@@ -1,0 +1,3 @@
+﻿todo 		Задачи
+stocks		Склады
+schedule	Расписание

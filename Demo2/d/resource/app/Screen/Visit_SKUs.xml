@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+
+  <s:Push Id="visit" Value="$param1"></s:Push>
+  <s:Push Id="outlet" Value="$visit.OutletAsObject"></s:Push>
+  <s:Push Id="questionnaire" Value="select single(*) from $dao.Document.Questionnaire where OutletType == $outlet.TypeAsObject.Id"></s:Push>
+  
+  <c:VerticalLayout>
+
+    <c:HorizontalLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnClickAction="Back"/>
+      <c:TextView Text="SKUs" />
+      <c:Button CssClass="btnForward" OnClickAction="Forward:$visit"/>
+    </c:HorizontalLayout>
+
+    <c:HorizontalLine/>
+
+    <c:ScrollView>
+
+      <c:VerticalLayout CssClass="grid">
+
+        <s:If Test="$questionnaire==null">
+
+          <c:HorizontalLayout>
+            <c:VerticalLayout>
+              <c:TextView Text="No questions" CssClass="H1"></c:TextView>
+            </c:VerticalLayout>
+          </c:HorizontalLayout>
+          
+        </s:If>
+        <s:Else>
+
+          <s:Iterator Id="item" Value="$questionnaire.SKUs">
+
+            <s:Push Id="sku" Value="$item.SKUAsObject"/>
+            <s:Push Id="skuValue" Value="select single(*) from $visit.SKUs where SKU == $sku.Id"/>
+            
+            <c:HorizontalLayout OnClickAction="Edit:$visit,$sku,$skuValue">
+
+              <c:VerticalLayout>
+                <s:If Test="$skuValue!=null">
+                  <c:TextView Text="$skuValue.Available" CssClass="H1"></c:TextView>
+                </s:If>
+                <s:Else>
+                  <c:TextView Text="?" CssClass="H1"></c:TextView>
+                </s:Else>
+                <c:TextView Text="$sku.Description" CssClass="H2"></c:TextView>
+              </c:VerticalLayout>
+
+              <c:Image/>
+
+            </c:HorizontalLayout>
+
+            <c:HorizontalLine/>
+          </s:Iterator>
+
+        </s:Else>
+
+      </c:VerticalLayout>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>

@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
+
+  <s:Push Id="visit" Value="$param1"></s:Push>
+  <s:Push Id="sku" Value="$param2"></s:Push>
+  <s:Push Id="skuValue" Value="$param3"></s:Push>
+
+  <s:If Test="$skuValue==null">
+    
+    <s:Push Id="skuValue">
+      <d:Document.Visit_SKUs Ref="$visit.Id" SKU="$sku.Id" Available="False"/>
+    </s:Push>
+
+  </s:If>
+
+  <c:VerticalLayout>
+
+    <c:HorizontalLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnClickAction="Back"/>
+      <c:TextView Text="#answer#" />
+      <c:Button CssClass="btnForward" OnClickAction="Back"/>
+    </c:HorizontalLayout>
+
+    <c:ScrollView>
+
+      <c:VerticalLayout CssClass="grid">
+
+        <c:HorizontalLayout>
+          <c:VerticalLayout>
+            <c:TextView Text="$sku.Description" CssClass="H1"></c:TextView>
+            <c:TextView Text="#typeanswer#" CssClass="H2"></c:TextView>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+
+        <c:HorizontalLine/>
+
+        <c:HorizontalLayout>
+            <c:CheckBox Value="$skuValue.Available" CssClass="H2"></c:CheckBox>  
+        </c:HorizontalLayout>
+
+      </c:VerticalLayout>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>
+
+
+

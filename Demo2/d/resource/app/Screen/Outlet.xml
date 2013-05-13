@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
+
+  <s:Push Id="outlet" Value="$param1"></s:Push>
+  
+  <c:VerticalLayout>
+
+    <c:HorizontalLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnClickAction="Back"/>
+      <c:TextView Text="Outlet" />
+      <c:Button CssClass="btnForward" OnClickAction="Commit"/>
+    </c:HorizontalLayout>
+
+    <c:HorizontalLine/>
+
+    <c:ScrollView>
+
+      <c:VerticalLayout CssClass="grid">
+
+        <c:HorizontalLayout>
+          
+          <c:VerticalLayout>
+            <c:TextView Text="$outlet.Description" CssClass="H1"></c:TextView>
+            <c:TextView Text="$outlet.Address" CssClass="H2"></c:TextView>
+          </c:VerticalLayout>
+          
+        </c:HorizontalLayout>
+
+        <c:HorizontalLine/>
+
+        <c:HorizontalLayout OnClickAction="EditParameter:$outlet,Class">
+
+          <c:VerticalLayout>
+            <c:TextView Text="$outlet.ClassAsObject.Description" CssClass="H1"></c:TextView>
+            <c:TextView Text="Outlet class" CssClass="H2"></c:TextView>
+          </c:VerticalLayout>
+          <c:Image/>
+          
+        </c:HorizontalLayout>
+
+        <c:HorizontalLine/>
+
+        <c:HorizontalLayout OnClickAction="EditParameter:$outlet,Type">
+
+          <c:VerticalLayout>
+            <c:TextView Text="$outlet.TypeAsObject.Description" CssClass="H1"></c:TextView>
+            <c:TextView Text="Outlet type" CssClass="H2"></c:TextView>
+          </c:VerticalLayout>
+          <c:Image/>
+
+        </c:HorizontalLayout>
+
+        <c:HorizontalLine/>
+
+        <c:HorizontalLayout OnClickAction="EditParameter:$outlet,Distributor">
+
+          <c:VerticalLayout>
+            <c:TextView Text="$outlet.DistributorAsObject.Description" CssClass="H1"></c:TextView>
+            <c:TextView Text="Distributor" CssClass="H2"></c:TextView>
+          </c:VerticalLayout>
+          <c:Image/>
+
+        </c:HorizontalLayout>
+
+        <c:HorizontalLine/>
+
+        <s:Iterator Id="parameter" Value="$dao.Catalog.OutletParameter">
+
+          <s:Push Id="parameterValue" Value="select single(*) from $outlet.Parameters where Parameter == $parameter.Id"/>
+
+          <c:HorizontalLayout OnClickAction="EditAddParameter:$outlet,$parameter,$parameterValue">
+
+            <c:VerticalLayout>
+              <s:If Test="$parameterValue!=null">
+                <c:TextView Text="$parameterValue.Value" CssClass="H1"></c:TextView>
+              </s:If>
+              <s:Else>
+                <c:TextView Text="?" CssClass="H1"></c:TextView>  
+              </s:Else>
+              <c:TextView Text="$parameter.Description" CssClass="H2"></c:TextView>
+            </c:VerticalLayout>
+            <c:Image/>
+                          
+          </c:HorizontalLayout>
+
+          <c:HorizontalLine/>
+
+        </s:Iterator>
+
+      </c:VerticalLayout>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>
+
+
+

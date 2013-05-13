@@ -1,0 +1,3 @@
+﻿todo 		Todo
+stocks		Stocks
+schedule	Schedule

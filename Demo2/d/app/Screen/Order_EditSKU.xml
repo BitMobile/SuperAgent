@@ -28,7 +28,7 @@
         <c:HorizontalLayout>
           <c:VerticalLayout>
             <c:TextView Text="$sku.Description" CssClass="H1"></c:TextView>
-            <c:TextView Text="Select value.." CssClass="H2"></c:TextView>
+            <c:TextView Text="#select_answer#" CssClass="H2"></c:TextView>
           </c:VerticalLayout>          
         </c:HorizontalLayout>
 
@@ -37,7 +37,7 @@
         <c:HorizontalLayout>
           <c:VerticalLayout>
             <c:EditText Value="$orderitem.Qty" AutoFocus="True" CssClass="H1"></c:EditText>
-            <c:TextView Text="Quantity" CssClass="H2"></c:TextView>
+            <c:TextView Text="#quantity#" CssClass="H2"></c:TextView>
           </c:VerticalLayout>
         </c:HorizontalLayout>
 
@@ -46,7 +46,7 @@
         <c:HorizontalLayout>
           <c:VerticalLayout>
             <c:TextView Text="$orderitem.Price" CssClass="H1"></c:TextView>
-            <c:TextView Text="Price" CssClass="H2"></c:TextView>
+            <c:TextView Text="#price#" CssClass="H2"></c:TextView>
           </c:VerticalLayout>
         </c:HorizontalLayout>
 

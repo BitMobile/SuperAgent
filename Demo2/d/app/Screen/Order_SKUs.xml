@@ -2,7 +2,7 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
 
   <s:Push Id="order" Value="$param1"></s:Push>
-  <s:Push Id="skus" Value="select * from $dao.Catalog.SKU"></s:Push>
+  <s:Push Id="groups" Value="select * from $dao.Catalog.SKUGroup"></s:Push>
 
   <c:VerticalLayout>
 
@@ -30,20 +30,36 @@
 
       <c:VerticalLayout CssClass="grid">
 
-        <s:Iterator Id="sku" Value="$skus">
+        <s:Iterator Id="group" Value="$groups">
+	  <c:HorizontalLayout>
+	    <c:VerticalLayout>
+	       <c:TextView Text = "$group.Description" CssClass = "H1"></c:TextView>
+	    </c:VerticalLayout>
 
-          <c:HorizontalLayout OnClickAction="Select:$order,$sku,null">
-
-            <c:VerticalLayout>
-              <c:TextView Text="$sku.Description" CssClass="H1"></c:TextView>
-              <c:TextView Text="$sku.Price" CssClass="H2"></c:TextView>
-            </c:VerticalLayout>
-
-            <c:Image/>
-
-          </c:HorizontalLayout>
+	  </c:HorizontalLayout>
 
           <c:HorizontalLine/>
+
+	        <s:Push Id="skus" Value="select * from $dao.Catalog.SKU where Owner==$group.Id"></s:Push>
+		
+		 <s:Iterator Id="sku" Value="$skus">
+
+		   <c:HorizontalLayout OnClickAction="Select:$order,$sku,null">
+
+            	     <c:VerticalLayout>
+              	       <c:TextView Text="$sku.Description" CssClass="H1"></c:TextView>
+              	       <c:TextView Text="$sku.Price" CssClass="H2"></c:TextView>
+           	     </c:VerticalLayout>
+
+                     <c:Image/>
+
+          	   </c:HorizontalLayout>
+		   <c:HorizontalLine/>
+		   
+		 </s:Iterator>
+		
+		
+	  
         </s:Iterator>
 
       </c:VerticalLayout>

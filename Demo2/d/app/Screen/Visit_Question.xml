@@ -22,7 +22,7 @@
 
     <c:HorizontalLayout CssClass="topNavigator">
       <c:Button CssClass="btnBack" OnClickAction="Back"/>
-      <c:TextView Text="VLISCO GROUP" />
+      <c:TextView Text="#answer#" />
       <c:Button CssClass="btnForward" OnClickAction="Back"/>
     </c:HorizontalLayout>
 
@@ -32,8 +32,7 @@
 
         <c:HorizontalLayout>
           <c:VerticalLayout>
-            <c:TextView Text="$question.Description" CssClass="H1"></c:TextView>
-            <c:TextView Text="Select value.." CssClass="H2"></c:TextView>
+            <c:TextView Text="#typeanswer#" CssClass="H2"></c:TextView>
           </c:VerticalLayout>
         </c:HorizontalLayout>
 

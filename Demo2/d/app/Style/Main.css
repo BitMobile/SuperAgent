@@ -25,7 +25,7 @@ vl hl Button {
 }
 
 .btnDistr {
-    background-image: url(distr_active.png);
+    background-image: url(distr.png);
 }
 
 .btnSchedule {

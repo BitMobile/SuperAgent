@@ -28,14 +28,3 @@ obj/
 _ReSharper*/
 [Tt]est[Rr]esult*
 *.dll
-
-bin*/
-code*/
-configuration*/
-data*/
-database*/
-AdminSync.svc
-DeviceSync.svc
-Client.cs
-ClientMetadata.cs
-download*/

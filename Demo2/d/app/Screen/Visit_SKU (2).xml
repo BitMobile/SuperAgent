@@ -8,7 +8,7 @@
   <s:If Test="$skuValue==null">
     
     <s:Push Id="skuValue">
-      <d:Document.Visit_SKUs Ref="$visit.Id" SKU="$sku.Id" Available="False"/>
+      <d:Document.Visit_SKUs Ref="$visit.Id" SKU="$sku.Id" Available="False" OutOfStock="False"/>
     </s:Push>
 
   </s:If>
@@ -17,7 +17,7 @@
 
     <c:HorizontalLayout CssClass="topNavigator">
       <c:Button CssClass="btnBack" OnClickAction="Back"/>
-      <c:TextView Text="VLISCO GROUP" />
+      <c:TextView Text="#answer#" />
       <c:Button CssClass="btnForward" OnClickAction="Back"/>
     </c:HorizontalLayout>
 
@@ -28,7 +28,7 @@
         <c:HorizontalLayout>
           <c:VerticalLayout>
             <c:TextView Text="$sku.Description" CssClass="H1"></c:TextView>
-            <c:TextView Text="Select value.." CssClass="H2"></c:TextView>
+            <c:TextView Text="#typeanswer#" CssClass="H2"></c:TextView>
           </c:VerticalLayout>
         </c:HorizontalLayout>
 
@@ -36,6 +36,12 @@
 
         <c:HorizontalLayout>
             <c:CheckBox Value="$skuValue.Available" CssClass="H2"></c:CheckBox>  
+        </c:HorizontalLayout>
+
+        <c:HorizontalLine/>
+
+        <c:HorizontalLayout>
+            <c:CheckBox Value="$skuValue.OutOfStock" CssClass="H2"></c:CheckBox>  
         </c:HorizontalLayout>
 
       </c:VerticalLayout>

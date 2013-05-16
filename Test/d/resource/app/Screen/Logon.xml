@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+
+  <c:VerticalLayout>
+
+    <c:HorizontalLayout CssClass="status">
+      <c:TextView Text="$common.LastUpdated"></c:TextView>
+    </c:HorizontalLayout>
+    
+    <c:HorizontalLayout CssClass="logo"/>   
+
+    <c:VerticalLayout>
+      <c:EditText Text="#username#"></c:EditText>
+      <c:EditText Text="#password#"></c:EditText>
+
+      <c:HorizontalLayout>
+        <c:Button Text="#cancel#" OnClickAction="Back"></c:Button>
+        <c:Button Text="#Ok#" OnClickAction="OK"></c:Button>
+      </c:HorizontalLayout>
+      
+    </c:VerticalLayout>
+    
+  </c:VerticalLayout>
+
+</c:Screen>

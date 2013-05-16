@@ -31,7 +31,6 @@ quantity	Количество
 price		Цена
 edit		Редактирование
 insert_text	Введите текст..
-totalamount	Итого
 
 
 

@@ -8,7 +8,7 @@
     <c:HorizontalLayout CssClass="topNavigator">
       <c:Button CssClass="btnBack" OnClickAction="Back"/>
       <c:TextView Text="#commentary#" />
-      <c:Button CssClass="btnForward" OnClickAction="Forward:$workflow.visit"/>
+      <c:Button CssClass="btnForward" OnClickAction="Commit"/>
     </c:HorizontalLayout>
 
     <c:ScrollView>
@@ -17,7 +17,7 @@
 
         <c:HorizontalLayout>
           <c:VerticalLayout>
-		<c:TextView Text="#typeanswer#" CssClass="H2"></c:TextView>
+		<c:TextView Text="#insert_text#" CssClass="H2"></c:TextView>
 		<c:HorizontalLine/>
 		<c:EditText Value="$order.Commentary" CssClass="H1" AutoFocus="True"></c:EditText>
           </c:VerticalLayout>          

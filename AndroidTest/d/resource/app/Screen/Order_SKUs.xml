@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+
+  <s:Push Id="order" Value="$param1"></s:Push>
+  <s:Push Id="groups" Value="select * from $dao.Catalog.SKUGroup"></s:Push>
+
+  <c:VerticalLayout>
+
+    <c:HorizontalLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnClickAction="Back"/>
+      <c:TextView Text="#sku#" />
+      <c:Button CssClass="btnForward" OnClickAction="Back"/>
+    </c:HorizontalLayout>
+
+    <c:HorizontalLine/>
+
+    <c:HorizontalLayout CssClass="search">
+
+      <c:HorizontalLayout >
+        <c:Image />
+        <c:EditText></c:EditText>
+      </c:HorizontalLayout>
+      <c:Button Text="#search#"></c:Button>
+
+    </c:HorizontalLayout>
+
+    <c:HorizontalLine/>
+
+    <c:ScrollView>
+
+      <c:VerticalLayout CssClass="grid">
+
+        <s:Iterator Id="group" Value="$groups">
+	  <c:HorizontalLayout>
+	    <c:VerticalLayout>
+	       <c:TextView Text = "$group.Description" CssClass = "H1"></c:TextView>
+	    </c:VerticalLayout>
+
+	  </c:HorizontalLayout>
+
+          <c:HorizontalLine/>
+
+	        <s:Push Id="skus" Value="select * from $dao.Catalog.SKU where Owner==$group.Id"></s:Push>
+		
+		 <s:Iterator Id="sku" Value="$skus">
+
+		   <c:HorizontalLayout OnClickAction="Select:$order,$sku,null">
+
+            	     <c:VerticalLayout>
+              	       <c:TextView Text="$sku.Description" CssClass="H1"></c:TextView>
+              	       <c:TextView Text="$sku.Price" CssClass="H2"></c:TextView>
+           	     </c:VerticalLayout>
+
+                     <c:Image/>
+
+          	   </c:HorizontalLayout>
+		   <c:HorizontalLine/>
+		   
+		 </s:Iterator>
+		
+		
+	  
+        </s:Iterator>
+
+      </c:VerticalLayout>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>

@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
-
-  <c:VerticalLayout>
-        <c:TextView  Text="#todo#"/>
-    </c:VerticalLayout>
-  
-</c:Screen>

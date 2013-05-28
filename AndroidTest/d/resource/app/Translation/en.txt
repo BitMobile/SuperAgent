@@ -31,5 +31,6 @@ quantity	Quantity
 price		Price
 edit		Edit
 insert_text	Insert text..
+totalamount	Total amount
 
 

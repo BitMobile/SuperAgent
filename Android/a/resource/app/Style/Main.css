@@ -1,23 +1,31 @@
 ﻿vl hl {
-    height: 64px;
+    height:20%;
     margin-top:3px;
 }
 
 vl hl Button {
-    width:72px;
-    height:64px;
+    width:31%;
+    height:100%;
     margin-left:8px;
 }
 
 .caption {
-    height:11px;
+    height:16px;
 }
 
 .caption TextView {
     width:33%;
     height:100%;
     text-align:center;
-    font:9px arial;
+    font:14px arial;
+}
+
+Indicator {
+    width:30px;
+    height:30px;
+    margin-left:10px;
+    margin-top:10px;
+    color:#8a9d9e;
 }
 
 .btnTodo {
@@ -25,7 +33,7 @@ vl hl Button {
 }
 
 .btnDistr {
-    background-image: url(distr.png);
+    background-image: url(distr_active.png);
 }
 
 .btnSchedule {
@@ -57,16 +65,16 @@ vl hl Button {
 }
 
 .status {
-    height:5px;
+    height:8px;
 }
 
 .status TextView {
-    font:5px Arial;
+    font:8px Arial;
     height:100%;
     width:100%;
 }
 
 .logo {
     background-image: url(logo_firstbit2.png);
-    height:57px;
+    height:25%;
 }

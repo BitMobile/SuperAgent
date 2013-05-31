@@ -27,7 +27,7 @@
         <c:HorizontalLayout OnClickAction="Add:$workflow.order">
           <c:VerticalLayout>
             <c:TextView Text="$sum" CssClass="H1"></c:TextView>
-            <c:TextView Text="#totalamount#" CssClass="H2"></c:TextView>
+            <c:TextView Text="#quantity#" CssClass="H2"></c:TextView>
           </c:VerticalLayout>
           <c:Image/>
         </c:HorizontalLayout>

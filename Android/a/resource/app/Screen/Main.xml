@@ -6,6 +6,7 @@
       <c:TextView Text="$common.LoadingStatus"></c:TextView>
     </c:HorizontalLayout>
     <c:HorizontalLayout CssClass="logo">
+      <c:Indicator/>
     </c:HorizontalLayout>
     <c:HorizontalLayout>
         <c:Button CssClass="btnTodo"></c:Button>

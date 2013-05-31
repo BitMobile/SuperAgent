@@ -21,12 +21,12 @@ vl {
 
 hl {
     width: 100%;
-    height: 33px;
+    height: 50px;
 }
 
 nb {
     width: 100%;
-    height: 27px;
+    height: 40px;
 }
 
 TextView {
@@ -37,48 +37,48 @@ TextView {
 Button {
     background-color:#808080;
     color:#fff;
-    width:75px;
-    height:17px;
+    width:100px;
+    height:25px;
 }
 
 .H1 {
-    font:13px Arial;
+    font:20px Arial;
 }
 
 .H2 {
-    font:9px Arial;
+    font:14px Arial;
 }
 
 .H3 {
-    font:13px Arial-BoldMT;
+    font:20px Arial-BoldMT;
 }
 
 .H4 {
-    font:9px Arial-BoldMT;
+    font:14px Arial-BoldMT;
 }
 
 .btnBack {
     background-image: url(button_left.png);
-    height: 37px;
+    height: 56px;
     width:20%;
 }
 
 .btnForward {
     background-image: url(button_right.png);
-    height: 37px;
+    height: 56px;
     width:20%;
 }
 
 
 
 .topNavigator {
-    height:37px;
+    height:56px;
     background-color:#2a3b3c;
 }
 
 .topNavigator TextView {
     width:60%;
-    height:37px;
+    height:56px;
     background-color:none;
     text-align: center;
     color: #FFF;
@@ -88,34 +88,39 @@ Button {
 
 
 .header {
-    height: 41px;
+    height: 61px;
 }
 
 .grid line {
     background-color:#879091;
-    margin-top:3px;
+    
 }
 
 .grid hl {
-    height:37px;
+    height:56px;
     selected-color:#bacdce;
 }
 
 .grid hl img {
-    width:13px;
-    height:12px;
-    margin-top:12px;
+    width:18px;
+    height:18px;
+    margin-top:18px;
     background-image: url(icon_more.png);
 }
 
 .grid hl vl {
     width:90%;
-    height:37px;
-    margin-top:3px;
-    padding-left:8px;
+    height:56px;
+    
+    padding-left:10px;
 }
 
 .grid hl vl TextView {
+    width:100%;
+    height:50%;
+}
+
+.grid hl vl hl TextView {
     width:100%;
     height:50%;
 }
@@ -127,7 +132,7 @@ Button {
 
 .grid hl EditText {
     width:100%;
-    height:19px;
+    height:28px;
     background-color: #f0f0f0;
     color:#000000;
     border-style:none;
@@ -135,7 +140,7 @@ Button {
 
 .grid hl vl EditText {
     width:100%;
-    height:19px;
+    height:14px;
     background-color: #f0f0f0;
     color:#000000;
     border-style:none;
@@ -143,13 +148,13 @@ Button {
 
 
 .search{
-    height:37px;
+    height:56px;
     background-color:#8a9d9e;
 }
 
 .search hl{
-    margin-left:8px;
-    margin-top:7px;
+    margin-left:10px;
+    margin-top:10px;
     height:70%;
     width:65%;
     border-width:1px;
@@ -159,10 +164,10 @@ Button {
 }
 
 .search hl img{
-    height:20px;
-    width:20px;
-    margin-top:2px;
-    margin-left:2px;
+    height:30px;
+    width:26px;
+    margin-top:3px;
+    margin-left:3px;
     background-image: url(icon_zoom.png);
     background-color: #ffffff;
 }
@@ -176,8 +181,8 @@ Button {
 }
 
 .search Button {
-    margin-left:8px;
-    margin-top:7px;
+    margin-left:10px;
+    margin-top:10px;
     width:25%;
     height:70%;
     background-color:#416765;

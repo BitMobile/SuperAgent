@@ -1,0 +1,197 @@
+﻿body {
+    background-color:#FFF; 
+}
+
+line {
+    width: 100%;
+    height:1px;
+    background-color:#000000;
+}
+
+
+sv {
+    width: 100%;
+    height: 100%;
+}
+
+vl {
+    width: 100%;
+    height: 100%;
+}
+
+hl {
+    width: 100%;
+    height: 50px;
+}
+
+nb {
+    width: 100%;
+    height: 40px;
+}
+
+TextView {
+    background-color:none;
+    color:#444444;
+}
+
+Button {
+    background-color:#808080;
+    color:#fff;
+    width:100px;
+    height:25px;
+}
+
+.H1 {
+    font:20px Arial;
+}
+
+.H2 {
+    font:14px Arial;
+}
+
+.H3 {
+    font:20px Arial-BoldMT;
+}
+
+.H4 {
+    font:14px Arial-BoldMT;
+}
+
+.btnBack {
+    background-image: url(button_left.png);
+    height: 56px;
+    width:20%;
+}
+
+.btnForward {
+    background-image: url(button_right.png);
+    height: 56px;
+    width:20%;
+}
+
+
+
+.topNavigator {
+    height:56px;
+    background-color:#2a3b3c;
+}
+
+.topNavigator TextView {
+    width:60%;
+    height:56px;
+    background-color:none;
+    text-align: center;
+    color: #FFF;
+    font:24px arial;
+}
+
+
+
+.header {
+    height: 61px;
+}
+
+.grid line {
+    background-color:#879091;
+    margin-top:5px;
+}
+
+.grid hl {
+    height:56px;
+    selected-color:#bacdce;
+}
+
+.grid hl img {
+    width:18px;
+    height:18px;
+    margin-top:18px;
+    background-image: url(icon_more.png);
+}
+
+.grid hl vl {
+    width:90%;
+    height:56px;
+    margin-top:5px;
+    padding-left:10px;
+}
+
+.grid hl vl TextView {
+    width:100%;
+    height:50%;
+}
+
+.grid hl vl hl TextView {
+    width:30%;
+    height:50%;
+}
+
+.grid hl CheckBox {
+    selected-color:#416765;
+    background-color:#8a9d9e;
+}
+
+.grid hl EditText {
+    width:100%;
+    height:28px;
+    background-color: #f0f0f0;
+    color:#000000;
+    border-style:none;
+}
+
+.grid hl vl EditText {
+    width:100%;
+    height:28px;
+    background-color: #f0f0f0;
+    color:#000000;
+    border-style:none;
+}
+
+
+.search{
+    height:56px;
+    background-color:#8a9d9e;
+}
+
+.search hl{
+    margin-left:10px;
+    margin-top:10px;
+    height:70%;
+    width:65%;
+    border-width:1px;
+    border-color:#283636;
+    background-color: #ffffff;
+    border-radius:8px;
+}
+
+.search hl img{
+    height:30px;
+    width:26px;
+    margin-top:3px;
+    margin-left:3px;
+    background-image: url(icon_zoom.png);
+    background-color: #ffffff;
+}
+
+.search hl EditText {
+    width:80%;
+    height:100%;
+    background-color: #ffffff;
+    color:#000000;
+    border-style:none;
+}
+
+.search Button {
+    margin-left:10px;
+    margin-top:10px;
+    width:25%;
+    height:70%;
+    background-color:#416765;
+    color:#ffffff; 
+    border-width:1px;
+    border-color:#283636;
+    border-radius:8px;
+}
+
+vl line {
+    background-color:#283636;
+}

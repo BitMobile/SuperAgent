@@ -46,7 +46,7 @@
             <c:CheckBox Value="$parameterValue.Value" CssClass="H2"></c:CheckBox>  
           </s:If>
           <s:Else>
-            <c:EditText Value="$parameterValue.Value" CssClass="H2"></c:EditText>
+            <c:EditText Value="$parameterValue.Value" CssClass="H2" AutoFocus="true"></c:EditText>
           </s:Else>
         </c:HorizontalLayout>
 

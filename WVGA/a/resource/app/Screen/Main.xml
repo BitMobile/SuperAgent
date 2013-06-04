@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+
+  <c:VerticalLayout>
+    <c:HorizontalLayout CssClass="status">
+      <c:TextView Text="$common.LoadingStatus"></c:TextView>
+    </c:HorizontalLayout>
+    <c:HorizontalLayout CssClass="logo">
+      <c:Indicator/>
+    </c:HorizontalLayout>
+    <c:HorizontalLayout>
+      <c:Button CssClass="btnTodo" OnClickAction="ToDo"></c:Button>
+      <c:Button CssClass="btnDistr" OnClickAction="Distr"></c:Button>
+      <c:Button CssClass="btnSchedule" OnClickAction="ScheduledVisit"></c:Button>
+    </c:HorizontalLayout>
+    <c:HorizontalLayout CssClass="caption">
+      <c:TextView Text="#todo#"/>
+      <c:TextView Text="#stock#"/>
+      <c:TextView Text="#schedule#"/>
+    </c:HorizontalLayout>
+    <c:HorizontalLayout>
+      <c:Button CssClass="btnOrder" OnClickAction="Order"></c:Button>
+      <c:Button CssClass="btnVisit" OnClickAction="UnscheduledVisit"></c:Button>
+      <c:Button CssClass="btnOutlets" OnClickAction="Outlets"></c:Button>
+    </c:HorizontalLayout>
+    <c:HorizontalLayout CssClass="caption">
+      <c:TextView Text="#order#"/>
+      <c:TextView Text="#visit#"/>
+      <c:TextView Text="#outlets#"/>
+    </c:HorizontalLayout>
+    <c:HorizontalLayout>
+      <c:Button CssClass="btnKpi" OnClickAction="Targets"></c:Button>
+      <c:Button CssClass="btnSettings" OnClickAction="Logon"></c:Button>
+      <c:Button CssClass="btnSync" OnClickAction="Sync"></c:Button>
+    </c:HorizontalLayout>
+    <c:HorizontalLayout CssClass="caption">
+      <c:TextView Text="#targets#"/>
+      <c:TextView Text="#settings#"/>
+      <c:TextView Text="#sync#"/>
+    </c:HorizontalLayout>
+  </c:VerticalLayout>
+
+</c:Screen>

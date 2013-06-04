@@ -1,0 +1,80 @@
+﻿vl hl {
+    height: 144px;
+    margin-top:3px;
+}
+
+vl hl Button {
+    width:144px;
+    height:144px;
+    margin-left:14px;
+}
+
+.caption {
+    height:32px;
+}
+
+.caption TextView {
+    width:33%;
+    height:100%;
+    text-align:center;
+    font:23px arial;
+}
+
+Indicator {
+    width:50px;
+    height:50px;
+    margin-left:15px;
+    margin-top:15px;
+    color:#8a9d9e;
+}
+
+.btnTodo {
+    background-image: url(todo.png);
+}
+
+.btnDistr {
+    background-image: url(distr_active.png);
+}
+
+.btnSchedule {
+    background-image: url(schedule.png);
+}
+
+.btnOrder {
+    background-image: url(order_active.png);
+}
+
+.btnVisit {
+    background-image: url(visit.png);
+}
+
+.btnOutlets {
+    background-image: url(outlets.png);
+}
+
+.btnKpi {
+    background-image: url(kpi.png);
+}
+
+.btnSettings {
+    background-image: url(settings.png);
+}
+
+.btnSync {
+    background-image: url(sync.png);
+}
+
+.status {
+    height:13px;
+}
+
+.status TextView {
+    font:13px Arial;
+    height:100%;
+    width:100%;
+}
+
+.logo {
+    background-image: url(logo_firstbit2.png);
+    height:128px;
+}

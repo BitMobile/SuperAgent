@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+
+  <s:Push Id="search" Value="$param1"/>
+  <s:If Test="$search==null">
+    <s:Push Id="outlets" Value="select * from $dao.Document.VisitPlan_Outlets where Date == $common.Today" />
+  </s:If>
+  <s:Else>
+    <s:Push Id="outlets" Value="select * from $dao.Document.VisitPlan_Outlets where Date == $common.Today &amp;&amp; OutletAsObject.Description.Contains($search)"></s:Push>
+  </s:Else>
+
+  <c:VerticalLayout>
+
+    <c:HorizontalLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnClickAction="Back"/>
+      <c:TextView Text="#schedule#" />
+      <c:Button CssClass="btnForward" />
+    </c:HorizontalLayout>
+
+    <c:HorizontalLine/>
+    
+    <c:HorizontalLayout CssClass="search">
+
+      <c:HorizontalLayout >
+        <c:Image />
+        <c:EditText Id="edtSearch" Text="$search"></c:EditText>
+      </c:HorizontalLayout>
+      <c:Button Text="#search#" OnClickAction="RefreshScreen:$edtSearch.Text"></c:Button>
+
+    </c:HorizontalLayout>
+
+    <c:HorizontalLine/>
+    
+    <c:ScrollView CssClass="grid">
+     
+        <s:Iterator Id="outlet" Value="$outlets">
+
+          <s:Push Id="planVisit" Value="$outlet.RefAsObject"></s:Push>
+          <s:Push Id="planOutlet" Value="$outlet.OutletAsObject"></s:Push>
+
+          <c:HorizontalLayout OnClickAction="Select:$planVisit,$planOutlet">
+          
+            <c:VerticalLayout>
+              <c:TextView Text="$planOutlet.Description" CssClass="H1"></c:TextView>
+              <c:TextView Text="$planOutlet.Address" CssClass="H2"></c:TextView>
+            </c:VerticalLayout>
+
+            <c:Image/>
+
+          </c:HorizontalLayout>
+          
+          <c:HorizontalLine/>
+        </s:Iterator>
+    
+    </c:ScrollView>
+       
+  </c:VerticalLayout>
+
+</c:Screen>

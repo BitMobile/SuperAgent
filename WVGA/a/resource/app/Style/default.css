@@ -195,3 +195,8 @@ Button {
 vl line {
     background-color:#283636;
 }
+
+CheckBox {
+    width:60px;
+    height:60px;
+}

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+
+  <s:Push Id="tasks" Value="select * from $dao.Document.Task"></s:Push>
+  
+  <c:VerticalLayout>
+
+    <c:HorizontalLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnClickAction="Back"/>
+      <c:TextView Text="#tasks#" />
+      <c:Button CssClass="btnForward" OnClickAction="Back"/>
+    </c:HorizontalLayout>
+
+    <c:HorizontalLine/>
+
+    <c:ScrollView CssClass="grid">
+
+      <s:Iterator Id="task" Value="$tasks">
+
+        <c:HorizontalLayout OnClickAction="Select:$task">
+
+          <c:VerticalLayout>
+            <c:TextView Text="$task.TextTask" CssClass="H1"></c:TextView>
+          </c:VerticalLayout>
+
+          <c:Image/>
+
+        </c:HorizontalLayout>
+
+        <c:HorizontalLine/>
+      </s:Iterator>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>

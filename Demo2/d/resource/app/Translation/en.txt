@@ -13,7 +13,7 @@ outlet_class	Outlet class
 outlet_type	Outlet type
 distributor	Distributor
 answer		Answer
-typeanswer	Insert answer..
+typeanswer	Insert answers..
 username	User name
 password	Password
 cancel		Cancel
@@ -21,7 +21,7 @@ Ok		Ok
 parameters	Parameters
 select_answer	Select value..
 save		Save
-no_questions	No answers
+no_questions	No questions
 questions	Questions
 commentary	Commentary
 insert_answer	Insert value..
@@ -32,5 +32,11 @@ price		Price
 edit		Edit
 insert_text	Insert text..
 totalamount	Total amount
+price2		Price:
+kpi			KPI
+tasks		Tasks
+description	Description
+result		Result
+endtime		End time
 
 

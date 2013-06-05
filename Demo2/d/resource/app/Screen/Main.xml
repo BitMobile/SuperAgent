@@ -6,9 +6,10 @@
       <c:TextView Text="$common.LoadingStatus"></c:TextView>
     </c:HorizontalLayout>
     <c:HorizontalLayout CssClass="logo">
+      <c:Indicator/>
     </c:HorizontalLayout>
     <c:HorizontalLayout>
-        <c:Button CssClass="btnTodo"></c:Button>
+        <c:Button CssClass="btnTodo" OnClickAction="ToDo"></c:Button>
         <c:Button CssClass="btnDistr" OnClickAction="Distr"></c:Button>
         <c:Button CssClass="btnSchedule" OnClickAction="ScheduledVisit"></c:Button>
       </c:HorizontalLayout>
@@ -28,7 +29,7 @@
         <c:TextView Text="#outlets#"/>
       </c:HorizontalLayout>
       <c:HorizontalLayout>
-        <c:Button CssClass="btnKpi"></c:Button>
+        <c:Button CssClass="btnKpi" OnClickAction="Targets"></c:Button>
         <c:Button CssClass="btnSettings" OnClickAction="Logon"></c:Button>
         <c:Button CssClass="btnSync" OnClickAction="Sync"></c:Button>
       </c:HorizontalLayout>

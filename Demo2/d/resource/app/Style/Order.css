@@ -121,16 +121,11 @@ Button {
 }
 
 .grid hl vl hl TextView {
-    width:100%;
+    width:50%;
     height:50%;
 }
 
 .grid hl CheckBox {
-    selected-color:#416765;
-    background-color:#8a9d9e;
-}
-
-.grid hl vl CheckBox {
     selected-color:#416765;
     background-color:#8a9d9e;
 }
@@ -199,4 +194,38 @@ Button {
 
 vl line {
     background-color:#283636;
+}
+
+.order line {
+    background-color:#879091;
+    margin-top:5px;
+}
+
+.order hl {
+    height:56px;
+    selected-color:#bacdce;
+}
+
+.order hl img {
+    width:18px;
+    height:18px;
+    margin-top:18px;
+    background-image: url(icon_more.png);
+}
+
+.order hl vl {
+    width:90%;
+    height:56px;
+    margin-top:5px;
+    padding-left:10px;
+}
+
+.order hl vl TextView {
+    width:100%;
+    height:50%;
+}
+
+.order hl vl hl TextView {
+    width:100%;
+    height:50%;
 }

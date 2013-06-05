@@ -20,12 +20,20 @@ vl hl Button {
     font:14px arial;
 }
 
+Indicator {
+    width:30px;
+    height:30px;
+    margin-left:10px;
+    margin-top:10px;
+    color:#8a9d9e;
+}
+
 .btnTodo {
     background-image: url(todo.png);
 }
 
 .btnDistr {
-    background-image: url(distr.png);
+    background-image: url(distr_active.png);
 }
 
 .btnSchedule {

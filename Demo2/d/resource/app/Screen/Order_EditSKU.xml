@@ -21,9 +21,7 @@
       <c:Button CssClass="btnForward" OnClickAction="Forward:$order.OutletAsObject"/>
     </c:HorizontalLayout>
 
-    <c:ScrollView>
-
-      <c:VerticalLayout CssClass="grid">
+    <c:ScrollView CssClass="grid">
 
         <c:HorizontalLayout>
           <c:VerticalLayout>
@@ -51,8 +49,6 @@
         </c:HorizontalLayout>
 
         <c:HorizontalLine/>
-
-      </c:VerticalLayout>
 
     </c:ScrollView>
 

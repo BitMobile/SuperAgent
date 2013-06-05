@@ -35,7 +35,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="d\AdminSync.svc" />
-    <Content Include="d\resource\app\BusinessProcess\BusinessProcess.xml" />
+    <Content Include="d\resource\app\BusinessProcess\BusinessProcess.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="d\resource\app\Image\button_left.png" />
     <Content Include="d\resource\app\Image\button_right.png" />
     <Content Include="d\resource\app\Image\corner_light_green.png" />
@@ -57,28 +59,51 @@
     <Content Include="d\resource\app\Screen\ListChoice.xml" />
     <Content Include="d\resource\app\Screen\Logon.xml" />
     <Content Include="d\resource\app\Screen\Main.xml" />
-    <Content Include="d\resource\app\Screen\Order.xml" />
+    <Content Include="d\resource\app\Screen\Order.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="d\resource\app\Screen\Order_Commentary.xml" />
     <Content Include="d\resource\app\Screen\Order_EditSKU.xml" />
-    <Content Include="d\resource\app\Screen\Order_SKUs.xml" />
+    <Content Include="d\resource\app\Screen\Order_SKUs.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="d\resource\app\Screen\Outlet.xml" />
     <Content Include="d\resource\app\Screen\OutletParameter.xml" />
-    <Content Include="d\resource\app\Screen\Outlets.xml" />
+    <Content Include="d\resource\app\Screen\Outlets.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="d\resource\app\Screen\ScheduledVisits.xml" />
     <Content Include="d\resource\app\Screen\Stock_SKUs.xml" />
     <Content Include="d\resource\app\Screen\UnscheduledVisit.xml" />
     <Content Include="d\resource\app\Screen\UnscheduleVisits.xml" />
     <Content Include="d\resource\app\Screen\Visit_Order_Commentary.xml" />
-    <Content Include="d\resource\app\Screen\Visit_Outlet.xml" />
+    <Content Include="d\resource\app\Screen\Visit_Outlet.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="d\resource\app\Screen\Visit_Question.xml" />
     <Content Include="d\resource\app\Screen\Visit_Questions.xml" />
     <Content Include="d\resource\app\Screen\Visit_SKU %282%29.xml" />
-    <Content Include="d\resource\app\Screen\Visit_SKU.xml" />
+    <Content Include="d\resource\app\Screen\Visit_SKU.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="d\resource\app\Screen\Visit_SKUs.xml" />
     <Content Include="d\resource\app\Screen\Visit_Total.xml" />
+    <Content Include="d\resource\app\Screen\Targets.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="d\resource\app\Screen\Tasks.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="d\resource\app\Screen\Task.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="d\resource\app\Style\default.css" />
     <Content Include="d\resource\app\Style\Logon.css" />
     <Content Include="d\resource\app\Style\Main.css" />
+    <Content Include="d\resource\app\Style\Order_SKUs.css" />
+    <Content Include="d\resource\app\Style\Visit_SKU.css" />
+    <Content Include="d\resource\app\Style\Order.css" />
+    <Content Include="d\resource\app\Style\Targets.css" />
     <Content Include="d\resource\app\Translation\en.txt" />
     <Content Include="d\resource\app\Translation\ru.txt" />
     <Content Include="d\resource\update.html" />

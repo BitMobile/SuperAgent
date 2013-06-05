@@ -15,9 +15,7 @@
 
     <c:HorizontalLine/>
 
-    <c:ScrollView>
-
-      <c:VerticalLayout CssClass="grid">
+    <c:ScrollView  CssClass="grid">
 
         <s:If Test="$questionnaire==null">
 
@@ -39,7 +37,7 @@
 
               <c:VerticalLayout>
                 <s:If Test="$skuValue!=null">
-                  <c:TextView Text="$skuValue.Available" CssClass="H1"></c:TextView>
+                  <c:TextView Text="$skuValue.Available" CssClass="H1" ></c:TextView>
                 </s:If>
                 <s:Else>
                   <c:TextView Text="?" CssClass="H1"></c:TextView>
@@ -55,8 +53,6 @@
           </s:Iterator>
 
         </s:Else>
-
-      </c:VerticalLayout>
 
     </c:ScrollView>
 

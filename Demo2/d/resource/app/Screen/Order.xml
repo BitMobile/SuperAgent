@@ -10,7 +10,8 @@
   </s:If>
   
   <s:Push Id="items" Value="select * from $dao.Document.Order_SKUs where Ref==$workflow.order.Id"></s:Push>
-  <s:Push Id="sum" Value="select sum(Qty) from $items"></s:Push>
+  <s:Push Id="sum" Value="select sum(Qty*Price) from $items"></s:Push>
+  <s:Push Id="qty" Value="select sum(Qty) from $items"></s:Push>
 
   <c:VerticalLayout>
 
@@ -23,7 +24,7 @@
     <c:HorizontalLine/>
 
     <c:VerticalLayout CssClass="header">
-      <c:VerticalLayout CssClass="grid">
+      <c:VerticalLayout  CssClass ="order">
         <c:HorizontalLayout OnClickAction="Add:$workflow.order">
           <c:VerticalLayout>
             <c:TextView Text="$sum" CssClass="H1"></c:TextView>
@@ -36,9 +37,7 @@
 
     <c:HorizontalLine/>
     
-    <c:ScrollView>
-
-      <c:VerticalLayout CssClass="grid">
+    <c:ScrollView CssClass="grid">
 
         <s:Iterator Id="orderitem" Value="$items">
 
@@ -46,7 +45,11 @@
 
             <c:VerticalLayout>
               <c:TextView Text="$orderitem.SKUAsObject.Description" CssClass="H1"></c:TextView>
-              <c:TextView Text="$orderitem.Qty" CssClass="H2"></c:TextView>
+              <c:HorizontalLayout>
+                <c:TextView Text="#quantity#: {$orderitem.Qty}" CssClass="H2"></c:TextView>
+                <s:Push Id="amount" Value="select sum(Qty*Price) from $items where SKU == orderitem.SKUAsObject.Id"></s:Push>
+                <c:TextView Text="#amount#: {$amount}" CssClass="H2"></c:TextView>
+              </c:HorizontalLayout>
             </c:VerticalLayout>
 
             <c:Image/>
@@ -55,8 +58,6 @@
 
           <c:HorizontalLine/>
         </s:Iterator>
-
-      </c:VerticalLayout>
 
     </c:ScrollView>
 

@@ -25,9 +25,7 @@
 
     <c:HorizontalLine/>
 
-    <c:ScrollView>
-
-      <c:VerticalLayout CssClass="grid">
+    <c:ScrollView  CssClass="grid">
 
         <s:Iterator Id="outlet" Value="$outlets">
 
@@ -44,8 +42,6 @@
 
           <c:HorizontalLine/>
         </s:Iterator>
-
-      </c:VerticalLayout>
 
     </c:ScrollView>
 

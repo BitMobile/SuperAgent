@@ -28,9 +28,7 @@
       <c:Button CssClass="btnForward" OnClickAction="Back"/>
     </c:HorizontalLayout>
 
-    <c:ScrollView>
-
-      <c:VerticalLayout CssClass="grid">
+    <c:ScrollView CssClass="grid">
 
         <c:HorizontalLayout>
           <c:VerticalLayout>
@@ -46,11 +44,19 @@
             <c:CheckBox Value="$parameterValue.Value" CssClass="H2"></c:CheckBox>  
           </s:If>
           <s:Else>
-            <c:EditText Value="$parameterValue.Value" CssClass="H2"></c:EditText>
+            <s:If Test="$parameter.DataTypeAsObject.Description=='Integer'">
+              <c:EditText Value="$parameterValue.Value" CssClass="H2" AutoFocus="True" Keyboard="numeric"></c:EditText>
+            </s:If>
+            <s:Else>
+              <s:If Test="$parameter.DataTypeAsObject.Description=='Decimal'">
+                <c:EditText Value="$parameterValue.Value" CssClass="H2" AutoFocus="True" Keyboard="numeric"></c:EditText>
+              </s:If>
+              <s:Else>
+                <c:EditText Value="$parameterValue.Value" CssClass="H2" AutoFocus="True"></c:EditText>
+              </s:Else>
+            </s:Else>
           </s:Else>
         </c:HorizontalLayout>
-
-      </c:VerticalLayout>
 
     </c:ScrollView>
 

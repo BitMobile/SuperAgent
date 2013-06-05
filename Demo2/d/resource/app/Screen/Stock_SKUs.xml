@@ -1,8 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
 
-  
-  <s:Push Id="skus" Value="select * from $dao.Catalog.SKU"></s:Push>
+  <s:Push Id="search" Value="$param2"></s:Push>
+
+  <s:If Test="$search==null">
+    <s:Push Id="skus" Value="select * from $dao.Catalog.SKU"></s:Push>
+  </s:If>
+  <s:Else>
+    <s:Push Id="skus" Value="select * from $dao.Catalog.SKU where Description.Contains($search)"></s:Push>
+  </s:Else>
 
   <c:VerticalLayout>
 
@@ -18,17 +24,15 @@
 
       <c:HorizontalLayout >
         <c:Image />
-        <c:EditText></c:EditText>
+        <c:EditText Id="edtSearch" Text="$search"></c:EditText>
       </c:HorizontalLayout>
-      <c:Button Text="#search#"></c:Button>
+      <c:Button Text="#search#" OnClickAction="RefreshScreen:$edtSearch.Text"></c:Button>
 
     </c:HorizontalLayout>
 
     <c:HorizontalLine/>
 
-    <c:ScrollView>
-
-      <c:VerticalLayout CssClass="grid">
+    <c:ScrollView CssClass="grid">
 
         <s:Iterator Id="sku" Value="$skus">
 
@@ -45,8 +49,6 @@
 
           <c:HorizontalLine/>
         </s:Iterator>
-
-      </c:VerticalLayout>
 
     </c:ScrollView>
 

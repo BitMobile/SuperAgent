@@ -6,14 +6,24 @@
     <bp:Step Name="Main" Screen="Main.xml">
 
 	<bp:Action Name="Distr" NextWorkflow="Stocks"></bp:Action>
+      <bp:Action Name="ToDo" NextWorkflow="ToDo"></bp:Action>
       <bp:Action Name="Order" NextWorkflow="Order"></bp:Action>
       <bp:Action Name="UnscheduledVisit" NextWorkflow="UnscheduledVisit"></bp:Action>
       <bp:Action Name="ScheduledVisit" NextWorkflow="ScheduledVisit"></bp:Action>
       <bp:Action Name="Outlets" NextWorkflow="Outlets"></bp:Action>
+      <bp:Action Name="Targets" NextWorkflow="Targets"></bp:Action>
       <bp:Action Name="Logon" NextWorkflow="Logon"></bp:Action>
       
     </bp:Step>
     
+  </bp:Workflow>
+
+  <bp:Workflow Name="ToDo">
+    <bp:Step Name="ToDo" Screen="Tasks.xml">
+      <bp:Action Name="Select" NextStep="Task"></bp:Action>
+    </bp:Step>
+    <bp:Step Name="Task" Screen="Task.xml">
+    </bp:Step>
   </bp:Workflow>
 
   <bp:Workflow Name="Stocks">
@@ -29,7 +39,7 @@
     </bp:Step>
 
     <bp:Step Name="Outlet" Screen="Visit_Outlet.xml">
-      <bp:Action Name="Forward" NextStep="Questions"></bp:Action>
+      <bp:Action Name="Forward" NextStep="Visit_Order"></bp:Action>
       <bp:Action Name="EditParameter" NextStep="EditOutletParameter"></bp:Action>
       <bp:Action Name="EditAddParameter" NextStep="EditOutletAddParameter"></bp:Action>
     </bp:Step>
@@ -78,7 +88,6 @@
     </bp:Step>
     
   </bp:Workflow>
-
 
 
   <bp:Workflow Name="UnscheduledVisit">
@@ -138,7 +147,6 @@
 
   </bp:Workflow>
 
-  
 
   <bp:Workflow Name="Outlets">
 
@@ -158,7 +166,6 @@
     </bp:Step>
 
   </bp:Workflow>
-
 
   
   <bp:Workflow Name="Order">
@@ -186,7 +193,11 @@
     
   </bp:Workflow>
 
-
+  <bp:Workflow Name="Targets">
+    <bp:Step Name="Targets" Screen="Targets.xml">
+    </bp:Step>
+  </bp:Workflow>
+  
   
   <bp:Workflow Name="Logon">
 

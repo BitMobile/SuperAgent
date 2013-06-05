@@ -121,16 +121,11 @@ Button {
 }
 
 .grid hl vl hl TextView {
-    width:100%;
+    width:30%;
     height:50%;
 }
 
 .grid hl CheckBox {
-    selected-color:#416765;
-    background-color:#8a9d9e;
-}
-
-.grid hl vl CheckBox {
     selected-color:#416765;
     background-color:#8a9d9e;
 }

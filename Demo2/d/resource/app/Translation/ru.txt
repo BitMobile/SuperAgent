@@ -13,7 +13,7 @@ outlet_class	Класс торговой точки
 outlet_type	Тип торговой точки
 distributor	Дистрибьютор
 answer		Ответ
-typeanswer	Введите значение..
+typeanswer	Введите значения..
 username	Имя пользователя
 password	Пароль
 cancel		Отмена
@@ -21,7 +21,7 @@ Ok		Ок
 parameters	Параметры
 select_answer	Выберите значение..
 save		Сохранить
-no_questions	Нет вопросов
+no_questions	Вопросов нет
 questions	Вопросы
 commentary	Комментарий
 insert_answer	Введите значение..
@@ -32,6 +32,12 @@ price		Цена
 edit		Редактирование
 insert_text	Введите текст..
 totalamount	Итого
+price2		Цена:
+kpi			KPI
+tasks		Цели
+description Описание
+result		Результат
+endtime		Срок выполнения
 
 
 

@@ -97,11 +97,13 @@
     <Content Include="d\resource\app\Screen\Task.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="d\resource\app\Screen\Visit_Order.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="d\resource\app\Style\default.css" />
     <Content Include="d\resource\app\Style\Logon.css" />
     <Content Include="d\resource\app\Style\Main.css" />
     <Content Include="d\resource\app\Style\Order_SKUs.css" />
-    <Content Include="d\resource\app\Style\Visit_SKU.css" />
     <Content Include="d\resource\app\Style\Order.css" />
     <Content Include="d\resource\app\Style\Targets.css" />
     <Content Include="d\resource\app\Translation\en.txt" />

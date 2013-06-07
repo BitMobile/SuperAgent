@@ -15,7 +15,7 @@
 
         <c:HorizontalLayout>
           <c:VerticalLayout>
-		<c:TextView Text="#typeanswer#" CssClass="H2"></c:TextView>
+		<c:TextView Text="#insert_text#" CssClass="H2"></c:TextView>
 		<c:HorizontalLine/>
 		<c:EditText Value="$order.Commentary" CssClass="H1" AutoFocus="True"></c:EditText>
           </c:VerticalLayout>          

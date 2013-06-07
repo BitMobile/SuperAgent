@@ -19,7 +19,7 @@
     <c:HorizontalLayout CssClass="topNavigator">
       <c:Button CssClass="btnBack" OnClickAction="Back"/>
       <c:TextView Text="#outlet#" />
-      <c:Button CssClass="btnForward" OnClickAction="Forward:$visit"/>
+      <c:Button CssClass="btnForward" OnClickAction="Forward:$outlet, $visit"/>
     </c:HorizontalLayout>
 
     <c:HorizontalLine/>

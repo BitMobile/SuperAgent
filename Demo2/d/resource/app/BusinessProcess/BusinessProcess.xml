@@ -44,7 +44,7 @@
       <bp:Action Name="EditAddParameter" NextStep="EditOutletAddParameter"></bp:Action>
     </bp:Step>
 
-    <bp:Step Name="Visit_Order" Screen="Order.xml">
+    <bp:Step Name="Visit_Order" Screen="Visit_Order.xml">
       <bp:Action Name="Add" NextStep="AddSKU"></bp:Action>
       <bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
       <bp:Action Name="Forward" NextStep="Commentary"></bp:Action>

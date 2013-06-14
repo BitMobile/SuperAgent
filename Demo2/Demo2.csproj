@@ -43,12 +43,14 @@
     <Content Include="d\resource\app\Image\corner_light_green.png" />
     <Content Include="d\resource\app\Image\corner_white.png" />
     <Content Include="d\resource\app\Image\distr.png" />
+    <Content Include="d\resource\app\Image\distr_active.png" />
     <Content Include="d\resource\app\Image\icon_more.png" />
     <Content Include="d\resource\app\Image\icon_zoom.png" />
     <Content Include="d\resource\app\Image\kpi.png" />
     <Content Include="d\resource\app\Image\logo.png" />
+    <Content Include="d\resource\app\Image\Logo3.png" />
+    <Content Include="d\resource\app\Image\Logo31.png" />
     <Content Include="d\resource\app\Image\logo_firstbit2.png" />
-    <Content Include="d\resource\app\Image\order.png" />
     <Content Include="d\resource\app\Image\order_active.png" />
     <Content Include="d\resource\app\Image\outlets.png" />
     <Content Include="d\resource\app\Image\schedule.png" />
@@ -100,12 +102,16 @@
     <Content Include="d\resource\app\Screen\Visit_Order.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="d\resource\app\Screen\Visit_Task.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="d\resource\app\Style\default.css" />
     <Content Include="d\resource\app\Style\Logon.css" />
     <Content Include="d\resource\app\Style\Main.css" />
     <Content Include="d\resource\app\Style\Order_SKUs.css" />
     <Content Include="d\resource\app\Style\Order.css" />
     <Content Include="d\resource\app\Style\Targets.css" />
+    <Content Include="d\resource\app\Style\Visit_Order.css" />
     <Content Include="d\resource\app\Translation\en.txt" />
     <Content Include="d\resource\app\Translation\ru.txt" />
     <Content Include="d\resource\update.html" />

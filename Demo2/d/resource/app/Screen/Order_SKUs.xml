@@ -38,20 +38,20 @@
     <c:ScrollView CssClass="grid">
 
         <s:Iterator Id="group" Value="$groups">
-	  <c:HorizontalLayout>
+	  <c:HorizontalLayout CssClass ="gridEdit">
 	    <c:VerticalLayout>
 	       <c:TextView Text = "$group.Description" CssClass = "H1"></c:TextView>
 	    </c:VerticalLayout>
 
 	  </c:HorizontalLayout>
 
-          <c:HorizontalLine/>
+          <c:HorizontalLine CssClass="editLine"/>
 
           <s:Push Id="skusByGroup" Value="select * from $skus where Owner==$group.Id"></s:Push>
 
           <s:Iterator Id="sku" Value="$skusByGroup">
 
-              <c:HorizontalLayout OnClickAction="Select:$order,$sku,null">
+              <c:HorizontalLayout OnClickAction="Select:$order,$sku,null" CssClass="gridWhite">
                 <c:VerticalLayout>
                   <c:TextView Text="$sku.Description" CssClass="H1"></c:TextView>
                   <c:HorizontalLayout>

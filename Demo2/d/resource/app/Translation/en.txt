@@ -5,6 +5,7 @@ order		Order
 visit		Visit
 outlets		Outlets
 targets		Targets
+target		Target
 settings	Settings
 sync		Sync
 search		Search
@@ -35,8 +36,9 @@ totalamount	Total amount
 price2		Price:
 kpi			KPI
 tasks		Tasks
+task		Task
 description	Description
 result		Result
-endtime		End time
+plandate	Plan date
 
 

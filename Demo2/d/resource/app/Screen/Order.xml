@@ -24,7 +24,7 @@
     <c:HorizontalLine/>
 
     <c:VerticalLayout CssClass="header">
-      <c:VerticalLayout  CssClass ="order">
+      <c:VerticalLayout  CssClass ="grid">
         <c:HorizontalLayout OnClickAction="Add:$workflow.order">
           <c:VerticalLayout>
             <c:TextView Text="$sum" CssClass="H1"></c:TextView>

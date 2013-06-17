@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
+
+  <s:Push Id="task" Value="$param1"></s:Push>
+  <s:Push Id="visit" Value="$param2"></s:Push>
+
+  <s:Push Id="taskValue" Value="select single(*) from $visit.Task where TextTask == $task.TextTask"/>
+
+  <s:If Test="taskValue==null">
+
+    <s:Push Id="taskValue">
+      <d:Document.Visit_Task Ref="$visit.Id" TextTask="$task.TextTask"/>
+    </s:Push>
+
+  </s:If>
+  
+  <c:VerticalLayout>
+
+    <c:HorizontalLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnClickAction="Back"/>
+      <c:TextView Text="#task#" />
+      <c:Button CssClass="btnForward" OnClickAction="Back:$visit.OutletAsObject,$task"/>
+    </c:HorizontalLayout>
+
+    <c:HorizontalLine/>
+
+    <c:ScrollView CssClass="grid">
+
+      <c:HorizontalLayout>
+
+          <c:VerticalLayout>
+            <c:TextView Text="$taskValue.TextTask" CssClass="H1"></c:TextView>
+            <c:TextView Text="#description#" CssClass="H2"></c:TextView>
+          </c:VerticalLayout>
+
+        </c:HorizontalLayout>
+
+        <c:HorizontalLine/>
+
+      <c:HorizontalLayout>
+
+        <c:VerticalLayout>
+          <c:EditText Value="$taskValue.Result" CssClass="H1" AutoFocus="True"></c:EditText>
+          <c:TextView Text="#result#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+
+      </c:HorizontalLayout>
+
+      <c:HorizontalLine/>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>

@@ -7,7 +7,7 @@
 
     <c:HorizontalLayout CssClass="topNavigator">
       <c:Button CssClass="btnBack" OnClickAction="Back"/>
-      <c:TextView Text="#tasks#" />
+      <c:TextView Text="#task#" />
       <c:Button CssClass="btnForward" OnClickAction="Back"/>
     </c:HorizontalLayout>
 
@@ -40,8 +40,23 @@
       <c:HorizontalLayout>
 
         <c:VerticalLayout>
-          <c:TextView Text="$task.DateOfCompletion" CssClass="H1"></c:TextView>
-          <c:TextView Text="#endtime#" CssClass="H2"></c:TextView>
+
+          <c:TextView Text="$task.Target" CssClass="H1"></c:TextView>
+          <c:TextView Text="#target#" CssClass="H2"></c:TextView>
+
+        </c:VerticalLayout>
+
+      </c:HorizontalLayout>
+
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout>
+
+        <c:VerticalLayout>
+           
+          <c:TextView Text="$task.PlanDate" CssClass="H1"></c:TextView>
+          <c:TextView Text="#plandate#" CssClass="H2"></c:TextView>
+
         </c:VerticalLayout>
 
       </c:HorizontalLayout>

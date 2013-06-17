@@ -15,7 +15,7 @@
     <c:HorizontalLayout CssClass="topNavigator">
       <c:Button CssClass="btnBack" OnClickAction="Rollback"/>
       <c:TextView Text="#visit#" />
-      <c:Button CssClass="btnForward" OnClickAction="Forward:$outlet"/>
+      <c:Button CssClass="btnForward" OnClickAction="Forward:$outlet, $workflow.visit"/>
     </c:HorizontalLayout>
 
     <c:HorizontalLine/>

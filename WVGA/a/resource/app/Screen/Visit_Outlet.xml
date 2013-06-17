@@ -4,7 +4,7 @@
   <s:Push Id="planVisit" Value="$param1"></s:Push>  
   <s:Push Id="outlet" Value="$param2"></s:Push>
 
-  <s:Push Id="visit" Value="select single(*) from $dao.Document.Visit where Outlet==$outlet.Id" />
+  <s:Push Id="visit" Value="select single(*) from $dao.Document.Visit where Outlet==$outlet.Id &amp;&amp; Date.Date==$common.Today.Date" />
   <s:If Test="$visit==null">
 
     <s:Push Id="status" Value="select single(*) from $dao.Enum.VisitStatus where Description=='Processing'"/>    

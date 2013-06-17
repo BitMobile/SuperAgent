@@ -42,6 +42,7 @@ Button {
 
 .H2 {
     font:23px Arial;
+    color:#b2749b;
 }
 
 .H3 {
@@ -56,19 +57,21 @@ Button {
     background-image: url(button_left.png);
     height: 84px;
     width:20%;
+    background-color:#363f6c;
 }
 
 .btnForward {
     background-image: url(button_right.png);
     height: 84px;
     width:20%;
+    background-color:#363f6c;
 }
 
 
 
 .topNavigator {
     height:84px;
-    background-color:#2a3b3c;
+    background-color:#363f6c;
 }
 
 .topNavigator TextView {
@@ -110,6 +113,18 @@ Button {
     padding-left:15px;
 }
 
+.grid hl vl1 {
+    width:80%;
+    height:120px;
+    margin-top:5px;
+    padding-left:15px;
+}
+
+.grid hl TextView {
+    width:100%;
+    height:100%;
+}
+
 .grid hl vl TextView {
     width:100%;
     height:50%;
@@ -121,13 +136,13 @@ Button {
 }
 
 .grid hl CheckBox {
-    selected-color:#416765;
-    background-color:#8a9d9e;
+    selected-color:#6f6583;
+    background-color:#9188a3;
 }
 
 .grid hl vl CheckBox {
-    selected-color:#416765;
-    background-color:#8a9d9e;
+    selected-color:#6f6583;
+    background-color:#9188a3;
 }
 
 .grid hl EditText {
@@ -149,7 +164,7 @@ Button {
 
 .search{
     height:96px;
-    background-color:#8a9d9e;
+    background-color:#9e87a7;
 }
 
 .search hl{
@@ -176,7 +191,7 @@ Button {
     width:80%;
     height:100%;
     background-color: #ffffff;
-    color:#000000;
+    color:#b2749b;
     border-style:none;
 }
 
@@ -185,8 +200,8 @@ Button {
     margin-top:17px;
     width:25%;
     height:70%;
-    background-color:#416765;
-    color:#ffffff; 
+    background-color:#363f6c;
+    color:#363f6c; 
     border-width:1px;
     border-color:#283636;
     border-radius:13px;

@@ -54,20 +54,20 @@ Button {
 
 .btnBack {
     background-image: url(button_left.png);
-    height: 96px;
+    height: 84px;
     width:20%;
 }
 
 .btnForward {
     background-image: url(button_right.png);
-    height: 96px;
+    height: 84px;
     width:20%;
 }
 
 
 
 .topNavigator {
-    height:96px;
+    height:84px;
     background-color:#2a3b3c;
 }
 
@@ -88,11 +88,11 @@ Button {
 
 .grid line {
     background-color:#879091;
-    margin-top:8px;
+    margin-top:5px;
 }
 
 .grid hl {
-    height:96px;
+    height:120px;
     selected-color:#bacdce;
 }
 
@@ -105,8 +105,8 @@ Button {
 
 .grid hl vl {
     width:90%;
-    height:96px;
-    margin-top:8px;
+    height:120px;
+    margin-top:5px;
     padding-left:15px;
 }
 
@@ -194,6 +194,11 @@ Button {
 
 vl line {
     background-color:#283636;
+}
+
+CheckBox {
+    width:59px;
+    height:59px;
 }
 
 .order line {

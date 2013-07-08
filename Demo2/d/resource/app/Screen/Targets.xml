@@ -4,9 +4,9 @@
   <c:VerticalLayout>
 
     <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnClickAction="Back"/>
+      <c:Button CssClass="btnBack" OnClickAction="Script:Workflow.DoBack"/>
       <c:TextView Text="#kpi#" />
-      <c:Button CssClass="btnForward" OnClickAction="Back"/>
+      <c:Button CssClass="btnForward" OnClickAction="Script:Workflow.DoBack"/>
     </c:HorizontalLayout>
 
     <c:HorizontalLine/>

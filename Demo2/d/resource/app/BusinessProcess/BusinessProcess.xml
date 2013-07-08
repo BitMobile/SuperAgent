@@ -5,7 +5,7 @@
 
     <bp:Step Name="Main" Screen="Main.xml">
 
-	<bp:Action Name="Distr" NextWorkflow="Stocks"></bp:Action>
+	    <bp:Action Name="Distr" NextWorkflow="Stocks"></bp:Action>
       <bp:Action Name="ToDo" NextWorkflow="ToDo"></bp:Action>
       <bp:Action Name="Order" NextWorkflow="Order"></bp:Action>
       <bp:Action Name="UnscheduledVisit" NextWorkflow="UnscheduledVisit"></bp:Action>
@@ -197,6 +197,7 @@
       <bp:Action Name="Add" NextStep="AddSKU"></bp:Action>
       <bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
       <bp:Action Name="Forward" NextStep="Commentary"></bp:Action>
+      <bp:Action Name="Back" NextStep="Outlets"></bp:Action>
     </bp:Step>
 
     <bp:Step Name="AddSKU" Screen="Order_SKUs.xml">

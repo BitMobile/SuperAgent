@@ -6,9 +6,9 @@
   <c:VerticalLayout>
 
     <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnClickAction="Back"/>
+      <c:Button CssClass="btnBack" OnClickAction="Script:Workflow.DoBack"/>
       <c:TextView Text="#commentary#" />
-      <c:Button CssClass="btnForward" OnClickAction="Commit"/>
+      <c:Button CssClass="btnForward" OnClickAction="Script:Workflow.DoCommit"/>
     </c:HorizontalLayout>
 
     <c:ScrollView CssClass="grid">

@@ -75,11 +75,6 @@ Indicator {
 }
 
 .logo2 {
-    background-image: url(Logo3.png);
-    height:10px;
-}
-
-.logo2 {
     background-image: url(Logo31.png);
     height:85px;
 }

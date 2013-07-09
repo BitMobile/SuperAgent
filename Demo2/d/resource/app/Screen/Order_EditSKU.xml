@@ -16,7 +16,7 @@
   <c:VerticalLayout>
 
     <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnClickAction="Back"/>
+      <c:Button CssClass="btnBack" OnClickAction="Script:Workflow.DoBack"/>
       <c:TextView Text="Edit" />
       <c:Button CssClass="btnForward" OnClickAction="Forward:$order.OutletAsObject"/>
     </c:HorizontalLayout>

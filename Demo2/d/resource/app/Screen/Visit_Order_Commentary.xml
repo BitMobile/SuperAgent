@@ -6,7 +6,7 @@
   <c:VerticalLayout>
 
     <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnClickAction="Back"/>
+      <c:Button CssClass="btnBack" OnClickAction="Script:Workflow.DoBack"/>
       <c:TextView Text="#commentary#" />
       <c:Button CssClass="btnForward" OnClickAction="Forward:$workflow.visit"/>
     </c:HorizontalLayout>

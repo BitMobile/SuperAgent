@@ -2,19 +2,14 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
 
   <s:Push Id="search" Value="$param1"/>
-  <s:If Test="$search==null">
-    <s:Push Id="outlets" Value="select distinct(OutletAsObject) from $dao.Catalog.Territory_Outlets"></s:Push>
-  </s:If>
-  <s:Else>
-    <s:Push Id="outlets" Value="select distinct(OutletAsObject) from $dao.Catalog.Territory_Outlets where OutletAsObject.Description.Contains($search)"></s:Push>
-  </s:Else>
+  <s:Push Id="outlets" Value="$Facade.GetOutlets($search)"></s:Push>
 
   <c:VerticalLayout>
 
     <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnClickAction="Back"/>
+      <c:Button CssClass="btnBack" OnClickAction="Script:Workflow.DoRollback"/>
       <c:TextView Text="#outlets#" />
-      <c:Button CssClass="btnForward" OnClickAction="Back"/>
+      <c:Button CssClass="btnForward" OnClickAction="Script:Workflow.DoBack"/>
     </c:HorizontalLayout>
 
     <c:HorizontalLine/>
@@ -25,7 +20,7 @@
         <c:Image />
         <c:EditText Id="edtSearch" Text="$search"></c:EditText>
       </c:HorizontalLayout>
-      <c:Button Text="#search#" OnClickAction="RefreshScreen:$edtSearch.Text"></c:Button>
+      <c:Button Text="#search#" OnClickAction="Script:Workflow.DoRefresh,$edtSearch.Text"></c:Button>
 
     </c:HorizontalLayout>
 
@@ -35,7 +30,7 @@
 
         <s:Iterator Id="outlet" Value="$outlets">
 
-          <c:HorizontalLayout OnClickAction="Select:$outlet, ">
+          <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$outlet">
 
             <c:VerticalLayout>
               <c:TextView Text="$outlet.Description" CssClass="H1"></c:TextView>

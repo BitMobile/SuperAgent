@@ -37,9 +37,21 @@ price2		Цена:
 kpi			KPI
 tasks		Задачи
 task		Задача
-description Описание
+description	Описание
 result		Результат
 plandate	Плановый срок
+distributor	Дистрибьютор
+outletType	Тип торговой точки
+outletClass	Класс торговой точки
+available	Доступность
+facing		Фейсинг
+stock		Остатки
+price		Цена
+markUp		Наценка
+outOfStock	Наличие на складе
+false		Нет
+true		Да
+done		Отвечен
 
 
 

@@ -14,8 +14,8 @@
       <c:EditText Text="#password#"></c:EditText>
 
       <c:HorizontalLayout>
-        <c:Button Text="#cancel#" OnClickAction="Back"></c:Button>
-        <c:Button Text="#Ok#" OnClickAction="OK"></c:Button>
+        <c:Button Text="#cancel#" OnClickAction="Script:Workflow.DoBack"></c:Button>
+        <c:Button Text="#Ok#" OnClickAction="Script:Workflow.DoBack"></c:Button>
       </c:HorizontalLayout>
       
     </c:VerticalLayout>

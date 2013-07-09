@@ -92,11 +92,25 @@ Button {
 
 .header {
     height: 61px;
+    background-color: #dbd7e1;
+}
+
+
+.grid headerEdit {
+    height: 61px;
+    background-color: #dbd7e1;
+    width:100%;
+    margin-top:0px;
 }
 
 .grid line {
     background-color:#879091;
     margin-top:5px;
+}
+
+.grid highlitedLine {
+    background-color:#879091;
+    margin-top:0px;
 }
 
 .grid hl {
@@ -141,13 +155,13 @@ Button {
 }
 
 .grid hl CheckBox {
-    selected-color:#6f6583;
-    background-color:#9188a3;
+    selected-color:#6f6583;   
+    background-color:#c9c3d5;
 }
 
 .grid hl vl CheckBox {
     selected-color:#6f6583;
-    background-color:#9188a3;
+    background-color:#c9c3d5;
 }
 
 .grid hl EditText {

@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+
+  <s:Push Id="items" Value="$Facade.GetLookupList($param1,$param2)"></s:Push>
+  <s:Push Value="$param1.Metadata.{$param2}.Name" Id="objectName"/>
+  
+  <c:VerticalLayout>
+
+    <c:HorizontalLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnClickAction="Script:Workflow.DoBack" OnEvent="Back"/>
+      <c:TextView Text="#parameters#" />
+      <c:Button CssClass="btnForward" OnClickAction="Script:Workflow.DoBack" />
+    </c:HorizontalLayout>
+
+    <c:HorizontalLine/>
+
+    <c:VerticalLayout CssClass="header">
+      <c:VerticalLayout CssClass="grid">
+        <c:HorizontalLayout>
+          <c:VerticalLayout CssClass="headerEdit">
+            <s:If Test="$param2=='Distributor'">
+              <c:TextView CssClass="H1" Text="#distributor#"/>
+            </s:If> 
+            <s:Else>
+              <s:If Test="$objectName=='OutletType'">
+                <c:TextView CssClass="H1" Text="#outletType#"/>
+              </s:If> 
+              <s:Else>
+                <s:If Test="$objectName=='OutletClass'">
+                  <c:TextView CssClass="H1" Text="#outletClass#"/>
+                </s:If>
+              </s:Else>
+            </s:Else>
+
+            <c:TextView Text="#select_answer#" CssClass="H2"></c:TextView>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+      </c:VerticalLayout>
+    </c:VerticalLayout>
+
+    <c:HorizontalLine/>
+
+    <c:ScrollView CssClass="grid">
+
+      <s:Iterator Id="item" Value="$items">
+
+        <c:HorizontalLayout OnClickAction="Script:Facade.UpdateValueAndBack,$param1,$param2,$item.Id">
+          <c:VerticalLayout>
+            <c:TextView Text="$item.Description" CssClass="H1"></c:TextView>
+          </c:VerticalLayout>
+          <c:Image/>
+        </c:HorizontalLayout>
+
+        <c:HorizontalLine/>
+
+      </s:Iterator>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>
+
+
+

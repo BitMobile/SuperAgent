@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+
+  <s:Push Id="outlet" Value="$param1"></s:Push>
+  <s:Push Id="visit" Value="$param2"></s:Push>
+  <s:Push Id="questions" Value="$Facade.GetQuestionsByOutlet($outlet)"></s:Push>
+  
+  <c:VerticalLayout>
+
+    <c:HorizontalLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnClickAction="Script:Workflow.DoBack" OnEvent="Back"/>
+      <c:TextView Text="#questions#" />
+      <c:Button CssClass="btnForward" OnClickAction="Script:Workflow.DoForward,$outlet,$visit"/>
+    </c:HorizontalLayout>
+
+    <c:HorizontalLine/>
+
+    <c:ScrollView CssClass="grid">
+
+        <s:If Test="$questions==null">
+
+          <c:HorizontalLayout>
+            <c:VerticalLayout>
+              <c:TextView Text="#no_questions#" CssClass="H1"></c:TextView>
+            </c:VerticalLayout>
+          </c:HorizontalLayout>
+          
+        </s:If>
+        <s:Else>
+
+          <s:Iterator Id="item" Value="$questions">
+
+            <s:Push Id="question" Value="$item.QuestionAsObject"/>
+            <s:Push Id="questionValue" Value="$Facade.GetVisitQuestionValue($visit,$question)"/>
+            
+            <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Edit,$outlet,$visit,$question,$questionValue">
+
+              <c:VerticalLayout>
+                <s:If Test="$questionValue!=null">
+                  <s:If Test="$question.AnswerTypeAsObject.Description=='Boolean'">
+                    <s:If Test = "$questionValue.Answer == 'False'">
+                      <c:TextView Text="#false#" CssClass="H1"></c:TextView>
+                    </s:If>
+                    <s:Else>
+                      <c:TextView Text="#true#" CssClass="H1"></c:TextView>
+                    </s:Else>
+                  </s:If>
+                  <s:Else>
+                    <c:TextView Text="$questionValue.Answer" CssClass="H1"></c:TextView>
+                  </s:Else>
+                </s:If>
+                <s:Else>
+                  <c:TextView Text="?" CssClass="H1"></c:TextView>
+                </s:Else>
+                <c:TextView Text="$question.Description" CssClass="H2"></c:TextView>
+              </c:VerticalLayout>
+
+              <c:Image/>
+
+            </c:HorizontalLayout>
+
+            <c:HorizontalLine/>
+          </s:Iterator>
+
+        </s:Else>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>

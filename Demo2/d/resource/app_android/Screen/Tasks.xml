@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+
+  <s:Push Id="outlet" Value="$param1"></s:Push>
+  <s:Push Id="visit" Value="$param2"></s:Push>
+  <s:Push Id="tasks" Value="$Facade.GetTasks($outlet)"></s:Push>
+    
+  <c:VerticalLayout>
+
+    <c:HorizontalLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnClickAction="Script:Workflow.DoBack" OnEvent="Back"/>
+      <c:TextView Text="#tasks#" />
+      <c:Button CssClass="btnForward" OnClickAction="Script:Workflow.DoForward,$outlet,$visit"/>
+    </c:HorizontalLayout>
+
+    <c:HorizontalLine/>
+
+    <c:ScrollView CssClass="grid">
+
+      <s:Iterator Id="task" Value="$tasks">
+
+
+        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$task,visit,outlet">
+
+          <c:VerticalLayout>
+            <c:TextView Text="$task.TextTask" CssClass="H1"></c:TextView>
+            <c:HorizontalLayout>
+              <c:TextView Text="$task.OutletAsObject.Description" CssClass="H2"></c:TextView>
+              <c:TextView Text="$task.PlanDate.DateString" CssClass="H2"></c:TextView>
+            </c:HorizontalLayout>
+          </c:VerticalLayout>
+
+          <c:Image/>
+
+        </c:HorizontalLayout>
+
+        <c:HorizontalLine/>
+      </s:Iterator>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>

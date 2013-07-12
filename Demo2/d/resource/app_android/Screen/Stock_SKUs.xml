@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+
+  <s:Push Id="search" Value="$param2"></s:Push>
+
+  <s:Push Id="skus" Value="$Facade.GetSKUs($search)"></s:Push>
+
+  <c:VerticalLayout>
+
+    <c:HorizontalLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnClickAction="Script:Workflow.DoBack" OnEvent="Back"/>
+      <c:TextView Text="#stock#" />
+      <c:Button CssClass="btnForward" OnClickAction="Script:Workflow.DoBack" OnEvent="Back"/>
+    </c:HorizontalLayout>
+
+    <c:HorizontalLine/>
+
+    <c:HorizontalLayout CssClass="search">
+
+      <c:HorizontalLayout >
+        <c:Image />
+        <c:EditText Id="edtSearch" Text="$search"></c:EditText>
+      </c:HorizontalLayout>
+      <c:Button Text="#search#" OnClickAction="RefreshScreen:$edtSearch.Text"></c:Button>
+
+    </c:HorizontalLayout>
+
+    <c:HorizontalLine/>
+
+    <c:ScrollView CssClass="grid">
+
+        <s:Iterator Id="sku" Value="$skus">
+
+          <c:HorizontalLayout>
+
+            <c:VerticalLayout>
+              <c:TextView Text="$sku.Description" CssClass="H1"></c:TextView>
+              <c:TextView Text="100 шт" CssClass="H2"></c:TextView>
+            </c:VerticalLayout>
+
+
+
+          </c:HorizontalLayout>
+
+          <c:HorizontalLine/>
+        </s:Iterator>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>

@@ -1,1 +1,0 @@
-<%@ ServiceHost Service="AdminSync.AdminSyncService" Factory="Microsoft.Synchronization.Services.SyncServiceHostFactory" %>

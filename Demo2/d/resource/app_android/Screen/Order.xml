@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
+
+  <s:Push Id="outlet" Value="$param1"></s:Push>
+  <s:Push Id="order" Value="$workflow.order"></s:Push>
+  
+  <s:Push Id="workflow.order" Value ="$Facade.CreateOrderIfNotExists($order, $outlet, $common.UserId, $workflow.visit.Id)"></s:Push>
+  
+  <s:Push Id="items" Value="$Facade.GetOrderedSKUs($workflow.order.Id)"></s:Push>
+  <s:Push Id="qty" Value="$Facade.GetOrderQTY($workflow.order.Id)"></s:Push>
+  <s:Push Id="sum" Value="$Facade.GetOrderSUM($workflow.order.Id)"></s:Push>
+
+  <c:VerticalLayout>
+
+    <c:HorizontalLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnClickAction="Script:Workflow.DoRollback" OnEvent="Back"/>
+      <c:TextView Text="#order#" />
+      <c:Button CssClass="btnForward" OnClickAction="Script:Workflow.DoForward,$workflow.order"/>
+    </c:HorizontalLayout>
+
+    <c:HorizontalLine/>
+
+    <c:VerticalLayout CssClass="header">
+      <c:VerticalLayout  CssClass ="grid">
+        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Add,$workflow.order">
+          <c:VerticalLayout>
+            <c:TextView Text="$sum" CssClass="H1"></c:TextView>
+            <c:TextView Text="#totalamount#" CssClass="H2"></c:TextView>
+          </c:VerticalLayout>
+          <c:Image/>
+        </c:HorizontalLayout>
+      </c:VerticalLayout>
+    </c:VerticalLayout>
+
+    <c:HorizontalLine/>
+    
+    <c:ScrollView CssClass="grid">
+
+        <s:Iterator Id="orderitem" Value="$items">
+
+          <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Edit,$workflow.order,$orderitem.SKUAsObject,$orderitem">
+
+            <c:VerticalLayout>
+              <c:TextView Text="$orderitem.SKUAsObject.Description" CssClass="H1"></c:TextView>
+              <c:HorizontalLayout>
+                <c:TextView Text="#quantity#: {$orderitem.Qty}" CssClass="H2"></c:TextView>
+                <s:Push Value="$Facade.GetSKUAmount($workflow.order.Id, $orderitem)" Id="amount"/>
+                <c:TextView Text="#amount#: {$amount}" CssClass="H2"></c:TextView>
+              </c:HorizontalLayout>
+            </c:VerticalLayout>
+
+            <c:Image/>
+
+          </c:HorizontalLayout>
+
+          <c:HorizontalLine/>
+        </s:Iterator>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>

@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+
+  <c:VerticalLayout>
+
+    <c:HorizontalLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnClickAction="Script:Workflow.DoBack" OnEvent="Back"/>
+      <c:TextView Text="#kpi#" />
+      <c:Button CssClass="btnForward" OnClickAction="Script:Workflow.DoBack" OnEvent="Back"/>
+    </c:HorizontalLayout>
+
+    <c:HorizontalLine/>
+
+    <c:HorizontalLayout CssClass="search">
+
+      <c:HorizontalLayout >
+        <c:Image />
+        <c:EditText></c:EditText>
+      </c:HorizontalLayout>
+      <c:Button Text="#search#"></c:Button>
+
+    </c:HorizontalLayout>
+
+    <c:HorizontalLine/>
+
+    <c:ScrollView CssClass="grid">
+
+      <c:HorizontalLayout>
+
+        <c:VerticalLayout>
+          <c:TextView Text="Total bonus: 1230 EUR" CssClass="H1"></c:TextView>
+          
+        </c:VerticalLayout>
+
+      </c:HorizontalLayout>
+
+      <c:HorizontalLine/>
+
+          <c:HorizontalLayout>
+
+            <c:VerticalLayout>
+              <c:TextView Text="New outlets" CssClass="H1"></c:TextView>
+              <c:HorizontalLayout>
+                <c:TextView Text="Target: 40" CssClass="H2"></c:TextView>
+                <c:TextView Text="Result: 15" CssClass="H2"></c:TextView>
+                <c:TextView Text="Bonus: 0" CssClass="H2"></c:TextView>
+              </c:HorizontalLayout>
+              
+            </c:VerticalLayout>
+
+          </c:HorizontalLayout>
+
+          <c:HorizontalLine/>
+
+      <c:HorizontalLayout>
+
+        <c:VerticalLayout>
+          <c:TextView Text="New clients" CssClass="H1"></c:TextView>
+          <c:HorizontalLayout>
+            <c:TextView Text="Target: 15" CssClass="H2"></c:TextView>
+            <c:TextView Text="Result: 10" CssClass="H2"></c:TextView>
+            <c:TextView Text="Bonus: 0" CssClass="H2"></c:TextView>
+          </c:HorizontalLayout>
+
+        </c:VerticalLayout>
+
+      </c:HorizontalLayout>
+
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout>
+
+        <c:VerticalLayout>
+          <c:TextView Text="Super Wax distribution" CssClass="H1"></c:TextView>
+          <c:HorizontalLayout>
+            <c:TextView Text="Target: 32%" CssClass="H2"></c:TextView>
+            <c:TextView Text="Result: 33%" CssClass="H2"></c:TextView>
+            <c:TextView Text="Bonus: 800 EUR" CssClass="H2"></c:TextView>
+          </c:HorizontalLayout>
+
+        </c:VerticalLayout>
+
+      </c:HorizontalLayout>
+
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout>
+
+        <c:VerticalLayout>
+          <c:TextView Text="Visit Plan completion" CssClass="H1"></c:TextView>
+          <c:HorizontalLayout>
+            <c:TextView Text="Target: 100%" CssClass="H2"></c:TextView>
+            <c:TextView Text="Result: 87%" CssClass="H2"></c:TextView>
+            <c:TextView Text="Bonus: 0" CssClass="H2"></c:TextView>
+          </c:HorizontalLayout>
+
+        </c:VerticalLayout>
+
+      </c:HorizontalLayout>
+
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout>
+
+        <c:VerticalLayout>
+          <c:TextView Text="Orders rate" CssClass="H1"></c:TextView>
+          <c:HorizontalLayout>
+            <c:TextView Text="Target: 40%" CssClass="H2"></c:TextView>
+            <c:TextView Text="Result: 54%" CssClass="H2"></c:TextView>
+            <c:TextView Text="Bonus: 430 EUR" CssClass="H2"></c:TextView>
+          </c:HorizontalLayout>
+
+        </c:VerticalLayout>
+
+      </c:HorizontalLayout>
+
+      <c:HorizontalLine/>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>

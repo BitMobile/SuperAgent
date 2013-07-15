@@ -11,9 +11,9 @@
   <c:VerticalLayout>
 
     <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnClickAction="Script:Workflow.DoBack"/>
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
       <c:TextView Text="#sku#" />
-      <c:Button CssClass="btnForward" OnClickAction="Script:Workflow.DoBack"/>
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoBack"/>
     </c:HorizontalLayout>
 
     <c:HorizontalLine/>

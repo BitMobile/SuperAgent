@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+
+  <s:Push Id="outlet" Value="$param1"></s:Push>
+  <s:Push Id="visit" Value="$param2"></s:Push>
+  <s:Push Id="questions" Value="$Facade.GetSKUsByOutlet($outlet)"></s:Push>
+  
+  <c:VerticalLayout>
+
+    <c:HorizontalLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack" />
+      <c:TextView Text="#questions#" />
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoForward,$outlet,$visit"/>
+    </c:HorizontalLayout>
+
+    <c:HorizontalLine/>
+
+    <c:ScrollView CssClass="grid">
+
+        <s:If Test="$questions==null">
+
+          <c:HorizontalLayout>
+            <c:VerticalLayout>
+              <c:TextView Text="#no_questions#" CssClass="H1"></c:TextView>
+            </c:VerticalLayout>
+          </c:HorizontalLayout>
+          
+        </s:If>
+        <s:Else>
+
+          <s:Iterator Id="item" Value="$questions">
+
+            <s:Push Id="sku" Value="$item.SKUAsObject"/>
+            <s:Push Id="skuValue" Value="$Facade.GetVisitSKUValue($visit,$sku)"/>
+            
+            <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Edit,$outlet,$visit,$sku,$skuValue">
+
+              <c:VerticalLayout>
+                <s:If Test="$skuValue!=null">
+                  <c:TextView CssClass="H1" Text="#done#"/>
+                </s:If>
+                <s:Else>
+                  <c:TextView Text="?" CssClass="H1"></c:TextView>
+                </s:Else>
+                <c:TextView Text="$sku.Description" CssClass="H2"></c:TextView>
+              </c:VerticalLayout>
+
+              <c:Image/>
+
+            </c:HorizontalLayout>
+
+            <c:HorizontalLine/>
+          </s:Iterator>
+
+        </s:Else>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>

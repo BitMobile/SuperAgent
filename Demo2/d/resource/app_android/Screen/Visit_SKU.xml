@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
+
+  <s:Push Id="outlet" Value="$param1"></s:Push>
+  <s:Push Id="visit" Value="$param2"></s:Push>
+  <s:Push Id="sku" Value="$param3"></s:Push>
+  <s:Push Id="skuValue" Value="$Facade.CreateVisitSKUValueIfNotExists($visit,$sku,$param4)"></s:Push>
+
+  <c:VerticalLayout>
+
+    <c:HorizontalLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack" />
+      <c:TextView Text="#answer#" />
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoBack" />
+    </c:HorizontalLayout>
+
+    <c:ScrollView CssClass="grid">
+
+         <c:HorizontalLayout>
+          <c:VerticalLayout>
+            <c:TextView Text="Available" CssClass="H1"></c:TextView>
+            <c:CheckBox Value="$skuValue.Available" CssClass="H2"></c:CheckBox>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+
+
+        <c:HorizontalLine/>
+
+        <c:HorizontalLayout>
+          <c:VerticalLayout>
+            <c:TextView Text="Facing" CssClass="H1"></c:TextView>
+            <c:EditText Value="$skuValue.Facing" CssClass="H1" Keyboard="numeric"></c:EditText>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+
+
+        <c:HorizontalLine/>
+
+        <c:HorizontalLayout>
+          <c:VerticalLayout>
+            <c:TextView Text="Stock" CssClass="H1"></c:TextView>
+            <c:EditText Value="$skuValue.Stock" CssClass="H1" Keyboard="numeric"></c:EditText>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+
+        <c:HorizontalLine/>
+
+        <c:HorizontalLayout>
+          <c:VerticalLayout>
+            <c:TextView Text="Price" CssClass="H1"></c:TextView>
+            <c:EditText Value="$skuValue.Price" CssClass="H1" Keyboard="numeric"></c:EditText>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+
+      <c:HorizontalLine/>
+
+        <c:HorizontalLayout>
+          <c:VerticalLayout>
+            <c:TextView Text="MarkUp" CssClass="H1"></c:TextView>
+            <c:EditText Value="$skuValue.MarkUp" CssClass="H1" Keyboard="numeric"></c:EditText>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+
+        <c:HorizontalLine/>
+
+        <c:HorizontalLayout>
+          <c:VerticalLayout>
+            <c:TextView Text="OutOfStock" CssClass="H1"></c:TextView>
+            <c:CheckBox Value="$skuValue.OutOfStock" CssClass="H2"></c:CheckBox>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+
+        <c:HorizontalLine/>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>
+
+
+
+

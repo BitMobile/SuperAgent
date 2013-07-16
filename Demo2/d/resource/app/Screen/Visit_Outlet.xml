@@ -29,7 +29,7 @@
 
         <c:HorizontalLine/>
 
-        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,EditParameter,$outlet,$Class">
+        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,EditParameter,$outlet,Class">
 
           <c:VerticalLayout>
             <c:TextView Text="$outlet.ClassAsObject.Description" CssClass="H1"></c:TextView>

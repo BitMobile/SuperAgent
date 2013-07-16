@@ -9,7 +9,7 @@
 
     <c:HorizontalLayout CssClass="topNavigator">
       <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
-      <c:TextView Text="#questions#" />
+      <c:TextView Text="#sku#" />
       <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoForward,$outlet,$visit"/>
     </c:HorizontalLayout>
 

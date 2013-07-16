@@ -20,7 +20,7 @@
       <s:Iterator Id="task" Value="$tasks">
 
 
-        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$task,visit,outlet">
+        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$task,$visit,$outlet">
 
           <c:VerticalLayout>
             <c:TextView Text="$task.TextTask" CssClass="H1"></c:TextView>

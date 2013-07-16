@@ -9,7 +9,7 @@
     <c:HorizontalLayout CssClass="topNavigator">
       <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack" />
       <c:TextView Text="#schedule#" />
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnEvent="Forward"/>
+      <c:Button CssClass="btnForward" OnEvent="Forward"/>
     </c:HorizontalLayout>
 
     <c:HorizontalLine/>

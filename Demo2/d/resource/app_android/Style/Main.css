@@ -1,31 +1,30 @@
 ﻿vl hl {
     height: 144px;
-    margin-top:3px;
 }
 
-vl hl Button {
-    width:144px;
-    height:144px;
-    margin-left:14px;
-}
+    vl hl Button {
+        width: 144px;
+        height: 144px;
+        margin-left: 12px;
+    }
 
 .caption {
-    height:32px;
+    height: 50px;
 }
 
-.caption TextView {
-    width:33%;
-    height:100%;
-    text-align:center;
-    font:23px arial;
-}
+    .caption TextView {
+        width: 33%;
+        height: 100%;
+        text-align: center;
+        font: 21px arial;
+    }
 
 Indicator {
-    width:50px;
-    height:50px;
-    margin-left:15px;
-    margin-top:15px;
-    color:#8a9d9e;
+    width: 50px;
+    height: 50px;
+    margin-left: 15px;
+    margin-top: 15px;
+    color: #8a9d9e;
 }
 
 .btnTodo {
@@ -65,16 +64,23 @@ Indicator {
 }
 
 .status {
-    height:13px;
+    height: 13px;
 }
 
-.status TextView {
-    font:13px Arial;
-    height:100%;
-    width:100%;
-}
+    .status TextView {
+        font: 13px Arial;
+        height: 100%;
+        width: 100%;
+    }
 
 .logo2 {
     background-image: url(Logo31.png);
-    height:128px;
+    margin-top: 50px;
+    margin-left: 11px;
+    height: 73px;
+    width: 458px;
+}
+
+.separatorOfLogo {
+    height: 50px;
 }

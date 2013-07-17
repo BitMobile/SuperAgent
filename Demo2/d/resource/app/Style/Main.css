@@ -78,3 +78,7 @@ Indicator {
     background-image: url(Logo31.png);
     height:85px;
 }
+
+.separatorOfLogo {
+    height: 1px;
+}

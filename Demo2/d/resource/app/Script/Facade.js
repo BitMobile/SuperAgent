@@ -259,6 +259,8 @@ function CreateUnschVisitIfNotExists(outlet, userId, visit) {
         visit.SR = userId;
         visit.Date = DateTime.Now;
         visit.StartTime = DateTime.Now;
+        visit.Lattitude = GPS.Latitude;
+        visit.Longitude = GPS.Longitude;
 
         var status = new Query("select single(*) from Enum.VisitStatus where Description=='Processing'").Execute();
         visit.Status = status.Id;

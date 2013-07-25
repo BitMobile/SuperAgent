@@ -1,14 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
 
-  <s:Push Id="outlets" Value="select * from $dao.Document.VisitPlan_Outlets where Date == $common.Today"></s:Push>
+  <s:Push Id="search" Value="$param1"/>
+  <s:Push Id="outlets" Value="$Facade.GetScheduledVisits($search)" />
 
   <c:VerticalLayout>
 
     <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnClickAction="Back"/>
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
       <c:TextView Text="#schedule#" />
-      <c:Button CssClass="btnForward" />
+      <c:Button CssClass="btnForward" OnEvent="Forward" />
     </c:HorizontalLayout>
 
     <c:HorizontalLine/>
@@ -17,39 +18,54 @@
 
       <c:HorizontalLayout >
         <c:Image />
-        <c:EditText></c:EditText>
+        <c:EditText Id="edtSearch" Text="$search"></c:EditText>
       </c:HorizontalLayout>
-      <c:Button Text="#search#"></c:Button>
+      <c:Button Text="#search#" OnClickAction="Script:Workflow.DoRefresh,$edtSearch.Text"></c:Button>
 
     </c:HorizontalLayout>
 
     <c:HorizontalLine/>
     
-    <c:ScrollView>
-    
-      <c:VerticalLayout CssClass="grid">
-      
+    <c:ScrollView CssClass="grid">
+     
         <s:Iterator Id="outlet" Value="$outlets">
 
           <s:Push Id="planVisit" Value="$outlet.RefAsObject"></s:Push>
           <s:Push Id="planOutlet" Value="$outlet.OutletAsObject"></s:Push>
+          <s:Push Id="todayVisit" Value="$Facade.GetTodayVisit($planOutlet)" />
 
-          <c:HorizontalLayout OnClickAction="Select:$planVisit,$planOutlet">
+          <s:If Test="$todayVisit==NULL">
+            <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$planVisit,$planOutlet">
           
-            <c:VerticalLayout>
-              <c:TextView Text="$planOutlet.Description" CssClass="H1"></c:TextView>
-              <c:TextView Text="$planOutlet.Address" CssClass="H2"></c:TextView>
-            </c:VerticalLayout>
+              <c:VerticalLayout>
+                <c:TextView Text="$planOutlet.Description" CssClass="H1"></c:TextView>
+                <c:TextView Text="$planOutlet.Address" CssClass="H2"></c:TextView>
+              </c:VerticalLayout>
 
-            <c:Image/>
+              <c:Image/>
 
-          </c:HorizontalLayout>
+            </c:HorizontalLayout>
           
-          <c:HorizontalLine/>
+            <c:HorizontalLine/>  
+          </s:If>
+
+          <s:Else>
+            <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$planVisit,$planOutlet">
+
+              <c:VerticalLayout  CssClass="vl1">
+                <c:TextView Text="$planOutlet.Description" CssClass="H1"></c:TextView>
+                <c:TextView Text="$planOutlet.Address" CssClass="H2"></c:TextView>
+              </c:VerticalLayout>
+
+              <c:TextView Text="$todayVisit.EndTime.TimeString" CssClass="H2"></c:TextView>
+              
+            </c:HorizontalLayout>
+
+            <c:HorizontalLine/>
+          </s:Else>
+          
         </s:Iterator>
     
-      </c:VerticalLayout>
-
     </c:ScrollView>
        
   </c:VerticalLayout>

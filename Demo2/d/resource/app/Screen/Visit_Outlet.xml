@@ -4,29 +4,19 @@
   <s:Push Id="planVisit" Value="$param1"></s:Push>  
   <s:Push Id="outlet" Value="$param2"></s:Push>
 
-  <s:Push Id="visit" Value="select single(*) from $dao.Document.Visit where Outlet==$outlet.Id" />
-  <s:If Test="$visit==null">
-
-    <s:Push Id="status" Value="select single(*) from $dao.Enum.VisitStatus where Description=='Processing'"/>    
-    <s:Push Id="visit">
-      <d:Document.Visit Plan="$planVisit.Id" Outlet="$outlet.Id" SR="$common.UserId" Date="$common.Now" StartTime="$common.Now" Status="$status.Id" Encashment="0"/>
-    </s:Push>
-    <s:Push Id="workflow.visit" Value="$visit"/>
-  </s:If>
+  <s:Push Id="visit" Value="$Facade.CreatePlannedVisitIfNotExists($planVisit,$outlet,$common.UserId)"/>
   
   <c:VerticalLayout>
 
     <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnClickAction="Back"/>
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
       <c:TextView Text="#outlet#" />
-      <c:Button CssClass="btnForward" OnClickAction="Forward:$visit"/>
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoForward,$outlet,$visit"/>
     </c:HorizontalLayout>
 
     <c:HorizontalLine/>
 
-    <c:ScrollView>
-
-      <c:VerticalLayout CssClass="grid">
+    <c:ScrollView CssClass="grid">
 
         <c:HorizontalLayout>
           
@@ -39,7 +29,7 @@
 
         <c:HorizontalLine/>
 
-        <c:HorizontalLayout OnClickAction="EditParameter:$outlet,Class">
+        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,EditParameter,$outlet,Class">
 
           <c:VerticalLayout>
             <c:TextView Text="$outlet.ClassAsObject.Description" CssClass="H1"></c:TextView>
@@ -51,7 +41,7 @@
 
         <c:HorizontalLine/>
 
-        <c:HorizontalLayout OnClickAction="EditParameter:$outlet,Type">
+        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,EditParameter,$outlet,Type">
 
           <c:VerticalLayout>
             <c:TextView Text="$outlet.TypeAsObject.Description" CssClass="H1"></c:TextView>
@@ -63,7 +53,7 @@
 
         <c:HorizontalLine/>
 
-        <c:HorizontalLayout OnClickAction="EditParameter:$outlet,Distributor">
+        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,EditParameter,$outlet,Distributor">
 
           <c:VerticalLayout>
             <c:TextView Text="$outlet.DistributorAsObject.Description" CssClass="H1"></c:TextView>
@@ -75,11 +65,11 @@
 
         <c:HorizontalLine/>
 
-        <s:Iterator Id="parameter" Value="$dao.Catalog.OutletParameter">
+      <s:Iterator Id="parameter" Value="$Facade.GetOutletParameters()">
 
-          <s:Push Id="parameterValue" Value="select single(*) from $outlet.Parameters where Parameter == $parameter.Id"/>
+        <s:Push Id="parameterValue" Value="$Facade.GetOutletParameterValue($outlet,$parameter)"/>
 
-          <c:HorizontalLayout OnClickAction="EditAddParameter:$outlet,$parameter,$parameterValue">
+        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,EditAddParameter,$outlet,$parameter,$parameterValue">
 
             <c:VerticalLayout>
               <s:If Test="$parameterValue!=null">
@@ -97,8 +87,6 @@
           <c:HorizontalLine/>
 
         </s:Iterator>
-
-      </c:VerticalLayout>
 
     </c:ScrollView>
 

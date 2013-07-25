@@ -1,16 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="ListChoice.css">
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
 
-  <s:Push Id="objectType" Value="$param1.Metadata.{$param2}.Type"></s:Push>
-  <s:Push Id="objectName" Value="$param1.Metadata.{$param2}.Name"></s:Push>
-  <s:Push Id="items" Value="select * from $dao.{$objectType}.{$objectName}"></s:Push>
-
+  <s:Push Id="items" Value="$Facade.GetLookupList($param1,$param2)"></s:Push>
+  <s:Push Value="$param1.Metadata.{$param2}.Name" Id="objectName"/>
+  
   <c:VerticalLayout>
 
     <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnClickAction="Back"/>
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
       <c:TextView Text="#parameters#" />
-      <c:Button CssClass="btnForward" OnClickAction="Back" />
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoBack" />
     </c:HorizontalLayout>
 
     <c:HorizontalLine/>
@@ -18,34 +17,43 @@
     <c:VerticalLayout CssClass="header">
       <c:VerticalLayout CssClass="grid">
         <c:HorizontalLayout>
-          <c:VerticalLayout>
-            <c:TextView Text="$objectName" CssClass="H1"></c:TextView>
+          <c:VerticalLayout CssClass="headerEdit">
+            <s:If Test="$param2=='Distributor'">
+              <c:TextView CssClass="H1" Text="#distributor#"/>
+            </s:If> 
+            <s:Else>
+              <s:If Test="$objectName=='OutletType'">
+                <c:TextView CssClass="H1" Text="#outletType#"/>
+              </s:If> 
+              <s:Else>
+                <s:If Test="$objectName=='OutletClass'">
+                  <c:TextView CssClass="H1" Text="#outletClass#"/>
+                </s:If>
+              </s:Else>
+            </s:Else>
+
             <c:TextView Text="#select_answer#" CssClass="H2"></c:TextView>
           </c:VerticalLayout>
         </c:HorizontalLayout>
       </c:VerticalLayout>
     </c:VerticalLayout>
-    
+
     <c:HorizontalLine/>
-    
-    <c:ScrollView>
 
-      <c:VerticalLayout CssClass="grid">
+    <c:ScrollView CssClass="grid">
 
-        <s:Iterator Id="item" Value="$items">
+      <s:Iterator Id="item" Value="$items">
 
-          <c:HorizontalLayout OnClickAction="UpdateValue:$param1,$param2,$item.Id;Back">
-            <c:VerticalLayout>
-              <c:TextView Text="$item.Description" CssClass="H1"></c:TextView>
-            </c:VerticalLayout>
-            <c:Image/>
-          </c:HorizontalLayout>
+        <c:HorizontalLayout OnClickAction="Script:Facade.UpdateValueAndBack,$param1,$param2,$item.Id">
+          <c:VerticalLayout>
+            <c:TextView Text="$item.Description" CssClass="H1"></c:TextView>
+          </c:VerticalLayout>
+          <c:Image/>
+        </c:HorizontalLayout>
 
-          <c:HorizontalLine/>
-          
-        </s:Iterator>
+        <c:HorizontalLine/>
 
-      </c:VerticalLayout>
+      </s:Iterator>
 
     </c:ScrollView>
 

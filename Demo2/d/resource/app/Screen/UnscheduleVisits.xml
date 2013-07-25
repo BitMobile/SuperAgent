@@ -6,9 +6,9 @@
   <c:VerticalLayout>
 
     <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnClickAction="Back"/>
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Back"/>
       <c:TextView Text="#visit#" />
-      <c:Button CssClass="btnForward" OnClickAction="Back"/>
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Back"/>
     </c:HorizontalLayout>
 
     <c:HorizontalLine/>
@@ -25,9 +25,7 @@
 
     <c:HorizontalLine/>
 
-    <c:ScrollView>
-
-      <c:VerticalLayout CssClass="grid">
+    <c:ScrollView  CssClass="grid">
 
         <s:Iterator Id="outlet" Value="$outlets">
 
@@ -44,8 +42,6 @@
 
           <c:HorizontalLine/>
         </s:Iterator>
-
-      </c:VerticalLayout>
 
     </c:ScrollView>
 

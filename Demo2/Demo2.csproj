@@ -35,52 +35,126 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="d\AdminSync.svc" />
-    <Content Include="d\resource\app\BusinessProcess\BusinessProcess.xml" />
-    <Content Include="d\resource\app\Image\button_left.png" />
-    <Content Include="d\resource\app\Image\button_right.png" />
-    <Content Include="d\resource\app\Image\corner_light_green.png" />
-    <Content Include="d\resource\app\Image\corner_white.png" />
-    <Content Include="d\resource\app\Image\distr.png" />
-    <Content Include="d\resource\app\Image\icon_more.png" />
-    <Content Include="d\resource\app\Image\icon_zoom.png" />
-    <Content Include="d\resource\app\Image\kpi.png" />
-    <Content Include="d\resource\app\Image\logo.png" />
-    <Content Include="d\resource\app\Image\logo_firstbit2.png" />
-    <Content Include="d\resource\app\Image\order.png" />
-    <Content Include="d\resource\app\Image\order_active.png" />
-    <Content Include="d\resource\app\Image\outlets.png" />
-    <Content Include="d\resource\app\Image\schedule.png" />
-    <Content Include="d\resource\app\Image\settings.png" />
-    <Content Include="d\resource\app\Image\sync.png" />
-    <Content Include="d\resource\app\Image\todo.png" />
-    <Content Include="d\resource\app\Image\visit.png" />
-    <Content Include="d\resource\app\Screen\ListChoice.xml" />
+    <Content Include="d\resource\app\BusinessProcess\BusinessProcess.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="d\resource\app\Image\Default\button_left.png" />
+    <Content Include="d\resource\app\Image\Default\button_right.png" />
+    <Content Include="d\resource\app\Image\Default\corner_light_green.png" />
+    <Content Include="d\resource\app\Image\Default\corner_white.png" />
+    <Content Include="d\resource\app\Image\Default\distr.png" />
+    <Content Include="d\resource\app\Image\Default\distr_active.png" />
+    <Content Include="d\resource\app\Image\Default\icon_more.png" />
+    <Content Include="d\resource\app\Image\Default\icon_zoom.png" />
+    <Content Include="d\resource\app\Image\Default\kpi.png" />
+    <Content Include="d\resource\app\Image\Default\logo.png" />
+    <Content Include="d\resource\app\Image\Default\Logo3.png" />
+    <Content Include="d\resource\app\Image\Default\Logo31.png" />
+    <Content Include="d\resource\app\Image\Default\logo_firstbit2.png" />
+    <Content Include="d\resource\app\Image\Default\order_active.png" />
+    <Content Include="d\resource\app\Image\Default\outlets.png" />
+    <Content Include="d\resource\app\Image\Default\schedule.png" />
+    <Content Include="d\resource\app\Image\Default\settings.png" />
+    <Content Include="d\resource\app\Image\Default\sync.png" />
+    <Content Include="d\resource\app\Image\Default\todo.png" />
+    <Content Include="d\resource\app\Image\Default\visit.png" />
+    <Content Include="d\resource\app\Screen\ListChoice.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="d\resource\app\Screen\Logon.xml" />
     <Content Include="d\resource\app\Screen\Main.xml" />
-    <Content Include="d\resource\app\Screen\Order.xml" />
+    <Content Include="d\resource\app\Screen\Order.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="d\resource\app\Screen\Order_Commentary.xml" />
     <Content Include="d\resource\app\Screen\Order_EditSKU.xml" />
-    <Content Include="d\resource\app\Screen\Order_SKUs.xml" />
-    <Content Include="d\resource\app\Screen\Outlet.xml" />
+    <Content Include="d\resource\app\Screen\Order_SKUs.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="d\resource\app\Screen\Outlet.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="d\resource\app\Screen\OutletParameter.xml" />
-    <Content Include="d\resource\app\Screen\Outlets.xml" />
-    <Content Include="d\resource\app\Screen\ScheduledVisits.xml" />
+    <Content Include="d\resource\app\Screen\Outlets.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="d\resource\app\Screen\ScheduledVisits.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="d\resource\app\Screen\Stock_SKUs.xml" />
-    <Content Include="d\resource\app\Screen\UnscheduledVisit.xml" />
+    <Content Include="d\resource\app\Screen\UnscheduledVisit.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="d\resource\app\Screen\UnscheduleVisits.xml" />
     <Content Include="d\resource\app\Screen\Visit_Order_Commentary.xml" />
-    <Content Include="d\resource\app\Screen\Visit_Outlet.xml" />
+    <Content Include="d\resource\app\Screen\Visit_Outlet.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="d\resource\app\Screen\Visit_Question.xml" />
     <Content Include="d\resource\app\Screen\Visit_Questions.xml" />
     <Content Include="d\resource\app\Screen\Visit_SKU %282%29.xml" />
-    <Content Include="d\resource\app\Screen\Visit_SKU.xml" />
-    <Content Include="d\resource\app\Screen\Visit_SKUs.xml" />
+    <Content Include="d\resource\app\Screen\Visit_SKU.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="d\resource\app\Screen\Visit_SKUs.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="d\resource\app\Screen\Visit_Total.xml" />
-    <Content Include="d\resource\app\Style\default.css" />
-    <Content Include="d\resource\app\Style\Logon.css" />
-    <Content Include="d\resource\app\Style\Main.css" />
+    <Content Include="d\resource\app\Screen\Targets.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="d\resource\app\Screen\Tasks.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="d\resource\app\Screen\Task.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="d\resource\app\Screen\Visit_Order.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="d\resource\app\Screen\Visit_Task.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="d\resource\app\Script\DB.js" />
+    <Content Include="d\resource\app\Script\Facade.js" />
+    <Content Include="d\resource\app\Script\Workflow.js" />
+    <Content Include="d\resource\app\Style\Default\default.css" />
+    <Content Include="d\resource\app\Style\Default\Logon.css" />
+    <Content Include="d\resource\app\Style\Default\Main.css" />
+    <Content Include="d\resource\app\Style\Default\Order_SKUs.css" />
+    <Content Include="d\resource\app\Style\Default\Order.css" />
+    <Content Include="d\resource\app\Style\Default\Targets.css" />
+    <Content Include="d\resource\app\Style\Default\Visit_Order.css" />
+    <Content Include="d\resource\app\Style\Default\Tasks.css" />
     <Content Include="d\resource\app\Translation\en.txt" />
     <Content Include="d\resource\app\Translation\ru.txt" />
+    <Content Include="d\resource\app\Image\480x800\button_left.png" />
+    <Content Include="d\resource\app\Image\480x800\button_right.png" />
+    <Content Include="d\resource\app\Image\480x800\corner_light_green.png" />
+    <Content Include="d\resource\app\Image\480x800\corner_white.png" />
+    <Content Include="d\resource\app\Image\480x800\distr.png" />
+    <Content Include="d\resource\app\Image\480x800\distr_active.png" />
+    <Content Include="d\resource\app\Image\480x800\icon_more.png" />
+    <Content Include="d\resource\app\Image\480x800\icon_zoom.png" />
+    <Content Include="d\resource\app\Image\480x800\kpi.png" />
+    <Content Include="d\resource\app\Image\480x800\logo.png" />
+    <Content Include="d\resource\app\Image\480x800\Logo31.png" />
+    <Content Include="d\resource\app\Image\480x800\logo_firstbit2.png" />
+    <Content Include="d\resource\app\Image\480x800\order_active.png" />
+    <Content Include="d\resource\app\Image\480x800\outlets.png" />
+    <Content Include="d\resource\app\Image\480x800\schedule.png" />
+    <Content Include="d\resource\app\Image\480x800\settings.png" />
+    <Content Include="d\resource\app\Image\480x800\sync.png" />
+    <Content Include="d\resource\app\Image\480x800\todo.png" />
+    <Content Include="d\resource\app\Image\480x800\visit.png" />
+    <Content Include="d\resource\app\Style\480x800\default.css" />
+    <Content Include="d\resource\app\Style\480x800\Logon.css" />
+    <Content Include="d\resource\app\Style\480x800\Main.css" />
+    <Content Include="d\resource\app\Style\480x800\Order.css" />
+    <Content Include="d\resource\app\Style\480x800\Order_SKUs.css" />
+    <Content Include="d\resource\app\Style\480x800\Targets.css" />
+    <Content Include="d\resource\app\Style\480x800\Tasks.css" />
+    <Content Include="d\resource\app\Style\480x800\Visit_Order.css" />
     <Content Include="d\resource\update.html" />
   </ItemGroup>
   <ItemGroup>

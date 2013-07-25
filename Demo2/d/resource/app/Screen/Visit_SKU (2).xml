@@ -16,9 +16,9 @@
   <c:VerticalLayout>
 
     <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnClickAction="Back"/>
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Back"/>
       <c:TextView Text="#answer#" />
-      <c:Button CssClass="btnForward" OnClickAction="Back"/>
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Back"/>
     </c:HorizontalLayout>
 
     <c:ScrollView>

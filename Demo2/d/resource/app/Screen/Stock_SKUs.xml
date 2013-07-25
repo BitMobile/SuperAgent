@@ -1,15 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
 
-  
-  <s:Push Id="skus" Value="select * from $dao.Catalog.SKU"></s:Push>
+  <s:Push Id="search" Value="$param2"></s:Push>
+
+  <s:Push Id="skus" Value="$Facade.GetSKUs($search)"></s:Push>
 
   <c:VerticalLayout>
 
     <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnClickAction="Back"/>
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
       <c:TextView Text="#stock#" />
-      <c:Button CssClass="btnForward" OnClickAction="Back"/>
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoBack"/>
     </c:HorizontalLayout>
 
     <c:HorizontalLine/>
@@ -18,17 +19,15 @@
 
       <c:HorizontalLayout >
         <c:Image />
-        <c:EditText></c:EditText>
+        <c:EditText Id="edtSearch" Text="$search"></c:EditText>
       </c:HorizontalLayout>
-      <c:Button Text="#search#"></c:Button>
+      <c:Button Text="#search#" OnClickAction="RefreshScreen:$edtSearch.Text"></c:Button>
 
     </c:HorizontalLayout>
 
     <c:HorizontalLine/>
 
-    <c:ScrollView>
-
-      <c:VerticalLayout CssClass="grid">
+    <c:ScrollView CssClass="grid">
 
         <s:Iterator Id="sku" Value="$skus">
 
@@ -45,8 +44,6 @@
 
           <c:HorizontalLine/>
         </s:Iterator>
-
-      </c:VerticalLayout>
 
     </c:ScrollView>
 

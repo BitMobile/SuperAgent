@@ -2,11 +2,10 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
 
   <c:VerticalLayout>
-    <c:HorizontalLayout CssClass="status">
-      <c:TextView Text="$common.LoadingStatus"></c:TextView>
-    </c:HorizontalLayout>
     <c:HorizontalLayout  CssClass="logo2">
         <c:Indicator/>  
+    </c:HorizontalLayout>
+    <c:HorizontalLayout CssClass="separatorOfLogo">
     </c:HorizontalLayout>
     <c:HorizontalLayout>
         <c:Button CssClass="btnSchedule" OnClickAction="Script:Workflow.DoAction,ScheduledVisit"></c:Button>

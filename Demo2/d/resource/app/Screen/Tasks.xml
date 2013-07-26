@@ -8,9 +8,9 @@
   <c:VerticalLayout>
 
     <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnClickAction="Script:Workflow.DoBack"/>
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
       <c:TextView Text="#tasks#" />
-      <c:Button CssClass="btnForward" OnClickAction="Script:Workflow.DoForward,$outlet,$visit"/>
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoForward,$outlet,$visit"/>
     </c:HorizontalLayout>
 
     <c:HorizontalLine/>
@@ -20,7 +20,7 @@
       <s:Iterator Id="task" Value="$tasks">
 
 
-        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$task,visit,outlet">
+        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$task,$visit,$outlet">
 
           <c:VerticalLayout>
             <c:TextView Text="$task.TextTask" CssClass="H1"></c:TextView>

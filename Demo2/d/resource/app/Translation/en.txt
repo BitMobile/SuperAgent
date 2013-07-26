@@ -52,5 +52,6 @@ outOfStock	Out Of Stock
 false		False
 true		True
 done		Done
+pcs			pcs.
 
 

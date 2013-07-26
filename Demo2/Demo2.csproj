@@ -124,6 +124,7 @@
     <Content Include="d\resource\app\Style\Targets.css" />
     <Content Include="d\resource\app\Style\Visit_Order.css" />
     <Content Include="d\resource\app\Style\Tasks.css" />
+    <Content Include="d\resource\app\Style\Stock_SKUs.css" />
     <Content Include="d\resource\app\Translation\en.txt" />
     <Content Include="d\resource\app\Translation\ru.txt" />
     <Content Include="d\resource\update.html" />

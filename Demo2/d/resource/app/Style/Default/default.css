@@ -154,6 +154,13 @@ Button {
     height:50%;
 }
 
+.hl2 vl {
+    width: 50%;
+    height: 56px;
+    margin-top: 5px;
+    padding-left: 10px;
+}
+
 .grid hl CheckBox {
     selected-color:#6f6583;   
     background-color:#c9c3d5;

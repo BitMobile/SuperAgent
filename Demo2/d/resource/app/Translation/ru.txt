@@ -52,6 +52,7 @@ outOfStock	Наличие на складе
 false		Нет
 true		Да
 done		Отвечен
+pcs			шт.
 
 
 

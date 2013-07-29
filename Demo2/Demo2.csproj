@@ -155,6 +155,7 @@
     <Content Include="d\resource\app\Style\Default\Targets.css" />
     <Content Include="d\resource\app\Style\Default\Visit_Order.css" />
     <Content Include="d\resource\app\Style\Default\Tasks.css" />
+    <Content Include="d\resource\app\Style\Stock_SKUs.css" />
     <Content Include="d\resource\app\Translation\en.txt" />
     <Content Include="d\resource\app\Translation\ru.txt" />
     <Content Include="d\resource\app\Image\480x800\button_left.png" />

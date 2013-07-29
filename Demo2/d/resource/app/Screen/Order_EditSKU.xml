@@ -41,14 +41,19 @@
 
         <c:HorizontalLine/>
         
-        <c:HorizontalLayout>
+        <c:HorizontalLayout CssClass="hl2">
           <c:VerticalLayout>
             <c:TextView Text="$orderitem.Price" CssClass="H1"></c:TextView>
             <c:TextView Text="#price#" CssClass="H2"></c:TextView>
           </c:VerticalLayout>
+          <c:VerticalLayout>
+            <c:TextView Text="$sku.Stock" CssClass="H1"></c:TextView>
+            <c:TextView Text="#stock#" CssClass="H2"></c:TextView>
+          </c:VerticalLayout>
         </c:HorizontalLayout>
 
         <c:HorizontalLine/>
+
 
     </c:ScrollView>
 

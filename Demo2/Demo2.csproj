@@ -92,7 +92,6 @@
     </Content>
     <Content Include="d\resource\app\Screen\Visit_Question.xml" />
     <Content Include="d\resource\app\Screen\Visit_Questions.xml" />
-    <Content Include="d\resource\app\Screen\Visit_SKU %282%29.xml" />
     <Content Include="d\resource\app\Screen\Visit_SKU.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -113,6 +112,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="d\resource\app\Screen\Visit_Task.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="d\resource\app\Screen\OrderList.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="d\resource\app\Script\DB.js" />

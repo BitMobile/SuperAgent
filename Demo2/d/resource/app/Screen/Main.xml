@@ -15,7 +15,7 @@
       <c:HorizontalLayout CssClass="caption">
         <c:TextView Text="#schedule#"/>
         <c:TextView Text="#visit#"/>
-        <c:TextView Text="#order#"/>
+        <c:TextView Text="#orders#"/>
       </c:HorizontalLayout>
       <c:HorizontalLayout>
         <c:Button CssClass="btnOutlets" OnClickAction="Script:Workflow.DoAction,Outlets"></c:Button>

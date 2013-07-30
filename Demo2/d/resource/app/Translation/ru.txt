@@ -53,6 +53,7 @@ false		Нет
 true		Да
 done		Отвечен
 pcs			шт.
+orders		Заказы
 
 
 

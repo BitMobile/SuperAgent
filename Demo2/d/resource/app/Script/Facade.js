@@ -274,18 +274,30 @@ function CreateUnschVisitIfNotExists(outlet, userId, visit) {
 
 //------------------------------Order func-------------------------
 
+function GetOrderList() {
 
-function CreateOrderIfNotExists(order, outlet, userId, visitId) {
+    var query = new Query();
+    query.Text = "select * from Document.Order";
+    return query.Execute();
 
-    if (order == null) {
-        var order = DB.Create("Document.Order");
-        order.Date = DateTime.Now;
-        order.Outlet = outlet.Id;
-        order.SR = userId;
-        order.DeliveryDate = DateTime.Now;
-        if (visitId != null) {
-            order.Visit = visitId;
-        }
+}
+
+function CreateOrderIfNotExists(order, outlet, userId, visitId, executedOrder) {
+
+    if (executedOrder != null) {
+        order = executedOrder;
+    }
+    else {
+        if (order == null) {
+                var order = DB.Create("Document.Order");
+                order.Date = DateTime.Now;
+                order.Outlet = outlet.Id;
+                order.SR = userId;
+                order.DeliveryDate = DateTime.Now;
+                if (visitId != null) {
+                    order.Visit = visitId;
+                }
+            }
     }
 
     return order;

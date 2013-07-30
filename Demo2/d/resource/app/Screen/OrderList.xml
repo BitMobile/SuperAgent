@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
+
+ 
+  <c:VerticalLayout>
+
+    <c:HorizontalLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoRollback"/>
+      <c:TextView Text="#orders#" />
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoForward"/>
+    </c:HorizontalLayout>
+
+    <c:HorizontalLine/>
+
+    <s:Push Id ="orders" Value="$Facade.GetOrderList()"></s:Push>
+    
+    <c:ScrollView CssClass="grid">
+
+      <s:Iterator Id="order" Value="$orders">
+      
+        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$order.Outlet,$order">
+          <c:VerticalLayout>
+            <c:TextView Text="$order.OutletAsObject.Description" CssClass="H1"></c:TextView>
+            <c:TextView Text="{$order.Number}, {$order.Date}" CssClass="H2"></c:TextView>
+          </c:VerticalLayout>
+          <c:Image/>
+
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+        
+      </s:Iterator>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>

@@ -6,7 +6,7 @@
   <s:Push Id="task" Value="$param1"></s:Push>
 
   <s:Push Id="taskValue" Value="$Facade.CreateVisitTaskValueIfNotExists($visit,$task)"/>
-  
+            
   <c:VerticalLayout>
 
     <c:HorizontalLayout CssClass="topNavigator">

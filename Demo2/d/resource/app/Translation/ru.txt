@@ -54,6 +54,7 @@ true		Да
 done		Отвечен
 pcs			шт.
 orders		Заказы
+newOrder	Создать новый заказ
 
 
 

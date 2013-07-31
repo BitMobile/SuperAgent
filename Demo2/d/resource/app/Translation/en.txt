@@ -54,5 +54,6 @@ true		True
 done		Done
 pcs			pcs.
 orders		Orders
+newOrder	Create new order
 
 

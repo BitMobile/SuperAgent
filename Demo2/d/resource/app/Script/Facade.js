@@ -139,7 +139,7 @@ function CreateVisitTaskValueIfNotExists(visit,task)
       taskValue = DB.Create("Document.Visit_Task");
       taskValue.Ref = visit.Id;
       taskValue.TextTask = task.TextTask;
-
+      taskValue.TaskRef = task.Id;
     }
 
     return taskValue;
@@ -280,6 +280,15 @@ function GetOrderList() {
     query.Text = "select * from Document.Order";
     return query.Execute();
 
+}
+
+function AssignNumberIfNotExist(order) {
+
+    if (order.Number == null) {
+        order.Number = "No number";
+    }
+
+    return order;
 }
 
 function CreateOrderIfNotExists(order, outlet, userId, visitId, executedOrder) {

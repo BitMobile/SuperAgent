@@ -141,11 +141,13 @@
     <Content Include="d\resource\app\Script\DB.js" />
     <Content Include="d\resource\app\Script\Facade.js" />
     <Content Include="d\resource\app\Script\Workflow.js" />
+    <Content Include="d\resource\app\Style\480x800\Stock_SKUs.css" />
     <Content Include="d\resource\app\Style\800x1232\default.css" />
     <Content Include="d\resource\app\Style\800x1232\Logon.css" />
     <Content Include="d\resource\app\Style\800x1232\Main.css" />
     <Content Include="d\resource\app\Style\800x1232\Order.css" />
     <Content Include="d\resource\app\Style\800x1232\Order_SKUs.css" />
+    <Content Include="d\resource\app\Style\800x1232\Stock_SKUs.css" />
     <Content Include="d\resource\app\Style\800x1232\Targets.css" />
     <Content Include="d\resource\app\Style\800x1232\Tasks.css" />
     <Content Include="d\resource\app\Style\800x1232\Visit_Order.css" />
@@ -157,7 +159,7 @@
     <Content Include="d\resource\app\Style\Default\Targets.css" />
     <Content Include="d\resource\app\Style\Default\Visit_Order.css" />
     <Content Include="d\resource\app\Style\Default\Tasks.css" />
-    <Content Include="d\resource\app\Style\Stock_SKUs.css" />
+    <Content Include="d\resource\app\Style\Default\Stock_SKUs.css" />
     <Content Include="d\resource\app\Translation\en.txt" />
     <Content Include="d\resource\app\Translation\ru.txt" />
     <Content Include="d\resource\app\Image\480x800\button_left.png" />

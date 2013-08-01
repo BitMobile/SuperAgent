@@ -29,7 +29,7 @@
     </c:HorizontalLayout>
     <c:HorizontalLayout>
       <c:Button CssClass="btnDistr" OnClickAction="Script:Workflow.DoAction,Distr"></c:Button>
-      <c:Button CssClass="btnSettings" OnClickAction="Script:Workflow.DoAction,Logon"></c:Button>
+      <c:Button CssClass="btnSettings"></c:Button>
       <c:Button CssClass="btnSync" OnClickAction="Script:DB.DoSync"></c:Button>
     </c:HorizontalLayout>
     <c:HorizontalLayout CssClass="caption">

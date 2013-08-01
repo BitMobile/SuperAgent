@@ -3,7 +3,7 @@ stock		Остатки
 schedule	Расписание
 order		Заказ
 visit		Визит
-outlets		Торговые точки
+outlets		Магазины
 targets		Цели
 target		Цель
 settings	Настройки

@@ -171,6 +171,12 @@ Button {
         border-style: none;
     }
 
+.hl2 vl {
+    width: 50%;
+    height: 84px;
+    margin-top: 5px;
+    padding-left: 10px;
+}
 
 .search {
     height: 76px;
@@ -201,8 +207,8 @@ Button {
             width: 80%;
             height: 52px;
             margin-top: 1px;
-            padding-left:10px;
-            padding-top:5px;
+            padding-left: 10px;
+            padding-top: 5px;
             background-color: #ffffff;
             color: #8b7498;
             border-style: none;

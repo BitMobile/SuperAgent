@@ -3,8 +3,9 @@
 
   <s:Push Id="outlet" Value="$param1"></s:Push>
   <s:Push Id="order" Value="$workflow.order"></s:Push>
+  <s:Push Id="executedOrder" Value="$param3"></s:Push>
   
-  <s:Push Id="workflow.order" Value ="$Facade.CreateOrderIfNotExists($order, $outlet, $common.UserId, $workflow.visit.Id)"></s:Push>
+  <s:Push Id="workflow.order" Value ="$Facade.CreateOrderIfNotExists($order, $outlet, $common.UserId, $workflow.visit.Id, $executedOrder)"></s:Push>
   
   <s:Push Id="items" Value="$Facade.GetOrderedSKUs($workflow.order.Id)"></s:Push>
   <s:Push Id="qty" Value="$Facade.GetOrderQTY($workflow.order.Id)"></s:Push>

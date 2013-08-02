@@ -3,7 +3,7 @@ stock		Остатки
 schedule	Расписание
 order		Заказ
 visit		Визит
-outlets		Торговые точки
+outlets		Магазины
 targets		Цели
 target		Цель
 settings	Настройки
@@ -52,6 +52,9 @@ outOfStock	Наличие на складе
 false		Нет
 true		Да
 done		Отвечен
+pcs			шт.
+orders		Заказы
+newOrder	Создать новый заказ
 
 
 

@@ -139,7 +139,7 @@ function CreateVisitTaskValueIfNotExists(visit,task)
       taskValue = DB.Create("Document.Visit_Task");
       taskValue.Ref = visit.Id;
       taskValue.TextTask = task.TextTask;
-
+      taskValue.TaskRef = task.Id;
     }
 
     return taskValue;
@@ -274,18 +274,39 @@ function CreateUnschVisitIfNotExists(outlet, userId, visit) {
 
 //------------------------------Order func-------------------------
 
+function GetOrderList() {
 
-function CreateOrderIfNotExists(order, outlet, userId, visitId) {
+    var query = new Query();
+    query.Text = "select * from Document.Order";
+    return query.Execute();
 
-    if (order == null) {
-        var order = DB.Create("Document.Order");
-        order.Date = DateTime.Now;
-        order.Outlet = outlet.Id;
-        order.SR = userId;
-        order.DeliveryDate = DateTime.Now;
-        if (visitId != null) {
-            order.Visit = visitId;
-        }
+}
+
+function AssignNumberIfNotExist(order) {
+
+    if (order.Number == null) {
+        order.Number = "No number";
+    }
+
+    return order;
+}
+
+function CreateOrderIfNotExists(order, outlet, userId, visitId, executedOrder) {
+
+    if (executedOrder != null) {
+        order = executedOrder;
+    }
+    else {
+        if (order == null) {
+                var order = DB.Create("Document.Order");
+                order.Date = DateTime.Now;
+                order.Outlet = outlet.Id;
+                order.SR = userId;
+                order.DeliveryDate = DateTime.Now;
+                if (visitId != null) {
+                    order.Visit = visitId;
+                }
+            }
     }
 
     return order;
@@ -328,6 +349,7 @@ function GetSKUAmount(orderId,item){
     return query.Execute();
 
 }
+
 
 
 //----------------------------GetSKUs-------------------------

@@ -58,6 +58,11 @@ Button {
     font:14px Arial-BoldMT;
 }
 
+.H5 {
+    font:20px Arial;
+    color:#b2749b;
+}
+
 .btnBack {
     background-image: url(button_left.png);
     height: 56px;
@@ -152,6 +157,13 @@ Button {
 .grid hl vl hl TextView {
     width:100%;
     height:50%;
+}
+
+.hl2 vl {
+    width: 50%;
+    height: 56px;
+    margin-top: 5px;
+    padding-left: 10px;
 }
 
 .grid hl CheckBox {

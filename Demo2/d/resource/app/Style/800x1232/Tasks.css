@@ -1,9 +1,5 @@
 ﻿.grid hl vl hl TextView {
     width:50%;
     height:50%;
+    margin-top:5px;
 }
-
-.header {
-    background-color: #dbd7e1;
-}
-

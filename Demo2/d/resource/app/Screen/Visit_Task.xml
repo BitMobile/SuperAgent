@@ -6,7 +6,7 @@
   <s:Push Id="task" Value="$param1"></s:Push>
 
   <s:Push Id="taskValue" Value="$Facade.CreateVisitTaskValueIfNotExists($visit,$task)"/>
-  
+
   <c:VerticalLayout>
 
     <c:HorizontalLayout CssClass="topNavigator">
@@ -21,20 +21,46 @@
 
       <c:HorizontalLayout>
 
-          <c:VerticalLayout>
-            <c:TextView Text="$taskValue.TextTask" CssClass="H1"></c:TextView>
-            <c:TextView Text="#description#" CssClass="H2"></c:TextView>
-          </c:VerticalLayout>
+        <c:VerticalLayout>
+          <c:TextView Text="$taskValue.TextTask" CssClass="H1"></c:TextView>
+          <c:TextView Text="#description#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
 
-        </c:HorizontalLayout>
+      </c:HorizontalLayout>
 
-        <c:HorizontalLine/>
+      <c:HorizontalLine/>
 
       <c:HorizontalLayout>
 
         <c:VerticalLayout>
           <c:EditText Value="$taskValue.Result" CssClass="H1" AutoFocus="True"></c:EditText>
           <c:TextView Text="#result#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+
+      </c:HorizontalLayout>
+
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout>
+
+        <c:VerticalLayout>
+
+          <c:TextView Text="$task.Target" CssClass="H1"></c:TextView>
+          <c:TextView Text="#target#" CssClass="H2"></c:TextView>
+
+        </c:VerticalLayout>
+
+      </c:HorizontalLayout>
+
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout>
+
+        <c:VerticalLayout>
+
+          <c:TextView Text="$task.PlanDate" CssClass="H1"></c:TextView>
+          <c:TextView Text="#plandate#" CssClass="H2"></c:TextView>
+
         </c:VerticalLayout>
 
       </c:HorizontalLayout>

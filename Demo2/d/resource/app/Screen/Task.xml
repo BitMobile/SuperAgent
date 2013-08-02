@@ -29,17 +29,6 @@
       <c:HorizontalLayout>
 
         <c:VerticalLayout>
-          <c:TextView Text="$task.Result" CssClass="H1"></c:TextView>
-          <c:TextView Text="#result#" CssClass="H2"></c:TextView>
-        </c:VerticalLayout>
-
-      </c:HorizontalLayout>
-
-      <c:HorizontalLine/>
-
-      <c:HorizontalLayout>
-
-        <c:VerticalLayout>
 
           <c:TextView Text="$task.Target" CssClass="H1"></c:TextView>
           <c:TextView Text="#target#" CssClass="H2"></c:TextView>

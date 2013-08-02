@@ -189,6 +189,11 @@
   
   <bp:Workflow Name="Order">
 
+    <bp:Step Name="OrderList" Screen="OrderList.xml">
+      <bp:Action Name="Forward" NextStep="Outlets"></bp:Action>
+      <bp:Action Name="Select" NextStep="Order"></bp:Action>
+    </bp:Step>
+
     <bp:Step Name="Outlets" Screen="Outlets.xml">
       <bp:Action Name="Select" NextStep="Order"></bp:Action>
     </bp:Step>

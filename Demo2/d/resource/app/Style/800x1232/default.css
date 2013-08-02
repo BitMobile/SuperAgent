@@ -77,7 +77,7 @@ Button {
 }
 
     .topNavigator TextView {
-        width: 320px;
+        width: 640px;
         height: 60px;
         margin-top: 10px;
         margin-left: 10px;
@@ -171,6 +171,7 @@ Button {
         border-style: none;
     }
 
+
 .hl2 vl {
     width: 50%;
     height: 84px;
@@ -187,7 +188,7 @@ Button {
         margin-left: 10px;
         margin-top: 10px;
         height: 54px;
-        width: 315px;
+        width: 635px;
         border-width: 1px;
         border-color: #283636;
         background-color: #ffffff;

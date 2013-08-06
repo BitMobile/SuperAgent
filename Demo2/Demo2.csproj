@@ -88,14 +88,18 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="d\resource\app\Screen\Order_Commentary.xml" />
-    <Content Include="d\resource\app\Screen\Order_EditSKU.xml" />
+    <Content Include="d\resource\app\Screen\Order_EditSKU.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="d\resource\app\Screen\Order_SKUs.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="d\resource\app\Screen\Outlet.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="d\resource\app\Screen\OutletParameter.xml" />
+    <Content Include="d\resource\app\Screen\OutletParameter.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="d\resource\app\Screen\Outlets.xml">
       <SubType>Designer</SubType>
     </Content>

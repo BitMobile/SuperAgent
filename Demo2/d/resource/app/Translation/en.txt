@@ -55,5 +55,8 @@ done		Done
 pcs			pcs.
 orders		Orders
 newOrder	Create new order
+discount	Discount
+noNumber	No number
+markUp		MarkUp
 
 

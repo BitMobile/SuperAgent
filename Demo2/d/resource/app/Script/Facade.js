@@ -285,10 +285,14 @@ function GetOrderList() {
 function AssignNumberIfNotExist(order) {
 
     if (order.Number == null) {
-        order.Number = "No number";
+        var number = "noNumber";
+    }
+    else {
+        var number = order.Number;
     }
 
-    return order;
+    return number;
+
 }
 
 function CreateOrderIfNotExists(order, outlet, userId, visitId, executedOrder) {
@@ -334,7 +338,7 @@ function GetOrderSUM(orderId) {
 
     var query = new Query();
     query.AddParameter("orderId", orderId);
-    query.Text = "select sum(Qty*Price) from Document.Order_SKUs where Ref==@orderId";
+    query.Text = "select sum(Amount) from Document.Order_SKUs where Ref==@orderId";
     return query.Execute();
 
 }
@@ -345,56 +349,80 @@ function GetSKUAmount(orderId,item){
     query.AddParameter("orderId", orderId);
  
     query.AddParameter("itemId", item.Id);
-    query.Text = "select sum(Qty*Price) from Document.Order_SKUs where Ref==@orderId && Id==@itemId";
+    query.Text = "select sum(Amount) from Document.Order_SKUs where Ref==@orderId && Id==@itemId";
     return query.Execute();
 
 }
 
+function CreateOrderItemIfNotExist(orderId,sku,orderitem) {
 
-
-//----------------------------GetSKUs-------------------------
-
-
-function GetSKUs(searchText, owner) {
-    if (owner == null) {
-        query = new Query();
-        if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Catalog.SKU";
-        }
-        else {
-            query.Text = "select * from Catalog.SKU where Description.Contains(@p1)";
-            query.AddParameter("p1", searchText);
-        }
-    }
-    else {
-        query = new Query();
-        query.AddParameter("owner", owner);
-        if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Catalog.SKU where Owner==@owner";
-        }
-        else {
-            query.Text = "select * from Catalog.SKU where Description.Contains(@p1) && Owner==@owner";
-            query.AddParameter("p1", searchText);
-        }
-    }
-
-    return query.Execute();
-}
-
-function GetSKUGroups(searchText) {
-    query = new Query();
+    if (orderitem == null) {
+        var p = DB.Create("Document.Order_SKUs");
+        p.Ref = orderId;
+        p.SKU = sku.Id;
+        p.Price = sku.Price;
+        p.Total = sku.Price;
         
-    if (String.IsNullOrEmpty(searchText)) {
-        query.Text = "select distinct(OwnerAsObject) from Catalog.SKU";
+        return p;
     }
     else {
-        query.Text = "select distinct(OwnerAsObject) from Catalog.SKU where Description.Contains(@p1)";
-        query.AddParameter("p1", searchText);
-    }
+        orderitem.Total = (orderitem.Price * (orderitem.Discount / 100 + 1));
+        orderitem.Amount = orderitem.Total * orderitem.Qty;
 
-    return query.Execute();
+        return orderitem;
+    }
 }
 
+function CalculatePrice(price,discount) {
 
-//-------------------------------Stocks--------------------
+    var total = (price * (discount/100 + 1));
+    return total
+
+}
+
+    //----------------------------GetSKUs-------------------------
+
+
+    function GetSKUs(searchText, owner) {
+        if (owner == null) {
+            query = new Query();
+            if (String.IsNullOrEmpty(searchText)) {
+                query.Text = "select * from Catalog.SKU";
+            }
+            else {
+                query.Text = "select * from Catalog.SKU where Description.Contains(@p1)";
+                query.AddParameter("p1", searchText);
+            }
+        }
+        else {
+            query = new Query();
+            query.AddParameter("owner", owner);
+            if (String.IsNullOrEmpty(searchText)) {
+                query.Text = "select * from Catalog.SKU where Owner==@owner";
+            }
+            else {
+                query.Text = "select * from Catalog.SKU where Description.Contains(@p1) && Owner==@owner";
+                query.AddParameter("p1", searchText);
+            }
+        }
+
+        return query.Execute();
+    }
+
+    function GetSKUGroups(searchText) {
+        query = new Query();
+        
+        if (String.IsNullOrEmpty(searchText)) {
+            query.Text = "select distinct(OwnerAsObject) from Catalog.SKU";
+        }
+        else {
+            query.Text = "select distinct(OwnerAsObject) from Catalog.SKU where Description.Contains(@p1)";
+            query.AddParameter("p1", searchText);
+        }
+
+        return query.Execute();
+    }
+
+
+    //-------------------------------Stocks--------------------
 

@@ -55,6 +55,9 @@ done		Отвечен
 pcs			шт.
 orders		Заказы
 newOrder	Создать новый заказ
+discount	Скидка
+noNumber	Нет номера
+markUp		Наценка
 
 
 

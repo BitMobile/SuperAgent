@@ -338,7 +338,7 @@ function GetOrderSUM(orderId) {
 
     var query = new Query();
     query.AddParameter("orderId", orderId);
-    query.Text = "select sum(Amount) from Document.Order_SKUs where Ref==@orderId";
+    query.Text = "select sum(Qty*Price) from Document.Order_SKUs where Ref==@orderId";
     return query.Execute();
 
 }
@@ -349,7 +349,7 @@ function GetSKUAmount(orderId,item){
     query.AddParameter("orderId", orderId);
  
     query.AddParameter("itemId", item.Id);
-    query.Text = "select sum(Amount) from Document.Order_SKUs where Ref==@orderId && Id==@itemId";
+    query.Text = "select sum(Qty*Price) from Document.Order_SKUs where Ref==@orderId && Id==@itemId";
     return query.Execute();
 
 }
@@ -367,8 +367,7 @@ function CreateOrderItemIfNotExist(orderId,sku,orderitem) {
     }
     else {
         orderitem.Total = (orderitem.Price * (orderitem.Discount / 100 + 1));
-        orderitem.Amount = orderitem.Total * orderitem.Qty;
-
+        
         return orderitem;
     }
 }
@@ -427,13 +426,9 @@ function CalculatePrice(price,discount) {
     {
         var query = new Query;
         query.AddParameter("group", group);
-        //query.AddParameter("userId", userId);
         query.Text = "select count(Id) from Catalog.Territory_SKUGroups where SKUGroup==@group";
-//        if (query.Execute() != 0)
-        return query.Execute();//true;
-  //      else
-    //        return false;
-
+        return query.Execute();
+  
     }
 
 

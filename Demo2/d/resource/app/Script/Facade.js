@@ -423,6 +423,19 @@ function CalculatePrice(price,discount) {
         return query.Execute();
     }
 
+    function checkSKUGroup(group,userId)
+    {
+        var query = new Query;
+        query.AddParameter("group", group);
+        //query.AddParameter("userId", userId);
+        query.Text = "select count(Id) from Catalog.Territory_SKUGroups where SKUGroup==@group";
+//        if (query.Execute() != 0)
+        return query.Execute();//true;
+  //      else
+    //        return false;
+
+    }
+
 
     //-------------------------------Stocks--------------------
 

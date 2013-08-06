@@ -32,37 +32,40 @@
 
     <c:ScrollView CssClass="grid">
 
-  <s:Iterator Id="group" Value="$groups">
-	  <c:HorizontalLayout CssClass ="gridEdit">
-	    <c:VerticalLayout>
-	       <c:TextView Text = "$group.Description" CssClass = "H1"></c:TextView>
-	    </c:VerticalLayout>
+      <s:Iterator Id="group" Value="$groups">
+        <s:Push Id="checkedGroup" Value="$Facade.checkSKUGroup($group.Id)"></s:Push>
+        <s:If Test="$checkedGroup != 0">
+        <c:HorizontalLayout CssClass ="gridEdit">
+          <c:VerticalLayout>
+            <c:TextView Text = "$group.Description" CssClass = "H1"></c:TextView>
+          </c:VerticalLayout>
 
-	  </c:HorizontalLayout>
+        </c:HorizontalLayout>
 
-    <c:HorizontalLine CssClass="editLine"/>
+        <c:HorizontalLine CssClass="editLine"/>
 
-    <s:Push Id="skusByGroup" Value="$Facade.GetSKUs($search,$group.Id)"></s:Push>
+        <s:Push Id="skusByGroup" Value="$Facade.GetSKUs($search,$group.Id)"></s:Push>
 
-    <s:Iterator Id="sku" Value="$skusByGroup">
+        <s:Iterator Id="sku" Value="$skusByGroup">
 
-      <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$order,$sku,null" CssClass="gridWhite">
-        <c:VerticalLayout>
-          <c:TextView Text="$sku.Description" CssClass="H1"></c:TextView>
-          <c:HorizontalLayout>
-            <c:TextView Text="#price2#" CssClass="H2"></c:TextView>
-            <c:TextView Text="$sku.Price" CssClass="H2"></c:TextView>
+          <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$order,$sku,null" CssClass="gridWhite">
+            <c:VerticalLayout>
+              <c:TextView Text="$sku.Description" CssClass="H1"></c:TextView>
+              <c:HorizontalLayout>
+                <c:TextView Text="#price2#" CssClass="H2"></c:TextView>
+                <c:TextView Text="$sku.Price" CssClass="H2"></c:TextView>
+              </c:HorizontalLayout>
+            </c:VerticalLayout>
+
+            <c:Image/>
+
           </c:HorizontalLayout>
-        </c:VerticalLayout>
+          <c:HorizontalLine/>
 
-        <c:Image/>
+        </s:Iterator>
 
-      </c:HorizontalLayout>
-      <c:HorizontalLine/>
-
-  </s:Iterator>
-
-          </s:Iterator>
+        </s:If>
+      </s:Iterator>
 
     </c:ScrollView>
 

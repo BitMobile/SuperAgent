@@ -313,6 +313,8 @@ function CreateOrderIfNotExists(order, outlet, userId, visitId, executedOrder) {
                 order.Outlet = outlet.Id;
                 order.SR = userId;
                 order.DeliveryDate = DateTime.Now;
+                var status = new Query("select single(*) from Enum.OrderSatus where Description=='New'").Execute();
+                order.Status = status.Id;
                 if (visitId != null) {
                     order.Visit = visitId;
                 }

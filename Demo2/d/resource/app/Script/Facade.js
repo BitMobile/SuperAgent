@@ -282,6 +282,12 @@ function GetOrderList() {
 
 }
 
+function GetOrderStatus(order) {
+
+    return order.StatusAsObject().Description;
+
+}
+
 function AssignNumberIfNotExist(order) {
 
     if (order.Number == null) {

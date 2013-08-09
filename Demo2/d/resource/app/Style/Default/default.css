@@ -105,6 +105,20 @@ Button {
     background-color: #dbd7e1;
 }
 
+.yellowVL{
+    height: 61px;
+    background-color: #fef7ac;
+}
+
+.greenVL{
+    height: 61px;
+    background-color: #acfeb8;
+}
+
+.greyVL{
+    height: 61px;
+    background-color: #e0e0e0;
+}
 
 .grid headerEdit {
     height: 61px;
@@ -147,6 +161,18 @@ Button {
     height:56px;
     margin-top:5px;
     padding-left:10px;
+}
+
+.grid hl vl2 {
+    width:2%;
+    height:56px;
+    background-color:#ef0648
+}
+
+.grid hl vl3 {
+    width:88%;
+    height:56px;
+    margin-top:5px;
 }
 
 .grid hl TextView {
@@ -196,7 +222,6 @@ Button {
     color:#000000;
     border-style:none;
 }
-
 
 .search{
     height:56px;

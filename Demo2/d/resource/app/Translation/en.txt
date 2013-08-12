@@ -58,5 +58,7 @@ newOrder	Create new order
 discount	Discount
 noNumber	No number
 markUp		MarkUp
+unit		Unit
+baseUnit	Base unit
 
 

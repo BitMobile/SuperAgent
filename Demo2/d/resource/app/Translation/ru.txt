@@ -58,6 +58,8 @@ newOrder	Создать новый заказ
 discount	Скидка
 noNumber	Нет номера
 markUp		Наценка
+unit		Единица изм.
+baseUnit	Базовая ед. изм.
 
 
 

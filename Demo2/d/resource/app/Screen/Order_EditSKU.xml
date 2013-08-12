@@ -4,10 +4,10 @@
   <s:Push Id="order" Value="$param1"></s:Push>
   <s:Push Id="sku" Value="$param2"></s:Push>
   <s:Push Id="orderitem" Value="$param3"></s:Push>
-  
- 
+
+
   <s:Push Id="orderitem" Value="$Facade.CreateOrderItemIfNotExist($order.Id,$sku,$orderitem)"></s:Push>
-  
+
 
   <c:VerticalLayout>
 
@@ -28,14 +28,14 @@
 
       <c:HorizontalLine/>
 
-      <c:HorizontalLayout  CssClass="hl2">
+      <c:HorizontalLayout  CssClass="hl3">
         <c:VerticalLayout>
           <c:EditText Value="$orderitem.Qty" AutoFocus="True" CssClass="H1"></c:EditText>
           <c:TextView Text="#quantity#" CssClass="H2"></c:TextView>
         </c:VerticalLayout>
         <c:VerticalLayout>
-          <c:TextView Text="$sku.Stock" CssClass="H1"></c:TextView>
-          <c:TextView Text="#stock#" CssClass="H2"></c:TextView>
+          <c:TextView Text="$sku.BaseUnitAsObject.Description" CssClass="H1"></c:TextView>
+          <c:TextView Text="#baseUnit#" CssClass="H2"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
 
@@ -46,9 +46,7 @@
           <c:TextView Text="$orderitem.Total" CssClass="H1"></c:TextView>
           <c:TextView Text="#price#" CssClass="H2"></c:TextView>
         </c:VerticalLayout>
-
-        <c:Button CssClass ="bthArLeft" OnClickAction="Script:Workflow.DoRefresh,$order,$sku,$orderitem"></c:Button>
-        
+        <c:Button CssClass ="bthRefresh" OnClickAction="Script:Workflow.DoRefresh,$order,$sku,$orderitem"></c:Button>
         <c:VerticalLayout>
           <c:EditText Value="$orderitem.Discount" CssClass="H1" Keyboard="numPunc"></c:EditText>
           <c:TextView Text="#discount#/#markUp#" CssClass="H2"></c:TextView>
@@ -57,6 +55,14 @@
 
       <c:HorizontalLine/>
 
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <c:TextView Text="$sku.Stock" CssClass="H1"></c:TextView>
+          <c:TextView Text="#stock#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+
+      <c:HorizontalLine/>
 
     </c:ScrollView>
 

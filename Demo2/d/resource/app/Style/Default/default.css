@@ -77,11 +77,11 @@ Button {
     background-color:#363f6c;
 }
 
-.bthArLeft {
-    background-image: url(icon_more_left.png);
-    width:18px;
-    height:18px;
-    margin-top:18px;
+.bthRefresh {
+    background-image: url(refresh.png);
+    width:56px;
+    height:56px;
+    background-color:#FFF;
 }
 
 .topNavigator {
@@ -191,7 +191,14 @@ Button {
 }
 
 .hl2 vl {
-    width: 50%;
+    width: 40%;
+    height: 56px;
+    margin-top: 5px;
+    padding-left: 10px;
+}
+
+.hl3 vl {
+    width: 30%;
     height: 56px;
     margin-top: 5px;
     padding-left: 10px;

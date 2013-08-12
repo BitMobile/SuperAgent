@@ -64,7 +64,7 @@ function GetScheduledVisits(searchText)
 function GetTodayVisit(outlet)
 {
     var query = new Query();
-    query.AddParameter("Date", DateTime.Now.Date);
+    query.AddParameter("Date", DateTime.Now);
     query.AddParameter("Outlet", outlet.Id);
     query.Text = "select single(*) from Document.Visit where Outlet==@Outlet && Date==@Date";
     return query.Execute();
@@ -346,7 +346,7 @@ function GetOrderSUM(orderId) {
 
     var query = new Query();
     query.AddParameter("orderId", orderId);
-    query.Text = "select sum(Qty*Price) from Document.Order_SKUs where Ref==@orderId";
+    query.Text = "select sum(Qty*Total) from Document.Order_SKUs where Ref==@orderId";
     return query.Execute();
 
 }
@@ -357,7 +357,7 @@ function GetSKUAmount(orderId,item){
     query.AddParameter("orderId", orderId);
  
     query.AddParameter("itemId", item.Id);
-    query.Text = "select sum(Qty*Price) from Document.Order_SKUs where Ref==@orderId && Id==@itemId";
+    query.Text = "select sum(Qty*Total) from Document.Order_SKUs where Ref==@orderId && Id==@itemId";
     return query.Execute();
 
 }
@@ -370,6 +370,7 @@ function CreateOrderItemIfNotExist(orderId,sku,orderitem) {
         p.SKU = sku.Id;
         p.Price = sku.Price;
         p.Total = sku.Price;
+//        p.BaseUnit = sku.BaseUnit;
         
         return p;
     }

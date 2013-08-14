@@ -19,6 +19,7 @@
 
         <c:HorizontalLayout>
           <c:VerticalLayout>
+            <c:TextView Text="$question.Description" CssClass="H1"></c:TextView>
             <c:TextView Text="#typeanswer#" CssClass="H2"></c:TextView>
           </c:VerticalLayout>
         </c:HorizontalLayout>

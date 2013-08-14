@@ -150,8 +150,6 @@
       <bp:Action Name="Forward" NextStep="Visit_Order"></bp:Action>
     </bp:Step>
 
-
-
     <bp:Step Name="EditOutletParameter" Screen="ListChoice.xml">
     </bp:Step>
 

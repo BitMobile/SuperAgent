@@ -242,10 +242,15 @@ function CreateVisitSKUValueIfNotExists(visit,sku,skuValue)
 }
 
 
-function UpdateValueAndBack(entity,attribute,value)
+function UpdateValueAndBack(entity,attribute,value,order)
 {
     entity[attribute] = value;
-    Workflow.Back();
+    //if (order != null) {
+    //    Workflow.DoAction(Select, order, entity.SKUAsObject(), entity);
+    //}
+    //else
+        Workflow.Back();
+
 }
 
 
@@ -362,23 +367,27 @@ function GetSKUAmount(orderId,item){
 
 }
 
-function CreateOrderItemIfNotExist(orderId,sku,orderitem) {
+function CreateOrderItemIfNotExist(orderId,sku,orderitem,unit){//,newUnit) {
 
     if (orderitem == null) {
+
         var p = DB.Create("Document.Order_SKUs");
         p.Ref = orderId;
         p.SKU = sku.Id;
         p.Price = sku.Price;
         p.Total = sku.Price;
-//        p.BaseUnit = sku.BaseUnit;
+        p.Units = sku.BaseUnit;
         
         return p;
     }
     else {
         orderitem.Total = (orderitem.Price * (orderitem.Discount / 100 + 1));
-        
+        if (unit != null)
+            orderitem.Units = unit.Pack;
+
         return orderitem;
     }
+
 }
 
 function CalculatePrice(price,discount) {
@@ -387,6 +396,21 @@ function CalculatePrice(price,discount) {
     return total
 
 }
+
+function GetUnits(skuId){
+
+    var units = new Query();
+    units.AddParameter("skuId", skuId);
+    units.Text = "select * from Catalog.SKU_Packing where Ref==@skuId";
+    return units.Execute();
+
+}
+
+function UpdateAndRefresh(entity, attribute, value){//, param1, param2, param3) {
+    entity[attribute] = value;
+    //Workflow.DoRefresh(param1,param2,param3);
+}
+
 
     //----------------------------GetSKUs-------------------------
 

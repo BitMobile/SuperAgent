@@ -4,10 +4,9 @@
   <s:Push Id="order" Value="$param1"></s:Push>
   <s:Push Id="sku" Value="$param2"></s:Push>
   <s:Push Id="orderitem" Value="$param3"></s:Push>
+  <s:Push Id="unit" Value="$param4"></s:Push>
 
-
-  <s:Push Id="orderitem" Value="$Facade.CreateOrderItemIfNotExist($order.Id,$sku,$orderitem)"></s:Push>
-
+  <s:Push Id="orderitem" Value="$Facade.CreateOrderItemIfNotExist($order.Id,$sku,$orderitem,$unit)"></s:Push>
 
   <c:VerticalLayout>
 
@@ -19,27 +18,14 @@
 
     <c:ScrollView CssClass="grid">
 
-      <c:HorizontalLayout>
+      <c:HorizontalLayout CssClass="headerEdit">
         <c:VerticalLayout>
           <c:TextView Text="$sku.Description" CssClass="H1"></c:TextView>
-          <c:TextView Text="#select_answer#" CssClass="H2"></c:TextView>
+          <c:TextView Text="#insert_answer#" CssClass="H2"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
 
-      <c:HorizontalLine/>
-
-      <c:HorizontalLayout  CssClass="hl3">
-        <c:VerticalLayout>
-          <c:EditText Value="$orderitem.Qty" AutoFocus="True" CssClass="H1"></c:EditText>
-          <c:TextView Text="#quantity#" CssClass="H2"></c:TextView>
-        </c:VerticalLayout>
-        <c:VerticalLayout>
-          <c:TextView Text="$sku.BaseUnitAsObject.Description" CssClass="H1"></c:TextView>
-          <c:TextView Text="#baseUnit#" CssClass="H2"></c:TextView>
-        </c:VerticalLayout>
-      </c:HorizontalLayout>
-
-      <c:HorizontalLine/>
+      <c:HorizontalLine CssClass ="highlitedLine"/>
 
       <c:HorizontalLayout CssClass="hl2">
         <c:VerticalLayout>
@@ -55,14 +41,43 @@
 
       <c:HorizontalLine/>
 
-      <c:HorizontalLayout>
+      <c:HorizontalLayout  CssClass="hl2">
         <c:VerticalLayout>
-          <c:TextView Text="$sku.Stock" CssClass="H1"></c:TextView>
-          <c:TextView Text="#stock#" CssClass="H2"></c:TextView>
+          <c:EditText Value="$orderitem.Qty" AutoFocus="True" CssClass="H1"></c:EditText>
+          <c:TextView Text="#quantity#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+        <c:VerticalLayout>
+          <c:TextView Text="$orderitem.UnitsAsObject.Description" CssClass="H1"></c:TextView>
+          <c:TextView Text="#selectUnit#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+
+      <c:HorizontalLayout CssClass="hl2">
+        <c:VerticalLayout>
+
+        </c:VerticalLayout>
+        <c:VerticalLayout>
+          <c:TextView Text="$sku.BaseUnitAsObject.Description" CssClass="H1"></c:TextView>
+          <c:TextView Text="#baseUnit#" CssClass="H2"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
 
       <c:HorizontalLine/>
+
+      <s:Push Id="units" Value="$Facade.GetUnits($sku.Id)"></s:Push>
+
+      <s:Iterator Id="unit" Value="$units">
+
+        <c:HorizontalLayout OnClickAction="Script:Workflow.DoRefresh,$order,$sku,$orderitem,$unit">
+          <c:VerticalLayout>
+            <c:TextView Text="$unit.PackAsObject.Description" CssClass="H1"></c:TextView>
+          </c:VerticalLayout>
+          <c:Image/>
+        </c:HorizontalLayout>
+
+        <c:HorizontalLine/>
+
+      </s:Iterator>
 
     </c:ScrollView>
 

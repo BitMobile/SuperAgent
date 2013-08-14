@@ -59,7 +59,8 @@ discount	Скидка
 noNumber	Нет номера
 markUp		Наценка
 unit		Единица изм.
-baseUnit	Базовая ед. изм.
+baseUnit	Баз. единица изм.
+selectUnit	Выбрать единицу измерения
 
 
 

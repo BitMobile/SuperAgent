@@ -18,7 +18,7 @@
 
          <c:HorizontalLayout>
           <c:VerticalLayout>
-            <c:TextView Text="Available" CssClass="H1"></c:TextView>
+            <c:TextView Text="#available#" CssClass="H1"></c:TextView>
             <c:CheckBox Value="$skuValue.Available" CssClass="H2"></c:CheckBox>
           </c:VerticalLayout>
         </c:HorizontalLayout>
@@ -28,7 +28,7 @@
 
         <c:HorizontalLayout>
           <c:VerticalLayout>
-            <c:TextView Text="Facing" CssClass="H1"></c:TextView>
+            <c:TextView Text="#facing#" CssClass="H1"></c:TextView>
             <c:EditText Value="$skuValue.Facing" CssClass="H1" Keyboard="numeric"></c:EditText>
           </c:VerticalLayout>
         </c:HorizontalLayout>
@@ -38,7 +38,7 @@
 
         <c:HorizontalLayout>
           <c:VerticalLayout>
-            <c:TextView Text="Stock" CssClass="H1"></c:TextView>
+            <c:TextView Text="#stock#" CssClass="H1"></c:TextView>
             <c:EditText Value="$skuValue.Stock" CssClass="H1" Keyboard="numeric"></c:EditText>
           </c:VerticalLayout>
         </c:HorizontalLayout>
@@ -47,7 +47,7 @@
 
         <c:HorizontalLayout>
           <c:VerticalLayout>
-            <c:TextView Text="Price" CssClass="H1"></c:TextView>
+            <c:TextView Text="#price#" CssClass="H1"></c:TextView>
             <c:EditText Value="$skuValue.Price" CssClass="H1" Keyboard="numeric"></c:EditText>
           </c:VerticalLayout>
         </c:HorizontalLayout>
@@ -56,7 +56,7 @@
 
         <c:HorizontalLayout>
           <c:VerticalLayout>
-            <c:TextView Text="MarkUp" CssClass="H1"></c:TextView>
+            <c:TextView Text="#markUp#" CssClass="H1"></c:TextView>
             <c:EditText Value="$skuValue.MarkUp" CssClass="H1" Keyboard="numeric"></c:EditText>
           </c:VerticalLayout>
         </c:HorizontalLayout>
@@ -65,7 +65,7 @@
 
         <c:HorizontalLayout>
           <c:VerticalLayout>
-            <c:TextView Text="OutOfStock" CssClass="H1"></c:TextView>
+            <c:TextView Text="#outOfStock#" CssClass="H1"></c:TextView>
             <c:CheckBox Value="$skuValue.OutOfStock" CssClass="H2"></c:CheckBox>
           </c:VerticalLayout>
         </c:HorizontalLayout>

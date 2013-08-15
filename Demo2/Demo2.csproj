@@ -40,6 +40,7 @@
     </Content>
     <Content Include="d\resource\app\Image\480x800\button_left_disabled.png" />
     <Content Include="d\resource\app\Image\480x800\button_right_disabled.png" />
+    <Content Include="d\resource\app\Image\480x800\refresh.png" />
     <Content Include="d\resource\app\Image\800x1280\button_left.png" />
     <Content Include="d\resource\app\Image\800x1280\button_left_disabled.png" />
     <Content Include="d\resource\app\Image\800x1280\button_right.png" />
@@ -52,6 +53,7 @@
     <Content Include="d\resource\app\Image\800x1280\logo_firstbit2.png" />
     <Content Include="d\resource\app\Image\800x1280\order_active.png" />
     <Content Include="d\resource\app\Image\800x1280\outlets.png" />
+    <Content Include="d\resource\app\Image\800x1280\refresh.png" />
     <Content Include="d\resource\app\Image\800x1280\schedule.png" />
     <Content Include="d\resource\app\Image\800x1280\settings.png" />
     <Content Include="d\resource\app\Image\800x1280\sync.png" />
@@ -61,14 +63,10 @@
     <Content Include="d\resource\app\Image\Default\button_left_disabled.png" />
     <Content Include="d\resource\app\Image\Default\button_right.png" />
     <Content Include="d\resource\app\Image\Default\button_right_disabled.png" />
-    <Content Include="d\resource\app\Image\Default\corner_light_green.png" />
-    <Content Include="d\resource\app\Image\Default\corner_white.png" />
-    <Content Include="d\resource\app\Image\Default\distr.png" />
     <Content Include="d\resource\app\Image\Default\distr_active.png" />
     <Content Include="d\resource\app\Image\Default\icon_more.png" />
     <Content Include="d\resource\app\Image\Default\icon_zoom.png" />
     <Content Include="d\resource\app\Image\Default\kpi.png" />
-    <Content Include="d\resource\app\Image\Default\logo.png" />
     <Content Include="d\resource\app\Image\Default\Logo31.png" />
     <Content Include="d\resource\app\Image\Default\logo_firstbit2.png" />
     <Content Include="d\resource\app\Image\Default\order_active.png" />

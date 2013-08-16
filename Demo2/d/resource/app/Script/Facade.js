@@ -1,68 +1,61 @@
 //Комментарий тест
 
-function GetLookupList(entity, attribute)
-{
+function GetLookupList(entity, attribute) {
     var objectType = entity.Metadata[attribute].Type;
     var objectName = entity.Metadata[attribute].Name;
     var query = new Query();
     query.Text = String.Format("select * from {0}.{1}", objectType, objectName);
-    return query.Execute(); 
+    return query.Execute();
 }
 
 
-function CreateOutletParameterValueIfNotExists(outlet,parameter,parameterValue)
-{
-    if(parameterValue!=null)
-      return parameterValue;
+function CreateOutletParameterValueIfNotExists(outlet, parameter, parameterValue) {
+    if (parameterValue != null)
+        return parameterValue;
 
     var p = DB.Create("Catalog.Outlet_Parameters");
-    
-    p.Ref = outlet.Id;   
-    p.Parameter = parameter.Id; 
-    
-    if(parameter.DataTypeAsObject().Description == "Boolean")
-      p.Value = false;
+
+    p.Ref = outlet.Id;
+    p.Parameter = parameter.Id;
+
+    if (parameter.DataTypeAsObject().Description == "Boolean")
+        p.Value = false;
     else
-      p.Value = "";
+        p.Value = "";
 
     return p;
 }
 
 
-function GetOutlets(searchText)
-{
+function GetOutlets(searchText) {
     query = new Query();
-    if(String.IsNullOrEmpty(searchText))
-    {
-      query.Text = "select distinct(OutletAsObject) from Catalog.Territory_Outlets";
+    if (String.IsNullOrEmpty(searchText)) {
+        query.Text = "select distinct(OutletAsObject) from Catalog.Territory_Outlets";
     }
-    else
-    {
-      query.Text = "select distinct(OutletAsObject) from Catalog.Territory_Outlets where OutletAsObject.Description.Contains(@p1)";
-      query.AddParameter("p1",searchText);
+    else {
+        query.Text = "select distinct(OutletAsObject) from Catalog.Territory_Outlets where OutletAsObject.Description.Contains(@p1)";
+        query.AddParameter("p1", searchText);
     }
 
     return query.Execute();
 }
 
 
-function GetScheduledVisits(searchText)
-{
+function GetScheduledVisits(searchText) {
     var query = new Query();
     query.AddParameter("Date", DateTime.Now.Date);
     query.AddParameter("SearchText", searchText);
 
-    if(String.IsNullOrEmpty(searchText))
-      query.Text = "select * from Document.VisitPlan_Outlets where Date == @Date";
+    if (String.IsNullOrEmpty(searchText))
+        query.Text = "select * from Document.VisitPlan_Outlets where Date == @Date";
     else
-      query.Text = "select * from Document.VisitPlan_Outlets where Date == @Date && OutletAsObject.Description.Contains(@SearchText)";
+        query.Text = "select * from Document.VisitPlan_Outlets where Date == @Date && OutletAsObject.Description.Contains(@SearchText)";
 
     return query.Execute();
 }
 
 
-function GetTodayVisit(outlet)
-{
+function GetTodayVisit(outlet) {
     var query = new Query();
     query.AddParameter("Date", DateTime.Now);
     query.AddParameter("Outlet", outlet.Id);
@@ -71,95 +64,86 @@ function GetTodayVisit(outlet)
 }
 
 
-function CreatePlannedVisitIfNotExists(planVisit,outlet,userId)
-{
+function CreatePlannedVisitIfNotExists(planVisit, outlet, userId) {
     var query = new Query();
     query.AddParameter("Date", DateTime.Now.Date);
     query.AddParameter("Outlet", outlet.Id);
     query.Text = "select single(*) from Document.Visit where Outlet==@Outlet && Date==@Date";
 
     var visit = query.Execute();
-    if(visit==null)
-    {
-      visit = DB.Create("Document.Visit");
-      visit.Plan = planVisit.Id;
-      visit.Outlet = outlet.Id;
-      visit.SR = userId;
-      visit.Date = DateTime.Now;
-      visit.StartTime = DateTime.Now;
+    if (visit == null) {
+        visit = DB.Create("Document.Visit");
+        visit.Plan = planVisit.Id;
+        visit.Outlet = outlet.Id;
+        visit.SR = userId;
+        visit.Date = DateTime.Now;
+        visit.StartTime = DateTime.Now;
 
-      var status = new Query("select single(*) from Enum.VisitStatus where Description=='Processing'").Execute();
-      visit.Status = status.Id;
+        var status = new Query("select single(*) from Enum.VisitStatus where Description=='Processing'").Execute();
+        visit.Status = status.Id;
 
-      visit.Encashment = 0;
+        visit.Encashment = 0;
     }
-    
+
     return visit;
 }
 
-function GetOutletParameters()
-{
+function GetOutletParameters() {
     return new Query("select * from Catalog.OutletParameter").Execute();
 }
 
 
-function GetOutletParameterValue(outlet,parameter)
-{
+function GetOutletParameterValue(outlet, parameter) {
     var query = new Query();
     query.AddParameter("Outlet", outlet.Id);
-    query.AddParameter("Parameter",parameter.Id);
+    query.AddParameter("Parameter", parameter.Id);
     query.Text = "select single(*) from Catalog.Outlet_Parameters where Parameter == @Parameter && Ref == @Outlet";
     return query.Execute();
 }
 
 
-function GetTasks(outlet)
-{
+function GetTasks(outlet) {
     var query = new Query();
     query.AddParameter("Date", DateTime.Now.Date);
     query.AddParameter("Outlet", outlet.Id);
-    if(outlet==null)
+    if (outlet == null)
         query.Text = "select * from Document.Task where PlanDate >= @Date";
     else
-      query.Text = "select * from Document.Task where Outlet == @Outlet && PlanDate >= @Date";
+        query.Text = "select * from Document.Task where Outlet == @Outlet && PlanDate >= @Date";
 
     return query.Execute();
 }
 
 
-function CreateVisitTaskValueIfNotExists(visit,task)
-{
+function CreateVisitTaskValueIfNotExists(visit, task) {
     var query = new Query();
     query.AddParameter("Visit", visit.Id);
     query.AddParameter("Text", task.TextTask);
     query.Text = "select single(*) from Document.Visit_Task where Ref == @Visit && TextTask == @Text";
     var taskValue = query.Execute();
-    if(taskValue==null)
-    {
-      taskValue = DB.Create("Document.Visit_Task");
-      taskValue.Ref = visit.Id;
-      taskValue.TextTask = task.TextTask;
-      taskValue.TaskRef = task.Id;
+    if (taskValue == null) {
+        taskValue = DB.Create("Document.Visit_Task");
+        taskValue.Ref = visit.Id;
+        taskValue.TextTask = task.TextTask;
+        taskValue.TaskRef = task.Id;
     }
 
     return taskValue;
 }
 
 
-function GetQuestionsByOutlet(outlet)
-{
+function GetQuestionsByOutlet(outlet) {
     var query = new Query();
     query.AddParameter("OutletType", outlet.Type);
     query.Text = "select single(*) from Document.Questionnaire where OutletType == @OutletType";
     var obj = query.Execute();
-    if(obj==null)
-      return null;
-    else
-    {
-      var query = new Query();
-      query.AddParameter("Ref", obj.Id);
-      query.Text = "select * from Document.Questionnaire_Questions where Ref == @Ref";
-      return query.Execute(); 
+    if (obj == null)
+        return null;
+    else {
+        var query = new Query();
+        query.AddParameter("Ref", obj.Id);
+        query.Text = "select * from Document.Questionnaire_Questions where Ref == @Ref";
+        return query.Execute();
     }
 
 
@@ -167,8 +151,7 @@ function GetQuestionsByOutlet(outlet)
 }
 
 
-function GetVisitQuestionValue(visit,question)
-{
+function GetVisitQuestionValue(visit, question) {
     var query = new Query();
     query.AddParameter("Visit", visit.Id);
     query.AddParameter("Question", question.Id);
@@ -177,39 +160,36 @@ function GetVisitQuestionValue(visit,question)
 }
 
 
-function CreateVisitQuestionValueIfNotExists(visit,question,questionValue)
-{
-    if(questionValue!=null)
-      return questionValue;
+function CreateVisitQuestionValueIfNotExists(visit, question, questionValue) {
+    if (questionValue != null)
+        return questionValue;
 
     var p = DB.Create("Document.Visit_Questions");
-    
-    p.Ref = visit.Id;   
-    p.Question = question.Id; 
-    
-    if(question.AnswerTypeAsObject().Description == "Boolean")
-      p.Answer = "false";
+
+    p.Ref = visit.Id;
+    p.Question = question.Id;
+
+    if (question.AnswerTypeAsObject().Description == "Boolean")
+        p.Answer = "false";
     else
-      p.Answer = "";
+        p.Answer = "";
 
     return p;
 }
 
 
-function GetSKUsByOutlet(outlet)
-{
+function GetSKUsByOutlet(outlet) {
     var query = new Query();
     query.AddParameter("OutletType", outlet.Type);
     query.Text = "select single(*) from Document.Questionnaire where OutletType == @OutletType";
     var obj = query.Execute();
-    if(obj==null)
-      return null;
-    else
-    {
-      var query = new Query();
-      query.AddParameter("Ref", obj.Id);
-      query.Text = "select * from Document.Questionnaire_SKUs where Ref == @Ref";
-      return query.Execute(); 
+    if (obj == null)
+        return null;
+    else {
+        var query = new Query();
+        query.AddParameter("Ref", obj.Id);
+        query.Text = "select * from Document.Questionnaire_SKUs where Ref == @Ref";
+        return query.Execute();
     }
 
 
@@ -217,8 +197,7 @@ function GetSKUsByOutlet(outlet)
 }
 
 
-function GetVisitSKUValue(visit,sku)
-{
+function GetVisitSKUValue(visit, sku) {
     var query = new Query();
     query.AddParameter("Visit", visit.Id);
     query.AddParameter("SKU", sku.Id);
@@ -227,14 +206,13 @@ function GetVisitSKUValue(visit,sku)
 }
 
 
-function CreateVisitSKUValueIfNotExists(visit,sku,skuValue)
-{
-    if(skuValue!=null)
-      return skuValue;
+function CreateVisitSKUValueIfNotExists(visit, sku, skuValue) {
+    if (skuValue != null)
+        return skuValue;
 
     var p = DB.Create("Document.Visit_SKUs");
-    
-    p.Ref = visit.Id;   
+
+    p.Ref = visit.Id;
     p.SKU = sku.Id;
     p.Available = false;
 
@@ -242,14 +220,10 @@ function CreateVisitSKUValueIfNotExists(visit,sku,skuValue)
 }
 
 
-function UpdateValueAndBack(entity,attribute,value,order)
-{
+function UpdateValueAndBack(entity, attribute, value, order) {
     entity[attribute] = value;
-    //if (order != null) {
-    //    Workflow.DoAction(Select, order, entity.SKUAsObject(), entity);
-    //}
-    //else
-        Workflow.Back();
+
+    Workflow.Back();
 
 }
 
@@ -257,7 +231,7 @@ function UpdateValueAndBack(entity,attribute,value,order)
 //------------------------------UnscheduledVisit--------------
 
 function CreateUnschVisitIfNotExists(outlet, userId, visit) {
-    
+
     if (visit == null) {
         visit = DB.Create("Document.Visit");
         visit.Outlet = outlet.Id;
@@ -313,17 +287,17 @@ function CreateOrderIfNotExists(order, outlet, userId, visitId, executedOrder) {
     }
     else {
         if (order == null) {
-                var order = DB.Create("Document.Order");
-                order.Date = DateTime.Now;
-                order.Outlet = outlet.Id;
-                order.SR = userId;
-                order.DeliveryDate = DateTime.Now;
-                var status = new Query("select single(*) from Enum.OrderSatus where Description=='New'").Execute();
-                order.Status = status.Id;
-                if (visitId != null) {
-                    order.Visit = visitId;
-                }
+            var order = DB.Create("Document.Order");
+            order.Date = DateTime.Now;
+            order.Outlet = outlet.Id;
+            order.SR = userId;
+            order.DeliveryDate = DateTime.Now;
+            var status = new Query("select single(*) from Enum.OrderSatus where Description=='New'").Execute();
+            order.Status = status.Id;
+            if (visitId != null) {
+                order.Visit = visitId;
             }
+        }
     }
 
     return order;
@@ -356,18 +330,18 @@ function GetOrderSUM(orderId) {
 
 }
 
-function GetSKUAmount(orderId,item){
+function GetSKUAmount(orderId, item) {
 
     var query = new Query();
     query.AddParameter("orderId", orderId);
- 
+
     query.AddParameter("itemId", item.Id);
     query.Text = "select sum(Qty*Total) from Document.Order_SKUs where Ref==@orderId && Id==@itemId";
     return query.Execute();
 
 }
 
-function CreateOrderItemIfNotExist(orderId,sku,orderitem,unit){//,newUnit) {
+function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit) {
 
     if (orderitem == null) {
 
@@ -377,7 +351,7 @@ function CreateOrderItemIfNotExist(orderId,sku,orderitem,unit){//,newUnit) {
         p.Price = sku.Price;
         p.Total = sku.Price;
         p.Units = sku.BaseUnit;
-        
+
         return p;
     }
     else {
@@ -390,14 +364,26 @@ function CreateOrderItemIfNotExist(orderId,sku,orderitem,unit){//,newUnit) {
 
 }
 
-function CalculatePrice(price,discount) {
+function CalculateValue(orderitem, sku) {
 
-    var total = (price * (discount/100 + 1));
+        var query = new Query();
+        query.AddParameter("ref", sku.Id);
+        query.AddParameter("units", orderitem.Units);
+        query.Text = "select single(*) from Catalog.SKU_Packing where Ref==@ref && Pack==units";
+        var item = query.Execute();
+    
+        return item.Multiplier*orderitem.Qty;
+    
+}
+
+function CalculatePrice(price, discount) {
+
+    var total = (price * (discount / 100 + 1));
     return total
 
 }
 
-function GetUnits(skuId){
+function GetUnits(skuId) {
 
     var units = new Query();
     units.AddParameter("skuId", skuId);
@@ -406,64 +392,63 @@ function GetUnits(skuId){
 
 }
 
-function UpdateAndRefresh(entity, attribute, value){//, param1, param2, param3) {
+function UpdateAndRefresh(entity, attribute, value) {
     entity[attribute] = value;
-    //Workflow.DoRefresh(param1,param2,param3);
+
 }
 
 
-    //----------------------------GetSKUs-------------------------
+//----------------------------GetSKUs-------------------------
 
 
-    function GetSKUs(searchText, owner) {
-        if (owner == null) {
-            query = new Query();
-            if (String.IsNullOrEmpty(searchText)) {
-                query.Text = "select * from Catalog.SKU";
-            }
-            else {
-                query.Text = "select * from Catalog.SKU where Description.Contains(@p1)";
-                query.AddParameter("p1", searchText);
-            }
-        }
-        else {
-            query = new Query();
-            query.AddParameter("owner", owner);
-            if (String.IsNullOrEmpty(searchText)) {
-                query.Text = "select * from Catalog.SKU where Owner==@owner";
-            }
-            else {
-                query.Text = "select * from Catalog.SKU where Description.Contains(@p1) && Owner==@owner";
-                query.AddParameter("p1", searchText);
-            }
-        }
-
-        return query.Execute();
-    }
-
-    function GetSKUGroups(searchText) {
+function GetSKUs(searchText, owner) {
+    if (owner == null) {
         query = new Query();
-        
         if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select distinct(OwnerAsObject) from Catalog.SKU";
+            query.Text = "select * from Catalog.SKU";
         }
         else {
-            query.Text = "select distinct(OwnerAsObject) from Catalog.SKU where Description.Contains(@p1)";
+            query.Text = "select * from Catalog.SKU where Description.Contains(@p1)";
             query.AddParameter("p1", searchText);
         }
-
-        return query.Execute();
+    }
+    else {
+        query = new Query();
+        query.AddParameter("owner", owner);
+        if (String.IsNullOrEmpty(searchText)) {
+            query.Text = "select * from Catalog.SKU where Owner==@owner";
+        }
+        else {
+            query.Text = "select * from Catalog.SKU where Description.Contains(@p1) && Owner==@owner";
+            query.AddParameter("p1", searchText);
+        }
     }
 
-    function checkSKUGroup(group,userId)
-    {
-        var query = new Query;
-        query.AddParameter("group", group);
-        query.Text = "select count(Id) from Catalog.Territory_SKUGroups where SKUGroup==@group";
-        return query.Execute();
-  
+    return query.Execute();
+}
+
+function GetSKUGroups(searchText) {
+    query = new Query();
+
+    if (String.IsNullOrEmpty(searchText)) {
+        query.Text = "select distinct(OwnerAsObject) from Catalog.SKU";
+    }
+    else {
+        query.Text = "select distinct(OwnerAsObject) from Catalog.SKU where Description.Contains(@p1)";
+        query.AddParameter("p1", searchText);
     }
 
+    return query.Execute();
+}
 
-    //-------------------------------Stocks--------------------
+function checkSKUGroup(group, userId) {
+    var query = new Query;
+    query.AddParameter("group", group);
+    query.Text = "select count(Id) from Catalog.Territory_SKUGroups where SKUGroup==@group";
+    return query.Execute();
+
+}
+
+
+//-------------------------------Stocks--------------------
 

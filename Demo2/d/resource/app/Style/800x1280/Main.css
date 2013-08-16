@@ -78,8 +78,16 @@ Indicator {
         width: 100%;
     }
 
-.logo2 {
-    background-image: url(Logo31.png);
+.logoEn {
+    background-image: url(LogoEn.png);
+    margin-top: 72px;
+    margin-left: 15px;
+    height: 131px;
+    width: 777px;
+}
+
+.logoRu {
+    background-image: url(LogoRu.png);
     margin-top: 72px;
     margin-left: 15px;
     height: 131px;

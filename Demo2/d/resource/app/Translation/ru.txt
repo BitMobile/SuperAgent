@@ -60,7 +60,9 @@ noNumber	Нет номера
 markUp		Наценка
 unit		Единица изм.
 baseUnit	Баз. единица изм.
-selectUnit	Выбрать единицу измерения
-
+selectUnit	Выберите единицу измерения:
+logo		logoRu
+packUnit	Ед. упаковки
+refreshScreen	Кликните здесь чтобы обновить экран
 
 

@@ -2,7 +2,7 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
 
   <c:VerticalLayout>
-    <c:HorizontalLayout  CssClass="logo2">
+    <c:HorizontalLayout  CssClass="#logo#">
       <c:Indicator/>
     </c:HorizontalLayout>
     <c:HorizontalLayout CssClass="separatorOfLogo">
@@ -20,7 +20,7 @@
     <c:HorizontalLayout>
       <c:Button CssClass="btnOutlets" OnClickAction="Script:Workflow.DoAction,Outlets"></c:Button>
       <c:Button CssClass="btnTodo" OnClickAction="Script:Workflow.DoAction,ToDo"></c:Button>
-      <c:Button CssClass="btnKpi" OnClickAction="Script:Workflow.DoAction,Targets"></c:Button>
+      <c:Button CssClass="btnKpi"></c:Button>
     </c:HorizontalLayout>
     <c:HorizontalLayout CssClass="caption">
       <c:TextView Text="#outlets#"/>

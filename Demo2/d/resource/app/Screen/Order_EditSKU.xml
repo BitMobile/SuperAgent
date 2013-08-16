@@ -7,6 +7,7 @@
   <s:Push Id="unit" Value="$param4"></s:Push>
 
   <s:Push Id="orderitem" Value="$Facade.CreateOrderItemIfNotExist($order.Id,$sku,$orderitem,$unit)"></s:Push>
+  <s:Push Id="baseQty" Value="$Facade.CalculateValue($orderitem, $sku)"></s:Push>
 
   <c:VerticalLayout>
 
@@ -18,10 +19,10 @@
 
     <c:ScrollView CssClass="grid">
 
-      <c:HorizontalLayout CssClass="headerEdit">
+      <c:HorizontalLayout CssClass="headerEdit" OnClickAction="Script:Workflow.DoRefresh,$order,$sku,$orderitem,$unit">
         <c:VerticalLayout>
           <c:TextView Text="$sku.Description" CssClass="H1"></c:TextView>
-          <c:TextView Text="#insert_answer#" CssClass="H2"></c:TextView>
+          <c:TextView Text="#refreshScreen#" CssClass="H2"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
 
@@ -32,7 +33,6 @@
           <c:TextView Text="$orderitem.Total" CssClass="H1"></c:TextView>
           <c:TextView Text="#price#" CssClass="H2"></c:TextView>
         </c:VerticalLayout>
-        <c:Button CssClass ="bthRefresh" OnClickAction="Script:Workflow.DoRefresh,$order,$sku,$orderitem"></c:Button>
         <c:VerticalLayout>
           <c:EditText Value="$orderitem.Discount" CssClass="H1" Keyboard="numPunc"></c:EditText>
           <c:TextView Text="#discount#/#markUp#" CssClass="H2"></c:TextView>
@@ -43,18 +43,19 @@
 
       <c:HorizontalLayout  CssClass="hl2">
         <c:VerticalLayout>
-          <c:EditText Value="$orderitem.Qty" AutoFocus="True" CssClass="H1"></c:EditText>
+          <c:EditText Value="$orderitem.Qty" CssClass="H1" Keyboard="numeric"></c:EditText>
           <c:TextView Text="#quantity#" CssClass="H2"></c:TextView>
         </c:VerticalLayout>
         <c:VerticalLayout>
           <c:TextView Text="$orderitem.UnitsAsObject.Description" CssClass="H1"></c:TextView>
-          <c:TextView Text="#selectUnit#" CssClass="H2"></c:TextView>
+          <c:TextView Text="#packUnit#" CssClass="H2"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
 
       <c:HorizontalLayout CssClass="hl2">
         <c:VerticalLayout>
-
+          <c:TextView Text="$baseQty" CssClass="H1"></c:TextView>
+          <c:TextView Text="#quantity#" CssClass="H2"></c:TextView>
         </c:VerticalLayout>
         <c:VerticalLayout>
           <c:TextView Text="$sku.BaseUnitAsObject.Description" CssClass="H1"></c:TextView>
@@ -63,6 +64,11 @@
       </c:HorizontalLayout>
 
       <c:HorizontalLine/>
+
+      <c:HorizontalLayout CssClass="headerEdit">
+        <c:TextView Text="#selectUnit#" CssClass="H2"></c:TextView>
+      </c:HorizontalLayout>
+      <c:HorizontalLine CssClass ="highlitedLine"/>
 
       <s:Push Id="units" Value="$Facade.GetUnits($sku.Id)"></s:Push>
 

@@ -193,10 +193,6 @@
     <Content Include="d\resource\app\Style\480x800\Targets.css" />
     <Content Include="d\resource\app\Style\480x800\Tasks.css" />
     <Content Include="d\resource\app\Style\480x800\Visit_Order.css" />
-    <Content Include="d\resource\update.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="d\resource\app\Translation\Translation.7z" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

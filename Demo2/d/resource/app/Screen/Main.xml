@@ -2,7 +2,7 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
 
   <c:VerticalLayout>
-    <c:HorizontalLayout  CssClass="logo2">
+    <c:HorizontalLayout  CssClass="#logo#">
       <c:Indicator/>
     </c:HorizontalLayout>
     <c:HorizontalLayout CssClass="separatorOfLogo">

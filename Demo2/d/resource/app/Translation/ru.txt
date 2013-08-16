@@ -61,6 +61,6 @@ markUp		Наценка
 unit		Единица изм.
 baseUnit	Баз. единица изм.
 selectUnit	Выбрать единицу измерения
-
+logo		logoRu
 
 

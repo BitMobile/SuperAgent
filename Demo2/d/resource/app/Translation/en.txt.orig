@@ -60,9 +60,13 @@ noNumber	No number
 markUp		MarkUp
 unit		Unit
 baseUnit	Base unit
-selectUnit	Select unit:
+<<<<<<< HEAD
+selectUnit	Select unit
 logo		logoEn
+=======
+selectUnit	Select unit:
 packUnit	Pack unit
 refreshScreen	Click here to refresh screen
+>>>>>>> b86bdd1c8c13acaa8c21c34932277056cf7017a1
 
 

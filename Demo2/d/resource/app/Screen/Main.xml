@@ -20,7 +20,7 @@
     <c:HorizontalLayout>
       <c:Button CssClass="btnOutlets" OnClickAction="Script:Workflow.DoAction,Outlets"></c:Button>
       <c:Button CssClass="btnTodo" OnClickAction="Script:Workflow.DoAction,ToDo"></c:Button>
-      <c:Button CssClass="btnKpi" OnClickAction="Script:Workflow.DoAction,Targets"></c:Button>
+      <c:Button CssClass="btnKpi"></c:Button>
     </c:HorizontalLayout>
     <c:HorizontalLayout CssClass="caption">
       <c:TextView Text="#outlets#"/>

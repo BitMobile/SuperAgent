@@ -4,15 +4,11 @@
   <s:Push Id="order" Value="$param1"></s:Push>
   <s:Push Id="sku" Value="$param2"></s:Push>
   <s:Push Id="orderitem" Value="$param3"></s:Push>
+  <s:Push Id="unit" Value="$param4"></s:Push>
 
-  <s:If Test="$orderitem==null">
+  <s:Push Id="orderitem" Value="$Facade.CreateOrderItemIfNotExist($order.Id,$sku,$orderitem,$unit)"></s:Push>
+  <s:Push Id="baseQty" Value="$Facade.CalculateValue($orderitem, $sku)"></s:Push>
 
-    <s:Push Id="orderitem">
-      <d:Document.Order_SKUs Ref="$order.Id" SKU="$sku.Id" Price="$sku.Price"/>
-    </s:Push>
-
-  </s:If>
-  
   <c:VerticalLayout>
 
     <c:HorizontalLayout CssClass="topNavigator">
@@ -23,37 +19,71 @@
 
     <c:ScrollView CssClass="grid">
 
-        <c:HorizontalLayout>
+      <c:HorizontalLayout CssClass="headerEdit" OnClickAction="Script:Workflow.DoRefresh,$order,$sku,$orderitem,$unit">
+        <c:VerticalLayout>
+          <c:TextView Text="$sku.Description" CssClass="H1"></c:TextView>
+          <c:TextView Text="#refreshScreen#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+
+      <c:HorizontalLine CssClass ="highlitedLine"/>
+
+      <c:HorizontalLayout CssClass="hl2">
+        <c:VerticalLayout>
+          <c:TextView Text="$orderitem.Total" CssClass="H1"></c:TextView>
+          <c:TextView Text="#price#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+        <c:VerticalLayout>
+          <c:EditText Value="$orderitem.Discount" CssClass="H1" Keyboard="numPunc"></c:EditText>
+          <c:TextView Text="#discount#/#markUp#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout  CssClass="hl2">
+        <c:VerticalLayout>
+          <c:EditText Value="$orderitem.Qty" CssClass="H1" Keyboard="numeric"></c:EditText>
+          <c:TextView Text="#quantity#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+        <c:VerticalLayout>
+          <c:TextView Text="$orderitem.UnitsAsObject.Description" CssClass="H1"></c:TextView>
+          <c:TextView Text="#packUnit#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+
+      <c:HorizontalLayout CssClass="hl2">
+        <c:VerticalLayout>
+          <c:TextView Text="$baseQty" CssClass="H1"></c:TextView>
+          <c:TextView Text="#quantity#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+        <c:VerticalLayout>
+          <c:TextView Text="$sku.BaseUnitAsObject.Description" CssClass="H1"></c:TextView>
+          <c:TextView Text="#baseUnit#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout CssClass="headerEdit">
+        <c:TextView Text="#selectUnit#" CssClass="H2"></c:TextView>
+      </c:HorizontalLayout>
+      <c:HorizontalLine CssClass ="highlitedLine"/>
+
+      <s:Push Id="units" Value="$Facade.GetUnits($sku.Id)"></s:Push>
+
+      <s:Iterator Id="unit" Value="$units">
+
+        <c:HorizontalLayout OnClickAction="Script:Workflow.DoRefresh,$order,$sku,$orderitem,$unit">
           <c:VerticalLayout>
-            <c:TextView Text="$sku.Description" CssClass="H1"></c:TextView>
-            <c:TextView Text="#select_answer#" CssClass="H2"></c:TextView>
-          </c:VerticalLayout>          
+            <c:TextView Text="$unit.PackAsObject.Description" CssClass="H1"></c:TextView>
+          </c:VerticalLayout>
+          <c:Image/>
         </c:HorizontalLayout>
 
         <c:HorizontalLine/>
 
-        <c:HorizontalLayout>
-          <c:VerticalLayout>
-            <c:EditText Value="$orderitem.Qty" AutoFocus="True" CssClass="H1"></c:EditText>
-            <c:TextView Text="#quantity#" CssClass="H2"></c:TextView>
-          </c:VerticalLayout>
-        </c:HorizontalLayout>
-
-        <c:HorizontalLine/>
-        
-        <c:HorizontalLayout CssClass="hl2">
-          <c:VerticalLayout>
-            <c:TextView Text="$orderitem.Price" CssClass="H1"></c:TextView>
-            <c:TextView Text="#price#" CssClass="H2"></c:TextView>
-          </c:VerticalLayout>
-          <c:VerticalLayout>
-            <c:TextView Text="$sku.Stock" CssClass="H1"></c:TextView>
-            <c:TextView Text="#stock#" CssClass="H2"></c:TextView>
-          </c:VerticalLayout>
-        </c:HorizontalLayout>
-
-        <c:HorizontalLine/>
-
+      </s:Iterator>
 
     </c:ScrollView>
 

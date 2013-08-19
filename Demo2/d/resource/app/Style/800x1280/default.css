@@ -53,6 +53,11 @@ Button {
     font: 20px Arial-BoldMT;
 }
 
+.H5 {
+    font: 33px Arial;
+    color: #b2749b;
+}
+
 .btnBack {
     background-image: url(button_left.png);
     height: 60px;
@@ -69,7 +74,12 @@ Button {
     margin-left: 10px;
 }
 
-
+.bthRefresh {
+    background-image: url(refresh.png);
+    width: 84px;
+    height: 84px;
+    background-color: #FFF;
+}
 
 .topNavigator {
     height: 80px;
@@ -86,13 +96,10 @@ Button {
         font: 36px arial;
     }
 
-
-
 .header {
     height: 102px;
     background-color: #dbd7e1;
 }
-
 
 .grid headerEdit {
     height: 101px;
@@ -128,6 +135,19 @@ Button {
         height: 90%;
         margin-top: 5px;
         padding-left: 15px;
+    }
+
+    .grid hl vl1 {
+        width: 80%;
+        height: 90%;
+        margin-top: 5px;
+        padding-left: 10px;
+    }
+
+    .grid hl vl2 {
+        width: 2%;
+        height: 90%;
+        background-color: #ef0648;
     }
 
     .grid hl TextView {
@@ -174,6 +194,13 @@ Button {
 
 .hl2 vl {
     width: 50%;
+    height: 84px;
+    margin-top: 5px;
+    padding-left: 10px;
+}
+
+.hl3 vl {
+    width: 30%;
     height: 84px;
     margin-top: 5px;
     padding-left: 10px;

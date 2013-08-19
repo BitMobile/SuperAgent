@@ -55,6 +55,14 @@ done		Отвечен
 pcs			шт.
 orders		Заказы
 newOrder	Создать новый заказ
-
+discount	Скидка
+noNumber	Нет номера
+markUp		Наценка
+unit		Единица изм.
+baseUnit	Баз. единица изм.
+selectUnit	Выберите единицу измерения:
+logo		logoRu
+packUnit	Ед. упаковки
+refreshScreen	Кликните здесь чтобы обновить экран
 
 

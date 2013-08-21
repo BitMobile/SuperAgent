@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+
+  <s:Push Id="search" Value="$param1"></s:Push>
+
+  <s:Push Id="skus" Value="$Facade.GetSKUs($search)"></s:Push>
+
+  <s:Push Id="groups" Value="$Facade.GetSKUGroups($search)"></s:Push>
+
+  <c:VerticalLayout>
+
+    <c:HorizontalLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
+      <c:TextView Text="#stock#" />
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoBack"/>
+    </c:HorizontalLayout>
+
+    <c:HorizontalLine/>
+
+    <c:HorizontalLayout CssClass="search">
+
+      <c:HorizontalLayout >
+        <c:Image />
+        <c:EditText Id="edtSearch" Text="$search"></c:EditText>
+      </c:HorizontalLayout>
+      <c:Button Text="#search#" OnClickAction="RefreshScreen:$edtSearch.Text"></c:Button>
+
+    </c:HorizontalLayout>
+
+    <c:HorizontalLine/>
+
+    <c:ScrollView CssClass="grid">
+
+      <s:Iterator Id="group" Value="$groups">
+        <s:Push Id="checkedGroup" Value="$Facade.checkSKUGroup($group.Id)"></s:Push>
+        <s:If Test="$checkedGroup != 0">
+          <c:HorizontalLayout CssClass ="gridEdit">
+            <c:VerticalLayout>
+              <c:TextView Text = "$group.Description" CssClass = "H1"></c:TextView>
+            </c:VerticalLayout>
+
+          </c:HorizontalLayout>
+
+          <c:HorizontalLine CssClass="editLine"/>
+
+          <s:Push Id="skusByGroup" Value="$Facade.GetSKUs($search,$group.Id)"></s:Push>
+
+          <s:Iterator Id="sku" Value="$skusByGroup">
+
+            <c:HorizontalLayout CssClass="gridWhite">
+              <c:VerticalLayout>
+                <c:TextView Text="$sku.Description" CssClass="H1"></c:TextView>
+                <c:HorizontalLayout>
+                  <c:TextView Text="{$sku.Stock} #pcs#" CssClass="H2"></c:TextView>
+                </c:HorizontalLayout>
+              </c:VerticalLayout>
+
+            </c:HorizontalLayout>
+            <c:HorizontalLine/>
+
+          </s:Iterator>
+        </s:If>
+      </s:Iterator>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>

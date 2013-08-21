@@ -26,7 +26,6 @@
         </c:HorizontalLayout>
 
       </s:If>
-      
       <s:Else>
 
         <s:Iterator Id="item" Value="$questions">

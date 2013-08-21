@@ -57,7 +57,7 @@
                 <c:TextView Text="$planOutlet.Address" CssClass="H2"></c:TextView>
               </c:VerticalLayout>
 
-              <c:TextView Text="$todayVisit.Date.TimeString" CssClass="H2"></c:TextView>
+              <c:TextView Text="$todayVisit.EndTime.TimeString" CssClass="H2"></c:TextView>
               
             </c:HorizontalLayout>
 

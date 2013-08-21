@@ -51,7 +51,7 @@ markUp		Наценка
 outOfStock	Наличие на складе
 false		Нет
 true		Да
-done		Заполнен
+done		Отвечен
 pcs			шт.
 orders		Заказы
 newOrder	Создать новый заказ
@@ -60,9 +60,7 @@ noNumber	Нет номера
 markUp		Наценка
 unit		Единица изм.
 baseUnit	Баз. единица изм.
-selectUnit	Выберите единицу измерения:
-packUnit	Ед. упаковки
-refreshScreen	Кликните здесь чтобы обновить экран
-no_tasks	Задач нет
+selectUnit	Выбрать единицу измерения
+
 
 

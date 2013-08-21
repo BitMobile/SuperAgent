@@ -60,9 +60,6 @@ noNumber	No number
 markUp		MarkUp
 unit		Unit
 baseUnit	Base unit
-selectUnit	Select unit:
-packUnit	Pack unit
-refreshScreen	Click here to refresh screen
-no_tasks	No tasks
+selectUnit	Select unit
 
 

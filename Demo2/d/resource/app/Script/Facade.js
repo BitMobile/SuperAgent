@@ -57,10 +57,15 @@ function GetScheduledVisits(searchText) {
 
 function GetTodayVisit(outlet) {
     var query = new Query();
-    query.AddParameter("Date", DateTime.Now);
+    query.AddParameter("Date", DateTime.Now.Date);
     query.AddParameter("Outlet", outlet.Id);
-    query.Text = "select single(*) from Document.Visit where Outlet==@Outlet && Date==@Date";
-    return query.Execute();
+    query.Text = "select single(*) from Document.Visit where Date.Date == @Date && Outlet==@Outlet";
+    var result = query.Execute();
+    if (result == null)
+        return null;
+    else
+        return result;
+    
 }
 
 
@@ -68,7 +73,7 @@ function CreatePlannedVisitIfNotExists(planVisit, outlet, userId) {
     var query = new Query();
     query.AddParameter("Date", DateTime.Now.Date);
     query.AddParameter("Outlet", outlet.Id);
-    query.Text = "select single(*) from Document.Visit where Outlet==@Outlet && Date==@Date";
+    query.Text = "select single(*) from Document.Visit where Date.Date == @Date && Outlet==@Outlet";
 
     var visit = query.Execute();
     if (visit == null) {
@@ -111,7 +116,11 @@ function GetTasks(outlet) {
     else
         query.Text = "select * from Document.Task where Outlet == @Outlet && PlanDate >= @Date";
 
-    return query.Execute();
+    var result = query.Execute();
+    if (result.Count == 0)
+        return null;
+    else
+        return result;
 }
 
 
@@ -133,15 +142,23 @@ function CreateVisitTaskValueIfNotExists(visit, task) {
 
 
 function GetQuestionsByOutlet(outlet) {
+    var terrioryQuery = new Query;
+    terrioryQuery.AddParameter("Outlet", outlet.Id);
+    terrioryQuery.Text = "select single(*) from Catalog.Territory_Outlets where Outlet==@Outlet";
+    var territory = terrioryQuery.Execute();
+
     var query = new Query();
     query.AddParameter("OutletType", outlet.Type);
-    query.Text = "select single(*) from Document.Questionnaire where OutletType == @OutletType";
+    query.AddParameter("OutletClass", outlet.Class);
+    query.AddParameter("Territory", territory.Ref);
+    query.Text = "select single(*) from Document.Questionnaire_Territories where  RefAsObject.OutletType == @OutletType &&  RefAsObject.OutletClass==@OutletClass && Territory==@Territory";
+    //query.Text = "select distinct(Territory) from Document.Questionnaire_Territories where  RefAsObject.OutletType == @OutletType &&  RefAsObject.OutletClass==@OutletClass && Territory==@Territory";
     var obj = query.Execute();
-    if (obj == null)
+    if (obj.Count = 0)
         return null;
     else {
         var query = new Query();
-        query.AddParameter("Ref", obj.Id);
+        query.AddParameter("Ref", obj.Ref);
         query.Text = "select * from Document.Questionnaire_Questions where Ref == @Ref";
         return query.Execute();
     }

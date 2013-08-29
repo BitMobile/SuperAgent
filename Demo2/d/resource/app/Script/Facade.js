@@ -117,7 +117,7 @@ function GetTasks(outlet) {
         query.Text = "select * from Document.Task where Outlet == @Outlet && PlanDate >= @Date";
 
     var result = query.Execute();
-    if (result.Count == 0)
+    if (result.items.Count() == 0)
         return null;
     else
         return result;
@@ -140,8 +140,7 @@ function CreateVisitTaskValueIfNotExists(visit, task) {
     return taskValue;
 }
 
-
-function GetQuestionsByOutlet(outlet) {
+function GetQuesttionaires(outlet) {
     var terrioryQuery = new Query;
     terrioryQuery.AddParameter("Outlet", outlet.Id);
     terrioryQuery.Text = "select single(*) from Catalog.Territory_Outlets where Outlet==@Outlet";
@@ -152,19 +151,20 @@ function GetQuestionsByOutlet(outlet) {
     query.AddParameter("OutletClass", outlet.Class);
     query.AddParameter("Territory", territory.Ref);
     query.Text = "select single(*) from Document.Questionnaire_Territories where  RefAsObject.OutletType == @OutletType &&  RefAsObject.OutletClass==@OutletClass && Territory==@Territory";
-    //query.Text = "select distinct(Territory) from Document.Questionnaire_Territories where  RefAsObject.OutletType == @OutletType &&  RefAsObject.OutletClass==@OutletClass && Territory==@Territory";
-    var obj = query.Execute();
-    if (obj.Count = 0)
+    //query.Text = "select distinct(Ref) from Document.Questionnaire_Territories where  RefAsObject.OutletType == @OutletType &&  RefAsObject.OutletClass==@OutletClass && Territory==@Territory";
+    return query.Execute();
+}
+
+
+function GetQuestionsByOutlet(questionnaires) {
+    if (questionnaires == null)
         return null;
     else {
-        var query = new Query();
-        query.AddParameter("Ref", obj.Ref);
-        query.Text = "select * from Document.Questionnaire_Questions where Ref == @Ref";
-        return query.Execute();
+        var questions = new Query();
+        questions.AddParameter("Ref", questionnaires.Ref);
+        questions.Text = "select * from Document.Questionnaire_Questions where Ref == @Ref";
+        return questions.Execute();
     }
-
-
-    return query.Execute();
 }
 
 
@@ -195,22 +195,38 @@ function CreateVisitQuestionValueIfNotExists(visit, question, questionValue) {
 }
 
 
-function GetSKUsByOutlet(outlet) {
-    var query = new Query();
-    query.AddParameter("OutletType", outlet.Type);
-    query.Text = "select single(*) from Document.Questionnaire where OutletType == @OutletType";
-    var obj = query.Execute();
-    if (obj == null)
+function GetSKUsByOutlet(questionnaires) {
+    if (questionnaires == null)
         return null;
     else {
         var query = new Query();
-        query.AddParameter("Ref", obj.Id);
+        query.AddParameter("Ref", questionnaires.Ref);
         query.Text = "select * from Document.Questionnaire_SKUs where Ref == @Ref";
         return query.Execute();
     }
 
-
     return query.Execute();
+}
+
+function CheckQuestionExistence(questionnaires, description) {
+    //if (questionnaires == null)
+    //    return null;
+    //else {
+    if (questionnaires != null) {
+        var query = new Query();
+        query.AddParameter("using", true);
+        query.AddParameter("description", description);
+        query.AddParameter("Ref", questionnaires.Ref);
+        query.Text = "select single(*) from Document.Questionnaire_SKUQuestions where Ref == @Ref && SKUQuestionAsObject.Description == @description && UseInQuestionaire == @using";
+        var result = query.Execute();
+        if (result == null)
+            return false;
+        else
+            return true;
+    }
+    else
+        return null;
+    //}
 }
 
 
@@ -231,9 +247,10 @@ function CreateVisitSKUValueIfNotExists(visit, sku, skuValue) {
 
     p.Ref = visit.Id;
     p.SKU = sku.Id;
-    p.Available = false;
+    //p.Available = false;
 
     return p;
+
 }
 
 
@@ -422,10 +439,10 @@ function GetSKUs(searchText, owner) {
     if (owner == null) {
         query = new Query();
         if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Catalog.SKU";
+            query.Text = "select * from Catalog.SKU where Stock!=0";
         }
         else {
-            query.Text = "select * from Catalog.SKU where Description.Contains(@p1)";
+            query.Text = "select * from Catalog.SKU where Description.Contains(@p1) && Stock!=0";
             query.AddParameter("p1", searchText);
         }
     }
@@ -433,10 +450,10 @@ function GetSKUs(searchText, owner) {
         query = new Query();
         query.AddParameter("owner", owner);
         if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Catalog.SKU where Owner==@owner";
+            query.Text = "select * from Catalog.SKU where Owner==@owner  && Stock!=0";
         }
         else {
-            query.Text = "select * from Catalog.SKU where Description.Contains(@p1) && Owner==@owner";
+            query.Text = "select * from Catalog.SKU where Description.Contains(@p1) && Owner==@owner  && Stock!=0";
             query.AddParameter("p1", searchText);
         }
     }

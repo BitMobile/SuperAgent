@@ -4,6 +4,7 @@
   <s:Push Id="outlet" Value="$param1"></s:Push>
   <s:Push Id="visit" Value="$param2"></s:Push>
   <s:Push Id="sku" Value="$param3"></s:Push>
+  <s:Push Id="questionnaires" Value="$param5"></s:Push>
   <s:Push Id="skuValue" Value="$Facade.CreateVisitSKUValueIfNotExists($visit,$sku,$param4)"></s:Push>
 
   <c:VerticalLayout>
@@ -15,62 +16,71 @@
     </c:HorizontalLayout>
 
     <c:ScrollView CssClass="grid">
-
-         <c:HorizontalLayout>
+      <s:Push Id="useInQuestionnaire" Value="$Facade.CheckQuestionExistence($questionnaires, Available)"></s:Push>
+      <s:If Test="$useInQuestionnaire">
+        <c:HorizontalLayout>
           <c:VerticalLayout>
             <c:TextView Text="#available#" CssClass="H1"></c:TextView>
             <c:CheckBox Value="$skuValue.Available" CssClass="H2"></c:CheckBox>
           </c:VerticalLayout>
         </c:HorizontalLayout>
-
-
         <c:HorizontalLine/>
+      </s:If>
 
+      <s:Push Id="useInQuestionnaire" Value="$Facade.CheckQuestionExistence($questionnaires, Facing)"></s:Push>
+      <s:If Test="$useInQuestionnaire">
         <c:HorizontalLayout>
           <c:VerticalLayout>
             <c:TextView Text="#facing#" CssClass="H1"></c:TextView>
             <c:EditText Value="$skuValue.Facing" CssClass="H1" Keyboard="numeric"></c:EditText>
           </c:VerticalLayout>
         </c:HorizontalLayout>
-
-
         <c:HorizontalLine/>
+      </s:If>
 
+      <s:Push Id="useInQuestionnaire" Value="$Facade.CheckQuestionExistence($questionnaires, Stock)"></s:Push>
+      <s:If Test="$useInQuestionnaire">
         <c:HorizontalLayout>
           <c:VerticalLayout>
             <c:TextView Text="#stock#" CssClass="H1"></c:TextView>
             <c:EditText Value="$skuValue.Stock" CssClass="H1" Keyboard="numeric"></c:EditText>
           </c:VerticalLayout>
         </c:HorizontalLayout>
-
         <c:HorizontalLine/>
+      </s:If>
 
+      <s:Push Id="useInQuestionnaire" Value="$Facade.CheckQuestionExistence($questionnaires, Price)"></s:Push>
+      <s:If Test="$useInQuestionnaire">
         <c:HorizontalLayout>
           <c:VerticalLayout>
             <c:TextView Text="#price#" CssClass="H1"></c:TextView>
             <c:EditText Value="$skuValue.Price" CssClass="H1" Keyboard="numeric"></c:EditText>
           </c:VerticalLayout>
         </c:HorizontalLayout>
+        <c:HorizontalLine/>
+      </s:If>
 
-      <c:HorizontalLine/>
-
+      <s:Push Id="useInQuestionnaire" Value="$Facade.CheckQuestionExistence($questionnaires, MarkUp)"></s:Push>
+      <s:If Test="$useInQuestionnaire">
         <c:HorizontalLayout>
           <c:VerticalLayout>
             <c:TextView Text="#markUp#" CssClass="H1"></c:TextView>
             <c:EditText Value="$skuValue.MarkUp" CssClass="H1" Keyboard="numeric"></c:EditText>
           </c:VerticalLayout>
         </c:HorizontalLayout>
-
         <c:HorizontalLine/>
+      </s:If>
 
+      <s:Push Id="useInQuestionnaire" Value="$Facade.CheckQuestionExistence($questionnaires, OutOfStock)"></s:Push>
+      <s:If Test="$useInQuestionnaire">
         <c:HorizontalLayout>
           <c:VerticalLayout>
             <c:TextView Text="#outOfStock#" CssClass="H1"></c:TextView>
             <c:CheckBox Value="$skuValue.OutOfStock" CssClass="H2"></c:CheckBox>
           </c:VerticalLayout>
         </c:HorizontalLayout>
-
         <c:HorizontalLine/>
+      </s:If>
 
     </c:ScrollView>
 

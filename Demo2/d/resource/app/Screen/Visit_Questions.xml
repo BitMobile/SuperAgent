@@ -3,14 +3,16 @@
 
   <s:Push Id="outlet" Value="$param1"></s:Push>
   <s:Push Id="visit" Value="$param2"></s:Push>
-  <s:Push Id="questions" Value="$Facade.GetQuestionsByOutlet($outlet)"></s:Push>
+  
+  <s:Push Id="questionnaires" Value="$Facade.GetQuesttionaires($outlet)"></s:Push>
+  <s:Push Id="questions" Value="$Facade.GetQuestionsByOutlet($questionnaires)"></s:Push>
 
   <c:VerticalLayout>
 
     <c:HorizontalLayout CssClass="topNavigator">
       <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
       <c:TextView Text="#questions#" />
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoForward,$outlet,$visit"/>
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoForward,$outlet,$visit,$questionnaires"/>
     </c:HorizontalLayout>
 
     <c:HorizontalLine/>

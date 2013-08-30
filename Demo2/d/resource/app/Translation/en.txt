@@ -62,7 +62,7 @@ unit		Unit
 baseUnit	Base unit
 selectUnit	Select unit:
 packUnit	Pack unit
-refreshScreen	Click here to refresh screen
+refreshScreen	Refresh screen
 no_tasks	No tasks
 
 

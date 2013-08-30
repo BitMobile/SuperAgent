@@ -62,7 +62,7 @@ unit		Единица изм.
 baseUnit	Баз. единица изм.
 selectUnit	Выберите единицу измерения:
 packUnit	Ед. упаковки
-refreshScreen	Кликните здесь чтобы обновить экран
+refreshScreen	Пересчитать заказ
 no_tasks	Задач нет
 
 

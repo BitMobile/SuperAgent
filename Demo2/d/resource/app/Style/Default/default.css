@@ -214,6 +214,8 @@ Button {
 .grid hl vl CheckBox {
     selected-color:#6f6583;
     background-color:#c9c3d5;
+    width:100%;
+    height:50%;
 }
 
 .grid hl EditText {

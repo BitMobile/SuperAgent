@@ -375,7 +375,7 @@ function GetSKUAmount(orderId, item) {
 
 }
 
-function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit) {
+function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit, multiplier) {
 
     if (orderitem == null) {
 
@@ -389,7 +389,7 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit) {
         return p;
     }
     else {
-        orderitem.Total = (orderitem.Price * (orderitem.Discount / 100 + 1));
+        orderitem.Total = (orderitem.Price * (orderitem.Discount / 100 + 1)*multiplier);
         if (unit != null)
             orderitem.Units = unit.Pack;
 
@@ -398,15 +398,39 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit) {
 
 }
 
-function CalculateValue(orderitem, sku) {
+function GetMultiplier(unit, sku, orderitem) {
 
+    if (unit != null) {
         var query = new Query();
+        query.AddParameter("units", unit.Pack);
         query.AddParameter("ref", sku.Id);
-        query.AddParameter("units", orderitem.Units);
-        query.Text = "select single(*) from Catalog.SKU_Packing where Ref==@ref && Pack==units";
+        query.Text = "select single(*) from Catalog.SKU_Packing where Ref==@ref && Pack==@units";
         var item = query.Execute();
+        return item.Multiplier;
+    }
+    else
+        if (orderitem != null) {
+            var query = new Query();
+            query.AddParameter("units", orderitem.Units);
+            query.AddParameter("ref", sku.Id);
+            query.Text = "select single(*) from Catalog.SKU_Packing where Ref==@ref && Pack==@units";
+            var item = query.Execute();
+            return item.Multiplier;
+        }
+        return 1;
+        //*orderitem.Qty;
+
+}
+
+function CalculateValue(orderitem, multiplier) {
+
+    //var query = new Query();
+    //query.AddParameter("ref", sku.Id);
+    //query.AddParameter("units", orderitem.Units);
+    //query.Text = "select single(*) from Catalog.SKU_Packing where Ref==@ref && Pack==units";
+    //var item = query.Execute();
     
-        return item.Multiplier*orderitem.Qty;
+    return multiplier * orderitem.Qty;
     
 }
 

@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
+
+
+  <c:VerticalLayout>
+
+    <c:HorizontalLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoRollback"/>
+      <c:TextView Text="#orders#" />
+      <c:Button CssClass="btnForward" OnClickAction="Script:Workflow.DoRollback"/>
+    </c:HorizontalLayout>
+
+    <c:HorizontalLine/>
+
+    <s:Push Id ="orders" Value="$Facade.GetOrderList()"></s:Push>
+
+    <c:VerticalLayout CssClass="header">
+      <c:VerticalLayout  CssClass ="grid">
+        <c:HorizontalLayout OnEvent="Forward" OnClickAction="Script:Workflow.DoForward">
+          <c:VerticalLayout>
+            <c:TextView Text="#newOrder#" CssClass="H5"></c:TextView>
+          </c:VerticalLayout>
+          <c:Image/>
+        </c:HorizontalLayout>
+      </c:VerticalLayout>
+    </c:VerticalLayout>
+
+    <c:HorizontalLine/>
+
+    <c:ScrollView CssClass="grid">
+
+      <s:Iterator Id="order" Value="$orders">
+
+        <s:Push Id="statusDescription" Value="$Facade.GetOrderStatus($order)"></s:Push>
+        <s:If Test="$statusDescription == 'Сanceled'">
+          <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$order.Outlet,null,$order">
+            <c:VerticalLayout CssClass="vl2">
+            </c:VerticalLayout>
+            <c:VerticalLayout CssClass="vl3">
+              <c:TextView Text="$order.OutletAsObject.Description" CssClass="H1"></c:TextView>
+              <s:Push Id="checkedNumber" Value ="$Facade.AssignNumberIfNotExist($order)"></s:Push>
+              <s:If Test="$checkedNumber == 'noNumber'">
+                <s:Push Id="checkedNumber" Value="#noNumber#"></s:Push>
+              </s:If>
+              <c:TextView Text="{$checkedNumber}, {$order.Date}" CssClass="H2"></c:TextView>
+            </c:VerticalLayout>
+            <c:Image/>
+          </c:HorizontalLayout>
+          <c:HorizontalLine/>
+        </s:If>
+        <s:Else>
+          <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$order.Outlet,null,$order">
+            <c:VerticalLayout>
+              <c:TextView Text="$order.OutletAsObject.Description" CssClass="H1"></c:TextView>
+              <s:Push Id="checkedNumber" Value ="$Facade.AssignNumberIfNotExist($order)"></s:Push>
+              <s:If Test="$checkedNumber == 'noNumber'">
+                <s:Push Id="checkedNumber" Value="#noNumber#"></s:Push>
+              </s:If>
+              <c:TextView Text="{$checkedNumber}, {$order.Date}" CssClass="H2"></c:TextView>
+            </c:VerticalLayout>
+            <c:Image/>
+          </c:HorizontalLayout>
+          <c:HorizontalLine/>
+        </s:Else>
+
+      </s:Iterator>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>

@@ -57,10 +57,15 @@ function GetScheduledVisits(searchText) {
 
 function GetTodayVisit(outlet) {
     var query = new Query();
-    query.AddParameter("Date", DateTime.Now);
+    query.AddParameter("Date", DateTime.Now.Date);
     query.AddParameter("Outlet", outlet.Id);
-    query.Text = "select single(*) from Document.Visit where Outlet==@Outlet && Date==@Date";
-    return query.Execute();
+    query.Text = "select single(*) from Document.Visit where Date.Date == @Date && Outlet==@Outlet";
+    var result = query.Execute();
+    if (result == null)
+        return null;
+    else
+        return result;
+    
 }
 
 
@@ -68,7 +73,7 @@ function CreatePlannedVisitIfNotExists(planVisit, outlet, userId) {
     var query = new Query();
     query.AddParameter("Date", DateTime.Now.Date);
     query.AddParameter("Outlet", outlet.Id);
-    query.Text = "select single(*) from Document.Visit where Outlet==@Outlet && Date==@Date";
+    query.Text = "select single(*) from Document.Visit where Date.Date == @Date && Outlet==@Outlet";
 
     var visit = query.Execute();
     if (visit == null) {
@@ -111,7 +116,11 @@ function GetTasks(outlet) {
     else
         query.Text = "select * from Document.Task where Outlet == @Outlet && PlanDate >= @Date";
 
-    return query.Execute();
+    var result = query.Execute();
+    if (result.items.Count() == 0)
+        return null;
+    else
+        return result;
 }
 
 
@@ -131,23 +140,31 @@ function CreateVisitTaskValueIfNotExists(visit, task) {
     return taskValue;
 }
 
+function GetQuesttionaires(outlet) {
+    var terrioryQuery = new Query;
+    terrioryQuery.AddParameter("Outlet", outlet.Id);
+    terrioryQuery.Text = "select single(*) from Catalog.Territory_Outlets where Outlet==@Outlet";
+    var territory = terrioryQuery.Execute();
 
-function GetQuestionsByOutlet(outlet) {
     var query = new Query();
     query.AddParameter("OutletType", outlet.Type);
-    query.Text = "select single(*) from Document.Questionnaire where OutletType == @OutletType";
-    var obj = query.Execute();
-    if (obj == null)
+    query.AddParameter("OutletClass", outlet.Class);
+    query.AddParameter("Territory", territory.Ref);
+    query.Text = "select single(*) from Document.Questionnaire_Territories where  RefAsObject.OutletType == @OutletType &&  RefAsObject.OutletClass==@OutletClass && Territory==@Territory";
+    //query.Text = "select distinct(Ref) from Document.Questionnaire_Territories where  RefAsObject.OutletType == @OutletType &&  RefAsObject.OutletClass==@OutletClass && Territory==@Territory";
+    return query.Execute();
+}
+
+
+function GetQuestionsByOutlet(questionnaires) {
+    if (questionnaires == null)
         return null;
     else {
-        var query = new Query();
-        query.AddParameter("Ref", obj.Id);
-        query.Text = "select * from Document.Questionnaire_Questions where Ref == @Ref";
-        return query.Execute();
+        var questions = new Query();
+        questions.AddParameter("Ref", questionnaires.Ref);
+        questions.Text = "select * from Document.Questionnaire_Questions where Ref == @Ref";
+        return questions.Execute();
     }
-
-
-    return query.Execute();
 }
 
 
@@ -178,22 +195,38 @@ function CreateVisitQuestionValueIfNotExists(visit, question, questionValue) {
 }
 
 
-function GetSKUsByOutlet(outlet) {
-    var query = new Query();
-    query.AddParameter("OutletType", outlet.Type);
-    query.Text = "select single(*) from Document.Questionnaire where OutletType == @OutletType";
-    var obj = query.Execute();
-    if (obj == null)
+function GetSKUsByOutlet(questionnaires) {
+    if (questionnaires == null)
         return null;
     else {
         var query = new Query();
-        query.AddParameter("Ref", obj.Id);
+        query.AddParameter("Ref", questionnaires.Ref);
         query.Text = "select * from Document.Questionnaire_SKUs where Ref == @Ref";
         return query.Execute();
     }
 
-
     return query.Execute();
+}
+
+function CheckQuestionExistence(questionnaires, description) {
+    //if (questionnaires == null)
+    //    return null;
+    //else {
+    if (questionnaires != null) {
+        var query = new Query();
+        query.AddParameter("using", true);
+        query.AddParameter("description", description);
+        query.AddParameter("Ref", questionnaires.Ref);
+        query.Text = "select single(*) from Document.Questionnaire_SKUQuestions where Ref == @Ref && SKUQuestionAsObject.Description == @description && UseInQuestionaire == @using";
+        var result = query.Execute();
+        if (result == null)
+            return false;
+        else
+            return true;
+    }
+    else
+        return null;
+    //}
 }
 
 
@@ -214,9 +247,10 @@ function CreateVisitSKUValueIfNotExists(visit, sku, skuValue) {
 
     p.Ref = visit.Id;
     p.SKU = sku.Id;
-    p.Available = false;
+    //p.Available = false;
 
     return p;
+
 }
 
 
@@ -341,7 +375,7 @@ function GetSKUAmount(orderId, item) {
 
 }
 
-function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit) {
+function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit, multiplier) {
 
     if (orderitem == null) {
 
@@ -355,7 +389,7 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit) {
         return p;
     }
     else {
-        orderitem.Total = (orderitem.Price * (orderitem.Discount / 100 + 1));
+        orderitem.Total = (orderitem.Price * (orderitem.Discount / 100 + 1)*multiplier);
         if (unit != null)
             orderitem.Units = unit.Pack;
 
@@ -364,15 +398,39 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit) {
 
 }
 
-function CalculateValue(orderitem, sku) {
+function GetMultiplier(unit, sku, orderitem) {
 
+    if (unit != null) {
         var query = new Query();
+        query.AddParameter("units", unit.Pack);
         query.AddParameter("ref", sku.Id);
-        query.AddParameter("units", orderitem.Units);
-        query.Text = "select single(*) from Catalog.SKU_Packing where Ref==@ref && Pack==units";
+        query.Text = "select single(*) from Catalog.SKU_Packing where Ref==@ref && Pack==@units";
         var item = query.Execute();
+        return item.Multiplier;
+    }
+    else
+        if (orderitem != null) {
+            var query = new Query();
+            query.AddParameter("units", orderitem.Units);
+            query.AddParameter("ref", sku.Id);
+            query.Text = "select single(*) from Catalog.SKU_Packing where Ref==@ref && Pack==@units";
+            var item = query.Execute();
+            return item.Multiplier;
+        }
+        return 1;
+        //*orderitem.Qty;
+
+}
+
+function CalculateValue(orderitem, multiplier) {
+
+    //var query = new Query();
+    //query.AddParameter("ref", sku.Id);
+    //query.AddParameter("units", orderitem.Units);
+    //query.Text = "select single(*) from Catalog.SKU_Packing where Ref==@ref && Pack==units";
+    //var item = query.Execute();
     
-        return item.Multiplier*orderitem.Qty;
+    return multiplier * orderitem.Qty;
     
 }
 
@@ -405,10 +463,10 @@ function GetSKUs(searchText, owner) {
     if (owner == null) {
         query = new Query();
         if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Catalog.SKU";
+            query.Text = "select * from Catalog.SKU where Stock!=0";
         }
         else {
-            query.Text = "select * from Catalog.SKU where Description.Contains(@p1)";
+            query.Text = "select * from Catalog.SKU where Description.Contains(@p1) && Stock!=0";
             query.AddParameter("p1", searchText);
         }
     }
@@ -416,10 +474,10 @@ function GetSKUs(searchText, owner) {
         query = new Query();
         query.AddParameter("owner", owner);
         if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Catalog.SKU where Owner==@owner";
+            query.Text = "select * from Catalog.SKU where Owner==@owner  && Stock!=0";
         }
         else {
-            query.Text = "select * from Catalog.SKU where Description.Contains(@p1) && Owner==@owner";
+            query.Text = "select * from Catalog.SKU where Description.Contains(@p1) && Owner==@owner  && Stock!=0";
             query.AddParameter("p1", searchText);
         }
     }

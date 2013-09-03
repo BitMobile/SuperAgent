@@ -51,7 +51,7 @@ markUp		Наценка
 outOfStock	Наличие на складе
 false		Нет
 true		Да
-done		Отвечен
+done		Заполнен
 pcs			шт.
 orders		Заказы
 newOrder	Создать новый заказ
@@ -63,6 +63,6 @@ baseUnit	Баз. единица изм.
 selectUnit	Выберите единицу измерения:
 logo		logoRu
 packUnit	Ед. упаковки
-refreshScreen	Кликните здесь чтобы обновить экран
-
+refreshScreen	Пересчитать заказ
+no_tasks	Задач нет
 

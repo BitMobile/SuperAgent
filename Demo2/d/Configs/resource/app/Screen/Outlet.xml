@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
+
+  <s:Push Id="outlet" Value="$param1"></s:Push>
+
+  <c:VerticalLayout>
+
+    <c:HorizontalLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
+      <c:TextView Text="#outlet#" />
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoCommit"/>
+    </c:HorizontalLayout>
+
+    <c:HorizontalLine/>
+
+    <c:ScrollView CssClass="grid">
+
+      <c:HorizontalLayout CssClass="headerEdit">
+
+        <c:VerticalLayout CssClass="headerEdit">
+          <c:TextView Text="$outlet.Description" CssClass="H1"></c:TextView>
+          <c:TextView Text="$outlet.Address" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+
+      </c:HorizontalLayout>
+
+      <c:HorizontalLine CssClass ="highlitedLine"/>
+
+      <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,EditParameter,$outlet,Class">
+
+        <c:VerticalLayout>
+          <c:TextView Text="$outlet.ClassAsObject.Description" CssClass="H1"></c:TextView>
+          <c:TextView Text="#outlet_class#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+        <c:Image/>
+
+      </c:HorizontalLayout>
+
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,EditParameter,$outlet,Type">
+
+        <c:VerticalLayout>
+          <c:TextView Text="$outlet.TypeAsObject.Description" CssClass="H1"></c:TextView>
+          <c:TextView Text="#outlet_type#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+        <c:Image/>
+
+      </c:HorizontalLayout>
+
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,EditParameter,$outlet,Distributor">
+
+        <c:VerticalLayout>
+          <c:TextView Text="$outlet.DistributorAsObject.Description" CssClass="H1"></c:TextView>
+          <c:TextView Text="#distributor#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+        <c:Image/>
+
+      </c:HorizontalLayout>
+
+      <c:HorizontalLine/>
+
+      <s:Iterator Id="parameter" Value="$Facade.GetOutletParameters()">
+
+        <s:Push Id="parameterValue" Value="$Facade.GetOutletParameterValue($outlet,$parameter)"/>
+
+        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,EditAddParameter,$outlet,$parameter,$parameterValue">
+
+          <c:VerticalLayout>
+            <s:If Test="$parameterValue!=null">
+              <s:If Test="$parameter.DataTypeAsObject.Description=='Boolean'">
+                <s:If Test="$parameterValue.Value == 'False'">
+                  <c:TextView CssClass="H1" Text="#true#"/>
+                </s:If>
+                <s:Else>
+                  <c:TextView CssClass="H1" Text="#false#"/>
+                </s:Else>
+              </s:If>
+              <s:Else>
+                <c:TextView CssClass="H1" Text="$parameterValue.Value"/>
+              </s:Else>
+            </s:If>
+            <s:Else>
+              <c:TextView Text="?" CssClass="H1"></c:TextView>
+            </s:Else>
+            <c:TextView Text="$parameter.Description" CssClass="H2"></c:TextView>
+          </c:VerticalLayout>
+          <c:Image/>
+
+        </c:HorizontalLayout>
+
+        <c:HorizontalLine/>
+
+      </s:Iterator>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>
+
+
+

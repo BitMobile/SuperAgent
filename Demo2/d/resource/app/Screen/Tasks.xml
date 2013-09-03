@@ -17,25 +17,36 @@
 
     <c:ScrollView CssClass="grid">
 
-      <s:Iterator Id="task" Value="$tasks">
 
+      <s:If Test="$tasks==null">
 
-        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$task,$visit,$outlet">
-
+        <c:HorizontalLayout>
           <c:VerticalLayout>
-            <c:TextView Text="$task.TextTask" CssClass="H1"></c:TextView>
-            <c:HorizontalLayout>
-              <c:TextView Text="$task.OutletAsObject.Description" CssClass="H2"></c:TextView>
-              <c:TextView Text="$task.PlanDate.DateString" CssClass="H2"></c:TextView>
-            </c:HorizontalLayout>
+            <c:TextView Text="#no_tasks#" CssClass="H1"></c:TextView>
           </c:VerticalLayout>
-
-          <c:Image/>
-
         </c:HorizontalLayout>
 
-        <c:HorizontalLine/>
-      </s:Iterator>
+      </s:If>
+
+      <s:Else>
+
+        <s:Iterator Id="task" Value="$tasks">
+
+          <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$task,$visit,$outlet">
+            <c:VerticalLayout>
+              <c:TextView Text="$task.TextTask" CssClass="H1"></c:TextView>
+              <c:HorizontalLayout>
+                <c:TextView Text="$task.OutletAsObject.Description" CssClass="H2"></c:TextView>
+                <c:TextView Text="$task.PlanDate.DateString" CssClass="H2"></c:TextView>
+              </c:HorizontalLayout>
+            </c:VerticalLayout>
+            <c:Image/>
+          </c:HorizontalLayout>
+          <c:HorizontalLine/>
+
+        </s:Iterator>
+      </s:Else>
+
 
     </c:ScrollView>
 

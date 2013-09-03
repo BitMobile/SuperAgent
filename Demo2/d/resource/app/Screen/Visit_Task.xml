@@ -33,7 +33,7 @@
       <c:HorizontalLayout>
 
         <c:VerticalLayout>
-          <c:EditText Value="$taskValue.Result" CssClass="H1" AutoFocus="True"></c:EditText>
+          <c:CheckBox Value="$taskValue.Result" CssClass="H1"></c:CheckBox>
           <c:TextView Text="#result#" CssClass="H2"></c:TextView>
         </c:VerticalLayout>
 

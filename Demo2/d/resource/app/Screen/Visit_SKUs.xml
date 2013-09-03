@@ -3,7 +3,8 @@
 
   <s:Push Id="outlet" Value="$param1"></s:Push>
   <s:Push Id="visit" Value="$param2"></s:Push>
-  <s:Push Id="questions" Value="$Facade.GetSKUsByOutlet($outlet)"></s:Push>
+  <s:Push Id="questionnaires" Value="$param3"></s:Push>
+  <s:Push Id="questions" Value="$Facade.GetSKUsByOutlet($questionnaires)"></s:Push>
 
   <c:VerticalLayout>
 
@@ -33,7 +34,7 @@
           <s:Push Id="sku" Value="$item.SKUAsObject"/>
           <s:Push Id="skuValue" Value="$Facade.GetVisitSKUValue($visit,$sku)"/>
 
-          <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Edit,$outlet,$visit,$sku,$skuValue">
+            <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Edit,$outlet,$visit,$sku,$skuValue,$questionnaires">
 
             <c:VerticalLayout>
               <s:If Test="$skuValue!=null">

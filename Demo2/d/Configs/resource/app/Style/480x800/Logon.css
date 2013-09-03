@@ -1,0 +1,51 @@
+﻿vl vl {
+    margin-left: 5%;
+    margin-top: 25px;
+    width: 90%;
+    height:250px;
+    background-color: #2a3b3c;
+    border-radius:47px;
+}
+
+vl vl EditText {
+    margin-left:10%;
+    margin-top:33px;
+    width:80%;
+    height:41px;
+    background-color: #ffffff;
+    color:#000000;
+    border-radius:13px;
+}
+
+vl vl hl {
+    margin-top:25px;
+    margin-left:10%;
+    width:80%;
+    height:50px;
+}
+
+vl vl hl Button {
+    margin-left:7%;
+    width:40%;
+    height:100%;
+    background-color:#8a9d9e;
+    color:#ffffff; 
+    border-width:1px;
+    border-color:#283636;
+    border-radius:13px;
+}
+
+.status {
+    height:13px;
+}
+
+.status TextView {
+    font:13px Arial;
+    height:100%;
+    width:100%;
+}
+
+.logo {
+    background-image: url(logo_firstbit2.png);
+    height:142px;
+}

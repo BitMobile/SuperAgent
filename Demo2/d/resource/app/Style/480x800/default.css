@@ -23,16 +23,19 @@ hl {
     height: 83px;
 }
 
+dl {
+    width: 100%;
+    height: 83px;
+}
+
+    dl hl {
+        width: 100%;
+        height: 100%;
+    }
+
 TextView {
     background-color: none;
     color: #444444;
-}
-
-Button {
-    background-color: #808080;
-    color: #fff;
-    width: 150px;
-    height: 42px;
 }
 
 .H1 {
@@ -59,18 +62,22 @@ Button {
 
 .btnBack {
     background-image: url(button_left.png);
-    height: 60px;
-    width: 60px;
-    margin-top: 10px;
-    margin-left: 10px;
+    height: auto;    
+    margin-top: 10%;
+    margin-left: 2%;
+    margin-bottom: 10%;
+    margin-right: 2%;
+    dock-align: left;
 }
 
 .btnForward {
     background-image: url(button_right.png);
-    height: 60px;
-    width: 60px;
-    margin-top: 10px;
-    margin-left: 10px;
+    height: auto;    
+    margin-top: 10%;
+    margin-left: 2%;
+    margin-bottom: 10%;
+    margin-right: 2%;
+    dock-align: right;
 }
 
 .bthRefresh {
@@ -81,18 +88,18 @@ Button {
 }
 
 .topNavigator {
-    height: 80px;
+    height: 10%;
     background-color: #282f5a;
 }
 
     .topNavigator TextView {
-        width: 320px;
-        height: 60px;
-        margin-top: 10px;
-        margin-left: 10px;
+        width: auto;
+        height: auto;
+        margin-top: 30%;        
+        margin-bottom: 30%;        
         text-align: center;
         color: #FFF;
-        font: 36px arial;
+        font: 40% arial;
     }
 
 .header {

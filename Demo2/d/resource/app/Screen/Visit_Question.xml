@@ -9,25 +9,25 @@
 
   <c:VerticalLayout>
 
-    <c:HorizontalLayout CssClass="topNavigator">
+    <c:DockLayout CssClass="topNavigator">
       <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
-      <c:TextView Text="#answer#" />
       <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoBack"/>
-    </c:HorizontalLayout>
+      <c:TextView Text="#answer#" />
+    </c:DockLayout>
 
     <c:ScrollView CssClass="grid">
 
-        <c:HorizontalLayout>
-          <c:VerticalLayout>
-            <c:TextView Text="$question.Description" CssClass="H1"></c:TextView>
-            <c:TextView Text="#typeanswer#" CssClass="H2"></c:TextView>
-          </c:VerticalLayout>
-        </c:HorizontalLayout>
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <c:TextView Text="$question.Description" CssClass="H1"></c:TextView>
+          <c:TextView Text="#typeanswer#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
 
-        <c:HorizontalLine/>
+      <c:HorizontalLine/>
 
 
-      
+
       <c:HorizontalLayout>
         <s:If Test="$question.AnswerTypeAsObject.Description=='Boolean'">
           <c:CheckBox Value="$questionValue.Answer" CssClass="H1"></c:CheckBox>

@@ -6,11 +6,11 @@
 
   <c:VerticalLayout>
 
-    <c:HorizontalLayout CssClass="topNavigator">
+    <c:DockLayout CssClass="topNavigator">
       <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoRollback"/>
-      <c:TextView Text="#outlets#" />
       <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoBack"/>
-    </c:HorizontalLayout>
+      <c:TextView Text="#outlets#" />
+    </c:DockLayout>
 
     <c:HorizontalLine/>
 
@@ -28,21 +28,21 @@
 
     <c:ScrollView CssClass="grid">
 
-        <s:Iterator Id="outlet" Value="$outlets">
+      <s:Iterator Id="outlet" Value="$outlets">
 
-          <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$outlet">
+        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$outlet">
 
-            <c:VerticalLayout>
-              <c:TextView Text="$outlet.Description" CssClass="H1"></c:TextView>
-              <c:TextView Text="$outlet.Address" CssClass="H2"></c:TextView>
-            </c:VerticalLayout>
+          <c:VerticalLayout>
+            <c:TextView Text="$outlet.Description" CssClass="H1"></c:TextView>
+            <c:TextView Text="$outlet.Address" CssClass="H2"></c:TextView>
+          </c:VerticalLayout>
 
-            <c:Image/>
+          <c:Image/>
 
-          </c:HorizontalLayout>
+        </c:HorizontalLayout>
 
-          <c:HorizontalLine/>
-        </s:Iterator>
+        <c:HorizontalLine/>
+      </s:Iterator>
 
     </c:ScrollView>
 

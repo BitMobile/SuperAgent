@@ -5,21 +5,21 @@
 
   <c:VerticalLayout>
 
-    <c:HorizontalLayout CssClass="topNavigator">
+    <c:DockLayout CssClass="topNavigator">
       <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
-      <c:TextView Text="#commentary#" />
       <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoCommit"/>
-    </c:HorizontalLayout>
+      <c:TextView Text="#commentary#" />
+    </c:DockLayout>
 
     <c:ScrollView CssClass="grid">
 
-        <c:HorizontalLayout>
-          <c:VerticalLayout>
-		<c:TextView Text="#insert_text#" CssClass="H2"></c:TextView>
-		<c:HorizontalLine/>
-		<c:EditText Value="$order.Commentary" CssClass="H1" AutoFocus="True"></c:EditText>
-          </c:VerticalLayout>          
-        </c:HorizontalLayout>
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <c:TextView Text="#insert_text#" CssClass="H2"></c:TextView>
+          <c:HorizontalLine/>
+          <c:EditText Value="$order.Commentary" CssClass="H1" AutoFocus="True"></c:EditText>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
 
     </c:ScrollView>
 

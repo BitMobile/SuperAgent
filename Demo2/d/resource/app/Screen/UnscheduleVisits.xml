@@ -5,11 +5,11 @@
 
   <c:VerticalLayout>
 
-    <c:HorizontalLayout CssClass="topNavigator">
+    <c:DockLayout CssClass="topNavigator">
       <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Back"/>
-      <c:TextView Text="#visit#" />
       <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Back"/>
-    </c:HorizontalLayout>
+      <c:TextView Text="#visit#" />
+    </c:DockLayout>
 
     <c:HorizontalLine/>
 
@@ -27,21 +27,21 @@
 
     <c:ScrollView  CssClass="grid">
 
-        <s:Iterator Id="outlet" Value="$outlets">
+      <s:Iterator Id="outlet" Value="$outlets">
 
-          <c:HorizontalLayout OnClickAction="OpenScreen:UnscheduleVisit.xml,$outlet">
+        <c:HorizontalLayout OnClickAction="OpenScreen:UnscheduleVisit.xml,$outlet">
 
-            <c:VerticalLayout>
-              <c:TextView Text="$outlet.Description" CssClass="H1"></c:TextView>
-              <c:TextView Text="$outlet.Address" CssClass="H2"></c:TextView>
-            </c:VerticalLayout>
+          <c:VerticalLayout>
+            <c:TextView Text="$outlet.Description" CssClass="H1"></c:TextView>
+            <c:TextView Text="$outlet.Address" CssClass="H2"></c:TextView>
+          </c:VerticalLayout>
 
-            <c:Image/>
+          <c:Image/>
 
-          </c:HorizontalLayout>
+        </c:HorizontalLayout>
 
-          <c:HorizontalLine/>
-        </s:Iterator>
+        <c:HorizontalLine/>
+      </s:Iterator>
 
     </c:ScrollView>
 

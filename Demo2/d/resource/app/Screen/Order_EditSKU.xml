@@ -11,11 +11,11 @@
 
   <c:VerticalLayout>
 
-    <c:HorizontalLayout CssClass="topNavigator">
+    <c:DockLayout CssClass="topNavigator">
       <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
-      <c:TextView Text="#edit#" />
       <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Forward:$order.OutletAsObject"/>
-    </c:HorizontalLayout>
+      <c:TextView Text="#edit#" />
+    </c:DockLayout>
 
     <c:ScrollView CssClass="grid">
 

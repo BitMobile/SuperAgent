@@ -4,11 +4,11 @@
 
   <c:VerticalLayout>
 
-    <c:HorizontalLayout CssClass="topNavigator">
+    <c:DockLayout CssClass="topNavigator">
       <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoRollback"/>
-      <c:TextView Text="#orders#" />
       <c:Button CssClass="btnForward" OnClickAction="Script:Workflow.DoRollback"/>
-    </c:HorizontalLayout>
+      <c:TextView Text="#orders#" />
+    </c:DockLayout>
 
     <c:HorizontalLine/>
 

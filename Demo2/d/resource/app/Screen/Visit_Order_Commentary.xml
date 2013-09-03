@@ -5,11 +5,11 @@
 
   <c:VerticalLayout>
 
-    <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
-      <c:TextView Text="#commentary#" />
+    <c:DockLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>     
       <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Forward:$workflow.visit"/>
-    </c:HorizontalLayout>
+      <c:TextView Text="#commentary#" />
+    </c:DockLayout>
 
     <c:ScrollView CssClass="grid">
 

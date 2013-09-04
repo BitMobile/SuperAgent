@@ -508,5 +508,70 @@ function checkSKUGroup(group, userId) {
 }
 
 
-//-------------------------------Stocks--------------------
+//-------------------------------Receivables--------------------
+
+function GetReceivables(outletId) {
+   // if (encashmentObj == null) {
+        var receivables = new Query;
+        receivables.AddParameter("outletRef", outletId);
+        receivables.Text = "select * from Document.AccountReceivable_ReceivableDocuments where RefAsObject.Outlet == @outletRef";
+        return receivables.Execute();
+    //}
+    //else {
+    //    var encashmentitems = new Query;
+    //    encashmentitems.AddParameter("encRef", encashmentObj.Id);
+    //    encashmentitems.Text = "select * from Document.Encashment_ReceivableDocuments where Ref == @encRef";
+    //    return encashmentitems.Execute();
+    //}
+}
+
+function CreateEncashmentIfNotExist(visit) {
+    //visit = DB.Create("Document.Visit");
+    //visit.Plan = planVisit.Id;
+    //visit.Outlet = outlet.Id;
+    //visit.SR = userId;
+    //visit.Date = DateTime.Now;
+    //visit.StartTime = DateTime.Now;
+    var query = new Query();
+    query.AddParameter("visitRef", visit.Id);
+    query.Text = "select single(*) from Document.Encashment where Visit == @visitRef";
+    var encashment = query.Execute();
+
+    if (encashment == null) {
+        encashment = DB.Create("Document.Encashment");
+        encashment.Visit = visit.Id;
+        encashment.Date = DateTime.Now;
+    }
+    return encashment;
+}
+
+function CreateEncashmentItemIfNotExist(encashment, receivableDoc) {
+    var query = new Query;
+    query.AddParameter("docName", receivableDoc.DocumentName);
+    query.AddParameter("docRef", encashment.Id);
+    query.Text = "select single(*) from Document.Encashment_ReceivableDocuments where Ref == @docRef && DocumentName == @docName";
+    var encItem = query.Execute();
+
+    if (encItem == null) {
+        encItem = DB.Create("Document.Encashment_ReceivableDocuments");
+        encItem.Ref = encashment.Id;
+        encItem.DocumentName = receivableDoc.DocumentName;
+        encItem.EncashmentSum = 0;
+    }
+    return encItem;
+}
+
+function GetEncashmentSum(docName, encashment) {
+    if (encashment != null) {
+        var query = new Query;
+        query.AddParameter("encId", encashment.Id);
+        query.AddParameter("docName", docName);
+        query.Text = "select single(*) from Document.Encashment_ReceivableDocuments where Ref == @encId && DocumentName == @docName";
+        return query.Execute();
+    }
+    else
+        return null;
+}
+
+
 

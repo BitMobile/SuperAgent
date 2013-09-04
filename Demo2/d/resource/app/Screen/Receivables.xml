@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+
+  <s:Push Id="visit" Value="$param1"/>
+  <s:Push Id="encashment" Value="$workflow.encashment"></s:Push>
+  <s:Push Id="receivables" Value="$Facade.GetReceivables($visit.Outlet)"></s:Push>
+
+  <c:VerticalLayout>
+
+    <c:HorizontalLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
+      <c:TextView Text="#receivables#" />
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Forward:$visit"/>
+    </c:HorizontalLayout>
+    <c:HorizontalLine/>
+
+    <c:ScrollView CssClass="grid">
+
+      <s:Iterator Id="receivableDoc" Value="$receivables">
+
+        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$receivableDoc,$visit">
+          <c:VerticalLayout>
+            <c:TextView Text="$receivableDoc.DocumentName" CssClass="H1"></c:TextView>
+            <c:HorizontalLayout >
+              <s:Push Id="encItem" Value ="$Facade.GetEncashmentSum($receivableDoc.DocumentName, $workflow.encashment)"></s:Push>
+              <s:If Test="$encItem != null">
+                <c:TextView Text="#encashmentSum#: {$encItem.EncashmentSum}" CssClass="H2"></c:TextView>
+              </s:If>
+              <s:Else>
+                <c:TextView Text="#documentSum#: {$receivableDoc.DocumentSum}" CssClass="H2"></c:TextView>
+              </s:Else>
+            </c:HorizontalLayout>
+          </c:VerticalLayout>
+          <c:Image/>
+        </c:HorizontalLayout>
+
+        <c:HorizontalLine/>
+      </s:Iterator>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>

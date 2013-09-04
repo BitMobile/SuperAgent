@@ -19,10 +19,10 @@
 
     <c:HorizontalLayout CssClass="search">
 
-      <c:HorizontalLayout >
+      <c:DockLayout >
         <c:Image />
         <c:EditText Id="edtSearch" Text="$search"></c:EditText>
-      </c:HorizontalLayout>
+      </c:DockLayout>
       <c:Button Text="#search#" OnClickAction="RefreshScreen:$edtSearch.Text"></c:Button>
 
     </c:HorizontalLayout>

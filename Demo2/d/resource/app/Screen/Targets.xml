@@ -13,10 +13,10 @@
 
     <c:HorizontalLayout CssClass="search">
 
-      <c:HorizontalLayout >
+      <c:DockLayout >
         <c:Image />
         <c:EditText></c:EditText>
-      </c:HorizontalLayout>
+      </c:DockLayout>
       <c:Button Text="#search#"></c:Button>
 
     </c:HorizontalLayout>

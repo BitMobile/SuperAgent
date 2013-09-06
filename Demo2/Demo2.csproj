@@ -150,6 +150,9 @@
     <Content Include="d\resource\app\Screen\Encashment.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="d\resource\app\Screen\EncashmentSpread.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="d\resource\app\Script\DB.js" />
     <Content Include="d\resource\app\Script\Facade.js" />
     <Content Include="d\resource\app\Script\Workflow.js" />

@@ -2,8 +2,10 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
 
   <s:Push Id="visit" Value="$param1"/>
-  <s:Push Id="encashment" Value="$workflow.encashment"></s:Push>
   <s:Push Id="receivables" Value="$Facade.GetReceivables($visit.Outlet)"></s:Push>
+  <s:Push Id="DoSpread" Value="$param2"/>
+  <s:Push Id="encashment" Value="$workflow.encashment"></s:Push>
+
 
   <c:VerticalLayout>
 
@@ -14,17 +16,46 @@
     </c:HorizontalLayout>
     <c:HorizontalLine/>
 
+    <c:VerticalLayout CssClass="header">
+      <c:VerticalLayout  CssClass ="grid">
+        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,GoSpread">
+          <c:VerticalLayout CssClass="vl4">
+            <s:Push Id="receivableAmount" Value="$Facade.GetAmount($receivables)"></s:Push>
+            <c:TextView Text="$receivableAmount" CssClass="H1"></c:TextView>
+            <c:TextView Text="#receivableAmount#" CssClass="H2"></c:TextView>
+          </c:VerticalLayout>
+          <c:VerticalLayout CssClass="vl4">
+            <s:Push Id="encashmentAmount" Value="$workflow.encashment.EncashmentAmount"></s:Push>
+            <s:If Test="$encashment==null">
+              <s:Push Id="encashmentAmount" Value="$Facade.ToFloat(0)"></s:Push>
+            </s:If>
+            <c:TextView Text="$encashmentAmount" CssClass="H1"></c:TextView>
+            <c:TextView Text="#encashmentAmount#" CssClass="H2"></c:TextView>
+          </c:VerticalLayout>
+          <c:Image/>
+        </c:HorizontalLayout>
+      </c:VerticalLayout>
+    </c:VerticalLayout>
+    <c:HorizontalLine/>
+
     <c:ScrollView CssClass="grid">
 
+      <s:Push Id="SumToSpread" Value="$Facade.ToFloat($encashmentAmount)"></s:Push>
       <s:Iterator Id="receivableDoc" Value="$receivables">
 
         <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$receivableDoc,$visit">
           <c:VerticalLayout>
             <c:TextView Text="$receivableDoc.DocumentName" CssClass="H1"></c:TextView>
             <c:HorizontalLayout >
-              <s:Push Id="encItem" Value ="$Facade.GetEncashmentSum($receivableDoc.DocumentName, $workflow.encashment)"></s:Push>
+              <s:Push Id="encItem" Value ="$Facade.GetEncashmentItem($receivableDoc.DocumentName, $encashment)"></s:Push>
+              <s:Push Id="zero" Value = "$Facade.ToFloat(0)"></s:Push>
+              <s:Push Id="SumToSpread" Value="$Facade.ToFloat($SumToSpread)"></s:Push>
+              <s:If Test="$SumToSpread != $zero">
+                <s:Push Id="encItem" Value="$Facade.SpreadOnItem($encItem,$SumToSpread,$encashment,$receivableDoc.DocumentName)"></s:Push>
+              </s:If>
               <s:If Test="$encItem != null">
                 <c:TextView Text="#encashmentSum#: {$encItem.EncashmentSum}" CssClass="H2"></c:TextView>
+                <s:Push Id="SumToSpread" Value="$Facade.GetDifference($SumToSpread,$encItem.EncashmentSum)"></s:Push>
               </s:If>
               <s:Else>
                 <c:TextView Text="#documentSum#: {$receivableDoc.DocumentSum}" CssClass="H2"></c:TextView>

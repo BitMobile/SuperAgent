@@ -3,16 +3,15 @@
 
   <s:Push Id="receivableDoc" Value="$param1"></s:Push>
   <s:Push Id="visit" Value="$param2"></s:Push>
-  <s:Push Id="encashment" Value="$Facade.CreateEncashmentIfNotExist($visit)"></s:Push>
-  <s:Push Id="workflow.encashment" Value="$encashment"></s:Push>
-  <s:Push Id="encasmentItem" Value="$Facade.CreateEncashmentItemIfNotExist($encashment, $receivableDoc)"></s:Push>
+  <s:Push Id="workflow.encashment" Value="$Facade.CreateEncashmentIfNotExist($visit)"></s:Push>
+  <s:Push Id="encasmentItem" Value="$Facade.CreateEncashmentItemIfNotExist($workflow.encashment, $receivableDoc)"></s:Push>
 
   <c:VerticalLayout>
 
     <c:HorizontalLayout CssClass="topNavigator">
       <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
       <c:TextView Text="#encashment#" />
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoBack"/>
+      <c:Button CssClass="btnForward" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
     </c:HorizontalLayout>
 
     <c:HorizontalLine/>
@@ -37,7 +36,7 @@
 
       <c:HorizontalLayout>
         <c:VerticalLayout>
-          <c:EditText Value="$encasmentItem.EncashmentSum" CssClass="H1" Keyboard="numeric"></c:EditText>
+          <c:EditText Value="$encasmentItem.EncashmentSum" CssClass="H1" Keyboard="numeric" AutoFocus="True"></c:EditText>
           <c:TextView Text="#sum#" CssClass="H2"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>

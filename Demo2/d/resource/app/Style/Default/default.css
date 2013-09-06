@@ -105,20 +105,6 @@ Button {
     background-color: #dbd7e1;
 }
 
-.yellowVL{
-    height: 61px;
-    background-color: #fef7ac;
-}
-
-.greenVL{
-    height: 61px;
-    background-color: #acfeb8;
-}
-
-.greyVL{
-    height: 61px;
-    background-color: #e0e0e0;
-}
 
 .grid headerEdit {
     height: 61px;
@@ -175,6 +161,11 @@ Button {
     margin-top:5px;
 }
 
+.grid hl vl4 {
+    width:45%;
+    height:56px;
+    margin-top:5px;
+}
 
 .grid hl TextView {
     width:100%;
@@ -197,8 +188,7 @@ Button {
     margin-top: 5px;
     padding-left: 10px;
 }
-
-
+ 
 .hl3 vl {
     width: 30%;
     height: 56px;

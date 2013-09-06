@@ -117,7 +117,7 @@ function GetTasks(outlet) {
         query.Text = "select * from Document.Task where Outlet == @Outlet && PlanDate >= @Date";
 
     var result = query.Execute();
-    if (result.items.Count() == 0)
+    if (result.items.Count == 0)
         return null;
     else
         return result;

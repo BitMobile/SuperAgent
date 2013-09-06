@@ -42,24 +42,29 @@ Button {
 }
 
 .H1 {
-    font: 40% Arial;
+    font: 60% Arial;
 }
 
 .H2 {
-    font: 20% Arial;
+    font: 40% Arial;
     color: #b2749b;
 }
 
 .H3 {
-    font: 20% Arial-BoldMT;
+    font: 40% Arial-BoldMT;
 }
 
 .H4 {
-    font: 20% Arial-BoldMT;
+    font: 40% Arial-BoldMT;
 }
 
 .H5 {
-    font: 40% Arial;
+    font: 60% Arial;
+    color: #b2749b;
+}
+
+.H6 {
+    font: 20% Arial;
     color: #b2749b;
 }
 
@@ -95,7 +100,7 @@ Button {
         margin-bottom: 20%;
         text-align: center;
         color: #FFF;
-        font: 40% arial;
+        font: 60% arial;
     }
 
 .grid headerEdit {
@@ -125,8 +130,8 @@ Button {
 }
 
 .grid hl img {
-    height: 40%;
-    margin-top: 30%;
+    height: 30%;
+    margin-top: 35%;
     background-image: url(icon_more.png);
 }
 
@@ -209,16 +214,20 @@ Button {
 .hl2 vl {
     width: 40%;
     height: 90%;
-    margin-top: 5%;
+    margin-top: 0%;
     padding-left: 5%;
+    padding-top: 5%;
 }
 
-.hl3 vl {
-    width: 30%;
-    height: 90%;
-    margin-top: 5%;
-    padding-left: 5%;
-}
+    .hl2 vl EditText {
+        width: 90%;
+        border-style: solid;
+        border-color: #f00;
+        border-width: 1px;
+        border-radius: 5px;
+        padding-left: 5%;
+    }
+
 
 .search {
     height: 10%;
@@ -249,13 +258,14 @@ Button {
             width: auto;
             height: auto;
             margin-top: 10%;
-            margin-right: 2%;
+            margin-right: 5%;
             padding-left: 5%;
             padding-top: 5%;
             background-color: #ffffff;
             color: #8b7498;
             border-style: none;
             dock-align: right;
+            font: 80% arial;
         }
 
     .search Button {

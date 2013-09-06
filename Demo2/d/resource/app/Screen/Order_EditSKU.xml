@@ -67,7 +67,7 @@
       <c:HorizontalLine/>
 
       <c:HorizontalLayout CssClass="headerEdit">
-        <c:TextView Text="#selectUnit#" CssClass="H2"></c:TextView>
+        <c:TextView Text="#selectUnit#" CssClass="H6"></c:TextView>
       </c:HorizontalLayout>
       <c:HorizontalLine CssClass ="highlitedLine"/>
 

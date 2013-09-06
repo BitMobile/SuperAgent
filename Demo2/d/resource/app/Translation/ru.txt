@@ -7,7 +7,7 @@ outlets		Магазины
 targets		Цели
 target		Цель
 settings	Настройки
-sync		Синхронизация
+sync		Обновить
 search		Поиск
 outlet		Торговая точка
 outlet_class	Класс торговой точки

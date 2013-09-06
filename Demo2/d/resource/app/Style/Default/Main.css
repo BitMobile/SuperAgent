@@ -1,33 +1,49 @@
 ﻿vl hl {
-    height: 96px;
-    margin-top:3px;
+    width: 90%;
+    margin-left: 4%;
+    margin-top: 5%;
 }
 
-vl hl Button {
-    width:96px;
-    height:96px;
-    margin-left:8px;
-    background-color:#fff;
+.logoEn {
+    background-image: url(LogoEn.png);
 }
 
-.caption {
-    height:16px;
-}
-
-.caption TextView {
-    width:33%;
-    height:100%;
-    text-align:center;
-    font:14px arial;
+.logoRu {
+    background-image: url(LogoRu.png);
 }
 
 Indicator {
-    width:30px;
-    height:30px;
-    margin-left:10px;
-    margin-top:10px;
-    color:#8a9d9e;
+    height: 90%;
+    margin-left: 5%;
+    margin-top: 5%;
+    color: #8a9d9e;
 }
+
+.menu {
+    height: 100%;
+    width: 100%;
+    margin-left: 1%;
+    margin-top: 1%;
+}
+
+    .menu vl {
+        width: 30%;
+        height: 100%;
+        margin-left: 2%;
+        margin-top: 1%;
+    }
+
+        .menu vl Button {
+            width: 100%;
+            background-color: #fff;
+        }
+
+        .menu vl TextView {
+            width: 100%;
+            height: 10%;
+            text-align: center;
+            font: 30% arial;
+        }
 
 .btnTodo {
     background-image: url(todo.png);
@@ -63,28 +79,7 @@ Indicator {
 
 .btnSync {
     background-image: url(sync.png);
-}
-
-.status {
-    height:8px;
-}
-
-.status TextView {
-    font:8px Arial;
-    height:100%;
-    width:100%;
-}
-
-.logoEn {
-    background-image: url(LogoEn.png);
-    height:85px;
-}
-
-.logoRu {
-    background-image: url(LogoRu.png);
-    height:85px;
-}
-
-.separatorOfLogo {
-    height: 1px;
+    width: 100%;
+    margin-left: 0%;
+    margin-top: 0%;
 }

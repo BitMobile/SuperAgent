@@ -16,14 +16,6 @@ function GetLookupList(entity, attribute) {
     return query.Execute();
 }
 
-function GetByGuid(entityType, entityName, guid) {
-    var query = new Query();
-    query.AddParameter("Guid", guid);
-    query.Text = String.Format("select single(*) from {0}.{1} where Id==@Guid", entityType, entityName);
-    return query.Execute();
-}
-
-
 function CreateOutletParameterValueIfNotExists(outlet, parameter, parameterValue) {
     if (parameterValue != null)
         return parameterValue;
@@ -596,11 +588,15 @@ function GetAmount(receivables) {
     return amount;
 }
 
-function SpreadOnItem(encItem, sumToSpread, encashment, docName) {
+function SpreadOnItem(encItem, sumToSpread, encashment, receivableDoc) {
+    if (sumToSpread > receivableDoc.DocumentSum) {
+        sumToSpread = receivableDoc.DocumentSum;
+    }
+
     if (encItem == null) {
         encItem = DB.Create("Document.Encashment_EncashmentDocuments");
         encItem.Ref = encashment.Id;
-        encItem.DocumentName = docName;
+        encItem.DocumentName = receivableDoc.DocumentName;
         encItem.EncashmentSum = sumToSpread;
     }
     else {
@@ -609,68 +605,13 @@ function SpreadOnItem(encItem, sumToSpread, encashment, docName) {
     return encItem;
 }
 
-//function SrpeadOnDocs(encashment, receivables) {
-//    var sumToSpread = encashment.EncashmentAmount;
-//    for (var i in receivables) {
-//        //var query = new Query;
-//        //query.AddParameter("encId", encashment.Id);
-//        //query.AddParameter("docName", i);
-//        //query.Text = "select single(*) from Document.Encashment_EncashmentDocuments where Ref == @encId && DocumentName == @docName";
-//        //encItem = query.Execute();
+function ClearIfZeroSum(item, sumToSpread) {
+    var v = parseFloat(0, 10);
+    if (sumToSpread == v) {
+        item.EncashmentSum = 0;
+    }
+    return item;
+}
 
-//        encItem = FindEncItem(i, encashment);
-//        if (encItem != null) {
-//            if (i.DocumentSum <= sumToSpread) {
-//                encItem.DocumentSum = i.DocumentSum;
-//            }
-//            else {
-//                encItem.DocumentSum = sumToSpread;
-//            }
-//            sumToSpread -= encItem.EncashmentSum;
-//        }
-//        else {
-//            if (sumToSpread != null) {
-//                encItem = DB.Create("Document.Encashment_EncashmentDocuments");
-//                encItem.Ref = encashment.Id;
-//                encItem.DocumentName = i.DocumentName;
-//                encItem.EncashmentSum = sumToSpread;
-//                sumToSpread -= encItem.EncashmentSum;
-//            }
-//        }
-//    }
-//    return encashment;
-//}
-
-//function FindEncItem(i, encashment) {
-//    var query = new Query;
-//    query.AddParameter("encId", encashment.Id);
-//    query.AddParameter("docName", i);
-//    query.Text = "select single(*) from Document.Encashment_EncashmentDocuments where Ref == @encId && DocumentName == @docName";
-//    return query.Execute();
-//}
-
-//function GetEncItems(enc) {
-//    var query = new Query;
-//    query.AddParameter("guid", enc.Id);
-//    query.Text = "select * from Document.Encashment_EncashmentDocuments where Ref==@guid";
-//    return query.Execute();
-//}
-
-//function encashmentAmount(encashment) {
-//    //var amount = 0;
-//    //for (var i in encashment) {
-//    //    amount += i.EncashmentSum;
-//    //}
-//    //return amount;
-//    if (encashment != null) {
-//        var query = new Query;
-//        query.AddParameter("encId", encashment.Id);
-//        query.Text = "select sum(EncashmentSum) from Document.Encashment_EncashmentDocuments where Ref == @encId";
-//        var result = query.Execute();
-//        return result;
-//    }
-//    else
-//        return 0;
-//}
 
 

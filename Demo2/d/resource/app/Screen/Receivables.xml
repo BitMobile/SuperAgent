@@ -51,9 +51,10 @@
               <s:Push Id="zero" Value = "$Facade.ToFloat(0)"></s:Push>
               <s:Push Id="SumToSpread" Value="$Facade.ToFloat($SumToSpread)"></s:Push>
               <s:If Test="$SumToSpread != $zero">
-                <s:Push Id="encItem" Value="$Facade.SpreadOnItem($encItem,$SumToSpread,$encashment,$receivableDoc.DocumentName)"></s:Push>
+                <s:Push Id="encItem" Value="$Facade.SpreadOnItem($encItem,$SumToSpread,$encashment,$receivableDoc)"></s:Push>
               </s:If>
               <s:If Test="$encItem != null">
+                <s:Push Id="encItem" Value="$Facade.ClearIfZeroSum($encItem,$SumToSpread)"></s:Push>
                 <c:TextView Text="#encashmentSum#: {$encItem.EncashmentSum}" CssClass="H2"></c:TextView>
                 <s:Push Id="SumToSpread" Value="$Facade.GetDifference($SumToSpread,$encItem.EncashmentSum)"></s:Push>
               </s:If>

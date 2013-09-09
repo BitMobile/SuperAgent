@@ -8,8 +8,8 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoForward,$outlet,$visit"/>
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($outlet,$visit)"/>
       <c:TextView Text="#tasks#" />
     </c:DockLayout>
 
@@ -32,7 +32,7 @@
 
         <s:Iterator Id="task" Value="$tasks">
 
-          <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$task,$visit,$outlet">
+          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$task,$visit,$outlet)">
             <c:VerticalLayout>
               <c:TextView Text="$task.TextTask" CssClass="H1"></c:TextView>
               <c:HorizontalLayout>

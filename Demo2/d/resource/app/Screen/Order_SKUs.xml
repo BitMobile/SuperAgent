@@ -11,8 +11,8 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoBack"/>
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()"/>
       <c:TextView Text="#sku#" />
     </c:DockLayout>
 
@@ -24,7 +24,7 @@
         <c:Image />
         <c:EditText Id="edtSearch" Text="$search"></c:EditText>
       </c:DockLayout>
-      <c:Button Text="#search#" OnClickAction="RefreshScreen:$param1,$edtSearch.Text"></c:Button>
+      <c:Button Text="#search#" OnClickAction="$Workflow.DoRefresh($param1,$edtSearch.Text)"></c:Button>
 
     </c:HorizontalLayout>
 
@@ -48,7 +48,7 @@
 
           <s:Iterator Id="sku" Value="$skusByGroup">
 
-            <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$order,$sku,null" CssClass="gridWhite">
+            <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$order,$sku,null)" CssClass="gridWhite">
               <c:VerticalLayout>
                 <c:TextView Text="$sku.Description" CssClass="H1"></c:TextView>
                 <c:HorizontalLayout>

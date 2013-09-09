@@ -9,8 +9,8 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>      
-      <c:Button CssClass="btnForward" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>      
+      <c:Button CssClass="btnForward" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
       <c:TextView Text="#encashment#" />
     </c:DockLayout>
 

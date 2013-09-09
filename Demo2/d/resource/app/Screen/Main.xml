@@ -7,27 +7,27 @@
     </c:HorizontalLayout>
     <c:HorizontalLayout CssClass="menu">
       <c:VerticalLayout>
-        <c:Button CssClass="btnSchedule" OnClickAction="Script:Workflow.DoAction,ScheduledVisit"/>
+        <c:Button CssClass="btnSchedule" OnClickAction="$Workflow.DoAction(ScheduledVisit)"/>
         <c:TextView Text="#schedule#"/>
-        <c:Button CssClass="btnOutlets" OnClickAction="Script:Workflow.DoAction,Outlets"/>
+        <c:Button CssClass="btnOutlets" OnClickAction="$Workflow.DoAction(Outlets)"/>
         <c:TextView Text="#outlets#"/>
-        <c:Button CssClass="btnDistr" OnClickAction="Script:Workflow.DoAction,Distr"/>
+        <c:Button CssClass="btnDistr" OnClickAction="$Workflow.DoAction(Distr)"/>
         <c:TextView Text="#stock#"/>
       </c:VerticalLayout>
       <c:VerticalLayout >
-        <c:Button CssClass="btnVisit" OnClickAction="Script:Workflow.DoAction,UnscheduledVisit"/>
+        <c:Button CssClass="btnVisit" OnClickAction="$Workflow.DoAction(UnscheduledVisit)"/>
         <c:TextView Text="#visit#"/>
-        <c:Button CssClass="btnTodo" OnClickAction="Script:Workflow.DoAction,ToDo"/>
+        <c:Button CssClass="btnTodo" OnClickAction="$Workflow.DoAction(ToDo)"/>
         <c:TextView Text="#todo#"/>
         <c:Button CssClass="btnSettings"/>
         <c:TextView Text="#settings#"/>
       </c:VerticalLayout>
       <c:VerticalLayout>
-        <c:Button CssClass="btnOrder" OnClickAction="Script:Workflow.DoAction,Order"/>
+        <c:Button CssClass="btnOrder" OnClickAction="$Workflow.DoAction(Order)"/>
         <c:TextView Text="#orders#"/>
         <c:Button CssClass="btnKpi"></c:Button>
         <c:TextView Text="#targets#"/>
-        <c:HorizontalLayout CssClass="btnSync" OnClickAction="Script:DB.DoSync">
+        <c:HorizontalLayout CssClass="btnSync" OnClickAction="$DB.DoSync()">
           <c:Indicator/>
         </c:HorizontalLayout>
         <c:TextView Text="#sync#"/>

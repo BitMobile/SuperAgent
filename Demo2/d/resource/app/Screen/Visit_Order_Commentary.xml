@@ -6,8 +6,8 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>     
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Forward:$workflow.visit"/>
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>     
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($workflow.visit)"/>
       <c:TextView Text="#commentary#" />
     </c:DockLayout>
 

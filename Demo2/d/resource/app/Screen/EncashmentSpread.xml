@@ -7,8 +7,8 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>      
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoBack"/>
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>      
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()"/>
       <c:TextView Text="#encashment#" />
     </c:DockLayout>
 
@@ -24,7 +24,7 @@
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
-      <c:HorizontalLayout  OnClickAction="Script:Workflow.DoAction,SpreadAndBack,$workflow.visit,'true'">
+      <c:HorizontalLayout  OnClickAction="$Workflow.DoAction(SpreadAndBack,$workflow.visit,'true')">
         <c:VerticalLayout>
           <c:TextView Text="#spreadOnReceivableDocuments#" CssClass="H5"></c:TextView>
         </c:VerticalLayout>

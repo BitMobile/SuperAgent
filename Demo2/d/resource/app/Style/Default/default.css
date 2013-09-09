@@ -98,13 +98,14 @@ Button {
     font:24px arial;
 }
 
-
-
 .header {
     height: 61px;
     background-color: #dbd7e1;
 }
 
+.header line {
+    background-color:#879091;
+}
 
 .grid headerEdit {
     height: 61px;

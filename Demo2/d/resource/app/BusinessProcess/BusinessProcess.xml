@@ -139,14 +139,8 @@
     <bp:Step Name="Receivables" Screen="Receivables.xml">
       <bp:Action Name="Forward" NextStep="Total"></bp:Action>
       <bp:Action Name="Select" NextStep="ReceivableDoc"></bp:Action>
-      <bp:Action Name="GoSpread" NextStep="DoSpread"></bp:Action>
     </bp:Step>
-
-    <bp:Step Name="DoSpread" Screen="EncashmentSpread.xml">
-      <bp:Action Name="SpreadAndBack" NextStep="Receivables"></bp:Action>
-    </bp:Step>
-    
-
+  
     <bp:Step Name="Total" Screen="Visit_Total.xml">
     </bp:Step>
     

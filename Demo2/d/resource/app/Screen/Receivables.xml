@@ -4,6 +4,7 @@
   <s:Push Id="visit" Value="$param1"/>
   <s:Push Id="receivables" Value="$Facade.GetReceivables($visit.Outlet)"></s:Push>
   <s:Push Id="DoSpread" Value="$param2"/>
+  <s:Push Id="workflow.encashment" Value="$Facade.CreateEncashmentIfNotExist($workflow.visit)"></s:Push>
   <s:Push Id="encashment" Value="$workflow.encashment"></s:Push>
 
 
@@ -12,35 +13,59 @@
     <c:HorizontalLayout CssClass="topNavigator">
       <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
       <c:TextView Text="#receivables#" />
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Forward:$visit"/>
+      <c:Button CssClass="btnForward" OnEvent="Back" OnClickAction="Forward:$visit"/>
     </c:HorizontalLayout>
     <c:HorizontalLine/>
 
-    <c:VerticalLayout CssClass="header">
-      <c:VerticalLayout  CssClass ="grid">
-        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,GoSpread">
-          <c:VerticalLayout CssClass="vl4">
-            <s:Push Id="receivableAmount" Value="$Facade.GetAmount($receivables)"></s:Push>
-            <c:TextView Text="$receivableAmount" CssClass="H1"></c:TextView>
-            <c:TextView Text="#receivableAmount#" CssClass="H2"></c:TextView>
-          </c:VerticalLayout>
-          <c:VerticalLayout CssClass="vl4">
-            <s:Push Id="encashmentAmount" Value="$workflow.encashment.EncashmentAmount"></s:Push>
-            <s:If Test="$encashment==null">
-              <s:Push Id="encashmentAmount" Value="$Facade.ToFloat(0)"></s:Push>
-            </s:If>
-            <c:TextView Text="$encashmentAmount" CssClass="H1"></c:TextView>
-            <c:TextView Text="#encashmentAmount#" CssClass="H2"></c:TextView>
-          </c:VerticalLayout>
-          <c:Image/>
-        </c:HorizontalLayout>
-      </c:VerticalLayout>
-    </c:VerticalLayout>
-    <c:HorizontalLine/>
+
 
     <c:ScrollView CssClass="grid">
 
-      <s:Push Id="SumToSpread" Value="$Facade.ToFloat($encashmentAmount)"></s:Push>
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <c:EditText Value="$workflow.encashment.DocNumber" CssClass="H1"></c:EditText>
+          <c:TextView Text="#docNumber#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <c:EditText Value="$workflow.encashment.NameSurname" CssClass="H1"></c:EditText>
+          <c:TextView Text="#nameSurname#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <c:EditText Value="$workflow.encashment.Commentary" CssClass="H1"></c:EditText>
+          <c:TextView Text="#commentary#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout CssClass="headerEdit">
+        <c:VerticalLayout CssClass="vl4">
+          <s:Push Id="receivableAmount" Value="$Facade.GetAmount($receivables)"></s:Push>
+          <c:TextView Text="$receivableAmount" CssClass="H1"></c:TextView>
+          <c:TextView Text="#receivableAmount#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+        <c:VerticalLayout CssClass="vl4">
+          <c:EditText Value="$encashment.EncashmentAmount" CssClass="H1" Keyboard="numeric"></c:EditText>
+          <c:TextView Text="#encashmentAmount#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine CssClass ="highlitedLine"/>
+
+      <c:HorizontalLayout  OnClickAction="Script:Workflow.DoRefresh,$workflow.visit,'true'">
+        <c:VerticalLayout>
+          <c:TextView Text="#spreadOnDocuments#" CssClass="H5"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <s:Push Id="SumToSpread" Value="$Facade.ToFloat($encashment.EncashmentAmount)"></s:Push>
       <s:Iterator Id="receivableDoc" Value="$receivables">
 
         <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$receivableDoc,$visit">

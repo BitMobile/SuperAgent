@@ -533,12 +533,7 @@ function GetReceivables(outletId) {
 }
 
 function CreateEncashmentIfNotExist(visit) {
-    //visit = DB.Create("Document.Visit");
-    //visit.Plan = planVisit.Id;
-    //visit.Outlet = outlet.Id;
-    //visit.SR = userId;
-    //visit.Date = DateTime.Now;
-    //visit.StartTime = DateTime.Now;
+
     var query = new Query();
     query.AddParameter("visitRef", visit.Id);
     query.Text = "select single(*) from Document.Encashment where Visit == @visitRef";
@@ -548,6 +543,8 @@ function CreateEncashmentIfNotExist(visit) {
         encashment = DB.Create("Document.Encashment");
         encashment.Visit = visit.Id;
         encashment.Date = DateTime.Now;
+        var v = parseFloat(0, 10)
+        encashment.EncashmentAmount = v;
     }
     return encashment;
 }

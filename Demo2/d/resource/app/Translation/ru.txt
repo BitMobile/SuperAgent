@@ -70,5 +70,11 @@ receivables	Задолженность
 encashment	Инкассация
 sum			Сумма
 encashmentSum	Сумма инкассации:
+spreadOnDocuments	Распределить на документы
+docNumber	Номер документа
+receivableAmount	Сумма задолженности
+encashmentAmount	Сумма инкассации
+nameSurname	ФИО
+
 
 

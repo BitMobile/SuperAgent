@@ -70,5 +70,9 @@ receivables	Receivables
 encashment	Encashment
 sum			Sum
 encashmentSum	Encashment sum
-
+spreadOnDocuments	Spread on documents
+docNumber	Document number
+receivableAmount	Receivable amount
+encashmentAmount	Encashment amount
+nameSurname	Name, surname
 

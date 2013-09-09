@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+
+  <s:Push Id="workflow.encashment" Value="$Facade.CreateEncashmentIfNotExist($workflow.visit)"></s:Push>
+  <s:Push Id="encashment" Value="$workflow.encashment"></s:Push>
+    
+  <c:VerticalLayout>
+
+    <c:DockLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>      
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoBack"/>
+      <c:TextView Text="#encashment#" />
+    </c:DockLayout>
+
+    <c:HorizontalLine/>
+
+    <c:ScrollView CssClass="grid">
+
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <c:EditText Value="$workflow.encashment.EncashmentAmount" CssClass="H1" Keyboard="numeric" AutoFocus="True"></c:EditText>
+          <c:TextView Text="#encashmentAmount#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout  OnClickAction="Script:Workflow.DoAction,SpreadAndBack,$workflow.visit,'true'">
+        <c:VerticalLayout>
+          <c:TextView Text="#spreadOnReceivableDocuments#" CssClass="H5"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <c:EditText Value="$workflow.encashment.Commentary" CssClass="H1"></c:EditText>
+          <c:TextView Text="#commentary#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>

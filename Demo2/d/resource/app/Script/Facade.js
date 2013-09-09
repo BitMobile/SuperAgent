@@ -1,10 +1,25 @@
 //Комментарий тест
 
+function ToFloat(text) {
+    return parseFloat(text, 10)
+}
+
+function GetDifference(val1, val2) {
+    return val1 - val2;
+}
+
 function GetLookupList(entity, attribute) {
     var objectType = entity.Metadata[attribute].Type;
     var objectName = entity.Metadata[attribute].Name;
     var query = new Query();
     query.Text = String.Format("select * from {0}.{1}", objectType, objectName);
+    return query.Execute();
+}
+
+function GetByGuid(entityType, entityName, guid) {
+    var query = new Query();
+    query.AddParameter("Guid", guid);
+    query.Text = String.Format("select single(*) from {0}.{1} where Id==@Guid", entityType, entityName);
     return query.Execute();
 }
 
@@ -65,7 +80,7 @@ function GetTodayVisit(outlet) {
         return null;
     else
         return result;
-    
+
 }
 
 
@@ -389,7 +404,7 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit, multiplier) {
         return p;
     }
     else {
-        orderitem.Total = (orderitem.Price * (orderitem.Discount / 100 + 1)*multiplier);
+        orderitem.Total = (orderitem.Price * (orderitem.Discount / 100 + 1) * multiplier);
         if (unit != null)
             orderitem.Units = unit.Pack;
 
@@ -417,8 +432,8 @@ function GetMultiplier(unit, sku, orderitem) {
             var item = query.Execute();
             return item.Multiplier;
         }
-        return 1;
-        //*orderitem.Qty;
+    return 1;
+    //*orderitem.Qty;
 
 }
 
@@ -429,9 +444,9 @@ function CalculateValue(orderitem, multiplier) {
     //query.AddParameter("units", orderitem.Units);
     //query.Text = "select single(*) from Catalog.SKU_Packing where Ref==@ref && Pack==units";
     //var item = query.Execute();
-    
+
     return multiplier * orderitem.Qty;
-    
+
 }
 
 function CalculatePrice(price, discount) {
@@ -508,5 +523,154 @@ function checkSKUGroup(group, userId) {
 }
 
 
-//-------------------------------Stocks--------------------
+//-------------------------------Receivables--------------------
+
+function GetReceivables(outletId) {
+    // if (encashmentObj == null) {
+    var receivables = new Query;
+    receivables.AddParameter("outletRef", outletId);
+    receivables.Text = "select * from Document.AccountReceivable_ReceivableDocuments where RefAsObject.Outlet == @outletRef";
+    return receivables.Execute();
+    //}
+    //else {
+    //    var encashmentitems = new Query;
+    //    encashmentitems.AddParameter("encRef", encashmentObj.Id);
+    //    encashmentitems.Text = "select * from Document.Encashment_ReceivableDocuments where Ref == @encRef";
+    //    return encashmentitems.Execute();
+    //}
+}
+
+function CreateEncashmentIfNotExist(visit) {
+    //visit = DB.Create("Document.Visit");
+    //visit.Plan = planVisit.Id;
+    //visit.Outlet = outlet.Id;
+    //visit.SR = userId;
+    //visit.Date = DateTime.Now;
+    //visit.StartTime = DateTime.Now;
+    var query = new Query();
+    query.AddParameter("visitRef", visit.Id);
+    query.Text = "select single(*) from Document.Encashment where Visit == @visitRef";
+    var encashment = query.Execute();
+
+    if (encashment == null) {
+        encashment = DB.Create("Document.Encashment");
+        encashment.Visit = visit.Id;
+        encashment.Date = DateTime.Now;
+    }
+    return encashment;
+}
+
+function CreateEncashmentItemIfNotExist(encashment, receivableDoc) {
+    var query = new Query;
+    query.AddParameter("docName", receivableDoc.DocumentName);
+    query.AddParameter("docRef", encashment.Id);
+    query.Text = "select single(*) from Document.Encashment_EncashmentDocuments where Ref == @docRef && DocumentName == @docName";
+    var encItem = query.Execute();
+
+    if (encItem == null) {
+        encItem = DB.Create("Document.Encashment_EncashmentDocuments");
+        encItem.Ref = encashment.Id;
+        encItem.DocumentName = receivableDoc.DocumentName;
+        encItem.EncashmentSum = 0;
+    }
+    return encItem;
+}
+
+function GetEncashmentItem(docName, encashment) {
+    if (encashment != null) {
+        var query = new Query;
+        query.AddParameter("encId", encashment.Id);
+        query.AddParameter("docName", docName);
+        query.Text = "select single(*) from Document.Encashment_EncashmentDocuments where Ref == @encId && DocumentName == @docName";
+        return query.Execute();
+    }
+    else
+        return null;
+}
+
+function GetAmount(receivables) {
+    var amount = 0;
+    for (var i in receivables) {
+        amount += i.DocumentSum;
+    }
+    return amount;
+}
+
+function SpreadOnItem(encItem, sumToSpread, encashment, docName) {
+    if (encItem == null) {
+        encItem = DB.Create("Document.Encashment_EncashmentDocuments");
+        encItem.Ref = encashment.Id;
+        encItem.DocumentName = docName;
+        encItem.EncashmentSum = sumToSpread;
+    }
+    else {
+        encItem.EncashmentSum = sumToSpread;
+    }
+    return encItem;
+}
+
+//function SrpeadOnDocs(encashment, receivables) {
+//    var sumToSpread = encashment.EncashmentAmount;
+//    for (var i in receivables) {
+//        //var query = new Query;
+//        //query.AddParameter("encId", encashment.Id);
+//        //query.AddParameter("docName", i);
+//        //query.Text = "select single(*) from Document.Encashment_EncashmentDocuments where Ref == @encId && DocumentName == @docName";
+//        //encItem = query.Execute();
+
+//        encItem = FindEncItem(i, encashment);
+//        if (encItem != null) {
+//            if (i.DocumentSum <= sumToSpread) {
+//                encItem.DocumentSum = i.DocumentSum;
+//            }
+//            else {
+//                encItem.DocumentSum = sumToSpread;
+//            }
+//            sumToSpread -= encItem.EncashmentSum;
+//        }
+//        else {
+//            if (sumToSpread != null) {
+//                encItem = DB.Create("Document.Encashment_EncashmentDocuments");
+//                encItem.Ref = encashment.Id;
+//                encItem.DocumentName = i.DocumentName;
+//                encItem.EncashmentSum = sumToSpread;
+//                sumToSpread -= encItem.EncashmentSum;
+//            }
+//        }
+//    }
+//    return encashment;
+//}
+
+//function FindEncItem(i, encashment) {
+//    var query = new Query;
+//    query.AddParameter("encId", encashment.Id);
+//    query.AddParameter("docName", i);
+//    query.Text = "select single(*) from Document.Encashment_EncashmentDocuments where Ref == @encId && DocumentName == @docName";
+//    return query.Execute();
+//}
+
+//function GetEncItems(enc) {
+//    var query = new Query;
+//    query.AddParameter("guid", enc.Id);
+//    query.Text = "select * from Document.Encashment_EncashmentDocuments where Ref==@guid";
+//    return query.Execute();
+//}
+
+//function encashmentAmount(encashment) {
+//    //var amount = 0;
+//    //for (var i in encashment) {
+//    //    amount += i.EncashmentSum;
+//    //}
+//    //return amount;
+//    if (encashment != null) {
+//        var query = new Query;
+//        query.AddParameter("encId", encashment.Id);
+//        query.Text = "select sum(EncashmentSum) from Document.Encashment_EncashmentDocuments where Ref == @encId";
+//        var result = query.Execute();
+//        return result;
+//    }
+//    else
+//        return 0;
+//}
+
 

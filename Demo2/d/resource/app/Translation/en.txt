@@ -65,5 +65,11 @@ logo		logoEn
 packUnit	Pack unit
 refreshScreen	Refresh screen
 no_tasks	No tasks
+documentSum	Document sum
+document	Document
+receivables	Receivables
+encashment	Encashment
+sum			Sum
+encashmentSum	Encashment sum
 
 

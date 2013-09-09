@@ -65,4 +65,10 @@ logo		logoRu
 packUnit	Ед. упаковки
 refreshScreen	Пересчитать заказ
 no_tasks	Задач нет
+documentSum	Сумма документа
+document	Документ
+receivables	Задолженность
+encashment	Инкассация
+sum			Сумма
+encashmentSum	Сумма инкассации:
 

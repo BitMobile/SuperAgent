@@ -111,9 +111,6 @@
     <Content Include="d\resource\app\Screen\Task.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="d\resource\app\Screen\Visit_Order.xml">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="d\resource\app\Screen\Visit_Task.xml">
       <SubType>Designer</SubType>
     </Content>

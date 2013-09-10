@@ -344,6 +344,17 @@ function CreateOrderIfNotExists(order, outlet, userId, visitId, executedOrder) {
     return order;
 }
 
+function GetMaxOrderAmount(outlet) {
+    var r = GetReceivables(outlet.Id);
+    var am = GetAmount(r);
+    var d;
+    if (outlet.ReceivableLimit > 0) {
+        d = outlet.ReceivableLimit - am;
+    }
+    else d = 0;
+    return d;
+}
+
 function GetOrderedSKUs(orderId) {
 
     var query = new Query();

@@ -22,7 +22,7 @@
 
       <c:HorizontalLayout CssClass="headerEdit" OnClickAction="$Workflow.DoRefresh($order,$sku,$orderitem,$unit)">
         <c:VerticalLayout>
-          <c:TextView Text="{$sku.Description},{$multiplier}" CssClass="H1"></c:TextView>
+          <c:TextView Text="{$sku.Description}" CssClass="H1"></c:TextView>
           <c:TextView Text="#refreshScreen#" CssClass="H2"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>

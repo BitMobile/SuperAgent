@@ -76,5 +76,6 @@ docNumber	Номер документа
 receivableAmount	Сумма задолженности
 encashmentAmount	Сумма инкассации
 nameSurname	ФИО
-
+maximumAmount	Лимит
+NoLimit		Неограничен
 

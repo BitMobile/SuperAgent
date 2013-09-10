@@ -6,18 +6,18 @@
   <s:Push Id="order" Value="$workflow.order"></s:Push>
 
   <s:Push Id="workflow.order" Value ="$Facade.CreateOrderIfNotExists($order, $outlet, $common.UserId, $visit.Id, null)"></s:Push>
-  
+
   <s:Push Id="items" Value="$Facade.GetOrderedSKUs($workflow.order.Id)"></s:Push>
   <s:Push Id="sum" Value="select sum(Qty*Price) from $items"></s:Push>
   <s:Push Id="qty" Value="select sum(Qty) from $items"></s:Push>
 
   <c:VerticalLayout>
 
-    <c:HorizontalLayout CssClass="topNavigator">
+    <c:DockLayout CssClass="topNavigator">
       <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
-      <c:TextView Text="#order#" />
       <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Forward:$workflow.order"/>
-    </c:HorizontalLayout>
+      <c:TextView Text="#order#" />
+    </c:DockLayout>
 
     <c:HorizontalLine/>
 
@@ -34,28 +34,28 @@
     </c:VerticalLayout>
 
     <c:HorizontalLine/>
-    
+
     <c:ScrollView CssClass="grid">
 
-        <s:Iterator Id="orderitem" Value="$items">
+      <s:Iterator Id="orderitem" Value="$items">
 
-          <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Edit,$workflow.order,$orderitem.SKUAsObject,$orderitem">
+        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Edit,$workflow.order,$orderitem.SKUAsObject,$orderitem">
 
-            <c:VerticalLayout>
-              <c:TextView Text="$orderitem.SKUAsObject.Description" CssClass="H1"></c:TextView>
-              <c:HorizontalLayout>
-                <c:TextView Text="#quantity#: {$orderitem.Qty}" CssClass="H2"></c:TextView>
-                <s:Push Id="amount" Value="$Facade.GetSKUAmount($workflow.order.Id, $orderitem)"></s:Push>
-                <c:TextView Text="#amount#: {$amount}" CssClass="H2"></c:TextView>
-              </c:HorizontalLayout>
-            </c:VerticalLayout>
+          <c:VerticalLayout>
+            <c:TextView Text="$orderitem.SKUAsObject.Description" CssClass="H1"></c:TextView>
+            <c:HorizontalLayout>
+              <c:TextView Text="#quantity#: {$orderitem.Qty}" CssClass="H2"></c:TextView>
+              <s:Push Id="amount" Value="$Facade.GetSKUAmount($workflow.order.Id, $orderitem)"></s:Push>
+              <c:TextView Text="#amount#: {$amount}" CssClass="H2"></c:TextView>
+            </c:HorizontalLayout>
+          </c:VerticalLayout>
 
-            <c:Image/>
+          <c:Image/>
 
-          </c:HorizontalLayout>
+        </c:HorizontalLayout>
 
-          <c:HorizontalLine/>
-        </s:Iterator>
+        <c:HorizontalLine/>
+      </s:Iterator>
 
     </c:ScrollView>
 

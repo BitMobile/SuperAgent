@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+
+  <s:Push Id="visit" Value="$param1"/>
+  <s:Push Id="receivables" Value="$Facade.GetReceivables($visit.Outlet)"></s:Push>
+  <s:Push Id="DoSpread" Value="$param2"/>
+  <s:Push Id="workflow.encashment" Value="$Facade.CreateEncashmentIfNotExist($workflow.visit)"></s:Push>
+  <s:Push Id="encashment" Value="$workflow.encashment"></s:Push>
+
+
+  <c:VerticalLayout>
+
+<<<<<<< HEAD
+    <c:DockLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>    
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Forward:$visit"/>
+      <c:TextView Text="#receivables#" />
+    </c:DockLayout>
+    
+=======
+    <c:HorizontalLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
+      <c:TextView Text="#receivables#" />
+      <c:Button CssClass="btnForward" OnEvent="Back" OnClickAction="Forward:$visit"/>
+    </c:HorizontalLayout>
+>>>>>>> origin/develop_IOS
+    <c:HorizontalLine/>
+
+
+
+    <c:ScrollView CssClass="grid">
+
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <c:EditText Value="$workflow.encashment.DocNumber" CssClass="H1"></c:EditText>
+          <c:TextView Text="#docNumber#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <c:EditText Value="$workflow.encashment.NameSurname" CssClass="H1"></c:EditText>
+          <c:TextView Text="#nameSurname#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <c:EditText Value="$workflow.encashment.Commentary" CssClass="H1"></c:EditText>
+          <c:TextView Text="#commentary#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout CssClass="headerEdit">
+        <c:VerticalLayout CssClass="vl4">
+          <s:Push Id="receivableAmount" Value="$Facade.GetAmount($receivables)"></s:Push>
+          <c:TextView Text="$receivableAmount" CssClass="H1"></c:TextView>
+          <c:TextView Text="#receivableAmount#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+        <c:VerticalLayout CssClass="vl4">
+          <c:EditText Value="$encashment.EncashmentAmount" CssClass="H1" Keyboard="numeric"></c:EditText>
+          <c:TextView Text="#encashmentAmount#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine CssClass ="highlitedLine"/>
+
+      <c:HorizontalLayout  OnClickAction="Script:Workflow.DoRefresh,$workflow.visit,'true'">
+        <c:VerticalLayout>
+          <c:TextView Text="#spreadOnDocuments#" CssClass="H5"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <s:Push Id="SumToSpread" Value="$Facade.ToFloat($encashment.EncashmentAmount)"></s:Push>
+      <s:Iterator Id="receivableDoc" Value="$receivables">
+
+        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$receivableDoc,$visit">
+          <c:VerticalLayout>
+            <c:TextView Text="$receivableDoc.DocumentName" CssClass="H1"></c:TextView>
+            <c:HorizontalLayout >
+              <s:Push Id="encItem" Value ="$Facade.GetEncashmentItem($receivableDoc.DocumentName, $encashment)"></s:Push>
+              <s:Push Id="zero" Value = "$Facade.ToFloat(0)"></s:Push>
+              <s:Push Id="SumToSpread" Value="$Facade.ToFloat($SumToSpread)"></s:Push>
+              <s:If Test="$SumToSpread != $zero">
+                <s:Push Id="encItem" Value="$Facade.SpreadOnItem($encItem,$SumToSpread,$encashment,$receivableDoc)"></s:Push>
+              </s:If>
+              <s:If Test="$encItem != null">
+                <s:Push Id="encItem" Value="$Facade.ClearIfZeroSum($encItem,$SumToSpread)"></s:Push>
+                <c:TextView Text="#encashmentSum#: {$encItem.EncashmentSum}" CssClass="H2"></c:TextView>
+                <s:Push Id="SumToSpread" Value="$Facade.GetDifference($SumToSpread,$encItem.EncashmentSum)"></s:Push>
+              </s:If>
+              <s:Else>
+                <c:TextView Text="#documentSum#: {$receivableDoc.DocumentSum}" CssClass="H2"></c:TextView>
+              </s:Else>
+            </c:HorizontalLayout>
+          </c:VerticalLayout>
+          <c:Image/>
+        </c:HorizontalLayout>
+
+        <c:HorizontalLine/>
+      </s:Iterator>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>

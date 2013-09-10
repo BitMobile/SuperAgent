@@ -13,11 +13,11 @@
 
   <c:VerticalLayout>
 
-    <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoRollback"/>
-      <c:TextView Text="#order#" />
+    <c:DockLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoRollback"/>      
       <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoForward,$workflow.order"/>
-    </c:HorizontalLayout>
+      <c:TextView Text="#order#" />
+    </c:DockLayout>
 
     <c:HorizontalLine/>
 

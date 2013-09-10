@@ -3,20 +3,20 @@
 
   <c:VerticalLayout>
 
-    <c:HorizontalLayout CssClass="topNavigator">
+    <c:DockLayout CssClass="topNavigator">
       <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
-      <c:TextView Text="#kpi#" />
       <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoBack"/>
-    </c:HorizontalLayout>
+      <c:TextView Text="#kpi#" />
+    </c:DockLayout>
 
     <c:HorizontalLine/>
 
     <c:HorizontalLayout CssClass="search">
 
-      <c:HorizontalLayout >
+      <c:DockLayout >
         <c:Image />
         <c:EditText></c:EditText>
-      </c:HorizontalLayout>
+      </c:DockLayout>
       <c:Button Text="#search#"></c:Button>
 
     </c:HorizontalLayout>
@@ -29,28 +29,28 @@
 
         <c:VerticalLayout>
           <c:TextView Text="Total bonus: 1230 EUR" CssClass="H1"></c:TextView>
-          
+
         </c:VerticalLayout>
 
       </c:HorizontalLayout>
 
       <c:HorizontalLine/>
 
+      <c:HorizontalLayout>
+
+        <c:VerticalLayout>
+          <c:TextView Text="New outlets" CssClass="H1"></c:TextView>
           <c:HorizontalLayout>
-
-            <c:VerticalLayout>
-              <c:TextView Text="New outlets" CssClass="H1"></c:TextView>
-              <c:HorizontalLayout>
-                <c:TextView Text="Target: 40" CssClass="H2"></c:TextView>
-                <c:TextView Text="Result: 15" CssClass="H2"></c:TextView>
-                <c:TextView Text="Bonus: 0" CssClass="H2"></c:TextView>
-              </c:HorizontalLayout>
-              
-            </c:VerticalLayout>
-
+            <c:TextView Text="Target: 40" CssClass="H2"></c:TextView>
+            <c:TextView Text="Result: 15" CssClass="H2"></c:TextView>
+            <c:TextView Text="Bonus: 0" CssClass="H2"></c:TextView>
           </c:HorizontalLayout>
 
-          <c:HorizontalLine/>
+        </c:VerticalLayout>
+
+      </c:HorizontalLayout>
+
+      <c:HorizontalLine/>
 
       <c:HorizontalLayout>
 

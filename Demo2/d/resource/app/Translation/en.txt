@@ -63,6 +63,17 @@ baseUnit	Base unit
 selectUnit	Select unit:
 logo		logoEn
 packUnit	Pack unit
-refreshScreen	Click here to refresh screen
-
+refreshScreen	Refresh screen
+no_tasks	No tasks
+documentSum	Document sum
+document	Document
+receivables	Receivables
+encashment	Encashment
+sum			Sum
+encashmentSum	Encashment sum
+spreadOnDocuments	Spread on documents
+docNumber	Document number
+receivableAmount	Receivable amount
+encashmentAmount	Encashment amount
+nameSurname	Name, surname
 

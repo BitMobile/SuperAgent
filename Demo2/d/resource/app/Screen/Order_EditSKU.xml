@@ -5,23 +5,24 @@
   <s:Push Id="sku" Value="$param2"></s:Push>
   <s:Push Id="orderitem" Value="$param3"></s:Push>
   <s:Push Id="unit" Value="$param4"></s:Push>
+  <s:Push Id="multiplier" Value="$Facade.GetMultiplier($unit, $sku, $orderitem)"></s:Push>
 
-  <s:Push Id="orderitem" Value="$Facade.CreateOrderItemIfNotExist($order.Id,$sku,$orderitem,$unit)"></s:Push>
-  <s:Push Id="baseQty" Value="$Facade.CalculateValue($orderitem, $sku)"></s:Push>
+  <s:Push Id="orderitem" Value="$Facade.CreateOrderItemIfNotExist($order.Id,$sku,$orderitem,$unit,$multiplier)"></s:Push>
+  <s:Push Id="baseQty" Value="$Facade.CalculateValue($orderitem, $multiplier)"></s:Push>
 
   <c:VerticalLayout>
 
-    <c:HorizontalLayout CssClass="topNavigator">
+    <c:DockLayout CssClass="topNavigator">
       <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
-      <c:TextView Text="#edit#" />
       <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Forward:$order.OutletAsObject"/>
-    </c:HorizontalLayout>
+      <c:TextView Text="#edit#" />
+    </c:DockLayout>
 
     <c:ScrollView CssClass="grid">
 
       <c:HorizontalLayout CssClass="headerEdit" OnClickAction="Script:Workflow.DoRefresh,$order,$sku,$orderitem,$unit">
         <c:VerticalLayout>
-          <c:TextView Text="$sku.Description" CssClass="H1"></c:TextView>
+          <c:TextView Text="{$sku.Description},{$multiplier}" CssClass="H1"></c:TextView>
           <c:TextView Text="#refreshScreen#" CssClass="H2"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
@@ -66,7 +67,7 @@
       <c:HorizontalLine/>
 
       <c:HorizontalLayout CssClass="headerEdit">
-        <c:TextView Text="#selectUnit#" CssClass="H2"></c:TextView>
+        <c:TextView Text="#selectUnit#" CssClass="H6"></c:TextView>
       </c:HorizontalLayout>
       <c:HorizontalLine CssClass ="highlitedLine"/>
 

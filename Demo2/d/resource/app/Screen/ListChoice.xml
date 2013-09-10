@@ -6,11 +6,11 @@
   
   <c:VerticalLayout>
 
-    <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
-      <c:TextView Text="#parameters#" />
+    <c:DockLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>      
       <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoBack" />
-    </c:HorizontalLayout>
+      <c:TextView Text="#parameters#" />
+    </c:DockLayout>
 
     <c:HorizontalLine/>
 

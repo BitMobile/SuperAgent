@@ -4,7 +4,8 @@
   <s:Push Id="planVisit" Value="$param1"></s:Push>  
   <s:Push Id="outlet" Value="$param2"></s:Push>
 
-  <s:Push Id="visit" Value="$Facade.CreatePlannedVisitIfNotExists($planVisit,$outlet,$common.UserId)"/>
+  <s:Push Id="workflow.visit" Value="$Facade.CreatePlannedVisitIfNotExists($planVisit,$outlet,$common.UserId)"/>
+  <s:Push Id="visit" Value="$workflow.visit"></s:Push>
   
   <c:VerticalLayout>
 

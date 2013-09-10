@@ -23,7 +23,7 @@
 
       <c:HorizontalLayout>
         <c:VerticalLayout>
-          <c:EditText Value="$workflow.encashment.DocNumber" CssClass="H1"></c:EditText>
+          <c:EditText Value="$workflow.encashment.DocNumber" Keyboard="numeric" CssClass="H1"></c:EditText>
           <c:TextView Text="#docNumber#" CssClass="H2"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>

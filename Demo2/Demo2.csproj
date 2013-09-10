@@ -110,7 +110,6 @@
     <Content Include="d\resource\app\Screen\UnscheduledVisit.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="d\resource\app\Screen\UnscheduleVisits.xml" />
     <Content Include="d\resource\app\Screen\Visit_Order_Commentary.xml" />
     <Content Include="d\resource\app\Screen\Visit_Outlet.xml">
       <SubType>Designer</SubType>

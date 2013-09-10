@@ -59,7 +59,7 @@
       </c:HorizontalLayout>
       <c:HorizontalLine CssClass ="highlitedLine"/>
 
-      <c:HorizontalLayout  OnClickAction="Script:Workflow.DoRefresh,$workflow.visit,'true'">
+      <c:HorizontalLayout  OnClickAction="$Workflow.DoRefresh($workflow.visit,'true')">
         <c:VerticalLayout>
           <c:TextView Text="#spreadOnDocuments#" CssClass="H5"></c:TextView>
         </c:VerticalLayout>

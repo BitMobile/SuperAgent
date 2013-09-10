@@ -88,6 +88,7 @@ Button {
 }
 
 .topNavigator {
+<<<<<<< HEAD
     height: 10%;
     background-color: #282f5a;
 }
@@ -101,10 +102,30 @@ Button {
         color: #FFF;
         font: 60% arial;
     }
+=======
+    height:56px;
+    background-color:#363f6c;
+}
+
+.topNavigator TextView {
+    width:60%;
+    height:56px;
+    background-color:none;
+    text-align: center;
+    color: #FFF;
+    font:24px arial;
+}
+
+.header {
+    height: 61px;
+    background-color: #dbd7e1;
+}
 
 .header line {
     background-color:#879091;
 }
+>>>>>>> origin/develop_IOS
+
 .grid headerEdit {
     height: 99%;
     background-color: #dbd7e1;

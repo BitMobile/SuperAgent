@@ -10,12 +10,20 @@
 
   <c:VerticalLayout>
 
+<<<<<<< HEAD
     <c:DockLayout CssClass="topNavigator">
       <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>    
-      <c:Button CssClass="btnForward" OnEvent="Back" OnClickAction="Forward:$visit"/>
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Forward:$visit"/>
       <c:TextView Text="#receivables#" />
     </c:DockLayout>
     
+=======
+    <c:HorizontalLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
+      <c:TextView Text="#receivables#" />
+      <c:Button CssClass="btnForward" OnEvent="Back" OnClickAction="Forward:$visit"/>
+    </c:HorizontalLayout>
+>>>>>>> origin/develop_IOS
     <c:HorizontalLine/>
 
 

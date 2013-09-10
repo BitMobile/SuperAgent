@@ -8,8 +8,8 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoForward,$outlet,$workflow.visit"/>
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($outlet,$workflow.visit)"/>
       <c:TextView Text="#visit#" />
     </c:DockLayout>
 
@@ -28,7 +28,7 @@
 
       <c:HorizontalLine/>
 
-      <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,EditParameter,$outlet,Class">
+      <c:HorizontalLayout OnClickAction="$Workflow.DoAction(EditParameter,$outlet,Class)">
 
         <c:VerticalLayout>
           <c:TextView Text="$outlet.ClassAsObject.Description" CssClass="H1"></c:TextView>
@@ -40,7 +40,7 @@
 
       <c:HorizontalLine/>
 
-      <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,EditParameter,$outlet,Type">
+      <c:HorizontalLayout OnClickAction="$Workflow.DoAction(EditParameter,$outlet,Type)">
 
         <c:VerticalLayout>
           <c:TextView Text="$outlet.TypeAsObject.Description" CssClass="H1"></c:TextView>
@@ -52,7 +52,7 @@
 
       <c:HorizontalLine/>
 
-      <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,EditParameter,$outlet,Distributor">
+      <c:HorizontalLayout OnClickAction="$Workflow.DoAction(EditParameter,$outlet,Distributor)">
 
         <c:VerticalLayout>
           <c:TextView Text="$outlet.DistributorAsObject.Description" CssClass="H1"></c:TextView>
@@ -68,7 +68,7 @@
 
         <s:Push Id="parameterValue" Value="$Facade.GetOutletParameterValue($outlet,$parameter)"/>
 
-        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,EditAddParameter,$outlet,$parameter,$parameterValue">
+        <c:HorizontalLayout OnClickAction="$Workflow.DoAction(EditAddParameter,$outlet,$parameter,$parameterValue)">
 
           <c:VerticalLayout>
             <s:If Test="$parameterValue!=null">

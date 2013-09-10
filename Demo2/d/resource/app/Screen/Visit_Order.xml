@@ -14,8 +14,8 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Forward:$workflow.order"/>
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($workflow.order)"/>
       <c:TextView Text="#order#" />
     </c:DockLayout>
 
@@ -23,7 +23,7 @@
 
     <c:VerticalLayout CssClass="header">
       <c:VerticalLayout  CssClass ="grid">
-        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Add,$workflow.order">
+        <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Add,$workflow.order)">
           <c:VerticalLayout>
             <c:TextView Text="$sum" CssClass="H1"></c:TextView>
             <c:TextView Text="#totalamount#" CssClass="H2"></c:TextView>
@@ -39,7 +39,7 @@
 
       <s:Iterator Id="orderitem" Value="$items">
 
-        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Edit,$workflow.order,$orderitem.SKUAsObject,$orderitem">
+        <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Edit,$workflow.order,$orderitem.SKUAsObject,$orderitem)">
 
           <c:VerticalLayout>
             <c:TextView Text="$orderitem.SKUAsObject.Description" CssClass="H1"></c:TextView>

@@ -9,8 +9,8 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoForward,$outlet,$visit"/>
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($outlet,$visit)"/>
       <c:TextView Text="#sku#" />
     </c:DockLayout>
 
@@ -34,7 +34,7 @@
           <s:Push Id="sku" Value="$item.SKUAsObject"/>
           <s:Push Id="skuValue" Value="$Facade.GetVisitSKUValue($visit,$sku)"/>
 
-            <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Edit,$outlet,$visit,$sku,$skuValue,$questionnaires">
+            <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Edit,$outlet,$visit,$sku,$skuValue,$questionnaires)">
 
             <c:VerticalLayout>
               <s:If Test="$skuValue!=null">

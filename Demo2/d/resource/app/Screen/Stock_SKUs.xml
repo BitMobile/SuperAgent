@@ -10,8 +10,8 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoBack"/>
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()"/>
       <c:TextView Text="#stock#" />
     </c:DockLayout>
 
@@ -23,7 +23,7 @@
         <c:Image />
         <c:EditText Id="edtSearch" Text="$search"></c:EditText>
       </c:DockLayout>
-      <c:Button Text="#search#" OnClickAction="RefreshScreen:$edtSearch.Text"></c:Button>
+      <c:Button Text="#search#" OnClickAction="$Workflow.DoRefresh($edtSearch.Text)"></c:Button>
 
     </c:HorizontalLayout>
 

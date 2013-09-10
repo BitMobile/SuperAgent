@@ -63,6 +63,11 @@ Button {
     color:#b2749b;
 }
 
+.H6 {
+    font:20px Arial;
+    color:#cf3333;
+}
+
 .btnBack {
     background-image: url(button_left.png);
     height: 56px;

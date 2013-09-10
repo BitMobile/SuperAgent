@@ -10,6 +10,7 @@
   <s:Push Id="items" Value="$Facade.GetOrderedSKUs($workflow.order.Id)"></s:Push>
   <s:Push Id="qty" Value="$Facade.GetOrderQTY($workflow.order.Id)"></s:Push>
   <s:Push Id="sum" Value="$Facade.GetOrderSUM($workflow.order.Id)"></s:Push>
+  <s:Push Id="maxAmount" Value="$Facade.GetMaxOrderAmount($outlet)"></s:Push>
 
   <c:VerticalLayout>
 
@@ -26,9 +27,18 @@
       <c:VerticalLayout CssClass="header">
         <c:VerticalLayout  CssClass ="grid">
           <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Add,$workflow.order">
-            <c:VerticalLayout>
-              <c:TextView Text="$sum" CssClass="H1"></c:TextView>
+            <c:VerticalLayout CssClass="vl4">
+                <c:TextView Text="$sum" CssClass="H1"></c:TextView>
               <c:TextView Text="#totalamount#" CssClass="H2"></c:TextView>
+            </c:VerticalLayout>
+            <c:VerticalLayout CssClass="vl4">
+              <s:If Test="$maxAmount == 0">
+                <c:TextView Text="#NoLimit#" CssClass="H1"></c:TextView>
+              </s:If>
+              <s:Else>
+                <c:TextView Text="$maxAmount" CssClass="H1"></c:TextView>
+              </s:Else>
+              <c:TextView Text="#maximumAmount#" CssClass="H2"></c:TextView>
             </c:VerticalLayout>
             <c:Image/>
           </c:HorizontalLayout>

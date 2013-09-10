@@ -75,4 +75,6 @@ docNumber	Document number
 receivableAmount	Receivable amount
 encashmentAmount	Encashment amount
 nameSurname	Name, surname
+maximumAmount	Amount limit
+NoLimit		No limit
 

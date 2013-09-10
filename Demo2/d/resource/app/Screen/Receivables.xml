@@ -10,11 +10,12 @@
 
   <c:VerticalLayout>
 
-    <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
+    <c:DockLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>    
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($visit)"/>
       <c:TextView Text="#receivables#" />
-      <c:Button CssClass="btnForward" OnEvent="Back" OnClickAction="Forward:$visit"/>
-    </c:HorizontalLayout>
+    </c:DockLayout>
+    
     <c:HorizontalLine/>
 
 
@@ -58,7 +59,7 @@
       </c:HorizontalLayout>
       <c:HorizontalLine CssClass ="highlitedLine"/>
 
-      <c:HorizontalLayout  OnClickAction="Script:Workflow.DoRefresh,$workflow.visit,'true'">
+      <c:HorizontalLayout  OnClickAction="$Workflow.DoRefresh($workflow.visit,'true')">
         <c:VerticalLayout>
           <c:TextView Text="#spreadOnDocuments#" CssClass="H5"></c:TextView>
         </c:VerticalLayout>
@@ -68,7 +69,7 @@
       <s:Push Id="SumToSpread" Value="$Facade.ToFloat($encashment.EncashmentAmount)"></s:Push>
       <s:Iterator Id="receivableDoc" Value="$receivables">
 
-        <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$receivableDoc,$visit">
+        <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$receivableDoc,$visit)">
           <c:VerticalLayout>
             <c:TextView Text="$receivableDoc.DocumentName" CssClass="H1"></c:TextView>
             <c:HorizontalLayout >

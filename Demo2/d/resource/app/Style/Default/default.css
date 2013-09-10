@@ -1,13 +1,12 @@
 ﻿body {
-    background-color:#FFF; 
+    background-color: #FFF;
 }
 
 line {
     width: 100%;
-    height:1px;
-    background-color:#000000;
+    height: 1px;
+    background-color: #000000;
 }
-
 
 sv {
     width: 100%;
@@ -21,46 +20,51 @@ vl {
 
 hl {
     width: 100%;
-    height: 50px;
 }
 
-nb {
+dl {
     width: 100%;
-    height: 40px;
 }
+
+    dl hl {
+        width: 100%;
+        height: 100%;
+    }
 
 TextView {
-    background-color:none;
-    color:#444444;
+    background-color: none;
+    color: #444444;
 }
 
 Button {
-    background-color:#808080;
-    color:#fff;
-    width:100px;
-    height:25px;
+    color: #fff;
 }
 
 .H1 {
-    font:20px Arial;
+    font: 60% Arial;
 }
 
 .H2 {
-    font:14px Arial;
-    color:#b2749b;
+    font: 40% Arial;
+    color: #b2749b;
 }
 
 .H3 {
-    font:20px Arial-BoldMT;
+    font: 40% Arial-BoldMT;
 }
 
 .H4 {
-    font:14px Arial-BoldMT;
+    font: 40% Arial-BoldMT;
 }
 
 .H5 {
-    font:20px Arial;
-    color:#b2749b;
+    font: 60% Arial;
+    color: #b2749b;
+}
+
+.H6 {
+    font: 20% Arial;
+    color: #b2749b;
 }
 
 .H6 {
@@ -70,211 +74,229 @@ Button {
 
 .btnBack {
     background-image: url(button_left.png);
-    height: 56px;
-    width:20%;
-    background-color:#363f6c;
+    height: auto;
+    margin-top: 10%;
+    margin-left: 2%;
+    margin-bottom: 10%;
+    margin-right: 2%;
+    dock-align: left;
 }
 
 .btnForward {
     background-image: url(button_right.png);
-    height: 56px;
-    width:20%;
-    background-color:#363f6c;
-}
-
-.bthRefresh {
-    background-image: url(refresh.png);
-    width:56px;
-    height:56px;
-    background-color:#FFF;
+    height: auto;
+    margin-top: 10%;
+    margin-left: 2%;
+    margin-bottom: 10%;
+    margin-right: 2%;
+    dock-align: right;
 }
 
 .topNavigator {
-    height:56px;
-    background-color:#363f6c;
+    height: 10%;
+    background-color: #282f5a;
 }
 
-.topNavigator TextView {
-    width:60%;
-    height:56px;
-    background-color:none;
-    text-align: center;
-    color: #FFF;
-    font:24px arial;
-}
-
-.header {
-    height: 61px;
-    background-color: #dbd7e1;
-}
+    .topNavigator TextView {
+        width: auto;
+        height: auto;
+        margin-top: 20%;
+        margin-bottom: 20%;
+        text-align: center;
+        color: #FFF;
+        font: 60% arial;
+    }
 
 .header line {
     background-color:#879091;
 }
-
 .grid headerEdit {
-    height: 61px;
+    height: 99%;
     background-color: #dbd7e1;
-    width:100%;
-    margin-top:0px;
+    width: 100%;
+    margin-top: 0px;
 }
 
 .grid line {
-    background-color:#879091;
-    margin-top:5px;
+    background-color: #879091;
+    margin-top: 1%;
 }
 
 .grid highlitedLine {
-    background-color:#879091;
-    margin-top:0px;
+    background-color: #879091;
+    margin-top: 0px;
 }
 
 .grid hl {
-    height:56px;
-    selected-color:#bacdce;
+    height: 15%;
+    selected-color: #bacdce;
+}
+
+.grid singleLayout {
+    height: 100%;
 }
 
 .grid hl img {
-    width:18px;
-    height:18px;
-    margin-top:18px;
+    height: 30%;
+    margin-top: 35%;
     background-image: url(icon_more.png);
 }
 
 .grid hl vl {
-    width:90%;
-    height:56px;
-    margin-top:5px;
-    padding-left:10px;
+    width: 90%;
+    height: 90%;
+    margin-top: 5%;
+    padding-left: 5%;
 }
 
 .grid hl vl1 {
-    width:80%;
-    height:56px;
-    margin-top:5px;
-    padding-left:10px;
+    width: 80%;
+    height: 90%;
+    margin-top: 5%;
+    padding-left: 2%;
 }
 
 .grid hl vl2 {
-    width:2%;
-    height:56px;
-    background-color:#ef0648
+    width: 2%;
+    height: 90%;
+    background-color: #ef0648;
 }
 
 .grid hl vl3 {
-    width:88%;
-    height:56px;
-    margin-top:5px;
+    width: 88%;
+    height: 90%;
+    margin-top: 5%;
 }
 
 .grid hl vl4 {
     width:45%;
-    height:56px;
-    margin-top:5px;
+    height:90%;
+    margin-top:5%;
 }
-
 .grid hl TextView {
-    width:100%;
-    height:100%;
+    width: 100%;
+    height: 100%;
 }
 
 .grid hl vl TextView {
-    width:100%;
-    height:50%;
+    width: 100%;
+    height: 50%;
 }
 
 .grid hl vl hl TextView {
-    width:100%;
-    height:50%;
-}
-
-.hl2 vl {
-    width: 40%;
-    height: 56px;
-    margin-top: 5px;
-    padding-left: 10px;
-}
- 
-.hl3 vl {
-    width: 30%;
-    height: 56px;
-    margin-top: 5px;
-    padding-left: 10px;
+    width: 50%;
+    height: 100%;
 }
 
 .grid hl CheckBox {
-    selected-color:#6f6583;   
-    background-color:#c9c3d5;
+    selected-color: #6f6583;
+    background-color: #c9c3d5;
 }
 
 .grid hl vl CheckBox {
-    selected-color:#6f6583;
-    background-color:#c9c3d5;
-    width:100%;
-    height:50%;
+    selected-color: #6f6583;
+    background-color: #c9c3d5;
 }
 
 .grid hl EditText {
-    width:100%;
-    height:28px;
+    width: 100%;
+    height: 50%;
     background-color: #f0f0f0;
-    color:#000000;
-    border-style:none;
+    color: #000000;
+    border-style: none;
 }
 
 .grid hl vl EditText {
-    width:100%;
-    height:28px;
+    width: 100%;
+    height: 50%;
     background-color: #f0f0f0;
-    color:#000000;
-    border-style:none;
+    color: #000000;
+    border-style: none;
 }
 
-.search{
-    height:56px;
-    background-color:#9e87a7;
+.header {
+    height: 15%;
+    background-color: #dbd7e1;
 }
 
-.search hl{
-    margin-left:10px;
-    margin-top:10px;
-    height:70%;
-    width:65%;
-    border-width:1px;
-    border-color:#283636;
-    background-color: #ffffff;
-    border-radius:8px;
+    .header grid hl {
+        height: 100%;
+    }
+
+.hl2 vl {
+    width: 40%;
+    height: 90%;
+    margin-top: 0%;
+    padding-left: 5%;
+    padding-top: 5%;
 }
 
-.search hl img{
-    height:30px;
-    width:26px;
-    margin-top:3px;
-    margin-left:3px;
-    background-image: url(icon_zoom.png);
-    background-color: #ffffff;
+    .hl2 vl EditText {
+        width: 90%;
+        border-style: solid;
+        border-color: #f00;
+        border-width: 1px;
+        border-radius: 5px;
+        padding-left: 5%;
+    }
+
+
+.search {
+    height: 10%;
+    background-color: #8b7498;
 }
 
-.search hl EditText {
-    width:80%;
-    height:100%;
-    background-color: #ffffff;
-    color:#b2749b;
-    border-style:none;
-}
+    .search dl {
+        margin-left: 2%;
+        margin-top: 20%;
+        height: 60%;
+        width: 60%;
+        border-width: 1px;
+        border-color: #283636;
+        background-color: #ffffff;
+        border-radius: 10px;
+    }
 
-.search Button {
-    margin-left:10px;
-    margin-top:10px;
-    width:25%;
-    height:70%;
-    background-color:#363f6c;
-    color:#363f6c; 
-    border-width:1px;
-    border-color:#283636;
-    border-radius:8px;
-}
+        .search dl img {
+            height: auto;
+            margin-top: 10%;
+            margin-left: 2%;
+            background-image: url(icon_zoom.png);
+            background-color: #ffffff;
+            dock-align: left;
+        }
+
+        .search dl EditText {
+            width: auto;
+            height: auto;
+            margin-top: 10%;
+            margin-right: 5%;
+            padding-left: 5%;
+            padding-top: 5%;
+            background-color: #ffffff;
+            color: #8b7498;
+            border-style: none;
+            dock-align: right;
+            font: 80% arial;
+        }
+
+    .search Button {
+        margin-left: 6%;
+        margin-top: 20%;
+        width: 30%;
+        height: 60%;
+        background-color: #282f5a;
+        color: #282f5a;
+        border-width: 1px;
+        border-color: #283636;
+        border-radius: 10px;
+    }
 
 vl line {
-    background-color:#283636;
+    background-color: #283636;
+}
+
+CheckBox {
+    width: 60px;
+    height: 60px;
 }

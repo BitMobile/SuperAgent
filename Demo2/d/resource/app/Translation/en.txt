@@ -61,6 +61,7 @@ markUp		MarkUp
 unit		Unit
 baseUnit	Base unit
 selectUnit	Select unit:
+logo		logoEn
 packUnit	Pack unit
 refreshScreen	Refresh screen
 no_tasks	No tasks

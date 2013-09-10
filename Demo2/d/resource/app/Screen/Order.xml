@@ -14,11 +14,11 @@
 
   <c:VerticalLayout>
 
-    <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoRollback"/>
+    <c:DockLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>      
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($workflow.order)"/>
       <c:TextView Text="#order#" />
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoForward,$workflow.order"/>
-    </c:HorizontalLayout>
+    </c:DockLayout>
 
     <c:HorizontalLine/>
 
@@ -26,7 +26,7 @@
     <s:If Test="$statusDescription == 'New'">
       <c:VerticalLayout CssClass="header">
         <c:VerticalLayout  CssClass ="grid">
-          <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Add,$workflow.order">
+          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Add,$workflow.order)">
             <c:VerticalLayout CssClass="vl4">
                 <c:TextView Text="$sum" CssClass="H1"></c:TextView>
               <c:TextView Text="#totalamount#" CssClass="H2"></c:TextView>
@@ -51,7 +51,7 @@
 
         <s:Iterator Id="orderitem" Value="$items">
 
-          <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Edit,$workflow.order,$orderitem.SKUAsObject,$orderitem">
+          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Edit,$workflow.order,$orderitem.SKUAsObject,$orderitem)">
 
             <c:VerticalLayout>
               <c:TextView Text="$orderitem.SKUAsObject.Description" CssClass="H1"></c:TextView>

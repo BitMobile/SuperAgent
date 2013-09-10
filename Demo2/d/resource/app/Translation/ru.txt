@@ -7,7 +7,7 @@ outlets		Магазины
 targets		Цели
 target		Цель
 settings	Настройки
-sync		Синхронизация
+sync		Обновить
 search		Поиск
 outlet		Торговая точка
 outlet_class	Класс торговой точки
@@ -61,6 +61,7 @@ markUp		Наценка
 unit		Единица изм.
 baseUnit	Баз. единица изм.
 selectUnit	Выберите единицу измерения:
+logo		logoRu
 packUnit	Ед. упаковки
 refreshScreen	Пересчитать заказ
 no_tasks	Задач нет
@@ -77,5 +78,4 @@ encashmentAmount	Сумма инкассации
 nameSurname	ФИО
 maximumAmount	Лимит
 NoLimit		Неограничен
-
 

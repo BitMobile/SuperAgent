@@ -12,15 +12,15 @@
 
   <c:VerticalLayout>
 
-    <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
+    <c:DockLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($order.OutletAsObject)"/>
       <c:TextView Text="#edit#" />
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Forward:$order.OutletAsObject"/>
-    </c:HorizontalLayout>
+    </c:DockLayout>
 
     <c:ScrollView CssClass="grid">
 
-      <c:HorizontalLayout CssClass="headerEdit" OnClickAction="Script:Workflow.DoRefresh,$order,$sku,$orderitem,$unit">
+      <c:HorizontalLayout CssClass="headerEdit" OnClickAction="$Workflow.DoRefresh($order,$sku,$orderitem,$unit)">
         <c:VerticalLayout>
           <c:TextView Text="{$sku.Description}" CssClass="H1"></c:TextView>
           <c:TextView Text="#refreshScreen#" CssClass="H2"></c:TextView>
@@ -67,7 +67,7 @@
       <c:HorizontalLine/>
 
       <c:HorizontalLayout CssClass="headerEdit">
-        <c:TextView Text="#selectUnit#" CssClass="H2"></c:TextView>
+        <c:TextView Text="#selectUnit#" CssClass="H6"></c:TextView>
       </c:HorizontalLayout>
       <c:HorizontalLine CssClass ="highlitedLine"/>
 
@@ -75,7 +75,7 @@
 
       <s:Iterator Id="unit" Value="$units">
 
-        <c:HorizontalLayout OnClickAction="Script:Workflow.DoRefresh,$order,$sku,$orderitem,$unit">
+        <c:HorizontalLayout OnClickAction="$Workflow.DoRefresh($order,$sku,$orderitem,$unit)">
           <c:VerticalLayout>
             <c:TextView Text="$unit.PackAsObject.Description" CssClass="H1"></c:TextView>
           </c:VerticalLayout>

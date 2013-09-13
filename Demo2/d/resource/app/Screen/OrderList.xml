@@ -49,7 +49,7 @@
           <c:HorizontalLine/>
         </s:If>
         <s:Else>
-          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$order.Outlet,null,$order)">
+          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$order.OutletAsObject,null,$order)">
             <c:VerticalLayout>
               <c:TextView Text="$order.OutletAsObject.Description" CssClass="H1"></c:TextView>
               <s:Push Id="checkedNumber" Value ="$Facade.AssignNumberIfNotExist($order)"></s:Push>

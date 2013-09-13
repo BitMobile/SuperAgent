@@ -8,6 +8,15 @@ function GetDifference(val1, val2) {
     return val1 - val2;
 }
 
+function GetGreater(val1, val2) {
+    var r = val1 - val2;
+    if (r > 0){
+        return false;
+    }
+    else
+        return true;
+}
+
 function GetLookupList(entity, attribute) {
     var objectType = entity.Metadata[attribute].Type;
     var objectName = entity.Metadata[attribute].Name;
@@ -130,6 +139,13 @@ function GetTasks(outlet) {
         return result;
 }
 
+function GetOutlet(task) {
+    var v = task.OutletAsObject().Description;
+    if (v == null)
+        return "Various outlets";
+    else
+        return v;
+}
 
 function CreateVisitTaskValueIfNotExists(visit, task) {
     var query = new Query();

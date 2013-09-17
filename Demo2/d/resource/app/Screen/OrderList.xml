@@ -4,11 +4,11 @@
 
   <c:VerticalLayout>
 
-    <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoRollback"/>
+    <c:DockLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
+      <c:Button CssClass="btnForward" OnClickAction="$Workflow.DoRollback()"/>
       <c:TextView Text="#orders#" />
-      <c:Button CssClass="btnForward" OnClickAction="Script:Workflow.DoRollback"/>
-    </c:HorizontalLayout>
+    </c:DockLayout>
 
     <c:HorizontalLine/>
 
@@ -16,7 +16,7 @@
 
     <c:VerticalLayout CssClass="header">
       <c:VerticalLayout  CssClass ="grid">
-        <c:HorizontalLayout OnEvent="Forward" OnClickAction="Script:Workflow.DoForward">
+        <c:HorizontalLayout OnEvent="Forward" OnClickAction="$Workflow.DoForward()">
           <c:VerticalLayout>
             <c:TextView Text="#newOrder#" CssClass="H5"></c:TextView>
           </c:VerticalLayout>
@@ -33,7 +33,7 @@
 
         <s:Push Id="statusDescription" Value="$Facade.GetOrderStatus($order)"></s:Push>
         <s:If Test="$statusDescription == 'Сanceled'">
-          <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$order.Outlet,null,$order">
+          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$order.OutletAsObject,null,$order)">
             <c:VerticalLayout CssClass="vl2">
             </c:VerticalLayout>
             <c:VerticalLayout CssClass="vl3">
@@ -49,7 +49,7 @@
           <c:HorizontalLine/>
         </s:If>
         <s:Else>
-          <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$order.Outlet,null,$order">
+          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$order.OutletAsObject,null,$order)">
             <c:VerticalLayout>
               <c:TextView Text="$order.OutletAsObject.Description" CssClass="H1"></c:TextView>
               <s:Push Id="checkedNumber" Value ="$Facade.AssignNumberIfNotExist($order)"></s:Push>

@@ -3,14 +3,14 @@
 
   <c:VerticalLayout>
 
-    <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
+    <c:DockLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoCommit()"/>
       <c:TextView Text="#save#" />
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoCommit"/>
-    </c:HorizontalLayout>
+    </c:DockLayout>
 
     <c:HorizontalLine/>
-  
+
   </c:VerticalLayout>
 
 </c:Screen>

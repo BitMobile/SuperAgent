@@ -1,5 +1,22 @@
 //Комментарий тест
 
+function ToFloat(text) {
+    return parseFloat(text, 10)
+}
+
+function GetDifference(val1, val2) {
+    return val1 - val2;
+}
+
+function GetGreater(val1, val2) {
+    var r = val1 - val2;
+    if (r > 0){
+        return false;
+    }
+    else
+        return true;
+}
+
 function GetLookupList(entity, attribute) {
     var objectType = entity.Metadata[attribute].Type;
     var objectName = entity.Metadata[attribute].Name;
@@ -7,7 +24,6 @@ function GetLookupList(entity, attribute) {
     query.Text = String.Format("select * from {0}.{1}", objectType, objectName);
     return query.Execute();
 }
-
 
 function CreateOutletParameterValueIfNotExists(outlet, parameter, parameterValue) {
     if (parameterValue != null)
@@ -57,10 +73,15 @@ function GetScheduledVisits(searchText) {
 
 function GetTodayVisit(outlet) {
     var query = new Query();
-    query.AddParameter("Date", DateTime.Now);
+    query.AddParameter("Date", DateTime.Now.Date);
     query.AddParameter("Outlet", outlet.Id);
-    query.Text = "select single(*) from Document.Visit where Outlet==@Outlet && Date==@Date";
-    return query.Execute();
+    query.Text = "select single(*) from Document.Visit where Date.Date == @Date && Outlet==@Outlet";
+    var result = query.Execute();
+    if (result == null)
+        return null;
+    else
+        return result;
+
 }
 
 
@@ -68,7 +89,7 @@ function CreatePlannedVisitIfNotExists(planVisit, outlet, userId) {
     var query = new Query();
     query.AddParameter("Date", DateTime.Now.Date);
     query.AddParameter("Outlet", outlet.Id);
-    query.Text = "select single(*) from Document.Visit where Outlet==@Outlet && Date==@Date";
+    query.Text = "select single(*) from Document.Visit where Date.Date == @Date && Outlet==@Outlet";
 
     var visit = query.Execute();
     if (visit == null) {
@@ -111,9 +132,20 @@ function GetTasks(outlet) {
     else
         query.Text = "select * from Document.Task where Outlet == @Outlet && PlanDate >= @Date";
 
-    return query.Execute();
+    var result = query.Execute();
+    if (result.items.Count == 0)
+        return null;
+    else
+        return result;
 }
 
+function GetOutlet(task) {
+    var v = task.OutletAsObject().Description;
+    if (v == null)
+        return "Various outlets";
+    else
+        return v;
+}
 
 function CreateVisitTaskValueIfNotExists(visit, task) {
     var query = new Query();
@@ -131,23 +163,31 @@ function CreateVisitTaskValueIfNotExists(visit, task) {
     return taskValue;
 }
 
+function GetQuesttionaires(outlet) {
+    var terrioryQuery = new Query;
+    terrioryQuery.AddParameter("Outlet", outlet.Id);
+    terrioryQuery.Text = "select single(*) from Catalog.Territory_Outlets where Outlet==@Outlet";
+    var territory = terrioryQuery.Execute();
 
-function GetQuestionsByOutlet(outlet) {
     var query = new Query();
     query.AddParameter("OutletType", outlet.Type);
-    query.Text = "select single(*) from Document.Questionnaire where OutletType == @OutletType";
-    var obj = query.Execute();
-    if (obj == null)
+    query.AddParameter("OutletClass", outlet.Class);
+    query.AddParameter("Territory", territory.Ref);
+    query.Text = "select single(*) from Document.Questionnaire_Territories where  RefAsObject.OutletType == @OutletType &&  RefAsObject.OutletClass==@OutletClass && Territory==@Territory";
+    //query.Text = "select distinct(Ref) from Document.Questionnaire_Territories where  RefAsObject.OutletType == @OutletType &&  RefAsObject.OutletClass==@OutletClass && Territory==@Territory";
+    return query.Execute();
+}
+
+
+function GetQuestionsByOutlet(questionnaires) {
+    if (questionnaires == null)
         return null;
     else {
-        var query = new Query();
-        query.AddParameter("Ref", obj.Id);
-        query.Text = "select * from Document.Questionnaire_Questions where Ref == @Ref";
-        return query.Execute();
+        var questions = new Query();
+        questions.AddParameter("Ref", questionnaires.Ref);
+        questions.Text = "select * from Document.Questionnaire_Questions where Ref == @Ref";
+        return questions.Execute();
     }
-
-
-    return query.Execute();
 }
 
 
@@ -178,22 +218,38 @@ function CreateVisitQuestionValueIfNotExists(visit, question, questionValue) {
 }
 
 
-function GetSKUsByOutlet(outlet) {
-    var query = new Query();
-    query.AddParameter("OutletType", outlet.Type);
-    query.Text = "select single(*) from Document.Questionnaire where OutletType == @OutletType";
-    var obj = query.Execute();
-    if (obj == null)
+function GetSKUsByOutlet(questionnaires) {
+    if (questionnaires == null)
         return null;
     else {
         var query = new Query();
-        query.AddParameter("Ref", obj.Id);
+        query.AddParameter("Ref", questionnaires.Ref);
         query.Text = "select * from Document.Questionnaire_SKUs where Ref == @Ref";
         return query.Execute();
     }
 
-
     return query.Execute();
+}
+
+function CheckQuestionExistence(questionnaires, description) {
+    //if (questionnaires == null)
+    //    return null;
+    //else {
+    if (questionnaires != null) {
+        var query = new Query();
+        query.AddParameter("using", true);
+        query.AddParameter("description", description);
+        query.AddParameter("Ref", questionnaires.Ref);
+        query.Text = "select single(*) from Document.Questionnaire_SKUQuestions where Ref == @Ref && SKUQuestionAsObject.Description == @description && UseInQuestionaire == @using";
+        var result = query.Execute();
+        if (result == null)
+            return false;
+        else
+            return true;
+    }
+    else
+        return null;
+    //}
 }
 
 
@@ -214,9 +270,10 @@ function CreateVisitSKUValueIfNotExists(visit, sku, skuValue) {
 
     p.Ref = visit.Id;
     p.SKU = sku.Id;
-    p.Available = false;
+    //p.Available = false;
 
     return p;
+
 }
 
 
@@ -303,6 +360,17 @@ function CreateOrderIfNotExists(order, outlet, userId, visitId, executedOrder) {
     return order;
 }
 
+function GetMaxOrderAmount(outlet) {
+    var r = GetReceivables(outlet.Id);
+    var am = GetAmount(r);
+    var d;
+    if (outlet.ReceivableLimit > 0) {
+        d = outlet.ReceivableLimit - am;
+    }
+    else d = 0;
+    return d;
+}
+
 function GetOrderedSKUs(orderId) {
 
     var query = new Query();
@@ -341,7 +409,7 @@ function GetSKUAmount(orderId, item) {
 
 }
 
-function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit) {
+function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit, multiplier) {
 
     if (orderitem == null) {
 
@@ -355,7 +423,7 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit) {
         return p;
     }
     else {
-        orderitem.Total = (orderitem.Price * (orderitem.Discount / 100 + 1));
+        orderitem.Total = (orderitem.Price * (orderitem.Discount / 100 + 1) * multiplier);
         if (unit != null)
             orderitem.Units = unit.Pack;
 
@@ -364,16 +432,40 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit) {
 
 }
 
-function CalculateValue(orderitem, sku) {
+function GetMultiplier(unit, sku, orderitem) {
 
+    if (unit != null) {
         var query = new Query();
+        query.AddParameter("units", unit.Pack);
         query.AddParameter("ref", sku.Id);
-        query.AddParameter("units", orderitem.Units);
-        query.Text = "select single(*) from Catalog.SKU_Packing where Ref==@ref && Pack==units";
+        query.Text = "select single(*) from Catalog.SKU_Packing where Ref==@ref && Pack==@units";
         var item = query.Execute();
-    
-        return item.Multiplier*orderitem.Qty;
-    
+        return item.Multiplier;
+    }
+    else
+        if (orderitem != null) {
+            var query = new Query();
+            query.AddParameter("units", orderitem.Units);
+            query.AddParameter("ref", sku.Id);
+            query.Text = "select single(*) from Catalog.SKU_Packing where Ref==@ref && Pack==@units";
+            var item = query.Execute();
+            return item.Multiplier;
+        }
+    return 1;
+    //*orderitem.Qty;
+
+}
+
+function CalculateValue(orderitem, multiplier) {
+
+    //var query = new Query();
+    //query.AddParameter("ref", sku.Id);
+    //query.AddParameter("units", orderitem.Units);
+    //query.Text = "select single(*) from Catalog.SKU_Packing where Ref==@ref && Pack==units";
+    //var item = query.Execute();
+
+    return multiplier * orderitem.Qty;
+
 }
 
 function CalculatePrice(price, discount) {
@@ -405,10 +497,10 @@ function GetSKUs(searchText, owner) {
     if (owner == null) {
         query = new Query();
         if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Catalog.SKU";
+            query.Text = "select * from Catalog.SKU where Stock!=0";
         }
         else {
-            query.Text = "select * from Catalog.SKU where Description.Contains(@p1)";
+            query.Text = "select * from Catalog.SKU where Description.Contains(@p1) && Stock!=0";
             query.AddParameter("p1", searchText);
         }
     }
@@ -416,10 +508,10 @@ function GetSKUs(searchText, owner) {
         query = new Query();
         query.AddParameter("owner", owner);
         if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Catalog.SKU where Owner==@owner";
+            query.Text = "select * from Catalog.SKU where Owner==@owner  && Stock!=0";
         }
         else {
-            query.Text = "select * from Catalog.SKU where Description.Contains(@p1) && Owner==@owner";
+            query.Text = "select * from Catalog.SKU where Description.Contains(@p1) && Owner==@owner  && Stock!=0";
             query.AddParameter("p1", searchText);
         }
     }
@@ -450,5 +542,100 @@ function checkSKUGroup(group, userId) {
 }
 
 
-//-------------------------------Stocks--------------------
+//-------------------------------Receivables--------------------
+
+function GetReceivables(outletId) {
+    // if (encashmentObj == null) {
+    var receivables = new Query;
+    receivables.AddParameter("outletRef", outletId);
+    receivables.Text = "select * from Document.AccountReceivable_ReceivableDocuments where RefAsObject.Outlet == @outletRef";
+    return receivables.Execute();
+    //}
+    //else {
+    //    var encashmentitems = new Query;
+    //    encashmentitems.AddParameter("encRef", encashmentObj.Id);
+    //    encashmentitems.Text = "select * from Document.Encashment_ReceivableDocuments where Ref == @encRef";
+    //    return encashmentitems.Execute();
+    //}
+}
+
+function CreateEncashmentIfNotExist(visit) {
+
+    var query = new Query();
+    query.AddParameter("visitRef", visit.Id);
+    query.Text = "select single(*) from Document.Encashment where Visit == @visitRef";
+    var encashment = query.Execute();
+
+    if (encashment == null) {
+        encashment = DB.Create("Document.Encashment");
+        encashment.Visit = visit.Id;
+        encashment.Date = DateTime.Now;
+        var v = parseFloat(0, 10)
+        encashment.EncashmentAmount = v;
+    }
+    return encashment;
+}
+
+function CreateEncashmentItemIfNotExist(encashment, receivableDoc) {
+    var query = new Query;
+    query.AddParameter("docName", receivableDoc.DocumentName);
+    query.AddParameter("docRef", encashment.Id);
+    query.Text = "select single(*) from Document.Encashment_EncashmentDocuments where Ref == @docRef && DocumentName == @docName";
+    var encItem = query.Execute();
+
+    if (encItem == null) {
+        encItem = DB.Create("Document.Encashment_EncashmentDocuments");
+        encItem.Ref = encashment.Id;
+        encItem.DocumentName = receivableDoc.DocumentName;
+        encItem.EncashmentSum = 0;
+    }
+    return encItem;
+}
+
+function GetEncashmentItem(docName, encashment) {
+    if (encashment != null) {
+        var query = new Query;
+        query.AddParameter("encId", encashment.Id);
+        query.AddParameter("docName", docName);
+        query.Text = "select single(*) from Document.Encashment_EncashmentDocuments where Ref == @encId && DocumentName == @docName";
+        return query.Execute();
+    }
+    else
+        return null;
+}
+
+function GetAmount(receivables) {
+    var amount = 0;
+    for (var i in receivables) {
+        amount += i.DocumentSum;
+    }
+    return amount;
+}
+
+function SpreadOnItem(encItem, sumToSpread, encashment, receivableDoc) {
+    if (sumToSpread > receivableDoc.DocumentSum) {
+        sumToSpread = receivableDoc.DocumentSum;
+    }
+
+    if (encItem == null) {
+        encItem = DB.Create("Document.Encashment_EncashmentDocuments");
+        encItem.Ref = encashment.Id;
+        encItem.DocumentName = receivableDoc.DocumentName;
+        encItem.EncashmentSum = sumToSpread;
+    }
+    else {
+        encItem.EncashmentSum = sumToSpread;
+    }
+    return encItem;
+}
+
+function ClearIfZeroSum(item, sumToSpread) {
+    var v = parseFloat(0, 10);
+    if (sumToSpread == v) {
+        item.EncashmentSum = 0;
+    }
+    return item;
+}
+
+
 

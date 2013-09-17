@@ -9,11 +9,11 @@
 
   <c:VerticalLayout>
 
-    <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
+    <c:DockLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>    
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()"/>
       <c:TextView Text="#task#" />
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoBack"/>
-    </c:HorizontalLayout>
+    </c:DockLayout>
 
     <c:HorizontalLine/>
 
@@ -33,7 +33,7 @@
       <c:HorizontalLayout>
 
         <c:VerticalLayout>
-          <c:EditText Value="$taskValue.Result" CssClass="H1" AutoFocus="True"></c:EditText>
+          <c:CheckBox Value="$taskValue.Result" CssClass="H1"></c:CheckBox>
           <c:TextView Text="#result#" CssClass="H2"></c:TextView>
         </c:VerticalLayout>
 

@@ -10,21 +10,21 @@
 
   <c:VerticalLayout>
 
-    <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
+    <c:DockLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()"/>
       <c:TextView Text="#sku#" />
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoBack"/>
-    </c:HorizontalLayout>
+    </c:DockLayout>
 
     <c:HorizontalLine/>
 
     <c:HorizontalLayout CssClass="search">
 
-      <c:HorizontalLayout >
+      <c:DockLayout >
         <c:Image />
         <c:EditText Id="edtSearch" Text="$search"></c:EditText>
-      </c:HorizontalLayout>
-      <c:Button Text="#search#" OnClickAction="RefreshScreen:$param1,$edtSearch.Text"></c:Button>
+      </c:DockLayout>
+      <c:Button Text="#search#" OnClickAction="$Workflow.DoRefresh($param1,$edtSearch.Text)"></c:Button>
 
     </c:HorizontalLayout>
 
@@ -35,36 +35,36 @@
       <s:Iterator Id="group" Value="$groups">
         <s:Push Id="checkedGroup" Value="$Facade.checkSKUGroup($group.Id)"></s:Push>
         <s:If Test="$checkedGroup != 0">
-        <c:HorizontalLayout CssClass ="gridEdit">
-          <c:VerticalLayout>
-            <c:TextView Text = "$group.Description" CssClass = "H1"></c:TextView>
-          </c:VerticalLayout>
-
-        </c:HorizontalLayout>
-
-        <c:HorizontalLine CssClass="editLine"/>
-
-        <s:Push Id="skusByGroup" Value="$Facade.GetSKUs($search,$group.Id)"></s:Push>
-
-        <s:Iterator Id="sku" Value="$skusByGroup">
-
-          <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Select,$order,$sku,null" CssClass="gridWhite">
+          <c:HorizontalLayout CssClass ="gridEdit">
             <c:VerticalLayout>
-              <c:TextView Text="$sku.Description" CssClass="H1"></c:TextView>
-              <c:HorizontalLayout>
-                <c:TextView Text="#price2#" CssClass="H2"></c:TextView>
-                <c:TextView Text="$sku.Price" CssClass="H2"></c:TextView>
-                <c:TextView Text="#stock#" CssClass="H2"></c:TextView>
-                <c:TextView Text="$sku.Stock" CssClass="H2"></c:TextView>
-              </c:HorizontalLayout>
+              <c:TextView Text = "$group.Description" CssClass = "H1"></c:TextView>
             </c:VerticalLayout>
 
-            <c:Image/>
-
           </c:HorizontalLayout>
-          <c:HorizontalLine/>
 
-        </s:Iterator>
+          <c:HorizontalLine CssClass="editLine"/>
+
+          <s:Push Id="skusByGroup" Value="$Facade.GetSKUs($search,$group.Id)"></s:Push>
+
+          <s:Iterator Id="sku" Value="$skusByGroup">
+
+            <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$order,$sku,null)" CssClass="gridWhite">
+              <c:VerticalLayout>
+                <c:TextView Text="$sku.Description" CssClass="H1"></c:TextView>
+                <c:HorizontalLayout>
+                  <c:TextView Text="#price2#" CssClass="H2"></c:TextView>
+                  <c:TextView Text="$sku.Price" CssClass="H2"></c:TextView>
+                  <c:TextView Text="#stock#" CssClass="H2"></c:TextView>
+                  <c:TextView Text="$sku.Stock" CssClass="H2"></c:TextView>
+                </c:HorizontalLayout>
+              </c:VerticalLayout>
+
+              <c:Image/>
+
+            </c:HorizontalLayout>
+            <c:HorizontalLine/>
+
+          </s:Iterator>
 
         </s:If>
       </s:Iterator>

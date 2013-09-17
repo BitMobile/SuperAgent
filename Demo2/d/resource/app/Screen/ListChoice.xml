@@ -6,11 +6,11 @@
   
   <c:VerticalLayout>
 
-    <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
+    <c:DockLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>      
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()" />
       <c:TextView Text="#parameters#" />
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoBack" />
-    </c:HorizontalLayout>
+    </c:DockLayout>
 
     <c:HorizontalLine/>
 
@@ -44,7 +44,7 @@
 
       <s:Iterator Id="item" Value="$items">
 
-        <c:HorizontalLayout OnClickAction="Script:Facade.UpdateValueAndBack,$param1,$param2,$item.Id">
+        <c:HorizontalLayout OnClickAction="$Facade.UpdateValueAndBack($param1,$param2,$item.Id)">
           <c:VerticalLayout>
             <c:TextView Text="$item.Description" CssClass="H1"></c:TextView>
           </c:VerticalLayout>

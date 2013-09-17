@@ -10,10 +10,16 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($outlet,$visit,$questionnaires)"/>
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
+<<<<<<< HEAD
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoForward,$outlet,$visit"/>
       <c:TextView Text="#questions#" />
     </c:DockLayout>
+=======
+      <c:TextView Text="#questions#" />
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoForward,$outlet,$visit,$questionnaires"/>
+    </c:HorizontalLayout>
+>>>>>>> origin/develop_IOS
 
     <c:HorizontalLine/>
 
@@ -36,7 +42,7 @@
           <s:Push Id="question" Value="$item.QuestionAsObject"/>
           <s:Push Id="questionValue" Value="$Facade.GetVisitQuestionValue($visit,$question)"/>
 
-          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Edit,$outlet,$visit,$question,$questionValue)">
+          <c:HorizontalLayout OnClickAction="Script:Workflow.DoAction,Edit,$outlet,$visit,$question,$questionValue">
 
             <c:VerticalLayout>
               <s:If Test="$questionValue!=null">

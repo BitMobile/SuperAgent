@@ -7,41 +7,41 @@
 
   <c:VerticalLayout>
 
-    <c:HorizontalLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="Script:Workflow.DoBack"/>
+    <c:DockLayout CssClass="topNavigator">
+      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()"/>
       <c:TextView Text="#parameters#" />
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="Script:Workflow.DoBack"/>
-    </c:HorizontalLayout>
+    </c:DockLayout>
 
     <c:ScrollView CssClass="grid">
 
-        <c:HorizontalLayout>
-          <c:VerticalLayout>
-            <c:TextView Text="$parameter.Description" CssClass="H1"></c:TextView>
-            <c:TextView Text="#insert_answer#" CssClass="H2"></c:TextView>
-          </c:VerticalLayout>          
-        </c:HorizontalLayout>
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <c:TextView Text="$parameter.Description" CssClass="H1"></c:TextView>
+          <c:TextView Text="#insert_answer#" CssClass="H2"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
 
-        <c:HorizontalLine/>
+      <c:HorizontalLine/>
 
-        <c:HorizontalLayout>
-          <s:If Test="$parameter.DataTypeAsObject.Description=='Boolean'">
-            <c:CheckBox Value="$parameterValue.Value" CssClass="H1"></c:CheckBox>  
+      <c:HorizontalLayout>
+        <s:If Test="$parameter.DataTypeAsObject.Description=='Boolean'">
+          <c:CheckBox Value="$parameterValue.Value" CssClass="H1"></c:CheckBox>
+        </s:If>
+        <s:Else>
+          <s:If Test="$parameter.DataTypeAsObject.Description=='Integer'">
+            <c:EditText Value="$parameterValue.Value" CssClass="H1" AutoFocus="true"></c:EditText>
           </s:If>
           <s:Else>
-            <s:If Test="$parameter.DataTypeAsObject.Description=='Integer'">
-              <c:EditText Value="$parameterValue.Value" CssClass="H1" AutoFocus="true"></c:EditText>
+            <s:If Test="$parameter.DataTypeAsObject.Description=='Decimal'">
+              <c:EditText Value="$parameterValue.Value" CssClass="H1" AutoFocus="True" Keyboard="numeric"></c:EditText>
             </s:If>
             <s:Else>
-              <s:If Test="$parameter.DataTypeAsObject.Description=='Decimal'">
-                <c:EditText Value="$parameterValue.Value" CssClass="H1" AutoFocus="True" Keyboard="numeric"></c:EditText>
-              </s:If>
-              <s:Else>
-                <c:EditText Value="$parameterValue.Value" CssClass="H1" AutoFocus="True"></c:EditText>
-              </s:Else>
+              <c:EditText Value="$parameterValue.Value" CssClass="H1" AutoFocus="True"></c:EditText>
             </s:Else>
           </s:Else>
-        </c:HorizontalLayout>
+        </s:Else>
+      </c:HorizontalLayout>
 
     </c:ScrollView>
 

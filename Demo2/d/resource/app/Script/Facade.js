@@ -617,6 +617,9 @@ function SpreadOnItem(encItem, sumToSpread, encashment, receivableDoc) {
         sumToSpread = receivableDoc.DocumentSum;
     }
 
+    if (sumToSpread == null)
+        sumToSpread = 0;
+
     if (encItem == null) {
         encItem = DB.Create("Document.Encashment_EncashmentDocuments");
         encItem.Ref = encashment.Id;

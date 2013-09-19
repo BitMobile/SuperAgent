@@ -33,7 +33,12 @@
                 <c:TextView Text="$sum" CssClass="H1"></c:TextView>
               </s:If>
               <s:Else>
-                <c:TextView Text="$sum" CssClass="H6"></c:TextView>
+                <s:If Test="$maxAmount == 0">
+                  <c:TextView Text="$sum" CssClass="H1"></c:TextView>
+                </s:If>
+                <s:Else>
+                  <c:TextView Text="$sum" CssClass="H6"></c:TextView>
+                </s:Else>
               </s:Else>
               <c:TextView Text="#totalamount#" CssClass="H2"></c:TextView>
             </c:VerticalLayout>

@@ -15,24 +15,23 @@
 
     <c:ScrollView CssClass="grid">
 
-      <c:HorizontalLayout>
-
+      <c:HorizontalLayout CssClass="textBlock">
         <c:VerticalLayout>
-          <c:TextView Text="$task.TextTask" CssClass="H1"></c:TextView>
+          <c:HorizontalLayout>
+            <c:TextView Text="$task.TextTask" CssClass="H1"></c:TextView>
+          </c:HorizontalLayout>
           <c:TextView Text="#description#" CssClass="H2"></c:TextView>
         </c:VerticalLayout>
-
       </c:HorizontalLayout>
 
       <c:HorizontalLine/>
 
-      <c:HorizontalLayout>
-
+      <c:HorizontalLayout CssClass="textBlock">
         <c:VerticalLayout>
-
-          <c:TextView Text="$task.Target" CssClass="H1"></c:TextView>
+          <c:HorizontalLayout>
+            <c:TextView Text="$task.Target" CssClass="H1"></c:TextView>
+          </c:HorizontalLayout>
           <c:TextView Text="#target#" CssClass="H2"></c:TextView>
-
         </c:VerticalLayout>
 
       </c:HorizontalLayout>
@@ -40,14 +39,10 @@
       <c:HorizontalLine/>
 
       <c:HorizontalLayout>
-
         <c:VerticalLayout>
-
           <c:TextView Text="$task.PlanDate" CssClass="H1"></c:TextView>
           <c:TextView Text="#plandate#" CssClass="H2"></c:TextView>
-
         </c:VerticalLayout>
-
       </c:HorizontalLayout>
 
       <c:HorizontalLine/>

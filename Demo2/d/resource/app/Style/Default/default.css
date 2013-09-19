@@ -63,8 +63,8 @@ Button {
 }
 
 .H6 {
-    font:60% Arial;
-    color:#cf3333;
+    font: 60% Arial;
+    color: #cf3333;
 }
 
 .btnBack {
@@ -103,8 +103,9 @@ Button {
     }
 
 .header line {
-    background-color:#879091;
+    background-color: #879091;
 }
+
 .grid headerEdit {
     height: 99%;
     background-color: #dbd7e1;
@@ -119,7 +120,7 @@ Button {
 
 .grid line {
     background-color: #879091;
-    margin-top: 1%;
+    margin-top: 0%;
 }
 
 .grid highlitedLine {
@@ -169,12 +170,12 @@ Button {
 }
 
 .grid hl vl4 {
-    width:45%;
-    height:90%;
-    margin-top:5%;
+    width: 45%;
+    height: 90%;
+    margin-top: 5%;
 }
 
-.grid hl vl hl{
+.grid hl vl hl {
     width: 100%;
     height: 100%;
 }
@@ -219,6 +220,24 @@ Button {
     color: #000000;
     border-style: none;
 }
+
+.grid textBlock {
+    height: 30%;
+}
+
+    .grid textBlock vl hl {
+        height: 75%;
+    }
+
+    .grid textBlock vl TextView {
+        height: 25%;
+    }
+
+    .grid textBlock vl hl TextView {
+        font: 20% arial;
+        white-space: normal;
+        padding-right: 2%;
+    }
 
 .header {
     height: 15%;

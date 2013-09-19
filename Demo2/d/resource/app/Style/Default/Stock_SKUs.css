@@ -1,20 +1,14 @@
 ﻿
 .editLine {
-    background-color:#879091;
-    margin-top:0px;
+    background-color: #879091;
+    margin-top: 0px;
 }
 
-.grid hl vl hl TextView {
-    width:30%;
-    margin-top:10%;
+.grid hl vl TextView {
+    width: 30%;
+    margin-top: 10%;
 }
 
-.gridEdit {
+.blockEdit {
     background-color: #dbd7e1;
-}
-
-
-
-.gridWhite {
-    background-color: #ffffff;
 }

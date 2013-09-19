@@ -15,7 +15,7 @@
 
     <c:ScrollView CssClass="grid">
 
-      <c:HorizontalLayout CssClass="textBlock">
+      <c:HorizontalLayout CssClass="miltilineBlock">
         <c:VerticalLayout>
           <c:HorizontalLayout>
             <c:TextView Text="$task.TextTask" CssClass="H1"></c:TextView>
@@ -26,7 +26,7 @@
 
       <c:HorizontalLine/>
 
-      <c:HorizontalLayout CssClass="textBlock">
+      <c:HorizontalLayout CssClass="miltilineBlock">
         <c:VerticalLayout>
           <c:HorizontalLayout>
             <c:TextView Text="$task.Target" CssClass="H1"></c:TextView>

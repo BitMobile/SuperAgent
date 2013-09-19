@@ -32,6 +32,7 @@ dl {
     }
 
 TextView {
+    padding-right: 2%;
     background-color: none;
     color: #444444;
 }
@@ -65,6 +66,11 @@ Button {
 .H6 {
     font: 60% Arial;
     color: #cf3333;
+}
+
+.H7 {
+    font: 70% Arial;
+    color: #b2749b;
 }
 
 .btnBack {
@@ -221,23 +227,40 @@ Button {
     border-style: none;
 }
 
-.grid textBlock {
+.miltilineBlock {
     height: 30%;
 }
 
-    .grid textBlock vl hl {
+    .miltilineBlock vl hl {
         height: 75%;
     }
 
-    .grid textBlock vl TextView {
+        .miltilineBlock vl hl TextView {
+            font: 20% arial;
+            white-space: normal;
+        }
+
+    .miltilineBlock vl TextView {
         height: 25%;
     }
 
-    .grid textBlock vl hl TextView {
-        font: 20% arial;
-        white-space: normal;
-        padding-right: 2%;
+.duallineBlock {
+}
+
+    .duallineBlock vl hl {
+        height: 66%;
     }
+
+        .duallineBlock vl hl TextView {
+            font: 40% arial;
+            white-space: normal;
+        }
+
+    .duallineBlock vl TextView {
+        height: 34%;
+    }
+
+
 
 .header {
     height: 15%;

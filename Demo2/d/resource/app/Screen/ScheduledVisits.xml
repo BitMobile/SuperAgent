@@ -6,9 +6,9 @@
 
   <c:VerticalLayout>
 
-    <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button CssClass="btnForward" OnEvent="Forward" />
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button CssClass="btn_forward" OnEvent="Forward" />
       <c:TextView Text="#schedule#" />
     </c:DockLayout>
 
@@ -52,12 +52,12 @@
         <s:Else>
           <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$planVisit,$planOutlet)">
 
-            <c:VerticalLayout  CssClass="vl1">
+            <c:VerticalLayout  CssClass="clipped">
               <c:TextView Text="$planOutlet.Description" CssClass="H1"></c:TextView>
               <c:TextView Text="$planOutlet.Address" CssClass="H2"></c:TextView>
             </c:VerticalLayout>
 
-              <c:TextView Text="$todayVisit.Date.TimeString" CssClass="H2"></c:TextView>
+            <c:TextView Text="$todayVisit.Date.TimeString" CssClass="H2"></c:TextView>
 
           </c:HorizontalLayout>
 

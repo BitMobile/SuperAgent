@@ -6,9 +6,9 @@
   
   <c:VerticalLayout>
 
-    <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>      
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()" />
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>      
+      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()" />
       <c:TextView Text="#parameters#" />
     </c:DockLayout>
 
@@ -17,7 +17,7 @@
     <c:VerticalLayout CssClass="header">
       <c:VerticalLayout CssClass="grid">
         <c:HorizontalLayout>
-          <c:VerticalLayout CssClass="headerEdit">
+          <c:VerticalLayout CssClass="header_edit_block">
             <s:If Test="$param2=='Distributor'">
               <c:TextView CssClass="H1" Text="#distributor#"/>
             </s:If> 

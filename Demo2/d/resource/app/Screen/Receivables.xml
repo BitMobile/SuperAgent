@@ -10,9 +10,9 @@
 
   <c:VerticalLayout>
 
-    <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>    
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($visit)"/>
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>    
+      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($visit)"/>
       <c:TextView Text="#receivables#" />
     </c:DockLayout>
     
@@ -46,18 +46,18 @@
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
-      <c:HorizontalLayout CssClass="headerEdit">
-        <c:VerticalLayout CssClass="vl4">
+      <c:HorizontalLayout CssClass="header_edit_block">
+        <c:VerticalLayout CssClass="half_width">
           <s:Push Id="receivableAmount" Value="$Facade.GetAmount($receivables)"></s:Push>
           <c:TextView Text="$receivableAmount" CssClass="H1"></c:TextView>
           <c:TextView Text="#receivableAmount#" CssClass="H2"></c:TextView>
         </c:VerticalLayout>
-        <c:VerticalLayout CssClass="vl4">
+        <c:VerticalLayout CssClass="half_width">
           <c:EditText Value="$encashment.EncashmentAmount" CssClass="H1" Keyboard="numeric"></c:EditText>
           <c:TextView Text="#encashmentAmount#" CssClass="H2"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
-      <c:HorizontalLine CssClass ="highlitedLine"/>
+      <c:HorizontalLine/>
 
       <c:HorizontalLayout  OnClickAction="$Workflow.DoRefresh($workflow.visit,'true')">
         <c:VerticalLayout>

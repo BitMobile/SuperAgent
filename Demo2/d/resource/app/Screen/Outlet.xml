@@ -5,9 +5,9 @@
 
   <c:VerticalLayout>
 
-    <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>      
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoCommit()"/>
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>      
+      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoCommit()"/>
       <c:TextView Text="#outlet#" />
     </c:DockLayout>
 
@@ -15,16 +15,16 @@
 
     <c:ScrollView CssClass="grid">
 
-      <c:HorizontalLayout CssClass="headerEdit">
+      <c:HorizontalLayout CssClass="header_edit_block">
 
-        <c:VerticalLayout CssClass="headerEdit">
+        <c:VerticalLayout CssClass="header_edit_block">
           <c:TextView Text="$outlet.Description" CssClass="H1"></c:TextView>
           <c:TextView Text="$outlet.Address" CssClass="H2"></c:TextView>
         </c:VerticalLayout>
 
       </c:HorizontalLayout>
 
-      <c:HorizontalLine CssClass ="highlitedLine"/>
+      <c:HorizontalLine/>
 
       <c:HorizontalLayout OnClickAction="$Workflow.DoAction(EditParameter,$outlet,Class)">
 

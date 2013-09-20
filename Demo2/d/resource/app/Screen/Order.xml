@@ -15,9 +15,9 @@
 
   <c:VerticalLayout>
 
-    <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($workflow.order)"/>
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
+      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($workflow.order)"/>
       <c:TextView Text="#order#" />
     </c:DockLayout>
 
@@ -28,7 +28,7 @@
       <c:VerticalLayout CssClass="header">
         <c:VerticalLayout  CssClass ="grid">
           <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Add,$workflow.order)">
-            <c:VerticalLayout CssClass="vl4">
+            <c:VerticalLayout CssClass="half_width">
               <s:If Test="$greater==True">
                 <c:TextView Text="$sum" CssClass="H1"></c:TextView>
               </s:If>
@@ -42,7 +42,7 @@
               </s:Else>
               <c:TextView Text="#totalamount#" CssClass="H2"></c:TextView>
             </c:VerticalLayout>
-            <c:VerticalLayout CssClass="vl4">
+            <c:VerticalLayout CssClass="half_width">
               <s:If Test="$maxAmount == 0">
                 <c:TextView Text="#NoLimit#" CssClass="H1"></c:TextView>
               </s:If>

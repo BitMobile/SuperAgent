@@ -9,9 +9,9 @@
 
   <c:VerticalLayout>
 
-    <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()"/>
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()"/>
       <c:TextView Text="#stock#" />
     </c:DockLayout>
 
@@ -49,10 +49,8 @@
 
             <c:HorizontalLayout CssClass="duallineBlock">
               <c:VerticalLayout>
-                <c:HorizontalLayout>
-                  <c:TextView Text="$sku.Description"></c:TextView>
-                </c:HorizontalLayout>
-                <c:TextView Text="{$sku.Stock} #pcs#" CssClass="H7"></c:TextView>
+                <c:TextView Text="$sku.Description" CssClass="H1"></c:TextView>
+                <c:TextView Text="{$sku.Stock} #pcs#" CssClass="H2"></c:TextView>
               </c:VerticalLayout>
             </c:HorizontalLayout>
 

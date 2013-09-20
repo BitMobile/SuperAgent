@@ -12,24 +12,24 @@
 
   <c:VerticalLayout>
 
-    <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($order.OutletAsObject)"/>
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($order.OutletAsObject)"/>
       <c:TextView Text="#edit#" />
     </c:DockLayout>
 
     <c:ScrollView CssClass="grid">
 
-      <c:HorizontalLayout CssClass="headerEdit" OnClickAction="$Workflow.DoRefresh($order,$sku,$orderitem,$unit)">
+      <c:HorizontalLayout CssClass="header_edit_block" OnClickAction="$Workflow.DoRefresh($order,$sku,$orderitem,$unit)">
         <c:VerticalLayout>
           <c:TextView Text="{$sku.Description}" CssClass="H1"></c:TextView>
           <c:TextView Text="#refreshScreen#" CssClass="H2"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
 
-      <c:HorizontalLine CssClass ="highlitedLine"/>
+      <c:HorizontalLine/>
 
-      <c:HorizontalLayout CssClass="hl2">
+      <c:HorizontalLayout CssClass="cell">
         <c:VerticalLayout>
           <c:TextView Text="$orderitem.Total" CssClass="H1"></c:TextView>
           <c:TextView Text="#price#" CssClass="H2"></c:TextView>
@@ -42,7 +42,7 @@
 
       <c:HorizontalLine/>
 
-      <c:HorizontalLayout  CssClass="hl2">
+      <c:HorizontalLayout  CssClass="cell">
         <c:VerticalLayout>
           <c:EditText Value="$orderitem.Qty" CssClass="H1" Keyboard="numeric"></c:EditText>
           <c:TextView Text="#quantity#" CssClass="H2"></c:TextView>
@@ -53,7 +53,7 @@
         </c:VerticalLayout>
       </c:HorizontalLayout>
 
-      <c:HorizontalLayout CssClass="hl2">
+      <c:HorizontalLayout CssClass="cell">
         <c:VerticalLayout>
           <c:TextView Text="$baseQty" CssClass="H1"></c:TextView>
           <c:TextView Text="#quantity#" CssClass="H2"></c:TextView>
@@ -66,12 +66,12 @@
 
       <c:HorizontalLine/>
 
-      <c:HorizontalLayout CssClass="headerEdit">
+      <c:HorizontalLayout CssClass="header_edit_block">
         <c:VerticalLayout>
           <c:TextView Text="#selectUnit#" CssClass="H5"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
-      <c:HorizontalLine CssClass ="highlitedLine"/>
+      <c:HorizontalLine/>
 
       <s:Push Id="units" Value="$Facade.GetUnits($sku.Id)"></s:Push>
 

@@ -18,6 +18,10 @@ vl {
     height: 100%;
 }
 
+    vl line {
+        background-color: #283636;
+    }
+
 hl {
     width: 100%;
 }
@@ -39,6 +43,36 @@ TextView {
 
 Button {
     color: #fff;
+}
+
+CheckBox {
+    width: 60px;
+    height: 60px;
+}
+
+EditText {
+    border-style: solid;
+    border-color: #f00;
+    border-width: 1px;
+    border-radius: 5px;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+MemoEdit {
+    height: 50%;
+    width: 90%;
+    margin-top: 5%;
+    margin-left: 5%;
+    color: #000;
+    background-color: #f0f0f0;
+    font: 5sp arial;
+    border-style: solid;
+    border-color: #f00;
+    border-width: 1px;
+    border-radius: 5px;
+    padding-left: 5%;
+    padding-right: 5%;
 }
 
 .H1 {
@@ -73,7 +107,7 @@ Button {
     color: #b2749b;
 }
 
-.btnBack {
+.btn_back {
     background-image: url(button_left.png);
     height: auto;
     margin-top: 10%;
@@ -83,7 +117,7 @@ Button {
     dock-align: left;
 }
 
-.btnForward {
+.btn_forward {
     background-image: url(button_right.png);
     height: auto;
     margin-top: 10%;
@@ -93,12 +127,12 @@ Button {
     dock-align: right;
 }
 
-.topNavigator {
-    height: 10sp;
+.top_navigator {
+    height: 10%;
     background-color: #282f5a;
 }
 
-    .topNavigator TextView {
+    .top_navigator TextView {
         width: auto;
         height: auto;
         margin-top: 20%;
@@ -112,120 +146,94 @@ Button {
     background-color: #879091;
 }
 
-.grid headerEdit {
-    height: 99%;
-    background-color: #dbd7e1;
-    width: 100%;
-    margin-top: 0px;
+.grid {
 }
 
-.grid headerEdit {
-    width: 100%;
-    height: 50%;
-}
+    .grid line {
+        background-color: #879091;
+    }
 
-.grid line {
-    background-color: #879091;
-    margin-top: 0%;
-}
+    .grid hl {
+        height: 10sp;
+        selected-color: #bacdce;
+    }
 
-.grid highlitedLine {
-    background-color: #879091;
-    margin-top: 0px;
-}
+        .grid hl img {
+            height: 30%;
+            margin-top: 35%;
+            background-image: url(icon_more.png);
+        }
 
-.grid hl {
-    height: 10sp;
-    selected-color: #bacdce;
-}
+        .grid hl CheckBox {
+            selected-color: #6f6583;
+            background-color: #c9c3d5;
+        }
 
-.grid singleLayout {
-    height: 100%;
-}
+        .grid hl TextView {
+            width: 100%;
+            height: 100%;
+        }
 
-.grid hl img {
-    height: 30%;
-    margin-top: 35%;
-    background-image: url(icon_more.png);
-}
+        .grid hl EditText {
+            width: 90%;
+            height: 50%;
+            margin-top: 5%;
+            margin-left: 5%;
+            background-color: #f0f0f0;
+            color: #000000;
+            border-style: solid;
+        }
 
-.grid hl vl {
-    width: 90%;
-    height: 90%;
-    margin-top: 5%;
-    padding-left: 5%;
-}
+        .grid hl vl {
+            width: 90%;
+            height: 90%;
+            margin-top: 5%;
+            padding-left: 5%;
+        }
 
-.grid hl vl1 {
-    width: 80%;
-    height: 90%;
-    margin-top: 5%;
-    padding-left: 2%;
-}
+            .grid hl vl CheckBox {
+                selected-color: #6f6583;
+                background-color: #c9c3d5;
+            }
 
-.grid hl vl2 {
-    width: 2%;
-    height: 90%;
-    background-color: #ef0648;
-}
+            .grid hl vl TextView {
+                width: 100%;
+                height: 50%;
+            }
 
-.grid hl vl3 {
-    width: 88%;
-    height: 90%;
-    margin-top: 5%;
-}
+            .grid hl vl EditText {
+                width: 100%;
+                height: 50%;
+                background-color: #f0f0f0;
+                color: #000000;
+                border-style: solid;
+            }
 
-.grid hl vl4 {
-    width: 45%;
-    height: 90%;
-    margin-top: 5%;
-}
+            .grid hl vl hl {
+                width: 100%;
+                height: 100%;
+            }
 
-.grid hl vl hl {
-    width: 100%;
-    height: 100%;
-}
+                .grid hl vl hl TextView {
+                    width: 100%;
+                    height: 100%;
+                }
+                                
+        .grid hl half_width {
+            width: 45%;
+        }
 
-.grid hl TextView {
-    width: 100%;
-    height: 100%;
-}
+    .grid header_edit_block {
+        background-color: #dbd7e1;
+        width: 100%;
+        margin-top: 0px;
+    }
 
-.grid hl vl TextView {
-    width: 100%;
-    height: 50%;
-}
+    .grid doubleline_block {
+    }
 
-.grid hl vl hl TextView {
-    width: 100%;
-    height: 100%;
-}
+    .grid doubleline_block vl 
 
-.grid hl CheckBox {
-    selected-color: #6f6583;
-    background-color: #c9c3d5;
-}
-
-.grid hl vl CheckBox {
-    selected-color: #6f6583;
-    background-color: #c9c3d5;
-}
-
-.grid hl EditText {
-    width: 100%;
-    height: 50%;
-    background-color: #f0f0f0;
-    color: #000000;
-    border-style: none;
-}
-
-.grid hl vl EditText {
-    width: 100%;
-    height: 50%;
-    background-color: #f0f0f0;
-    color: #000000;
-    border-style: none;
-}
 
 .miltilineBlock {
     height: 30sp;
@@ -272,28 +280,22 @@ Button {
         height: 100%;
     }
 
-.hl2 vl {
-    width: 40%;
-    height: 90%;
-    margin-top: 0%;
-    padding-left: 5%;
-    padding-top: 5%;
-}
-
-    .hl2 vl EditText {
-        width: 90%;
-        border-style: solid;
-        border-color: #f00;
-        border-width: 1px;
-        border-radius: 5px;
-        padding-left: 5%;
-    }
-
-
 .search {
-    height: 10sp;
+    height: 10%;
     background-color: #8b7498;
 }
+
+    .search Button {
+        margin-left: 6%;
+        margin-top: 20%;
+        width: 30%;
+        height: 60%;
+        background-color: #282f5a;
+        color: #282f5a;
+        border-width: 1px;
+        border-color: #283636;
+        border-radius: 10px;
+    }
 
     .search dl {
         margin-left: 2%;
@@ -328,24 +330,3 @@ Button {
             dock-align: right;
             font: 80% arial;
         }
-
-    .search Button {
-        margin-left: 6%;
-        margin-top: 20%;
-        width: 30%;
-        height: 60%;
-        background-color: #282f5a;
-        color: #282f5a;
-        border-width: 1px;
-        border-color: #283636;
-        border-radius: 10px;
-    }
-
-vl line {
-    background-color: #283636;
-}
-
-CheckBox {
-    width: 60px;
-    height: 60px;
-}

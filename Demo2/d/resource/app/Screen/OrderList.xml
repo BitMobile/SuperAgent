@@ -4,9 +4,9 @@
 
   <c:VerticalLayout>
 
-    <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
-      <c:Button CssClass="btnForward" OnClickAction="$Workflow.DoRollback()"/>
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
+      <c:Button CssClass="btn_forward" OnClickAction="$Workflow.DoRollback()"/>
       <c:TextView Text="#orders#" />
     </c:DockLayout>
 
@@ -34,9 +34,8 @@
         <s:Push Id="statusDescription" Value="$Facade.GetOrderStatus($order)"></s:Push>
         <s:If Test="$statusDescription == 'Сanceled'">
           <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$order.OutletAsObject,null,$order)">
-            <c:VerticalLayout CssClass="vl2">
-            </c:VerticalLayout>
-            <c:VerticalLayout CssClass="vl3">
+            <c:VerticalLayout CssClass="canceled_mark"/>
+            <c:VerticalLayout CssClass="clipped">
               <c:TextView Text="$order.OutletAsObject.Description" CssClass="H1"></c:TextView>
               <s:Push Id="checkedNumber" Value ="$Facade.AssignNumberIfNotExist($order)"></s:Push>
               <s:If Test="$checkedNumber == 'noNumber'">

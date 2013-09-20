@@ -94,7 +94,7 @@ Button {
 }
 
 .topNavigator {
-    height: 10%;
+    height: 10sp;
     background-color: #282f5a;
 }
 
@@ -135,7 +135,7 @@ Button {
 }
 
 .grid hl {
-    height: 15%;
+    height: 10sp;
     selected-color: #bacdce;
 }
 
@@ -228,7 +228,7 @@ Button {
 }
 
 .miltilineBlock {
-    height: 30%;
+    height: 30sp;
 }
 
     .miltilineBlock vl hl {
@@ -263,7 +263,7 @@ Button {
 
 
 .header {
-    height: 15%;
+    height: 10sp;
     background-color: #dbd7e1;
 }
 
@@ -290,7 +290,7 @@ Button {
 
 
 .search {
-    height: 10%;
+    height: 10sp;
     background-color: #8b7498;
 }
 

@@ -68,6 +68,7 @@ no_tasks	No tasks
 documentSum	Document sum
 document	Document
 receivables	Receivables
+receivable	Receivable
 encashment	Encashment
 sum			Sum
 encashmentSum	Encashment sum

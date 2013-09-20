@@ -32,7 +32,7 @@ dl {
     }
 
 TextView {
-    padding-right: 2%;
+    padding-right: 5%;
     background-color: none;
     color: #444444;
 }
@@ -245,6 +245,7 @@ Button {
     }
 
 .duallineBlock {
+    height: 12sp;
 }
 
     .duallineBlock vl hl {

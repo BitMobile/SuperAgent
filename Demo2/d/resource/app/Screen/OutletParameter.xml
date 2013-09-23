@@ -17,30 +17,30 @@
 
       <c:HorizontalLayout>
         <c:VerticalLayout>
-          <c:TextView Text="$parameter.Description" CssClass="H1"></c:TextView>
-          <c:TextView Text="#insert_answer#" CssClass="H2"></c:TextView>
+          <c:TextView Text="$parameter.Description" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#insert_answer#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
 
       <c:HorizontalLine/>
 
-      <c:HorizontalLayout>
-        <s:If Test="$parameter.DataTypeAsObject.Description=='Boolean'">
-          <c:CheckBox Value="$parameterValue.Value" CssClass="H1"></c:CheckBox>
-        </s:If>
-        <s:Else>
-          <s:If Test="$parameter.DataTypeAsObject.Description=='Integer'">
-            <c:EditText Value="$parameterValue.Value" CssClass="H1" AutoFocus="true"></c:EditText>
+      <c:HorizontalLayout>        
+          <s:If Test="$parameter.DataTypeAsObject.Description=='Boolean'">
+            <c:CheckBox Value="$parameterValue.Value" CssClass="main_row"></c:CheckBox>
           </s:If>
           <s:Else>
-            <s:If Test="$parameter.DataTypeAsObject.Description=='Decimal'">
-              <c:EditText Value="$parameterValue.Value" CssClass="H1" AutoFocus="True" Keyboard="numeric"></c:EditText>
+            <s:If Test="$parameter.DataTypeAsObject.Description=='Integer'">
+              <c:EditText Value="$parameterValue.Value" CssClass="main_row" AutoFocus="true"></c:EditText>
             </s:If>
             <s:Else>
-              <c:EditText Value="$parameterValue.Value" CssClass="H1" AutoFocus="True"></c:EditText>
+              <s:If Test="$parameter.DataTypeAsObject.Description=='Decimal'">
+                <c:EditText Value="$parameterValue.Value" CssClass="main_row" AutoFocus="True" Keyboard="numeric"></c:EditText>
+              </s:If>
+              <s:Else>
+                <c:EditText Value="$parameterValue.Value" CssClass="main_row" AutoFocus="True"></c:EditText>
+              </s:Else>
             </s:Else>
-          </s:Else>
-        </s:Else>
+          </s:Else>        
       </c:HorizontalLayout>
 
     </c:ScrollView>

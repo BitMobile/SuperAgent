@@ -22,8 +22,8 @@
 
       <c:HorizontalLayout CssClass="header_edit_block" OnClickAction="$Workflow.DoRefresh($order,$sku,$orderitem,$unit)">
         <c:VerticalLayout>
-          <c:TextView Text="{$sku.Description}" CssClass="H1"></c:TextView>
-          <c:TextView Text="#refreshScreen#" CssClass="H2"></c:TextView>
+          <c:TextView Text="{$sku.Description}" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#refreshScreen#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
 
@@ -31,12 +31,12 @@
 
       <c:HorizontalLayout CssClass="cell">
         <c:VerticalLayout>
-          <c:TextView Text="$orderitem.Total" CssClass="H1"></c:TextView>
-          <c:TextView Text="#price#" CssClass="H2"></c:TextView>
+          <c:TextView Text="$orderitem.Total" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#price#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
         <c:VerticalLayout>
-          <c:EditText Value="$orderitem.Discount" CssClass="H1" Keyboard="numPunc"></c:EditText>
-          <c:TextView Text="#discount#/#markUp#" CssClass="H2"></c:TextView>
+          <c:EditText Value="$orderitem.Discount" CssClass="main_row" Keyboard="numPunc"></c:EditText>
+          <c:TextView Text="#discount#/#markUp#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
 
@@ -44,23 +44,23 @@
 
       <c:HorizontalLayout  CssClass="cell">
         <c:VerticalLayout>
-          <c:EditText Value="$orderitem.Qty" CssClass="H1" Keyboard="numeric"></c:EditText>
-          <c:TextView Text="#quantity#" CssClass="H2"></c:TextView>
+          <c:EditText Value="$orderitem.Qty" CssClass="main_row" Keyboard="numeric"></c:EditText>
+          <c:TextView Text="#quantity#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
         <c:VerticalLayout>
-          <c:TextView Text="$orderitem.UnitsAsObject.Description" CssClass="H1"></c:TextView>
-          <c:TextView Text="#packUnit#" CssClass="H2"></c:TextView>
+          <c:TextView Text="$orderitem.UnitsAsObject.Description" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#packUnit#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
 
       <c:HorizontalLayout CssClass="cell">
         <c:VerticalLayout>
-          <c:TextView Text="$baseQty" CssClass="H1"></c:TextView>
-          <c:TextView Text="#quantity#" CssClass="H2"></c:TextView>
+          <c:TextView Text="$baseQty" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#quantity#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
         <c:VerticalLayout>
-          <c:TextView Text="$sku.BaseUnitAsObject.Description" CssClass="H1"></c:TextView>
-          <c:TextView Text="#baseUnit#" CssClass="H2"></c:TextView>
+          <c:TextView Text="$sku.BaseUnitAsObject.Description" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#baseUnit#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
 
@@ -68,7 +68,7 @@
 
       <c:HorizontalLayout CssClass="header_edit_block">
         <c:VerticalLayout>
-          <c:TextView Text="#selectUnit#" CssClass="H5"></c:TextView>
+          <c:TextView Text="#selectUnit#" CssClass="header_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
@@ -79,7 +79,7 @@
 
         <c:HorizontalLayout OnClickAction="$Workflow.DoRefresh($order,$sku,$orderitem,$unit)">
           <c:VerticalLayout>
-            <c:TextView Text="$unit.PackAsObject.Description" CssClass="H1"></c:TextView>
+            <c:TextView Text="$unit.PackAsObject.Description" CssClass="main_row"></c:TextView>
           </c:VerticalLayout>
           <c:Image/>
         </c:HorizontalLayout>

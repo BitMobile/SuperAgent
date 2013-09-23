@@ -22,7 +22,7 @@
 
         <c:HorizontalLayout>
           <c:VerticalLayout>
-            <c:TextView Text="#no_questions#" CssClass="H1"></c:TextView>
+            <c:TextView Text="#no_questions#" CssClass="main_row"></c:TextView>
           </c:VerticalLayout>
         </c:HorizontalLayout>
 
@@ -34,16 +34,16 @@
           <s:Push Id="sku" Value="$item.SKUAsObject"/>
           <s:Push Id="skuValue" Value="$Facade.GetVisitSKUValue($visit,$sku)"/>
 
-            <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Edit,$outlet,$visit,$sku,$skuValue,$questionnaires)">
+          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Edit,$outlet,$visit,$sku,$skuValue,$questionnaires)">
 
             <c:VerticalLayout>
               <s:If Test="$skuValue!=null">
-                <c:TextView CssClass="H1" Text="#done#"/>
+                <c:TextView CssClass="main_row" Text="#done#"/>
               </s:If>
               <s:Else>
-                <c:TextView Text="?" CssClass="H1"></c:TextView>
+                <c:TextView Text="?" CssClass="main_row"></c:TextView>
               </s:Else>
-              <c:TextView Text="$sku.Description" CssClass="H2"></c:TextView>
+              <c:TextView Text="$sku.Description" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
 
             <c:Image/>

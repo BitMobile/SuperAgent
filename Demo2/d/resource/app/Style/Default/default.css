@@ -51,61 +51,27 @@ CheckBox {
 }
 
 EditText {
+    color: #000;
+    background-color: #f0f0f0;
     border-style: solid;
-    border-color: #f00;
+    border-color: #cacaca;
     border-width: 1px;
     border-radius: 5px;
-    padding-left: 5%;
-    padding-right: 5%;
+    padding-left: 2%;
+    padding-right: 2%;
 }
 
 MemoEdit {
-    height: 50%;
-    width: 90%;
-    margin-top: 5%;
-    margin-left: 5%;
     color: #000;
     background-color: #f0f0f0;
-    font: 5sp arial;
     border-style: solid;
-    border-color: #f00;
+    border-color: #cacaca;
     border-width: 1px;
     border-radius: 5px;
-    padding-left: 5%;
-    padding-right: 5%;
+    padding-left: 2%;
+    padding-right: 2%;
 }
 
-.H1 {
-    font: 60% Arial;
-}
-
-.H2 {
-    font: 40% Arial;
-    color: #b2749b;
-}
-
-.H3 {
-    font: 40% Arial-BoldMT;
-}
-
-.H4 {
-    font: 40% Arial-BoldMT;
-}
-
-.H5 {
-    font: 60% Arial;
-    color: #b2749b;
-}
-
-.H6 {
-    font: 60% Arial;
-    color: #cf3333;
-}
-
-.H7 {
-    font: 70% Arial;
-    color: #b2749b;
-}
 
 .btn_back {
     background-image: url(button_left.png);
@@ -141,144 +107,7 @@ MemoEdit {
         color: #FFF;
         font: 60% arial;
     }
-
-.header line {
-    background-color: #879091;
-}
-
-.grid {
-}
-
-    .grid line {
-        background-color: #879091;
-    }
-
-    .grid hl {
-        height: 10sp;
-        selected-color: #bacdce;
-    }
-
-        .grid hl img {
-            height: 30%;
-            margin-top: 35%;
-            background-image: url(icon_more.png);
-        }
-
-        .grid hl CheckBox {
-            selected-color: #6f6583;
-            background-color: #c9c3d5;
-        }
-
-        .grid hl TextView {
-            width: 100%;
-            height: 100%;
-        }
-
-        .grid hl EditText {
-            width: 90%;
-            height: 50%;
-            margin-top: 5%;
-            margin-left: 5%;
-            background-color: #f0f0f0;
-            color: #000000;
-            border-style: solid;
-        }
-
-        .grid hl vl {
-            width: 90%;
-            height: 90%;
-            margin-top: 5%;
-            padding-left: 5%;
-        }
-
-            .grid hl vl CheckBox {
-                selected-color: #6f6583;
-                background-color: #c9c3d5;
-            }
-
-            .grid hl vl TextView {
-                width: 100%;
-                height: 50%;
-            }
-
-            .grid hl vl EditText {
-                width: 100%;
-                height: 50%;
-                background-color: #f0f0f0;
-                color: #000000;
-                border-style: solid;
-            }
-
-            .grid hl vl hl {
-                width: 100%;
-                height: 100%;
-            }
-
-                .grid hl vl hl TextView {
-                    width: 100%;
-                    height: 100%;
-                }
-                                
-        .grid hl half_width {
-            width: 45%;
-        }
-
-    .grid header_edit_block {
-        background-color: #dbd7e1;
-        width: 100%;
-        margin-top: 0px;
-    }
-
-    .grid doubleline_block {
-    }
-
-    .grid doubleline_block vl 
-
-
-.miltilineBlock {
-    height: 30sp;
-}
-
-    .miltilineBlock vl hl {
-        height: 75%;
-    }
-
-        .miltilineBlock vl hl TextView {
-            font: 20% arial;
-            white-space: normal;
-        }
-
-    .miltilineBlock vl TextView {
-        height: 25%;
-    }
-
-.duallineBlock {
-    height: 12sp;
-}
-
-    .duallineBlock vl hl {
-        height: 66%;
-    }
-
-        .duallineBlock vl hl TextView {
-            font: 40% arial;
-            white-space: normal;
-        }
-
-    .duallineBlock vl TextView {
-        height: 34%;
-    }
-
-
-
-.header {
-    height: 10sp;
-    background-color: #dbd7e1;
-}
-
-    .header grid hl {
-        height: 100%;
-    }
+    
 
 .search {
     height: 10%;
@@ -330,3 +159,175 @@ MemoEdit {
             dock-align: right;
             font: 80% arial;
         }
+        
+
+.grid {
+}
+
+    .grid line {
+        background-color: #879091;
+    }
+
+    .grid hl {
+        height: 12sp;
+        selected-color: #bacdce;
+    }
+
+        .grid hl img {
+            height: 30%;
+            margin-top: 35%;
+            background-image: url(icon_more.png);
+        }
+
+        .grid hl CheckBox {
+            selected-color: #6f6583;
+            background-color: #c9c3d5;
+        }
+
+        .grid hl TextView {
+            width: 100%;
+            height: 100%;            
+            padding-top: 20%;
+            font: 40% Arial;
+        }
+
+        .grid hl EditText {
+            width: 98%;
+            height: 50%;
+            margin-top: 5%;
+            margin-left: 1%;
+            background-color: #f0f0f0;
+            color: #000000;
+            border-style: solid;
+        }
+
+        .grid hl vl {
+            width: 93%;
+            height: 90%;
+            margin-top: 5%;
+            padding-left: 2%;
+        }
+
+            .grid hl vl CheckBox {
+                width: 100%;
+                height: 66%;
+                selected-color: #6f6583;
+                background-color: #c9c3d5;
+            }
+
+            .grid hl vl TextView {
+                width: 100%;
+                height: 66%;
+                white-space: normal;
+                font: 40% Arial;
+            }
+
+            .grid hl vl EditText {
+                width: 98%;
+                height: 66%;
+                border-style: solid;
+                font: 40% Arial;
+            }
+
+            .grid hl vl MemoEdit {
+                width: 98%;
+                height: 66%;
+                border-style: solid;
+                font: 40% Arial;
+            }
+
+            .grid hl vl hl {
+                width: 100%;
+                height: 100%;
+            }
+
+                .grid hl vl hl TextView {
+                    width: 50%;
+                    height: 100%;
+                    font: 60% Arial;
+                }
+
+            .grid hl vl description_row {
+                width: 100%;
+                height: 34%;
+                font: 60% Arial;
+            }
+
+        .grid hl half_width {
+            width: 45%;
+        }
+
+    .grid header_edit_block {
+        background-color: #dbd7e1;
+        width: 100%;
+        margin-top: 0px;
+    }
+    
+
+.text_block {
+    height: 18sp;
+}
+
+    .text_block vl main_row {
+        height: 75%;
+        font: 24% Arial;
+    }
+
+    .text_block vl description_row {
+        height: 20%;
+        font: 68% Arial;
+    }
+
+.memo_block {
+    height: 48sp;
+}
+
+    .memo_block vl {
+        width: 98%;
+        height: 90%;
+        margin-top: 5%;
+        margin-left: 1%;
+        padding-left: 0%;
+    }
+
+        .memo_block vl description_row {
+            height: 11%;
+        }
+
+        .memo_block vl MemoEdit {
+            height: 80%;
+            width: 100%;
+            margin-top: 8%;
+            margin-left: 0%;
+            font: 8% Arial;
+        }
+        
+
+.main_row {
+}
+
+.header_row {
+    color: #b2749b;
+}
+
+.warning_row {
+    color: #cf3333;
+}
+
+.description_row {
+    color: #b2749b;
+}
+
+
+.header {
+    height: 12sp;
+    background-color: #dbd7e1;
+}
+
+    .header grid hl {
+        height: 100%;
+    }
+
+    .header line {
+        background-color: #879091;
+    }

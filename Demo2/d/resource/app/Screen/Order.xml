@@ -30,26 +30,26 @@
           <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Add,$workflow.order)">
             <c:VerticalLayout CssClass="half_width">
               <s:If Test="$greater==True">
-                <c:TextView Text="$sum" CssClass="H1"></c:TextView>
+                <c:TextView Text="$sum" CssClass="main_row"></c:TextView>
               </s:If>
               <s:Else>
                 <s:If Test="$maxAmount == 0">
-                  <c:TextView Text="$sum" CssClass="H1"></c:TextView>
+                  <c:TextView Text="$sum" CssClass="main_row"></c:TextView>
                 </s:If>
                 <s:Else>
-                  <c:TextView Text="$sum" CssClass="H6"></c:TextView>
+                  <c:TextView Text="$sum" CssClass="warning_row"></c:TextView>
                 </s:Else>
               </s:Else>
-              <c:TextView Text="#totalamount#" CssClass="H2"></c:TextView>
+              <c:TextView Text="#totalamount#" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
             <c:VerticalLayout CssClass="half_width">
               <s:If Test="$maxAmount == 0">
-                <c:TextView Text="#NoLimit#" CssClass="H1"></c:TextView>
+                <c:TextView Text="#NoLimit#" CssClass="main_row"></c:TextView>
               </s:If>
               <s:Else>
-                <c:TextView Text="$maxAmount" CssClass="H1"></c:TextView>
+                <c:TextView Text="$maxAmount" CssClass="main_row"></c:TextView>
               </s:Else>
-              <c:TextView Text="#maximumAmount#" CssClass="H2"></c:TextView>
+              <c:TextView Text="#maximumAmount#" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
             <c:Image/>
           </c:HorizontalLayout>
@@ -65,9 +65,9 @@
           <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Edit,$workflow.order,$orderitem.SKUAsObject,$orderitem)">
 
             <c:VerticalLayout>
-              <c:TextView Text="$orderitem.SKUAsObject.Description" CssClass="H1"></c:TextView>
+              <c:TextView Text="$orderitem.SKUAsObject.Description" CssClass="main_row"></c:TextView>
               <s:Push Value="$Facade.GetSKUAmount($workflow.order.Id, $orderitem)" Id="amount"/>
-              <c:TextView Text="#quantity#: {$orderitem.Qty}   #amount#: {$amount}" CssClass="H2"></c:TextView>
+              <c:TextView Text="#quantity#: {$orderitem.Qty}   #amount#: {$amount}" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
 
             <c:Image/>
@@ -85,8 +85,8 @@
         <c:VerticalLayout  CssClass ="grid">
           <c:HorizontalLayout>
             <c:VerticalLayout>
-              <c:TextView Text="$sum" CssClass="H1"></c:TextView>
-              <c:TextView Text="#totalamount#" CssClass="H2"></c:TextView>
+              <c:TextView Text="$sum" CssClass="main_row"></c:TextView>
+              <c:TextView Text="#totalamount#" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
             <c:Image/>
           </c:HorizontalLayout>
@@ -102,9 +102,9 @@
           <c:HorizontalLayout>
 
             <c:VerticalLayout>
-              <c:TextView Text="$orderitem.SKUAsObject.Description" CssClass="H1"></c:TextView>
+              <c:TextView Text="$orderitem.SKUAsObject.Description" CssClass="main_row"></c:TextView>
               <s:Push Value="$Facade.GetSKUAmount($workflow.order.Id, $orderitem)" Id="amount"/>
-              <c:TextView Text="#quantity#: {$orderitem.Qty}   #amount#: {$amount}" CssClass="H2"></c:TextView>
+              <c:TextView Text="#quantity#: {$orderitem.Qty}   #amount#: {$amount}" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
 
             <c:Image/>

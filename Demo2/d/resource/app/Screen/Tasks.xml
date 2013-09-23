@@ -22,7 +22,7 @@
 
         <c:HorizontalLayout>
           <c:VerticalLayout>
-            <c:TextView Text="#no_tasks#" CssClass="H1"></c:TextView>
+            <c:TextView Text="#no_tasks#" CssClass="main_row"></c:TextView>
           </c:VerticalLayout>
         </c:HorizontalLayout>
 
@@ -32,11 +32,11 @@
 
         <s:Iterator Id="task" Value="$tasks">
 
-          <c:HorizontalLayout CssClass="duallineBlock" OnClickAction="$Workflow.DoAction(Select,$task,$visit,$outlet)">
+          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$task,$visit,$outlet)">
             <c:VerticalLayout>
-              <c:TextView Text="$task.TextTask" CssClass="H1"></c:TextView>
+              <c:TextView Text="$task.TextTask" CssClass="main_row"></c:TextView>
               <s:Push Id="descr" Value="$Facade.GetOutlet($task)"></s:Push>
-              <c:TextView Text="{$descr}, {$task.PlanDate.DateString}" CssClass="H2"></c:TextView>
+              <c:TextView Text="{$descr}, {$task.PlanDate.DateString}" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
             <c:Image/>
           </c:HorizontalLayout>

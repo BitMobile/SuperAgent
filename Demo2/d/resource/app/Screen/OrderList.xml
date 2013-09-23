@@ -18,7 +18,7 @@
       <c:VerticalLayout  CssClass ="grid">
         <c:HorizontalLayout OnEvent="Forward" OnClickAction="$Workflow.DoForward()">
           <c:VerticalLayout>
-            <c:TextView Text="#newOrder#" CssClass="H5"></c:TextView>
+            <c:TextView Text="#newOrder#" CssClass="header_row"></c:TextView>
           </c:VerticalLayout>
           <c:Image/>
         </c:HorizontalLayout>
@@ -36,12 +36,12 @@
           <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$order.OutletAsObject,null,$order)">
             <c:VerticalLayout CssClass="canceled_mark"/>
             <c:VerticalLayout CssClass="clipped">
-              <c:TextView Text="$order.OutletAsObject.Description" CssClass="H1"></c:TextView>
+              <c:TextView Text="$order.OutletAsObject.Description" CssClass="main_row"></c:TextView>
               <s:Push Id="checkedNumber" Value ="$Facade.AssignNumberIfNotExist($order)"></s:Push>
               <s:If Test="$checkedNumber == 'noNumber'">
                 <s:Push Id="checkedNumber" Value="#noNumber#"></s:Push>
               </s:If>
-              <c:TextView Text="{$checkedNumber}, {$order.Date}" CssClass="H2"></c:TextView>
+              <c:TextView Text="{$checkedNumber}, {$order.Date}" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
             <c:Image/>
           </c:HorizontalLayout>
@@ -50,12 +50,12 @@
         <s:Else>
           <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$order.OutletAsObject,null,$order)">
             <c:VerticalLayout>
-              <c:TextView Text="$order.OutletAsObject.Description" CssClass="H1"></c:TextView>
+              <c:TextView Text="$order.OutletAsObject.Description" CssClass="main_row"></c:TextView>
               <s:Push Id="checkedNumber" Value ="$Facade.AssignNumberIfNotExist($order)"></s:Push>
               <s:If Test="$checkedNumber == 'noNumber'">
                 <s:Push Id="checkedNumber" Value="#noNumber#"></s:Push>
               </s:If>
-              <c:TextView Text="{$checkedNumber}, {$order.Date}" CssClass="H2"></c:TextView>
+              <c:TextView Text="{$checkedNumber}, {$order.Date}" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
             <c:Image/>
           </c:HorizontalLayout>

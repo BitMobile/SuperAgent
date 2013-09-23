@@ -19,12 +19,10 @@
 
     <c:ScrollView CssClass="grid">
 
-      <c:HorizontalLayout CssClass="miltilineBlock">
+      <c:HorizontalLayout CssClass="text_block">
         <c:VerticalLayout>
-          <c:HorizontalLayout>
-            <c:TextView Text="$taskValue.TextTask" CssClass="H1"></c:TextView>
-          </c:HorizontalLayout>
-          <c:TextView Text="#description#" CssClass="H2"></c:TextView>
+          <c:TextView Text="$taskValue.TextTask" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
 
@@ -32,19 +30,17 @@
 
       <c:HorizontalLayout>
         <c:VerticalLayout>
-          <c:CheckBox Value="$taskValue.Result" CssClass="H1"></c:CheckBox>
-          <c:TextView Text="#result#" CssClass="H2"></c:TextView>
+          <c:CheckBox Value="$taskValue.Result" CssClass="main_row"></c:CheckBox>
+          <c:TextView Text="#result#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
 
       <c:HorizontalLine/>
 
-      <c:HorizontalLayout CssClass="miltilineBlock">
+      <c:HorizontalLayout CssClass="text_block">
         <c:VerticalLayout>
-          <c:HorizontalLayout>
-            <c:TextView Text="$task.Target" CssClass="H1"></c:TextView>
-          </c:HorizontalLayout>
-          <c:TextView Text="#target#" CssClass="H2"></c:TextView>
+          <c:TextView Text="$task.Target" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#target#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
 
@@ -52,8 +48,8 @@
 
       <c:HorizontalLayout>
         <c:VerticalLayout>
-          <c:TextView Text="$task.PlanDate" CssClass="H1"></c:TextView>
-          <c:TextView Text="#plandate#" CssClass="H2"></c:TextView>
+          <c:TextView Text="$task.PlanDate" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#plandate#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
 
       </c:HorizontalLayout>

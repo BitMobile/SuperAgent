@@ -32,10 +32,8 @@
 
         <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$outlet)" CssClass="doubleline_block">
           <c:VerticalLayout>
-            <c:TextView Text="$outlet.Description" CssClass="H1"></c:TextView>
-            <c:HorizontalLayout>
-              <c:TextView Text="$outlet.Address" CssClass="H2"></c:TextView>
-            </c:HorizontalLayout>
+            <c:TextView Text="$outlet.Description" CssClass="main_row"></c:TextView>
+            <c:TextView Text="$outlet.Address" CssClass="description_row"></c:TextView>
           </c:VerticalLayout>
           <c:Image/>
         </c:HorizontalLayout>

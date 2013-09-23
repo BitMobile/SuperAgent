@@ -20,24 +20,24 @@
 
       <c:HorizontalLayout>
         <c:VerticalLayout>
-          <c:TextView Text="$encasmentItem.DocumentName" CssClass="H1"></c:TextView>
-          <c:TextView Text="#document#" CssClass="H2"></c:TextView>
+          <c:TextView Text="$encasmentItem.DocumentName" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#document#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
       <c:HorizontalLayout>
         <c:VerticalLayout>
-          <c:TextView Text="$receivableDoc.DocumentSum" CssClass="H1"></c:TextView>
-          <c:TextView Text="#target#" CssClass="H2"></c:TextView>
+          <c:TextView Text="$receivableDoc.DocumentSum" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#target#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
       <c:HorizontalLayout>
         <c:VerticalLayout>
-          <c:EditText Value="$encasmentItem.EncashmentSum" CssClass="H1" Keyboard="numeric" AutoFocus="True"></c:EditText>
-          <c:TextView Text="#sum#" CssClass="H2"></c:TextView>
+          <c:EditText Value="$encasmentItem.EncashmentSum" CssClass="main_row" Keyboard="numeric" AutoFocus="True"></c:EditText>
+          <c:TextView Text="#sum#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>

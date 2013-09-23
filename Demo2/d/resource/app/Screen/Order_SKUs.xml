@@ -37,7 +37,7 @@
         <s:If Test="$checkedGroup != 0">
           <c:HorizontalLayout CssClass ="gridEdit">
             <c:VerticalLayout>
-              <c:TextView Text = "$group.Description" CssClass = "H1"></c:TextView>
+              <c:TextView Text = "$group.Description" CssClass = "main_row"></c:TextView>
             </c:VerticalLayout>
 
           </c:HorizontalLayout>
@@ -50,12 +50,12 @@
 
             <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$order,$sku,null)" CssClass="gridWhite">
               <c:VerticalLayout>
-                <c:TextView Text="$sku.Description" CssClass="H1"></c:TextView>
+                <c:TextView Text="$sku.Description" CssClass="main_row"></c:TextView>
                 <c:HorizontalLayout>
-                  <c:TextView Text="#price2#" CssClass="H2"></c:TextView>
-                  <c:TextView Text="$sku.Price" CssClass="H2"></c:TextView>
-                  <c:TextView Text="#stock#" CssClass="H2"></c:TextView>
-                  <c:TextView Text="$sku.Stock" CssClass="H2"></c:TextView>
+                  <c:TextView Text="#price2#" CssClass="description_row"></c:TextView>
+                  <c:TextView Text="$sku.Price" CssClass="description_row"></c:TextView>
+                  <c:TextView Text="#stock#" CssClass="description_row"></c:TextView>
+                  <c:TextView Text="$sku.Stock" CssClass="description_row"></c:TextView>
                 </c:HorizontalLayout>
               </c:VerticalLayout>
 

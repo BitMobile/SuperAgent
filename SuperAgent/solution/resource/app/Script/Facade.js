@@ -191,7 +191,11 @@ function GetQuestionsByOutlet(questionnaires) {
         var questions = new Query();
         questions.AddParameter("Ref", questionnaires.Ref);
         questions.Text = "select * from Document.Questionnaire_Questions where Ref == @Ref";
-        return questions.Execute();
+        var result = questions.Execute();
+        if (result.items.Count == 0)
+            return null;
+        else
+            return result;
     }
 }
 
@@ -230,10 +234,12 @@ function GetSKUsByOutlet(questionnaires) {
         var query = new Query();
         query.AddParameter("Ref", questionnaires.Ref);
         query.Text = "select * from Document.Questionnaire_SKUs where Ref == @Ref";
-        return query.Execute();
+        var result = query.Execute();
+        if (result.items.Count == 0)
+            return null;
+        else
+            return result;
     }
-
-    return query.Execute();
 }
 
 function CheckQuestionExistence(questionnaires, description) {
@@ -504,6 +510,11 @@ function GetUnits(skuId) {
 function UpdateAndRefresh(entity, attribute, value) {
     entity[attribute] = value;
 
+}
+
+function DeleteItemAndBack(orderitem) {
+    DB.Current.Document.Order_SKUs.Delete(orderitem);
+    Workflow.Back();
 }
 
 

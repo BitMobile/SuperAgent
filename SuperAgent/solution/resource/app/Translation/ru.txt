@@ -7,7 +7,7 @@ outlets		Магазины
 targets		Цели
 target		Цель
 settings	Настройки
-sync		Синхронизация
+sync		Обновить
 search		Поиск
 outlet		Торговая точка
 outlet_class	Класс торговой точки
@@ -51,7 +51,7 @@ markUp		Наценка
 outOfStock	Наличие на складе
 false		Нет
 true		Да
-done		Отвечен
+done		Заполнен
 pcs			шт.
 orders		Заказы
 newOrder	Создать новый заказ
@@ -60,14 +60,23 @@ noNumber	Нет номера
 markUp		Наценка
 unit		Единица изм.
 baseUnit	Баз. единица изм.
-<<<<<<< HEAD
-selectUnit	Выбрать единицу измерения
-logo		logoRu
-=======
 selectUnit	Выберите единицу измерения:
+logo		logoRu
 packUnit	Ед. упаковки
-refreshScreen	Кликните здесь чтобы обновить экран
-
->>>>>>> b86bdd1c8c13acaa8c21c34932277056cf7017a1
-
+refreshScreen	Пересчитать заказ
+no_tasks	Задач нет
+documentSum	Сумма документа
+document	Документ
+receivables	Задолженность
+receivable	Задолженность
+encashment	Инкассация
+sum			Сумма
+encashmentSum	Сумма инкассации
+spreadOnDocuments	Распределить на документы
+docNumber	Номер документа
+receivableAmount	Сумма задолженности
+encashmentAmount	Сумма инкассации
+nameSurname	ФИО
+maximumAmount	Лимит
+NoLimit		Неограничен
 

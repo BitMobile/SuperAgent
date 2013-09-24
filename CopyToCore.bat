@@ -1,1 +1,0 @@
-xcopy "d:\Projects\solutions" "D:\Projects\core\SyncService\SyncService\Solutions" /S /I /Y

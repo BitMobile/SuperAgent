@@ -1,1 +1,0 @@
-D:\Projects\core\BitMobileServer\Utils\bin\Debug\utils.exe -storage http://localhost/SyncOnPremises/test/%1 %1.zip

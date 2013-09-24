@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4F97195E-F736-4372-898C-9E01B1EBFE84}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SuperAgent</RootNamespace>
+    <AssemblyName>SuperAgent</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="resource\app\BusinessProcess\BusinessProcess.xml" />
+    <Content Include="resource\app\Image\Default\button_left.png" />
+    <Content Include="resource\app\Image\Default\button_left_disabled.png" />
+    <Content Include="resource\app\Image\Default\button_right.png" />
+    <Content Include="resource\app\Image\Default\button_right_disabled.png" />
+    <Content Include="resource\app\Image\Default\distr_active.png" />
+    <Content Include="resource\app\Image\Default\icon_more.png" />
+    <Content Include="resource\app\Image\Default\icon_zoom.png" />
+    <Content Include="resource\app\Image\Default\kpi.png" />
+    <Content Include="resource\app\Image\Default\kpi_disabled.png" />
+    <Content Include="resource\app\Image\Default\LogoEn.png" />
+    <Content Include="resource\app\Image\Default\LogoRu.png" />
+    <Content Include="resource\app\Image\Default\logo_firstbit2.png" />
+    <Content Include="resource\app\Image\Default\order_active.png" />
+    <Content Include="resource\app\Image\Default\outlets.png" />
+    <Content Include="resource\app\Image\Default\refresh.png" />
+    <Content Include="resource\app\Image\Default\schedule.png" />
+    <Content Include="resource\app\Image\Default\settings.png" />
+    <Content Include="resource\app\Image\Default\settings_disabled.png" />
+    <Content Include="resource\app\Image\Default\sync.png" />
+    <Content Include="resource\app\Image\Default\todo.png" />
+    <Content Include="resource\app\Image\Default\visit.png" />
+    <Content Include="resource\app\Screen\Encashment.xml" />
+    <Content Include="resource\app\Screen\ListChoice.xml" />
+    <Content Include="resource\app\Screen\Main.xml" />
+    <Content Include="resource\app\Screen\Order.xml" />
+    <Content Include="resource\app\Screen\OrderList.xml" />
+    <Content Include="resource\app\Screen\Order_Commentary.xml" />
+    <Content Include="resource\app\Screen\Order_EditSKU.xml" />
+    <Content Include="resource\app\Screen\Order_SKUs.xml" />
+    <Content Include="resource\app\Screen\Outlet.xml" />
+    <Content Include="resource\app\Screen\OutletParameter.xml" />
+    <Content Include="resource\app\Screen\Outlets.xml" />
+    <Content Include="resource\app\Screen\Receivables.xml" />
+    <Content Include="resource\app\Screen\ScheduledVisits.xml" />
+    <Content Include="resource\app\Screen\Stock_SKUs.xml" />
+    <Content Include="resource\app\Screen\Targets.xml" />
+    <Content Include="resource\app\Screen\Task.xml" />
+    <Content Include="resource\app\Screen\Tasks.xml" />
+    <Content Include="resource\app\Screen\UnscheduledVisit.xml" />
+    <Content Include="resource\app\Screen\Visit_Order_Commentary.xml" />
+    <Content Include="resource\app\Screen\Visit_Outlet.xml" />
+    <Content Include="resource\app\Screen\Visit_Question.xml" />
+    <Content Include="resource\app\Screen\Visit_Questions.xml" />
+    <Content Include="resource\app\Screen\Visit_SKU.xml" />
+    <Content Include="resource\app\Screen\Visit_SKUs.xml" />
+    <Content Include="resource\app\Screen\Visit_Task.xml" />
+    <Content Include="resource\app\Screen\Visit_Total.xml" />
+    <Content Include="resource\app\Script\DB.js" />
+    <Content Include="resource\app\Script\Facade.js" />
+    <Content Include="resource\app\Script\Workflow.js" />
+    <Content Include="resource\app\Style\Default\default.css" />
+    <Content Include="resource\app\Style\Default\Main.css" />
+    <Content Include="resource\app\Style\Default\Order.css" />
+    <Content Include="resource\app\Style\Default\OrderList.css" />
+    <Content Include="resource\app\Style\Default\Order_EditSKU.css" />
+    <Content Include="resource\app\Style\Default\Order_SKUs.css" />
+    <Content Include="resource\app\Style\Default\ScheduledVisits.css" />
+    <Content Include="resource\app\Style\Default\Stock_SKUs.css" />
+    <Content Include="resource\app\Style\Default\Targets.css" />
+    <Content Include="resource\app\Style\Default\Visit_Order.css" />
+    <Content Include="resource\app\Translation\en.txt" />
+    <Content Include="resource\app\Translation\ru.txt" />
+    <Content Include="resource\settings.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

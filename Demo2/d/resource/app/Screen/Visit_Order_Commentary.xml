@@ -5,24 +5,23 @@
 
   <c:VerticalLayout>
 
-    <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>     
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($workflow.visit)"/>
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($workflow.visit)"/>
       <c:TextView Text="#commentary#" />
     </c:DockLayout>
 
     <c:ScrollView CssClass="grid">
 
-        <c:HorizontalLayout>
-          <c:VerticalLayout>
-		<c:TextView Text="#insert_text#" CssClass="H2"></c:TextView>
-		<c:HorizontalLine/>
-		<c:EditText Value="$order.Commentary" CssClass="H1" AutoFocus="True"></c:EditText>
-          </c:VerticalLayout>          
-        </c:HorizontalLayout>
+      <c:HorizontalLayout CssClass="memo_block">
+        <c:VerticalLayout>
+          <c:TextView Text="#insert_text#" CssClass="description_row"></c:TextView>
+          <c:HorizontalLine/>
+          <c:MemoEdit Value="$order.Commentary" CssClass="main_row" AutoFocus="True"></c:MemoEdit>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
 
     </c:ScrollView>
-
   </c:VerticalLayout>
 
 </c:Screen>

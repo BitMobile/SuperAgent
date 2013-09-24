@@ -9,9 +9,9 @@
 
   <c:VerticalLayout>
 
-    <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()"/>
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()"/>
       <c:TextView Text="#answer#" />
     </c:DockLayout>
 
@@ -19,8 +19,8 @@
 
       <c:HorizontalLayout>
         <c:VerticalLayout>
-          <c:TextView Text="$question.Description" CssClass="H1"></c:TextView>
-          <c:TextView Text="#typeanswer#" CssClass="H2"></c:TextView>
+          <c:TextView Text="$question.Description" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#typeanswer#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
 
@@ -28,23 +28,23 @@
 
 
 
-      <c:HorizontalLayout>
-        <s:If Test="$question.AnswerTypeAsObject.Description=='Boolean'">
-          <c:CheckBox Value="$questionValue.Answer" CssClass="H1"></c:CheckBox>
-        </s:If>
-        <s:Else>
-          <s:If Test="$question.AnswerTypeAsObject.Description=='Integer'">
-            <c:EditText Value="$questionValue.Answer" CssClass="H1" AutoFocus="True" Keyboard="numeric"></c:EditText>
+      <c:HorizontalLayout>        
+          <s:If Test="$question.AnswerTypeAsObject.Description=='Boolean'">
+            <c:CheckBox Value="$questionValue.Answer" CssClass="main_row"></c:CheckBox>
           </s:If>
           <s:Else>
-            <s:If Test="$question.AnswerTypeAsObject.Description=='Decimal'">
-              <c:EditText Value="$questionValue.Answer" CssClass="H1" AutoFocus="True" Keyboard="numeric"></c:EditText>
+            <s:If Test="$question.AnswerTypeAsObject.Description=='Integer'">
+              <c:EditText Value="$questionValue.Answer" CssClass="main_row" AutoFocus="True" Keyboard="numeric"></c:EditText>
             </s:If>
             <s:Else>
-              <c:EditText Value="$questionValue.Answer" CssClass="H1" AutoFocus="True"></c:EditText>
+              <s:If Test="$question.AnswerTypeAsObject.Description=='Decimal'">
+                <c:EditText Value="$questionValue.Answer" CssClass="main_row" AutoFocus="True" Keyboard="numeric"></c:EditText>
+              </s:If>
+              <s:Else>
+                <c:EditText Value="$questionValue.Answer" CssClass="main_row" AutoFocus="True"></c:EditText>
+              </s:Else>
             </s:Else>
-          </s:Else>
-        </s:Else>
+          </s:Else>        
       </c:HorizontalLayout>
 
     </c:ScrollView>

@@ -128,16 +128,19 @@
     <Content Include="d\resource\app\Script\Workflow.js" />
     <Content Include="d\resource\app\Style\Default\default.css" />
     <Content Include="d\resource\app\Style\Default\Main.css" />
+    <Content Include="d\resource\app\Style\Default\OrderList.css" />
+    <Content Include="d\resource\app\Style\Default\Order_EditSKU.css" />
     <Content Include="d\resource\app\Style\Default\Order_SKUs.css" />
     <Content Include="d\resource\app\Style\Default\Order.css" />
     <Content Include="d\resource\app\Style\Default\Targets.css" />
     <Content Include="d\resource\app\Style\Default\Visit_Order.css" />
-    <Content Include="d\resource\app\Style\Default\Tasks.css" />
     <Content Include="d\resource\app\Style\Default\Stock_SKUs.css" />
     <Content Include="d\resource\app\Translation\en.txt" />
     <Content Include="d\resource\app\Translation\ru.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="d\resource\app\Style\Default\ScheduledVisits.css" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

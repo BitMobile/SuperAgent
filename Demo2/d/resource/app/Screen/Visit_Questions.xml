@@ -9,9 +9,9 @@
 
   <c:VerticalLayout>
 
-    <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($outlet,$visit,$questionnaires)"/>
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($outlet,$visit,$questionnaires)"/>
       <c:TextView Text="#questions#" />
     </c:DockLayout>
 
@@ -23,7 +23,7 @@
 
         <c:HorizontalLayout>
           <c:VerticalLayout>
-            <c:TextView Text="#no_questions#" CssClass="H1"></c:TextView>
+            <c:TextView Text="#no_questions#" CssClass="main_row"></c:TextView>
           </c:VerticalLayout>
         </c:HorizontalLayout>
 
@@ -42,20 +42,20 @@
               <s:If Test="$questionValue!=null">
                 <s:If Test="$question.AnswerTypeAsObject.Description=='Boolean'">
                   <s:If Test = "$questionValue.Answer == 'True'">
-                    <c:TextView Text="#true#" CssClass="H1"></c:TextView>
+                    <c:TextView Text="#true#" CssClass="main_row"></c:TextView>
                   </s:If>
                   <s:Else>
-                    <c:TextView Text="#false#" CssClass="H1"></c:TextView>
+                    <c:TextView Text="#false#" CssClass="main_row"></c:TextView>
                   </s:Else>
                 </s:If>
                 <s:Else>
-                  <c:TextView Text="$questionValue.Answer" CssClass="H1"></c:TextView>
+                  <c:TextView Text="$questionValue.Answer" CssClass="main_row"></c:TextView>
                 </s:Else>
               </s:If>
               <s:Else>
-                <c:TextView Text="?" CssClass="H1"></c:TextView>
+                <c:TextView Text="?" CssClass="main_row"></c:TextView>
               </s:Else>
-              <c:TextView Text="$question.Description" CssClass="H2"></c:TextView>
+              <c:TextView Text="$question.Description" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
 
             <c:Image/>

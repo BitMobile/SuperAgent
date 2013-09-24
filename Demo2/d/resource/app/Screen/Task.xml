@@ -5,9 +5,9 @@
 
   <c:VerticalLayout>
 
-    <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()"/>
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()"/>
       <c:TextView Text="#task#" />
     </c:DockLayout>
 
@@ -15,11 +15,19 @@
 
     <c:ScrollView CssClass="grid">
 
-      <c:HorizontalLayout>
-
+      <c:HorizontalLayout CssClass="text_block">
         <c:VerticalLayout>
-          <c:TextView Text="$task.TextTask" CssClass="H1"></c:TextView>
-          <c:TextView Text="#description#" CssClass="H2"></c:TextView>
+          <c:TextView Text="$task.TextTask" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout CssClass="text_block">
+        <c:VerticalLayout>
+          <c:TextView Text="$task.Target" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#target#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
 
       </c:HorizontalLayout>
@@ -27,27 +35,10 @@
       <c:HorizontalLine/>
 
       <c:HorizontalLayout>
-
         <c:VerticalLayout>
-
-          <c:TextView Text="$task.Target" CssClass="H1"></c:TextView>
-          <c:TextView Text="#target#" CssClass="H2"></c:TextView>
-
+          <c:TextView Text="$task.PlanDate" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#plandate#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
-
-      </c:HorizontalLayout>
-
-      <c:HorizontalLine/>
-
-      <c:HorizontalLayout>
-
-        <c:VerticalLayout>
-
-          <c:TextView Text="$task.PlanDate" CssClass="H1"></c:TextView>
-          <c:TextView Text="#plandate#" CssClass="H2"></c:TextView>
-
-        </c:VerticalLayout>
-
       </c:HorizontalLayout>
 
       <c:HorizontalLine/>

@@ -6,9 +6,9 @@
   
   <c:VerticalLayout>
 
-    <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>      
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()" />
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>      
+      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()" />
       <c:TextView Text="#parameters#" />
     </c:DockLayout>
 
@@ -17,22 +17,22 @@
     <c:VerticalLayout CssClass="header">
       <c:VerticalLayout CssClass="grid">
         <c:HorizontalLayout>
-          <c:VerticalLayout CssClass="headerEdit">
+          <c:VerticalLayout CssClass="header_edit_block">
             <s:If Test="$param2=='Distributor'">
-              <c:TextView CssClass="H1" Text="#distributor#"/>
+              <c:TextView CssClass="main_row" Text="#distributor#"/>
             </s:If> 
             <s:Else>
               <s:If Test="$objectName=='OutletType'">
-                <c:TextView CssClass="H1" Text="#outletType#"/>
+                <c:TextView CssClass="main_row" Text="#outletType#"/>
               </s:If> 
               <s:Else>
                 <s:If Test="$objectName=='OutletClass'">
-                  <c:TextView CssClass="H1" Text="#outletClass#"/>
+                  <c:TextView CssClass="main_row" Text="#outletClass#"/>
                 </s:If>
               </s:Else>
             </s:Else>
 
-            <c:TextView Text="#select_answer#" CssClass="H2"></c:TextView>
+            <c:TextView Text="#select_answer#" CssClass="description_row"></c:TextView>
           </c:VerticalLayout>
         </c:HorizontalLayout>
       </c:VerticalLayout>
@@ -46,7 +46,7 @@
 
         <c:HorizontalLayout OnClickAction="$Facade.UpdateValueAndBack($param1,$param2,$item.Id)">
           <c:VerticalLayout>
-            <c:TextView Text="$item.Description" CssClass="H1"></c:TextView>
+            <c:TextView Text="$item.Description" CssClass="main_row"></c:TextView>
           </c:VerticalLayout>
           <c:Image/>
         </c:HorizontalLayout>

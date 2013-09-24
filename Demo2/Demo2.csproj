@@ -46,6 +46,7 @@
     <Content Include="d\resource\app\Image\Default\icon_more.png" />
     <Content Include="d\resource\app\Image\Default\icon_zoom.png" />
     <Content Include="d\resource\app\Image\Default\kpi.png" />
+    <Content Include="d\resource\app\Image\Default\kpi_disabled.png" />
     <Content Include="d\resource\app\Image\Default\LogoEn.png" />
     <Content Include="d\resource\app\Image\Default\LogoRu.png" />
     <Content Include="d\resource\app\Image\Default\logo_firstbit2.png" />
@@ -54,6 +55,7 @@
     <Content Include="d\resource\app\Image\Default\refresh.png" />
     <Content Include="d\resource\app\Image\Default\schedule.png" />
     <Content Include="d\resource\app\Image\Default\settings.png" />
+    <Content Include="d\resource\app\Image\Default\settings_disabled.png" />
     <Content Include="d\resource\app\Image\Default\sync.png" />
     <Content Include="d\resource\app\Image\Default\todo.png" />
     <Content Include="d\resource\app\Image\Default\visit.png" />

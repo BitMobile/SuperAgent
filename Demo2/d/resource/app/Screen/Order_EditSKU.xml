@@ -5,9 +5,11 @@
   <s:Push Id="sku" Value="$param2"></s:Push>
   <s:Push Id="orderitem" Value="$param3"></s:Push>
   <s:Push Id="unit" Value="$param4"></s:Push>
+  <s:Push Id="discValue" Value="$param5"></s:Push>
   <s:Push Id="multiplier" Value="$Facade.GetMultiplier($unit, $sku, $orderitem)"></s:Push>
 
-  <s:Push Id="orderitem" Value="$Facade.CreateOrderItemIfNotExist($order.Id,$sku,$orderitem,$unit,$multiplier)"></s:Push>
+  <s:Push Id="orderitem" Value="$Facade.CreateOrderItemIfNotExist($order.Id,$sku,$orderitem,$unit,$multiplier,$discValue)"></s:Push>
+  <s:Push Id="discValue" Value="$orderitem.Discount"></s:Push>
   <s:Push Id="baseQty" Value="$Facade.CalculateValue($orderitem, $multiplier)"></s:Push>
 
   <c:VerticalLayout>
@@ -20,7 +22,7 @@
 
     <c:ScrollView CssClass="grid">
 
-      <c:HorizontalLayout CssClass="header_edit_block" OnClickAction="$Workflow.DoRefresh($order,$sku,$orderitem,$unit)">
+      <c:HorizontalLayout CssClass="header_edit_block" OnClickAction="$Workflow.DoRefresh($order,$sku,$orderitem,$unit,$discount.Text)">
         <c:VerticalLayout>
           <c:TextView Text="{$sku.Description}" CssClass="main_row"></c:TextView>
           <c:TextView Text="#refreshScreen#" CssClass="description_row"></c:TextView>
@@ -35,7 +37,7 @@
           <c:TextView Text="#price#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
         <c:VerticalLayout>
-          <c:EditText Value="$orderitem.Discount" CssClass="main_row" Keyboard="numPunc"></c:EditText>
+          <c:EditText Id="discount" Text="$discValue" CssClass="main_row"></c:EditText>
           <c:TextView Text="#discount#/#markUp#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>

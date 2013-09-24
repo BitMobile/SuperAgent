@@ -68,9 +68,10 @@ no_tasks	Задач нет
 documentSum	Сумма документа
 document	Документ
 receivables	Задолженность
+receivable	Задолженность
 encashment	Инкассация
 sum			Сумма
-encashmentSum	Сумма инкассации:
+encashmentSum	Сумма инкассации
 spreadOnDocuments	Распределить на документы
 docNumber	Номер документа
 receivableAmount	Сумма задолженности

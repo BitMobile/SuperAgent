@@ -5,7 +5,8 @@
   <s:Push Id="visit" Value="$param2"></s:Push>
   <s:Push Id="workflow.encashment" Value="$Facade.CreateEncashmentIfNotExist($visit)"></s:Push>
   <s:Push Id="encasmentItem" Value="$Facade.CreateEncashmentItemIfNotExist($workflow.encashment, $receivableDoc)"></s:Push>
-
+  <s:Push Id="workflow.autoSpread" Value="False"></s:Push>
+  
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
@@ -29,7 +30,7 @@
       <c:HorizontalLayout>
         <c:VerticalLayout>
           <c:TextView Text="$receivableDoc.DocumentSum" CssClass="main_row"></c:TextView>
-          <c:TextView Text="#target#" CssClass="description_row"></c:TextView>
+          <c:TextView Text="#receivable#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>

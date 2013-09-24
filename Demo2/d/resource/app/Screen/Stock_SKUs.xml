@@ -50,7 +50,7 @@
             <c:HorizontalLayout>
               <c:VerticalLayout>
                 <c:TextView Text="$sku.Description" CssClass="main_row"></c:TextView>
-                <c:TextView Text="{$sku.Stock} #pcs#" CssClass="description_row"></c:TextView>
+                <c:TextView Text="{$sku.Stock} {$sku.BaseUnitAsObject.Description}" CssClass="description_row"></c:TextView>
               </c:VerticalLayout>
             </c:HorizontalLayout>
 

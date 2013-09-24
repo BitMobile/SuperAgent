@@ -10,11 +10,16 @@ function GetDifference(val1, val2) {
 
 function GetGreater(val1, val2) {
     var r = val1 - val2;
-    if (r > 0){
+    if (r > 0) {
         return false;
     }
     else
         return true;
+}
+
+function AssignValue(entity, attribute, value) {
+    entity[attribute] = value;
+    return entity;
 }
 
 function GetLookupList(entity, attribute) {
@@ -409,7 +414,7 @@ function GetSKUAmount(orderId, item) {
 
 }
 
-function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit, multiplier) {
+function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit, multiplier, discount) {
 
     if (orderitem == null) {
 
@@ -419,10 +424,15 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit, multiplier) {
         p.Price = sku.Price;
         p.Total = sku.Price;
         p.Units = sku.BaseUnit;
+        p.Discount = 0;
 
         return p;
     }
     else {
+        if (discount != null)
+            orderitem.Discount = discount;
+        else
+            orderitem.Discount = 0;
         orderitem.Total = (orderitem.Price * (orderitem.Discount / 100 + 1) * multiplier);
         if (unit != null)
             orderitem.Units = unit.Pack;
@@ -638,6 +648,29 @@ function ClearIfZeroSum(item, sumToSpread) {
         item.EncashmentSum = 0;
     }
     return item;
+}
+
+function GetSpreadValue(startValue, workflowValue) {
+    if (workflowValue == null)
+        return startValue;
+    else
+        return workflowValue;
+}
+
+function GetEncAmount(encashmentText, autoSpread, encashment) {
+    if (autoSpread == "True") {
+        if (encashmentText == null) {
+            return encashment.EncashmentAmount;
+        }
+        else
+            return encashmentText;
+    }
+    else {
+        var query = new Query();
+        query.AddParameter("docId", encashment.Id);
+        query.Text = "select sum(EncashmentSum) from Document.Encashment_EncashmentDocuments where Ref==@docId";
+        return query.Execute();
+    }
 }
 
 

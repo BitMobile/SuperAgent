@@ -107,7 +107,7 @@ MemoEdit {
         color: #FFF;
         font: 60% arial;
     }
-    
+
 
 .search {
     height: 10%;
@@ -159,7 +159,7 @@ MemoEdit {
             dock-align: right;
             font: 80% arial;
         }
-        
+
 
 .grid {
 }
@@ -186,7 +186,7 @@ MemoEdit {
 
         .grid hl TextView {
             width: 100%;
-            height: 100%;            
+            height: 100%;
             padding-top: 20%;
             font: 40% Arial;
         }
@@ -262,7 +262,7 @@ MemoEdit {
         width: 100%;
         margin-top: 0px;
     }
-    
+
 
 .text_block {
     height: 18sp;
@@ -301,12 +301,12 @@ MemoEdit {
             margin-left: 0%;
             font: 8% Arial;
         }
-        
+
 
 .main_row {
 }
 
-.header_row {
+.caption_row {
     color: #b2749b;
 }
 
@@ -326,8 +326,4 @@ MemoEdit {
 
     .header grid hl {
         height: 100%;
-    }
-
-    .header line {
-        background-color: #879091;
     }

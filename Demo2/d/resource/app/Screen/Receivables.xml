@@ -61,7 +61,7 @@
 
       <c:HorizontalLayout  OnClickAction="$Workflow.DoRefresh($workflow.visit,'true')">
         <c:VerticalLayout>
-          <c:TextView Text="#spreadOnDocuments#" CssClass="header_row"></c:TextView>
+          <c:TextView Text="#spreadOnDocuments#" CssClass="caption_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>

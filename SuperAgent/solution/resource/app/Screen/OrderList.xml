@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
 
-
+  <s:Push Id="search" Value="$param1"/>
+  <s:Push Id ="orders" Value="$Facade.GetOrderList($search)"></s:Push>
+  
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
@@ -12,7 +14,13 @@
 
     <c:HorizontalLine/>
 
-    <s:Push Id ="orders" Value="$Facade.GetOrderList()"></s:Push>
+    <c:HorizontalLayout CssClass="search">
+      <c:DockLayout >
+        <c:Image />
+        <c:EditText Id="edtSearch" Text="$search"></c:EditText>
+      </c:DockLayout>
+      <c:Button Text="#search#" OnClickAction="$Workflow.DoRefresh($edtSearch.Text)"></c:Button>
+    </c:HorizontalLayout>
 
     <c:VerticalLayout CssClass="header">
       <c:VerticalLayout  CssClass ="grid">

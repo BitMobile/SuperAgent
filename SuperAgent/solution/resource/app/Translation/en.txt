@@ -1,0 +1,82 @@
+﻿todo		ToDo
+stock		Stock
+schedule	Schedule
+order		Order
+visit		Visit
+outlets		Outlets
+targets		Targets
+target		Target
+settings	Settings
+sync		Sync
+search		Search
+outlet		Outlet
+outlet_class	Outlet class
+outlet_type	Outlet type
+distributor	Distributor
+answer		Answer
+typeanswer	Insert answers..
+username	User name
+password	Password
+cancel		Cancel
+Ok		Ok
+parameters	Parameters
+select_answer	Select value..
+save		Save
+no_questions	No questions
+questions	Questions
+commentary	Commentary
+insert_answer	Insert value..
+amount		Amount
+sku		SKU
+quantity	Quantity
+price		Price
+edit		Edit
+insert_text	Insert text..
+totalamount	Total amount
+price2		Price:
+kpi			KPI
+tasks		Tasks
+task		Task
+description	Description
+result		Result
+plandate	Plan date
+distributor	Distributor
+outletType	Outlet type
+outletClass	Outlet class
+available	Available
+facing		Facing
+stock		Stock
+price		Price
+markUp		Mark Up
+outOfStock	Out Of Stock
+false		False
+true		True
+done		Done
+pcs			pcs.
+orders		Orders
+newOrder	Create new order
+discount	Discount
+noNumber	No number
+markUp		MarkUp
+unit		Unit
+baseUnit	Base unit
+selectUnit	Select unit:
+logo		logoEn
+packUnit	Pack unit
+refreshScreen	Refresh screen
+no_tasks	No tasks
+documentSum	Document sum
+document	Document
+receivables	Receivables
+receivable	Receivable
+encashment	Encashment
+sum			Sum
+encashmentSum	Encashment sum
+spreadOnDocuments	Spread on documents
+docNumber	Document number
+receivableAmount	Receivable amount
+encashmentAmount	Encashment amount
+nameSurname	Name, surname
+maximumAmount	Amount limit
+NoLimit		No limit
+

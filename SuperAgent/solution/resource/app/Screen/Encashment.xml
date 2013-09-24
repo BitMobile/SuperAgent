@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+
+  <s:Push Id="receivableDoc" Value="$param1"></s:Push>
+  <s:Push Id="visit" Value="$param2"></s:Push>
+  <s:Push Id="workflow.encashment" Value="$Facade.CreateEncashmentIfNotExist($visit)"></s:Push>
+  <s:Push Id="encasmentItem" Value="$Facade.CreateEncashmentItemIfNotExist($workflow.encashment, $receivableDoc)"></s:Push>
+  <s:Push Id="workflow.autoSpread" Value="False"></s:Push>
+  
+  <c:VerticalLayout>
+
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>      
+      <c:Button CssClass="btn_forward" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:TextView Text="#encashment#" />
+    </c:DockLayout>
+
+    <c:HorizontalLine/>
+
+    <c:ScrollView CssClass="grid">
+
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <c:TextView Text="$encasmentItem.DocumentName" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#document#" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <c:TextView Text="$receivableDoc.DocumentSum" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#receivable#" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <c:EditText Value="$encasmentItem.EncashmentSum" CssClass="main_row" Keyboard="numeric" AutoFocus="True"></c:EditText>
+          <c:TextView Text="#sum#" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>

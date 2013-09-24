@@ -1,1 +1,0 @@
-D:\Projects\core\BitMobileServer\Utils\bin\Debug\utils.exe -metadata http://localhost/SyncOnPremises/test/%1 config.xml

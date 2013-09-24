@@ -414,7 +414,7 @@ function GetSKUAmount(orderId, item) {
 
 }
 
-function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit, multiplier) {
+function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit, multiplier, discount) {
 
     if (orderitem == null) {
 
@@ -424,10 +424,15 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit, multiplier) {
         p.Price = sku.Price;
         p.Total = sku.Price;
         p.Units = sku.BaseUnit;
+        p.Discount = 0;
 
         return p;
     }
     else {
+        if (discount != null)
+            orderitem.Discount = discount;
+        else
+            orderitem.Discount = 0;
         orderitem.Total = (orderitem.Price * (orderitem.Discount / 100 + 1) * multiplier);
         if (unit != null)
             orderitem.Units = unit.Pack;

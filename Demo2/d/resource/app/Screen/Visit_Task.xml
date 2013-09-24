@@ -46,7 +46,7 @@
         <c:VerticalLayout>
 
           <c:TextView Text="$task.Target" CssClass="H1"></c:TextView>
-          <c:TextView Text="#target#" CssClass="H2"></c:TextView>
+          <c:TextView Text="#task#" CssClass="H2"></c:TextView>
 
         </c:VerticalLayout>
 

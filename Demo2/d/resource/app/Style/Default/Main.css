@@ -71,11 +71,11 @@ Indicator {
 }
 
 .btnKpi {
-    background-image: url(kpi.png);
+    background-image: url(kpi_disabled.png);
 }
 
 .btnSettings {
-    background-image: url(settings.png);
+    background-image: url(settings_disabled.png);
 }
 
 .btnSync {

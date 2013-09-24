@@ -22,10 +22,13 @@
 
     <c:ScrollView CssClass="grid">
 
-      <c:HorizontalLayout CssClass="header_edit_block" OnClickAction="$Workflow.DoRefresh($order,$sku,$orderitem,$unit,$discount.Text)">
-        <c:VerticalLayout>
+      <c:HorizontalLayout CssClass="header_edit_block">
+        <c:VerticalLayout CssClass="half_width"  OnClickAction="$Workflow.DoRefresh($order,$sku,$orderitem,$unit,$discount.Text)">
           <c:TextView Text="{$sku.Description}" CssClass="main_row"></c:TextView>
           <c:TextView Text="#refreshScreen#" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+        <c:VerticalLayout CssClass="half_width" OnClickAction="$Facade.DeleteItemAndBack($orderitem)">
+          <c:TextView Text="#deleteItem#" CssClass="caption_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
 

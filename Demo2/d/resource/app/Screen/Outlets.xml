@@ -6,9 +6,9 @@
 
   <c:VerticalLayout>
 
-    <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
-      <c:Button CssClass="btnForward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()"/>
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
+      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()"/>
       <c:TextView Text="#outlets#" />
     </c:DockLayout>
 
@@ -30,15 +30,12 @@
 
       <s:Iterator Id="outlet" Value="$outlets">
 
-        <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$outlet)">
-
+        <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$outlet)" CssClass="doubleline_block">
           <c:VerticalLayout>
-            <c:TextView Text="$outlet.Description" CssClass="H1"></c:TextView>
-            <c:TextView Text="$outlet.Address" CssClass="H2"></c:TextView>
+            <c:TextView Text="$outlet.Description" CssClass="main_row"></c:TextView>
+            <c:TextView Text="$outlet.Address" CssClass="description_row"></c:TextView>
           </c:VerticalLayout>
-
           <c:Image/>
-
         </c:HorizontalLayout>
 
         <c:HorizontalLine/>

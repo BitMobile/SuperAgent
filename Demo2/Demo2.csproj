@@ -46,6 +46,7 @@
     <Content Include="d\resource\app\Image\Default\icon_more.png" />
     <Content Include="d\resource\app\Image\Default\icon_zoom.png" />
     <Content Include="d\resource\app\Image\Default\kpi.png" />
+    <Content Include="d\resource\app\Image\Default\kpi_disabled.png" />
     <Content Include="d\resource\app\Image\Default\LogoEn.png" />
     <Content Include="d\resource\app\Image\Default\LogoRu.png" />
     <Content Include="d\resource\app\Image\Default\logo_firstbit2.png" />
@@ -54,6 +55,7 @@
     <Content Include="d\resource\app\Image\Default\refresh.png" />
     <Content Include="d\resource\app\Image\Default\schedule.png" />
     <Content Include="d\resource\app\Image\Default\settings.png" />
+    <Content Include="d\resource\app\Image\Default\settings_disabled.png" />
     <Content Include="d\resource\app\Image\Default\sync.png" />
     <Content Include="d\resource\app\Image\Default\todo.png" />
     <Content Include="d\resource\app\Image\Default\visit.png" />
@@ -128,16 +130,19 @@
     <Content Include="d\resource\app\Script\Workflow.js" />
     <Content Include="d\resource\app\Style\Default\default.css" />
     <Content Include="d\resource\app\Style\Default\Main.css" />
+    <Content Include="d\resource\app\Style\Default\OrderList.css" />
+    <Content Include="d\resource\app\Style\Default\Order_EditSKU.css" />
     <Content Include="d\resource\app\Style\Default\Order_SKUs.css" />
     <Content Include="d\resource\app\Style\Default\Order.css" />
     <Content Include="d\resource\app\Style\Default\Targets.css" />
     <Content Include="d\resource\app\Style\Default\Visit_Order.css" />
-    <Content Include="d\resource\app\Style\Default\Tasks.css" />
     <Content Include="d\resource\app\Style\Default\Stock_SKUs.css" />
     <Content Include="d\resource\app\Translation\en.txt" />
     <Content Include="d\resource\app\Translation\ru.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="d\resource\app\Style\Default\ScheduledVisits.css" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

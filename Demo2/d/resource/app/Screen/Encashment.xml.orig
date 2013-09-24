@@ -29,8 +29,13 @@
 
       <c:HorizontalLayout>
         <c:VerticalLayout>
+<<<<<<< HEAD
           <c:TextView Text="$receivableDoc.DocumentSum" CssClass="main_row"></c:TextView>
           <c:TextView Text="#receivable#" CssClass="description_row"></c:TextView>
+=======
+          <c:TextView Text="$receivableDoc.DocumentSum" CssClass="H1"></c:TextView>
+          <c:TextView Text="#receivable#" CssClass="H2"></c:TextView>
+>>>>>>> develop_IOS
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>

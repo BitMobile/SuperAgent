@@ -4,9 +4,9 @@
 
   <c:VerticalLayout>
 
-    <c:DockLayout CssClass="topNavigator">
-      <c:Button CssClass="btnBack" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
-      <c:Button CssClass="btnForward" OnClickAction="$Workflow.DoRollback()"/>
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
+      <c:Button CssClass="btn_forward" OnClickAction="$Workflow.DoRollback()"/>
       <c:TextView Text="#orders#" />
     </c:DockLayout>
 
@@ -18,7 +18,7 @@
       <c:VerticalLayout  CssClass ="grid">
         <c:HorizontalLayout OnEvent="Forward" OnClickAction="$Workflow.DoForward()">
           <c:VerticalLayout>
-            <c:TextView Text="#newOrder#" CssClass="H5"></c:TextView>
+            <c:TextView Text="#newOrder#" CssClass="caption_row"></c:TextView>
           </c:VerticalLayout>
           <c:Image/>
         </c:HorizontalLayout>
@@ -34,15 +34,14 @@
         <s:Push Id="statusDescription" Value="$Facade.GetOrderStatus($order)"></s:Push>
         <s:If Test="$statusDescription == 'Сanceled'">
           <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$order.OutletAsObject,null,$order)">
-            <c:VerticalLayout CssClass="vl2">
-            </c:VerticalLayout>
-            <c:VerticalLayout CssClass="vl3">
-              <c:TextView Text="$order.OutletAsObject.Description" CssClass="H1"></c:TextView>
+            <c:VerticalLayout CssClass="canceled_mark"/>
+            <c:VerticalLayout CssClass="clipped">
+              <c:TextView Text="$order.OutletAsObject.Description" CssClass="main_row"></c:TextView>
               <s:Push Id="checkedNumber" Value ="$Facade.AssignNumberIfNotExist($order)"></s:Push>
               <s:If Test="$checkedNumber == 'noNumber'">
                 <s:Push Id="checkedNumber" Value="#noNumber#"></s:Push>
               </s:If>
-              <c:TextView Text="{$checkedNumber}, {$order.Date}" CssClass="H2"></c:TextView>
+              <c:TextView Text="{$checkedNumber}, {$order.Date}" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
             <c:Image/>
           </c:HorizontalLayout>
@@ -51,12 +50,12 @@
         <s:Else>
           <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$order.OutletAsObject,null,$order)">
             <c:VerticalLayout>
-              <c:TextView Text="$order.OutletAsObject.Description" CssClass="H1"></c:TextView>
+              <c:TextView Text="$order.OutletAsObject.Description" CssClass="main_row"></c:TextView>
               <s:Push Id="checkedNumber" Value ="$Facade.AssignNumberIfNotExist($order)"></s:Push>
               <s:If Test="$checkedNumber == 'noNumber'">
                 <s:Push Id="checkedNumber" Value="#noNumber#"></s:Push>
               </s:If>
-              <c:TextView Text="{$checkedNumber}, {$order.Date}" CssClass="H2"></c:TextView>
+              <c:TextView Text="{$checkedNumber}, {$order.Date}" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
             <c:Image/>
           </c:HorizontalLayout>

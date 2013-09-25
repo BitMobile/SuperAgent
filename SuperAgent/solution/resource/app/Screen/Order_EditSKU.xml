@@ -27,8 +27,8 @@
           <c:TextView Text="{$sku.Description}" CssClass="main_row"></c:TextView>
           <c:TextView Text="#refreshScreen#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
-        <c:VerticalLayout CssClass="half_width" OnClickAction="$Facade.DeleteItemAndBack($orderitem)">
-          <c:TextView Text="#deleteItem#" CssClass="caption_row"></c:TextView>
+        <c:VerticalLayout CssClass="half_width">
+          <c:Button CssClass="btn_delete" OnClickAction="$Facade.DeleteItemAndBack($orderitem)"></c:Button>
         </c:VerticalLayout>
       </c:HorizontalLayout>
 

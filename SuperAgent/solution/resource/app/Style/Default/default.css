@@ -74,7 +74,9 @@ MemoEdit {
 
 .btn_delete {
     background-image: url(trash.png);
-    height: auto;
+    height: 60%;
+    margin-left: 75%;
+    margin-top: 23%;
 }
 
 .btn_back {
@@ -260,12 +262,6 @@ MemoEdit {
         .grid hl half_width {
             width: 45%;
         }
-
-            .grid hl half_width btn_delete {
-                background-image: url(trash.png);
-                height: auto;
-
-            }
 
     .grid header_edit_block {
         background-color: #dbd7e1;

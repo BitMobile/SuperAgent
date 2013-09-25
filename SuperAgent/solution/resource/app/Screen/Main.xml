@@ -2,37 +2,43 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
 
   <c:VerticalLayout>
-    <c:HorizontalLayout CssClass="#logo#">
-      
-    </c:HorizontalLayout>
-    <c:HorizontalLayout CssClass="menu">
-      <c:VerticalLayout>
-        <c:Button CssClass="btnSchedule" OnClickAction="$Workflow.DoAction(ScheduledVisit)"/>
+    <c:HorizontalLayout CssClass="#logo#"/>
+    <c:VerticalLayout CssClass="menu">
+      <c:HorizontalLayout>
+        <c:Button CssClass="btn_schedule" OnClickAction="$Workflow.DoAction(ScheduledVisit)"/>
+        <c:Button CssClass="btn_visit" OnClickAction="$Workflow.DoAction(UnscheduledVisit)"/>
+        <c:Button CssClass="btn_order" OnClickAction="$Workflow.DoAction(Order)"/>
+      </c:HorizontalLayout>
+      <c:HorizontalLayout CssClass="title">
         <c:TextView Text="#schedule#"/>
-        <c:Button CssClass="btnOutlets" OnClickAction="$Workflow.DoAction(Outlets)"/>
-        <c:TextView Text="#outlets#"/>
-        <c:Button CssClass="btnDistr" OnClickAction="$Workflow.DoAction(Distr)"/>
-        <c:TextView Text="#stock#"/>
-      </c:VerticalLayout>
-      <c:VerticalLayout >
-        <c:Button CssClass="btnVisit" OnClickAction="$Workflow.DoAction(UnscheduledVisit)"/>
         <c:TextView Text="#visit#"/>
-        <c:Button CssClass="btnTodo" OnClickAction="$Workflow.DoAction(ToDo)"/>
-        <c:TextView Text="#todo#"/>
-        <c:Button CssClass="btnSettings"/>
-        <c:TextView Text="#settings#"/>
-      </c:VerticalLayout>
-      <c:VerticalLayout>
-        <c:Button CssClass="btnOrder" OnClickAction="$Workflow.DoAction(Order)"/>
         <c:TextView Text="#orders#"/>
-        <c:Button CssClass="btnKpi"></c:Button>
+      </c:HorizontalLayout>
+
+      <c:HorizontalLayout>
+        <c:Button CssClass="btn_outlets" OnClickAction="$Workflow.DoAction(Outlets)"/>
+        <c:Button CssClass="btn_todo" OnClickAction="$Workflow.DoAction(ToDo)"/>
+        <c:Button CssClass="btn_kpi"></c:Button>
+      </c:HorizontalLayout>
+      <c:HorizontalLayout CssClass="title">
+        <c:TextView Text="#outlets#"/>
+        <c:TextView Text="#todo#"/>
         <c:TextView Text="#targets#"/>
-        <c:HorizontalLayout CssClass="btnSync" OnClickAction="$DB.DoSync()">
+      </c:HorizontalLayout>
+
+      <c:HorizontalLayout>
+        <c:Button CssClass="btn_distr" OnClickAction="$Workflow.DoAction(Distr)"/>
+        <c:Button CssClass="btn_settings"/>
+        <c:HorizontalLayout CssClass="btn_sync" OnClickAction="$DB.DoSync()">
           <c:Indicator/>
         </c:HorizontalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLayout CssClass="title">
+        <c:TextView Text="#stock#"/>
+        <c:TextView Text="#settings#"/>
         <c:TextView Text="#sync#"/>
-      </c:VerticalLayout>
-    </c:HorizontalLayout>
+      </c:HorizontalLayout>
+    </c:VerticalLayout>
   </c:VerticalLayout>
 
 </c:Screen>

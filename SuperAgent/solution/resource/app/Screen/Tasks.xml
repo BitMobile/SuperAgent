@@ -9,7 +9,12 @@
 
     <c:DockLayout CssClass="top_navigator">
       <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($outlet,$visit)"/>
+      <s:If Test="$workflow.visit != null">
+        <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($outlet,$visit)"/>
+      </s:If>
+      <s:Else>
+        <c:Button CssClass="btn_grey_forward"/>
+      </s:Else>
       <c:TextView Text="#tasks#" />
     </c:DockLayout>
 

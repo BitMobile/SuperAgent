@@ -20,30 +20,6 @@
 
     <c:ScrollView CssClass="grid">
 
-      <c:HorizontalLayout>
-        <c:VerticalLayout>
-          <c:EditText Value="$workflow.encashment.DocNumber" Keyboard="numeric" CssClass="main_row"></c:EditText>
-          <c:TextView Text="#docNumber#" CssClass="description_row"></c:TextView>
-        </c:VerticalLayout>
-      </c:HorizontalLayout>
-      <c:HorizontalLine/>
-
-      <c:HorizontalLayout>
-        <c:VerticalLayout>
-          <c:EditText Value="$workflow.encashment.NameSurname" CssClass="main_row"></c:EditText>
-          <c:TextView Text="#nameSurname#" CssClass="description_row"></c:TextView>
-        </c:VerticalLayout>
-      </c:HorizontalLayout>
-      <c:HorizontalLine/>
-
-      <c:HorizontalLayout>
-        <c:VerticalLayout>
-          <c:EditText Value="$workflow.encashment.Commentary" CssClass="main_row"></c:EditText>
-          <c:TextView Text="#commentary#" CssClass="description_row"></c:TextView>
-        </c:VerticalLayout>
-      </c:HorizontalLayout>
-      <c:HorizontalLine/>
-
       <c:HorizontalLayout CssClass="header_edit_block">
         <c:VerticalLayout CssClass="half_width">
           <s:Push Id="receivableAmount" Value="$Facade.GetAmount($receivables)"></s:Push>
@@ -108,6 +84,30 @@
 
         <c:HorizontalLine/>
       </s:Iterator>
+
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <c:EditText Value="$workflow.encashment.DocNumber" Keyboard="numeric" CssClass="main_row"></c:EditText>
+          <c:TextView Text="#docNumber#" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <c:EditText Value="$workflow.encashment.NameSurname" CssClass="main_row"></c:EditText>
+          <c:TextView Text="#nameSurname#" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <c:EditText Value="$workflow.encashment.Commentary" CssClass="main_row"></c:EditText>
+          <c:TextView Text="#commentary#" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
 
     </c:ScrollView>
 

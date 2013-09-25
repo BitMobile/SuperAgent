@@ -55,6 +55,7 @@
     <Content Include="resource\app\Image\Default\settings_disabled.png" />
     <Content Include="resource\app\Image\Default\sync.png" />
     <Content Include="resource\app\Image\Default\todo.png" />
+    <Content Include="resource\app\Image\Default\trash.png" />
     <Content Include="resource\app\Image\Default\visit.png" />
     <Content Include="resource\app\Screen\Encashment.xml" />
     <Content Include="resource\app\Screen\ListChoice.xml" />

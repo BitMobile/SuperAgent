@@ -206,10 +206,10 @@ MemoEdit {
         }
 
         .grid hl vl {
-            width: 93%;
+            width: 90%;
             height: 90%;
             margin-top: 5%;
-            padding-left: 2%;
+            padding-left: 5%;
         }
 
             .grid hl vl CheckBox {

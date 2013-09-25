@@ -72,9 +72,9 @@ function GetScheduledVisits(searchText) {
     query.AddParameter("SearchText", searchText);
 
     if (String.IsNullOrEmpty(searchText))
-        query.Text = "select * from Document.VisitPlan_Outlets where Date == @Date";
+        query.Text = "select * from Document.VisitPlan_Outlets where Date == @Date orderbydesc Date";
     else
-        query.Text = "select * from Document.VisitPlan_Outlets where Date == @Date && OutletAsObject.Description.Contains(@SearchText)";
+        query.Text = "select * from Document.VisitPlan_Outlets where Date == @Date && OutletAsObject.Description.Contains(@SearchText) orderbydesc Date";
 
     return query.Execute();
 }
@@ -325,10 +325,17 @@ function CreateUnschVisitIfNotExists(outlet, userId, visit) {
 
 //------------------------------Order func-------------------------
 
-function GetOrderList() {
-
+function GetOrderList(searchText) {
+    
     var query = new Query();
-    query.Text = "select * from Document.Order";
+    if (String.IsNullOrEmpty(searchText)) {
+        query.Text = "select * from Document.Order orderbydesc Date";
+    }
+    else {
+        query.AddParameter("text", searchText);
+        query.Text = "select * from Document.Order where OutletAsObject.Description.Contains(@text) orderbydesc Date";
+    }
+
     return query.Execute();
 
 }

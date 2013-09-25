@@ -22,6 +22,10 @@ function AssignValue(entity, attribute, value) {
     return entity;
 }
 
+function FormatValue(value) {
+    return String.Format("{0:F2}", value);
+}
+
 function GetLookupList(entity, attribute) {
     var objectType = entity.Metadata[attribute].Type;
     var objectName = entity.Metadata[attribute].Name;
@@ -405,7 +409,8 @@ function GetOrderSUM(orderId) {
     var query = new Query();
     query.AddParameter("orderId", orderId);
     query.Text = "select sum(Qty*Total) from Document.Order_SKUs where Ref==@orderId";
-    return query.Execute();
+    var value = query.Execute();
+    return String.Format("{0:F2}", value);
 
 }
 

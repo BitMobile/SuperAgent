@@ -428,7 +428,8 @@ function GetSKUAmount(orderId, item) {
 
     query.AddParameter("itemId", item.Id);
     query.Text = "select sum(Qty*Total) from Document.Order_SKUs where Ref==@orderId && Id==@itemId";
-    return query.Execute();
+    var result = query.Execute();
+    return String.Format("{0:F2}", result);
 
 }
 

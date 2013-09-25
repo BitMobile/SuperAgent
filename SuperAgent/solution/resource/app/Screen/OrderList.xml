@@ -8,7 +8,7 @@
 
     <c:DockLayout CssClass="top_navigator">
       <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
-      <c:Button CssClass="btn_forward" OnClickAction="$Workflow.DoRollback()"/>
+      <c:Button CssClass="btn_grey_forward"/>
       <c:TextView Text="#orders#" />
     </c:DockLayout>
 

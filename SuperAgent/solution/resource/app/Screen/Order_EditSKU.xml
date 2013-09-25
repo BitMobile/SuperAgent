@@ -22,10 +22,13 @@
 
     <c:ScrollView CssClass="grid">
 
-      <c:HorizontalLayout CssClass="header_edit_block" OnClickAction="$Workflow.DoRefresh($order,$sku,$orderitem,$unit,$discount.Text)">
-        <c:VerticalLayout>
+      <c:HorizontalLayout CssClass="header_edit_block">
+        <c:VerticalLayout CssClass="half_width"  OnClickAction="$Workflow.DoRefresh($order,$sku,$orderitem,$unit,$discount.Text)">
           <c:TextView Text="{$sku.Description}" CssClass="main_row"></c:TextView>
           <c:TextView Text="#refreshScreen#" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+        <c:VerticalLayout CssClass="half_width">
+          <c:Button CssClass="btn_delete" OnClickAction="$Facade.DeleteItemAndBack($orderitem)"></c:Button>
         </c:VerticalLayout>
       </c:HorizontalLayout>
 
@@ -33,7 +36,8 @@
 
       <c:HorizontalLayout CssClass="cell">
         <c:VerticalLayout>
-          <c:TextView Text="$orderitem.Total" CssClass="main_row"></c:TextView>
+          <s:Push Id="orderItemTotal" Value="$Facade.FormatValue($orderitem.Total)"></s:Push>
+          <c:TextView Text="$orderItemTotal" CssClass="main_row"></c:TextView>
           <c:TextView Text="#price#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
         <c:VerticalLayout>

@@ -22,6 +22,10 @@ function AssignValue(entity, attribute, value) {
     return entity;
 }
 
+function FormatValue(value) {
+    return String.Format("{0:F2}", value);
+}
+
 function GetLookupList(entity, attribute) {
     var objectType = entity.Metadata[attribute].Type;
     var objectName = entity.Metadata[attribute].Name;
@@ -138,10 +142,13 @@ function GetTasks(outlet) {
         query.Text = "select * from Document.Task where Outlet == @Outlet && PlanDate >= @Date";
 
     var result = query.Execute();
-    if (result.items.Count == 0)
-        return null;
+    if (result.Items != 0)
+        if (result.items.Count > 0)
+            return result;
+        else
+            return null;
     else
-        return result;
+        return null;
 }
 
 function GetOutlet(task) {
@@ -169,18 +176,18 @@ function CreateVisitTaskValueIfNotExists(visit, task) {
 }
 
 function GetQuesttionaires(outlet) {
-    var terrioryQuery = new Query;
+    var terrioryQuery = new Query();
     terrioryQuery.AddParameter("Outlet", outlet.Id);
     terrioryQuery.Text = "select single(*) from Catalog.Territory_Outlets where Outlet==@Outlet";
     var territory = terrioryQuery.Execute();
 
-    var query = new Query();
-    query.AddParameter("OutletType", outlet.Type);
-    query.AddParameter("OutletClass", outlet.Class);
-    query.AddParameter("Territory", territory.Ref);
-    query.Text = "select single(*) from Document.Questionnaire_Territories where  RefAsObject.OutletType == @OutletType &&  RefAsObject.OutletClass==@OutletClass && Territory==@Territory";
+    var questQuery = new Query();
+    questQuery.AddParameter("OutletType", outlet.Type);
+    questQuery.AddParameter("OutletClass", outlet.Class);
+    questQuery.AddParameter("Territory", territory.Ref);
+    questQuery.Text = "select single(*) from Document.Questionnaire_Territories where  RefAsObject.OutletType == @OutletType &&  RefAsObject.OutletClass==@OutletClass && Territory==@Territory";
     //query.Text = "select distinct(Ref) from Document.Questionnaire_Territories where  RefAsObject.OutletType == @OutletType &&  RefAsObject.OutletClass==@OutletClass && Territory==@Territory";
-    return query.Execute();
+    return questQuery.Execute();
 }
 
 
@@ -191,7 +198,14 @@ function GetQuestionsByOutlet(questionnaires) {
         var questions = new Query();
         questions.AddParameter("Ref", questionnaires.Ref);
         questions.Text = "select * from Document.Questionnaire_Questions where Ref == @Ref";
-        return questions.Execute();
+        var result = questions.Execute();
+        if (result.Items != 0)
+            if (result.items.Count > 0)
+                return result;
+            else
+                return null;
+        else
+            return null;
     }
 }
 
@@ -230,16 +244,19 @@ function GetSKUsByOutlet(questionnaires) {
         var query = new Query();
         query.AddParameter("Ref", questionnaires.Ref);
         query.Text = "select * from Document.Questionnaire_SKUs where Ref == @Ref";
-        return query.Execute();
+        var result = query.Execute();
+        if (result.Items != 0)
+            if (result.items.Count > 0)
+                return result;
+            else
+                return null;
+        else
+            return null;
     }
-
-    return query.Execute();
 }
 
 function CheckQuestionExistence(questionnaires, description) {
-    //if (questionnaires == null)
-    //    return null;
-    //else {
+
     if (questionnaires != null) {
         var query = new Query();
         query.AddParameter("using", true);
@@ -254,7 +271,7 @@ function CheckQuestionExistence(questionnaires, description) {
     }
     else
         return null;
-    //}
+
 }
 
 
@@ -316,7 +333,7 @@ function CreateUnschVisitIfNotExists(outlet, userId, visit) {
 //------------------------------Order func-------------------------
 
 function GetOrderList(searchText) {
-    
+
     var query = new Query();
     if (String.IsNullOrEmpty(searchText)) {
         query.Text = "select * from Document.Order orderbydesc Date";
@@ -406,7 +423,8 @@ function GetOrderSUM(orderId) {
     var query = new Query();
     query.AddParameter("orderId", orderId);
     query.Text = "select sum(Qty*Total) from Document.Order_SKUs where Ref==@orderId";
-    return query.Execute();
+    var value = query.Execute();
+    return String.Format("{0:F2}", value);
 
 }
 
@@ -417,7 +435,8 @@ function GetSKUAmount(orderId, item) {
 
     query.AddParameter("itemId", item.Id);
     query.Text = "select sum(Qty*Total) from Document.Order_SKUs where Ref==@orderId && Id==@itemId";
-    return query.Execute();
+    var result = query.Execute();
+    return String.Format("{0:F2}", result);
 
 }
 
@@ -475,11 +494,6 @@ function GetMultiplier(unit, sku, orderitem) {
 
 function CalculateValue(orderitem, multiplier) {
 
-    //var query = new Query();
-    //query.AddParameter("ref", sku.Id);
-    //query.AddParameter("units", orderitem.Units);
-    //query.Text = "select single(*) from Catalog.SKU_Packing where Ref==@ref && Pack==units";
-    //var item = query.Execute();
 
     return multiplier * orderitem.Qty;
 
@@ -504,6 +518,11 @@ function GetUnits(skuId) {
 function UpdateAndRefresh(entity, attribute, value) {
     entity[attribute] = value;
 
+}
+
+function DeleteItemAndBack(orderitem) {
+    DB.Current.Document.Order_SKUs.Delete(orderitem);
+    Workflow.Back();
 }
 
 
@@ -562,18 +581,12 @@ function checkSKUGroup(group, userId) {
 //-------------------------------Receivables--------------------
 
 function GetReceivables(outletId) {
-    // if (encashmentObj == null) {
+
     var receivables = new Query;
     receivables.AddParameter("outletRef", outletId);
     receivables.Text = "select * from Document.AccountReceivable_ReceivableDocuments where RefAsObject.Outlet == @outletRef";
     return receivables.Execute();
-    //}
-    //else {
-    //    var encashmentitems = new Query;
-    //    encashmentitems.AddParameter("encRef", encashmentObj.Id);
-    //    encashmentitems.Text = "select * from Document.Encashment_ReceivableDocuments where Ref == @encRef";
-    //    return encashmentitems.Execute();
-    //}
+
 }
 
 function CreateEncashmentIfNotExist(visit) {

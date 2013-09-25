@@ -6,3 +6,7 @@
     .cell vl EditText {
         width: 90%;
     }
+
+.grid hl half_width {
+    width: 50%;
+}

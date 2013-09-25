@@ -72,6 +72,12 @@ MemoEdit {
     padding-right: 2%;
 }
 
+.btn_delete {
+    background-image: url(trash_icon.png);
+    height: 80%;
+	margin-left: 60%;
+	margin-top: 10%;
+}
 
 .btn_back {
     background-image: url(button_left.png);
@@ -85,6 +91,16 @@ MemoEdit {
 
 .btn_forward {
     background-image: url(button_right.png);
+    height: auto;
+    margin-top: 10%;
+    margin-left: 2%;
+    margin-bottom: 10%;
+    margin-right: 2%;
+    dock-align: right;
+}
+
+.btn_grey_forward {
+    background-image: url(button_right_disabled.png);
     height: auto;
     margin-top: 10%;
     margin-left: 2%;

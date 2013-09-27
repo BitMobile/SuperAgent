@@ -1,4 +1,3 @@
-//Комментарий тест
 
 function ToFloat(text) {
     return parseFloat(text, 10)
@@ -142,11 +141,8 @@ function GetTasks(outlet) {
         query.Text = "select * from Document.Task where Outlet == @Outlet && PlanDate >= @Date";
 
     var result = query.Execute();
-    if (result.Items != 0)
-        if (result.items.Count > 0)
-            return result;
-        else
-            return null;
+    if (result.Count() > 0)
+        return result;
     else
         return null;
 }
@@ -186,7 +182,7 @@ function GetQuesttionaires(outlet) {
     questQuery.AddParameter("OutletClass", outlet.Class);
     questQuery.AddParameter("Territory", territory.Ref);
     questQuery.Text = "select single(*) from Document.Questionnaire_Territories where  RefAsObject.OutletType == @OutletType &&  RefAsObject.OutletClass==@OutletClass && Territory==@Territory";
-    //query.Text = "select distinct(Ref) from Document.Questionnaire_Territories where  RefAsObject.OutletType == @OutletType &&  RefAsObject.OutletClass==@OutletClass && Territory==@Territory";
+
     return questQuery.Execute();
 }
 
@@ -245,11 +241,8 @@ function GetSKUsByOutlet(questionnaires) {
         query.AddParameter("Ref", questionnaires.Ref);
         query.Text = "select * from Document.Questionnaire_SKUs where Ref == @Ref";
         var result = query.Execute();
-        if (result.Items != 0)
-            if (result.items.Count > 0)
-                return result;
-            else
-                return null;
+        if (result.Count() > 0)
+            return result;
         else
             return null;
     }
@@ -292,10 +285,8 @@ function CreateVisitSKUValueIfNotExists(visit, sku, skuValue) {
 
     p.Ref = visit.Id;
     p.SKU = sku.Id;
-    //p.Available = false;
 
     return p;
-
 }
 
 
@@ -488,8 +479,6 @@ function GetMultiplier(unit, sku, orderitem) {
             return item.Multiplier;
         }
     return 1;
-    //*orderitem.Qty;
-
 }
 
 function CalculateValue(orderitem, multiplier) {

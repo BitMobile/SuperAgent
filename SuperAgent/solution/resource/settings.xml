@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <configuration>
     <client> 
-        <supportedCore version="1.0.2.0" />
+        <supportedCore version="1.0.2.2" />
     </client>
 </configuration>

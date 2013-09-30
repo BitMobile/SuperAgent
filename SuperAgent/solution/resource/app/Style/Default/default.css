@@ -239,14 +239,14 @@ MemoEdit {
             }
 
             .grid hl vl EditText {
-                width: 98%;
+                width: 90%;
                 height: 66%;
                 border-style: solid;
                 font: 40% Arial;
             }
 
             .grid hl vl MemoEdit {
-                width: 98%;
+                width: 90%;
                 height: 66%;
                 border-style: solid;
                 font: 40% Arial;

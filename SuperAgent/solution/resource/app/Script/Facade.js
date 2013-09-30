@@ -195,11 +195,8 @@ function GetQuestionsByOutlet(questionnaires) {
         questions.AddParameter("Ref", questionnaires.Ref);
         questions.Text = "select * from Document.Questionnaire_Questions where Ref == @Ref";
         var result = questions.Execute();
-        if (result.Items != 0)
-            if (result.items.Count > 0)
-                return result;
-            else
-                return null;
+        if (result.Count() > 0)
+            return result;
         else
             return null;
     }

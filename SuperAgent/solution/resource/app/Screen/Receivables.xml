@@ -63,7 +63,8 @@
                   <s:Push Id="SumToSpread" Value="$Facade.GetDifference($SumToSpread,$encItem.EncashmentSum)"></s:Push>
                 </s:If>
                 <s:Else>
-                <c:TextView Text="#documentSum#: {$receivableDoc.DocumentSum}" CssClass="description_row"></c:TextView>
+                  <s:Push Id="documentSum" Value="$Facade.ToFloat($receivableDoc.DocumentSum)"></s:Push>
+                  <c:TextView Text="#documentSum#: {$documentSum}" CssClass="description_row"></c:TextView>
                 </s:Else>
               </s:If>
               <s:Else>
@@ -73,7 +74,8 @@
                   <c:TextView Text="#encashmentSum#: {$encItem.EncashmentSum}" CssClass="description_row"></c:TextView>
                 </s:If>
                 <s:Else>
-                  <c:TextView Text="#documentSum#: {$receivableDoc.DocumentSum}" CssClass="description_row"></c:TextView>
+                  <s:Push Id="documentSum" Value="$Facade.ToFloat($receivableDoc.DocumentSum)"></s:Push>
+                  <c:TextView Text="#documentSum#: {$documentSum}" CssClass="description_row"></c:TextView>
                 </s:Else>
               </s:Else>
 

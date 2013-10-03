@@ -71,7 +71,7 @@
           <c:VerticalLayout>
             <s:If Test="$parameterValue!=null">
               <s:If Test="$parameter.DataTypeAsObject.Description=='Boolean'">
-                <s:If Test="$parameterValue.Value == 'False'">
+                <s:If Test="$parameterValue.Value == 'True'">
                   <c:TextView CssClass="main_row" Text="#true#"/>
                 </s:If>
                 <s:Else>

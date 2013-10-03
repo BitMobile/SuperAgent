@@ -63,7 +63,9 @@
     <Content Include="resource\app\Screen\Order.xml" />
     <Content Include="resource\app\Screen\OrderList.xml" />
     <Content Include="resource\app\Screen\Order_Commentary.xml" />
-    <Content Include="resource\app\Screen\Order_EditSKU.xml" />
+    <Content Include="resource\app\Screen\Order_EditSKU.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="resource\app\Screen\Order_SKUs.xml" />
     <Content Include="resource\app\Screen\Outlet.xml" />
     <Content Include="resource\app\Screen\OutletParameter.xml" />

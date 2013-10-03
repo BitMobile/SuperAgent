@@ -25,6 +25,13 @@ function FormatValue(value) {
     return String.Format("{0:F2}", value);
 }
 
+function ConvertToBoolean(val) {
+    if (val == "true" || val == true)
+        return true;
+    else
+        return false;
+}
+
 function GetLookupList(entity, attribute) {
     var objectType = entity.Metadata[attribute].Type;
     var objectName = entity.Metadata[attribute].Name;
@@ -428,7 +435,7 @@ function GetSKUAmount(orderId, item) {
 
 }
 
-function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit, multiplier, discount) {
+function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit, multiplier, discount, ismarkup) {
 
     if (orderitem == null) {
 
@@ -443,12 +450,24 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit, multiplier, di
         return p;
     }
     else {
-        if (discount != null)
-            if (discount > 0)
-                orderitem.Discount = -discount;
+        if (discount != null && discount != "") {
+            if (ismarkup == false) {
+                if (discount > 0)
+                    orderitem.Discount = -discount;
+                else
+                    orderitem.Discount = discount;
+            }
+            else {
+                if (discount < 0)
+                    orderitem.Discount = -discount;
 
-            else
-                orderitem.Discount = discount;
+                else
+                    orderitem.Discount = discount;
+            }
+        }
+        else
+            orderitem.Discount = 0;
+
         orderitem.Total = (orderitem.Price * (orderitem.Discount / 100 + 1) * multiplier);
         if (unit != null)
             orderitem.Units = unit.Pack;

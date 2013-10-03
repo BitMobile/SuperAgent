@@ -444,9 +444,11 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit, multiplier, di
     }
     else {
         if (discount != null)
-            orderitem.Discount = discount;
-        else
-            orderitem.Discount = 0;
+            if (discount > 0)
+                orderitem.Discount = -discount;
+
+            else
+                orderitem.Discount = discount;
         orderitem.Total = (orderitem.Price * (orderitem.Discount / 100 + 1) * multiplier);
         if (unit != null)
             orderitem.Units = unit.Pack;

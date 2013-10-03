@@ -41,8 +41,8 @@
           <c:TextView Text="#price#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
         <c:VerticalLayout>
-          <c:EditText Id="discount" Text="$discValue" CssClass="main_row"></c:EditText>
-          <c:TextView Text="#discount#/#markUp#" CssClass="description_row"></c:TextView>
+          <c:EditText Id="discount" Text="$discValue" CssClass="main_row" Keyboard="numeric"></c:EditText>
+          <c:TextView Text="#discount#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
 

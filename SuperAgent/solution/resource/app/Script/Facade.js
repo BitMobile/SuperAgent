@@ -1,4 +1,6 @@
 
+//---------------Common functions-----------
+
 function ToFloat(text) {
     return parseFloat(text, 10)
 }
@@ -40,6 +42,19 @@ function GetLookupList(entity, attribute) {
     return query.Execute();
 }
 
+function CheckIfEmptyAndBack(entity, attribute, objectType, objectName) {
+
+    if (entity[attribute] == ""){
+
+        //DB.Current.Document.Order_SKUs.Delete(orderitem);
+        DB.Current[objectType][objectName].Delete(entity);
+    }
+
+    Workflow.Back();
+}
+
+//-----------------Outlets----------------------------
+
 function CreateOutletParameterValueIfNotExists(outlet, parameter, parameterValue) {
     if (parameterValue != null)
         return parameterValue;
@@ -71,6 +86,8 @@ function GetOutlets(searchText) {
     return query.Execute();
 }
 
+
+//----------------------Schedules visits----------------
 
 function GetScheduledVisits(searchText) {
     var query = new Query();
@@ -465,8 +482,6 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit, multiplier, di
                     orderitem.Discount = discount;
             }
         }
-        else
-            orderitem.Discount = 0;
 
         orderitem.Total = (orderitem.Price * (orderitem.Discount / 100 + 1) * multiplier);
         if (unit != null)

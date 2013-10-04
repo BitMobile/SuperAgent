@@ -53,7 +53,7 @@
         </c:VerticalLayout>
         <c:VerticalLayout>
           <c:CheckBox Id="discCheckbox" On="$ismarkup" CssClass="main_row"></c:CheckBox>
-          <c:TextView Text="switch discount/markup" CssClass="description_row"></c:TextView>
+          <c:TextView Text="#discount#/#markUp#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>

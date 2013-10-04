@@ -49,7 +49,7 @@
         <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$receivableDoc,$visit)">
           <c:VerticalLayout>
             <c:TextView Text="$receivableDoc.DocumentName" CssClass="main_row"></c:TextView>
-            <c:HorizontalLayout >
+            
               <s:If Test="$autoSpread=='True'">
                 <s:Push Id="encItem" Value ="$Facade.GetEncashmentItem($receivableDoc.DocumentName, $encashment)"></s:Push>
                 <s:Push Id="zero" Value = "$Facade.ToFloat(0)"></s:Push>
@@ -63,8 +63,7 @@
                   <s:Push Id="SumToSpread" Value="$Facade.GetDifference($SumToSpread,$encItem.EncashmentSum)"></s:Push>
                 </s:If>
                 <s:Else>
-                  <s:Push Id="documentSum" Value="$Facade.ToFloat($receivableDoc.DocumentSum)"></s:Push>
-                  <c:TextView Text="#documentSum#: {$documentSum}" CssClass="description_row"></c:TextView>
+                  <c:TextView Text="#documentSum#: {$receivableDoc.DocumentSum}" CssClass="description_row"></c:TextView>
                 </s:Else>
               </s:If>
               <s:Else>
@@ -74,12 +73,11 @@
                   <c:TextView Text="#encashmentSum#: {$encItem.EncashmentSum}" CssClass="description_row"></c:TextView>
                 </s:If>
                 <s:Else>
-                  <s:Push Id="documentSum" Value="$Facade.ToFloat($receivableDoc.DocumentSum)"></s:Push>
-                  <c:TextView Text="#documentSum#: {$documentSum}" CssClass="description_row"></c:TextView>
+                  <c:TextView Text="#documentSum#: {$receivableDoc.DocumentSum}" CssClass="description_row"></c:TextView>
                 </s:Else>
               </s:Else>
 
-            </c:HorizontalLayout>
+            
           </c:VerticalLayout>
           <c:Image/>
         </c:HorizontalLayout>

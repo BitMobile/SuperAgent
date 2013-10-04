@@ -44,13 +44,24 @@ function GetLookupList(entity, attribute) {
 
 function CheckIfEmptyAndBack(entity, attribute, objectType, objectName) {
 
-    if (entity[attribute] == ""){
-
-        //DB.Current.Document.Order_SKUs.Delete(orderitem);
-        DB.Current[objectType][objectName].Delete(entity);
+    if (entity.IsNew) {
+        if (entity[attribute] == "" || entity[attribute] == 0)
+            DB.Current[objectType][objectName].Delete(entity);
     }
 
     Workflow.Back();
+}
+
+function CheckIfEmptyAndForward(entity, attribute, objectType, objectName) {
+
+    if (entity.IsNew) {
+        if (entity[attribute] == "" || entity[attribute] == 0)
+            DB.Current[objectType][objectName].Delete(entity);
+    }
+
+    var parameters = [];
+
+    Workflow.Forward(parameters);
 }
 
 //-----------------Outlets----------------------------

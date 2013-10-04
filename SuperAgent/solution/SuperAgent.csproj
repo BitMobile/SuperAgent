@@ -34,7 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="resource\app\BusinessProcess\BusinessProcess.xml" />
+    <Content Include="resource\app\BusinessProcess\BusinessProcess.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="resource\app\Image\Default\button_left.png" />
     <Content Include="resource\app\Image\Default\button_left_disabled.png" />
     <Content Include="resource\app\Image\Default\button_right.png" />

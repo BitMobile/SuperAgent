@@ -6,11 +6,11 @@
   <s:Push Id="executedOrder" Value="$param3"></s:Push>
 
   <s:Push Id="workflow.order" Value ="$Facade.CreateOrderIfNotExists($order, $outlet, $common.UserId, $workflow.visit.Id, $executedOrder)"></s:Push>
-
+  
   <s:Push Id="items" Value="$Facade.GetOrderedSKUs($workflow.order.Id)"></s:Push>
   <s:Push Id="qty" Value="$Facade.GetOrderQTY($workflow.order.Id)"></s:Push>
   <s:Push Id="sum" Value="$Facade.GetOrderSUM($workflow.order.Id)"></s:Push>
-  <s:Push Id="maxAmount" Value="$Facade.GetMaxOrderAmount($outlet)"></s:Push>
+  <s:Push Id="maxAmount" Value="$Facade.GetMaxOrderAmount($workflow.order.OutletAsObject)"></s:Push>
   <s:Push Id="greater" Value="$Facade.GetGreater($sum,$maxAmount)"></s:Push>
 
   <c:VerticalLayout>

@@ -13,6 +13,8 @@
 
     <c:ScrollView CssClass="grid">
 
+      <s:Push Id="statusDescription" Value="$Facade.GetOrderStatus($workflow.order)"></s:Push>
+      <s:If Test="$statusDescription == 'New'">
       <c:HorizontalLayout CssClass="memo_block">
         <c:VerticalLayout>
           <c:TextView Text="#insert_text#" CssClass="description_row"></c:TextView>
@@ -20,6 +22,14 @@
           <c:MemoEdit Value="$order.Commentary" CssClass="main_row" AutoFocus="True"></c:MemoEdit>
         </c:VerticalLayout>
       </c:HorizontalLayout>
+      </s:If>
+      <s:Else>
+        <c:HorizontalLayout>
+          <c:VerticalLayout>
+            <c:TextView Text="$order.Commentary" CssClass="main_row"></c:TextView>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+      </s:Else>
 
     </c:ScrollView>
   </c:VerticalLayout>

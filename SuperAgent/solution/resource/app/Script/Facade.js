@@ -2,7 +2,7 @@
 //---------------Common functions-----------
 
 function ToFloat(text) {
-    return parseFloat(text, 10)
+    return parseFloat(text, 10);
 }
 
 function GetDifference(val1, val2) {
@@ -45,7 +45,7 @@ function GetLookupList(entity, attribute) {
 function CheckIfEmptyAndBack(entity, attribute, objectType, objectName) {
 
     if (entity.IsNew) {
-        if (entity[attribute] == "" || entity[attribute] == 0)
+        if (entity[attribute] == "" || String(entity[attribute]) == "0")
             DB.Current[objectType][objectName].Delete(entity);
     }
 
@@ -467,15 +467,25 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit, multiplier, di
 
     if (orderitem == null) {
 
-        var p = DB.Create("Document.Order_SKUs");
-        p.Ref = orderId;
-        p.SKU = sku.Id;
-        p.Price = sku.Price;
-        p.Total = sku.Price;
-        p.Units = sku.BaseUnit;
-        p.Discount = 0;
+        var query = new Query();
+        query.AddParameter("ref", orderId);
+        query.AddParameter("sku", sku.Id);
+        query.Text = "select * from Document.Order_SKUs where Ref==@ref && SKU==@sku";
+        var r = query.Execute();
+        if (r.Count() > 0)
+            for (var k in r)
+                return k;
+        else {
+            var p = DB.Create("Document.Order_SKUs");
+            p.Ref = orderId;
+            p.SKU = sku.Id;
+            p.Price = sku.Price;
+            p.Total = sku.Price;
+            p.Units = sku.BaseUnit;
+            p.Discount = 0;
 
-        return p;
+            return p;
+        }
     }
     else {
         if (discount != null && discount != "") {

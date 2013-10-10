@@ -43,7 +43,7 @@
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
-      <s:Push Id="SumToSpread" Value="$Facade.ToFloat($encashment.EncashmentAmount)"></s:Push>
+      <s:Push Id="SumToSpread" Value="$Facade.ToFloat($encashmentAmount)"></s:Push>
       <s:Iterator Id="receivableDoc" Value="$receivables">
 
         <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$receivableDoc,$visit)">

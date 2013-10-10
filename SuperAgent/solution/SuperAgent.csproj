@@ -62,7 +62,9 @@
     <Content Include="resource\app\Screen\Encashment.xml" />
     <Content Include="resource\app\Screen\ListChoice.xml" />
     <Content Include="resource\app\Screen\Main.xml" />
-    <Content Include="resource\app\Screen\Order.xml" />
+    <Content Include="resource\app\Screen\Order.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="resource\app\Screen\OrderList.xml" />
     <Content Include="resource\app\Screen\Order_Commentary.xml" />
     <Content Include="resource\app\Screen\Order_EditSKU.xml">

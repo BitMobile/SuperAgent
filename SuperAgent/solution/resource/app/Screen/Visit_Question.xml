@@ -10,8 +10,8 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Facade.CheckIfEmptyAndBack($questionValue, Answer, Document, Visit_Questions)"/>
+      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckIfEmptyAndBack($questionValue, Answer, Document, Visit_Questions)"/>
       <c:TextView Text="#answer#" />
     </c:DockLayout>
 

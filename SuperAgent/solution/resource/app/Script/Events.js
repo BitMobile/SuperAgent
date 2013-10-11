@@ -1,15 +1,9 @@
-﻿//function OnLoading(screenName) {}
+﻿//function OnWorkflowStart(name) { }
 
-//function OnLoad(screenName) {}
+//function OnWorkflowForward(name, lastStep, nextStep) { }
 
-//function OnWorkflowStart(name, lastStep, nextStep) {}
+//function Decide(handler) { }
 
-//function OnWorkflowForward(name, lastStep, nextStep) {}
+//function OnWorkflowBack(name, lastStep, nextStep) { }
 
-//function OnWorkflowBack(name, lastStep, nextStep) {}
-
-//function OnWorkflowCommit(name, lastStep, nextStep) {}
-
-//function OnWorkflowRollback(name, lastStep, nextStep) {}
-
-//function OnWorkflowStop(name, lastStep, nextStep) {}
+//function OnWorkflowFinish(name, reason) { }

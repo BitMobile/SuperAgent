@@ -340,8 +340,10 @@ function CreateUnschVisitIfNotExists(outlet, userId, visit) {
         visit.SR = userId;
         visit.Date = DateTime.Now;
         visit.StartTime = DateTime.Now;
-        visit.Lattitude = GPS.Latitude;
-        visit.Longitude = GPS.Longitude;
+        if (GPS.Update()) {
+            visit.Lattitude = GPS.Latitude;
+            visit.Longitude = GPS.Longitude;
+        }
 
         var status = new Query("select single(*) from Enum.VisitStatus where Description=='Processing'").Execute();
         visit.Status = status.Id;
@@ -724,6 +726,22 @@ function GetEncAmount(encashmentText, autoSpread, encashment) {
         query.Text = "select sum(EncashmentSum) from Document.Encashment_EncashmentDocuments where Ref==@docId";
         return query.Execute();
     }
+}
+
+function GetLatitude() {
+    if (GPS.Update(60))
+        return GPS.Latitude;
+    return 0;
+}
+
+function GetLongitude() {
+    if (GPS.Update(60))
+        return GPS.Longitude;
+    return 0;
+}
+
+function ShowDialog() {
+    Dialog.Message("hi");
 }
 
 

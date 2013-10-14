@@ -76,6 +76,7 @@
     <Content Include="resource\app\Screen\Outlets.xml" />
     <Content Include="resource\app\Screen\Receivables.xml" />
     <Content Include="resource\app\Screen\ScheduledVisits.xml" />
+    <Content Include="resource\app\Screen\Settings.xml" />
     <Content Include="resource\app\Screen\Stock_SKUs.xml" />
     <Content Include="resource\app\Screen\Targets.xml" />
     <Content Include="resource\app\Screen\Task.xml" />

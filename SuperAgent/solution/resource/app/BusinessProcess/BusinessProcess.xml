@@ -12,7 +12,7 @@
       <bp:Action Name="ScheduledVisit" NextWorkflow="ScheduledVisit"></bp:Action>
       <bp:Action Name="Outlets" NextWorkflow="Outlets"></bp:Action>
       <bp:Action Name="Targets" NextWorkflow="Targets"></bp:Action>
-      <bp:Action Name="Logon" NextWorkflow="Logon"></bp:Action>
+      <bp:Action Name="Settings" NextWorkflow="Settings"></bp:Action>
       
     </bp:Step>
     
@@ -237,10 +237,9 @@
   </bp:Workflow>
   
   
-  <bp:Workflow Name="Logon">
+  <bp:Workflow Name="Settings">
 
-    <bp:Step Name="Logon" Screen="Logon.xml">
-      <bp:Action Name="OK"></bp:Action>
+    <bp:Step Name="Settings" Screen="Settings.xml">
     </bp:Step>
 
   </bp:Workflow>

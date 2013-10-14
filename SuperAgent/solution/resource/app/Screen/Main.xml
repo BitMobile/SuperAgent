@@ -28,7 +28,7 @@
 
       <c:HorizontalLayout>
         <c:Button CssClass="btn_distr" OnClickAction="$Workflow.DoAction(Distr)"/>
-        <c:Button CssClass="btn_settings"/>
+        <c:Button CssClass="btn_settings" OnClickAction="$Workflow.DoAction(Settings)"/>
         <c:HorizontalLayout CssClass="btn_sync" OnClickAction="$DB.DoSync()">
           <c:Indicator/>
         </c:HorizontalLayout>

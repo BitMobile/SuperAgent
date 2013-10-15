@@ -804,13 +804,13 @@ function GetEncAmount(encashmentText, autoSpread, encashment) {
 }
 
 function GetLatitude() {
-    if (GPS.Update(60))
+    if (GPS.Update())
         return GPS.Latitude;
     return 0;
 }
 
 function GetLongitude() {
-    if (GPS.Update(60))
+    if (GPS.Update())
         return GPS.Longitude;
     return 0;
 }

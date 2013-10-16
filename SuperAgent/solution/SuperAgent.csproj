@@ -84,11 +84,19 @@
     <Content Include="resource\app\Screen\Visit_Order_Commentary.xml" />
     <Content Include="resource\app\Screen\Visit_Outlet.xml" />
     <Content Include="resource\app\Screen\Visit_Question.xml" />
-    <Content Include="resource\app\Screen\Visit_Questions.xml" />
-    <Content Include="resource\app\Screen\Visit_SKU.xml" />
-    <Content Include="resource\app\Screen\Visit_SKUs.xml" />
+    <Content Include="resource\app\Screen\Visit_Questions.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="resource\app\Screen\Visit_SKU.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="resource\app\Screen\Visit_SKUs.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="resource\app\Screen\Visit_Task.xml" />
-    <Content Include="resource\app\Screen\Visit_Total.xml" />
+    <Content Include="resource\app\Screen\Visit_Total.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="resource\app\Script\DB.js" />
     <Content Include="resource\app\Script\Facade.js" />
     <Content Include="resource\app\Script\Workflow.js" />

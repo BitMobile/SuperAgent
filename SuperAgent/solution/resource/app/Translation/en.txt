@@ -80,4 +80,5 @@ nameSurname	Name, surname
 maximumAmount	Amount limit
 NoLimit		No limit
 deleteItem	Delete this item
+startTime	Start time
 

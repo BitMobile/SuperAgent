@@ -3,6 +3,7 @@
 
   <s:Push Id="outlet" Value="$param1"></s:Push>
   <s:Push Id="visit" Value="$param2"></s:Push>
+  <s:Push Id="workflow.questions_qty" Value="$Facade.ToFloat(0)"></s:Push>
   
   <s:Push Id="questionnaires" Value="$Facade.GetQuesttionaires($outlet)"></s:Push>
   <s:Push Id="questions" Value="$Facade.GetQuestionsByOutlet($questionnaires)"></s:Push>
@@ -33,6 +34,7 @@
 
         <s:Iterator Id="item" Value="$questions">
 
+          <s:Push Id="workflow.questions_qty" Value="$Facade.GetSum($workflow.questions_qty, 1)"></s:Push>
           <s:Push Id="question" Value="$item.QuestionAsObject"/>
           <s:Push Id="questionValue" Value="$Facade.GetVisitQuestionValue($visit,$question)"/>
 

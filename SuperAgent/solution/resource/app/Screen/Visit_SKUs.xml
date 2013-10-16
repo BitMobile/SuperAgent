@@ -5,6 +5,8 @@
   <s:Push Id="visit" Value="$param2"></s:Push>
   <s:Push Id="questionnaires" Value="$param3"></s:Push>
   <s:Push Id="questions" Value="$Facade.GetSKUsByOutlet($questionnaires)"></s:Push>
+  <s:Push Id="workflow.sku_qty" Value="$Facade.GetSKUQty($questions, $questionnaires)"></s:Push>
+  
 
   <c:VerticalLayout>
 
@@ -29,10 +31,12 @@
       </s:If>
       <s:Else>
 
+        <s:Push Id="workflow.sku_answ" Value="0"></s:Push>
+        
         <s:Iterator Id="item" Value="$questions">
-
           <s:Push Id="sku" Value="$item.SKUAsObject"/>
           <s:Push Id="skuValue" Value="$Facade.GetVisitSKUValue($visit,$sku)"/>
+          <s:Push Id="workflow.sku_answ" Value="$Facade.GetSKUAnswers($sku ,$visit, $workflow.sku_answ)"></s:Push>
 
           <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Edit,$outlet,$visit,$sku,$skuValue,$questionnaires)">
 

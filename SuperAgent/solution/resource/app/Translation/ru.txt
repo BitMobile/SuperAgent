@@ -80,4 +80,5 @@ nameSurname	ФИО
 maximumAmount	Лимит
 NoLimit		Неограничен
 deleteItem	Удалить эту строку
+startTime	Время начала
 

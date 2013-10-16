@@ -5,6 +5,10 @@ function ToFloat(text) {
     return parseFloat(text, 10);
 }
 
+function GetSum(val1, val2) {
+    return parseFloat(val1) + parseFloat(val2);
+}
+
 function GetDifference(val1, val2) {
     return val1 - val2;
 }
@@ -62,6 +66,14 @@ function CheckIfEmptyAndForward(entity, attribute, objectType, objectName) {
     var parameters = [];
 
     Workflow.Forward(parameters);
+}
+
+function CountEntities(type, name, paramValue, parameter) {
+    var query = new Query();
+    query.AddParameter("v", paramValue);
+    query.Text = String.Format("select count(Id) from {0}.{1} where {2}==@v", type, name, parameter);
+    return query.Execute();
+
 }
 
 //-----------------Outlets----------------------------
@@ -328,6 +340,59 @@ function UpdateValueAndBack(entity, attribute, value, order) {
     Workflow.Back();
 
 }
+
+
+function GetSKUQty(questions, questionnaires) {
+    var q = questions.Count();
+    var parameters = ["Available", "Facing", "Stock", "Price", "Mark up", "Out of stock"];
+    var s = parseInt(0);
+    var r;
+    for (var i in parameters) {
+        if (CheckQuestionExistence(questionnaires, parameters[i]))
+            s += parseInt(1);
+    }
+    return q * s;
+
+}
+
+function GetSKUAnswers(sku, visit, sku_answ) {
+
+    sku_answ = parseInt(sku_answ);
+    var parameters = ["Available", "Facing", "Stock", "Price", "MarkUp", "OutOfStock"];
+    var s = parseInt(0);
+    for (var i in parameters) {
+        if (IsAnswered(visit, parameters[i], sku.Id))
+            s += parseInt(1);
+    }
+    if (sku_answ != null)
+        return sku_answ + s
+    else
+        return s;
+}
+
+function IsAnswered(visit, qName, sku) {
+    if (questionnaires != null) {
+        var query = new Query();
+        query.AddParameter("Ref", visit.Id);
+        query.AddParameter("sku", sku);
+        if (qName == "Facing" || qName == "Stock" || qName == "Price" || qName == "MarkUp") {
+            query.AddParameter("null", null);
+            query.Text = String.Format("select single(*) from Document.Visit_SKUs where Ref == @Ref && {0} != @null && SKU == @sku", qName);
+        }
+        else {
+            query.Text = "select single(*) from Document.Visit_SKUs where Ref == @Ref && SKU == @sku";
+        }
+
+        var result = query.Execute();
+        if (result == null)
+            return false;
+        else
+            return true;
+    }
+    else
+        return null;
+}
+
 
 
 //------------------------------UnscheduledVisit--------------

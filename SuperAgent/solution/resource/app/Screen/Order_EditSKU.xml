@@ -25,7 +25,7 @@
     <c:ScrollView CssClass="grid">
 
       <c:HorizontalLayout CssClass="header_edit_block">
-        <c:VerticalLayout CssClass="half_width"  OnClickAction="$Workflow.DoRefresh($order,$sku,$orderitem,$unit,$discount.Text,$discCheckbox.On)">
+        <c:VerticalLayout CssClass="half_width"  OnClickAction="$Workflow.DoRefresh($order,$sku,$orderitem,$unit,$discount.Text,$discCheckbox.Checked)">
           <c:TextView Text="{$sku.Description}" CssClass="main_row"></c:TextView>
           <c:TextView Text="#refreshScreen#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
@@ -52,7 +52,7 @@
           </s:Else>
         </c:VerticalLayout>
         <c:VerticalLayout>
-          <c:CheckBox Id="discCheckbox" On="$ismarkup" CssClass="main_row"></c:CheckBox>
+          <c:CheckBox Id="discCheckbox" Checked="$ismarkup" CssClass="main_row"></c:CheckBox>
           <c:TextView Text="#discount#/#markUp#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>

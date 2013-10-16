@@ -61,7 +61,7 @@
     <Content Include="resource\app\Image\Default\visit.png" />
     <Content Include="resource\app\Screen\Encashment.xml" />
     <Content Include="resource\app\Screen\ListChoice.xml" />
-    <Content Include="resource\app\Screen\Main.xml" />
+    <Content Include="resource\app\Screen\Main.xml">
     <Content Include="resource\app\Screen\Order.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -76,6 +76,7 @@
     <Content Include="resource\app\Screen\Outlets.xml" />
     <Content Include="resource\app\Screen\Receivables.xml" />
     <Content Include="resource\app\Screen\ScheduledVisits.xml" />
+    <Content Include="resource\app\Screen\Settings.xml" />
     <Content Include="resource\app\Screen\Stock_SKUs.xml" />
     <Content Include="resource\app\Screen\Targets.xml" />
     <Content Include="resource\app\Screen\Task.xml" />
@@ -98,6 +99,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="resource\app\Script\DB.js" />
+    <Content Include="resource\app\Script\Events.js" />
     <Content Include="resource\app\Script\Facade.js" />
     <Content Include="resource\app\Script\Workflow.js" />
     <Content Include="resource\app\Style\Default\default.css" />

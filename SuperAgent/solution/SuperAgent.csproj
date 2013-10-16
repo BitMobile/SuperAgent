@@ -61,7 +61,7 @@
     <Content Include="resource\app\Image\Default\visit.png" />
     <Content Include="resource\app\Screen\Encashment.xml" />
     <Content Include="resource\app\Screen\ListChoice.xml" />
-    <Content Include="resource\app\Screen\Main.xml">
+    <Content Include="resource\app\Screen\Main.xml"/>
     <Content Include="resource\app\Screen\Order.xml">
       <SubType>Designer</SubType>
     </Content>

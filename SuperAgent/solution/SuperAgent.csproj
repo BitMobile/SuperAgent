@@ -61,7 +61,7 @@
     <Content Include="resource\app\Image\Default\visit.png" />
     <Content Include="resource\app\Screen\Encashment.xml" />
     <Content Include="resource\app\Screen\ListChoice.xml" />
-    <Content Include="resource\app\Screen\Main.xml"/>
+    <Content Include="resource\app\Screen\Main.xml" />
     <Content Include="resource\app\Screen\Order.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -114,7 +114,9 @@
     <Content Include="resource\app\Style\Default\Visit_Order.css" />
     <Content Include="resource\app\Translation\en.txt" />
     <Content Include="resource\app\Translation\ru.txt" />
-    <Content Include="resource\settings.xml" />
+    <Content Include="resource\settings.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

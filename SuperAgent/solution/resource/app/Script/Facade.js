@@ -343,15 +343,19 @@ function UpdateValueAndBack(entity, attribute, value, order) {
 
 
 function GetSKUQty(questions, questionnaires) {
-    var q = questions.Count();
-    var parameters = ["Available", "Facing", "Stock", "Price", "Mark up", "Out of stock"];
-    var s = parseInt(0);
-    var r;
-    for (var i in parameters) {
-        if (CheckQuestionExistence(questionnaires, parameters[i]))
-            s += parseInt(1);
+    if (questions != null) {
+        var q = questions.Count();
+        var parameters = ["Available", "Facing", "Stock", "Price", "Mark up", "Out of stock"];
+        var s = parseInt(0);
+        var r;
+        for (var i in parameters) {
+            if (CheckQuestionExistence(questionnaires, parameters[i]))
+                s += parseInt(1);
+        }
+        return q * s;
     }
-    return q * s;
+    else
+        return 0;
 
 }
 

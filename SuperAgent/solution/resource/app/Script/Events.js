@@ -6,7 +6,7 @@
 
 function OnWorkflowFinish(name, reason) {
     //Dialog.Message(name + ": " + reason);
-    //if (name == "UnscheduledVisit") {
-    Variables.workflow.visit.Lattitude = 1; //EndTime = DateTime.Now;
-    //}
+    if (name == "UnscheduledVisit") {
+        Variables["workflow"].["visit"].Lattitude = 1; //EndTime = DateTime.Now;
+    }
 }

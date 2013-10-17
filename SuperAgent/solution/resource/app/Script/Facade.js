@@ -56,6 +56,14 @@ function CheckIfEmptyAndBack(entity, attribute, objectType, objectName) {
     Workflow.Back();
 }
 
+function DeleteAndBack(entity, objectType, objectName) {
+
+    if (entity.IsNew) 
+        DB.Current[objectType][objectName].Delete(entity);
+    
+    Workflow.Back();
+}
+
 function CheckIfEmptyAndForward(entity, attribute, objectType, objectName) {
 
     if (entity.IsNew) {

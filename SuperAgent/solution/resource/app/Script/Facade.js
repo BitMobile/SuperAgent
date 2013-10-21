@@ -58,9 +58,9 @@ function CheckIfEmptyAndBack(entity, attribute, objectType, objectName) {
 
 function DeleteAndBack(entity, objectType, objectName) {
 
-    if (entity.IsNew) 
+    if (entity.IsNew)
         DB.Current[objectType][objectName].Delete(entity);
-    
+
     Workflow.Back();
 }
 
@@ -417,10 +417,12 @@ function CreateUnschVisitIfNotExists(outlet, userId, visit) {
         visit.SR = userId;
         visit.Date = DateTime.Now;
         visit.StartTime = DateTime.Now;
-        if (GPS.Update()) {
-            visit.Lattitude = GPS.Latitude;
-            visit.Longitude = GPS.Longitude;
-        }
+                
+        var location = GPS.CurrentLocation;
+        if (location.NotEmpty) {
+            visit.Lattitude = location.Latitude;
+            visit.Longitude = location.Longitude;
+        }        
 
         var status = new Query("select single(*) from Enum.VisitStatus where Description=='Processing'").Execute();
         visit.Status = status.Id;

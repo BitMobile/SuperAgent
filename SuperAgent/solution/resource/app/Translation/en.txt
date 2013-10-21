@@ -81,4 +81,6 @@ maximumAmount	Amount limit
 NoLimit		No limit
 deleteItem	Delete this item
 startTime	Start time
+newOutlet	Create new outlet
+messageNulls	There shouldn't be empty fields.
 

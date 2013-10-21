@@ -2,6 +2,8 @@
 //---------------Common functions-----------
 
 function ToFloat(text) {
+    if (text == null)
+        return parseFloat(0, 10);
     return parseFloat(text, 10);
 }
 
@@ -20,6 +22,17 @@ function GetGreater(val1, val2) {
     }
     else
         return true;
+}
+
+function AreEqual(val1, val2) {
+    if (String(val1) == String(val2))
+        return true;
+    else
+        return false;
+}
+
+function GetMultiple(val1, val2) {
+    return (val1 * val2)
 }
 
 function AssignValue(entity, attribute, value) {
@@ -117,6 +130,39 @@ function GetOutlets(searchText) {
     return query.Execute();
 }
 
+function CreateOutletIfNotExist(outlet) {
+    if (outlet == null) {
+        var p = DB.Create("Catalog.Outlet");
+        p.ConfirmationStatus = DB.Current.Constant.OutletConfirmationStatus.New;
+        return p;
+    }
+    else
+        return outlet;
+
+}
+
+function CreateAndForward() {
+    var p = DB.Create("Catalog.Outlet");
+    p.ConfirmationStatus = DB.Current.Constant.OutletConfirmationStatus.New;
+
+    var parameters = [p];
+    Workflow.Action("Create", parameters);
+}
+
+function CheckNotNullAndCommit(outlet) {
+    var attributes = ["outletDescr", "outletAddress", "outletClass", "outletType", "outletDistr"];//"Description", "Address", "Type", "Class", "Distributor"];
+    var areNulls = false;
+    for (var i in attributes) {
+        var attribute = attributes[i];
+        if (Variables[attribute].Text == null || Variables[attribute].Text == "" || Variables[attribute].Text == "\n\n\n\n\n\n\n"){//Variables[attribute].Text == "" || Variables[attribute].Text == null) {
+            areNulls = true;
+        }
+    }
+    if (areNulls)
+        Dialog.Message("#messageNulls#");
+    else
+        Workflow.Commit();
+}
 
 //----------------------Schedules visits----------------
 
@@ -568,29 +614,40 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit, multiplier, di
             return p;
         }
     }
-    else {
-        if (discount != null && discount != "") {
-            if (ismarkup == false) {
-                if (discount > 0)
-                    orderitem.Discount = -discount;
-                else
-                    orderitem.Discount = discount;
-            }
-            else {
-                if (discount < 0)
-                    orderitem.Discount = -discount;
+    //else {
+    //    if (discount != null && discount != "") {
+    //        if (ismarkup == false) {
+    //            if (discount > 0)
+    //                orderitem.Discount = -discount;
+    //            else
+    //                orderitem.Discount = discount;
+    //        }
+    //        else {
+    //            if (discount < 0)
+    //                orderitem.Discount = -discount;
 
-                else
-                    orderitem.Discount = discount;
-            }
-        }
+    //            else
+    //                orderitem.Discount = discount;
+    //        }
+    //    }
 
-        orderitem.Total = (orderitem.Price * (orderitem.Discount / 100 + 1) * multiplier);
-        if (unit != null)
-            orderitem.Units = unit.Pack;
+    //    orderitem.Total = (orderitem.Price * (orderitem.Discount / 100 + 1) * multiplier);
+    //    if (unit != null)
+    //        orderitem.Units = unit.Pack;
 
-        return orderitem;
-    }
+    //    return orderitem;
+    //}
+
+}
+
+function CountPriceAndQTY(orderitem, discount, ismarkup, multiplier) {
+
+    var p = orderitem.Price * (parseInt(discount) / 100 + 1) * multiplier;
+    Variables["orderitem"].Discount = parseInt(discount);
+    Variables["orderitem"].Total = p;
+
+    Variables["orderItemTotalId"].Text = p;
+
 
 }
 
@@ -616,12 +673,6 @@ function GetMultiplier(unit, sku, orderitem) {
     return 1;
 }
 
-function CalculateValue(orderitem, multiplier) {
-
-
-    return multiplier * orderitem.Qty;
-
-}
 
 function CalculatePrice(price, discount) {
 

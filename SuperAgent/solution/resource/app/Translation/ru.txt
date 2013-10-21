@@ -81,4 +81,6 @@ maximumAmount	Лимит
 NoLimit		Неограничен
 deleteItem	Удалить эту строку
 startTime	Время начала
+newOutlet	Создать новую торговую точку
+messageNulls	Все поля на экране должны быть заполнены.
 

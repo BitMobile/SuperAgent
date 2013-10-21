@@ -98,6 +98,8 @@
     <Content Include="resource\app\Screen\Visit_Total.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="resource\app\Screen\Outlets_Outlets.xml" />
+    <Content Include="resource\app\Screen\NewOutlet.xml" />
     <Content Include="resource\app\Script\DB.js" />
     <Content Include="resource\app\Script\Events.js" />
     <Content Include="resource\app\Script\Facade.js" />

@@ -76,10 +76,12 @@ function CheckIfEmptyAndBack(entity, attribute, objectType, objectName) {
     Workflow.Back();
 }
 
-function DeleteAndBack(entity, objectType, objectName) {
+function DeleteAndBack(entity, objectType, objectName, varToDelete) {
 
     if (entity.IsNew)
         DB.Current[objectType][objectName].Delete(entity);
+    if (varToDelete != null)
+        Variables["workflow"][varToDelete] = null;
 
     Workflow.Back();
 }
@@ -201,23 +203,22 @@ function GetTodayVisit(outlet) {
 }
 
 
-function CreatePlannedVisitIfNotExists(planVisit, outlet, userId) {
-    var query = new Query();
-    query.AddParameter("Date", DateTime.Now.Date);
-    query.AddParameter("Outlet", outlet.Id);
-    query.Text = "select single(*) from Document.Visit where Date.Date == @Date && Outlet==@Outlet";
+function CreateVisitIfNotExists(outlet, userId, visit, planVisit) {
+    //var query = new Query();
+    //query.AddParameter("Date", DateTime.Now.Date);
+    //query.AddParameter("Outlet", outlet.Id);
+    //query.Text = "select single(*) from Document.Visit where Date.Date == @Date && Outlet==@Outlet";
 
-    var visit = query.Execute();
+    //var visit = query.Execute();
     if (visit == null) {
         visit = DB.Create("Document.Visit");
-        visit.Plan = planVisit.Id;
+        if (planVisit != null)
+            visit.Plan = planVisit.Id;
         visit.Outlet = outlet.Id;
         visit.SR = userId;
         visit.Date = DateTime.Now;
         visit.StartTime = DateTime.Now;
-
-        var status = new Query("select single(*) from Enum.VisitStatus where Description=='Processing'").Execute();
-        visit.Status = status.Id;
+        visit.Status = DB.Current.Constant.VisitStatus.Processing;//status.Id;
 
         visit.Encashment = 0;
     }

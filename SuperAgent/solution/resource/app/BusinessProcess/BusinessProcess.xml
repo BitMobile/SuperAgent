@@ -113,7 +113,7 @@
       <bp:Action Name="Select" NextStep="Outlet"></bp:Action>
     </bp:Step>
 
-    <bp:Step Name="Outlet" Screen="UnscheduledVisit.xml">
+    <bp:Step Name="Outlet" Screen="Visit_Outlet.xml">
       <bp:Action Name="Forward" NextStep="Visit_Tasks"></bp:Action>
       <bp:Action Name="EditParameter" NextStep="EditOutletParameter"></bp:Action>
       <bp:Action Name="EditAddParameter" NextStep="EditOutletAddParameter"></bp:Action>

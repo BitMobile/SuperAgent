@@ -84,4 +84,6 @@ startTime	Start time
 newOutlet	Create new outlet
 messageNulls	There shouldn't be empty fields.
 countPrice	Count price
+address		Address
+description	Description
 

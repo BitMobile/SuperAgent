@@ -84,4 +84,6 @@ startTime	Время начала
 newOutlet	Создать новую торговую точку
 messageNulls	Все поля на экране должны быть заполнены.
 countPrice	Пересчитать цену
+address		Адрес
+description	Наименование
 

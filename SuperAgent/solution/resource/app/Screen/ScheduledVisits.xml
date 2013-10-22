@@ -35,7 +35,7 @@
         <s:Push Id="todayVisit" Value="$Facade.GetTodayVisit($planOutlet)" />
 
         <s:If Test="$todayVisit==NULL">
-          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$planVisit,$planOutlet)">
+          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$planOutlet,$planVisit)">
 
             <c:VerticalLayout>
               <c:TextView Text="$planOutlet.Description" CssClass="main_row"></c:TextView>

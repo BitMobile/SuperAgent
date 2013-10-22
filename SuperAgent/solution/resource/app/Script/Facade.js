@@ -51,6 +51,13 @@ function ConvertToBoolean(val) {
         return false;
 }
 
+function ConvertToBoolean1(val1) {
+    if (val1 > 0)
+        return true;
+    else
+        return false;
+}
+
 function GetLookupList(entity, attribute) {
     var objectType = entity.Metadata[attribute].Type;
     var objectName = entity.Metadata[attribute].Name;
@@ -154,7 +161,7 @@ function CheckNotNullAndCommit(outlet) {
     var areNulls = false;
     for (var i in attributes) {
         var attribute = attributes[i];
-        if (Variables[attribute].Text == null || Variables[attribute].Text == "" || Variables[attribute].Text == "\n\n\n\n\n\n\n"){//Variables[attribute].Text == "" || Variables[attribute].Text == null) {
+        if (Variables[attribute].Text == null || Variables[attribute].Text == "" || Variables[attribute].Text == "\n\n\n\n\n\n\n") {//Variables[attribute].Text == "" || Variables[attribute].Text == null) {
             areNulls = true;
         }
     }
@@ -463,12 +470,12 @@ function CreateUnschVisitIfNotExists(outlet, userId, visit) {
         visit.SR = userId;
         visit.Date = DateTime.Now;
         visit.StartTime = DateTime.Now;
-                
+
         var location = GPS.CurrentLocation;
         if (location.NotEmpty) {
             visit.Lattitude = location.Latitude;
             visit.Longitude = location.Longitude;
-        }        
+        }
 
         var status = new Query("select single(*) from Enum.VisitStatus where Description=='Processing'").Execute();
         visit.Status = status.Id;
@@ -590,7 +597,7 @@ function GetSKUAmount(orderId, item) {
 
 }
 
-function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit, multiplier, discount, ismarkup) {
+function CreateOrderItemIfNotExist(orderId, sku, orderitem, multiplier) {
 
     if (orderitem == null) {
 
@@ -599,9 +606,10 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit, multiplier, di
         query.AddParameter("sku", sku.Id);
         query.Text = "select * from Document.Order_SKUs where Ref==@ref && SKU==@sku";
         var r = query.Execute();
-        if (r.Count() > 0)
+        if (r.Count() > 0) {
             for (var k in r)
                 return k;
+        }
         else {
             var p = DB.Create("Document.Order_SKUs");
             p.Ref = orderId;
@@ -610,10 +618,12 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit, multiplier, di
             p.Total = sku.Price;
             p.Units = sku.BaseUnit;
             p.Discount = 0;
-
             return p;
         }
     }
+    else
+        return orderitem;
+
     //else {
     //    if (discount != null && discount != "") {
     //        if (ismarkup == false) {
@@ -640,43 +650,45 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, unit, multiplier, di
 
 }
 
-function CountPriceAndQTY(orderitem, discount, ismarkup, multiplier) {
+function CountPrice(orderitem, discount, discChBox) {
 
-    var p = orderitem.Price * (parseInt(discount) / 100 + 1) * multiplier;
-    Variables["orderitem"].Discount = parseInt(discount);
+    if (discount == null || discount == "")
+        discount = 0;
+    if (discount < 0)
+        discount = -discount;
+
+    if (discChBox) {
+        discChBox = 1;
+        Variables["discTextView"].Text = "#markUp#";
+    }
+    else {
+        discChBox = -1;
+        Variables["discTextView"].Text = "#discount#";
+    }
+    var p = orderitem.Price * (parseInt(discount) * discChBox / 100 + 1) * Variables["multiplier"];
+    Variables["orderitem"].Discount = parseInt(discount * discChBox);
+    Variables["discountEdit"].Text = parseInt(discount * discChBox);
     Variables["orderitem"].Total = p;
-
     Variables["orderItemTotalId"].Text = p;
-
-
 }
 
-function GetMultiplier(unit, sku, orderitem) {
+function GetMultiplier(sku, orderitem) {
 
-    if (unit != null) {
+    if (orderitem != null) {
         var query = new Query();
-        query.AddParameter("units", unit.Pack);
+        query.AddParameter("units", orderitem.Units);
         query.AddParameter("ref", sku.Id);
         query.Text = "select single(*) from Catalog.SKU_Packing where Ref==@ref && Pack==@units";
         var item = query.Execute();
         return item.Multiplier;
     }
-    else
-        if (orderitem != null) {
-            var query = new Query();
-            query.AddParameter("units", orderitem.Units);
-            query.AddParameter("ref", sku.Id);
-            query.Text = "select single(*) from Catalog.SKU_Packing where Ref==@ref && Pack==@units";
-            var item = query.Execute();
-            return item.Multiplier;
-        }
     return 1;
 }
 
 
-function CalculatePrice(price, discount) {
+function CalculatePrice(price, discount, multiplier) {
 
-    var total = (price * (discount / 100 + 1));
+    var total = (price * (discount / 100 + 1)) * multiplier;
     return total
 
 }
@@ -690,10 +702,22 @@ function GetUnits(skuId) {
 
 }
 
-function UpdateAndRefresh(entity, attribute, value) {
-    entity[attribute] = value;
+function ChangeUnit(sku, orderitem, unit, discount, discChBox) {
 
+    //CountPrice(orderitem, discount, discChBox);
+
+    //var multiplier = GetMultiplier(sku, orderitem);
+    Variables["multiplier"] = unit.Multiplier;
+    Variables["baseQtyTextView"].Text = orderitem.Qty * unit.Multiplier;
+
+    Variables["orderitem"].Units = unit.Pack;
+    Variables["itemUnits"].Text = unit.PackAsObject().Description;
+
+    var p = CalculatePrice(sku.Price, orderitem.Discount, unit.Multiplier);
+    Variables["orderitem"].Total = p;
+    Variables["orderItemTotalId"].Text = p;
 }
+
 
 function DeleteItemAndBack(orderitem) {
     DB.Current.Document.Order_SKUs.Delete(orderitem);

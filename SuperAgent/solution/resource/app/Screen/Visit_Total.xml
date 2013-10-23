@@ -5,7 +5,7 @@
 
     <c:DockLayout CssClass="top_navigator">
       <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoCommit()"/>
+      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.SetTimeAndCommit()"/>
       <c:TextView Text="#save#" />
     </c:DockLayout>
     <c:HorizontalLine/>

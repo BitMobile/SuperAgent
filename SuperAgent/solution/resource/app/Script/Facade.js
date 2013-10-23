@@ -485,7 +485,10 @@ function IsAnswered(visit, qName, sku) {
         return null;
 }
 
-
+function SetTimeAndCommit() {
+    Variables["workflow"]["visit"].EndTime = DateTime.Now;
+    Workflow.Commit();
+}
 
 //------------------------------UnscheduledVisit--------------
 

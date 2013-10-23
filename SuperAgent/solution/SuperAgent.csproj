@@ -110,7 +110,6 @@
     <Content Include="resource\app\Style\Default\default.css" />
     <Content Include="resource\app\Style\Default\Main.css" />
     <Content Include="resource\app\Style\Default\Order.css" />
-    <Content Include="resource\app\Style\Default\OrderList.css" />
     <Content Include="resource\app\Style\Default\Order_EditSKU.css" />
     <Content Include="resource\app\Style\Default\Order_SKUs.css" />
     <Content Include="resource\app\Style\Default\ScheduledVisits.css" />

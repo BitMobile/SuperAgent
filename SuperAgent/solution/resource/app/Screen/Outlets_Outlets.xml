@@ -44,10 +44,19 @@
       <s:Iterator Id="outlet" Value="$outlets">
 
         <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$outlet)">
-          <c:VerticalLayout>
+          <s:If Test="$outlet.ConfirmationStatusAsObject.Description == 'New'">
+          <c:VerticalLayout CssClass="blue_mark"/>
+          <c:VerticalLayout CssClass="clipped">
             <c:TextView Text="$outlet.Description" CssClass="main_row"></c:TextView>
             <c:TextView Text="$outlet.Address" CssClass="description_row"></c:TextView>
           </c:VerticalLayout>
+            </s:If>
+          <s:Else>
+            <c:VerticalLayout>
+            <c:TextView Text="$outlet.Description" CssClass="main_row"></c:TextView>
+            <c:TextView Text="$outlet.Address" CssClass="description_row"></c:TextView>
+          </c:VerticalLayout>
+          </s:Else>
           <c:Image/>
         </c:HorizontalLayout>
 

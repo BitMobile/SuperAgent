@@ -42,7 +42,7 @@
         <s:Push Id="statusDescription" Value="$Facade.GetOrderStatus($order)"></s:Push>
         <s:If Test="$statusDescription == 'Сanceled'">
           <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$order.OutletAsObject,null,$order)">
-            <c:VerticalLayout CssClass="canceled_mark"/>
+            <c:VerticalLayout CssClass="red_mark"/>
             <c:VerticalLayout CssClass="clipped">
               <c:TextView Text="$order.OutletAsObject.Description" CssClass="main_row"></c:TextView>
               <s:Push Id="checkedNumber" Value ="$Facade.AssignNumberIfNotExist($order)"></s:Push>

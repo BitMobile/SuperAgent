@@ -81,7 +81,6 @@
     <Content Include="resource\app\Screen\Targets.xml" />
     <Content Include="resource\app\Screen\Task.xml" />
     <Content Include="resource\app\Screen\Tasks.xml" />
-    <Content Include="resource\app\Screen\UnscheduledVisit.xml" />
     <Content Include="resource\app\Screen\Visit_Order_Commentary.xml" />
     <Content Include="resource\app\Screen\Visit_Outlet.xml" />
     <Content Include="resource\app\Screen\Visit_Question.xml" />
@@ -101,7 +100,7 @@
     <Content Include="resource\app\Screen\Outlets_Outlets.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="resource\app\Screen\NewOutlet.xml">
+    <Content Include="resource\app\Screen\EditOutlet.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="resource\app\Script\DB.js" />

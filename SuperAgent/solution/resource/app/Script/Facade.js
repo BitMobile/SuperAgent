@@ -139,6 +139,20 @@ function GetOutlets(searchText) {
     return query.Execute();
 }
 
+function GetApprovedOutlets(searchText) {
+    query = new Query();
+    query.AddParameter("status", DB.Current.Constant.OutletConfirmationStatus.Approved);
+    if (String.IsNullOrEmpty(searchText)) {
+        query.Text = "select distinct(OutletAsObject) from Catalog.Territory_Outlets where OutletAsObject.ConfirmationStatus == @status";
+    }
+    else {
+        query.Text = "select distinct(OutletAsObject) from Catalog.Territory_Outlets where OutletAsObject.Description.Contains(@p1) && OutletAsObject.ConfirmationStatus==@status";
+        query.AddParameter("p1", searchText);
+    }
+
+    return query.Execute();
+}
+
 function CreateOutletIfNotExist(outlet) {
     if (outlet == null) {
         var p = DB.Create("Catalog.Outlet");
@@ -169,8 +183,20 @@ function CheckNotNullAndCommit(outlet) {
     }
     if (areNulls)
         Dialog.Message("#messageNulls#");
-    else
+    else {
+        if (outlet.ConfirmationStatus == null) {
+            t = DB.Create("Catalog.Outlet");
+            t.Description = outlet.Description;
+            t.Address = outlet.Address;
+            t.Class = outlet.Class;
+            t.Type = outlet.Type;
+            t.Distributor = outlet.Distributor;
+            t.ConfirmationStatus = DB.Current.Constant.OutletConfirmationStatus.New;
+        }
+        else
+            Variables["outlet"].ConfirmationStatus = DB.Current.Constant.OutletConfirmationStatus.New;
         Workflow.Commit();
+    }
 }
 
 //----------------------Schedules visits----------------

@@ -2,7 +2,7 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
 
   <s:Push Id="search" Value="$param1"/>
-  <s:Push Id="outlets" Value="$Facade.GetOutlets($search)"></s:Push>
+  <s:Push Id="outlets" Value="$Facade.GetApprovedOutlets($search)"></s:Push>
 
   <c:VerticalLayout>
 

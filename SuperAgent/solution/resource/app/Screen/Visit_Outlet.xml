@@ -20,7 +20,15 @@
       <c:HorizontalLayout CssClass ="header_edit_block">
         <c:VerticalLayout>
           <c:TextView Text="$outlet.Description" CssClass="main_row"></c:TextView>
-          <c:TextView Text="$outlet.Address" CssClass="description_row"></c:TextView>
+          <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <c:TextView Text="$outlet.Address" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#address#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>

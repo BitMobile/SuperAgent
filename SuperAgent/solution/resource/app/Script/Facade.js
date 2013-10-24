@@ -151,10 +151,10 @@ function CreateOutletParameterValueIfNotExists(outlet, parameter, parameterValue
 function GetOutlets(searchText) {
     query = new Query();
     if (String.IsNullOrEmpty(searchText)) {
-        query.Text = "select distinct(OutletAsObject) from Catalog.Territory_Outlets";
+        query.Text = "select distinct(OutletAsObject) from Catalog.Territory_Outlets limit 500";
     }
     else {
-        query.Text = "select distinct(OutletAsObject) from Catalog.Territory_Outlets where OutletAsObject.Description.Contains(@p1)";
+        query.Text = "select distinct(OutletAsObject) from Catalog.Territory_Outlets where OutletAsObject.Description.Contains(@p1) limit 500";
         query.AddParameter("p1", searchText);
     }
 
@@ -165,10 +165,10 @@ function GetApprovedOutlets(searchText) {
     query = new Query();
     query.AddParameter("status", DB.Current.Constant.OutletConfirmationStatus.Approved);
     if (String.IsNullOrEmpty(searchText)) {
-        query.Text = "select distinct(OutletAsObject) from Catalog.Territory_Outlets where OutletAsObject.ConfirmationStatus == @status";
+        query.Text = "select distinct(OutletAsObject) from Catalog.Territory_Outlets where OutletAsObject.ConfirmationStatus == @status limit 500";
     }
     else {
-        query.Text = "select distinct(OutletAsObject) from Catalog.Territory_Outlets where OutletAsObject.Description.Contains(@p1) && OutletAsObject.ConfirmationStatus==@status";
+        query.Text = "select distinct(OutletAsObject) from Catalog.Territory_Outlets where OutletAsObject.Description.Contains(@p1) && OutletAsObject.ConfirmationStatus==@status  limit 500";
         query.AddParameter("p1", searchText);
     }
 
@@ -547,11 +547,11 @@ function GetOrderList(searchText) {
 
     var query = new Query();
     if (String.IsNullOrEmpty(searchText)) {
-        query.Text = "select * from Document.Order orderbydesc Date";
+        query.Text = "select * from Document.Order orderbydesc Date limit 100";
     }
     else {
         query.AddParameter("text", searchText);
-        query.Text = "select * from Document.Order where OutletAsObject.Description.Contains(@text) orderbydesc Date";
+        query.Text = "select * from Document.Order where OutletAsObject.Description.Contains(@text) orderbydesc Date  limit 100";
     }
 
     return query.Execute();
@@ -620,7 +620,7 @@ function GetOrderedSKUs(orderId) {
 
     var query = new Query();
     query.AddParameter("orderId", orderId);
-    query.Text = "select * from Document.Order_SKUs where Ref==@orderId";
+    query.Text = "select * from Document.Order_SKUs where Ref==@orderId limit 100";
     return query.Execute();
 
 }
@@ -764,10 +764,10 @@ function GetSKUs(searchText, owner) {
     if (owner == null) {
         query = new Query();
         if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Catalog.SKU where Stock!=0";
+            query.Text = "select * from Catalog.SKU where Stock!=0  limit 100";
         }
         else {
-            query.Text = "select * from Catalog.SKU where Description.Contains(@p1) && Stock!=0";
+            query.Text = "select * from Catalog.SKU where Description.Contains(@p1) && Stock!=0  limit 100";
             query.AddParameter("p1", searchText);
         }
     }
@@ -775,10 +775,10 @@ function GetSKUs(searchText, owner) {
         query = new Query();
         query.AddParameter("owner", owner);
         if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Catalog.SKU where Owner==@owner  && Stock!=0";
+            query.Text = "select * from Catalog.SKU where Owner==@owner  && Stock!=0  limit 100";
         }
         else {
-            query.Text = "select * from Catalog.SKU where Description.Contains(@p1) && Owner==@owner  && Stock!=0";
+            query.Text = "select * from Catalog.SKU where Description.Contains(@p1) && Owner==@owner  && Stock!=0  limit 100";
             query.AddParameter("p1", searchText);
         }
     }

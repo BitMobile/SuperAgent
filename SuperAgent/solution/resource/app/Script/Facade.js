@@ -66,22 +66,34 @@ function GetLookupList(entity, attribute) {
     return query.Execute();
 }
 
+function UpdateEntity(entity) {
+    
+    if (getType(entity) == "DefaultScope.Catalog.Outlet") {
+        entity.ConfirmationStatus = DB.Current.Constant.OutletConfirmationStatus.New;
+        Dialog.Debug(getType(entity));
+    }
+    return entity;
+}
+
+function UpdateValueAndBack(entity, attribute, value) {
+    entity[attribute] = value;
+    entity = UpdateEntity(entity);
+
+    Workflow.Back();
+
+}
+
 function CheckIfEmptyAndBack(entity, attribute, objectType, objectName) {
 
     if (entity.IsNew) {
-        if (entity[attribute] == "" || entity[attribute] == 0)//String(entity[attribute]) == "0")
+        if (entity[attribute] == "" || String(entity[attribute]) == "0")//String(entity[attribute]) == "0")
             DB.Current[objectType][objectName].Delete(entity);
     }
 
-    Workflow.Back();
-}
-
-function DeleteAndBack(entity, objectType, objectName, varToDelete) {
-
-    if (entity.IsNew)
-        DB.Current[objectType][objectName].Delete(entity);
-    if (varToDelete != null)
-        Variables["workflow"][varToDelete] = null;
+    var r = entity.RefAsObject;
+    if (getType(r) == "DefaultScope.Catalog.Outlet") {
+        UpdateOtletStatus();
+    }
 
     Workflow.Back();
 }
@@ -96,6 +108,16 @@ function CheckIfEmptyAndForward(entity, attribute, objectType, objectName) {
     var parameters = [];
 
     Workflow.Forward(parameters);
+}
+
+function DeleteAndBack(entity, objectType, objectName, varToDelete) {
+
+    if (entity.IsNew)
+        DB.Current[objectType][objectName].Delete(entity);
+    if (varToDelete != null)
+        Variables["workflow"][varToDelete] = null;
+
+    Workflow.Back();
 }
 
 function CountEntities(type, name, paramValue, parameter) {
@@ -156,7 +178,7 @@ function GetApprovedOutlets(searchText) {
 function CreateOutletIfNotExist(outlet) {
     if (outlet == null) {
         var p = DB.Create("Catalog.Outlet");
-        p.ConfirmationStatus = DB.Current.Constant.OutletConfirmationStatus.New;
+        p = UpdateEntity(p);
         return p;
     }
     else
@@ -166,8 +188,8 @@ function CreateOutletIfNotExist(outlet) {
 
 function CreateAndForward() {
     var p = DB.Create("Catalog.Outlet");
-    p.ConfirmationStatus = DB.Current.Constant.OutletConfirmationStatus.New;
-
+    p = UpdateEntity(p);
+    
     var parameters = [p];
     Workflow.Action("Create", parameters);
 }
@@ -183,7 +205,14 @@ function CheckNotNullAndCommit(outlet) {
     }
     if (areNulls)
         Dialog.Message("#messageNulls#");
-    else {
+    else
+        Dialog.Question("#saveChanges#", ChangeHandler);
+
+}
+
+function ChangeHandler(answ) {
+    if (answ == DialogResult.Yes) {
+        var outlet = Variables["outlet"];
         if (outlet.ConfirmationStatus == null) {
             t = DB.Create("Catalog.Outlet");
             t.Description = outlet.Description;
@@ -191,12 +220,19 @@ function CheckNotNullAndCommit(outlet) {
             t.Class = outlet.Class;
             t.Type = outlet.Type;
             t.Distributor = outlet.Distributor;
-            t.ConfirmationStatus = DB.Current.Constant.OutletConfirmationStatus.New;
+            t = UpdateEntity(t);
         }
         else
-            Variables["outlet"].ConfirmationStatus = DB.Current.Constant.OutletConfirmationStatus.New;
+            UpdateOtletStatus();
         Workflow.Commit();
     }
+    else
+        Workflow.Rollback();
+
+}
+
+function UpdateOtletStatus() {
+    Variables["outlet"].ConfirmationStatus = DB.Current.Constant.OutletConfirmationStatus.New;
 }
 
 //----------------------Schedules visits----------------
@@ -442,14 +478,6 @@ function CreateVisitSKUValueIfNotExists(visit, sku, skuValue) {
 }
 
 
-function UpdateValueAndBack(entity, attribute, value, order) {
-    entity[attribute] = value;
-
-    Workflow.Back();
-
-}
-
-
 function GetSKUQty(questions, questionnaires) {
     if (questions != null) {
         var q = questions.Count();
@@ -565,7 +593,7 @@ function CreateOrderIfNotExists(order, outlet, userId, visitId, executedOrder) {
             if (location.NotEmpty) {
                 order.Lattitude = location.Latitude;
                 order.Longitude = location.Longitude;
-            }            
+            }
             var status = new Query("select single(*) from Enum.OrderSatus where Description=='New'").Execute();
             order.Status = status.Id;
             if (visitId != null) {
@@ -672,9 +700,9 @@ function CountPrice(orderitem, discount, discChBox) {
         discChBox = -1;
         Variables["discTextView"].Text = "#discount#";
     }
-    var p = orderitem.Price * (parseInt(discount) * discChBox / 100 + 1) * Variables["multiplier"];
-    Variables["orderitem"].Discount = parseInt(discount * discChBox);
-    Variables["discountEdit"].Text = parseInt(discount * discChBox);
+    var p = orderitem.Price * (parseFloat(discount) * discChBox / 100 + 1) * Variables["multiplier"];
+    Variables["orderitem"].Discount = parseFloat(discount * discChBox);
+    Variables["discountEdit"].Text = parseFloat(discount * discChBox);
     Variables["orderitem"].Total = p;
     Variables["orderItemTotalId"].Text = p;
 }

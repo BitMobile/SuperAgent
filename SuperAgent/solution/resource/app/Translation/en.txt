@@ -89,4 +89,5 @@ description	Description
 coordinatesAreSet	Coordinates Are Set
 setCoordinates	Set outlet coordinates by current location?
 location	Set coordinates
+saveChanges	Save changes?
 

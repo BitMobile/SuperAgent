@@ -266,6 +266,7 @@ MemoEdit {
             .grid hl vl description_row {
                 width: 100%;
                 height: 34%;
+                white-space: nowrap;
                 font: 60% Arial;
             }
 

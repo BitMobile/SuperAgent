@@ -69,7 +69,7 @@ function GetLookupList(entity, attribute) {
 function CheckIfEmptyAndBack(entity, attribute, objectType, objectName) {
 
     if (entity.IsNew) {
-        if (entity[attribute] == "" || String(entity[attribute]) == "0")
+        if (entity[attribute] == "" || entity[attribute] == 0)//String(entity[attribute]) == "0")
             DB.Current[objectType][objectName].Delete(entity);
     }
 
@@ -244,12 +244,32 @@ function CreateVisitIfNotExists(outlet, userId, visit, planVisit) {
         visit.SR = userId;
         visit.Date = DateTime.Now;
         visit.StartTime = DateTime.Now;
+        var location = GPS.CurrentLocation;
+        if (location.NotEmpty) {
+            visit.Lattitude = location.Latitude;
+            visit.Longitude = location.Longitude;
+        }
         visit.Status = DB.Current.Constant.VisitStatus.Processing;//status.Id;
 
         visit.Encashment = 0;
     }
 
     return visit;
+}
+
+function SetLocation() {
+    Dialog.Question("#setCoordinates#", LocationDialogHandler);
+}
+
+function LocationDialogHandler(answ) {
+    if (answ == DialogResult.Yes) {
+        var location = GPS.CurrentLocation;
+        if (location.NotEmpty) {
+            Variables["outlet"].Lattitude = location.Latitude;
+            Variables["outlet"].Longitude = location.Longitude;
+            Dialog.Message("#coordinatesAreSet#");
+        }
+    }
 }
 
 function GetOutletParameters() {
@@ -492,30 +512,6 @@ function SetTimeAndCommit() {
 
 //------------------------------UnscheduledVisit--------------
 
-function CreateUnschVisitIfNotExists(outlet, userId, visit) {
-
-    if (visit == null) {
-        visit = DB.Create("Document.Visit");
-        visit.Outlet = outlet.Id;
-        visit.SR = userId;
-        visit.Date = DateTime.Now;
-        visit.StartTime = DateTime.Now;
-
-        var location = GPS.CurrentLocation;
-        if (location.NotEmpty) {
-            visit.Lattitude = location.Latitude;
-            visit.Longitude = location.Longitude;
-        }
-
-        var status = new Query("select single(*) from Enum.VisitStatus where Description=='Processing'").Execute();
-        visit.Status = status.Id;
-
-        visit.Encashment = 0;
-    }
-
-    return visit;
-}
-
 
 //------------------------------Order func-------------------------
 
@@ -565,6 +561,11 @@ function CreateOrderIfNotExists(order, outlet, userId, visitId, executedOrder) {
             order.Outlet = outlet.Id;
             order.SR = userId;
             order.DeliveryDate = DateTime.Now;
+            var location = GPS.CurrentLocation;
+            if (location.NotEmpty) {
+                order.Lattitude = location.Latitude;
+                order.Longitude = location.Longitude;
+            }            
             var status = new Query("select single(*) from Enum.OrderSatus where Description=='New'").Execute();
             order.Status = status.Id;
             if (visitId != null) {
@@ -654,30 +655,6 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, multiplier) {
     else
         return orderitem;
 
-    //else {
-    //    if (discount != null && discount != "") {
-    //        if (ismarkup == false) {
-    //            if (discount > 0)
-    //                orderitem.Discount = -discount;
-    //            else
-    //                orderitem.Discount = discount;
-    //        }
-    //        else {
-    //            if (discount < 0)
-    //                orderitem.Discount = -discount;
-
-    //            else
-    //                orderitem.Discount = discount;
-    //        }
-    //    }
-
-    //    orderitem.Total = (orderitem.Price * (orderitem.Discount / 100 + 1) * multiplier);
-    //    if (unit != null)
-    //        orderitem.Units = unit.Pack;
-
-    //    return orderitem;
-    //}
-
 }
 
 function CountPrice(orderitem, discount, discChBox) {
@@ -734,9 +711,6 @@ function GetUnits(skuId) {
 
 function ChangeUnit(sku, orderitem, unit, discount, discChBox) {
 
-    //CountPrice(orderitem, discount, discChBox);
-
-    //var multiplier = GetMultiplier(sku, orderitem);
     Variables["multiplier"] = unit.Multiplier;
     Variables["baseQtyTextView"].Text = orderitem.Qty * unit.Multiplier;
 

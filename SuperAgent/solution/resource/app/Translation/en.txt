@@ -86,4 +86,7 @@ messageNulls	There shouldn't be empty fields.
 countPrice	Count price
 address		Address
 description	Description
+coordinatesAreSet	Coordinates Are Set
+setCoordinates	Set outlet coordinates by current location?
+location	Set coordinates
 

@@ -212,17 +212,14 @@ function CheckNotNullAndCommit(outlet) {
 function ChangeHandler(answ) {
     if (answ == DialogResult.Yes) {
         var outlet = Variables["outlet"];
-        if (outlet.ConfirmationStatus == null) {
-            t = DB.Create("Catalog.Outlet");
-            t.Description = outlet.Description;
-            t.Address = outlet.Address;
-            t.Class = outlet.Class;
-            t.Type = outlet.Type;
-            t.Distributor = outlet.Distributor;
-            t = UpdateEntity(t);
-        }
-        else
-            UpdateOtletStatus();
+        UpdateOtletStatus();
+        var terrioryQuery = new Query();
+        terrioryQuery.AddParameter("sr", Variables["common"]["userId"]);
+        terrioryQuery.Text = "select single(*) from Catalog.Territory where SR==@sr";
+        var territory = terrioryQuery.Execute();
+        var to = DB.Create("Catalog.Territory_Outlets");
+        to.Ref = territory.Id;
+        to.Outlet = outlet.Id;
         Workflow.Commit();
     }
     else

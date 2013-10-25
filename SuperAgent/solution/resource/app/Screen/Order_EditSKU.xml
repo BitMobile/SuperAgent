@@ -20,11 +20,11 @@
     <c:ScrollView CssClass="grid">
 
       <c:HorizontalLayout CssClass="header_edit_block">
-        <c:VerticalLayout CssClass="half_width"  OnClickAction="$Facade.CountPrice($orderitem,$discountEdit.Text,$discCheckbox.Checked)">
+        <c:VerticalLayout CssClass="partial_width" OnClickAction="$Facade.CountPrice($orderitem,$discountEdit.Text,$discCheckbox.Checked)">
           <c:TextView Text="{$sku.Description}" CssClass="main_row"></c:TextView>
           <c:TextView Text="#countPrice#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
-        <c:VerticalLayout CssClass="half_width">
+        <c:VerticalLayout CssClass="quarter_width">
           <c:Button CssClass="btn_delete" OnClickAction="$Facade.DeleteItemAndBack($orderitem)"></c:Button>
         </c:VerticalLayout>
       </c:HorizontalLayout>

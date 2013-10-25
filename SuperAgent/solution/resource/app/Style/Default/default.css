@@ -274,6 +274,14 @@ MemoEdit {
             width: 45%;
         }
 
+        .grid hl partial_width {
+            width: 75%;
+        }
+
+        .grid hl quarter_width {
+            width: 15%;
+        }
+
         .grid hl clipped {
             width: 88%;
             padding-left: 3%;

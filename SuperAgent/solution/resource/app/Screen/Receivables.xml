@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
 
-  <s:Push Id="visit" Value="$param1"/>
+  <s:Push Id="visit" Value="$workflow.visit"/>
   <s:Push Id="receivables" Value="$Facade.GetReceivables($visit.Outlet)"></s:Push>
-  <s:Push Id="autoSpread" Value="$Facade.GetSpreadValue($param2, $workflow.autoSpread)"/>
+  <s:Push Id="autoSpread" Value="$Facade.GetSpreadValue($param1, $workflow.autoSpread)"/>
   <s:Push Id="workflow.autoSpread" Value="True"/>
   <s:Push Id="workflow.encashment" Value="$Facade.CreateEncashmentIfNotExist($workflow.visit)"></s:Push>
   <s:Push Id="encashment" Value="$workflow.encashment"></s:Push>

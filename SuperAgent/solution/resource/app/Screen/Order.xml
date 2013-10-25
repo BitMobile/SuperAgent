@@ -6,7 +6,7 @@
   <s:Push Id="executedOrder" Value="$param3"></s:Push>
 
   <s:Push Id="workflow.order" Value ="$Facade.CreateOrderIfNotExists($order, $outlet, $common.UserId, $workflow.visit.Id, $executedOrder)"></s:Push>
-  
+
   <s:Push Id="items" Value="$Facade.GetOrderedSKUs($workflow.order.Id)"></s:Push>
   <s:Push Id="qty" Value="$Facade.GetOrderQTY($workflow.order.Id)"></s:Push>
   <s:Push Id="sum" Value="$Facade.GetOrderSUM($workflow.order.Id)"></s:Push>
@@ -61,20 +61,20 @@
       <c:ScrollView CssClass="grid">
 
         <s:Iterator Id="orderitem" Value="$items">
+          <s:Push Id="orderitem" Value="$Facade.DeleteZeroItem($orderitem)"></s:Push>
 
-          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Edit,$workflow.order,$orderitem.SKUAsObject,$orderitem)">
-
-            <c:VerticalLayout>
-              <c:TextView Text="$orderitem.SKUAsObject.Description" CssClass="main_row"></c:TextView>
-              <s:Push Value="$Facade.GetSKUAmount($workflow.order.Id, $orderitem)" Id="amount"/>
-              <c:TextView Text="#quantity#: {$orderitem.Qty}   #amount#: {$amount}" CssClass="description_row"></c:TextView>
-            </c:VerticalLayout>
-
-            <c:Image/>
-
-          </c:HorizontalLayout>
-
-          <c:HorizontalLine/>
+          <s:If Test="$orderitem != null">
+            <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Edit,$workflow.order,$orderitem.SKUAsObject,$orderitem)">
+              <c:VerticalLayout>
+                <c:TextView Text="$orderitem.SKUAsObject.Description" CssClass="main_row"></c:TextView>
+                <s:Push Value="$Facade.GetSKUAmount($workflow.order.Id, $orderitem)" Id="amount"/>
+                <c:TextView Text="#quantity#: {$orderitem.Qty}   #amount#: {$amount}" CssClass="description_row"></c:TextView>
+              </c:VerticalLayout>
+              <c:Image/>
+            </c:HorizontalLayout>
+            <c:HorizontalLine/>
+          </s:If>
+          
         </s:Iterator>
 
       </c:ScrollView>

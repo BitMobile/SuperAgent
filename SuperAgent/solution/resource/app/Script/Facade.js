@@ -67,10 +67,9 @@ function GetLookupList(entity, attribute) {
 }
 
 function UpdateEntity(entity) {
-    
+
     if (getType(entity) == "DefaultScope.Catalog.Outlet") {
         entity.ConfirmationStatus = DB.Current.Constant.OutletConfirmationStatus.New;
-        Dialog.Debug(getType(entity));
     }
     return entity;
 }
@@ -189,7 +188,7 @@ function CreateOutletIfNotExist(outlet) {
 function CreateAndForward() {
     var p = DB.Create("Catalog.Outlet");
     p = UpdateEntity(p);
-    
+
     var parameters = [p];
     Workflow.Action("Create", parameters);
 }
@@ -535,6 +534,12 @@ function IsAnswered(visit, qName, sku) {
 
 function SetTimeAndCommit() {
     Variables["workflow"]["visit"].EndTime = DateTime.Now;
+
+    var order = Variables["workflow"]["order"];
+    var c = CountEntities("Document", "Order_SKUs", order.Id, "Ref");
+    if (c == 0)
+        DB.Current.Document.Order.Delete(order);
+
     Workflow.Commit();
 }
 
@@ -694,15 +699,15 @@ function CountPrice(orderitem, discount, discChBox) {
 
     if (discChBox) {
         discChBox = 1;
-        Variables["discTextView"].Text = "#markUp#";
+        Variables["discTextView"].Text = Translate["#markUp#"];
     }
     else {
         discChBox = -1;
-        Variables["discTextView"].Text = "#discount#";
+        Variables["discTextView"].Text = Translate["#discount#"];
     }
-    var p = orderitem.Price * (parseFloat(discount) * discChBox / 100 + 1) * Variables["multiplier"];
-    Variables["orderitem"].Discount = parseFloat(discount * discChBox);
-    Variables["discountEdit"].Text = parseFloat(discount * discChBox);
+    var p = orderitem.Price * Converter.ToDecimal((discount) * discChBox / 100 + 1) * Variables["multiplier"];
+    Variables["orderitem"].Discount = Converter.ToDecimal(discount * discChBox);
+    Variables["discountEdit"].Text = Converter.ToDecimal(discount * discChBox);
     Variables["orderitem"].Total = p;
     Variables["orderItemTotalId"].Text = p;
 }
@@ -756,6 +761,34 @@ function DeleteItemAndBack(orderitem) {
     Workflow.Back();
 }
 
+function DeleteZeroItem(orderitem) {
+    if (orderitem.Qty == 0) {
+        DB.Current.Document.Order_SKUs.Delete(orderitem);
+        return null;
+    }
+    else
+        return orderitem;
+}
+
+function CheckOrderAndCommit(order) {
+
+    var c = CountEntities("Document", "Order_SKUs", order.Id, "Ref");
+    if (c == 0)
+        Workflow.Rollback();
+    else
+        Workflow.Commit();
+
+}
+
+function CheckOrderAtVisit(order) {
+    var c = CountEntities("Document", "Order_SKUs", order.Id, "Ref");
+    var or = Variables["order"];
+    if (c == 0 && or != null) {
+        DB.Current.Document.Order.Delete(or);
+    }
+    var parameters = ["True"];
+    Workflow.Forward(parameters);
+}
 
 //----------------------------GetSKUs-------------------------
 

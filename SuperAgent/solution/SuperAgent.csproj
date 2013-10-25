@@ -72,10 +72,14 @@
     </Content>
     <Content Include="resource\app\Screen\Order_SKUs.xml" />
     <Content Include="resource\app\Screen\Outlet.xml" />
-    <Content Include="resource\app\Screen\OutletParameter.xml" />
+    <Content Include="resource\app\Screen\OutletParameter.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="resource\app\Screen\Outlets.xml" />
     <Content Include="resource\app\Screen\Receivables.xml" />
-    <Content Include="resource\app\Screen\ScheduledVisits.xml" />
+    <Content Include="resource\app\Screen\ScheduledVisits.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="resource\app\Screen\Settings.xml" />
     <Content Include="resource\app\Screen\Stock_SKUs.xml" />
     <Content Include="resource\app\Screen\Targets.xml" />

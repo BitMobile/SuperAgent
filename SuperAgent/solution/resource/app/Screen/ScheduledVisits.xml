@@ -37,7 +37,7 @@
         <s:If Test="$todayVisit==NULL">
           <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$planOutlet,$planVisit)">
             <s:If Test="$planOutlet.ConfirmationStatusAsObject.Description == 'New'">
-            <c:VerticalLayout CssClass="blue_mark"/>
+              <c:VerticalLayout CssClass="blue_mark"/>
             </s:If>
             <c:VerticalLayout>
               <c:TextView Text="$planOutlet.Description" CssClass="main_row"></c:TextView>
@@ -53,7 +53,9 @@
 
         <s:Else>
           <c:HorizontalLayout>
-
+            <s:If Test="$planOutlet.ConfirmationStatusAsObject.Description == 'New'">
+              <c:VerticalLayout CssClass="blue_mark"/>
+            </s:If>
             <c:VerticalLayout  CssClass="clipped">
               <c:TextView Text="$planOutlet.Description" CssClass="main_row"></c:TextView>
               <c:TextView Text="$planOutlet.Address" CssClass="description_row"></c:TextView>

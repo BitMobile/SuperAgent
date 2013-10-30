@@ -344,6 +344,37 @@ MemoEdit {
             font: 8% Arial;
         }
 
+.two_row_memo {
+    height: 16sp;
+}
+    .two_row_memo vl {
+            width: 90%;
+            height: 95%;
+            margin-top: 3%;
+            margin-left: 0%;
+            padding-left: 5%;
+        }
+
+            .two_row_memo vl description_row {
+                margin-top: 3%;
+                height: 25%;
+            }
+
+            .two_row_memo vl MemoEdit {
+                height: 65%;
+                width: 100%;
+                margin-top: 3%;
+                margin-left: 0%;
+                padding-top: 1%;
+                padding-bottom: 1%;
+                font: 30% Arial;
+            }
+
+            
+.memo_header {
+    height: 16sp;
+    background-color: #dbd7e1;
+}
 
 .main_row {
 }
@@ -359,7 +390,6 @@ MemoEdit {
 .description_row {
     color: #b2749b;
 }
-
 
 .header {
     height: 12sp;

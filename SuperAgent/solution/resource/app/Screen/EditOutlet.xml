@@ -13,19 +13,27 @@
 
     <c:HorizontalLine/>
 
+    <c:VerticalLayout CssClass="memo_header">
+      <c:VerticalLayout  CssClass ="grid">
+
+        <c:HorizontalLayout CssClass ="two_row_memo">
+          <c:VerticalLayout>
+            <c:MemoEdit Id="outletDescr"  Value="$outlet.Description" CssClass="main_row"></c:MemoEdit>
+            <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+
+      </c:VerticalLayout>
+    </c:VerticalLayout>
+
+    <c:HorizontalLine/>
+
     <c:ScrollView CssClass="grid">
 
-      <c:HorizontalLayout CssClass="header_edit_block">
-        <c:VerticalLayout CssClass="header_edit_block">
-          <c:EditText Id="outletDescr" Value="$outlet.Description" CssClass="main_row"></c:EditText>
-          <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
-        </c:VerticalLayout>
-      </c:HorizontalLayout>
-      <c:HorizontalLine/>
-
-      <c:HorizontalLayout>
+      <c:HorizontalLayout CssClass="two_row_memo">
         <c:VerticalLayout>
-          <c:EditText Id="outletAddress" Value="$outlet.Address" CssClass="main_row"></c:EditText>
+          <c:MemoEdit Id="outletAddress" Value="$outlet.Address" CssClass="main_row"></c:MemoEdit>
           <c:TextView Text="#address#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>

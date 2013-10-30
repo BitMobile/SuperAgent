@@ -37,7 +37,7 @@ price2		Цена:
 kpi			KPI
 tasks		Задачи
 task		Задача
-description	Описание
+description	Наименование
 result		Результат
 plandate	Плановый срок
 distributor	Дистрибьютор

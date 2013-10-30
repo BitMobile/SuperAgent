@@ -31,6 +31,14 @@
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
+      <c:HorizontalLayout OnClickAction="$Facade.SetLocation()">
+        <c:VerticalLayout>
+          <c:TextView Text="#location#" CssClass="caption_row"></c:TextView>
+          <c:TextView Text="#current#: {$outlet.Lattitude}, {$outlet.Longitude}," CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
       <c:HorizontalLayout OnClickAction="$Workflow.DoAction(EditParameter,$outlet,Class)">
         <c:VerticalLayout>
           <c:TextView Id="outletClass" Text="$outlet.ClassAsObject.Description" CssClass="main_row"></c:TextView>

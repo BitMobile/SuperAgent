@@ -2,7 +2,7 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
 
   <s:Push Id="search" Value="$param1"/>
-  <s:Push Id="outlets" Value="$Facade.GetApprovedOutlets($search)"></s:Push>
+  <s:Push Id="outlets" Value="$Facade.GetOutlets($search)"></s:Push>
 
   <c:VerticalLayout>
 
@@ -31,10 +31,19 @@
       <s:Iterator Id="outlet" Value="$outlets">
 
         <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$outlet)">
-          <c:VerticalLayout>
-            <c:TextView Text="$outlet.Description" CssClass="main_row"></c:TextView>
-            <c:TextView Text="$outlet.Address" CssClass="description_row"></c:TextView>
-          </c:VerticalLayout>
+          <s:If Test="$outlet.ConfirmationStatusAsObject.Description == 'New'">
+            <c:VerticalLayout CssClass="blue_mark"/>
+            <c:VerticalLayout CssClass="clipped">
+              <c:TextView Text="$outlet.Description" CssClass="main_row"></c:TextView>
+              <c:TextView Text="$outlet.Address" CssClass="description_row"></c:TextView>
+            </c:VerticalLayout>
+          </s:If>
+          <s:Else>
+            <c:VerticalLayout>
+              <c:TextView Text="$outlet.Description" CssClass="main_row"></c:TextView>
+              <c:TextView Text="$outlet.Address" CssClass="description_row"></c:TextView>
+            </c:VerticalLayout>
+          </s:Else>
           <c:Image/>
         </c:HorizontalLayout>
 

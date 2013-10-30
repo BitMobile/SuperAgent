@@ -188,6 +188,8 @@ function CreateOutletIfNotExist(outlet) {
 function CreateAndForward() {
     var p = DB.Create("Catalog.Outlet");
     p = UpdateEntity(p);
+    p.Lattitude = 0;
+    p.Longitude = 0;
 
     var parameters = [p];
     Workflow.Action("Create", parameters);
@@ -300,6 +302,10 @@ function LocationDialogHandler(answ) {
             Variables["outlet"].Lattitude = location.Latitude;
             Variables["outlet"].Longitude = location.Longitude;
             Dialog.Message("#coordinatesAreSet#");
+            var outlet = Variables["outlet"];
+            UpdateEntity(outlet);
+            var arg = [outlet];
+            Workflow.Refresh(arg);
         }
     }
 }

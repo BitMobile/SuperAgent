@@ -6,9 +6,9 @@
 
 function OnWorkflowForward(name, lastStep, nextStep) { }
 
-    function OnWorkflowBack(name, lastStep, nextStep) { }
+function OnWorkflowBack(name, lastStep, nextStep) { }
 
-    function OnWorkflowFinish(name, reason) {
-        if (name == "UnscheduledVisit" || name == "ScheduledVisit")
-            GPS.StopTracking();
-    }
+function OnWorkflowFinish(name, reason) {
+    if (name == "UnscheduledVisit" || name == "ScheduledVisit")
+        GPS.StopTracking();
+}

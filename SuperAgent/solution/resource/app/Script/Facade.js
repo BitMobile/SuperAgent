@@ -97,16 +97,27 @@ function CheckIfEmptyAndBack(entity, attribute, objectType, objectName) {
     Workflow.Back();
 }
 
-function CheckIfEmptyAndForward(entity, attribute, objectType, objectName) {
+function CheckIfEmpty(entity, attribute, objectType, objectName, deleteIfEmpty) {
 
-    if (entity.IsNew) {
-        if (entity[attribute] == "" || entity[attribute] == 0)
+    if (entity[attribute].Trim() == "" || String(entity[attribute]) == "0") {
+        if (entity.IsNew && ConvertToBoolean(deleteIfEmpty)) {
             DB.Current[objectType][objectName].Delete(entity);
+            return true;
+        }
+        else            
+            return false;        
     }
+    else
+        return true;
+}
 
-    var parameters = [];
+function CheckIfEmptyAndForward(entity, attribute, objectType, objectName, deleteIfEmpty) {
 
-    Workflow.Forward(parameters);
+    var doaction = CheckIfEmpty(entity, attribute, objectType, objectName, deleteIfEmpty);
+    if (doaction) {
+        var parameters = [];
+        Workflow.Forward(parameters);
+    }
 }
 
 function DeleteAndBack(entity, objectType, objectName, varToDelete) {
@@ -185,6 +196,17 @@ function CreateOutletIfNotExist(outlet) {
 
 }
 
+function CheckEmptyOutletFields(outlet) {
+    var correctDescr = CheckIfEmpty(outlet, "Description", "", "", false);
+    var correctAddr = CheckIfEmpty(outlet, "Address", "", "", false);
+    if (correctDescr && correctAddr) {
+        var parameters = [];
+        Workflow.Forward(parameters);
+    }
+    else
+        Dialog.Message("Attribute couldn't be cleaned");
+}
+
 function CreateAndForward() {
     var p = DB.Create("Catalog.Outlet");
     p = UpdateEntity(p);
@@ -195,12 +217,14 @@ function CreateAndForward() {
     Workflow.Action("Create", parameters);
 }
 
+
+
 function CheckNotNullAndCommit(outlet) {
     var attributes = ["outletDescr", "outletAddress", "outletClass", "outletType", "outletDistr"];//"Description", "Address", "Type", "Class", "Distributor"];
     var areNulls = false;
     for (var i in attributes) {
         var attribute = attributes[i];
-        if (Variables[attribute].Text == null || Variables[attribute].Text == "" || Variables[attribute].Text == "\n\n\n\n\n\n\n") {//Variables[attribute].Text == "" || Variables[attribute].Text == null) {
+        if (Variables[attribute].Text == null || (Variables[attribute].Text).Trim() == "" || Variables[attribute].Text == "\n\n\n\n\n\n\n") {//Variables[attribute].Text == "" || Variables[attribute].Text == null) {
             areNulls = true;
         }
     }
@@ -262,14 +286,13 @@ function GetTodayVisit(outlet) {
 
 }
 
+function ShowTheMessage() {
+    Dialog.Message("I work! What else?");
+}
+
 
 function CreateVisitIfNotExists(outlet, userId, visit, planVisit) {
-    //var query = new Query();
-    //query.AddParameter("Date", DateTime.Now.Date);
-    //query.AddParameter("Outlet", outlet.Id);
-    //query.Text = "select single(*) from Document.Visit where Date.Date == @Date && Outlet==@Outlet";
-
-    //var visit = query.Execute();
+ 
     if (visit == null) {
         visit = DB.Create("Document.Visit");
         if (planVisit != null)
@@ -283,7 +306,7 @@ function CreateVisitIfNotExists(outlet, userId, visit, planVisit) {
             visit.Lattitude = location.Latitude;
             visit.Longitude = location.Longitude;
         }
-        visit.Status = DB.Current.Constant.VisitStatus.Processing;//status.Id;
+        visit.Status = DB.Current.Constant.VisitStatus.Processing;
 
         visit.Encashment = 0;
     }
@@ -783,15 +806,6 @@ function CheckOrderAndCommit(order) {
 
 }
 
-function CheckOrderAtVisit(order) {
-    var c = CountEntities("Document", "Order_SKUs", order.Id, "Ref");
-    var or = Variables["order"];
-    if (c == 0 && or != null) {
-        DB.Current.Document.Order.Delete(or);
-    }
-    var parameters = ["True"];
-    Workflow.Forward(parameters);
-}
 
 //----------------------------GetSKUs-------------------------
 

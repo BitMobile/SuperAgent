@@ -2,6 +2,7 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
 
   <s:Push Id="outlet" Value="$param1"></s:Push>
+  <s:Push Id="workflow.outlet" Value="$param1"></s:Push>
   <s:Push Id="planVisit" Value="$param2"></s:Push>
 
   <s:Push Id="workflow.visit" Value="$Facade.CreateVisitIfNotExists($outlet,$common.UserId, $workflow.visit, $planVisit)"/>
@@ -9,8 +10,8 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Facade.DeleteAndBack($workflow.visit, Document, Visit, visit)"/>
-      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($outlet,$workflow.visit)"/>
+      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
+      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckEmptyOutletFields($outlet)"/>
       <c:TextView Text="#outlet#" />
     </c:DockLayout>
     <c:HorizontalLine/>

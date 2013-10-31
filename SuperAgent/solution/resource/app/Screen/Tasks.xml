@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
 
-  <s:Push Id="outlet" Value="$param1"></s:Push>
-  <s:Push Id="visit" Value="$param2"></s:Push>
+  <s:Push Id="outlet" Value="$workflow.outlet"></s:Push>
+  <s:Push Id="visit" Value="$workflow.visit"></s:Push>
   <s:Push Id="tasks" Value="$Facade.GetTasks($outlet)"></s:Push>
 
   <c:VerticalLayout>

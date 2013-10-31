@@ -71,7 +71,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="resource\app\Screen\Order_SKUs.xml" />
-    <Content Include="resource\app\Screen\Outlet.xml" />
     <Content Include="resource\app\Screen\OutletParameter.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -86,6 +85,9 @@
     <Content Include="resource\app\Screen\Task.xml" />
     <Content Include="resource\app\Screen\Tasks.xml" />
     <Content Include="resource\app\Screen\Visit_Order_Commentary.xml" />
+    <Content Include="resource\app\Screen\Outlet.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="resource\app\Screen\Visit_Outlet.xml" />
     <Content Include="resource\app\Screen\Visit_Question.xml" />
     <Content Include="resource\app\Screen\Visit_Questions.xml">
@@ -102,9 +104,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="resource\app\Screen\Outlets_Outlets.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="resource\app\Screen\EditOutlet.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="resource\app\Script\DB.js" />

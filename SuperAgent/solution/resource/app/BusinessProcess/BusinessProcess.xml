@@ -188,12 +188,12 @@
       <bp:Action Name="Create" NextStep="CreateOutlet"></bp:Action>
     </bp:Step>
 
-    <bp:Step Name="Outlet" Screen="EditOutlet.xml">
+    <bp:Step Name="Outlet" Screen="Outlet.xml">
       <bp:Action Name="EditParameter" NextStep="EditOutletParameter"></bp:Action>
       <bp:Action Name="EditAddParameter" NextStep="EditOutletAddParameter"></bp:Action>
     </bp:Step>
     
-    <bp:Step Name="CreateOutlet" Screen="EditOutlet.xml">
+    <bp:Step Name="CreateOutlet" Screen="Outlet.xml">
       <bp:Action Name="EditParameter" NextStep="EditOutletParameter"></bp:Action>
       <bp:Action Name="EditAddParameter" NextStep="EditOutletAddParameter"></bp:Action>
     </bp:Step>

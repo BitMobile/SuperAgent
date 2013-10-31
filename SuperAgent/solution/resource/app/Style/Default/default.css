@@ -348,7 +348,7 @@ MemoEdit {
     height: 16sp;
 }
     .two_row_memo vl {
-            width: 90%;
+            width: 95%;
             height: 95%;
             margin-top: 3%;
             margin-left: 0%;
@@ -362,7 +362,7 @@ MemoEdit {
 
             .two_row_memo vl MemoEdit {
                 height: 65%;
-                width: 100%;
+                width: 90%;
                 margin-top: 3%;
                 margin-left: 0%;
                 padding-top: 1%;

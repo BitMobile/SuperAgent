@@ -204,7 +204,7 @@ function CheckEmptyOutletFields(outlet) {
         Workflow.Forward(parameters);
     }
     else
-        Dialog.Message("Attribute couldn't be cleaned");
+        Dialog.Message("#couldn't_be_cleaned#");
 }
 
 function CreateAndForward() {

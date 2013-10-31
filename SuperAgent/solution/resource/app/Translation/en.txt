@@ -91,4 +91,5 @@ setCoordinates	Set outlet coordinates by current location?
 location	Set coordinates
 saveChanges	Save changes?
 current		Current
+couldn't_be_cleaned	Field couldn't be cleaned
 

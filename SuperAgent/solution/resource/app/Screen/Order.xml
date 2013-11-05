@@ -2,10 +2,9 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
 
   <s:Push Id="outlet" Value="$param1"></s:Push>
-  <s:Push Id="order" Value="$workflow.order"></s:Push>
   <s:Push Id="executedOrder" Value="$param3"></s:Push>
 
-  <s:Push Id="workflow.order" Value ="$Facade.CreateOrderIfNotExists($order, $outlet, $common.UserId, $workflow.visit.Id, $executedOrder)"></s:Push>
+  <s:Push Id="workflow.order" Value ="$Facade.CreateOrderIfNotExists($workflow.order, $outlet, $common.UserId, $workflow.visit.Id, $executedOrder)"></s:Push>
 
   <s:Push Id="items" Value="$Facade.GetOrderedSKUs($workflow.order.Id)"></s:Push>
   <s:Push Id="qty" Value="$Facade.GetOrderQTY($workflow.order.Id)"></s:Push>
@@ -60,6 +59,14 @@
 
       <c:ScrollView CssClass="grid">
 
+        <c:HorizontalLayout OnClickAction="$Workflow.DoAction(EditPriceList, $workflow.order, PriceList)">
+          <c:VerticalLayout>
+            <c:TextView Text="Just do what you must." CssClass="main_row"></c:TextView>
+            <c:TextView Text="$workflow.order.PriceListAsObject.Description" CssClass="description_row"></c:TextView>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+
         <s:Iterator Id="orderitem" Value="$items">
           <s:Push Id="orderitem" Value="$Facade.DeleteZeroItem($orderitem)"></s:Push>
 
@@ -74,7 +81,7 @@
             </c:HorizontalLayout>
             <c:HorizontalLine/>
           </s:If>
-          
+
         </s:Iterator>
 
       </c:ScrollView>
@@ -96,6 +103,13 @@
       <c:HorizontalLine/>
 
       <c:ScrollView CssClass="grid">
+
+        <c:HorizontalLayout>
+          <c:VerticalLayout>
+            <c:TextView Text="$order.PriceListAsObject.Description" CssClass="main_row"></c:TextView>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
 
         <s:Iterator Id="orderitem" Value="$items">
 

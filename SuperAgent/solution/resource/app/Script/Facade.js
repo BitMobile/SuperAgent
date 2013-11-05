@@ -66,17 +66,18 @@ function GetLookupList(entity, attribute) {
     return query.Execute();
 }
 
-function UpdateEntity(entity) {
+function UpdateEntity(entity, value) {
 
     if (getType(entity) == "DefaultScope.Catalog.Outlet") {
         entity.ConfirmationStatus = DB.Current.Constant.OutletConfirmationStatus.New;
     }
+
     return entity;
 }
 
 function UpdateValueAndBack(entity, attribute, value) {
     entity[attribute] = value;
-    entity = UpdateEntity(entity);
+    entity = UpdateEntity(entity, value);
 
     Workflow.Back();
 
@@ -104,8 +105,8 @@ function CheckIfEmpty(entity, attribute, objectType, objectName, deleteIfEmpty) 
             DB.Current[objectType][objectName].Delete(entity);
             return true;
         }
-        else            
-            return false;        
+        else
+            return false;
     }
     else
         return true;
@@ -292,7 +293,7 @@ function ShowTheMessage() {
 
 
 function CreateVisitIfNotExists(outlet, userId, visit, planVisit) {
- 
+
     if (visit == null) {
         visit = DB.Create("Document.Visit");
         if (planVisit != null)
@@ -687,7 +688,21 @@ function GetSKUAmount(orderId, item) {
 
 }
 
-function CreateOrderItemIfNotExist(orderId, sku, orderitem, multiplier) {
+function GetpriceLists(order, attribute) {
+
+    var query = new Query();
+    query.AddParameter("outlet", order.Outlet);
+    query.Text = "select * from Catalog.Outlet_Prices where Ref==@outlet";
+    return query.Execute();
+
+}
+
+
+//-----------------------OrderItem-------------------
+
+
+
+function CreateOrderItemIfNotExist(orderId, sku, orderitem, price) {
 
     if (orderitem == null) {
 
@@ -704,8 +719,8 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, multiplier) {
             var p = DB.Create("Document.Order_SKUs");
             p.Ref = orderId;
             p.SKU = sku.Id;
-            p.Price = sku.Price;
-            p.Total = sku.Price;
+            p.Price = price;
+            p.Total = price;
             p.Units = sku.BaseUnit;
             p.Discount = 0;
             return p;
@@ -814,10 +829,10 @@ function GetSKUs(searchText, owner) {
     if (owner == null) {
         query = new Query();
         if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Catalog.SKU where Stock!=0  limit 100";
+            query.Text = "select * from Document.PriceList_Prices where limit 100";
         }
         else {
-            query.Text = "select * from Catalog.SKU where Description.Contains(@p1) && Stock!=0  limit 100";
+            query.Text = "select * from  Document.PriceList_Prices where SKUAsObject.Description.Contains(@p1) limit 100";
             query.AddParameter("p1", searchText);
         }
     }
@@ -825,10 +840,10 @@ function GetSKUs(searchText, owner) {
         query = new Query();
         query.AddParameter("owner", owner);
         if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Catalog.SKU where Owner==@owner  && Stock!=0  limit 100";
+            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Owner==@owner limit 100";
         }
         else {
-            query.Text = "select * from Catalog.SKU where Description.Contains(@p1) && Owner==@owner  && Stock!=0  limit 100";
+            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Description.Contains(@p1) && SKUAsObject.Owner==@owner limit 100";
             query.AddParameter("p1", searchText);
         }
     }
@@ -854,7 +869,18 @@ function checkSKUGroup(group, userId) {
     var query = new Query;
     query.AddParameter("group", group);
     query.Text = "select count(Id) from Catalog.Territory_SKUGroups where SKUGroup==@group";
-    return query.Execute();
+    var res1 = query.Execute();
+
+    var query2 = new Query;
+    query2.AddParameter("groupId", group);
+    query2.Text = "select count(SKU) from Document.PriceList_Prices where SKUAsObject.Owner == @groupId";
+    var res2 = query2.Execute();
+
+    if (parseInt(res1) != parseInt(0) && parseInt(res2) != parseInt(0)) {
+        return 1;
+    }
+    else
+        return 0;
 
 }
 

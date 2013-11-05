@@ -5,7 +5,7 @@
   <s:Push Id="sku" Value="$param2"></s:Push>
   <s:Push Id="orderitem" Value="$param3"></s:Push>
   <s:Push Id="multiplier" Value="$Facade.GetMultiplier($sku, $orderitem)"></s:Push>
-  <s:Push Id="orderitem" Value="$Facade.CreateOrderItemIfNotExist($order.Id,$sku,$orderitem)"></s:Push>
+  <s:Push Id="orderitem" Value="$Facade.CreateOrderItemIfNotExist($order.Id,$sku,$orderitem,$param4)"></s:Push>
   <s:Push Id="baseQty" Value="$Facade.GetMultiple($orderitem.Qty, $multiplier)"></s:Push>
   <s:Push Id="ismarkup" Value="$Facade.ConvertToBoolean1($orderitem.Discount)"></s:Push>
 

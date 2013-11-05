@@ -1,13 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
 
-  <s:Push Id="items" Value="$Facade.GetLookupList($param1,$param2)"></s:Push>
-  <s:Push Value="$param1.Metadata.{$param2}.Name" Id="objectName"/>
-  
+  <s:If Test="$workflow.order == null">
+    <s:Push Id="items" Value="$Facade.GetLookupList($param1,$param2)"></s:Push>
+    <s:Push Value="$param1.Metadata.{$param2}.Name" Id="objectName"/>
+  </s:If>
+  <s:Else>
+    <s:Push Id="items" Value="$Facade.GetpriceLists($workflow.order)"></s:Push>
+    <s:Push Id="objectName" Value="null" />
+  </s:Else>
+
+
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>      
+      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
       <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()" />
       <c:TextView Text="#parameters#" />
     </c:DockLayout>
@@ -20,11 +27,11 @@
           <c:VerticalLayout CssClass="header_edit_block">
             <s:If Test="$param2=='Distributor'">
               <c:TextView CssClass="main_row" Text="#distributor#"/>
-            </s:If> 
+            </s:If>
             <s:Else>
               <s:If Test="$objectName=='OutletType'">
                 <c:TextView CssClass="main_row" Text="#outletType#"/>
-              </s:If> 
+              </s:If>
               <s:Else>
                 <s:If Test="$objectName=='OutletClass'">
                   <c:TextView CssClass="main_row" Text="#outletClass#"/>
@@ -44,9 +51,21 @@
 
       <s:Iterator Id="item" Value="$items">
 
-        <c:HorizontalLayout OnClickAction="$Facade.UpdateValueAndBack($param1,$param2,$item.Id)">
+        <s:If Test="$workflow.order == null">
+          <s:Push Id="itemId" Value="$item.Id"></s:Push>
+        </s:If>
+        <s:Else>
+          <s:Push Id="itemId" Value="$item.PriceListAsObject.Id"></s:Push>
+        </s:Else>
+
+        <c:HorizontalLayout OnClickAction="$Facade.UpdateValueAndBack($param1,$param2,$itemId)">
           <c:VerticalLayout>
-            <c:TextView Text="$item.Description" CssClass="main_row"></c:TextView>
+            <s:If Test="$workflow.order == null">
+              <c:TextView Text="$item.Description" CssClass="main_row"></c:TextView>
+            </s:If>
+            <s:Else>
+              <c:TextView Text="$item.PriceListAsObject.Description" CssClass="main_row"></c:TextView>
+            </s:Else>
           </c:VerticalLayout>
           <c:Image/>
         </c:HorizontalLayout>

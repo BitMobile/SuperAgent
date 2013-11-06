@@ -92,4 +92,6 @@ location	Установить координаты
 saveChanges	Сохранить изменения?
 current		Текущие
 couldn't_be_cleaned	Поле не может быть очищено
+priceList	Прайс лист
+isntSelected	Не выбран
 

@@ -61,9 +61,15 @@
 
         <c:HorizontalLayout OnClickAction="$Workflow.DoAction(EditPriceList, $workflow.order, PriceList)">
           <c:VerticalLayout>
-            <c:TextView Text="Just do what you must." CssClass="main_row"></c:TextView>
-            <c:TextView Text="$workflow.order.PriceListAsObject.Description" CssClass="description_row"></c:TextView>
+            <s:If Test="$workflow.order.PriceListAsRef == null">
+              <c:TextView Text="#isntSelected#" CssClass="main_row"></c:TextView>
+            </s:If>
+            <s:Else>
+              <c:TextView Text="$workflow.order.PriceListAsObject.Description" CssClass="main_row"></c:TextView>
+            </s:Else>
+            <c:TextView Text="#priceList#" CssClass="description_row"></c:TextView>
           </c:VerticalLayout>
+          <c:Image/>
         </c:HorizontalLayout>
         <c:HorizontalLine/>
 

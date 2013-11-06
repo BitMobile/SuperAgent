@@ -825,28 +825,29 @@ function CheckOrderAndCommit(order) {
 //----------------------------GetSKUs-------------------------
 
 
-function GetSKUs(searchText, owner) {
-    if (owner == null) {
-        query = new Query();
-        if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Document.PriceList_Prices where limit 100";
-        }
-        else {
-            query.Text = "select * from  Document.PriceList_Prices where SKUAsObject.Description.Contains(@p1) limit 100";
-            query.AddParameter("p1", searchText);
-        }
+function GetSKUs(searchText, owner, priceListId) {
+    //if (owner == null) {
+    //    query = new Query();
+    //    if (String.IsNullOrEmpty(searchText)) {
+    //        query.Text = "select * from Document.PriceList_Prices where limit 100";
+    //    }
+    //    else {
+    //        query.Text = "select * from  Document.PriceList_Prices where SKUAsObject.Description.Contains(@p1) limit 100";
+    //        query.AddParameter("p1", searchText);
+    //    }
+    //}
+    //else {
+    query = new Query();
+    query.AddParameter("owner", owner);
+    query.AddParameter("priceList", priceListId);
+    if (String.IsNullOrEmpty(searchText)) {
+        query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Owner==@owner && Ref == @priceList limit 100";
     }
     else {
-        query = new Query();
-        query.AddParameter("owner", owner);
-        if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Owner==@owner limit 100";
-        }
-        else {
-            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Description.Contains(@p1) && SKUAsObject.Owner==@owner limit 100";
-            query.AddParameter("p1", searchText);
-        }
+        query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Description.Contains(@p1) && SKUAsObject.Owner==@owner && Ref == @priceList limit 100";
+        query.AddParameter("p1", searchText);
     }
+    //    }
 
     return query.Execute();
 }
@@ -865,7 +866,7 @@ function GetSKUGroups(searchText) {
     return query.Execute();
 }
 
-function checkSKUGroup(group, userId) {
+function checkSKUGroup(group, priceListId) {
     var query = new Query;
     query.AddParameter("group", group);
     query.Text = "select count(Id) from Catalog.Territory_SKUGroups where SKUGroup==@group";
@@ -873,7 +874,8 @@ function checkSKUGroup(group, userId) {
 
     var query2 = new Query;
     query2.AddParameter("groupId", group);
-    query2.Text = "select count(SKU) from Document.PriceList_Prices where SKUAsObject.Owner == @groupId";
+    query2.AddParameter("priceList", priceListId);
+    query2.Text = "select count(SKU) from Document.PriceList_Prices where SKUAsObject.Owner == @groupId && Ref == @priceList";
     var res2 = query2.Execute();
 
     if (parseInt(res1) != parseInt(0) && parseInt(res2) != parseInt(0)) {

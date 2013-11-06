@@ -3,13 +3,12 @@
 
   <s:If Test="$workflow.order == null">
     <s:Push Id="items" Value="$Facade.GetLookupList($param1,$param2)"></s:Push>
-    <s:Push Value="$param1.Metadata.{$param2}.Name" Id="objectName"/>
   </s:If>
   <s:Else>
     <s:Push Id="items" Value="$Facade.GetpriceLists($workflow.order)"></s:Push>
-    <s:Push Id="objectName" Value="null" />
   </s:Else>
-
+  
+  <s:Push Value="$param1.Metadata.{$param2}.Name" Id="objectName"/>
 
   <c:VerticalLayout>
 
@@ -36,6 +35,11 @@
                 <s:If Test="$objectName=='OutletClass'">
                   <c:TextView CssClass="main_row" Text="#outletClass#"/>
                 </s:If>
+                <s:Else>
+                  <s:If Test="$objectName=='PriceList'">
+                    <c:TextView CssClass="main_row" Text="#priceList#"/>
+                  </s:If>
+                </s:Else>
               </s:Else>
             </s:Else>
 

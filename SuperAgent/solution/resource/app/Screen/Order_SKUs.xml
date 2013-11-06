@@ -31,7 +31,7 @@
     <c:ScrollView CssClass="grid">
 
       <s:Iterator Id="group" Value="$groups">
-        <s:Push Id="checkedGroup" Value="$Facade.checkSKUGroup($group.Id)"></s:Push>
+        <s:Push Id="checkedGroup" Value="$Facade.checkSKUGroup($group.Id, $order.PriceList)"></s:Push>
         <s:If Test="$checkedGroup != 0">
           <c:HorizontalLayout CssClass ="gridEdit">
             <c:VerticalLayout>
@@ -42,7 +42,7 @@
 
           <c:HorizontalLine CssClass="editLine"/>
 
-          <s:Push Id="skusByGroup" Value="$Facade.GetSKUs($search,$group.Id)"></s:Push>
+          <s:Push Id="skusByGroup" Value="$Facade.GetSKUs($search,$group.Id,$order.PriceList)"></s:Push>
 
           <s:Iterator Id="sku" Value="$skusByGroup">
 
@@ -53,7 +53,7 @@
                   <c:TextView Text="#price2#" CssClass="description_row"></c:TextView>
                   <c:TextView Text="$sku.Price" CssClass="description_row"></c:TextView>
                   <c:TextView Text="#stock#" CssClass="description_row"></c:TextView>
-                  <c:TextView Text="$sku.Stock" CssClass="description_row"></c:TextView>
+                  <c:TextView Text="$sku.SKUAsObject.Stock" CssClass="description_row"></c:TextView>
                 </c:HorizontalLayout>
               </c:VerticalLayout>
 

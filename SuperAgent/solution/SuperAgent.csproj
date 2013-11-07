@@ -59,6 +59,7 @@
     <Content Include="resource\app\Image\Default\todo.png" />
     <Content Include="resource\app\Image\Default\trash.png" />
     <Content Include="resource\app\Image\Default\visit.png" />
+    <Content Include="resource\app\Screen\ScheduledVisits_Map.xml" />
     <Content Include="resource\app\Screen\Encashment.xml" />
     <Content Include="resource\app\Screen\ListChoice.xml" />
     <Content Include="resource\app\Screen\Main.xml" />
@@ -81,7 +82,9 @@
     <Content Include="resource\app\Screen\ScheduledVisits.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="resource\app\Screen\Settings.xml" />
+    <Content Include="resource\app\Screen\Settings.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="resource\app\Screen\Stock_SKUs.xml" />
     <Content Include="resource\app\Screen\Targets.xml" />
     <Content Include="resource\app\Screen\Task.xml" />

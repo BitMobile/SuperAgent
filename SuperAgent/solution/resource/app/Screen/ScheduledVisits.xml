@@ -8,22 +8,30 @@
 
     <c:DockLayout CssClass="top_navigator">
       <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button CssClass="btn_grey_forward" OnEvent="Forward" />
+      <c:Button CssClass="btn_grey_forward" />
       <c:TextView Text="#schedule#" />
     </c:DockLayout>
-
     <c:HorizontalLine/>
 
     <c:HorizontalLayout CssClass="search">
-
       <c:DockLayout >
         <c:Image />
         <c:EditText Id="edtSearch" Text="$search"></c:EditText>
       </c:DockLayout>
       <c:Button Text="#search#" OnClickAction="$Workflow.DoRefresh($edtSearch.Text)"></c:Button>
-
     </c:HorizontalLayout>
+    <c:HorizontalLine/>
 
+    <c:VerticalLayout CssClass="header">
+      <c:VerticalLayout  CssClass ="grid">
+        <c:HorizontalLayout OnEvent="Forward" OnClickAction="$Workflow.DoAction(ShowMap, $outlets)">
+          <c:VerticalLayout>
+            <c:TextView Text="#showOnMap#" CssClass="caption_row"></c:TextView>
+          </c:VerticalLayout>
+          <c:Image/>
+        </c:HorizontalLayout>
+      </c:VerticalLayout>
+    </c:VerticalLayout>
     <c:HorizontalLine/>
 
     <c:ScrollView CssClass="grid">

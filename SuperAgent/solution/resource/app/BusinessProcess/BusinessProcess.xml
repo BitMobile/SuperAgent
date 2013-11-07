@@ -13,9 +13,9 @@
       <bp:Action Name="Outlets" NextWorkflow="Outlets"></bp:Action>
       <bp:Action Name="Targets" NextWorkflow="Targets"></bp:Action>
       <bp:Action Name="Settings" NextWorkflow="Settings"></bp:Action>
-      
+
     </bp:Step>
-    
+
   </bp:Workflow>
 
   <bp:Workflow Name="ToDo">
@@ -37,6 +37,7 @@
 
     <bp:Step Name="Visits" Screen="ScheduledVisits.xml">
       <bp:Action Name="Select" NextStep="Outlet"></bp:Action>
+      <bp:Action Name="ShowMap" NextStep="ShowMap"></bp:Action>
     </bp:Step>
 
     <bp:Step Name="Outlet" Screen="Visit_Outlet.xml">
@@ -44,7 +45,7 @@
       <bp:Action Name="EditParameter" NextStep="EditOutletParameter"></bp:Action>
       <bp:Action Name="EditAddParameter" NextStep="EditOutletAddParameter"></bp:Action>
     </bp:Step>
-    
+
     <bp:Step Name="Visit_Tasks" Screen="Tasks.xml">
       <bp:Action Name="Select" NextStep="Visit_Task"></bp:Action>
       <bp:Action Name="Forward" NextStep="Questions"></bp:Action>
@@ -103,7 +104,10 @@
 
     <bp:Step Name="ReceivableDoc" Screen="Encashment.xml">
     </bp:Step>
-    
+
+    <bp:Step Name="ShowMap" Screen="ScheduledVisits_Map.xml">
+    </bp:Step>
+
   </bp:Workflow>
 
 
@@ -123,7 +127,7 @@
       <bp:Action Name="Select" NextStep="Visit_Task"></bp:Action>
       <bp:Action Name="Forward" NextStep="Questions"></bp:Action>
     </bp:Step>
-    
+
     <bp:Step Name="Questions" Screen="Visit_Questions.xml">
       <bp:Action Name="Forward" NextStep="SKUs"></bp:Action>
       <bp:Action Name="Edit" NextStep="EditQuestion"></bp:Action>
@@ -139,22 +143,22 @@
       <bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
       <bp:Action Name="Forward" NextStep="Commentary"></bp:Action>
     </bp:Step>
-    
+
     <bp:Step Name="Commentary" Screen="Visit_Order_Commentary.xml">
-	    <bp:Action Name="Forward" NextStep="Receivables"></bp:Action>
+      <bp:Action Name="Forward" NextStep="Receivables"></bp:Action>
     </bp:Step>
 
     <bp:Step Name="Receivables" Screen="Receivables.xml">
       <bp:Action Name="Forward" NextStep="Total"></bp:Action>
       <bp:Action Name="Select" NextStep="ReceivableDoc"></bp:Action>
     </bp:Step>
-  
+
     <bp:Step Name="Total" Screen="Visit_Total.xml">
     </bp:Step>
-    
+
     <bp:Step Name="Visit_Task" Screen="Visit_Task.xml">
     </bp:Step>
-    
+
     <bp:Step Name="AddSKU" Screen="Order_SKUs.xml">
       <bp:Action Name="Select" NextStep="EditSKU"></bp:Action>
     </bp:Step>
@@ -193,7 +197,7 @@
       <bp:Action Name="EditAddParameter" NextStep="EditOutletAddParameter"></bp:Action>
       <bp:Action Name="ShowMap" NextStep="ShowMap"></bp:Action>
     </bp:Step>
-    
+
     <bp:Step Name="CreateOutlet" Screen="EditOutlet.xml">
       <bp:Action Name="EditParameter" NextStep="EditOutletParameter"></bp:Action>
       <bp:Action Name="EditAddParameter" NextStep="EditOutletAddParameter"></bp:Action>
@@ -207,9 +211,10 @@
 
     <bp:Step Name="ShowMap" Screen="Outlet_Map.xml">
     </bp:Step>
+
   </bp:Workflow>
 
-  
+
   <bp:Workflow Name="Order">
 
     <bp:Step Name="OrderList" Screen="OrderList.xml">
@@ -237,15 +242,15 @@
 
     <bp:Step Name="Commentary" Screen="Order_Commentary.xml">
     </bp:Step>
-    
+
   </bp:Workflow>
 
   <bp:Workflow Name="Targets">
     <bp:Step Name="Targets" Screen="Targets.xml">
     </bp:Step>
   </bp:Workflow>
-  
-  
+
+
   <bp:Workflow Name="Settings">
 
     <bp:Step Name="Settings" Screen="Settings.xml">

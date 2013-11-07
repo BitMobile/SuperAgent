@@ -3,7 +3,7 @@
 function OnLoad(screenName) {
     if (screenName == "Outlet_Map.xml") {
         var outlet = Variables["outlet"];
-        Variables["map"].AddMarker("red", outlet.Lattitude, outlet.Longitude);
+        Variables["map"].AddMarker(outlet.Description, outlet.Lattitude, outlet.Longitude, "red");
     }
     else if (screenName == "ScheduledVisits_Map.xml") {
         PrepareScheduledVisits_Map();
@@ -21,14 +21,14 @@ function OnWorkflowStart(name) {
 
 function OnWorkflowBack(name, lastStep, nextStep) {
     if (lastStep == "PriceLists" && nextStep == "Order") {
-        
+
         //revising SKUs
         var query = new Query();
         query.AddParameter("orderId", Variables["workflow"]["order"].Id);
         query.Text = "select * from Document.Order_SKUs where Ref==@orderId limit 100";
         var SKUs = query.Execute();
         var s = SKUs.Count();
-        
+
         if (parseInt(SKUs.Count()) != parseInt(0))
             Dialog.Message("SKU list will be revised");
 
@@ -42,7 +42,7 @@ function OnWorkflowBack(name, lastStep, nextStep) {
                 DB.Current.Document.Order_SKUs.Delete(k);
             else {
                 k.Price = pricelistItem.Price;
-                k.Total = (k.Discount/100 + 1)* k.Price;
+                k.Total = (k.Discount / 100 + 1) * k.Price;
                 k.Amount = k.Qty * k.Total;
             }
         }
@@ -67,9 +67,9 @@ function PrepareScheduledVisits_Map() {
             query.Text = "select single(*) from Document.Visit where Date.Date == @Date && Outlet==@Outlet";
             var result = query.Execute();
             if (result == null)
-                Variables["map"].AddMarker("yellow", outlet.Lattitude, outlet.Longitude);
+                Variables["map"].AddMarker(outlet.Description, outlet.Lattitude, outlet.Longitude, "yellow");
             else
-                Variables["map"].AddMarker("green", outlet.Lattitude, outlet.Longitude);
+                Variables["map"].AddMarker(outlet.Description, outlet.Lattitude, outlet.Longitude, "green");
         }
     }
 }

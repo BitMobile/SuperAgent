@@ -2,6 +2,7 @@
     if (name == "UnscheduledVisit" || name == "ScheduledVisit") {
         GPS.StartTracking();
     }
+    Variables["workflow"].Add("name", name);
 }
 
 function OnWorkflowForward(name, lastStep, nextStep) { }

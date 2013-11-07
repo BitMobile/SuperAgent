@@ -16,12 +16,12 @@
     </c:DockLayout>
     <c:HorizontalLine/>
 
-    <c:VerticalLayout CssClass="memo_header">
+    <c:VerticalLayout CssClass="header">
       <c:VerticalLayout  CssClass ="grid">
 
-        <c:HorizontalLayout CssClass ="two_row_memo">
+        <c:HorizontalLayout>
           <c:VerticalLayout>
-            <c:MemoEdit Value="$outlet.Description" CssClass="main_row"></c:MemoEdit>
+            <c:TextView Text="$outlet.Description" CssClass="main_row"></c:TextView>
             <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
           </c:VerticalLayout>
         </c:HorizontalLayout>

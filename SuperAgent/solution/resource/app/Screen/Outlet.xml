@@ -6,26 +6,45 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-        <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
-        <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckNotNullAndCommit($outlet)"/>
+      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
+      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckNotNullAndCommit($outlet)"/>
       <c:TextView Text="#outlet#" />
     </c:DockLayout>
     <c:HorizontalLine/>
 
-    <c:VerticalLayout CssClass="memo_header">
-      <c:VerticalLayout  CssClass ="grid">
 
-        <c:HorizontalLayout CssClass ="two_row_memo">
-          <c:VerticalLayout>
-            <c:MemoEdit Id="outletDescr" Value="$outlet.Description" CssClass="main_row"></c:MemoEdit>
-            <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
-          </c:VerticalLayout>
-        </c:HorizontalLayout>
-        <c:HorizontalLine/>
-
+    <s:If Test="$outlet.IsNew">
+      <c:VerticalLayout CssClass="memo_header">
+        <c:VerticalLayout  CssClass ="grid">
+          
+          <c:HorizontalLayout CssClass ="two_row_memo">
+            <c:VerticalLayout>
+              <c:MemoEdit Id="outletDescr" Value="$outlet.Description" CssClass="main_row"></c:MemoEdit>
+              <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
+            </c:VerticalLayout>
+          </c:HorizontalLayout>
+          
+          <c:HorizontalLine/>
+        </c:VerticalLayout>
       </c:VerticalLayout>
-    </c:VerticalLayout>
-    <c:HorizontalLine/>
+      <c:HorizontalLine/>
+    </s:If>
+    <s:Else>
+      <c:VerticalLayout CssClass="header">
+        <c:VerticalLayout  CssClass ="grid">
+          
+          <c:HorizontalLayout>
+            <c:VerticalLayout>
+              <c:TextView Text="$outlet.Description" CssClass="main_row"></c:TextView>
+              <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
+            </c:VerticalLayout>
+          
+          </c:HorizontalLayout>
+          <c:HorizontalLine/>
+        </c:VerticalLayout>
+      </c:VerticalLayout>
+      <c:HorizontalLine/>
+    </s:Else>
 
     <c:ScrollView CssClass="grid">
 

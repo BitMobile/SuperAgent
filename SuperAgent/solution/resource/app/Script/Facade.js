@@ -954,6 +954,10 @@ function GetEncAmount(encashmentText, autoSpread, encashment) {
     }
 }
 
+function GetSKUImage(sku) {
+    return "sku/get/" + sku.Id;
+}
+
 function GetLatitude() {
     if (GPS.Update())
         return GPS.Latitude;

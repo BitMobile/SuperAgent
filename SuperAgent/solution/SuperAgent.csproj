@@ -85,6 +85,7 @@
     <Content Include="resource\app\Screen\Settings.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="resource\app\Screen\SKU_Image.xml" />
     <Content Include="resource\app\Screen\Stock_SKUs.xml" />
     <Content Include="resource\app\Screen\Targets.xml" />
     <Content Include="resource\app\Screen\Task.xml" />

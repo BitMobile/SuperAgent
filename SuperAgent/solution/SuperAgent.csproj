@@ -72,6 +72,7 @@
     </Content>
     <Content Include="resource\app\Screen\Order_SKUs.xml" />
     <Content Include="resource\app\Screen\Outlet.xml" />
+    <Content Include="resource\app\Screen\Outlet_Map.xml" />
     <Content Include="resource\app\Screen\OutletParameter.xml">
       <SubType>Designer</SubType>
     </Content>

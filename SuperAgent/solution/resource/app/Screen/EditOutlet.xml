@@ -31,6 +31,14 @@
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
+      <c:HorizontalLayout OnClickAction="$Workflow.DoAction(ShowMap, $outlet)">
+        <c:VerticalLayout>
+          <c:TextView Text="#showOnMap#" CssClass="main_row"></c:TextView>
+        </c:VerticalLayout>
+        <c:Image/>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
       <c:HorizontalLayout OnClickAction="$Workflow.DoAction(EditParameter,$outlet,Class)">
         <c:VerticalLayout>
           <c:TextView Id="outletClass" Text="$outlet.ClassAsObject.Description" CssClass="main_row"></c:TextView>

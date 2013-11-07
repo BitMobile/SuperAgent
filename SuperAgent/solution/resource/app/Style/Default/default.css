@@ -72,6 +72,11 @@ MemoEdit {
     padding-right: 2%;
 }
 
+WebMapGoogle {
+    width: 100%;
+    height: 100%;
+}
+
 .btn_delete {
     background-image: url(trash_icon.png);
     height: 80%;

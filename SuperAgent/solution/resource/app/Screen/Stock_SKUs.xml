@@ -45,11 +45,12 @@
           <s:Push Id="skusByGroup" Value="$Facade.GetSKUs($search,$group.Id)"></s:Push>
           <s:Iterator Id="sku" Value="$skusByGroup">
 
-            <c:HorizontalLayout>
+            <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select, $sku)">
               <c:VerticalLayout>
                 <c:TextView Text="$sku.Description" CssClass="main_row"></c:TextView>
                 <c:TextView Text="{$sku.Stock} {$sku.BaseUnitAsObject.Description}" CssClass="description_row"></c:TextView>
               </c:VerticalLayout>
+              <c:Image/>
             </c:HorizontalLayout>
 
             <c:HorizontalLine/>

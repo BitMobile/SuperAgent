@@ -90,8 +90,9 @@ coordinatesAreSet	Координаты установлены
 setCoordinates	Установить координаты торговой точки по текущему расположению?
 location	Установить координаты
 saveChanges	Сохранить изменения?
+map			Карта
+showOnMap	Показать на карте
 current		Текущие
 couldn't_be_cleaned	Поле не может быть очищено
 priceList	Прайс лист
 isntSelected	Не выбран
-

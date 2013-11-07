@@ -29,6 +29,10 @@
 
   <bp:Workflow Name="Stocks">
     <bp:Step Name="Stocks" Screen="Stock_SKUs.xml">
+      <bp:Action Name="Select" NextStep="SKUImage"/>
+    </bp:Step>
+
+    <bp:Step Name="SKUImage" Screen="SKU_Image.xml">
     </bp:Step>
 
   </bp:Workflow>
@@ -37,6 +41,7 @@
 
     <bp:Step Name="Visits" Screen="ScheduledVisits.xml">
       <bp:Action Name="Select" NextStep="Outlet"></bp:Action>
+      <bp:Action Name="ShowMap" NextStep="ShowMap"></bp:Action>
     </bp:Step>
 
     <bp:Step Name="Outlet" Screen="Visit_Outlet.xml">
@@ -106,6 +111,9 @@
     </bp:Step>
 
     <bp:Step Name="ReceivableDoc" Screen="Encashment.xml">
+    </bp:Step>
+
+    <bp:Step Name="ShowMap" Screen="ScheduledVisits_Map.xml">
     </bp:Step>
 
   </bp:Workflow>
@@ -199,6 +207,7 @@
     <bp:Step Name="Outlet" Screen="Outlet.xml">
       <bp:Action Name="EditParameter" NextStep="EditOutletParameter"></bp:Action>
       <bp:Action Name="EditAddParameter" NextStep="EditOutletAddParameter"></bp:Action>
+      <bp:Action Name="ShowMap" NextStep="ShowMap"></bp:Action>
     </bp:Step>
 
     <bp:Step Name="CreateOutlet" Screen="Outlet.xml">
@@ -210,6 +219,9 @@
     </bp:Step>
 
     <bp:Step Name="EditOutletAddParameter" Screen="OutletParameter.xml">
+    </bp:Step>
+
+    <bp:Step Name="ShowMap" Screen="Outlet_Map.xml">
     </bp:Step>
 
   </bp:Workflow>

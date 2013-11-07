@@ -90,8 +90,9 @@ coordinatesAreSet	Coordinates Are Set
 setCoordinates	Set outlet coordinates by current location?
 location	Set coordinates
 saveChanges	Save changes?
+map			Map
+showOnMap	Show on map
 current		Current
 couldn't_be_cleaned	Field couldn't be cleaned
 priceList	Price list
 isntSelected	Isn't selected
-

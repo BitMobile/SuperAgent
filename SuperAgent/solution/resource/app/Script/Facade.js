@@ -578,6 +578,21 @@ function SetTimeAndCommit() {
     Workflow.Commit();
 }
 
+function HasCoordinates(visitPlans) {
+    if (visitPlans == null) {
+        return false;
+    }
+
+    for (var visitPlan in visitPlans) {
+        var outlet = visitPlan.OutletAsObject();
+        if (!isDefault(outlet.Lattitude) && !isDefault(outlet.Longitude)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 //------------------------------UnscheduledVisit--------------
 
 

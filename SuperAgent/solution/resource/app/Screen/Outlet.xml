@@ -37,14 +37,6 @@
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
-      <c:HorizontalLayout OnClickAction="$Workflow.DoAction(ShowMap, $outlet)">
-        <c:VerticalLayout>
-          <c:TextView Text="#showOnMap#" CssClass="main_row"></c:TextView>
-        </c:VerticalLayout>
-        <c:Image/>
-      </c:HorizontalLayout>
-      <c:HorizontalLine/>
-
       <c:HorizontalLayout OnClickAction="$Facade.SetLocation()">
         <c:VerticalLayout>
           <c:TextView Text="#location#" CssClass="caption_row"></c:TextView>

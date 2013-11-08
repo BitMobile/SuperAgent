@@ -96,3 +96,4 @@ current		Current
 couldn't_be_cleaned	Field couldn't be cleaned
 priceList	Price list
 isntSelected	Isn't selected
+SKUWillRevised	SKU list has been revised

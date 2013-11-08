@@ -12,34 +12,30 @@
       <c:Button CssClass="btn_grey_forward" OnEvent="Forward"/>
       <c:TextView Text="#stock#" />
     </c:DockLayout>
-
     <c:HorizontalLine/>
 
     <c:HorizontalLayout CssClass="search">
-
       <c:DockLayout >
         <c:Image />
         <c:EditText Id="edtSearch" Text="$search"></c:EditText>
       </c:DockLayout>
       <c:Button Text="#search#" OnClickAction="$Workflow.DoRefresh($edtSearch.Text)"></c:Button>
-
     </c:HorizontalLayout>
-
     <c:HorizontalLine/>
 
     <c:ScrollView CssClass="grid">
 
       <s:Iterator Id="group" Value="$groups">
-
+        <s:Push Id="skusByGroup" Value="$Facade.GetSKUs($search,$group.SKUGroup, null)"></s:Push>
+        <s:Push Id="groupIsEmpty" Value="$Facade.CountCollection($skusByGroup)"></s:Push>
+        <s:If Test="$groupIsEmpty != 0">
           <c:HorizontalLayout CssClass ="blockEdit">
             <c:VerticalLayout>
               <c:TextView Text = "$group.SKUGroupAsObject.Description" CssClass = "main_row"></c:TextView>
             </c:VerticalLayout>
           </c:HorizontalLayout>
-
           <c:HorizontalLine CssClass="editLine"/>
 
-          <s:Push Id="skusByGroup" Value="$Facade.GetSKUs($search,$group.SKUGroup)"></s:Push>
           <s:Iterator Id="sku" Value="$skusByGroup">
 
             <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select, $sku)">
@@ -49,10 +45,10 @@
               </c:VerticalLayout>
               <c:Image/>
             </c:HorizontalLayout>
-
             <c:HorizontalLine/>
 
           </s:Iterator>
+        </s:If>
       </s:Iterator>
 
     </c:ScrollView>

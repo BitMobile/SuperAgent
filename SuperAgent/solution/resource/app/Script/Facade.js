@@ -24,6 +24,10 @@ function GetGreater(val1, val2) {
         return true;
 }
 
+function CountCollection(collection) {
+    return parseInt(collection.Count());
+}
+
 function AreEqual(val1, val2) {
     if (String(val1) == String(val2))
         return true;
@@ -78,7 +82,11 @@ function UpdateEntity(entity, value) {
 function UpdateValueAndBack(entity, attribute, value) {
     entity[attribute] = value;
     entity = UpdateEntity(entity, value);
-
+    if (Variables["workflow"]["name"] = "Order") {
+        var n = CountEntities("Document", "Order_SKUs", Variables["workflow"]["order"].Id, "Ref");
+        if (parseInt(n) != parseInt(0))
+            Dialog.Message("#SKUWillRevised#");
+    }
     Workflow.Back();
 
 }
@@ -828,27 +836,27 @@ function CheckOrderAndCommit(order) {
 function GetSKUs(searchText, owner, priceListId) {
     if (priceListId == null) {
         query = new Query();
+        query.AddParameter("owner", owner);
         if (String.IsNullOrEmpty(searchText)) {
-            query.AddParameter("owner", owner);
             query.Text = "select * from Catalog.SKU where Owner==@owner limit 100";
         }
         else {
-            query.Text = "select * from  Catalog.SKU where SKU.Description.Contains(@p1) && Owner==@owner limit 100";
+            query.Text = "select * from  Catalog.SKU where Description.Contains(@p1) && Owner==@owner limit 100";
             query.AddParameter("p1", searchText);
         }
     }
     else {
-    query = new Query();
-    query.AddParameter("owner", owner);
-    query.AddParameter("priceList", priceListId);
-    if (String.IsNullOrEmpty(searchText)) {
-        query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Owner==@owner && Ref == @priceList limit 100";
-    }
-    else {
-        query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Description.Contains(@p1) && SKUAsObject.Owner==@owner && Ref == @priceList limit 100";
-        query.AddParameter("p1", searchText);
-    }
+        query = new Query();
+        query.AddParameter("owner", owner);
+        query.AddParameter("priceList", priceListId);
+        if (String.IsNullOrEmpty(searchText)) {
+            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Owner==@owner && Ref == @priceList limit 100";
         }
+        else {
+            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Description.Contains(@p1) && SKUAsObject.Owner==@owner && Ref == @priceList limit 100";
+            query.AddParameter("p1", searchText);
+        }
+    }
 
     return query.Execute();
 }
@@ -860,7 +868,7 @@ function GetSKUGroups(searchText, userId) {
         query.Text = "select * from Catalog.Territory_SKUGroups where RefAsObject.SR==@user";
     }
     else {
-        query.Text = "select * from Catalog.Territory_SKUGroups where RefAsObject.SR==@user && SKUGroupAsObject.Description.Contains(@p1)";
+        query.Text = "select * from Catalog.Territory_SKUGroups where RefAsObject.SR==@user";
         query.AddParameter("p1", searchText);
     }
 

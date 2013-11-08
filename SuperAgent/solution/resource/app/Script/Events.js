@@ -60,7 +60,7 @@ function ReviseSKUs() {
     var s = SKUs.Count();
 
     if (parseInt(SKUs.Count()) != parseInt(0))
-        Dialog.Message("SKU list will be revised");
+   //     Dialog.Message("SKU list will be revised");
 
     for (var k in SKUs) {
         var query2 = new Query();

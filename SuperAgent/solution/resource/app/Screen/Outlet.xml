@@ -12,20 +12,38 @@
     </c:DockLayout>
     <c:HorizontalLine/>
 
-    <c:VerticalLayout CssClass="memo_header">
-      <c:VerticalLayout  CssClass ="grid">
+    <s:If Test="$outlet.IsNew">
+      <c:VerticalLayout CssClass="memo_header">
+        <c:VerticalLayout  CssClass ="grid">
 
-        <c:HorizontalLayout CssClass ="two_row_memo">
-          <c:VerticalLayout>
-            <c:MemoEdit Id="outletDescr" Value="$outlet.Description" CssClass="main_row"></c:MemoEdit>
-            <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
-          </c:VerticalLayout>
-        </c:HorizontalLayout>
-        <c:HorizontalLine/>
+          <c:HorizontalLayout CssClass ="two_row_memo">
+            <c:VerticalLayout>
+              <c:MemoEdit Id="outletDescr" Value="$outlet.Description" CssClass="main_row"></c:MemoEdit>
+              <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
+            </c:VerticalLayout>
+          </c:HorizontalLayout>
 
+          <c:HorizontalLine/>
+        </c:VerticalLayout>
       </c:VerticalLayout>
-    </c:VerticalLayout>
-    <c:HorizontalLine/>
+      <c:HorizontalLine/>
+    </s:If>
+    <s:Else>
+      <c:VerticalLayout CssClass="header">
+        <c:VerticalLayout  CssClass ="grid">
+
+          <c:HorizontalLayout>
+            <c:VerticalLayout>
+              <c:TextView Text="$outlet.Description" CssClass="main_row"></c:TextView>
+              <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
+            </c:VerticalLayout>
+          </c:HorizontalLayout>
+
+          <c:HorizontalLine/>
+        </c:VerticalLayout>
+      </c:VerticalLayout>
+      <c:HorizontalLine/>
+    </s:Else>
 
     <c:ScrollView CssClass="grid">
 
@@ -36,6 +54,16 @@
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
+
+      <s:If Test="$outlet.IsNew == false">
+        <c:HorizontalLayout OnClickAction="$Workflow.DoAction(ShowMap, $outlet)">
+          <c:VerticalLayout>
+            <c:TextView Text="#showOnMap#" CssClass="main_row"></c:TextView>
+          </c:VerticalLayout>
+          <c:Image/>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+      </s:If>
 
       <c:HorizontalLayout OnClickAction="$Facade.SetLocation()">
         <c:VerticalLayout>

@@ -35,7 +35,7 @@ function OnWorkflowFinish(name, reason) {
 // ------------------------ Functions ------------------------
 
 function PrepareScheduledVisits_Map() {
-    var visitPlans = Variables["outlets"];
+    var visitPlans = Variables["visitPlans"];
     for (var visitPlan in visitPlans) {
         var outlet = visitPlan.OutletAsObject();
         if (!isDefault(outlet.Lattitude) && !isDefault(outlet.Longitude)) {

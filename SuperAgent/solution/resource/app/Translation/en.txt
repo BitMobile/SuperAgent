@@ -92,6 +92,7 @@ location	Set coordinates
 saveChanges	Save changes?
 map			Map
 showOnMap	Show on map
+no_visitPlans	No visits to display 
 current		Current
 couldn't_be_cleaned	Field couldn't be cleaned
 priceList	Price list

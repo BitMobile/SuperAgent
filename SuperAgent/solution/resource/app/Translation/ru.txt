@@ -92,6 +92,7 @@ location	Установить координаты
 saveChanges	Сохранить изменения?
 map			Карта
 showOnMap	Показать на карте
+no_visitPlans		Нет визитов для отображения
 current		Текущие
 couldn't_be_cleaned	Поле не может быть очищено
 priceList	Прайс лист

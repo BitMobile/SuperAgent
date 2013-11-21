@@ -82,7 +82,7 @@ function UpdateEntity(entity, value) {
 function UpdateValueAndBack(entity, attribute, value) {
     entity[attribute] = value;
     entity = UpdateEntity(entity, value);
-    if (Variables["workflow"]["name"] = "Order") {
+    if (Variables["workflow"]["name"] == "Order") {
         var n = CountEntities("Document", "Order_SKUs", Variables["workflow"]["order"].Id, "Ref");
         if (parseInt(n) != parseInt(0))
             Dialog.Message("#SKUWillRevised#");
@@ -853,10 +853,10 @@ function GetSKUs(searchText, owner, priceListId) {
         query = new Query();
         query.AddParameter("owner", owner);
         if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Catalog.SKU where Owner==@owner limit 100";
+            query.Text = "select * from Catalog.SKU where Owner==@owner && Stock != 0 limit 100";
         }
         else {
-            query.Text = "select * from  Catalog.SKU where Description.Contains(@p1) && Owner==@owner limit 100";
+            query.Text = "select * from  Catalog.SKU where Description.Contains(@p1) && Owner==@owner && Stock != 0 limit 100";
             query.AddParameter("p1", searchText);
         }
     }
@@ -865,10 +865,10 @@ function GetSKUs(searchText, owner, priceListId) {
         query.AddParameter("owner", owner);
         query.AddParameter("priceList", priceListId);
         if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Owner==@owner && Ref == @priceList limit 100";
+            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Owner==@owner && Ref == @priceList && SKUAsObject.Stock != 0 limit 100";
         }
         else {
-            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Description.Contains(@p1) && SKUAsObject.Owner==@owner && Ref == @priceList limit 100";
+            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Description.Contains(@p1) && SKUAsObject.Owner==@owner && Ref == @priceList && SKUAsObject.Stock != 0 limit 100";
             query.AddParameter("p1", searchText);
         }
     }

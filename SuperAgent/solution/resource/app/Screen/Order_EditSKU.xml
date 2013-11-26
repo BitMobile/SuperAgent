@@ -1,11 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
 
-  <s:Push Id="order" Value="$param1"></s:Push>
-  <s:Push Id="sku" Value="$param2"></s:Push>
-  <s:Push Id="orderitem" Value="$param3"></s:Push>
-  <s:Push Id="multiplier" Value="$Facade.GetMultiplier($sku, $orderitem)"></s:Push>
-  <s:Push Id="orderitem" Value="$Facade.CreateOrderItemIfNotExist($order.Id,$sku,$orderitem,$param4)"></s:Push>
+  <s:Push Id="order" Value="$workflow.order"></s:Push>
+  <s:Push Id="sku" Value="$param1"></s:Push>
+  <s:Push Id="feature" Value="$param2"></s:Push>
+  <s:Push Id="price" Value="$param3"></s:Push>
+  <s:Push Id="orderitem" Value="$param4"></s:Push>
+  <s:Push Id="multiplier" Value="$Facade.GetMultiplier($sku.Id, $orderitem)"></s:Push>
+  <s:Push Id="orderitem" Value="$Facade.CreateOrderItemIfNotExist($order.Id,$sku,$orderitem,$feature.Feature,$price)"></s:Push>
   <s:Push Id="baseQty" Value="$Facade.GetMultiple($orderitem.Qty, $multiplier)"></s:Push>
   <s:Push Id="ismarkup" Value="$Facade.ConvertToBoolean1($orderitem.Discount)"></s:Push>
 
@@ -21,7 +23,7 @@
 
       <c:HorizontalLayout CssClass="header_edit_block">
         <c:VerticalLayout CssClass="partial_width" OnClickAction="$Facade.CountPrice($orderitem,$discountEdit.Text,$discCheckbox.Checked)">
-          <c:TextView Text="{$sku.Description}" CssClass="main_row"></c:TextView>
+          <c:TextView Text="{$sku.Description}, {$orderitem.FeatureAsObject.Description}" CssClass="main_row"></c:TextView>
           <c:TextView Text="#countPrice#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
         <c:VerticalLayout CssClass="quarter_width">

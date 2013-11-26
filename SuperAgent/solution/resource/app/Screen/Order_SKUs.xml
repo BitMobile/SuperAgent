@@ -43,8 +43,8 @@
           <c:HorizontalLine CssClass="editLine"/>
 
           <s:Iterator Id="sku" Value="$skusByGroup">
-
-            <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$order,$sku.SKUAsObject,null,$sku.Price)" CssClass="gridWhite">
+            <s:Push Id="actionName" Value="$Facade.GetActionValue($sku.SKU)"></s:Push>
+            <c:HorizontalLayout OnClickAction="$Workflow.DoAction($actionName, $sku)" CssClass="gridWhite">
               <c:VerticalLayout>
                 <c:TextView Text="$sku.SKUAsObject.Description" CssClass="main_row"></c:TextView>
                 
@@ -52,7 +52,7 @@
                   <c:TextView Text="#price2#" CssClass="description_row"></c:TextView>
                   <c:TextView Text="$sku.Price" CssClass="description_row"></c:TextView>
                   <c:TextView Text="#stock#" CssClass="description_row"></c:TextView>
-                  <c:TextView Text="$sku.SKUAsObject.Stock" CssClass="description_row"></c:TextView>
+                  <c:TextView Text="$sku.SKUAsObject.CommonStock" CssClass="description_row"></c:TextView>
                 </c:HorizontalLayout>
                 
               </c:VerticalLayout>

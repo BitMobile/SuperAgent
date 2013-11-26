@@ -21,6 +21,8 @@
     </c:DockLayout>
 
     <c:HorizontalLine/>
+    
+    
 
     <s:Push Id="statusDescription" Value="$Facade.GetOrderStatus($workflow.order)"></s:Push>
     <s:If Test="$statusDescription == 'New'">
@@ -59,6 +61,8 @@
         <c:HorizontalLine/>
       </s:If>
 
+      
+      
       <c:ScrollView CssClass="grid">
 
         <c:HorizontalLayout OnClickAction="$Workflow.DoAction(EditPriceList, $workflow.order, PriceList)">
@@ -74,14 +78,16 @@
           <c:Image/>
         </c:HorizontalLayout>
         <c:HorizontalLine/>
+        
+        
 
         <s:Iterator Id="orderitem" Value="$items">
           <s:Push Id="orderitem" Value="$Facade.DeleteZeroItem($orderitem)"></s:Push>
 
           <s:If Test="$orderitem != null">
-            <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Edit,$workflow.order,$orderitem.SKUAsObject,$orderitem)">
+            <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Edit,$orderitem.SKUAsObject,null,null,$orderitem)">
               <c:VerticalLayout>
-                <c:TextView Text="$orderitem.SKUAsObject.Description" CssClass="main_row"></c:TextView>
+                <c:TextView Text="{$orderitem.SKUAsObject.Description}, {$orderitem.FeatureAsObject.Description}" CssClass="main_row"></c:TextView>
                 <s:Push Value="$Facade.GetSKUAmount($workflow.order.Id, $orderitem)" Id="amount"/>
                 <c:TextView Text="#quantity#: {$orderitem.Qty}   #amount#: {$amount}" CssClass="description_row"></c:TextView>
               </c:VerticalLayout>
@@ -135,6 +141,8 @@
 
           <c:HorizontalLine/>
         </s:Iterator>
+        
+        
 
       </c:ScrollView>
     </s:Else>

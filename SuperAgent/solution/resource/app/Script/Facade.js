@@ -139,10 +139,29 @@ function DeleteAndBack(entity, objectType, objectName, varToDelete) {
     Workflow.Back();
 }
 
+
+//--------------------Common Querys------------------
+
+function GetEntity(type, name, paramValue, parameter) {
+    var query = new Query();
+    query.AddParameter("v", paramValue);
+    query.Text = String.Format("select single(*) from {0}.{1} where {2}==@v", type, name, parameter);
+    return query.Execute();
+}
+
+
 function CountEntities(type, name, paramValue, parameter) {
     var query = new Query();
     query.AddParameter("v", paramValue);
     query.Text = String.Format("select count(Id) from {0}.{1} where {2}==@v", type, name, parameter);
+    return query.Execute();
+}
+
+function CountEntities2(type, name, param1Value, param1, param2value, param2) {
+    var query = new Query();
+    query.AddParameter("v1", param1Value);
+    query.AddParameter("v2", param2Value);
+    query.Text = String.Format("select count(Id) from {0}.{1} where {2}==@v1 && {3}==@v2", type, name, param1, param2);
     return query.Execute();
 
 }
@@ -720,19 +739,40 @@ function GetpriceLists(order, attribute) {
 
 }
 
+function GetFeatures(sku) {
+    var query = new Query();
+    query.AddParameter("sku", sku);
+    query.Text = "select * from Catalog.SKU_Stocks where Ref==@sku && StockValue!=0";
+    return query.Execute();
+}
+
+function GetActionValue(skuId) {
+    var c = CountEntities("Catalog", "SKU_Stocks", skuId, "Ref");
+    if (parseInt(c) == parseInt(1))
+        return "SelectSKU";
+    else
+        return "Select";
+}
+
 
 //-----------------------OrderItem-------------------
 
 
 
-function CreateOrderItemIfNotExist(orderId, sku, orderitem, price) {
+function CreateOrderItemIfNotExist(orderId, sku, orderitem, feature, price) {
 
     if (orderitem == null) {
+
+        if (feature == null) {
+            var f = GetEntity("Catalog", "SKU_Stocks", sku.Id, "Ref");
+            feature = f.Feature;
+        }
 
         var query = new Query();
         query.AddParameter("ref", orderId);
         query.AddParameter("sku", sku.Id);
-        query.Text = "select * from Document.Order_SKUs where Ref==@ref && SKU==@sku";
+        query.AddParameter("feature", feature);
+        query.Text = "select * from Document.Order_SKUs where Ref==@ref && SKU==@sku && Feature==@feature";
         var r = query.Execute();
         if (r.Count() > 0) {
             for (var k in r)
@@ -742,6 +782,7 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, price) {
             var p = DB.Create("Document.Order_SKUs");
             p.Ref = orderId;
             p.SKU = sku.Id;
+            p.Feature = feature;
             p.Price = price;
             p.Total = price;
             p.Units = sku.BaseUnit;
@@ -781,7 +822,7 @@ function GetMultiplier(sku, orderitem) {
     if (orderitem != null) {
         var query = new Query();
         query.AddParameter("units", orderitem.Units);
-        query.AddParameter("ref", sku.Id);
+        query.AddParameter("ref", sku);
         query.Text = "select single(*) from Catalog.SKU_Packing where Ref==@ref && Pack==@units";
         var item = query.Execute();
         return item.Multiplier;
@@ -853,10 +894,10 @@ function GetSKUs(searchText, owner, priceListId) {
         query = new Query();
         query.AddParameter("owner", owner);
         if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Catalog.SKU where Owner==@owner && Stock != 0 limit 100";
+            query.Text = "select * from Catalog.SKU where Owner==@owner && CommonStock != 0 limit 100";
         }
         else {
-            query.Text = "select * from  Catalog.SKU where Description.Contains(@p1) && Owner==@owner && Stock != 0 limit 100";
+            query.Text = "select * from  Catalog.SKU where Description.Contains(@p1) && Owner==@owner && CommonStock != 0 limit 100";
             query.AddParameter("p1", searchText);
         }
     }
@@ -865,10 +906,10 @@ function GetSKUs(searchText, owner, priceListId) {
         query.AddParameter("owner", owner);
         query.AddParameter("priceList", priceListId);
         if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Owner==@owner && Ref == @priceList && SKUAsObject.Stock != 0 limit 100";
+            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Owner==@owner && Ref == @priceList && SKUAsObject.CommonStock != 0 limit 100";
         }
         else {
-            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Description.Contains(@p1) && SKUAsObject.Owner==@owner && Ref == @priceList && SKUAsObject.Stock != 0 limit 100";
+            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Description.Contains(@p1) && SKUAsObject.Owner==@owner && Ref == @priceList && SKUAsObject.CommonStock != 0 limit 100";
             query.AddParameter("p1", searchText);
         }
     }

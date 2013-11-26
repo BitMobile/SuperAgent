@@ -41,7 +41,7 @@
             <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select, $sku)">
               <c:VerticalLayout>
                 <c:TextView Text="$sku.Description" CssClass="main_row"></c:TextView>
-                <c:TextView Text="{$sku.Stock} {$sku.BaseUnitAsObject.Description}" CssClass="description_row"></c:TextView>
+                <c:TextView Text="{$sku.CommonStock} {$sku.BaseUnitAsObject.Description}" CssClass="description_row"></c:TextView>
               </c:VerticalLayout>
               <c:Image/>
             </c:HorizontalLayout>

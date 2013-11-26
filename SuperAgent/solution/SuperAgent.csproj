@@ -61,17 +61,23 @@
     <Content Include="resource\app\Image\Default\visit.png" />
     <Content Include="resource\app\Screen\ScheduledVisits_Map.xml" />
     <Content Include="resource\app\Screen\Encashment.xml" />
-    <Content Include="resource\app\Screen\ListChoice.xml" />
+    <Content Include="resource\app\Screen\ListChoice.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="resource\app\Screen\Main.xml" />
     <Content Include="resource\app\Screen\Order.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="resource\app\Screen\OrderList.xml" />
+    <Content Include="resource\app\Screen\OrderList.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="resource\app\Screen\Order_Commentary.xml" />
     <Content Include="resource\app\Screen\Order_EditSKU.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="resource\app\Screen\Order_SKUs.xml" />
+    <Content Include="resource\app\Screen\Order_SKUs.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="resource\app\Screen\Outlet_Map.xml" />
     <Content Include="resource\app\Screen\OutletParameter.xml">
       <SubType>Designer</SubType>
@@ -113,6 +119,7 @@
     <Content Include="resource\app\Screen\Outlets_Outlets.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="resource\app\Screen\Features.xml" />
     <Content Include="resource\app\Script\DB.js" />
     <Content Include="resource\app\Script\Events.js" />
     <Content Include="resource\app\Script\Facade.js" />

@@ -98,3 +98,4 @@ couldn't_be_cleaned	Поле не может быть очищено
 priceList	Прайс лист
 isntSelected	Не выбран
 SKUWillRevised	Заказ пересчитан
+features	Характеристики

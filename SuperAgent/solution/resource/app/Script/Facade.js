@@ -669,7 +669,7 @@ function CreateOrderIfNotExists(order, outlet, userId, visitId, executedOrder) {
                 order.Longitude = location.Longitude;
             }
             var status = new Query("select single(*) from Enum.OrderSatus where Description=='New'").Execute();
-            order.Status = status.Id;
+            order.Status = DB.Current.Constant.OrderSatus.New;
             if (visitId != null) {
                 order.Visit = visitId;
             }

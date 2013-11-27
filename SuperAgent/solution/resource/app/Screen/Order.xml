@@ -26,7 +26,7 @@
 
     <s:Push Id="statusDescription" Value="$Facade.GetOrderStatus($workflow.order)"></s:Push>
     <s:If Test="$statusDescription == 'New'">
-      <s:If Test="workflow.order.PriceListAsRef != null">
+      <s:If Test="$workflow.order.PriceListAsRef != null">
         <c:VerticalLayout CssClass="header">
           <c:VerticalLayout  CssClass ="grid">
             <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Add,$workflow.order)">

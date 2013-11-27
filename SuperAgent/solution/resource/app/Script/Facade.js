@@ -149,6 +149,13 @@ function GetEntity(type, name, paramValue, parameter) {
     return query.Execute();
 }
 
+function GetEntities(type, name, paramValue, parameter) {
+    var query = new Query();
+    query.AddParameter("v", paramValue);
+    query.Text = String.Format("select * from {0}.{1} where {2}==@v", type, name, parameter);
+    return query.Execute();
+}
+
 
 function CountEntities(type, name, paramValue, parameter) {
     var query = new Query();
@@ -668,10 +675,14 @@ function CreateOrderIfNotExists(order, outlet, userId, visitId, executedOrder) {
                 order.Lattitude = location.Latitude;
                 order.Longitude = location.Longitude;
             }
-            var status = new Query("select single(*) from Enum.OrderSatus where Description=='New'").Execute();
             order.Status = DB.Current.Constant.OrderSatus.New;
             if (visitId != null) {
                 order.Visit = visitId;
+            }
+            var prices = GetEntities("Catalog", "Outlet_Prices", outlet.Id, "Ref");
+            if (parseInt(prices.Count()) == parseInt(1)) {
+                for (var k in prices)
+                    order.PriceList = k.PriceList;
             }
         }
     }

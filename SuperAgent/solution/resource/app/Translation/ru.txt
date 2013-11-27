@@ -99,3 +99,4 @@ priceList	Прайс лист
 isntSelected	Не выбран
 SKUWillRevised	Заказ пересчитан
 features	Характеристики
+noPriceLists	Для этой торговой точки нет прайс листов

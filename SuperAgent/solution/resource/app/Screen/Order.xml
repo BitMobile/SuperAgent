@@ -67,10 +67,14 @@
 
         <c:HorizontalLayout OnClickAction="$Workflow.DoAction(EditPriceList, $workflow.order, PriceList)">
           <c:VerticalLayout>
-            <s:If Test="$workflow.order.PriceListAsRef == null">
-              <c:TextView Text="#isntSelected#" CssClass="main_row"></c:TextView>
+            <s:Push Id="priceLists" Value="$Facade.CountEntities(Catalog, Outlet_Prices, $outlet.Id, Ref)"></s:Push>
+            <s:If Test="$priceLists == 0">
+              <c:TextView Text="#noPriceLists#" CssClass="main_row"></c:TextView>
             </s:If>
             <s:Else>
+              <s:If Test="$workflow.order.PriceListAsRef == null">
+                <c:TextView Text="#isntSelected#" CssClass="main_row"></c:TextView>
+              </s:If>
               <c:TextView Text="$workflow.order.PriceListAsObject.Description" CssClass="main_row"></c:TextView>
             </s:Else>
             <c:TextView Text="#priceList#" CssClass="description_row"></c:TextView>

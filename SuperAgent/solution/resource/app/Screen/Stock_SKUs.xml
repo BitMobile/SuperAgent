@@ -8,8 +8,8 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button CssClass="btn_grey_forward" OnEvent="Forward"/>
+      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button Id="btnForward" CssClass="btn_grey_forward" OnEvent="Forward"/>
       <c:TextView Text="#stock#" />
     </c:DockLayout>
     <c:HorizontalLine/>
@@ -19,11 +19,11 @@
         <c:Image />
         <c:EditText Id="edtSearch" Text="$search"></c:EditText>
       </c:DockLayout>
-      <c:Button Text="#search#" OnClickAction="$Workflow.DoRefresh($edtSearch.Text)"></c:Button>
+      <c:Button Id="btnSearch" Text="#search#" OnClickAction="$Workflow.DoRefresh($edtSearch.Text)"></c:Button>
     </c:HorizontalLayout>
     <c:HorizontalLine/>
 
-    <c:ScrollView CssClass="grid">
+    <c:ScrollView Id="grScrollView" CssClass="grid">
 
       <s:Iterator Id="group" Value="$groups">
         <s:Push Id="skusByGroup" Value="$Facade.GetSKUs($search,$group.SKUGroup, null)"></s:Push>
@@ -38,7 +38,7 @@
 
           <s:Iterator Id="sku" Value="$skusByGroup">
 
-            <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select, $sku)">
+            <c:HorizontalLayout Id="grSKU" OnClickAction="$Workflow.DoAction(Select, $sku)">
               <c:VerticalLayout>
                 <c:TextView Text="$sku.Description" CssClass="main_row"></c:TextView>
                 <c:TextView Text="{$sku.CommonStock} {$sku.BaseUnitAsObject.Description}" CssClass="description_row"></c:TextView>

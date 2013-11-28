@@ -5,9 +5,9 @@
     <c:HorizontalLayout CssClass="#logo#"/>
     <c:VerticalLayout CssClass="menu">
       <c:HorizontalLayout>
-        <c:Button CssClass="btn_schedule" OnClickAction="$Workflow.DoAction(ScheduledVisit)"/>
-        <c:Button CssClass="btn_visit" OnClickAction="$Workflow.DoAction(UnscheduledVisit)"/>
-        <c:Button CssClass="btn_order" OnClickAction="$Workflow.DoAction(Order)"/>
+        <c:Button Id="btnSchedule" CssClass="btn_schedule" OnClickAction="$Workflow.DoAction(ScheduledVisit)"/>
+        <c:Button Id="btnVisit" CssClass="btn_visit" OnClickAction="$Workflow.DoAction(UnscheduledVisit)"/>
+        <c:Button Id="btnOrder"  CssClass="btn_order" OnClickAction="$Workflow.DoAction(Order)"/>
       </c:HorizontalLayout>
       <c:HorizontalLayout CssClass="title">
         <c:TextView Text="#schedule#"/>
@@ -16,9 +16,9 @@
       </c:HorizontalLayout>
 
       <c:HorizontalLayout>
-        <c:Button CssClass="btn_outlets" OnClickAction="$Workflow.DoAction(Outlets)"/>
-        <c:Button CssClass="btn_todo" OnClickAction="$Workflow.DoAction(ToDo)"/>
-        <c:Button CssClass="btn_kpi"></c:Button>
+        <c:Button Id="btnOutlets" CssClass="btn_outlets" OnClickAction="$Workflow.DoAction(Outlets)"/>
+        <c:Button Id="btnTodo" CssClass="btn_todo" OnClickAction="$Workflow.DoAction(ToDo)"/>
+        <c:Button Id="btnKpi" CssClass="btn_kpi"></c:Button>
       </c:HorizontalLayout>
       <c:HorizontalLayout CssClass="title">
         <c:TextView Text="#outlets#"/>
@@ -27,9 +27,9 @@
       </c:HorizontalLayout>
 
       <c:HorizontalLayout>
-        <c:Button CssClass="btn_distr" OnClickAction="$Workflow.DoAction(Distr)"/>
-        <c:Button CssClass="btn_settings"/>
-        <c:HorizontalLayout CssClass="btn_sync" OnClickAction="$DB.DoSync()">
+        <c:Button Id="btnDistr" CssClass="btn_distr" OnClickAction="$Workflow.DoAction(Distr)"/>
+        <c:Button Id="btnSettings" CssClass="btn_settings"/>
+        <c:HorizontalLayout Id="btnSync" CssClass="btn_sync" OnClickAction="$DB.DoSync()">
           <c:Indicator/>
         </c:HorizontalLayout>
       </c:HorizontalLayout>

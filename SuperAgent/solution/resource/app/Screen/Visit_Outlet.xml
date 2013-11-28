@@ -10,13 +10,13 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
-      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckEmptyOutletFields($outlet)"/>
+      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
+      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckEmptyOutletFields($outlet)"/>
       <c:TextView Text="#outlet#" />
     </c:DockLayout>
     <c:HorizontalLine/>
 
-    <c:VerticalLayout CssClass="header">
+    <c:VerticalLayout Id="headerDescr" CssClass="header">
       <c:VerticalLayout  CssClass ="grid">
 
         <c:HorizontalLayout>
@@ -32,7 +32,7 @@
 
     <c:HorizontalLine/>
 
-    <c:ScrollView CssClass="grid">
+    <c:ScrollView Id="grScrollView" CssClass="grid">
 
       <c:HorizontalLayout CssClass="two_row_memo">
         <c:VerticalLayout>
@@ -85,8 +85,8 @@
 
           <c:VerticalLayout>
             <s:If Test="$parameterValue!=null">
-              <s:If Test="parameter.DataTypeAsObject.Description=='Boolean'">
-                <s:If Test = "parameterValue.Value == 'True'">
+              <s:If Test="$parameter.DataTypeAsObject.Description=='Boolean'">
+                <s:If Test = "$parameterValue.Value == 'True'">
                   <c:TextView Text="#true#" CssClass="main_row"></c:TextView>
                 </s:If>
                 <s:Else>

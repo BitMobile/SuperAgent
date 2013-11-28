@@ -7,8 +7,8 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
-      <c:Button CssClass="btn_grey_forward"/>
+      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
+      <c:Button Id="btnForward" CssClass="btn_grey_forward"/>
       <c:TextView Text="#orders#" />
     </c:DockLayout>
 
@@ -19,12 +19,12 @@
         <c:Image />
         <c:EditText Id="edtSearch" Text="$search"></c:EditText>
       </c:DockLayout>
-      <c:Button Text="#search#" OnClickAction="$Workflow.DoRefresh($edtSearch.Text)"></c:Button>
+      <c:Button Id="btnSearch" Text="#search#" OnClickAction="$Workflow.DoRefresh($edtSearch.Text)"></c:Button>
     </c:HorizontalLayout>
 
     <c:VerticalLayout CssClass="header">
       <c:VerticalLayout  CssClass ="grid">
-        <c:HorizontalLayout OnEvent="Forward" OnClickAction="$Workflow.DoForward()">
+        <c:HorizontalLayout Id="NewOrder" OnEvent="Forward" OnClickAction="$Workflow.DoForward()">
           <c:VerticalLayout>
             <c:TextView Text="#newOrder#" CssClass="caption_row"></c:TextView>
           </c:VerticalLayout>
@@ -35,7 +35,7 @@
 
     <c:HorizontalLine/>
 
-    <c:ScrollView CssClass="grid">
+    <c:ScrollView Id="grScrollView" CssClass="grid">
 
       <s:Iterator Id="order" Value="$orders">
 

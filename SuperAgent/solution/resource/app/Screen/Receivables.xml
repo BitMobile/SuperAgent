@@ -11,14 +11,14 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">  
-      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($visit)"/>
+      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($visit)"/>
       <c:TextView Text="#receivables#" />
     </c:DockLayout>
 
     <c:HorizontalLine/>
 
-    <c:ScrollView CssClass="grid">
+    <c:ScrollView Id="grScrollView" CssClass="grid">
 
       <c:HorizontalLayout CssClass="header_edit_block">
         <c:VerticalLayout CssClass="half_width">

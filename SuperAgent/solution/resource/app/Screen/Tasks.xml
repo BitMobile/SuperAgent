@@ -6,23 +6,20 @@
   <s:Push Id="tasks" Value="$Facade.GetTasks($outlet)"></s:Push>
 
   <c:VerticalLayout>
-
+    
     <c:DockLayout CssClass="top_navigator">
-      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
       <s:If Test="$workflow.visit != null">
-        <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($outlet,$visit)"/>
+        <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($outlet,$visit)"/>
       </s:If>
       <s:Else>
-        <c:Button CssClass="btn_grey_forward"/>
+        <c:Button Id="btnForward" CssClass="btn_grey_forward"/>
       </s:Else>
       <c:TextView Text="#tasks#" />
     </c:DockLayout>
-
     <c:HorizontalLine/>
 
-    <c:ScrollView CssClass="grid">
-
-
+    <c:ScrollView Id="grScrollView" CssClass="grid">
       <s:If Test="$tasks==null">
 
         <c:HorizontalLayout>
@@ -32,9 +29,7 @@
         </c:HorizontalLayout>
 
       </s:If>
-
       <s:Else>
-
         <s:Iterator Id="task" Value="$tasks">
 
           <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$task,$visit,$outlet)">
@@ -49,10 +44,8 @@
 
         </s:Iterator>
       </s:Else>
-
-
     </c:ScrollView>
-
+    
   </c:VerticalLayout>
 
 </c:Screen>

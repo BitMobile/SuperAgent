@@ -15,21 +15,20 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
-      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($workflow.order)"/>
+      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
+      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($workflow.order)"/>
       <c:TextView Text="#order#" />
     </c:DockLayout>
-
     <c:HorizontalLine/>
-    
-    
+
+
 
     <s:Push Id="statusDescription" Value="$Facade.GetOrderStatus($workflow.order)"></s:Push>
     <s:If Test="$statusDescription == 'New'">
       <s:If Test="$workflow.order.PriceListAsRef != null">
         <c:VerticalLayout CssClass="header">
           <c:VerticalLayout  CssClass ="grid">
-            <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Add,$workflow.order)">
+            <c:HorizontalLayout Id="Orderadd" OnClickAction="$Workflow.DoAction(Add,$workflow.order)">
               <c:VerticalLayout CssClass="half_width">
                 <s:If Test="$greater==True">
                   <c:TextView Text="$sum" CssClass="main_row"></c:TextView>
@@ -61,9 +60,9 @@
         <c:HorizontalLine/>
       </s:If>
 
-      
-      
-      <c:ScrollView CssClass="grid">
+
+
+      <c:ScrollView Id="grScrollView" CssClass="grid">
 
         <c:HorizontalLayout OnClickAction="$Workflow.DoAction(EditPriceList, $workflow.order, PriceList)">
           <c:VerticalLayout>
@@ -82,8 +81,8 @@
           <c:Image/>
         </c:HorizontalLayout>
         <c:HorizontalLine/>
-        
-        
+
+
 
         <s:Iterator Id="orderitem" Value="$items">
           <s:Push Id="orderitem" Value="$Facade.DeleteZeroItem($orderitem)"></s:Push>
@@ -108,7 +107,7 @@
     <s:Else>
       <c:VerticalLayout CssClass="header">
         <c:VerticalLayout  CssClass ="grid">
-          <c:HorizontalLayout>
+          <c:HorizontalLayout Id="OrderAdd">
             <c:VerticalLayout>
               <c:TextView Text="$sum" CssClass="main_row"></c:TextView>
               <c:TextView Text="#totalamount#" CssClass="description_row"></c:TextView>
@@ -120,7 +119,7 @@
 
       <c:HorizontalLine/>
 
-      <c:ScrollView CssClass="grid">
+      <c:ScrollView Id="grScrollView" CssClass="grid">
 
         <c:HorizontalLayout>
           <c:VerticalLayout>
@@ -145,8 +144,8 @@
 
           <c:HorizontalLine/>
         </s:Iterator>
-        
-        
+
+
 
       </c:ScrollView>
     </s:Else>

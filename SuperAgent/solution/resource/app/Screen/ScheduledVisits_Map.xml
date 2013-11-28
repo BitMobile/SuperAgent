@@ -5,8 +5,8 @@
 
   <c:VerticalLayout>
     <c:DockLayout CssClass="top_navigator">
-      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button CssClass="btn_grey_forward" OnEvent="Forward"/>
+      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()" />
+      <c:Button Id="btnForward" CssClass="btn_grey_forward" OnEvent="Forward" />
       <c:TextView Text="#map#" />
     </c:DockLayout>
 

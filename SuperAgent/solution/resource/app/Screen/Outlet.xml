@@ -3,17 +3,17 @@
 
   <s:Push Id="outlet" Value="$param1"></s:Push>
 
-  <c:VerticalLayout>
+  <c:VerticalLayout Id="vOutlet">
 
     <c:DockLayout CssClass="top_navigator">
-      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
-      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckNotNullAndCommit($outlet)"/>
+      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
+      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckNotNullAndCommit($outlet)"/>
       <c:TextView Text="#outlet#" />
     </c:DockLayout>
     <c:HorizontalLine/>
 
     <s:If Test="$outlet.IsNew">
-      <c:VerticalLayout CssClass="memo_header">
+      <c:VerticalLayout Id="headerDescr" CssClass="memo_header">
         <c:VerticalLayout  CssClass ="grid">
 
           <c:HorizontalLayout CssClass ="two_row_memo">
@@ -29,12 +29,12 @@
       <c:HorizontalLine/>
     </s:If>
     <s:Else>
-      <c:VerticalLayout CssClass="header">
+      <c:VerticalLayout Id="headerDescr" CssClass="header">
         <c:VerticalLayout  CssClass ="grid">
 
           <c:HorizontalLayout>
             <c:VerticalLayout>
-              <c:TextView Text="$outlet.Description" CssClass="main_row"></c:TextView>
+              <c:TextView Id="outletDescr" Text="$outlet.Description" CssClass="main_row"></c:TextView>
               <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
           </c:HorizontalLayout>
@@ -45,7 +45,7 @@
       <c:HorizontalLine/>
     </s:Else>
 
-    <c:ScrollView CssClass="grid">
+    <c:ScrollView Id="grScrollView" CssClass="grid">
 
       <c:HorizontalLayout CssClass="two_row_memo">
         <c:VerticalLayout>
@@ -108,8 +108,8 @@
 
           <c:VerticalLayout>
             <s:If Test="$parameterValue!=null">
-              <s:If Test="parameter.DataTypeAsObject.Description=='Boolean'">
-                <s:If Test = "parameterValue.Value == 'True'">
+              <s:If Test="$parameter.DataTypeAsObject.Description=='Boolean'">
+                <s:If Test = "$parameterValue.Value == 'True'">
                   <c:TextView Text="#true#" CssClass="main_row"></c:TextView>
                 </s:If>
                 <s:Else>

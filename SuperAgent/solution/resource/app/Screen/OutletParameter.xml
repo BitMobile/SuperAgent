@@ -8,12 +8,12 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Facade.CheckIfEmptyAndBack($parameterValue, Value, Catalog, Outlet_Parameters)"/>
-      <c:Button CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckIfEmptyAndBack($parameterValue, Value, Catalog, Outlet_Parameters)"/>
+      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Facade.CheckIfEmptyAndBack($parameterValue, Value, Catalog, Outlet_Parameters)"/>
+      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckIfEmptyAndBack($parameterValue, Value, Catalog, Outlet_Parameters)"/>
       <c:TextView Text="#parameters#" />
     </c:DockLayout>
 
-    <c:ScrollView CssClass="grid">
+    <c:ScrollView Id="grScrollView" CssClass="grid">
 
       <c:HorizontalLayout>
         <c:VerticalLayout>

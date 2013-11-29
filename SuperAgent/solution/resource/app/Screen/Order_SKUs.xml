@@ -33,7 +33,7 @@
       <s:Iterator Id="group" Value="$groups">
         <s:Push Id="skusByGroup" Value="$Facade.GetSKUs($search,$group.SKUGroup,$order.PriceList)"></s:Push>
         <s:Push Id="groupIsEmpty" Value="$Facade.CountCollection($skusByGroup)"></s:Push>
-        <s:If Test="$groupIsEmpty != 0">
+        <s:If Test="$groupIsEmpty != 0.00">
 
           <c:HorizontalLayout CssClass ="gridEdit">
             <c:VerticalLayout>
@@ -48,10 +48,8 @@
                 <c:TextView Text="$sku.SKUAsObject.Description" CssClass="main_row"></c:TextView>
                 
                 <c:HorizontalLayout>
-                  <c:TextView Text="#price2#" CssClass="description_row"></c:TextView>
-                  <c:TextView Text="$sku.Price" CssClass="description_row"></c:TextView>
-                  <c:TextView Text="#stock#" CssClass="description_row"></c:TextView>
-                  <c:TextView Text="$sku.SKUAsObject.CommonStock" CssClass="description_row"></c:TextView>
+                  <c:TextView Text="#price2# {$sku.Price}" CssClass="description_row"></c:TextView>
+                  <c:TextView Text="#stock#: {$sku.SKUAsObject.CommonStock}" CssClass="description_row"></c:TextView>
                 </c:HorizontalLayout>
                 
               </c:VerticalLayout>

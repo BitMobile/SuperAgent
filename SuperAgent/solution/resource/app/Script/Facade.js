@@ -758,15 +758,18 @@ function GetFeatures(sku) {
 }
 
 function CheckfeaturesAndAction(sku) {
-    //var actionName = GetActionValue(sku.SKU);
 
     var c = GetFeatures(sku.SKU);
-    if (parseInt(c.Count()) == parseInt(1))
+    if (parseInt(c.Count()) == parseInt(1)) {
         var actionName = "SelectSKU";
-    else
+        for (var k in c)
+            var feature = k;
+    }
+    else {
         var actionName = "Select";
-
-    var parameters = [sku.SKUAsObject(), null, sku.Price];
+        var feature = null;
+    }
+    var parameters = [sku.SKUAsObject(), feature, sku.Price];
     Workflow.Action(actionName, parameters);
 }
 

@@ -21,7 +21,7 @@
         <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select, $sku, $feature, $price)">
           <c:VerticalLayout>
             <c:TextView Text = "$feature.FeatureAsObject.Description" CssClass = "main_row"></c:TextView>
-            <c:TextView Text = "$feature.StockValue" CssClass = "description_row"></c:TextView>
+            <c:TextView Text = "#stock#: {$feature.StockValue}" CssClass = "description_row"></c:TextView>
           </c:VerticalLayout>
           <c:Image/>
         </c:HorizontalLayout>

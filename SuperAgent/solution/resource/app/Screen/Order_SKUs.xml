@@ -48,8 +48,7 @@
                 <c:TextView Text="$sku.SKUAsObject.Description" CssClass="main_row"></c:TextView>
                 
                 <c:HorizontalLayout>
-                  <c:TextView Text="#price2# {$sku.Price}" CssClass="description_row"></c:TextView>
-                  <c:TextView Text="#stock#: {$sku.SKUAsObject.CommonStock}" CssClass="description_row"></c:TextView>
+                  <c:TextView Text="#price2# {$sku.Price}  #stock#: {$sku.SKUAsObject.CommonStock}" CssClass="description_row"></c:TextView>
                 </c:HorizontalLayout>
                 
               </c:VerticalLayout>

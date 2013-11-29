@@ -33,7 +33,7 @@
       <s:Iterator Id="group" Value="$groups">
         <s:Push Id="skusByGroup" Value="$Facade.GetSKUs($search,$group.SKUGroup,$order.PriceList)"></s:Push>
         <s:Push Id="groupIsEmpty" Value="$Facade.CountCollection($skusByGroup)"></s:Push>
-        <s:If Test="$groupIsEmpty != 0.00">
+        <s:If Test="$groupIsEmpty != 0">
 
           <c:HorizontalLayout CssClass ="gridEdit">
             <c:VerticalLayout>

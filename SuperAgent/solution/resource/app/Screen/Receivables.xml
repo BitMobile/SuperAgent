@@ -29,7 +29,7 @@
         <c:VerticalLayout CssClass="half_width">
           <s:Push Id="encashmentAmount" Value="$Facade.GetEncAmount($param3, $autoSpread, $encashment)"></s:Push>
           <c:EditText Id="encashmentAttribute" Text="$encashmentAmount" CssClass="main_row" Keyboard="numeric" AutoFocus="True"></c:EditText>
-          <s:Push Id="encashment" Value="$Facade.AssignValue($encashment, EncashmentAmount, $encashmentAttribute.Text)"></s:Push>
+          <s:Push Id="encashment" Value="$Facade.AssignValue($encashment, EncashmentAmount, $encashmentAttribute.Text, int)"></s:Push>
           <c:TextView Text="#encashmentAmount#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
@@ -52,9 +52,8 @@
             
               <s:If Test="$autoSpread=='True'">
                 <s:Push Id="encItem" Value ="$Facade.GetEncashmentItem($receivableDoc.DocumentName, $encashment)"></s:Push>
-                <s:Push Id="zero" Value = "$Facade.ToFloat(0)"></s:Push>
-                <s:Push Id="SumToSpread" Value="$Facade.ToFloat($SumToSpread)"></s:Push>
-                <s:If Test="$SumToSpread != $zero">
+                <s:Push Id="areEqual" Value = "$Facade.AreEqual($SumToSpread, 0)"></s:Push>
+                <s:If Test="$areEqual==False">
                   <s:Push Id="encItem" Value="$Facade.SpreadOnItem($encItem,$SumToSpread,$encashment,$receivableDoc)"></s:Push>
                 </s:If>
                 <s:If Test="$encItem != null">

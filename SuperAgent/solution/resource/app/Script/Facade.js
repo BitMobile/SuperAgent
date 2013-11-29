@@ -39,8 +39,14 @@ function GetMultiple(val1, val2) {
     return (val1 * val2)
 }
 
-function AssignValue(entity, attribute, value) {
-    entity[attribute] = value;
+function AssignValue(entity, attribute, value, type) {
+    if (type == "int")
+        if (value == "")
+            entity[attribute] = parseInt(0);
+        else
+            entity[attribute] = parseInt(value);
+    else
+        entity[attribute] = value;
     return entity;
 }
 
@@ -753,7 +759,7 @@ function GetpriceLists(order, attribute) {
 function GetFeatures(sku) {
     var query = new Query();
     query.AddParameter("sku", sku);
-    query.Text = "select * from Catalog.SKU_Stocks where Ref==@sku && StockValue!= 0.00";
+    query.Text = "select * from Catalog.SKU_Stocks where Ref==@sku && StockValue!= 0";
     return query.Execute();
 }
 

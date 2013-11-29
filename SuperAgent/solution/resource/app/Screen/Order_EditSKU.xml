@@ -23,7 +23,8 @@
 
       <c:HorizontalLayout CssClass="header_edit_block">
         <c:VerticalLayout CssClass="partial_width" OnClickAction="$Facade.CountPrice($orderitem,$discountEdit.Text,$discCheckbox.Checked)">
-          <c:TextView Text="{$sku.Description}, {$orderitem.FeatureAsObject.Description}" CssClass="main_row"></c:TextView>
+          <s:Push Id="featureDescr" Value="$Facade.GetFeatureDescr($orderitem.FeatureAsObject)"></s:Push>
+          <c:TextView Text="{$sku.Description}{$featureDescr}" CssClass="main_row"></c:TextView>
           <c:TextView Text="#countPrice#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
         <c:VerticalLayout CssClass="quarter_width">

@@ -753,8 +753,21 @@ function GetpriceLists(order, attribute) {
 function GetFeatures(sku) {
     var query = new Query();
     query.AddParameter("sku", sku);
-    query.Text = "select * from Catalog.SKU_Stocks where Ref==@sku && StockValue!=0";
+    query.Text = "select * from Catalog.SKU_Stocks where Ref==@sku && StockValue!= 0.00";
     return query.Execute();
+}
+
+function CheckfeaturesAndAction(sku) {
+    //var actionName = GetActionValue(sku.SKU);
+
+    var c = GetFeatures(sku.SKU);
+    if (parseInt(c.Count()) == parseInt(1))
+        var actionName = "SelectSKU";
+    else
+        var actionName = "Select";
+
+    var parameters = [sku.SKUAsObject(), null, sku.Price];
+    Workflow.Action(actionName, parameters);
 }
 
 function GetActionValue(skuId) {
@@ -765,6 +778,12 @@ function GetActionValue(skuId) {
         return "Select";
 }
 
+function GetFeatureDescr(feature) {
+    if (feature.Code == "000000001")
+        return "";
+    else
+        return (", " + feature.Description);
+}
 
 //-----------------------OrderItem-------------------
 
@@ -905,10 +924,10 @@ function GetSKUs(searchText, owner, priceListId) {
         query = new Query();
         query.AddParameter("owner", owner);
         if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Catalog.SKU where Owner==@owner && CommonStock != 0 limit 100";
+            query.Text = "select * from Catalog.SKU where Owner==@owner && CommonStock != 0.00 limit 100";
         }
         else {
-            query.Text = "select * from  Catalog.SKU where Description.Contains(@p1) && Owner==@owner && CommonStock != 0 limit 100";
+            query.Text = "select * from  Catalog.SKU where Description.Contains(@p1) && Owner==@owner && CommonStock != 0.00 limit 100";
             query.AddParameter("p1", searchText);
         }
     }
@@ -917,10 +936,10 @@ function GetSKUs(searchText, owner, priceListId) {
         query.AddParameter("owner", owner);
         query.AddParameter("priceList", priceListId);
         if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Owner==@owner && Ref == @priceList && SKUAsObject.CommonStock != 0 limit 100";
+            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Owner==@owner && Ref == @priceList && SKUAsObject.CommonStock != 0.00 limit 100";
         }
         else {
-            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Description.Contains(@p1) && SKUAsObject.Owner==@owner && Ref == @priceList && SKUAsObject.CommonStock != 0 limit 100";
+            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Description.Contains(@p1) && SKUAsObject.Owner==@owner && Ref == @priceList && SKUAsObject.CommonStock != 0.00 limit 100";
             query.AddParameter("p1", searchText);
         }
     }
@@ -940,35 +959,6 @@ function GetSKUGroups(searchText, userId) {
     }
 
     return query.Execute();
-}
-
-function checkSKUGroup(group, priceListId) {
-    if (priceListId != null) {
-        var query = new Query;
-        query.AddParameter("group", group);
-        query.Text = "select count(Id) from Catalog.Territory_SKUGroups where SKUGroup==@group";
-        var res1 = query.Execute();
-
-        var query2 = new Query;
-        query2.AddParameter("groupId", group);
-        query2.AddParameter("priceList", priceListId);
-        query2.Text = "select count(SKU) from Document.PriceList_Prices where SKUAsObject.Owner == @groupId && Ref == @priceList";
-        var res2 = query2.Execute();
-
-        if (parseInt(res1) != parseInt(0) && parseInt(res2) != parseInt(0)) {
-            return 1;
-        }
-        else
-            return 0;
-    }
-    else {
-        var query = new Query;
-        query.AddParameter("group", group);
-        query.Text = "select count(Id) from Catalog.Territory_SKUGroups where SKUGroup==@group";
-        var res1 = query.Execute();
-        return res1;
-    }
-
 }
 
 

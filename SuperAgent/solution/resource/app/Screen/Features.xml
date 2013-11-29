@@ -2,22 +2,23 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
 
   <s:Push Id="sku" Value="$param1"></s:Push>
+  <s:Push Id="price" Value="$param3"></s:Push>
 
-  <s:Push Id="features" Value="$Facade.GetFeatures($sku.SKU)"></s:Push>
+  <s:Push Id="features" Value="$Facade.GetFeatures($sku.Id)"></s:Push>
 
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button CssClass="btn_grey_forward" OnEvent="Forward"/>
+      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button Id="btnForward" CssClass="btn_grey_forward" OnEvent="Forward"/>
       <c:TextView Text="#features#" />
     </c:DockLayout>
     <c:HorizontalLine/>
 
-    <c:ScrollView CssClass="grid">
+    <c:ScrollView Id="grScrollView" CssClass="grid">
       <s:Iterator Id="feature" Value="$features">
 
-        <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select, $sku.SKUAsObject, $feature, $sku.Price)">
+        <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select, $sku, $feature, $price)">
           <c:VerticalLayout>
             <c:TextView Text = "$feature.FeatureAsObject.Description" CssClass = "main_row"></c:TextView>
             <c:TextView Text = "$feature.StockValue" CssClass = "description_row"></c:TextView>

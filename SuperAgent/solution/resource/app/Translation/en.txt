@@ -100,3 +100,4 @@ isntSelected	Isn't selected
 SKUWillRevised	SKU list has been revised
 features	Features
 noPriceLists	No Price Lists for this outlet
+emptyList	List is empty

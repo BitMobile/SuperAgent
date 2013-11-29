@@ -43,8 +43,7 @@
           <c:HorizontalLine CssClass="editLine"/>
 
           <s:Iterator Id="sku" Value="$skusByGroup">
-            <s:Push Id="actionName" Value="$Facade.GetActionValue($sku.SKU)"></s:Push>
-            <c:HorizontalLayout OnClickAction="$Workflow.DoAction($actionName, $sku)" CssClass="gridWhite">
+            <c:HorizontalLayout OnClickAction="$Facade.CheckfeaturesAndAction($sku)" CssClass="gridWhite">
               <c:VerticalLayout>
                 <c:TextView Text="$sku.SKUAsObject.Description" CssClass="main_row"></c:TextView>
                 

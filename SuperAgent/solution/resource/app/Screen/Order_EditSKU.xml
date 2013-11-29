@@ -31,7 +31,6 @@
           <c:Button CssClass="btn_delete" OnClickAction="$Facade.DeleteItemAndBack($orderitem)"></c:Button>
         </c:VerticalLayout>
       </c:HorizontalLayout>
-
       <c:HorizontalLine/>
 
       <c:HorizontalLayout CssClass="33">
@@ -76,27 +75,26 @@
           <c:TextView Text="#baseUnit#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
-
       <c:HorizontalLine/>
 
+
+      
       <c:HorizontalLayout CssClass="header_edit_block">
         <c:VerticalLayout>
           <c:TextView Text="#selectUnit#" CssClass="caption_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
-
+     
       <s:Push Id="units" Value="$Facade.GetUnits($sku.Id)"></s:Push>
-
       <s:Iterator Id="unit" Value="$units">
 
-        <c:HorizontalLayout OnClickAction="$Facade.ChangeUnit($sku, $orderitem, $unit, $discountEdit.Text, $discCheckbox.Checked)">
+        <c:HorizontalLayout OnClickAction="$Facade.ChangeUnit($sku, $orderitem, $unit, $discountEdit.Text, $discCheckbox.Checked, $price)">
           <c:VerticalLayout>
             <c:TextView Text="$unit.PackAsObject.Description" CssClass="main_row"></c:TextView>
           </c:VerticalLayout>
           <c:Image/>
         </c:HorizontalLayout>
-
         <c:HorizontalLine/>
 
       </s:Iterator>

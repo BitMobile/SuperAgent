@@ -886,7 +886,7 @@ function GetUnits(skuId) {
 
 }
 
-function ChangeUnit(sku, orderitem, unit, discount, discChBox) {
+function ChangeUnit(sku, orderitem, unit, discount, discChBox, price) {
 
     Variables["multiplier"] = unit.Multiplier;
     Variables["baseQtyTextView"].Text = orderitem.Qty * unit.Multiplier;
@@ -894,11 +894,10 @@ function ChangeUnit(sku, orderitem, unit, discount, discChBox) {
     Variables["orderitem"].Units = unit.Pack;
     Variables["itemUnits"].Text = unit.PackAsObject().Description;
 
-    var p = CalculatePrice(sku.Price, orderitem.Discount, unit.Multiplier);
+    var p = CalculatePrice(price, orderitem.Discount, unit.Multiplier);
     Variables["orderitem"].Total = p;
     Variables["orderItemTotalId"].Text = p;
 }
-
 
 function DeleteItemAndBack(orderitem) {
     DB.Current.Document.Order_SKUs.Delete(orderitem);

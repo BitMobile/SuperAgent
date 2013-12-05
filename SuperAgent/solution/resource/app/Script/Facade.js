@@ -394,9 +394,9 @@ function GetTasks(outlet) {
     query.AddParameter("Date", DateTime.Now.Date);
     query.AddParameter("Outlet", outlet.Id);
     if (outlet == null)
-        query.Text = "select * from Document.Task where PlanDate >= @Date";
+        query.Text = "select * from Document.Task where PlanDate >= @Date orderby OutletAsObject.Description";
     else
-        query.Text = "select * from Document.Task where Outlet == @Outlet && PlanDate >= @Date";
+        query.Text = "select * from Document.Task where Outlet == @Outlet && PlanDate >= @Date orderby OutletAsObject.Description";
 
     var result = query.Execute();
     if (result.Count() > 0)
@@ -451,7 +451,7 @@ function GetQuestionsByOutlet(questionnaires) {
     else {
         var questions = new Query();
         questions.AddParameter("Ref", questionnaires.Ref);
-        questions.Text = "select * from Document.Questionnaire_Questions where Ref == @Ref";
+        questions.Text = "select * from Document.Questionnaire_Questions where Ref == @Ref orderby QuestionAsObject.Description";
         var result = questions.Execute();
         if (result.Count() > 0)
             return result;
@@ -494,7 +494,7 @@ function GetSKUsByOutlet(questionnaires) {
     else {
         var query = new Query();
         query.AddParameter("Ref", questionnaires.Ref);
-        query.Text = "select * from Document.Questionnaire_SKUs where Ref == @Ref";
+        query.Text = "select * from Document.Questionnaire_SKUs where Ref == @Ref orderby SKUAsObject.Description";
         var result = query.Execute();
         if (result.Count() > 0)
             return result;
@@ -985,7 +985,7 @@ function GetReceivables(outletId) {
 
     var receivables = new Query;
     receivables.AddParameter("outletRef", outletId);
-    receivables.Text = "select * from Document.AccountReceivable_ReceivableDocuments where RefAsObject.Outlet == @outletRef";
+    receivables.Text = "select * from Document.AccountReceivable_ReceivableDocuments where RefAsObject.Outlet == @outletRef orderby DocumentName";
     return receivables.Execute();
 
 }

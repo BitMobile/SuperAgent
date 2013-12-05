@@ -2,7 +2,7 @@
 //---------------Common functions-----------
 
 function ToFloat(text) {
-    if (text == null)
+    if (String.IsNullOrEmpty(text))
         return parseFloat(0, 10);
     return parseFloat(text, 10);
 }

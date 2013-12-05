@@ -101,3 +101,4 @@ SKUWillRevised	SKU list has been revised
 features	Features
 noPriceLists	No Price Lists for this outlet
 emptyList	List is empty
+impossibleToDelete	Impossible to delete, order is already in base

@@ -10,7 +10,7 @@
 
   <c:VerticalLayout>
 
-    <c:DockLayout CssClass="top_navigator">  
+    <c:DockLayout CssClass="top_navigator">
       <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
       <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($visit)"/>
       <c:TextView Text="#receivables#" />
@@ -48,38 +48,38 @@
         <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$receivableDoc,$visit)">
           <c:VerticalLayout>
             <c:TextView Text="$receivableDoc.DocumentName" CssClass="main_row"></c:TextView>
-            
-              <s:If Test="$autoSpread=='True'">
-                <s:Push Id="encItem" Value ="$Facade.GetEncashmentItem($receivableDoc.DocumentName, $encashment)"></s:Push>
-                <s:Push Id="areEqual" Value = "$Facade.AreEqual($SumToSpread, 0)"></s:Push>
-                <s:If Test="$areEqual==False">
-                  <s:Push Id="encItem" Value="$Facade.SpreadOnItem($encItem,$SumToSpread,$encashment,$receivableDoc)"></s:Push>
-                </s:If>
-                <s:If Test="$encItem != null">
-                  <s:Push Id="encItem" Value="$Facade.ClearIfZeroSum($encItem,$SumToSpread)"></s:Push>
+
+            <s:If Test="$autoSpread=='True'">
+              <s:Push Id="encItem" Value ="$Facade.GetEncashmentItem($receivableDoc.DocumentName, $encashment)"></s:Push>
+              <s:Push Id="areEqual" Value = "$Facade.AreEqual($SumToSpread, 0)"></s:Push>
+              <s:If Test="$areEqual == 'False'">
+                <s:Push Id="encItem" Value="$Facade.SpreadOnItem($encItem,$SumToSpread,$encashment,$receivableDoc)"></s:Push>
+              </s:If>
+              <s:If Test="$encItem != null">
+                <s:Push Id="encItem" Value="$Facade.ClearIfZeroSum($encItem,$SumToSpread)"></s:Push>
                 <c:TextView Text="#encashmentSum#: {$encItem.EncashmentSum}" CssClass="description_row"></c:TextView>
-                  <s:Push Id="SumToSpread" Value="$Facade.GetDifference($SumToSpread,$encItem.EncashmentSum)"></s:Push>
-                </s:If>
-                <s:Else>
-                  <c:TextView Text="#documentSum#: {$receivableDoc.DocumentSum}" CssClass="description_row"></c:TextView>
-                </s:Else>
+                <s:Push Id="SumToSpread" Value="$Facade.GetDifference($SumToSpread,$encItem.EncashmentSum)"></s:Push>
               </s:If>
               <s:Else>
-                <s:Push Id="encItem" Value ="$Facade.GetEncashmentItem($receivableDoc.DocumentName, $encashment)"></s:Push>
-                <s:If Test="$encItem != null">
-                  <s:Push Id="encItem" Value="$Facade.ClearIfZeroSum($encItem,$SumToSpread)"></s:Push>
-                  <c:TextView Text="#encashmentSum#: {$encItem.EncashmentSum}" CssClass="description_row"></c:TextView>
-                </s:If>
-                <s:Else>
-                  <c:TextView Text="#documentSum#: {$receivableDoc.DocumentSum}" CssClass="description_row"></c:TextView>
-                </s:Else>
+                <c:TextView Text="#documentSum#: {$receivableDoc.DocumentSum}" CssClass="description_row"></c:TextView>
               </s:Else>
-           
+            </s:If>
+            <s:Else>
+              <s:Push Id="encItem" Value ="$Facade.GetEncashmentItem($receivableDoc.DocumentName, $encashment)"></s:Push>
+              <s:If Test="$encItem != null">
+                <s:Push Id="encItem" Value="$Facade.ClearIfZeroSum($encItem,$SumToSpread)"></s:Push>
+                <c:TextView Text="#encashmentSum#: {$encItem.EncashmentSum}" CssClass="description_row"></c:TextView>
+              </s:If>
+              <s:Else>
+                <c:TextView Text="#documentSum#: {$receivableDoc.DocumentSum}" CssClass="description_row"></c:TextView>
+              </s:Else>
+            </s:Else>
+
           </c:VerticalLayout>
           <c:Image/>
         </c:HorizontalLayout>
         <c:HorizontalLine/>
-      
+
       </s:Iterator>
 
       <c:HorizontalLayout>

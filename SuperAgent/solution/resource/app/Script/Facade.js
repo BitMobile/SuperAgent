@@ -29,7 +29,7 @@ function CountCollection(collection) {
 }
 
 function AreEqual(val1, val2) {
-    if (String(val1) == String(val2))
+    if (val1.ToString() == val2.ToString())
         return true;
     else
         return false;
@@ -40,11 +40,12 @@ function GetMultiple(val1, val2) {
 }
 
 function AssignValue(entity, attribute, value, type) {
-    if (type == "int")
+    if (type == "int") {
         if (value == "")
             entity[attribute] = parseInt(0);
         else
-            entity[attribute] = parseInt(value);
+            entity[attribute] = parseFloat(value);
+    }
     else
         entity[attribute] = value;
     return entity;
@@ -202,10 +203,10 @@ function CreateOutletParameterValueIfNotExists(outlet, parameter, parameterValue
 function GetOutlets(searchText) {
     query = new Query();
     if (String.IsNullOrEmpty(searchText)) {
-        query.Text = "select distinct(OutletAsObject) from Catalog.Territory_Outlets limit 500";
+        query.Text = "select distinct(OutletAsObject) from Catalog.Territory_Outlets orderby OutletAsObject.Description limit 500";
     }
     else {
-        query.Text = "select distinct(OutletAsObject) from Catalog.Territory_Outlets where OutletAsObject.Description.Contains(@p1) limit 500";
+        query.Text = "select distinct(OutletAsObject) from Catalog.Territory_Outlets where OutletAsObject.Description.Contains(@p1) orderby OutletAsObject.Description limit 500";
         query.AddParameter("p1", searchText);
     }
 
@@ -306,9 +307,9 @@ function GetScheduledVisits(searchText) {
     query.AddParameter("SearchText", searchText);
 
     if (String.IsNullOrEmpty(searchText))
-        query.Text = "select * from Document.VisitPlan_Outlets where Date == @Date orderbydesc Date";
+        query.Text = "select * from Document.VisitPlan_Outlets where Date == @Date orderby OutletAsObject.Description";
     else
-        query.Text = "select * from Document.VisitPlan_Outlets where Date == @Date && OutletAsObject.Description.Contains(@SearchText) orderbydesc Date";
+        query.Text = "select * from Document.VisitPlan_Outlets where Date == @Date && OutletAsObject.Description.Contains(@SearchText) orderby OutletAsObject.Description";
 
     return query.Execute();
 }
@@ -895,6 +896,7 @@ function ChangeUnit(sku, orderitem, unit, discount, discChBox, price) {
     Variables["itemUnits"].Text = unit.PackAsObject().Description;
 
     var p = CalculatePrice(price, orderitem.Discount, unit.Multiplier);
+    Variables["orderitem"].Price = price * unit.Multiplier;
     Variables["orderitem"].Total = p;
     Variables["orderItemTotalId"].Text = p;
 }
@@ -916,11 +918,18 @@ function DeleteZeroItem(orderitem) {
 function CheckOrderAndCommit(order) {
 
     var c = CountEntities("Document", "Order_SKUs", order.Id, "Ref");
-    if (c == 0)
-        Workflow.Rollback();
+    if (c == 0) {
+        if (order.IsNew) {
+            DB.Current.Document.Order.Delete(order);
+            Workflow.Commit();
+        }
+        else {
+            Dialog.Message("#impossibleToDelete#");
+            Workflow.Rollback();
+        }
+    }
     else
         Workflow.Commit();
-
 }
 
 
@@ -932,10 +941,10 @@ function GetSKUs(searchText, owner, priceListId) {
         query = new Query();
         query.AddParameter("owner", owner);
         if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Catalog.SKU where Owner==@owner && CommonStock != 0.00 limit 100";
+            query.Text = "select * from Catalog.SKU where Owner==@owner && CommonStock != 0.00 orderby Description limit 100";
         }
         else {
-            query.Text = "select * from  Catalog.SKU where Description.Contains(@p1) && Owner==@owner && CommonStock != 0.00 limit 100";
+            query.Text = "select * from  Catalog.SKU where Description.Contains(@p1) && Owner==@owner && CommonStock != 0.00 orderby Description limit 100";
             query.AddParameter("p1", searchText);
         }
     }
@@ -944,10 +953,10 @@ function GetSKUs(searchText, owner, priceListId) {
         query.AddParameter("owner", owner);
         query.AddParameter("priceList", priceListId);
         if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Owner==@owner && Ref == @priceList && SKUAsObject.CommonStock != 0.00 limit 100";
+            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Owner==@owner && Ref == @priceList && SKUAsObject.CommonStock != 0.00 orderby SKUAsObject.Description limit 100";
         }
         else {
-            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Description.Contains(@p1) && SKUAsObject.Owner==@owner && Ref == @priceList && SKUAsObject.CommonStock != 0.00 limit 100";
+            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Description.Contains(@p1) && SKUAsObject.Owner==@owner && Ref == @priceList && SKUAsObject.CommonStock != 0.00 orderby SKUAsObject.Description limit 100";
             query.AddParameter("p1", searchText);
         }
     }
@@ -959,10 +968,10 @@ function GetSKUGroups(searchText, userId) {
     var query = new Query();
     query.AddParameter("user", userId);
     if (String.IsNullOrEmpty(searchText)) {
-        query.Text = "select * from Catalog.Territory_SKUGroups where RefAsObject.SR==@user";
+        query.Text = "select * from Catalog.Territory_SKUGroups where RefAsObject.SR==@user orderby SKUGroupAsObject.Description";
     }
     else {
-        query.Text = "select * from Catalog.Territory_SKUGroups where RefAsObject.SR==@user";
+        query.Text = "select * from Catalog.Territory_SKUGroups where RefAsObject.SR==@user orderby SKUGroupAsObject.Description";
         query.AddParameter("p1", searchText);
     }
 
@@ -1055,9 +1064,8 @@ function SpreadOnItem(encItem, sumToSpread, encashment, receivableDoc) {
 }
 
 function ClearIfZeroSum(item, sumToSpread) {
-    var v = parseFloat(0, 10);
-    if (sumToSpread == v) {
-        item.EncashmentSum = 0;
+    if (parseInt(sumToSpread) == parseInt(0)) {
+        item.EncashmentSum = parseInt(0);
     }
     return item;
 }
@@ -1101,8 +1109,9 @@ function GetLongitude() {
     return 0;
 }
 
-function ShowDialog() {
-    Dialog.Message("hi");
+function ShowDialog(v1, v2) {
+    var v = String((v1 + ", " + v2));
+    Dialog.Debug(v);
 }
 
 

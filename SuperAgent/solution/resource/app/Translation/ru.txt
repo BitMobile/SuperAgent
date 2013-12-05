@@ -101,3 +101,4 @@ SKUWillRevised	Заказ пересчитан
 features	Характеристики
 noPriceLists	Для этой торговой точки нет прайс листов
 emptyList	Список пуст
+impossibleToDelete	Невозможно удалить, заказ уже в базе

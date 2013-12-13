@@ -4,7 +4,7 @@
   <s:Push Id="order" Value="$param1"></s:Push>
   <s:Push Id="search" Value="$param2"></s:Push>
 
-  <s:Push Id="groups" Value="$Facade.GetSKUGroups($search, $common.UserId)"></s:Push>
+  <s:Push Id="groups" Value="$Facade.GetSKUGroups($search)"></s:Push>
 
   <c:VerticalLayout>
 
@@ -31,13 +31,11 @@
     <c:ScrollView Id="grScrollView" CssClass="grid">
 
       <s:Iterator Id="group" Value="$groups">
-        <s:Push Id="skusByGroup" Value="$Facade.GetSKUs($search,$group.SKUGroup,$order.PriceList)"></s:Push>
-        <s:Push Id="groupIsEmpty" Value="$Facade.CountCollection($skusByGroup)"></s:Push>
-        <s:If Test="$groupIsEmpty != 0">
+        <s:Push Id="skusByGroup" Value="$Facade.GetSKUs($search,$group.Id,$order.PriceList)"></s:Push>
 
           <c:HorizontalLayout CssClass ="gridEdit">
             <c:VerticalLayout>
-              <c:TextView Text = "$group.SKUGroupAsObject.Description" CssClass = "main_row"></c:TextView>
+              <c:TextView Text = "$group.Description" CssClass = "main_row"></c:TextView>
             </c:VerticalLayout>
           </c:HorizontalLayout>
           <c:HorizontalLine CssClass="editLine"/>
@@ -58,7 +56,6 @@
             <c:HorizontalLine/>
 
           </s:Iterator>
-        </s:If>
 
       </s:Iterator>
 

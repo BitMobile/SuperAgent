@@ -85,7 +85,9 @@
     <Content Include="resource\app\Screen\Outlets.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="resource\app\Screen\Receivables.xml" />
+    <Content Include="resource\app\Screen\Receivables.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="resource\app\Screen\ScheduledVisits.xml">
       <SubType>Designer</SubType>
     </Content>

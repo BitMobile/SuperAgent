@@ -39,7 +39,7 @@ function GetMultiple(val1, val2) {
     return (val1 * val2)
 }
 
-function AssignValue(entity, attribute, value, type) {
+function AssignValue(entity, attribute, value, type) { //delete it
     if (type == "int") {
         if (value == "")
             entity[attribute] = parseInt(0);
@@ -153,6 +153,14 @@ function GetEntity(type, name, paramValue, parameter) {
     var query = new Query();
     query.AddParameter("v", paramValue);
     query.Text = String.Format("select single(*) from {0}.{1} where {2}==@v", type, name, parameter);
+    return query.Execute();
+}
+
+function GetEntity2(type, name, param1Value, param1, param2value, param2) {
+    var query = new Query();
+    query.AddParameter("v1", param1Value);
+    query.AddParameter("v2", param2Value);
+    query.Text = String.Format("select single(*) from {0}.{1} where {2}==@v1 && {3}==@v2", type, name, param1, param2);
     return query.Execute();
 }
 
@@ -603,10 +611,14 @@ function IsAnswered(visit, qName, sku) {
 function SetTimeAndCommit() {
     Variables["workflow"]["visit"].EndTime = DateTime.Now;
 
+    //check empty order
     var order = Variables["workflow"]["order"];
     var c = CountEntities("Document", "Order_SKUs", order.Id, "Ref");
     if (c == 0)
         DB.Current.Document.Order.Delete(order);
+
+    //check empty encashment
+
 
     Workflow.Commit();
 }
@@ -705,6 +717,7 @@ function GetMaxOrderAmount(outlet) {
         d = outlet.ReceivableLimit - am;
     }
     else d = 0;
+
     return d;
 }
 
@@ -860,11 +873,12 @@ function CountPrice(orderitem, discount, discChBox) {
 function GetMultiplier(sku, orderitem) {
 
     if (orderitem != null) {
-        var query = new Query();
-        query.AddParameter("units", orderitem.Units);
-        query.AddParameter("ref", sku);
-        query.Text = "select single(*) from Catalog.SKU_Packing where Ref==@ref && Pack==@units";
-        var item = query.Execute();
+        //var query = new Query();
+        //query.AddParameter("units", orderitem.Units);
+        //query.AddParameter("ref", sku);
+        //query.Text = "select single(*) from Catalog.SKU_Packing where Ref==@ref && Pack==@units";
+        //var item = query.Execute();
+        var item = GetEntity2("Catalog", "SKU_Packing", sku, "Ref", orderitem.Units, "Pack");
         return item.Multiplier;
     }
     return 1;
@@ -964,14 +978,13 @@ function GetSKUs(searchText, owner, priceListId) {
     return query.Execute();
 }
 
-function GetSKUGroups(searchText, userId) {
+function GetSKUGroups(searchText) {
     var query = new Query();
-    query.AddParameter("user", userId);
     if (String.IsNullOrEmpty(searchText)) {
-        query.Text = "select * from Catalog.Territory_SKUGroups where RefAsObject.SR==@user orderby SKUGroupAsObject.Description";
+        query.Text = "select distinct(OwnerAsObject) from Catalog.SKU orderby Description";
     }
     else {
-        query.Text = "select * from Catalog.Territory_SKUGroups where RefAsObject.SR==@user orderby SKUGroupAsObject.Description";
+        query.Text = "select distinct(OwnerAsObject) from Catalog.SKU orderby Description";
         query.AddParameter("p1", searchText);
     }
 
@@ -986,11 +999,15 @@ function GetReceivables(outletId) {
     var receivables = new Query;
     receivables.AddParameter("outletRef", outletId);
     receivables.Text = "select * from Document.AccountReceivable_ReceivableDocuments where RefAsObject.Outlet == @outletRef orderby DocumentName";
-    return receivables.Execute();
+    var d = receivables.Execute();
+    var r = GetAmount(d);
+    Variables.Add("receivableAmount", r);
+    return d;
 
 }
 
-function CreateEncashmentIfNotExist(visit) {
+function CreateEncashmentIfNotExist(visit, textValue, autospread) {
+
 
     var query = new Query();
     query.AddParameter("visitRef", visit.Id);
@@ -1004,12 +1021,18 @@ function CreateEncashmentIfNotExist(visit) {
         var v = parseFloat(0, 10)
         encashment.EncashmentAmount = v;
     }
+    if (textValue == "" || textValue == null)
+        textValue = 0;
+    encashment.EncashmentAmount = textValue;
+    var e = GetEncAmount(textValue, autospread, encashment);
+    Variables.Add("encashmentAmount", e);
+
     return encashment;
 }
 
 function CreateEncashmentItemIfNotExist(encashment, receivableDoc) {
     var query = new Query;
-    query.AddParameter("docName", receivableDoc.DocumentName);
+    query.AddParameter("docName", receivableDoc);
     query.AddParameter("docRef", encashment.Id);
     query.Text = "select single(*) from Document.Encashment_EncashmentDocuments where Ref == @docRef && DocumentName == @docName";
     var encItem = query.Execute();
@@ -1017,22 +1040,20 @@ function CreateEncashmentItemIfNotExist(encashment, receivableDoc) {
     if (encItem == null) {
         encItem = DB.Create("Document.Encashment_EncashmentDocuments");
         encItem.Ref = encashment.Id;
-        encItem.DocumentName = receivableDoc.DocumentName;
+        encItem.DocumentName = receivableDoc;
         encItem.EncashmentSum = 0;
     }
     return encItem;
 }
 
 function GetEncashmentItem(docName, encashment) {
-    if (encashment != null) {
-        var query = new Query;
-        query.AddParameter("encId", encashment.Id);
-        query.AddParameter("docName", docName);
-        query.Text = "select single(*) from Document.Encashment_EncashmentDocuments where Ref == @encId && DocumentName == @docName";
-        return query.Execute();
-    }
-    else
-        return null;
+
+    var query = new Query;
+    query.AddParameter("encId", encashment);
+    query.AddParameter("docName", docName);
+    query.Text = "select single(*) from Document.Encashment_EncashmentDocuments where Ref == @encId && DocumentName == @docName";
+    return query.Execute();
+
 }
 
 function GetAmount(receivables) {
@@ -1053,7 +1074,7 @@ function SpreadOnItem(encItem, sumToSpread, encashment, receivableDoc) {
 
     if (encItem == null) {
         encItem = DB.Create("Document.Encashment_EncashmentDocuments");
-        encItem.Ref = encashment.Id;
+        encItem.Ref = encashment;
         encItem.DocumentName = receivableDoc.DocumentName;
         encItem.EncashmentSum = sumToSpread;
     }
@@ -1063,22 +1084,74 @@ function SpreadOnItem(encItem, sumToSpread, encashment, receivableDoc) {
     return encItem;
 }
 
-function ClearIfZeroSum(item, sumToSpread) {
-    if (parseInt(sumToSpread) == parseInt(0)) {
-        item.EncashmentSum = parseInt(0);
+function GetEncashments(receivables, autoSpread, encashmentAmount, encashmentId) {
+    var parent = [];
+    var sumToSpread = encashmentAmount;
+    for (var i in receivables) {
+        var document = [];
+        document.push(i.DocumentName);
+        var encItem = GetEncashmentItem(i.DocumentName, encashmentId);
+        if (autoSpread == true) {
+            if (parseInt(sumToSpread) != parseInt(0)) {
+                encItem = SpreadOnItem(encItem, sumToSpread, encashmentId, i);
+                document.push(("1)Encashment sum: " + encItem.EncashmentSum));
+                sumToSpread = sumToSpread - encItem.EncashmentSum;
+            }
+            else {
+                ClearIfZeroSum(encItem);
+                document.push(("2)Document sum: " + i.DocumentSum));
+            }
+        }
+        else {
+            if (encItem.EncashmentSum != undefined) {
+                //ClearIfZeroSum(encItem, 
+                document.push(("3)Encashment sum: " + encItem.EncashmentSum));
+            }
+            else {
+                document.push(("4)Document sum: " + i.DocumentSum));
+            }
+        }
+
+        parent.push(document);
     }
+
+    Variables["workflow"]["autoSpread"] = true;
+
+    return parent;
+}
+
+function GetDocumentsFromArray(docs) {
+    //for (var i in array) {
+    //Variables.Add("documentName", array[0]);
+    //Variables.Add("documentBody", array[1]);
+    //}
+    var count = 0;      //it's all because we can't get array items by their index :'(
+    for (var i in docs) {
+        if (count == 0)
+            Variables.Add("documentName", i);
+        else
+            Variables.Add("documentBody", i);
+        count += 1;
+    }
+
+}
+
+function ClearIfZeroSum(item, sumToSpread) {
+    //if (parseInt(sumToSpread) == parseInt(0)) {
+        item.EncashmentSum = parseInt(0);
+    //}
     return item;
 }
 
-function GetSpreadValue(startValue, workflowValue) {
+function GetSpreadMode(workflowValue) {
     if (workflowValue == null)
-        return startValue;
+        return true;
     else
         return workflowValue;
 }
 
 function GetEncAmount(encashmentText, autoSpread, encashment) {
-    if (autoSpread == "True") {
+    if (autoSpread == true) {
         if (encashmentText == null) {
             return encashment.EncashmentAmount;
         }
@@ -1109,10 +1182,16 @@ function GetLongitude() {
     return 0;
 }
 
-function ShowDialog(v1, v2) {
-    var v = String((v1 + ", " + v2));
-    Dialog.Debug(v);
+function ShowDialog(v1) {
+    //var v = String((v1));
+    Dialog.Debug(v1);
 }
+
+function test() {
+    var parameters = ["Available", "Facing", "Stock", "Price", "MarkUp", "OutOfStock"];
+    return parameters;
+}
+
 
 
 

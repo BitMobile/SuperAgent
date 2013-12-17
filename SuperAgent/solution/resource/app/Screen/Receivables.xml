@@ -5,7 +5,6 @@
   <s:Push Id="receivables" Value="$Facade.GetReceivables($visit.Outlet)"></s:Push>
   <s:Push Id="workflow.encashment" Value="$Facade.CreateEncashmentIfNotExist($workflow.visit, $param2, $workflow.autoSpread)"></s:Push>
   <s:Push Id="workflow.autoSpread" Value="$Facade.GetSpreadMode($workflow.autoSpread)"></s:Push>
-  <s:Push Id="test" Value="$Facade.ShowDialog($workflow.autoSpread)"></s:Push>
   
   <c:VerticalLayout>
 

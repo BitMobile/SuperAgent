@@ -27,14 +27,16 @@
 
       <s:Iterator Id="group" Value="$groups">
         <s:Push Id="skusByGroup" Value="$Facade.GetSKUs($search,$group.Id, null)"></s:Push>
-          <c:HorizontalLayout CssClass ="blockEdit">
+        <s:If Test="$groupIsNotEmpty">
+        <c:HorizontalLayout CssClass ="blockEdit">
             <c:VerticalLayout>
               <c:TextView Text = "$group.Description" CssClass = "main_row"></c:TextView>
             </c:VerticalLayout>
           </c:HorizontalLayout>
           <c:HorizontalLine CssClass="editLine"/>
+        </s:If>
 
-          <s:Iterator Id="sku" Value="$skusByGroup">
+        <s:Iterator Id="sku" Value="$skusByGroup">
 
             <c:HorizontalLayout Id="grSKU" OnClickAction="$Workflow.DoAction(Select, $sku)">
               <c:VerticalLayout>

@@ -33,14 +33,16 @@
       <s:Iterator Id="group" Value="$groups">
         <s:Push Id="skusByGroup" Value="$Facade.GetSKUs($search,$group.Id,$order.PriceList)"></s:Push>
 
-          <c:HorizontalLayout CssClass ="gridEdit">
+        <s:If Test="$groupIsNotEmpty">
+        <c:HorizontalLayout CssClass ="gridEdit">
             <c:VerticalLayout>
               <c:TextView Text = "$group.Description" CssClass = "main_row"></c:TextView>
             </c:VerticalLayout>
           </c:HorizontalLayout>
           <c:HorizontalLine CssClass="editLine"/>
+        </s:If>
 
-          <s:Iterator Id="sku" Value="$skusByGroup">
+        <s:Iterator Id="sku" Value="$skusByGroup">
             <c:HorizontalLayout OnClickAction="$Facade.CheckfeaturesAndAction($sku)" CssClass="gridWhite">
               <c:VerticalLayout>
                 <c:TextView Text="$sku.SKUAsObject.Description" CssClass="main_row"></c:TextView>

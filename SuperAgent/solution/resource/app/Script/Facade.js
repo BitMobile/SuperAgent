@@ -951,31 +951,34 @@ function CheckOrderAndCommit(order) {
 
 
 function GetSKUs(searchText, owner, priceListId) {
+    //for Stock_SKUs.xml   
     if (priceListId == null) {
-        query = new Query();
-        query.AddParameter("owner", owner);
         if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Catalog.SKU where Owner==@owner && CommonStock != 0.00 orderby Description limit 100";
+            var q = DB.Current.Catalog.SKU.SelectBy("Owner", owner).Where("CommonStock!=0.00").Top(100).OrderBy("Description");
         }
         else {
-            query.Text = "select * from  Catalog.SKU where Description.Contains(@p1) && Owner==@owner && CommonStock != 0.00 orderby Description limit 100";
-            query.AddParameter("p1", searchText);
+            var q = DB.Current.Catalog.SKU.SelectBy("Owner", owner).Where("CommonStock!=0.00 && Description.Contains(@p1)", [searchText]).Top(100).OrderBy("Description");
         }
     }
+        //for Order_SKUs.xml
     else {
-        query = new Query();
-        query.AddParameter("owner", owner);
-        query.AddParameter("priceList", priceListId);
+
         if (String.IsNullOrEmpty(searchText)) {
-            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Owner==@owner && Ref == @priceList && SKUAsObject.CommonStock != 0.00 orderby SKUAsObject.Description limit 100";
+            var skus = DB.Current.Catalog.SKU.SelectBy("Owner", owner).Where("CommonStock!=0.00").Distinct("Id");
         }
         else {
-            query.Text = "select * from Document.PriceList_Prices where SKUAsObject.Description.Contains(@p1) && SKUAsObject.Owner==@owner && Ref == @priceList && SKUAsObject.CommonStock != 0.00 orderby SKUAsObject.Description limit 100";
-            query.AddParameter("p1", searchText);
+            var skus = DB.Current.Catalog.SKU.SelectBy("Owner", owner).Where("CommonStock!=0.00 && Description.Contains(@p1)", [searchText]).Distinct("Id");
         }
+        var q = DB.Current.Document.PriceList_Prices.SelectBy("SKU", skus).Where("Ref==@p1", [priceListId]).Top(100).OrderBy("SKUAsObject.Description");
     }
 
-    return query.Execute();
+    //to hide empty groups at the screen
+    if (parseInt(q.Count()) != parseInt(0))
+        Variables.Add("groupIsNotEmpty", true);
+    else
+        Variables.Add("groupIsNotEmpty", false);
+
+    return q;
 }
 
 function GetSKUGroups(searchText) {

@@ -214,7 +214,7 @@ function GetOutlets(searchText) {
     }
     else {
         return DB.Current.Catalog.Territory_Outlets.Select().Where("OutletAsObject.Description.Contains(@p1)", [searchText]).Top(500).OrderBy("OutletAsObject.Description").Distinct("OutletAsObject");
-    }    
+    }
 }
 
 function GetApprovedOutlets(searchText) {
@@ -285,10 +285,6 @@ function ChangeHandler(answ) {
     if (answ == DialogResult.Yes) {
         var outlet = Variables["outlet"];
         UpdateOtletStatus();
-        //var terrioryQuery = new Query();
-        //terrioryQuery.AddParameter("sr", Variables["common"]["userId"]);
-        //terrioryQuery.Text = "select single(*) from Catalog.Territory where SR==@sr";
-        //var territory = terrioryQuery.Execute();
         var territory = DB.Current.Catalog.Territory.Select().First();
         var to = DB.Create("Catalog.Territory_Outlets");
         to.Ref = territory.Id;
@@ -307,25 +303,22 @@ function UpdateOtletStatus() {
 //----------------------Schedules visits----------------
 
 function GetScheduledVisits(searchText) {
-    var query = new Query();
-    query.AddParameter("Date", DateTime.Now.Date);
-    query.AddParameter("SearchText", searchText);
 
     if (String.IsNullOrEmpty(searchText))
-        query.Text = "select * from Document.VisitPlan_Outlets where Date == @Date orderby OutletAsObject.Description";
+        return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date).Top(100).OrderBy("OutletAsObject.Description");
     else
-        query.Text = "select * from Document.VisitPlan_Outlets where Date == @Date && OutletAsObject.Description.Contains(@SearchText) orderby OutletAsObject.Description";
+        return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date).Where("OutletAsObject.Description.Contains(@p1)", [searchText]).Top(100).OrderBy("OutletAsObject.Description");
 
-    return query.Execute();
 }
 
-
+//checks whether this visit is already done today
 function GetTodayVisit(outlet) {
     var query = new Query();
     query.AddParameter("Date", DateTime.Now.Date);
     query.AddParameter("Outlet", outlet.Id);
     query.Text = "select single(*) from Document.Visit where Date.Date == @Date && Outlet==@Outlet";
     var result = query.Execute();
+    //var result = DB.Current.Document.Visit.SelectBy("Date", DateTime.Now.Date).Union(DB.Current.Document.Visit.SelectBy("Outlet", outlet.Id)).First();
     if (result == null)
         return null;
     else
@@ -381,16 +374,12 @@ function LocationDialogHandler(answ) {
 }
 
 function GetOutletParameters() {
-    return new Query("select * from Catalog.OutletParameter").Execute();
+    return DB.Current.Catalog.OutletParameter.Select();
 }
 
 
 function GetOutletParameterValue(outlet, parameter) {
-    var query = new Query();
-    query.AddParameter("Outlet", outlet.Id);
-    query.AddParameter("Parameter", parameter.Id);
-    query.Text = "select single(*) from Catalog.Outlet_Parameters where Parameter == @Parameter && Ref == @Outlet";
-    return query.Execute();
+    return DB.Current.Catalog.Outlet_Parameters.SelectBy("Parameter", parameter.Id).Union(DB.Current.Catalog.Outlet_Parameters.SelectBy("Ref", outlet.Id)).First();
 }
 
 
@@ -1138,7 +1127,7 @@ function GetDocumentsFromArray(docs) {
 
 function ClearIfZeroSum(item, sumToSpread) {
     //if (parseInt(sumToSpread) == parseInt(0)) {
-        item.EncashmentSum = parseInt(0);
+    item.EncashmentSum = parseInt(0);
     //}
     return item;
 }

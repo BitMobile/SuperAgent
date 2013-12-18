@@ -209,16 +209,12 @@ function CreateOutletParameterValueIfNotExists(outlet, parameter, parameterValue
 
 
 function GetOutlets(searchText) {
-    query = new Query();
     if (String.IsNullOrEmpty(searchText)) {
-        query.Text = "select distinct(OutletAsObject) from Catalog.Territory_Outlets orderby OutletAsObject.Description limit 500";
+        return DB.Current.Catalog.Territory_Outlets.Select().Top(500).OrderBy("OutletAsObject.Description").Distinct("OutletAsObject");
     }
     else {
-        query.Text = "select distinct(OutletAsObject) from Catalog.Territory_Outlets where OutletAsObject.Description.Contains(@p1) orderby OutletAsObject.Description limit 500";
-        query.AddParameter("p1", searchText);
-    }
-
-    return query.Execute();
+        return DB.Current.Catalog.Territory_Outlets.Select().Where("OutletAsObject.Description.Contains(@p1)", [searchText]).Top(500).OrderBy("OutletAsObject.Description").Distinct("OutletAsObject");
+    }    
 }
 
 function GetApprovedOutlets(searchText) {
@@ -289,10 +285,11 @@ function ChangeHandler(answ) {
     if (answ == DialogResult.Yes) {
         var outlet = Variables["outlet"];
         UpdateOtletStatus();
-        var terrioryQuery = new Query();
-        terrioryQuery.AddParameter("sr", Variables["common"]["userId"]);
-        terrioryQuery.Text = "select single(*) from Catalog.Territory where SR==@sr";
-        var territory = terrioryQuery.Execute();
+        //var terrioryQuery = new Query();
+        //terrioryQuery.AddParameter("sr", Variables["common"]["userId"]);
+        //terrioryQuery.Text = "select single(*) from Catalog.Territory where SR==@sr";
+        //var territory = terrioryQuery.Execute();
+        var territory = DB.Current.Catalog.Territory.Select().First();
         var to = DB.Create("Catalog.Territory_Outlets");
         to.Ref = territory.Id;
         to.Outlet = outlet.Id;

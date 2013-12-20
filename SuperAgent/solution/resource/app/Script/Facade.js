@@ -384,19 +384,16 @@ function GetOutletParameterValue(outlet, parameter) {
 
 
 function GetTasks(outlet) {
-    var query = new Query();
-    query.AddParameter("Date", DateTime.Now.Date);
-    query.AddParameter("Outlet", outlet.Id);
-    if (outlet == null)
-        query.Text = "select * from Document.Task where PlanDate >= @Date orderby OutletAsObject.Description";
-    else
-        query.Text = "select * from Document.Task where Outlet == @Outlet && PlanDate >= @Date orderby OutletAsObject.Description";
 
-    var result = query.Execute();
+    if (outlet == null)
+        var result = DB.Current.Document.Task.Select().Where("PlanDate >= @p1", [DateTime.Now.Date]).OrderBy("OutletAsObject.Description");
+    else
+        var result = DB.Current.Document.Task.SelectBy("Outlet", outlet.Id).Where("PlanDate >= @p1", [DateTime.Now.Date]).OrderBy("OutletAsObject.Description");
     if (result.Count() > 0)
         return result;
     else
         return null;
+
 }
 
 function GetOutlet(task) {

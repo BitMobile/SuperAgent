@@ -156,13 +156,6 @@ function GetEntity(type, name, paramValue, parameter) {
     return query.Execute();
 }
 
-function GetEntity2(type, name, param1Value, param1, param2value, param2) {
-    var query = new Query();
-    query.AddParameter("v1", param1Value);
-    query.AddParameter("v2", param2Value);
-    query.Text = String.Format("select single(*) from {0}.{1} where {2}==@v1 && {3}==@v2", type, name, param1, param2);
-    return query.Execute();
-}
 
 function GetEntities(type, name, paramValue, parameter) {
     var query = new Query();
@@ -179,14 +172,6 @@ function CountEntities(type, name, paramValue, parameter) {
     return query.Execute();
 }
 
-function CountEntities2(type, name, param1Value, param1, param2value, param2) {
-    var query = new Query();
-    query.AddParameter("v1", param1Value);
-    query.AddParameter("v2", param2Value);
-    query.Text = String.Format("select count(Id) from {0}.{1} where {2}==@v1 && {3}==@v2", type, name, param1, param2);
-    return query.Execute();
-
-}
 
 //-----------------Outlets----------------------------
 
@@ -215,20 +200,6 @@ function GetOutlets(searchText) {
     else {
         return DB.Current.Catalog.Territory_Outlets.Select().Where("OutletAsObject.Description.Contains(@p1)", [searchText]).Top(500).OrderBy("OutletAsObject.Description").Distinct("OutletAsObject");
     }
-}
-
-function GetApprovedOutlets(searchText) {
-    query = new Query();
-    query.AddParameter("status", DB.Current.Constant.OutletConfirmationStatus.Approved);
-    if (String.IsNullOrEmpty(searchText)) {
-        query.Text = "select distinct(OutletAsObject) from Catalog.Territory_Outlets where OutletAsObject.ConfirmationStatus == @status limit 500";
-    }
-    else {
-        query.Text = "select distinct(OutletAsObject) from Catalog.Territory_Outlets where OutletAsObject.Description.Contains(@p1) && OutletAsObject.ConfirmationStatus==@status  limit 500";
-        query.AddParameter("p1", searchText);
-    }
-
-    return query.Execute();
 }
 
 function CreateOutletIfNotExist(outlet) {
@@ -628,22 +599,21 @@ function HasCoordinates(visitPlans) {
 
 function GetOrderList(searchText) {
 
-    var query = new Query();
+    var canc = DB.Current.Constant.OrderSatus.Canceled;
+    Variables.Add("workflow.canc", canc);
+
+    var n = DB.Current.Constant.OrderSatus.New;
+    Variables.Add("workflow.new", n);
+
+    var cls = DB.Current.Constant.OrderSatus.Closed;
+    Variables.Add("workflow.cls", cls);
+
     if (String.IsNullOrEmpty(searchText)) {
-        query.Text = "select * from Document.Order orderbydesc Date limit 100";
+        return DB.Current.Document.Order.Select().Top(100).OrderBy("Date", true);
     }
     else {
-        query.AddParameter("text", searchText);
-        query.Text = "select * from Document.Order where OutletAsObject.Description.Contains(@text) orderbydesc Date  limit 100";
+        return DB.Current.Document.Order.Select().Where("OutletAsObject.Description.Contains(@p1)", [searchText]).Top(100).OrderBy("Date", true);
     }
-
-    return query.Execute();
-
-}
-
-function GetOrderStatus(order) {
-
-    return order.StatusAsObject().Description;
 
 }
 
@@ -706,11 +676,7 @@ function GetMaxOrderAmount(outlet) {
 
 function GetOrderedSKUs(orderId) {
 
-    var query = new Query();
-    query.AddParameter("orderId", orderId);
-    query.Text = "select * from Document.Order_SKUs where Ref==@orderId limit 100";
-    return query.Execute();
-
+    return DB.Current.Document.Order_SKUs.Select().Where("Ref==@p1", [orderId]).Top(100);
 }
 
 function GetOrderQTY(orderId) {
@@ -746,10 +712,7 @@ function GetSKUAmount(orderId, item) {
 
 function GetpriceLists(order, attribute) {
 
-    var query = new Query();
-    query.AddParameter("outlet", order.Outlet);
-    query.Text = "select * from Catalog.Outlet_Prices where Ref==@outlet";
-    return query.Execute();
+    return DB.Current.Catalog.Outlet_Prices.Select().Where("Ref==@p1", [order.Outlet]).OrderBy("RefAsObject.Description");
 
 }
 
@@ -804,12 +767,8 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, feature, price) {
             feature = f.Feature;
         }
 
-        var query = new Query();
-        query.AddParameter("ref", orderId);
-        query.AddParameter("sku", sku.Id);
-        query.AddParameter("feature", feature);
-        query.Text = "select * from Document.Order_SKUs where Ref==@ref && SKU==@sku && Feature==@feature";
-        var r = query.Execute();
+        var query = new Query();        
+        var r = DB.Current.Document.Order_SKUs.SelectBy("SKU", sku.Id).Where("Ref==@p1 && Feature==@p2", [orderId, feature]);
         if (r.Count() > 0) {
             for (var k in r)
                 return k;
@@ -856,12 +815,7 @@ function CountPrice(orderitem, discount, discChBox) {
 function GetMultiplier(sku, orderitem) {
 
     if (orderitem != null) {
-        //var query = new Query();
-        //query.AddParameter("units", orderitem.Units);
-        //query.AddParameter("ref", sku);
-        //query.Text = "select single(*) from Catalog.SKU_Packing where Ref==@ref && Pack==@units";
-        //var item = query.Execute();
-        var item = GetEntity2("Catalog", "SKU_Packing", sku, "Ref", orderitem.Units, "Pack");
+        var item = DB.Current.Catalog.SKU_Packing.SelectBy("Pack", orderitem.Units).Where("Ref==@p1", [sku]).First();
         return item.Multiplier;
     }
     return 1;
@@ -947,15 +901,35 @@ function GetSKUs(searchText, owner, priceListId) {
     else {
 
         if (String.IsNullOrEmpty(searchText)) {
-            var skus = DB.Current.Catalog.SKU.SelectBy("Owner", owner).Where("CommonStock!=0.00").Distinct("Id");
+            //skus by group
+            var skus = DB.Current.Catalog.SKU
+                .SelectBy("Owner", owner)
+                .Where("CommonStock!=0.00")
+                .Distinct("Id");
         }
         else {
-            var skus = DB.Current.Catalog.SKU.SelectBy("Owner", owner).Where("CommonStock!=0.00 && Description.Contains(@p1)", [searchText]).Distinct("Id");
+            var skus = DB.Current.Catalog.SKU
+                .SelectBy("Owner", owner)
+                .Where("CommonStock!=0.00 && Description.Contains(@p1)", [searchText])
+                .Distinct("Id");
         }
-        var q = DB.Current.Document.PriceList_Prices.SelectBy("SKU", skus).Where("Ref==@p1", [priceListId]).Top(100).OrderBy("SKUAsObject.Description");
+        if (skus.Count() < 100) {
+            var q = DB.Current.Document.PriceList_Prices
+                .SelectBy("SKU", skus)
+                .Where("Ref==@p1", [priceListId])
+                .Top(100)
+                .OrderBy("SKUAsObject.Description");
+        }
+        else {
+            var q = DB.Current.Document.PriceList_Prices
+                .SelectBy("Ref", priceListId)
+                .Where("SKU.In(@p1)", [skus])
+                .Top(100)
+                .OrderBy("SKUAsObject.Description");
+        }
     }
 
-    //to hide empty groups at the screen
+    //  to hide empty groups at the screen
     if (parseInt(q.Count()) != parseInt(0))
         Variables.Add("groupIsNotEmpty", true);
     else
@@ -965,16 +939,10 @@ function GetSKUs(searchText, owner, priceListId) {
 }
 
 function GetSKUGroups(searchText) {
-    var query = new Query();
-    if (String.IsNullOrEmpty(searchText)) {
-        query.Text = "select distinct(OwnerAsObject) from Catalog.SKU orderby Description";
-    }
-    else {
-        query.Text = "select distinct(OwnerAsObject) from Catalog.SKU orderby Description";
-        query.AddParameter("p1", searchText);
-    }
 
-    return query.Execute();
+    var ow = DB.Current.Catalog.SKU.Select().Distinct("Owner");
+    return DB.Current.Catalog.SKUGroup.SelectBy("Id", ow);
+
 }
 
 
@@ -1080,21 +1048,21 @@ function GetEncashments(receivables, autoSpread, encashmentAmount, encashmentId)
         if (autoSpread == true) {
             if (parseInt(sumToSpread) != parseInt(0)) {
                 encItem = SpreadOnItem(encItem, sumToSpread, encashmentId, i);
-                document.push(("1)Encashment sum: " + encItem.EncashmentSum));
+                document.push((Translate["#encashmentSum#: "] + encItem.EncashmentSum));
                 sumToSpread = sumToSpread - encItem.EncashmentSum;
             }
             else {
                 ClearIfZeroSum(encItem);
-                document.push(("2)Document sum: " + i.DocumentSum));
+                document.push((Translate["#documentSum#: "] + i.DocumentSum));
             }
         }
         else {
             if (encItem.EncashmentSum != undefined) {
                 //ClearIfZeroSum(encItem, 
-                document.push(("3)Encashment sum: " + encItem.EncashmentSum));
+                document.push((Translate["#encashmentSum#: "] + encItem.EncashmentSum));
             }
             else {
-                document.push(("4)Document sum: " + i.DocumentSum));
+                document.push((Translate["#documentSum#: "] + i.DocumentSum));
             }
         }
 

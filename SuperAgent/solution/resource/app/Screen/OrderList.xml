@@ -38,9 +38,8 @@
     <c:ScrollView Id="grScrollView" CssClass="grid">
 
       <s:Iterator Id="order" Value="$orders">
-
-        <s:Push Id="statusDescription" Value="$Facade.GetOrderStatus($order)"></s:Push>
-        <s:If Test="$statusDescription == 'Сanceled'">
+        
+        <s:If Test="$order.Status == $workflow.canc">
           <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$order.OutletAsObject,null,$order)">
             <c:VerticalLayout CssClass="red_mark"/>
             <c:VerticalLayout CssClass="clipped">

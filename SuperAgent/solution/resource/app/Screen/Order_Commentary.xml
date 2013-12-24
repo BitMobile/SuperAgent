@@ -13,9 +13,8 @@
     </c:DockLayout>
 
     <c:ScrollView Id="grScrollView" CssClass="grid">
-
-      <s:Push Id="statusDescription" Value="$Facade.GetOrderStatus($workflow.order)"></s:Push>
-      <s:If Test="$statusDescription == 'New'">
+      
+      <s:If Test="$workflow.order.Status == $workflow.new">
       <c:HorizontalLayout CssClass="memo_block">
         <c:VerticalLayout>
           <c:TextView Text="#insert_text#" CssClass="description_row"></c:TextView>

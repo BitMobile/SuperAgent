@@ -22,9 +22,8 @@
     <c:HorizontalLine/>
 
 
-
-    <s:Push Id="statusDescription" Value="$Facade.GetOrderStatus($workflow.order)"></s:Push>
-    <s:If Test="$statusDescription == 'New'">
+    
+    <s:If Test="$workflow.order.Status == $workflow.new">
       <s:If Test="$workflow.order.PriceListAsRef != null">
         <c:VerticalLayout CssClass="header">
           <c:VerticalLayout  CssClass ="grid">
@@ -52,7 +51,7 @@
                 </s:Else>
                 <c:TextView Text="#maximumAmount#" CssClass="description_row"></c:TextView>
               </c:VerticalLayout>
-              <c:Image/>
+              <c:Image CssClass="add_img"/>
             </c:HorizontalLayout>
           </c:VerticalLayout>
         </c:VerticalLayout>

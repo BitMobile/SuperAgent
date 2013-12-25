@@ -599,14 +599,7 @@ function HasCoordinates(visitPlans) {
 
 function GetOrderList(searchText) {
 
-    var canc = DB.Current.Constant.OrderSatus.Canceled;
-    Variables.Add("workflow.canc", canc);
-
-    var n = DB.Current.Constant.OrderSatus.New;
-    Variables.Add("workflow.new", n);
-
-    var cls = DB.Current.Constant.OrderSatus.Closed;
-    Variables.Add("workflow.cls", cls);
+    CreateOrderStatusVariables();
 
     if (String.IsNullOrEmpty(searchText)) {
         return DB.Current.Document.Order.Select().Top(100).OrderBy("Date", true);
@@ -615,6 +608,17 @@ function GetOrderList(searchText) {
         return DB.Current.Document.Order.Select().Where("OutletAsObject.Description.Contains(@p1)", [searchText]).Top(100).OrderBy("Date", true);
     }
 
+}
+
+function CreateOrderStatusVariables() {
+    var canc = DB.Current.Constant.OrderSatus.Canceled;
+    Variables.Add("workflow.canc", canc);
+
+    var n = DB.Current.Constant.OrderSatus.New;
+    Variables.Add("workflow.new", n);
+
+    var cls = DB.Current.Constant.OrderSatus.Closed;
+    Variables.Add("workflow.cls", cls);
 }
 
 function AssignNumberIfNotExist(order) {

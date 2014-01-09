@@ -28,7 +28,7 @@
 
       <c:HorizontalLayout>
         <c:VerticalLayout>
-          <c:TextView Text="receivableDoc.DocumentSum" CssClass="main_row"></c:TextView>
+          <c:TextView Text="$param3" CssClass="main_row"></c:TextView>
           <c:TextView Text="#receivable#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>

@@ -45,7 +45,7 @@
       <s:Iterator Id="encashmentDoc" Value="$encasments">
         <s:Push Id="someId" Value="$Facade.GetDocumentsFromArray($encashmentDoc)"></s:Push>
 
-        <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$documentName,$visit)">
+        <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$documentName,$visit,$receivableSum)">
           <c:VerticalLayout>
             <c:TextView Text="$documentName" CssClass="main_row"></c:TextView>
             <c:TextView Text="$documentBody" CssClass="description_row"></c:TextView>

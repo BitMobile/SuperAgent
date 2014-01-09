@@ -1070,6 +1070,8 @@ function GetEncashments(receivables, autoSpread, encashmentAmount, encashmentId)
             }
         }
 
+        document.push(i.DocumentSum);
+
         parent.push(document);
     }
 
@@ -1087,8 +1089,12 @@ function GetDocumentsFromArray(docs) {
     for (var i in docs) {
         if (count == 0)
             Variables.Add("documentName", i);
-        else
-            Variables.Add("documentBody", i);
+        else {
+            if (count == 1)
+                Variables.Add("documentBody", i);
+            else
+                Variables.Add("receivableSum", i);
+        }
         count += 1;
     }
 

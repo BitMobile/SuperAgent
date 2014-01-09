@@ -11,6 +11,7 @@ function OnLoad(screenName) {
 }
 
 function OnWorkflowStart(name) {
+    Variables.AddGlobal("workflow", new Dictionary());
     if (name == "UnscheduledVisit" || name == "ScheduledVisit") {
         GPS.StartTracking();
     }
@@ -30,6 +31,11 @@ function OnWorkflowBack(name, lastStep, nextStep) {
 function OnWorkflowFinish(name, reason) {
     if (name == "UnscheduledVisit" || name == "ScheduledVisit")
         GPS.StopTracking();
+    Variables.Remove("workflow");
+}
+
+function OnWorkflowPause(name) {
+    Variables.Remove("workflow");
 }
 
 // ------------------------ Functions ------------------------
@@ -60,20 +66,20 @@ function ReviseSKUs() {
     var s = SKUs.Count();
 
     if (parseInt(SKUs.Count()) != parseInt(0))
-   //     Dialog.Message("SKU list will be revised");
+        //     Dialog.Message("SKU list will be revised");
 
-    for (var k in SKUs) {
-        var query2 = new Query();
-        query2.AddParameter("PLid", Variables["workflow"]["order"].PriceList);
-        query2.AddParameter("sku", k.SKU);
-        query2.Text = "select single(*) from Document.PriceList_Prices where Ref==@PLid && SKU==@sku";
-        var pricelistItem = query2.Execute();
-        if (pricelistItem == null)
-            DB.Current.Document.Order_SKUs.Delete(k);
-        else {
-            k.Price = pricelistItem.Price;
-            k.Total = (k.Discount / 100 + 1) * k.Price;
-            k.Amount = k.Qty * k.Total;
+        for (var k in SKUs) {
+            var query2 = new Query();
+            query2.AddParameter("PLid", Variables["workflow"]["order"].PriceList);
+            query2.AddParameter("sku", k.SKU);
+            query2.Text = "select single(*) from Document.PriceList_Prices where Ref==@PLid && SKU==@sku";
+            var pricelistItem = query2.Execute();
+            if (pricelistItem == null)
+                DB.Current.Document.Order_SKUs.Delete(k);
+            else {
+                k.Price = pricelistItem.Price;
+                k.Total = (k.Discount / 100 + 1) * k.Price;
+                k.Amount = k.Qty * k.Total;
+            }
         }
-    }
 }

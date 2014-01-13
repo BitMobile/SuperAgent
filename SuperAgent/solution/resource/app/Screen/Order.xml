@@ -23,7 +23,7 @@
     <c:HorizontalLine/>
 
 
-    
+
     <s:If Test="$workflow.order.Status == $workflow.new">
       <s:If Test="$workflow.order.PriceListAsRef != null">
         <c:VerticalLayout CssClass="header">
@@ -64,25 +64,27 @@
 
       <c:ScrollView Id="grScrollView" CssClass="grid">
 
-        <c:HorizontalLayout OnClickAction="$Workflow.DoAction(EditPriceList, $workflow.order, PriceList)">
-          <c:VerticalLayout>
-            <s:If Test="$workflow.order.PriceListAsRef != null">
-              <c:TextView Text="$workflow.order.PriceListAsObject.Description" CssClass="main_row"></c:TextView>
-            </s:If>
-            <s:Else>
-              <s:Push Id="priceLists" Value="$Facade.CountEntities(Catalog, Outlet_Prices, $workflow.order.Outlet, Ref)"></s:Push>
-              <s:If Test="$priceLists == 0">
-                <c:TextView Text="#noPriceLists#" CssClass="main_row"></c:TextView>
+        <s:Push Id="priceLists" Value="$Facade.CountEntities(Catalog, Outlet_Prices, $workflow.order.Outlet, Ref)"></s:Push>        
+        <s:If Test="$priceLists != 1">
+          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(EditPriceList, $workflow.order, PriceList)">
+            <c:VerticalLayout>
+              <s:If Test="$workflow.order.PriceListAsRef != null">
+                <c:TextView Text="$workflow.order.PriceListAsObject.Description" CssClass="main_row"></c:TextView>
               </s:If>
               <s:Else>
-                <c:TextView Text="#isntSelected#" CssClass="main_row"></c:TextView>
+                <s:If Test="$priceLists == 0">
+                  <c:TextView Text="#noPriceLists#" CssClass="main_row"></c:TextView>
+                </s:If>
+                <s:Else>
+                  <c:TextView Text="#isntSelected#" CssClass="main_row"></c:TextView>
+                </s:Else>
               </s:Else>
-            </s:Else>       
-            <c:TextView Text="#priceList#" CssClass="description_row"></c:TextView>
-          </c:VerticalLayout>
-          <c:Image/>
-        </c:HorizontalLayout>
-        <c:HorizontalLine/>
+              <c:TextView Text="#priceList#" CssClass="description_row"></c:TextView>
+            </c:VerticalLayout>
+            <c:Image/>
+          </c:HorizontalLayout>
+          <c:HorizontalLine/>
+        </s:If>
 
 
         <s:Iterator Id="orderitem" Value="$items">
@@ -105,9 +107,9 @@
 
       </c:ScrollView>
     </s:If>
-    
-    
-    
+
+
+
 
     <s:Else>
       <c:VerticalLayout CssClass="header">
@@ -121,7 +123,7 @@
         </c:VerticalLayout>
       </c:VerticalLayout>
       <c:HorizontalLine/>
-            
+
 
       <c:ScrollView Id="grScrollView" CssClass="grid">
 
@@ -148,11 +150,11 @@
             </c:VerticalLayout>
           </c:HorizontalLayout>
           <c:HorizontalLine/>
-          
+
         </s:Iterator>
-        
+
       </c:ScrollView>
-      
+
     </s:Else>
 
   </c:VerticalLayout>

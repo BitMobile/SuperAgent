@@ -433,20 +433,46 @@ function GetVisitQuestionValue(visit, question) {
 
 
 function CreateVisitQuestionValueIfNotExists(visit, question, questionValue) {
-    if (questionValue != null)
-        return questionValue;
 
-    var p = DB.Create("Document.Visit_Questions");
+    var query = new Query();
+    query.AddParameter("Visit", visit.Id);
+    query.AddParameter("Question", question.Id);
+    query.Text = "select single(*) from Document.Visit_Questions where Ref == @Visit && Question == @Question";
+    var result = query.Execute();
+    if (result == null) {
+        var p = DB.Create("Document.Visit_Questions");
 
-    p.Ref = visit.Id;
-    p.Question = question.Id;
+        p.Ref = visit.Id;
+        p.Question = question.Id;
 
-    if (question.AnswerTypeAsObject().Description == "Boolean")
-        p.Answer = "false";
-    else
-        p.Answer = "";
+        if (question.AnswerTypeAsObject().Description == "Boolean")
+            p.Answer = "false";
+        else
+            p.Answer = "";
 
-    return p;
+        result = p;
+    }
+    return result;
+}
+
+function CheckEmptyQuestionsAndForward(questionnaires, visit) {
+
+    var emptyQuestion = DB.Current.Document.Visit_Questions.SelectBy("Ref", visit.Id).Where("Answer==@p1", [""]).First();
+    //for (var i in questions) {
+    //        Dialog.Debug(i.Answer);
+    //        DB.Current.Document.Visit_Questions.Delete(i);                    
+    //}
+
+    //if (emptyQuestion != null) {
+    while (emptyQuestion != null) {
+        DB.Current.Document.Visit_Questions.Delete(emptyQuestion);
+        emptyQuestion = DB.Current.Document.Visit_Questions.SelectBy("Ref", visit.Id).Where("Answer==@p1", [""]).First();
+    }
+    //}
+
+    var p = [questionnaires];
+    Workflow.Forward(p);
+    //DoForward($outlet,$visit,$questionnaires
 }
 
 
@@ -562,7 +588,8 @@ function IsAnswered(visit, qName, sku) {
         return null;
 }
 
-function SetTimeAndCommit() {
+function CheckAndCommit() {
+    //set time of visit
     Variables["workflow"]["visit"].EndTime = DateTime.Now;
 
     //check empty order
@@ -571,9 +598,9 @@ function SetTimeAndCommit() {
     if (c == 0)
         DB.Current.Document.Order.Delete(order);
 
-    //check empty encashment
+    //TODO:check empty encashment
 
-
+    //commit
     Workflow.Commit();
 }
 
@@ -771,7 +798,7 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, feature, price) {
             feature = f.Feature;
         }
 
-        var query = new Query();        
+        var query = new Query();
         var r = DB.Current.Document.Order_SKUs.SelectBy("SKU", sku.Id).Where("Ref==@p1 && Feature==@p2", [orderId, feature]);
         if (r.Count() > 0) {
             for (var k in r)
@@ -1151,10 +1178,6 @@ function ShowDialog(v1) {
     Dialog.Debug(v1);
 }
 
-function test() {
-    var parameters = ["Available", "Facing", "Stock", "Price", "MarkUp", "OutOfStock"];
-    return parameters;
-}
 
 
 

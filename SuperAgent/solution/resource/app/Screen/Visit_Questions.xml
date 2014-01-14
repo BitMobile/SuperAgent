@@ -4,7 +4,7 @@
   <s:Push Id="outlet" Value="$param1"></s:Push>
   <s:Push Id="visit" Value="$param2"></s:Push>
   <s:Push Id="workflow.questions_qty" Value="$Facade.ToFloat(0)"></s:Push>
-  
+
   <s:Push Id="questionnaires" Value="$Facade.GetQuesttionaires($outlet)"></s:Push>
   <s:Push Id="questions" Value="$Facade.GetQuestionsByOutlet($questionnaires)"></s:Push>
 
@@ -12,7 +12,7 @@
 
     <c:DockLayout CssClass="top_navigator">
       <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($outlet,$visit,$questionnaires)"/>
+      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckEmptyQuestionsAndForward($questionnaires, $visit)"/>
       <c:TextView Text="#questions#" />
     </c:DockLayout>
 
@@ -29,39 +29,37 @@
         </c:HorizontalLayout>
 
       </s:If>
-      
+
       <s:Else>
 
         <s:Iterator Id="item" Value="$questions">
 
           <s:Push Id="workflow.questions_qty" Value="$Facade.GetSum($workflow.questions_qty, 1)"></s:Push>
           <s:Push Id="question" Value="$item.QuestionAsObject"/>
-          <s:Push Id="questionValue" Value="$Facade.GetVisitQuestionValue($visit,$question)"/>
+          <s:Push Id="questionValue" Value="$Facade.CreateVisitQuestionValueIfNotExists($visit,$question,$questionValue)"></s:Push>
 
-          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Edit,$outlet,$visit,$question,$questionValue)">
+          <c:HorizontalLayout>
 
             <c:VerticalLayout>
-              <s:If Test="$questionValue!=null">
-                <s:If Test="$question.AnswerTypeAsObject.Description=='Boolean'">
-                  <s:If Test = "$questionValue.Answer == 'True'">
-                    <c:TextView Text="#true#" CssClass="main_row"></c:TextView>
-                  </s:If>
-                  <s:Else>
-                    <c:TextView Text="#false#" CssClass="main_row"></c:TextView>
-                  </s:Else>
-                </s:If>
-                <s:Else>
-                  <c:TextView Text="$questionValue.Answer" CssClass="main_row"></c:TextView>
-                </s:Else>
+              <s:If Test="$question.AnswerTypeAsObject.Description=='Boolean'">
+                <c:CheckBox Value="$questionValue.Answer" CssClass="main_row"></c:CheckBox>
               </s:If>
               <s:Else>
-                <c:TextView Text="?" CssClass="main_row"></c:TextView>
+                <s:If Test="$question.AnswerTypeAsObject.Description=='Integer'">
+                  <c:EditText Value="$questionValue.Answer" CssClass="main_row" Keyboard="numeric"></c:EditText>
+                </s:If>
+                <s:Else>
+                  <s:If Test="$question.AnswerTypeAsObject.Description=='Decimal'">
+                    <c:EditText Value="$questionValue.Answer" CssClass="main_row" Keyboard="numeric"></c:EditText>
+                  </s:If>
+                  <s:Else>
+                    <c:EditText Value="$questionValue.Answer" CssClass="main_row"></c:EditText>
+                  </s:Else>
+                </s:Else>
               </s:Else>
               <c:TextView Text="$question.Description" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
-
-            <c:Image/>
-
+            
           </c:HorizontalLayout>
 
           <c:HorizontalLine/>

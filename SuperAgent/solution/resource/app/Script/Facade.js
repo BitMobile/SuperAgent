@@ -237,18 +237,23 @@ function CreateAndForward() {
 
 
 function CheckNotNullAndCommit(outlet) {
-    var attributes = ["outletDescr", "outletAddress", "outletClass", "outletType", "outletDistr"];//"Description", "Address", "Type", "Class", "Distributor"];
-    var areNulls = false;
-    for (var i in attributes) {
-        var attribute = attributes[i];
-        if (Variables[attribute].Text == null || (Variables[attribute].Text).Trim() == "" || Variables[attribute].Text == "\n\n\n\n\n\n\n") {//Variables[attribute].Text == "" || Variables[attribute].Text == null) {
-            areNulls = true;
+    if (Variables["workflow"]["name"] == "Outlets") {
+        var attributes = ["outletDescr", "outletAddress", "outletClass", "outletType", "outletDistr"];//"Description", "Address", "Type", "Class", "Distributor"];
+        var areNulls = false;
+        for (var i in attributes) {
+            var attribute = attributes[i];
+            if (Variables[attribute].Text == null || (Variables[attribute].Text).Trim() == "" || Variables[attribute].Text == "\n\n\n\n\n\n\n") {//Variables[attribute].Text == "" || Variables[attribute].Text == null) {
+                areNulls = true;
+            }
         }
+        if (areNulls)
+            Dialog.Message("#messageNulls#");
+        else
+            Dialog.Question("#saveChanges#", ChangeHandler);
     }
-    if (areNulls)
-        Dialog.Message("#messageNulls#");
-    else
-        Dialog.Question("#saveChanges#", ChangeHandler);
+    else {
+        CheckEmptyOutletFields(outlet);
+    }
 
 }
 
@@ -458,21 +463,13 @@ function CreateVisitQuestionValueIfNotExists(visit, question, questionValue) {
 function CheckEmptyQuestionsAndForward(questionnaires, visit) {
 
     var emptyQuestion = DB.Current.Document.Visit_Questions.SelectBy("Ref", visit.Id).Where("Answer==@p1", [""]).First();
-    //for (var i in questions) {
-    //        Dialog.Debug(i.Answer);
-    //        DB.Current.Document.Visit_Questions.Delete(i);                    
-    //}
-
-    //if (emptyQuestion != null) {
     while (emptyQuestion != null) {
         DB.Current.Document.Visit_Questions.Delete(emptyQuestion);
         emptyQuestion = DB.Current.Document.Visit_Questions.SelectBy("Ref", visit.Id).Where("Answer==@p1", [""]).First();
     }
-    //}
 
     var p = [questionnaires];
     Workflow.Forward(p);
-    //DoForward($outlet,$visit,$questionnaires
 }
 
 

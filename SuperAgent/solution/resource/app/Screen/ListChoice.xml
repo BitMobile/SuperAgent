@@ -1,13 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
 
-  <s:If Test="$workflow.order == null">
+  <s:If Test="$param3 == null">
     <s:Push Id="items" Value="$Facade.GetLookupList($param1,$param2)"></s:Push>
   </s:If>
   <s:Else>
-    <s:Push Id="items" Value="$Facade.GetpriceLists($workflow.order)"></s:Push>
+    <s:If Test="$param3=='Order'">
+      <s:Push Id="items" Value="$Facade.GetpriceLists($workflow.order)"></s:Push>
+    </s:If>
+    <s:Else>
+      <s:If Test="$param3=='Visit_Questions'">
+        <s:Push Id="items" Value="$Facade.GetValueList()"></s:Push>
+      </s:If>
+    </s:Else>
   </s:Else>
   
+
   <s:Push Value="$param1.Metadata.{$param2}.Name" Id="objectName"/>
 
   <c:VerticalLayout>
@@ -55,20 +63,34 @@
 
       <s:Iterator Id="item" Value="$items">
 
-        <s:If Test="$workflow.order == null">
+        <s:If Test="$param3 == null">
           <s:Push Id="itemId" Value="$item.Id"></s:Push>
         </s:If>
         <s:Else>
-          <s:Push Id="itemId" Value="$item.PriceListAsObject.Id"></s:Push>
+          <s:If Test="$param3=='Order'">
+            <s:Push Id="itemId" Value="$item.PriceListAsObject.Id"></s:Push>
+          </s:If>
+          <s:Else>
+            <s:If Test="$param3=='Visit_Questions'">
+              <s:Push Id="items" Value="$param3"></s:Push>
+            </s:If>
+          </s:Else>
         </s:Else>
 
         <c:HorizontalLayout OnClickAction="$Facade.UpdateValueAndBack($param1,$param2,$itemId)">
           <c:VerticalLayout>
-            <s:If Test="$workflow.order == null">
+            <s:If Test="$param3 == null">
               <c:TextView Text="$item.Description" CssClass="main_row"></c:TextView>
             </s:If>
-            <s:Else>
-              <c:TextView Text="$item.PriceListAsObject.Description" CssClass="main_row"></c:TextView>
+            <s:Else>              
+              <s:If Test="$param3=='Order'">
+                <c:TextView Text="$item.PriceListAsObject.Description" CssClass="main_row"></c:TextView>
+              </s:If>
+              <s:Else>
+                <s:If Test="$param3=='Visit_Questions'">
+                  <s:Push Id="items" Value="$param3"></s:Push>
+                </s:If>
+              </s:Else>
             </s:Else>
           </c:VerticalLayout>
           <c:Image/>

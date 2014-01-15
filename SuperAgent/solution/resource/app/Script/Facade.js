@@ -87,13 +87,19 @@ function UpdateEntity(entity, value) {
 }
 
 function UpdateValueAndBack(entity, attribute, value) {
-    entity[attribute] = value;
-    entity = UpdateEntity(entity, value);
-    if (Variables["workflow"]["name"] == "Order") {
-        var n = CountEntities("Document", "Order_SKUs", Variables["workflow"]["order"].Id, "Ref");
-        if (parseInt(n) != parseInt(0))
-            Dialog.Message("#SKUWillRevised#");
+    if (attribute != "Answer") {  //for Visit_Questions
+        entity[attribute] = value;
+        entity = UpdateEntity(entity, value); //set status 'New' for Outelt
+        if (attribute == "PriceList") {
+            var n = CountEntities("Document", "Order_SKUs", Variables["workflow"]["order"].Id, "Ref");
+            if (parseInt(n) != parseInt(0))
+                Dialog.Message("#SKUWillRevised#");
+        }
     }
+    else {
+        entity[attribute] = value.Value;
+    }
+    
     Workflow.Back();
 
 }
@@ -458,6 +464,17 @@ function CreateVisitQuestionValueIfNotExists(visit, question, questionValue) {
         result = p;
     }
     return result;
+}
+
+function GoToValueList(answerType, question) {
+    if (answerType == "ValueList") {        
+        var parameters = [question, "Answer", "Visit_Questions"];
+        Workflow.Action("Edit", parameters);
+    }
+}
+
+function GetValueList(question) {
+    return DB.Current.Catalog.Question_ValueList.SelectBy("Ref", question.Question).OrderBy("Value");
 }
 
 function CheckEmptyQuestionsAndForward(questionnaires, visit) {

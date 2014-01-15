@@ -4,19 +4,13 @@
   <s:If Test="$param3 == null">
     <s:Push Id="items" Value="$Facade.GetLookupList($param1,$param2)"></s:Push>
   </s:If>
-  <s:Else>
-    <s:If Test="$param3=='Order'">
-      <s:Push Id="items" Value="$Facade.GetpriceLists($workflow.order)"></s:Push>
-    </s:If>
-    <s:Else>
-      <s:If Test="$param3=='Visit_Questions'">
-        <s:Push Id="items" Value="$Facade.GetValueList()"></s:Push>
-      </s:If>
-    </s:Else>
-  </s:Else>
-  
+  <s:If Test="$param3=='Order'">
+    <s:Push Id="items" Value="$Facade.GetpriceLists($workflow.order)"></s:Push>
+  </s:If>
+  <s:If Test="$param3=='Visit_Questions'">
+    <s:Push Id="items" Value="$Facade.GetValueList($param1)"></s:Push>
+  </s:If>
 
-  <s:Push Value="$param1.Metadata.{$param2}.Name" Id="objectName"/>
 
   <c:VerticalLayout>
 
@@ -32,24 +26,22 @@
       <c:VerticalLayout CssClass="grid">
         <c:HorizontalLayout>
           <c:VerticalLayout CssClass="header_edit_block">
+
             <s:If Test="$param2=='Distributor'">
               <c:TextView CssClass="main_row" Text="#distributor#"/>
             </s:If>
-            <s:Else>
-              <s:If Test="$objectName=='OutletType'">
-                <c:TextView CssClass="main_row" Text="#outletType#"/>
-              </s:If>
-              <s:Else>
-                <s:If Test="$objectName=='OutletClass'">
-                  <c:TextView CssClass="main_row" Text="#outletClass#"/>
-                </s:If>
-                <s:Else>
-                  <s:If Test="$objectName=='PriceList'">
-                    <c:TextView CssClass="main_row" Text="#priceList#"/>
-                  </s:If>
-                </s:Else>
-              </s:Else>
-            </s:Else>
+            <s:If Test="$param2=='Type'">
+              <c:TextView CssClass="main_row" Text="#outletType#"/>
+            </s:If>
+            <s:If Test="$param2=='Class'">
+              <c:TextView CssClass="main_row" Text="#outletClass#"/>
+            </s:If>
+            <s:If Test="$param2=='PriceList'">
+              <c:TextView CssClass="main_row" Text="#priceList#"/>
+            </s:If>
+            <s:If Test="$param2=='Answer'">
+              <c:TextView CssClass="main_row" Text="Value list"/>
+            </s:If>
 
             <c:TextView Text="#select_answer#" CssClass="description_row"></c:TextView>
           </c:VerticalLayout>
@@ -66,32 +58,24 @@
         <s:If Test="$param3 == null">
           <s:Push Id="itemId" Value="$item.Id"></s:Push>
         </s:If>
-        <s:Else>
-          <s:If Test="$param3=='Order'">
-            <s:Push Id="itemId" Value="$item.PriceListAsObject.Id"></s:Push>
-          </s:If>
-          <s:Else>
-            <s:If Test="$param3=='Visit_Questions'">
-              <s:Push Id="items" Value="$param3"></s:Push>
-            </s:If>
-          </s:Else>
-        </s:Else>
+        <s:If Test="$param3=='Order'">
+          <s:Push Id="itemId" Value="$item.PriceListAsObject.Id"></s:Push>
+        </s:If>
+        <s:If Test="$param3=='Visit_Questions'">
+          <s:Push Id="itemId" Value="$item"></s:Push>
+        </s:If>
 
         <c:HorizontalLayout OnClickAction="$Facade.UpdateValueAndBack($param1,$param2,$itemId)">
           <c:VerticalLayout>
             <s:If Test="$param3 == null">
               <c:TextView Text="$item.Description" CssClass="main_row"></c:TextView>
             </s:If>
-            <s:Else>              
-              <s:If Test="$param3=='Order'">
-                <c:TextView Text="$item.PriceListAsObject.Description" CssClass="main_row"></c:TextView>
-              </s:If>
-              <s:Else>
-                <s:If Test="$param3=='Visit_Questions'">
-                  <s:Push Id="items" Value="$param3"></s:Push>
-                </s:If>
-              </s:Else>
-            </s:Else>
+            <s:If Test="$param3=='Order'">
+              <c:TextView Text="$item.PriceListAsObject.Description" CssClass="main_row"></c:TextView>
+            </s:If>
+            <s:If Test="$param3=='Visit_Questions'">
+              <c:TextView Text="$item.Value" CssClass="main_row"></c:TextView>
+            </s:If>
           </c:VerticalLayout>
           <c:Image/>
         </c:HorizontalLayout>

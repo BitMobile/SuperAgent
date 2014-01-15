@@ -38,7 +38,7 @@
           <s:Push Id="question" Value="$item.QuestionAsObject"/>
           <s:Push Id="questionValue" Value="$Facade.CreateVisitQuestionValueIfNotExists($visit,$question,$questionValue)"></s:Push>
 
-          <c:HorizontalLayout>
+          <c:HorizontalLayout OnClickAction="$Facade.GoToValueList($question.AnswerTypeAsObject.Description, $questionValue)">
 
             <c:VerticalLayout>
               <s:If Test="$question.AnswerTypeAsObject.Description=='Boolean'">
@@ -53,13 +53,28 @@
                     <c:EditText Value="$questionValue.Answer" CssClass="main_row" Keyboard="numeric"></c:EditText>
                   </s:If>
                   <s:Else>
-                    <c:EditText Value="$questionValue.Answer" CssClass="main_row"></c:EditText>
+                    <s:If Test="$question.AnswerTypeAsObject.Description=='ValueList'">
+                      <s:If Test="$questionValue.Answer==''">
+                        <c:TextView Text="#select_answer#" CssClass="main_row"></c:TextView>
+                      </s:If>
+                      <s:Else>
+                        <c:TextView Text="$questionValue.Answer" CssClass="main_row"></c:TextView>
+                      </s:Else>
+                      
+                    </s:If>
+                    <s:Else>
+                      <c:EditText Value="$questionValue.Answer" CssClass="main_row"></c:EditText>
+                    </s:Else>
                   </s:Else>
                 </s:Else>
               </s:Else>
               <c:TextView Text="$question.Description" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
-            
+
+            <s:If Test="$question.AnswerTypeAsObject.Description=='ValueList'">
+              <c:Image/>
+            </s:If>
+
           </c:HorizontalLayout>
 
           <c:HorizontalLine/>

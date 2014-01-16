@@ -99,7 +99,7 @@ function UpdateValueAndBack(entity, attribute, value) {
     else {
         entity[attribute] = value.Value;
     }
-    
+
     Workflow.Back();
 
 }
@@ -403,18 +403,22 @@ function CreateVisitTaskValueIfNotExists(visit, task) {
 }
 
 function GetQuesttionaires(outlet) {
-    var terrioryQuery = new Query();
-    terrioryQuery.AddParameter("Outlet", outlet.Id);
-    terrioryQuery.Text = "select single(*) from Catalog.Territory_Outlets where Outlet==@Outlet";
-    var territory = terrioryQuery.Execute();
 
-    var questQuery = new Query();
-    questQuery.AddParameter("OutletType", outlet.Type);
-    questQuery.AddParameter("OutletClass", outlet.Class);
-    questQuery.AddParameter("Territory", territory.Ref);
-    questQuery.Text = "select single(*) from Document.Questionnaire_Territories where  RefAsObject.OutletType == @OutletType &&  RefAsObject.OutletClass==@OutletClass && Territory==@Territory";
+    var t2 = DB.Current.Catalog.Territory.Select().Distinct("Id");
 
-    return questQuery.Execute();
+    var questByTerr = DB.Current.Document.Questionnaire_Territories.SelectBy("Territory", t2).Distinct("Ref");
+
+    var q2 = DB.Current.Document.Questionnaire.SelectBy("Id", questByTerr)
+        .Where("OutletType==@p1 && OutletClass==@p2 && Scale==@p3", [outlet.Type, outlet.Class, DB.Current.Constant.QuestionnaireScale.Region])
+        .OrderBy("Date", true)
+        .Top(1)
+        .UnionAll(DB.Current.Document.Questionnaire.SelectBy("Id", questByTerr)
+        .Where("OutletType==@p1 && OutletClass==@p2 && Scale==@p3", [outlet.Type, outlet.Class, DB.Current.Constant.QuestionnaireScale.Territory])
+        .OrderBy("Date", true)
+        .Top(1))
+        .Distinct("Id");
+
+    return q2;
 }
 
 
@@ -422,10 +426,7 @@ function GetQuestionsByOutlet(questionnaires) {
     if (questionnaires == null)
         return null;
     else {
-        var questions = new Query();
-        questions.AddParameter("Ref", questionnaires.Ref);
-        questions.Text = "select * from Document.Questionnaire_Questions where Ref == @Ref orderby QuestionAsObject.Description";
-        var result = questions.Execute();
+        var result = DB.Current.Document.Questionnaire_Questions.SelectBy("Ref", questionnaires).OrderBy("QuestionAsObject.Description");
         if (result.Count() > 0)
             return result;
         else
@@ -467,7 +468,7 @@ function CreateVisitQuestionValueIfNotExists(visit, question, questionValue) {
 }
 
 function GoToValueList(answerType, question) {
-    if (answerType == "ValueList") {        
+    if (answerType == "ValueList") {
         var parameters = [question, "Answer", "Visit_Questions"];
         Workflow.Action("Edit", parameters);
     }
@@ -494,10 +495,8 @@ function GetSKUsByOutlet(questionnaires) {
     if (questionnaires == null)
         return null;
     else {
-        var query = new Query();
-        query.AddParameter("Ref", questionnaires.Ref);
-        query.Text = "select * from Document.Questionnaire_SKUs where Ref == @Ref orderby SKUAsObject.Description";
-        var result = query.Execute();
+        var s = DB.Current.Catalog.SKU.Select().Distinct("Id");
+        var result = DB.Current.Document.Questionnaire_SKUs.SelectBy("Ref", questionnaires).Union(DB.Current.Document.Questionnaire_SKUs.SelectBy("SKU", s)).OrderBy("SKUAsObject.Description");
         if (result.Count() > 0)
             return result;
         else
@@ -508,12 +507,7 @@ function GetSKUsByOutlet(questionnaires) {
 function CheckQuestionExistence(questionnaires, description) {
 
     if (questionnaires != null) {
-        var query = new Query();
-        query.AddParameter("using", true);
-        query.AddParameter("description", description);
-        query.AddParameter("Ref", questionnaires.Ref);
-        query.Text = "select single(*) from Document.Questionnaire_SKUQuestions where Ref == @Ref && SKUQuestionAsObject.Description == @description && UseInQuestionaire == @using";
-        var result = query.Execute();
+        var result = DB.Current.Document.Questionnaire_SKUQuestions.SelectBy("Ref", questionnaires).Where("SKUQuestionAsObject.Description==@p1 && UseInQuestionaire==@p2", [description, true]);
         if (result == null)
             return false;
         else
@@ -1189,7 +1183,8 @@ function GetLongitude() {
 
 function ShowDialog(v1) {
     //var v = String((v1));
-    Dialog.Debug(v1);
+    var p = DB.Current.Catalog.Territory.Select();
+    Dialog.Debug(p);
 }
 
 

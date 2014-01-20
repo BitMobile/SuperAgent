@@ -7,6 +7,10 @@ function ToFloat(text) {
     return parseFloat(text, 10);
 }
 
+function ToInteger(text) {
+    return parseInt(text);
+}
+
 function GetSum(val1, val2) {
     return parseFloat(val1) + parseFloat(val2);
 }
@@ -426,7 +430,7 @@ function GetQuestionsByOutlet(questionnaires) {
     if (questionnaires == null)
         return null;
     else {
-        var result = DB.Current.Document.Questionnaire_Questions.SelectBy("Ref", questionnaires).OrderBy("QuestionAsObject.Description");
+        var result = DB.Current.Document.Questionnaire_Questions.SelectBy("Ref", questionnaires).OrderBy("QuestionAsObject.Description").Distinct("Question");
         if (result.Count() > 0)
             return result;
         else
@@ -443,6 +447,10 @@ function GetVisitQuestionValue(visit, question) {
     return query.Execute();
 }
 
+
+function GetObject(obj) {
+    return DB.Current.Catalog.Question.SelectBy("Id", obj).First();
+}
 
 function CreateVisitQuestionValueIfNotExists(visit, question, questionValue) {
 
@@ -480,7 +488,7 @@ function GetValueList(question) {
 
 function CheckEmptyQuestionsAndForward(questionnaires, visit) {
 
-    var emptyQuestion = DB.Current.Document.Visit_Questions.SelectBy("Ref", visit.Id).Where("Answer==@p1", [""]).First();
+    var emptyQuestion = DB.Current.Document.Visit_Questions.SelectBy("Ref", visit.Id).Where("Answer==@p1", [""]).First();    
     while (emptyQuestion != null) {
         DB.Current.Document.Visit_Questions.Delete(emptyQuestion);
         emptyQuestion = DB.Current.Document.Visit_Questions.SelectBy("Ref", visit.Id).Where("Answer==@p1", [""]).First();
@@ -504,11 +512,15 @@ function GetSKUsByOutlet(questionnaires) {
     }
 }
 
-function CheckQuestionExistence(questionnaires, description) {
+function CheckQuestionExistence(questionnaires, description, sku) {
 
     if (questionnaires != null) {
-        var result = DB.Current.Document.Questionnaire_SKUQuestions.SelectBy("Ref", questionnaires).Where("SKUQuestionAsObject.Description==@p1 && UseInQuestionaire==@p2", [description, true]);
-        if (result == null)
+        var skuSelect = DB.Current.Document.Questionnaire_SKUs.SelectBy("SKU", sku.Id).Distinct("Ref");
+        var result = DB.Current.Document.Questionnaire_SKUQuestions.SelectBy("Ref", questionnaires)
+            .Where("SKUQuestionAsObject.Description==@p1 && UseInQuestionaire==@p2", [description, true])
+            .Union(DB.Current.Document.Questionnaire_SKUQuestions.SelectBy("Ref", skuSelect))
+            .Count();
+        if (result == 0)
             return false;
         else
             return true;
@@ -541,59 +553,43 @@ function CreateVisitSKUValueIfNotExists(visit, sku, skuValue) {
 }
 
 
-function GetSKUQty(questions, questionnaires) {
+function GetSKUQty(questions, questionnaires, sku) {
+
+    var cv=parseInt(0);    
     if (questions != null) {
-        var q = questions.Count();
-        var parameters = ["Available", "Facing", "Stock", "Price", "Mark up", "Out of stock"];
-        var s = parseInt(0);
-        var r;
+        var parameters = ["Available", "Facing", "Stock", "Price", "MarkUp", "OutOfStock"];
         for (var i in parameters) {
-            if (CheckQuestionExistence(questionnaires, parameters[i]))
-                s += parseInt(1);
+            var lm = CheckQuestionExistence(questionnaires, parameters[i], sku);
+            if (lm)
+                cv += parseInt(1);
         }
-        return q * s;
     }
-    else
-        return 0;
+    Variables["workflow"]["sku_qty"] = parseInt(Variables["workflow"]["sku_qty"]);
+    Variables["workflow"]["sku_qty"] += cv;
+    return cv;
 
 }
 
-function GetSKUAnswers(sku, visit, sku_answ) {
-
-    sku_answ = parseInt(sku_answ);
+function GetSKUAnswers(visit, sku) {//, sku_answ) {
+   
+    var sa = parseInt(0);
     var parameters = ["Available", "Facing", "Stock", "Price", "MarkUp", "OutOfStock"];
-    var s = parseInt(0);
     for (var i in parameters) {
-        if (IsAnswered(visit, parameters[i], sku.Id))
-            s += parseInt(1);
-    }
-    if (sku_answ != null)
-        return sku_answ + s
-    else
-        return s;
+        if (IsAnswered(visit, parameters[i], sku))
+            sa += parseInt(1);
+    }    
+    Variables["workflow"]["sku_answ"] += sa;
+    return sa;
 }
 
 function IsAnswered(visit, qName, sku) {
-    if (questionnaires != null) {
-        var query = new Query();
-        query.AddParameter("Ref", visit.Id);
-        query.AddParameter("sku", sku);
-        if (qName == "Facing" || qName == "Stock" || qName == "Price" || qName == "MarkUp") {
-            query.AddParameter("null", null);
-            query.Text = String.Format("select single(*) from Document.Visit_SKUs where Ref == @Ref && {0} != @null && SKU == @sku", qName);
-        }
-        else {
-            query.Text = "select single(*) from Document.Visit_SKUs where Ref == @Ref && SKU == @sku";
-        }
+    
+    var n = DB.Current.Document.Visit_SKUs.SelectBy("Ref", visit.Id)        
+        .Where(String.Format("{0}!=@p1 && SKU==@p2", qName), [null, sku.Id])
+        .Count();    
 
-        var result = query.Execute();
-        if (result == null)
-            return false;
-        else
-            return true;
-    }
-    else
-        return null;
+    return n;
+
 }
 
 function CheckAndCommit() {

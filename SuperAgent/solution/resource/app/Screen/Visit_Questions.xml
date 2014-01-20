@@ -35,7 +35,7 @@
         <s:Iterator Id="item" Value="$questions">
 
           <s:Push Id="workflow.questions_qty" Value="$Facade.GetSum($workflow.questions_qty, 1)"></s:Push>
-          <s:Push Id="question" Value="$item.QuestionAsObject"/>
+          <s:Push Id="question" Value="$Facade.GetObject($item)"/>
           <s:Push Id="questionValue" Value="$Facade.CreateVisitQuestionValueIfNotExists($visit,$question,$questionValue)"></s:Push>
 
           <c:HorizontalLayout OnClickAction="$Facade.GoToValueList($question.AnswerTypeAsObject.Description, $questionValue)">

@@ -36,6 +36,22 @@
         </c:VerticalLayout>
         <c:HorizontalLine/>
       </s:If>
+      <s:Else>
+        <c:VerticalLayout Id="headerDescr" CssClass="header">
+          <c:VerticalLayout  CssClass ="grid">
+
+            <c:HorizontalLayout>
+              <c:VerticalLayout>
+                <c:TextView Id="outletDescr" Text="$outlet.Description" CssClass="main_row"></c:TextView>
+                <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
+              </c:VerticalLayout>
+            </c:HorizontalLayout>
+
+            <c:HorizontalLine/>
+          </c:VerticalLayout>
+        </c:VerticalLayout>
+        <c:HorizontalLine/>
+      </s:Else>
     </s:If>
     <s:Else>
       <c:VerticalLayout Id="headerDescr" CssClass="header">

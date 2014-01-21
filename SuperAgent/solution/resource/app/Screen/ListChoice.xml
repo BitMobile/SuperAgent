@@ -40,7 +40,7 @@
               <c:TextView CssClass="main_row" Text="#priceList#"/>
             </s:If>
             <s:If Test="$param2=='Answer'">
-              <c:TextView CssClass="main_row" Text="Value list"/>
+              <c:TextView CssClass="main_row" Text="#valueList#"/>
             </s:If>
 
             <c:TextView Text="#select_answer#" CssClass="description_row"></c:TextView>

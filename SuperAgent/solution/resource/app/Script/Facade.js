@@ -254,7 +254,7 @@ function CheckNotNullAndCommit(outlet) {
             var attribute = attributes[i];
             if (Variables[attribute].Text == null || (Variables[attribute].Text).Trim() == "" || Variables[attribute].Text == "\n\n\n\n\n\n\n") {//Variables[attribute].Text == "" || Variables[attribute].Text == null) {
                 areNulls = true;
-            }
+            }            
         }
         if (areNulls)
             Dialog.Message("#messageNulls#");
@@ -548,6 +548,8 @@ function CreateVisitSKUValueIfNotExists(visit, sku, skuValue) {
 
     p.Ref = visit.Id;
     p.SKU = sku.Id;
+    p.Available = "false";
+    p.OutOfStock = "false";
 
     return p;
 }

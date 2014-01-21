@@ -20,7 +20,6 @@
       <s:If Test="$useInQuestionnaire">
         <c:HorizontalLayout>
           <c:VerticalLayout>
-            <s:Push Id="$skuValue" Value="$Facade.AssignValue($skuValue, Available, false, bool)"></s:Push>
             <c:CheckBox Value="$skuValue.Available" CssClass="main_row"></c:CheckBox>
             <c:TextView Text="#available#" CssClass="description_row"></c:TextView>
           </c:VerticalLayout>

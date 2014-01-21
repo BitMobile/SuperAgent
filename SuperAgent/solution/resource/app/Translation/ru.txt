@@ -102,3 +102,4 @@ features	Характеристики
 noPriceLists	Для этой торговой точки нет прайс листов
 emptyList	Список пуст
 impossibleToDelete	Невозможно удалить, заказ уже в базе
+valueList	Список значений

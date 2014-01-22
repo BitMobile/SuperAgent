@@ -254,7 +254,7 @@ function CheckNotNullAndCommit(outlet) {
             var attribute = attributes[i];
             if (Variables[attribute].Text == null || (Variables[attribute].Text).Trim() == "" || Variables[attribute].Text == "\n\n\n\n\n\n\n") {//Variables[attribute].Text == "" || Variables[attribute].Text == null) {
                 areNulls = true;
-            }            
+            }
         }
         if (areNulls)
             Dialog.Message("#messageNulls#");
@@ -488,7 +488,7 @@ function GetValueList(question) {
 
 function CheckEmptyQuestionsAndForward(questionnaires, visit) {
 
-    var emptyQuestion = DB.Current.Document.Visit_Questions.SelectBy("Ref", visit.Id).Where("Answer==@p1", [""]).First();    
+    var emptyQuestion = DB.Current.Document.Visit_Questions.SelectBy("Ref", visit.Id).Where("Answer==@p1", [""]).First();
     while (emptyQuestion != null) {
         DB.Current.Document.Visit_Questions.Delete(emptyQuestion);
         emptyQuestion = DB.Current.Document.Visit_Questions.SelectBy("Ref", visit.Id).Where("Answer==@p1", [""]).First();
@@ -540,7 +540,7 @@ function GetVisitSKUValue(visit, sku) {
 }
 
 
-function CreateVisitSKUValueIfNotExists(visit, sku, skuValue) {
+function CreateVisitSKUValueIfNotExists(visit, sku, skuValue, questionnaires) {
     if (skuValue != null)
         return skuValue;
 
@@ -548,8 +548,10 @@ function CreateVisitSKUValueIfNotExists(visit, sku, skuValue) {
 
     p.Ref = visit.Id;
     p.SKU = sku.Id;
-    p.Available = "false";
-    p.OutOfStock = "false";
+    if (CheckQuestionExistence(questionnaires, "Available", sku))
+        p.Available = "false";
+    if (CheckQuestionExistence(questionnaires, "OutOfStock", sku))
+        p.OutOfStock = "false";
 
     return p;
 }
@@ -557,7 +559,7 @@ function CreateVisitSKUValueIfNotExists(visit, sku, skuValue) {
 
 function GetSKUQty(questions, questionnaires, sku) {
 
-    var cv=parseInt(0);    
+    var cv = parseInt(0);
     if (questions != null) {
         var parameters = ["Available", "Facing", "Stock", "Price", "MarkUp", "OutOfStock"];
         for (var i in parameters) {
@@ -573,22 +575,22 @@ function GetSKUQty(questions, questionnaires, sku) {
 }
 
 function GetSKUAnswers(visit, sku) {//, sku_answ) {
-   
+
     var sa = parseInt(0);
     var parameters = ["Available", "Facing", "Stock", "Price", "MarkUp", "OutOfStock"];
     for (var i in parameters) {
         if (IsAnswered(visit, parameters[i], sku))
             sa += parseInt(1);
-    }    
+    }
     Variables["workflow"]["sku_answ"] += sa;
     return sa;
 }
 
 function IsAnswered(visit, qName, sku) {
-    
-    var n = DB.Current.Document.Visit_SKUs.SelectBy("Ref", visit.Id)        
+
+    var n = DB.Current.Document.Visit_SKUs.SelectBy("Ref", visit.Id)
         .Where(String.Format("{0}!=@p1 && SKU==@p2", qName), [null, sku.Id])
-        .Count();    
+        .Count();
 
     return n;
 
@@ -756,7 +758,7 @@ function GetpriceLists(order, attribute) {
 function GetFeatures(sku) {
     var query = new Query();
     query.AddParameter("sku", sku);
-    query.Text = "select * from Catalog.SKU_Stocks where Ref==@sku && StockValue!= 0";
+    query.Text = "select * from Catalog.SKU_Stocks where Ref==@sku";
     return query.Execute();
 }
 
@@ -774,14 +776,6 @@ function CheckfeaturesAndAction(sku) {
     }
     var parameters = [sku.SKUAsObject(), feature, sku.Price];
     Workflow.Action(actionName, parameters);
-}
-
-function GetActionValue(skuId) {
-    var c = CountEntities("Catalog", "SKU_Stocks", skuId, "Ref");
-    if (parseInt(c) == parseInt(1))
-        return "SelectSKU";
-    else
-        return "Select";
 }
 
 function GetFeatureDescr(feature) {
@@ -941,20 +935,18 @@ function GetSKUs(searchText, owner, priceListId) {
             //skus by group
             var skus = DB.Current.Catalog.SKU
                 .SelectBy("Owner", owner)
-                .Where("CommonStock!=0.00")
                 .Distinct("Id");
         }
         else {
             var skus = DB.Current.Catalog.SKU
                 .SelectBy("Owner", owner)
-                .Where("CommonStock!=0.00 && Description.Contains(@p1)", [searchText])
+                .Where("Description.Contains(@p1)", [searchText])
                 .Distinct("Id");
         }
         if (skus.Count() < 100) {
             var q = DB.Current.Document.PriceList_Prices
                 .SelectBy("SKU", skus)
                 .Where("Ref==@p1", [priceListId])
-                .Top(100)
                 .OrderBy("SKUAsObject.Description");
         }
         else {

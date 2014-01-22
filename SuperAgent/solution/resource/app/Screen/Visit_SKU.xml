@@ -5,7 +5,7 @@
   <s:Push Id="visit" Value="$param2"></s:Push>
   <s:Push Id="sku" Value="$param3"></s:Push>
   <s:Push Id="questionnaires" Value="$param5"></s:Push>
-  <s:Push Id="skuValue" Value="$Facade.CreateVisitSKUValueIfNotExists($visit,$sku,$param4)"></s:Push>
+  <s:Push Id="skuValue" Value="$Facade.CreateVisitSKUValueIfNotExists($visit,$sku,$param4,$questionnaires)"></s:Push>
 
   <c:VerticalLayout>
 

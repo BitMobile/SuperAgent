@@ -2,14 +2,15 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
 
   <s:Push Id="order" Value="$workflow.order"></s:Push>
-  <s:Push Id="sku" Value="$param1"></s:Push>
-  <s:Push Id="feature" Value="$param2"></s:Push>
-  <s:Push Id="price" Value="$param3"></s:Push>
-  <s:Push Id="orderitem" Value="$param4"></s:Push>
+  <s:Push Id="sku" Value="$param1"></s:Push>  
+  <s:Push Id="price" Value="$param2"></s:Push>
+  <s:Push Id="orderitem" Value="$param3"></s:Push>
   <s:Push Id="multiplier" Value="$Facade.GetMultiplier($sku.Id, $orderitem)"></s:Push>
-  <s:Push Id="orderitem" Value="$Facade.CreateOrderItemIfNotExist($order.Id,$sku,$orderitem,$feature.Feature,$price)"></s:Push>
+  <s:Push Id="features" Value="$Facade.GetFeatures($sku.Id)"></s:Push>
+  <s:Push Id="orderitem" Value="$Facade.CreateOrderItemIfNotExist($order.Id,$sku,$orderitem,$price,$features)"></s:Push>
   <s:Push Id="baseQty" Value="$Facade.GetMultiple($orderitem.Qty, $multiplier)"></s:Push>
   <s:Push Id="ismarkup" Value="$Facade.ConvertToBoolean1($orderitem.Discount)"></s:Push>
+  
 
   <c:VerticalLayout>
 
@@ -20,15 +21,13 @@
     </c:DockLayout>
 
     <c:ScrollView Id="grScrollView" CssClass="grid">
-
+      
+      <s:Push Id="featureDescr" Value="$Facade.GetFeatureDescr($orderitem.FeatureAsObject)"></s:Push>
+      
       <c:HorizontalLayout CssClass="header_edit_block">
-        <c:VerticalLayout CssClass="partial_width" OnClickAction="$Facade.CountPrice($orderitem,$discountEdit.Text,$discCheckbox.Checked)">
-          <s:Push Id="featureDescr" Value="$Facade.GetFeatureDescr($orderitem.FeatureAsObject)"></s:Push>
+        <c:VerticalLayout CssClass="partial_width" OnClickAction="$Facade.CountPrice($orderitem,$discountEdit.Text,$discCheckbox.Checked)">          
           <c:TextView Text="{$sku.Description}{$featureDescr}" CssClass="main_row"></c:TextView>
           <c:TextView Text="#countPrice#" CssClass="description_row"></c:TextView>
-        </c:VerticalLayout>
-        <c:VerticalLayout CssClass="quarter_width">
-          <c:Button CssClass="btn_delete" OnClickAction="$Facade.DeleteItemAndBack($orderitem)"></c:Button>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
@@ -39,23 +38,6 @@
           <c:TextView Text="#price#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
         <c:VerticalLayout>
-          <c:EditText Id="discountEdit" Text="$orderitem.Discount" CssClass="main_row" Keyboard="numeric"></c:EditText>
-          <s:If Test="$ismarkup">
-            <c:TextView Id="discTextView" Text="#markUp#" CssClass="description_row"></c:TextView>  
-          </s:If>
-          <s:Else>
-            <c:TextView Id="discTextView" Text="#discount#" CssClass="description_row"></c:TextView>
-          </s:Else>
-        </c:VerticalLayout>
-        <c:VerticalLayout>
-          <c:CheckBox Id="discCheckbox" Checked="$ismarkup" CssClass="main_row"></c:CheckBox>
-          <c:TextView Text="#discount#/#markUp#" CssClass="description_row"></c:TextView>
-        </c:VerticalLayout>
-      </c:HorizontalLayout>
-      <c:HorizontalLine/>
-
-      <c:HorizontalLayout  Id="btnSpread" CssClass="cell">
-        <c:VerticalLayout>
           <c:EditText Value="$orderitem.Qty" CssClass="main_row" Keyboard="numeric"></c:EditText>
           <c:TextView Text="#quantity#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
@@ -64,15 +46,24 @@
           <c:TextView Text="#packUnit#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
+      <c:HorizontalLine/>
 
-      <c:HorizontalLayout CssClass="cell">
+      <c:HorizontalLayout  Id="btnSpread" CssClass="33">
         <c:VerticalLayout>
-          <c:TextView Id="baseQtyTextView" Text="$baseQty" CssClass="main_row"></c:TextView>
-          <c:TextView Text="#quantity#" CssClass="description_row"></c:TextView>
+          <c:CheckBox Id="discCheckbox" Checked="$ismarkup" CssClass="main_row"></c:CheckBox>
+          <c:TextView Text="#discount#/#markUp#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
         <c:VerticalLayout>
-          <c:TextView Text="$sku.BaseUnitAsObject.Description" CssClass="main_row"></c:TextView>
-          <c:TextView Text="#baseUnit#" CssClass="description_row"></c:TextView>
+          <c:EditText Id="discountEdit" Text="$orderitem.Discount" CssClass="main_row" Keyboard="numeric"></c:EditText>
+          <s:If Test="$ismarkup">
+            <c:TextView Id="discTextView" Text="#markUp#" CssClass="description_row"></c:TextView>
+          </s:If>
+          <s:Else>
+            <c:TextView Id="discTextView" Text="#discount#" CssClass="description_row"></c:TextView>
+          </s:Else>
+        </c:VerticalLayout>
+        <c:VerticalLayout CssClass="quarter_width">
+          <c:Button CssClass="btn_delete" OnClickAction="$Facade.DeleteItemAndBack($orderitem)"></c:Button>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
@@ -81,19 +72,20 @@
       
       <c:HorizontalLayout CssClass="header_edit_block">
         <c:VerticalLayout>
-          <c:TextView Text="#selectUnit#" CssClass="caption_row"></c:TextView>
+          <c:TextView Text="select feature" CssClass="caption_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
-     
-      <s:Push Id="units" Value="$Facade.GetUnits($sku.Id)"></s:Push>
-      <s:Iterator Id="unit" Value="$units">
+           
+      <s:Iterator Id="feature" Value="$features">
 
-        <c:HorizontalLayout OnClickAction="$Facade.ChangeUnit($sku, $orderitem, $unit, $discountEdit.Text, $discCheckbox.Checked, $price)">
+        <c:HorizontalLayout OnClickAction="$Facade.ChangeFeatureAndRefresh($orderitem, $feature, $sku)">
           <c:VerticalLayout>
-            <c:TextView Text="$unit.PackAsObject.Description" CssClass="main_row"></c:TextView>
+            <c:TextView Text="$feature.FeatureAsObject.Description" CssClass="main_row"></c:TextView>
           </c:VerticalLayout>
-          <c:Image/>
+          <s:If Test="$orderitem.Feature==$feature.Feature">
+            <c:Image CssClass="tick"/>
+          </s:If>
         </c:HorizontalLayout>
         <c:HorizontalLine/>
 

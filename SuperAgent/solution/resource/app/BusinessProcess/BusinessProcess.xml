@@ -255,8 +255,7 @@
       <bp:Action Name="Forward" NextStep="Commentary"></bp:Action>
     </bp:Step>
 
-    <bp:Step Name="AddSKU" Screen="Order_SKUs.xml">
-      <bp:Action Name="Select" NextStep="SelectFeature"></bp:Action>
+    <bp:Step Name="AddSKU" Screen="Order_SKUs.xml">      
       <bp:Action Name="SelectSKU" NextStep="EditSKU"></bp:Action>
     </bp:Step>
     

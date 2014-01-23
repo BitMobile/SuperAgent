@@ -22,7 +22,7 @@
 
     <c:HorizontalLine/>
 
-    <c:VerticalLayout CssClass="header">
+    <c:VerticalLayout Id="header" CssClass="header">
       <c:VerticalLayout CssClass="grid">
         <c:HorizontalLayout>
           <c:VerticalLayout CssClass="header_edit_block">

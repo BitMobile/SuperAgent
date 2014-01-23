@@ -78,7 +78,7 @@ receivableAmount	Сумма задолженности
 encashmentAmount	Сумма инкассации
 nameSurname	ФИО
 maximumAmount	Лимит
-NoLimit		Неограничен
+NoLimit		Не ограничен
 deleteItem	Удалить эту строку
 startTime	Время начала
 newOutlet	Создать новую торговую точку
@@ -95,7 +95,7 @@ showOnMap	Показать на карте
 no_visitPlans		Нет визитов для отображения
 current		Текущие
 couldn't_be_cleaned	Поле не может быть очищено
-priceList	Прайс лист
+priceList	Прайс-лист
 isntSelected	Не выбран
 SKUWillRevised	Заказ пересчитан
 features	Характеристики

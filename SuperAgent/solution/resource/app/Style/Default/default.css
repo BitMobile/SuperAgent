@@ -212,6 +212,12 @@ WebImage {
                 background-image: url(icon_add.png);
             }
 
+            .tick {
+                height: 30%;
+                margin-top: 35%;
+                background-image: url(tick.png);
+            }
+
         .grid hl CheckBox {
             selected-color: #6f6583;
             background-color: #c9c3d5;

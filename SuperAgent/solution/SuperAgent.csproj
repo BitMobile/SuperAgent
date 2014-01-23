@@ -132,6 +132,7 @@
     <Content Include="resource\app\Style\Default\ScheduledVisits.css" />
     <Content Include="resource\app\Style\Default\Stock_SKUs.css" />
     <Content Include="resource\app\Style\Default\Targets.css" />
+    <Content Include="resource\app\Style\Default\Visit_Questions.css" />
     <Content Include="resource\app\Style\Default\Visit_Order.css" />
     <Content Include="resource\app\Translation\en.txt" />
     <Content Include="resource\app\Translation\ru.txt" />
@@ -140,11 +141,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="resource\app\Style\Default\Visit_Questions.css" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="ArtOfTest.WebAii, Version=2012.2.1204.0, Culture=neutral, PublicKeyToken=4fd5f65be123776c" />
     <Reference Include="ArtOfTest.WebAii.Design, Version=2012.2.1204.0, Culture=neutral, PublicKeyToken=4fc62bbc3827ab1d" />
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

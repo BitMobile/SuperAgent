@@ -758,9 +758,10 @@ function GetpriceLists(order, attribute) {
 function GetFeatures(sku) {
     var query = new Query();
     query.AddParameter("sku", sku);
-    query.Text = "select * from Catalog.SKU_Stocks where Ref==@sku";
+    query.Text = "select * from Catalog.SKU_Stocks where Ref==@sku orderby LineNumber";
     return query.Execute();
 }
+
 
 function CheckfeaturesAndAction(sku) {
 
@@ -789,14 +790,16 @@ function GetFeatureDescr(feature) {
 
 
 
-function CreateOrderItemIfNotExist(orderId, sku, orderitem, feature, price) {
+function CreateOrderItemIfNotExist(orderId, sku, orderitem, price, features) {
+
+    var feature = DB.Current.Catalog.SKU_Stocks.SelectBy("Ref", sku.Id).OrderBy("LineNumber").First();
 
     if (orderitem == null) {
 
-        if (feature == null) {
-            var f = GetEntity("Catalog", "SKU_Stocks", sku.Id, "Ref");
-            feature = f.Feature;
-        }
+        //if (feature == null) {
+        //    var f = GetEntity("Catalog", "SKU_Stocks", sku.Id, "Ref");
+        //    feature = f.Feature;
+        //}
 
         var query = new Query();
         var r = DB.Current.Document.Order_SKUs.SelectBy("SKU", sku.Id).Where("Ref==@p1 && Feature==@p2", [orderId, feature]);
@@ -808,7 +811,7 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, feature, price) {
             var p = DB.Create("Document.Order_SKUs");
             p.Ref = orderId;
             p.SKU = sku.Id;
-            p.Feature = feature;
+            p.Feature = feature.Feature;
             p.Price = price;
             p.Total = price;
             p.Units = sku.BaseUnit;
@@ -881,6 +884,12 @@ function ChangeUnit(sku, orderitem, unit, discount, discChBox, price) {
     Variables["orderitem"].Price = price * unit.Multiplier;
     Variables["orderitem"].Total = p;
     Variables["orderItemTotalId"].Text = p;
+}
+
+function ChangeFeatureAndRefresh(orderItem, feature, sku) {
+    orderItem.Feature = feature.Feature;
+    var arr = [sku, null, orderItem];
+    Workflow.Refresh(arr);
 }
 
 function DeleteItemAndBack(orderitem) {

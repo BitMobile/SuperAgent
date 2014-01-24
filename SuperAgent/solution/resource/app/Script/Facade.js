@@ -839,7 +839,7 @@ function CountPrice(orderitem, discount, discChBox) {
         discChBox = -1;
         Variables["discTextView"].Text = Translate["#discount#"];
     }
-    var p = orderitem.Price * Converter.ToDecimal((discount) * discChBox / 100 + 1) * Variables["multiplier"];
+    var p = orderitem.Price * Converter.ToDecimal((discount) * discChBox / 100 + 1);// * Variables["multiplier"];
     Variables["orderitem"].Discount = Converter.ToDecimal(discount * discChBox);
     Variables["discountEdit"].Text = Converter.ToDecimal(discount * discChBox);
     Variables["orderitem"].Total = p;
@@ -858,7 +858,7 @@ function GetMultiplier(sku, orderitem) {
 
 function CalculatePrice(price, discount, multiplier) {
 
-    var total = (price * (discount / 100 + 1)) * multiplier;
+    var total = (price * (discount / 100 + 1)) * multiplier;    
     return total
 
 }
@@ -867,28 +867,38 @@ function GetUnits(skuId) {
 
     var units = new Query();
     units.AddParameter("skuId", skuId);
-    units.Text = "select * from Catalog.SKU_Packing where Ref==@skuId";
+    units.Text = "select single(*) from Catalog.SKU_Packing where Ref==@skuId";
     return units.Execute();
 
 }
 
-function ChangeUnit(sku, orderitem, unit, discount, discChBox, price) {
+function ChangeUnit(sku, orderitem, discount, discChBox, price) {
+
+    var currUnit = DB.Current.Catalog.SKU_Packing.SelectBy("Ref", sku.Id).Where("Pack==@p1", [orderitem.Units]).First();
+    //Dialog.Debug(currUnit);
+
+    var unit = DB.Current.Catalog.SKU_Packing.SelectBy("Ref", sku.Id).Where("LineNumber==@p1", [(currUnit.LineNumber + 1)]).First();
+    if (unit == null)
+        unit = DB.Current.Catalog.SKU_Packing.SelectBy("Ref", sku.Id).Where("LineNumber==@p1", [1]).First();
+
+    //Dialog.Debug(unit);
 
     Variables["multiplier"] = unit.Multiplier;
-    Variables["baseQtyTextView"].Text = orderitem.Qty * unit.Multiplier;
+    //Variables["baseQtyTextView"].Text = orderitem.Qty * unit.Multiplier;
 
     Variables["orderitem"].Units = unit.Pack;
     Variables["itemUnits"].Text = unit.PackAsObject().Description;
 
+    Dialog.Debug(price);
     var p = CalculatePrice(price, orderitem.Discount, unit.Multiplier);
     Variables["orderitem"].Price = price * unit.Multiplier;
     Variables["orderitem"].Total = p;
     Variables["orderItemTotalId"].Text = p;
 }
 
-function ChangeFeatureAndRefresh(orderItem, feature, sku) {
+function ChangeFeatureAndRefresh(orderItem, feature, sku, price) {
     orderItem.Feature = feature.Feature;
-    var arr = [sku, null, orderItem];
+    var arr = [sku, price, orderItem];
     Workflow.Refresh(arr);
 }
 

@@ -41,7 +41,7 @@
           <c:EditText Value="$orderitem.Qty" CssClass="main_row" Keyboard="numeric"></c:EditText>
           <c:TextView Text="#quantity#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
-        <c:VerticalLayout>
+        <c:VerticalLayout OnClickAction="$Facade.ChangeUnit($sku, $orderitem, $discountEdit.Text, $discCheckbox.Checked, $price)">
           <c:TextView Id="itemUnits" Text="$orderitem.UnitsAsObject.Description" CssClass="main_row"></c:TextView>
           <c:TextView Text="#packUnit#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
@@ -72,14 +72,14 @@
       
       <c:HorizontalLayout CssClass="header_edit_block">
         <c:VerticalLayout>
-          <c:TextView Text="select feature" CssClass="caption_row"></c:TextView>
+          <c:TextView Text="#features#" CssClass="caption_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
            
       <s:Iterator Id="feature" Value="$features">
 
-        <c:HorizontalLayout OnClickAction="$Facade.ChangeFeatureAndRefresh($orderitem, $feature, $sku)">
+        <c:HorizontalLayout OnClickAction="$Facade.ChangeFeatureAndRefresh($orderitem, $feature, $sku, $price)">
           <c:VerticalLayout>
             <c:TextView Text="$feature.FeatureAsObject.Description" CssClass="main_row"></c:TextView>
           </c:VerticalLayout>

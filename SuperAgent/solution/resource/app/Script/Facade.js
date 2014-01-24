@@ -889,7 +889,7 @@ function ChangeUnit(sku, orderitem, discount, discChBox, price) {
     Variables["orderitem"].Units = unit.Pack;
     Variables["itemUnits"].Text = unit.PackAsObject().Description;
 
-    Dialog.Debug(price);
+    //Dialog.Debug(price);
     var p = CalculatePrice(price, orderitem.Discount, unit.Multiplier);
     Variables["orderitem"].Price = price * unit.Multiplier;
     Variables["orderitem"].Total = p;
@@ -1092,7 +1092,7 @@ function GetEncashments(receivables, autoSpread, encashmentAmount, encashmentId)
     for (var i in receivables) {
         var document = [];
         document.push(i.DocumentName);
-        var encItem = GetEncashmentItem(i.DocumentName, encashmentId);
+        var encItem = GetEncashmentItem(i.DocumentName, encashmentId);        
         if (autoSpread == true) {
             if (parseInt(sumToSpread) != parseInt(0)) {
                 encItem = SpreadOnItem(encItem, sumToSpread, encashmentId, i);
@@ -1172,6 +1172,12 @@ function GetEncAmount(encashmentText, autoSpread, encashment) {
         query.Text = "select sum(EncashmentSum) from Document.Encashment_EncashmentDocuments where Ref==@docId";
         return query.Execute();
     }
+}
+
+function SetAmountAndForward(encashment,sum) {
+    encashment.EncashmentAmount = sum;
+
+    Workflow.Forward([]);
 }
 
 function GetSKUImage(sku) {

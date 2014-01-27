@@ -669,7 +669,7 @@ function AssignNumberIfNotExist(order) {
 
 }
 
-function CreateOrderIfNotExists(order, outlet, userId, visitId, executedOrder) {
+function CreateOrderIfNotExists(order, outlet, userId, visitId, executedOrder, priceLists) {
 
     if (executedOrder != null) {
         order = executedOrder;
@@ -690,14 +690,17 @@ function CreateOrderIfNotExists(order, outlet, userId, visitId, executedOrder) {
             if (visitId != null) {
                 order.Visit = visitId;
             }
-            var prices = GetEntities("Catalog", "Outlet_Prices", outlet.Id, "Ref");
-            if (parseInt(prices.Count()) == parseInt(1)) {
-                for (var k in prices)
-                    order.PriceList = k.PriceList;
+            //var prices = GetEntities("Catalog", "Outlet_Prices", outlet.Id, "Ref");
+            if (priceLists == parseInt(1)) {
+                Dialog.Debug("H");
+                //for (var k in prices)
+                var pl = GetpriceListRef(outlet.Id);
+                Dialog.Debug(pl);
+                order.PriceList = pl;
             }
         }
     }
-
+    Dialog.Debug(order);
     return order;
 }
 
@@ -749,10 +752,46 @@ function GetSKUAmount(orderId, item) {
 
 }
 
-function GetpriceLists(order, attribute) {
 
-    return DB.Current.Catalog.Outlet_Prices.Select().Where("Ref==@p1", [order.Outlet]).OrderBy("RefAsObject.Description");
+function GetPriceListQty(outlet) {
+    var pl = DB.Current.Catalog.Outlet_Prices.SelectBy("Ref", outlet).Count();
+    if (parseInt(pl) != parseInt(0))
+        return pl;
+    else {
+        return d = DB.Current.Document.PriceList.SelectBy("DefaultPriceList", true).Count();
+    }
+}
 
+function GetpriceListRef(outlet) {
+    var pl = DB.Current.Catalog.Outlet_Prices.Select().Where("Ref==@p1", [outlet]).OrderBy("RefAsObject.Description").Count();
+    Dialog.Debug(pl);
+    if (parseInt(pl) == parseInt(1)) {
+        Dialog.Debug("C");
+        return DB.Current.Catalog.Outlet_Prices.Select().Where("Ref==@p1", [outlet]).Distinct("PriceList").First();
+    }
+
+    dl = DB.Current.Document.PriceList.SelectBy("DefaultPriceList", true).Count();
+    Dialog.Debug(dl);
+    if (parseInt(dl) == parseInt(1)) {
+        Dialog.Debug("D");
+        return DB.Current.Document.PriceList.SelectBy("DefaultPriceList", true).Distinct("Id").First();
+    }
+}
+
+function GetpriceLists(outlet, order) {
+
+    var pl = DB.Current.Catalog.Outlet_Prices.Select().Where("Ref==@p1", [outlet]).OrderBy("RefAsObject.Description").Count();
+    Dialog.Debug(pl);
+    if (parseInt(pl) != parseInt(0)) {
+        Dialog.Debug("A");
+        Variables.Add("defaultPriceLists", parseInt(0));
+        return DB.Current.Catalog.Outlet_Prices.Select().Where("Ref==@p1", [outlet]).OrderBy("RefAsObject.Description");
+    }
+    else {
+        Dialog.Debug("B");
+        Variables.Add("defaultPriceLists", parseInt(1));
+        return DB.Current.Document.PriceList.SelectBy("DefaultPriceList", true);
+    }
 }
 
 function GetFeatures(sku) {
@@ -858,7 +897,7 @@ function GetMultiplier(sku, orderitem) {
 
 function CalculatePrice(price, discount, multiplier) {
 
-    var total = (price * (discount / 100 + 1)) * multiplier;    
+    var total = (price * (discount / 100 + 1)) * multiplier;
     return total
 
 }
@@ -1092,7 +1131,7 @@ function GetEncashments(receivables, autoSpread, encashmentAmount, encashmentId)
     for (var i in receivables) {
         var document = [];
         document.push(i.DocumentName);
-        var encItem = GetEncashmentItem(i.DocumentName, encashmentId);        
+        var encItem = GetEncashmentItem(i.DocumentName, encashmentId);
         if (autoSpread == true) {
             if (parseInt(sumToSpread) != parseInt(0)) {
                 encItem = SpreadOnItem(encItem, sumToSpread, encashmentId, i);
@@ -1174,7 +1213,7 @@ function GetEncAmount(encashmentText, autoSpread, encashment) {
     }
 }
 
-function SetAmountAndForward(encashment,sum) {
+function SetAmountAndForward(encashment, sum) {
     encashment.EncashmentAmount = sum;
 
     Workflow.Forward([]);

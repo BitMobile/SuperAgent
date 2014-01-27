@@ -16,7 +16,7 @@
 
     <c:DockLayout CssClass="top_navigator">
       <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward()"/>
+      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($order.OutletAsObject)"/>
       <c:TextView Text="#edit#" />
     </c:DockLayout>
 

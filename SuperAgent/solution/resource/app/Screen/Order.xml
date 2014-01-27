@@ -3,8 +3,9 @@
 
   <s:Push Id="outlet" Value="$param1"></s:Push>
   <s:Push Id="executedOrder" Value="$param3"></s:Push>
+  <s:Push Id="priceLists" Value="$Facade.GetPriceListQty($outlet.Id)"></s:Push>
 
-  <s:Push Id="workflow.order" Value ="$Facade.CreateOrderIfNotExists($workflow.order, $outlet, $common.UserId, $workflow.visit.Id, $executedOrder)"></s:Push>
+  <s:Push Id="workflow.order" Value ="$Facade.CreateOrderIfNotExists($workflow.order, $outlet, $common.UserId, $workflow.visit.Id, $executedOrder, $priceLists)"></s:Push>
 
   <s:Push Id="items" Value="$Facade.GetOrderedSKUs($workflow.order.Id)"></s:Push>
   <s:Push Id="qty" Value="$Facade.GetOrderQTY($workflow.order.Id)"></s:Push>
@@ -63,8 +64,7 @@
 
 
       <c:ScrollView Id="grScrollView" CssClass="grid">
-
-        <s:Push Id="priceLists" Value="$Facade.CountEntities(Catalog, Outlet_Prices, $workflow.order.Outlet, Ref)"></s:Push>        
+    
         <s:If Test="$priceLists != 1">
           <c:HorizontalLayout OnClickAction="$Workflow.DoAction(EditPriceList, $workflow.order, PriceList, Order)">
             <c:VerticalLayout>
@@ -72,8 +72,8 @@
                 <c:TextView Text="$workflow.order.PriceListAsObject.Description" CssClass="main_row"></c:TextView>
               </s:If>
               <s:Else>
-                <s:If Test="$priceLists == 0">
-                  <c:TextView Text="#noPriceLists#" CssClass="main_row"></c:TextView>
+                <s:If Test="$priceLists == 0">                  
+                    <c:TextView Text="#noPriceLists#" CssClass="main_row"></c:TextView>                  
                 </s:If>
                 <s:Else>
                   <c:TextView Text="#isntSelected#" CssClass="main_row"></c:TextView>

@@ -5,7 +5,7 @@
     <s:Push Id="items" Value="$Facade.GetLookupList($param1,$param2)"></s:Push>
   </s:If>
   <s:If Test="$param3=='Order'">
-    <s:Push Id="items" Value="$Facade.GetpriceLists($workflow.order)"></s:Push>
+    <s:Push Id="items" Value="$Facade.GetpriceLists($workflow.order.Outlet)"></s:Push>
   </s:If>
   <s:If Test="$param3=='Visit_Questions'">
     <s:Push Id="items" Value="$Facade.GetValueList($param1)"></s:Push>
@@ -59,7 +59,12 @@
           <s:Push Id="itemId" Value="$item.Id"></s:Push>
         </s:If>
         <s:If Test="$param3=='Order'">
-          <s:Push Id="itemId" Value="$item.PriceListAsObject.Id"></s:Push>
+          <s:If Test="$defaultPriceLists==0">
+            <s:Push Id="itemId" Value="$item.PriceListAsObject.Id"></s:Push>
+          </s:If>
+          <s:Else>
+            <s:Push Id="itemId" Value="$item.Id"></s:Push>
+          </s:Else>
         </s:If>
         <s:If Test="$param3=='Visit_Questions'">
           <s:Push Id="itemId" Value="$item"></s:Push>
@@ -71,7 +76,12 @@
               <c:TextView Text="$item.Description" CssClass="main_row"></c:TextView>
             </s:If>
             <s:If Test="$param3=='Order'">
-              <c:TextView Text="$item.PriceListAsObject.Description" CssClass="main_row"></c:TextView>
+              <s:If Test="$defaultPriceLists==0">
+                <c:TextView Text="$item.PriceListAsObject.Description" CssClass="main_row"></c:TextView>
+              </s:If>
+              <s:Else>
+                <c:TextView Text="$item.Description" CssClass="main_row"></c:TextView>
+              </s:Else>
             </s:If>
             <s:If Test="$param3=='Visit_Questions'">
               <c:TextView Text="$item.Value" CssClass="main_row"></c:TextView>

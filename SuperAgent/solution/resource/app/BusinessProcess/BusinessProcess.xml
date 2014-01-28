@@ -72,7 +72,7 @@
       <bp:Action Name="Forward" NextStep="Commentary"></bp:Action>
     </bp:Step>
 
-    <bp:Step Name="Commentary" Screen="Visit_Order_Commentary.xml">
+    <bp:Step Name="Commentary" Screen="Order_Commentary.xml">
       <bp:Action Name="Forward" NextStep="Receivables"></bp:Action>
     </bp:Step>
 
@@ -158,7 +158,7 @@
       <bp:Action Name="Forward" NextStep="Commentary"></bp:Action>
     </bp:Step>
 
-    <bp:Step Name="Commentary" Screen="Visit_Order_Commentary.xml">
+    <bp:Step Name="Commentary" Screen="Order_Commentary.xml">
       <bp:Action Name="Forward" NextStep="Receivables"></bp:Action>
     </bp:Step>
 

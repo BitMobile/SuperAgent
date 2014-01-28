@@ -41,7 +41,7 @@
           <c:EditText Value="$orderitem.Qty" CssClass="main_row" Keyboard="numeric"></c:EditText>
           <c:TextView Text="#quantity#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
-        <c:VerticalLayout OnClickAction="$Facade.ChangeUnit($sku, $orderitem, $discountEdit.Text, $discCheckbox.Checked, $price)">
+        <c:VerticalLayout OnClickAction="$Facade.ChangeUnit($sku, $orderitem, $discountEdit.Text, $discCheckbox.Checked, $price)" CssClass="header">
           <c:TextView Id="itemUnits" Text="$orderitem.UnitsAsObject.Description" CssClass="main_row"></c:TextView>
           <c:TextView Text="#packUnit#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>

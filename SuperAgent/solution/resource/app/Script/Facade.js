@@ -690,17 +690,12 @@ function CreateOrderIfNotExists(order, outlet, userId, visitId, executedOrder, p
             if (visitId != null) {
                 order.Visit = visitId;
             }
-            //var prices = GetEntities("Catalog", "Outlet_Prices", outlet.Id, "Ref");
             if (priceLists == parseInt(1)) {
-                Dialog.Debug("H");
-                //for (var k in prices)
                 var pl = GetpriceListRef(outlet.Id);
-                Dialog.Debug(pl);
                 order.PriceList = pl;
             }
         }
     }
-    Dialog.Debug(order);
     return order;
 }
 
@@ -764,16 +759,12 @@ function GetPriceListQty(outlet) {
 
 function GetpriceListRef(outlet) {
     var pl = DB.Current.Catalog.Outlet_Prices.Select().Where("Ref==@p1", [outlet]).OrderBy("RefAsObject.Description").Count();
-    Dialog.Debug(pl);
     if (parseInt(pl) == parseInt(1)) {
-        Dialog.Debug("C");
         return DB.Current.Catalog.Outlet_Prices.Select().Where("Ref==@p1", [outlet]).Distinct("PriceList").First();
     }
 
     dl = DB.Current.Document.PriceList.SelectBy("DefaultPriceList", true).Count();
-    Dialog.Debug(dl);
     if (parseInt(dl) == parseInt(1)) {
-        Dialog.Debug("D");
         return DB.Current.Document.PriceList.SelectBy("DefaultPriceList", true).Distinct("Id").First();
     }
 }
@@ -781,14 +772,11 @@ function GetpriceListRef(outlet) {
 function GetpriceLists(outlet, order) {
 
     var pl = DB.Current.Catalog.Outlet_Prices.Select().Where("Ref==@p1", [outlet]).OrderBy("RefAsObject.Description").Count();
-    Dialog.Debug(pl);
     if (parseInt(pl) != parseInt(0)) {
-        Dialog.Debug("A");
         Variables.Add("defaultPriceLists", parseInt(0));
         return DB.Current.Catalog.Outlet_Prices.Select().Where("Ref==@p1", [outlet]).OrderBy("RefAsObject.Description");
     }
     else {
-        Dialog.Debug("B");
         Variables.Add("defaultPriceLists", parseInt(1));
         return DB.Current.Document.PriceList.SelectBy("DefaultPriceList", true);
     }
@@ -914,21 +902,17 @@ function GetUnits(skuId) {
 function ChangeUnit(sku, orderitem, discount, discChBox, price) {
 
     var currUnit = DB.Current.Catalog.SKU_Packing.SelectBy("Ref", sku.Id).Where("Pack==@p1", [orderitem.Units]).First();
-    //Dialog.Debug(currUnit);
 
     var unit = DB.Current.Catalog.SKU_Packing.SelectBy("Ref", sku.Id).Where("LineNumber==@p1", [(currUnit.LineNumber + 1)]).First();
     if (unit == null)
         unit = DB.Current.Catalog.SKU_Packing.SelectBy("Ref", sku.Id).Where("LineNumber==@p1", [1]).First();
 
-    //Dialog.Debug(unit);
 
     Variables["multiplier"] = unit.Multiplier;
-    //Variables["baseQtyTextView"].Text = orderitem.Qty * unit.Multiplier;
 
     Variables["orderitem"].Units = unit.Pack;
     Variables["itemUnits"].Text = unit.PackAsObject().Description;
 
-    //Dialog.Debug(price);
     var p = CalculatePrice(price, orderitem.Discount, unit.Multiplier);
     Variables["orderitem"].Price = price * unit.Multiplier;
     Variables["orderitem"].Total = p;
@@ -955,21 +939,26 @@ function DeleteZeroItem(orderitem) {
         return orderitem;
 }
 
-function CheckOrderAndCommit(order) {
+function CheckOrderAndCommit(order, workflowName) {
 
-    var c = CountEntities("Document", "Order_SKUs", order.Id, "Ref");
-    if (c == 0) {
-        if (order.IsNew) {
-            DB.Current.Document.Order.Delete(order);
+    if (workflowName == "Order") {
+        var c = CountEntities("Document", "Order_SKUs", order.Id, "Ref");
+        if (c == 0) {
+            if (order.IsNew) {
+                DB.Current.Document.Order.Delete(order);
+                Workflow.Commit();
+            }
+            else {
+                Dialog.Message("#impossibleToDelete#");
+                Workflow.Rollback();
+            }
+        }
+        else
             Workflow.Commit();
-        }
-        else {
-            Dialog.Message("#impossibleToDelete#");
-            Workflow.Rollback();
-        }
     }
-    else
-        Workflow.Commit();
+    else {
+        Workflow.Forward([]);
+    }
 }
 
 

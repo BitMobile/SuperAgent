@@ -157,6 +157,17 @@ function DeleteAndBack(entity, objectType, objectName, varToDelete) {
 }
 
 
+function SetDateTime(entity, attribute) {
+    var NewDateTime = entity[attribute];
+    var Header = Translate["#enterDateTime#"];
+    Dialog.ShowDateTime(Header, NewDateTime, DateTimeDialog, entity);
+}
+
+function DateTimeDialog(entity, dateTime) {    
+    entity.DeliveryDate = dateTime;
+    Variables["deliveryDate"].Text = dateTime;
+}
+
 //--------------------Common Querys------------------
 
 function GetEntity(type, name, paramValue, parameter) {
@@ -769,6 +780,14 @@ function GetpriceListRef(outlet) {
     }
 }
 
+function PriceListAction(order, priceLists) {
+    if (parseInt(priceLists) != parseInt(0)) {
+        var arr = [order, "PriceList", "Order"]
+        Workflow.Action("EditPriceList", arr);
+    }
+
+}
+
 function GetpriceLists(outlet, order) {
 
     var pl = DB.Current.Catalog.Outlet_Prices.Select().Where("Ref==@p1", [outlet]).OrderBy("RefAsObject.Description").Count();
@@ -811,6 +830,11 @@ function GetFeatureDescr(feature) {
         return "";
     else
         return (", " + feature.Description);
+}
+
+function SetDeliveryDate(order, attrName) {
+    SetDateTime(order, attrName);
+    //Workflow.Refresh([order]);
 }
 
 //-----------------------OrderItem-------------------

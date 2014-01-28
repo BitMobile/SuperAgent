@@ -71,7 +71,9 @@
     <Content Include="resource\app\Screen\OrderList.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="resource\app\Screen\Order_Commentary.xml" />
+    <Content Include="resource\app\Screen\Order_Commentary.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="resource\app\Screen\Order_EditSKU.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -99,7 +101,6 @@
     <Content Include="resource\app\Screen\Targets.xml" />
     <Content Include="resource\app\Screen\Task.xml" />
     <Content Include="resource\app\Screen\Tasks.xml" />
-    <Content Include="resource\app\Screen\Visit_Order_Commentary.xml" />
     <Content Include="resource\app\Screen\Outlet.xml">
       <SubType>Designer</SubType>
     </Content>

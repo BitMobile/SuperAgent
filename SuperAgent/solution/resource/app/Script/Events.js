@@ -18,7 +18,7 @@ function OnWorkflowStart(name) {
     Variables["workflow"].Add("name", name);
 }
 
-//function OnWorkflowForward(name, lastStep, nextStep) { }
+//function OnWorkflowForward(name, lastStep, nextStep, parameters) { }
 
 function OnWorkflowBack(name, lastStep, nextStep) {
 

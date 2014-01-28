@@ -81,7 +81,9 @@
               </s:Else>
               <c:TextView Text="#priceList#" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
-            <c:Image/>
+            <s:If Test="$priceLists != 0">
+              <c:Image/>
+            </s:If>
           </c:HorizontalLayout>
           <c:HorizontalLine/>
         </s:If>

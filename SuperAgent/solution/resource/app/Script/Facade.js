@@ -165,7 +165,7 @@ function SetDateTime(entity, attribute) {
 
 function DateTimeDialog(entity, dateTime) {    
     entity.DeliveryDate = dateTime;
-    Variables["deliveryDate"].Text = dateTime;
+    Variables["deliveryDate"].Text = dateTime; //refactoring is needed
 }
 
 //--------------------Common Querys------------------

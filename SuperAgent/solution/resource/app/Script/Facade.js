@@ -163,9 +163,18 @@ function SetDateTime(entity, attribute) {
     Dialog.ShowDateTime(Header, NewDateTime, DateTimeDialog, entity);
 }
 
-function DateTimeDialog(entity, dateTime) {    
+function DateTimeDialog(entity, dateTime) {
     entity.DeliveryDate = dateTime;
     Variables["deliveryDate"].Text = dateTime; //refactoring is needed
+}
+
+function GenerateGuid() {
+
+    return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+}
+
+function S4() {
+    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 }
 
 //--------------------Common Querys------------------
@@ -483,14 +492,33 @@ function CreateVisitQuestionValueIfNotExists(visit, question, questionValue) {
 
         result = p;
     }
+
     return result;
+
 }
 
-function GoToValueList(answerType, question) {
+function GoToQuestionAction(answerType, question, visit) {
     if (answerType == "ValueList") {
         var parameters = [question, "Answer", "Visit_Questions"];
         Workflow.Action("Edit", parameters);
     }
+    if (answerType == "Snapshot") {
+        MakeASnapshot(visit);
+    }
+}
+
+function MakeASnapshot(visit) {
+    FileSystem.CreateDirectory("/private/Document.Visit");
+    var guid = GenerateGuid();
+    var path = String.Format("/private/Document.Visit/{0}/{1}.jpg", visit.Id, guid);
+    Camera.Size = 300;
+    Camera.Path = path;
+    Camera.MakeSnapshot();
+    question.Answer = guid;
+}
+
+function OnSnapshot(visit) {
+
 }
 
 function GetValueList(question) {
@@ -875,7 +903,9 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, price, features) {
 
 }
 
-function CountPrice(orderitem, discount, discChBox) {
+function CountPrice(orderitem, discChBox) {
+
+    var discount = orderitem.Discount
 
     if (discount == null || discount == "")
         discount = 0;
@@ -892,7 +922,7 @@ function CountPrice(orderitem, discount, discChBox) {
     }
     var p = orderitem.Price * Converter.ToDecimal((discount) * discChBox / 100 + 1);// * Variables["multiplier"];
     Variables["orderitem"].Discount = Converter.ToDecimal(discount * discChBox);
-    Variables["discountEdit"].Text = Converter.ToDecimal(discount * discChBox);
+    //Variables["discountEdit"].Text = Converter.ToDecimal(discount * discChBox);
     Variables["orderitem"].Total = p;
     Variables["orderItemTotalId"].Text = p;
 }
@@ -923,7 +953,9 @@ function GetUnits(skuId) {
 
 }
 
-function ChangeUnit(sku, orderitem, discount, discChBox, price) {
+function ChangeUnit(sku, orderitem, discChBox, price) {
+
+    
 
     var currUnit = DB.Current.Catalog.SKU_Packing.SelectBy("Ref", sku.Id).Where("Pack==@p1", [orderitem.Units]).First();
 
@@ -931,15 +963,19 @@ function ChangeUnit(sku, orderitem, discount, discChBox, price) {
     if (unit == null)
         unit = DB.Current.Catalog.SKU_Packing.SelectBy("Ref", sku.Id).Where("LineNumber==@p1", [1]).First();
 
-
+    if (price == null)
+        price = orderitem.Price / unit.Multiplier;
+    Dialog.Debug(unit.Multiplier);
     Variables["multiplier"] = unit.Multiplier;
 
     Variables["orderitem"].Units = unit.Pack;
     Variables["itemUnits"].Text = unit.PackAsObject().Description;
 
     var p = CalculatePrice(price, orderitem.Discount, unit.Multiplier);
+    Dialog.Debug(p);
     Variables["orderitem"].Price = price * unit.Multiplier;
     Variables["orderitem"].Total = p;
+    Dialog.Debug(orderitem);
     Variables["orderItemTotalId"].Text = p;
 }
 
@@ -1041,7 +1077,8 @@ function GetSKUs(searchText, owner, priceListId) {
 function GetSKUGroups(searchText) {
 
     var ow = DB.Current.Catalog.SKU.Select().Distinct("Owner");
-    return DB.Current.Catalog.SKUGroup.SelectBy("Id", ow);
+    var terr = DB.Current.Catalog.Territory_SKUGroups.SelectBy("SKUGroup", ow).Distinct("SKUGroup");
+    return DB.Current.Catalog.SKUGroup.SelectBy("Id", terr).OrderBy("Description");
 
 }
 
@@ -1255,6 +1292,15 @@ function ShowDialog(v1) {
 }
 
 
+//---------------------------------------------Sync--------------------------------
+
+function Sync() {
+
+    DB.Sync();
+    FileSystem.UploadPrivate();
+    FileSystem.SyncShared();
+
+}
 
 
 

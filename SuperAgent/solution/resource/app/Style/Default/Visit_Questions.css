@@ -1,3 +1,12 @@
 ﻿.grid hl vl purple_row {
-                color: #b2749b;
-            }
+    color: #b2749b;
+}
+
+.header {
+    background-color: #dbd7e1;
+}
+
+.grid hi vl hl TextView {
+    width: 50%;
+    height: 50%;
+}

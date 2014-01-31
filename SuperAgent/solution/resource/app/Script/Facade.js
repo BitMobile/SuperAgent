@@ -869,11 +869,11 @@ function SetDeliveryDate(order, attrName) {
 
 
 
-function CreateOrderItemIfNotExist(orderId, sku, orderitem, price, features) {
-
-    var feature = DB.Current.Catalog.SKU_Stocks.SelectBy("Ref", sku.Id).OrderBy("LineNumber").First();
+function CreateOrderItemIfNotExist(orderId, sku, orderitem, price, features) {    
 
     if (orderitem == null) {
+
+        var feature = DB.Current.Catalog.SKU_Stocks.SelectBy("Ref", sku.Id).OrderBy("LineNumber").First();
 
         //if (feature == null) {
         //    var f = GetEntity("Catalog", "SKU_Stocks", sku.Id, "Ref");
@@ -898,14 +898,16 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, price, features) {
             return p;
         }
     }
-    else
+    else {
+        Variables["param4"] = orderitem.Discount;
         return orderitem;
+    }
 
 }
 
-function CountPrice(orderitem, discChBox) {
+function CountPrice(orderitem, discChBox, price) {
 
-    var discount = orderitem.Discount
+    var discount = Variables["discountEdit"].Text;
 
     if (discount == null || discount == "")
         discount = 0;
@@ -920,11 +922,22 @@ function CountPrice(orderitem, discChBox) {
         discChBox = -1;
         Variables["discTextView"].Text = Translate["#discount#"];
     }
-    var p = orderitem.Price * Converter.ToDecimal((discount) * discChBox / 100 + 1);// * Variables["multiplier"];
+
+    //var p = orderitem.Price * Converter.ToDecimal((discount) * discChBox / 100 + 1);// * Variables["multiplier"];
+    p = CalculatePrice(orderitem.Price, (discount * discChBox), 1);
     Variables["orderitem"].Discount = Converter.ToDecimal(discount * discChBox);
-    //Variables["discountEdit"].Text = Converter.ToDecimal(discount * discChBox);
+    ////Variables["discountEdit"].Text = Converter.ToDecimal(discount * discChBox);
+    ReNewControls(p, orderitem.Discount);
+    //Variables["orderitem"].Total = p;
+    //Variables["orderItemTotalId"].Text = p;
+    return orderitem;
+}
+
+function ReNewControls(p, discount) {
+
     Variables["orderitem"].Total = p;
     Variables["orderItemTotalId"].Text = p;
+    Variables["discountEdit"].Text = discount;
 }
 
 function GetMultiplier(sku, orderitem) {
@@ -935,7 +948,6 @@ function GetMultiplier(sku, orderitem) {
     }
     return 1;
 }
-
 
 function CalculatePrice(price, discount, multiplier) {
 
@@ -955,33 +967,36 @@ function GetUnits(skuId) {
 
 function ChangeUnit(sku, orderitem, discChBox, price) {
 
-    
-
     var currUnit = DB.Current.Catalog.SKU_Packing.SelectBy("Ref", sku.Id).Where("Pack==@p1", [orderitem.Units]).First();
 
     var unit = DB.Current.Catalog.SKU_Packing.SelectBy("Ref", sku.Id).Where("LineNumber==@p1", [(currUnit.LineNumber + 1)]).First();
     if (unit == null)
         unit = DB.Current.Catalog.SKU_Packing.SelectBy("Ref", sku.Id).Where("LineNumber==@p1", [1]).First();
 
-    if (price == null)
-        price = orderitem.Price / unit.Multiplier;
-    Dialog.Debug(unit.Multiplier);
+    if (price == null) {
+        price = DB.Current.Document.PriceList_Prices.SelectBy("Ref", orderitem.RefAsObject().PriceList).Where("SKU==@p1", [orderitem.SKU]).First();
+        price = Converter.ToDecimal(price.Price);
+    }
+
+    Variables["orderitem"].Price = price * unit.Multiplier;
+
     Variables["multiplier"] = unit.Multiplier;
 
     Variables["orderitem"].Units = unit.Pack;
     Variables["itemUnits"].Text = unit.PackAsObject().Description;
 
-    var p = CalculatePrice(price, orderitem.Discount, unit.Multiplier);
-    Dialog.Debug(p);
-    Variables["orderitem"].Price = price * unit.Multiplier;
-    Variables["orderitem"].Total = p;
-    Dialog.Debug(orderitem);
-    Variables["orderItemTotalId"].Text = p;
+    //var p = CalculatePrice(price, orderitem.Discount, unit.Multiplier);
+    orderitem = CountPrice(orderitem, discChBox, price)
+
+    ReNewControls(p, orderitem.Discount);
+    //Variables["orderitem"].Total = p;
+    //Variables["orderItemTotalId"].Text = p;
 }
 
 function ChangeFeatureAndRefresh(orderItem, feature, sku, price) {
     orderItem.Feature = feature.Feature;
-    var arr = [sku, price, orderItem];
+    var d = Variables["discountEdit"].Text;
+    var arr = [sku, price, orderItem, d];//, discountText];
     Workflow.Refresh(arr);
 }
 

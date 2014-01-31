@@ -2,7 +2,7 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
 
   <s:Push Id="order" Value="$workflow.order"></s:Push>
-  <s:Push Id="sku" Value="$param1"></s:Push>  
+  <s:Push Id="sku" Value="$param1"></s:Push>
   <s:Push Id="price" Value="$param2"></s:Push>
   <s:Push Id="orderitem" Value="$param3"></s:Push>
   <s:Push Id="multiplier" Value="$Facade.GetMultiplier($sku.Id, $orderitem)"></s:Push>
@@ -10,7 +10,7 @@
   <s:Push Id="orderitem" Value="$Facade.CreateOrderItemIfNotExist($order.Id,$sku,$orderitem,$price,$features)"></s:Push>
   <s:Push Id="baseQty" Value="$Facade.GetMultiple($orderitem.Qty, $multiplier)"></s:Push>
   <s:Push Id="ismarkup" Value="$Facade.ConvertToBoolean1($orderitem.Discount)"></s:Push>
-  
+
 
   <c:VerticalLayout>
 
@@ -21,11 +21,11 @@
     </c:DockLayout>
 
     <c:ScrollView Id="grScrollView" CssClass="grid">
-      
+
       <s:Push Id="featureDescr" Value="$Facade.GetFeatureDescr($orderitem.FeatureAsObject)"></s:Push>
-      
+
       <c:HorizontalLayout CssClass="header_edit_block">
-        <c:VerticalLayout CssClass="partial_width" OnClickAction="$Facade.CountPrice($orderitem,$discCheckbox.Checked)">          
+        <c:VerticalLayout CssClass="partial_width" OnClickAction="$Facade.CountPrice($orderitem,$discCheckbox.Checked)">
           <c:TextView Text="{$sku.Description}{$featureDescr}" CssClass="main_row"></c:TextView>
           <c:TextView Text="#countPrice#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
@@ -54,7 +54,7 @@
           <c:TextView Text="#discount#/#markUp#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
         <c:VerticalLayout>
-          <c:EditText Value="$orderitem.Discount" CssClass="main_row" Keyboard="numeric"></c:EditText>
+          <c:EditText Id="discountEdit" Text="$param4" CssClass="main_row" Keyboard="numeric"></c:EditText>
           <s:If Test="$ismarkup">
             <c:TextView Id="discTextView" Text="#markUp#" CssClass="description_row"></c:TextView>
           </s:If>
@@ -69,17 +69,17 @@
       <c:HorizontalLine/>
 
 
-      
+
       <c:HorizontalLayout CssClass="header_edit_block">
         <c:VerticalLayout>
           <c:TextView Text="#features#" CssClass="caption_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
-           
+
       <s:Iterator Id="feature" Value="$features">
 
-        <c:HorizontalLayout OnClickAction="$Facade.ChangeFeatureAndRefresh($orderitem, $feature, $sku, $price, )">
+        <c:HorizontalLayout OnClickAction="$Facade.ChangeFeatureAndRefresh($orderitem, $feature, $sku, $price)">
           <c:VerticalLayout>
             <c:TextView Text="$feature.FeatureAsObject.Description" CssClass="main_row"></c:TextView>
           </c:VerticalLayout>

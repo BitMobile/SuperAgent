@@ -12,7 +12,9 @@
       <c:TextView Text="#outlets#" />
     </c:DockLayout>
 
-    <c:HorizontalLine/>
+    <c:HorizontalLine/> 
+	
+	
 
     <c:HorizontalLayout CssClass="search">
 

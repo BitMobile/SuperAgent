@@ -884,11 +884,6 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, price, features) {
 
         var feature = DB.Current.Catalog.SKU_Stocks.SelectBy("Ref", sku.Id).OrderBy("LineNumber").First();
 
-        //if (feature == null) {
-        //    var f = GetEntity("Catalog", "SKU_Stocks", sku.Id, "Ref");
-        //    feature = f.Feature;
-        //}
-
         var query = new Query();
         var r = DB.Current.Document.Order_SKUs.SelectBy("SKU", sku.Id).Where("Ref==@p1 && Feature==@p2", [orderId, feature]);
         if (r.Count() > 0) {
@@ -917,6 +912,8 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, price, features) {
 
 function CountPrice(orderitem, discChBox, price) {
 
+    discChBox = Variables["discCheckbox"]["Checked"];
+
     var discount = Variables["discountEdit"].Text;
 
     if (discount == null || discount == "")
@@ -933,13 +930,11 @@ function CountPrice(orderitem, discChBox, price) {
         Variables["discTextView"].Text = Translate["#discount#"];
     }
 
-    //var p = orderitem.Price * Converter.ToDecimal((discount) * discChBox / 100 + 1);// * Variables["multiplier"];
     p = CalculatePrice(orderitem.Price, (discount * discChBox), 1);
     Variables["orderitem"].Discount = Converter.ToDecimal(discount * discChBox);
-    ////Variables["discountEdit"].Text = Converter.ToDecimal(discount * discChBox);
+
     ReNewControls(p, orderitem.Discount);
-    //Variables["orderitem"].Total = p;
-    //Variables["orderItemTotalId"].Text = p;
+
     return orderitem;
 }
 
@@ -989,25 +984,36 @@ function ChangeUnit(sku, orderitem, discChBox, price) {
     }
 
     Variables["orderitem"].Price = price * unit.Multiplier;
-
     Variables["multiplier"] = unit.Multiplier;
-
     Variables["orderitem"].Units = unit.Pack;
     Variables["itemUnits"].Text = unit.PackAsObject().Description;
 
-    //var p = CalculatePrice(price, orderitem.Discount, unit.Multiplier);
     orderitem = CountPrice(orderitem, discChBox, price)
 
     ReNewControls(p, orderitem.Discount);
-    //Variables["orderitem"].Total = p;
-    //Variables["orderItemTotalId"].Text = p;
+
 }
 
 function ChangeFeatureAndRefresh(orderItem, feature, sku, price, discountEdit, showimage) {
     orderItem.Feature = feature.Feature;
     var d = Variables["discountEdit"].Text;
-    var arr = [sku, price, orderItem, d, showimage];//, discountText];
+    var ch = Variables["discCheckbox"]["Checked"];
+    var arr = [sku, price, orderItem, d, showimage, ch];//, discountText];
     Workflow.Refresh(arr);
+}
+
+function GetCheckBoxValue(val1) {
+    if (Variables.Exists("param6")) {
+        var r = Variables["param6"];
+        Variables.Remove("param6");
+        return r;
+    }
+    else {
+        if (val1 > 0)
+            return true;
+        else
+            return false;
+    }
 }
 
 function DeleteItemAndBack(orderitem) {

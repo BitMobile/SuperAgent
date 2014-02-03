@@ -79,7 +79,7 @@
 
       <s:Iterator Id="feature" Value="$features">
 
-        <c:HorizontalLayout OnClickAction="$Facade.ChangeFeatureAndRefresh($orderitem, $feature, $sku, $price)">
+        <c:HorizontalLayout OnClickAction="$Facade.ChangeFeatureAndRefresh($orderitem, $feature, $sku, $price, $discountEdit.Text)">
           <c:VerticalLayout>
             <c:TextView Text="$feature.FeatureAsObject.Description" CssClass="main_row"></c:TextView>
           </c:VerticalLayout>

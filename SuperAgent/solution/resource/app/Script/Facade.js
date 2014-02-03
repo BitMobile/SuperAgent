@@ -869,7 +869,7 @@ function SetDeliveryDate(order, attrName) {
 
 
 
-function CreateOrderItemIfNotExist(orderId, sku, orderitem, price, features) {    
+function CreateOrderItemIfNotExist(orderId, sku, orderitem, price, features) {
 
     if (orderitem == null) {
 
@@ -899,7 +899,8 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, price, features) {
         }
     }
     else {
-        Variables["param4"] = orderitem.Discount;
+        if (parseInt(orderitem.Discount) != parseInt(0))
+            Variables["param4"] = orderitem.Discount;
         return orderitem;
     }
 
@@ -993,7 +994,7 @@ function ChangeUnit(sku, orderitem, discChBox, price) {
     //Variables["orderItemTotalId"].Text = p;
 }
 
-function ChangeFeatureAndRefresh(orderItem, feature, sku, price) {
+function ChangeFeatureAndRefresh(orderItem, feature, sku, price, discountEdit) {
     orderItem.Feature = feature.Feature;
     var d = Variables["discountEdit"].Text;
     var arr = [sku, price, orderItem, d];//, discountText];

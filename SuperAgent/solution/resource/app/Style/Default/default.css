@@ -96,7 +96,8 @@ WebMapGoogle {
 
 .btn_showpicture {
     background-image: url(icon_image.png);
-    height: 50%;
+	height: 50%;
+	horizontal-align: right;
     margin-top: 25%;
 }
 

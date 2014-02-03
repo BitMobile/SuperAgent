@@ -10,7 +10,14 @@
       <c:TextView Text="#sku#" />
     </c:DockLayout>
 
-    <c:WebImage Url="$Facade.GetSKUImage($sku)" UrlType="Relative"/>
+    <s:If Test="$sku.DefaultPicture != null">
+		
+		<c:HorizontalLayout CssClass="StockSKU">
+			<c:Image Source="$Facade.GetSharedImagePath(Catalog.SKU, $sku.Id, $sku.DefaultPicture, $sku.DefaultPictureExtension)"/>
+		</c:HorizontalLayout>
+		<c:HorizontalLine/>
+		
+	</s:If >	
 
   </c:VerticalLayout>
 

@@ -177,6 +177,12 @@ function S4() {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 }
 
+function GetSharedImagePath(objectType, objectID, pictID, pictExt) {
+
+	return "/shared/" + objectType + "/" + objectID.ToString() + "/" + pictID.ToString() + pictExt;
+	
+}
+
 //--------------------Common Querys------------------
 
 function GetEntity(type, name, paramValue, parameter) {
@@ -997,10 +1003,10 @@ function ChangeUnit(sku, orderitem, discChBox, price) {
     //Variables["orderItemTotalId"].Text = p;
 }
 
-function ChangeFeatureAndRefresh(orderItem, feature, sku, price, discountEdit) {
+function ChangeFeatureAndRefresh(orderItem, feature, sku, price, discountEdit, showimage) {
     orderItem.Feature = feature.Feature;
     var d = Variables["discountEdit"].Text;
-    var arr = [sku, price, orderItem, d];//, discountText];
+    var arr = [sku, price, orderItem, d, showimage];//, discountText];
     Workflow.Refresh(arr);
 }
 

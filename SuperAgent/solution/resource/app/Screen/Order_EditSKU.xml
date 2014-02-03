@@ -5,13 +5,17 @@
   <s:Push Id="sku" Value="$param1"></s:Push>
   <s:Push Id="price" Value="$param2"></s:Push>
   <s:Push Id="orderitem" Value="$param3"></s:Push>
+  <s:Push Id="showimage" Value="$param5"></s:Push>
   <s:Push Id="multiplier" Value="$Facade.GetMultiplier($sku.Id, $orderitem)"></s:Push>
   <s:Push Id="features" Value="$Facade.GetFeatures($sku.Id)"></s:Push>
   <s:Push Id="orderitem" Value="$Facade.CreateOrderItemIfNotExist($order.Id,$sku,$orderitem,$price,$features)"></s:Push>
   <s:Push Id="baseQty" Value="$Facade.GetMultiple($orderitem.Qty, $multiplier)"></s:Push>
   <s:Push Id="ismarkup" Value="$Facade.ConvertToBoolean1($orderitem.Discount)"></s:Push>
 
-
+  <s:If Test="$showimage == null">
+      <s:Push Id="showimage" Value="NotShow"></s:Push>
+  </s:If >
+  
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
@@ -29,9 +33,33 @@
           <c:TextView Text="{$sku.Description}{$featureDescr}" CssClass="main_row"></c:TextView>
           <c:TextView Text="#countPrice#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
-      </c:HorizontalLayout>
+		<c:VerticalLayout CssClass="quarter_width">
+			<s:If Test="$sku.DefaultPicture != null">
+				<s:If Test="$showimage == 'NotShow'">
+					<c:Button CssClass="btn_showpicture" OnClickAction="$Workflow.DoRefresh($param1, $param2, $param3, $param4, Show)"></c:Button>
+				</s:If >
+				<s:If Test="$showimage == 'Show'">
+					<c:Button CssClass="btn_showpicture" OnClickAction="$Workflow.DoRefresh($param1, $param2, $param3, $param4, NotShow)"></c:Button>
+				</s:If >				 
+			</s:If >	
+        </c:VerticalLayout>
+	  </c:HorizontalLayout>
+	  
       <c:HorizontalLine/>
 
+	  <s:If Test="$sku.DefaultPicture != null">
+		
+		<s:If Test="$showimage == 'Show'">
+		
+			<c:HorizontalLayout CssClass="60">
+				<c:Image Source="$Facade.GetSharedImagePath(Catalog.SKU, $sku.Id, $sku.DefaultPicture, $sku.DefaultPictureExtension)"/>
+			</c:HorizontalLayout>
+			<c:HorizontalLine/>
+		
+		</s:If >
+		
+	  </s:If >		
+	  
       <c:HorizontalLayout CssClass="33">
         <c:VerticalLayout>
           <c:TextView Id ="orderItemTotalId" Text="$orderitem.Total" CssClass="main_row"></c:TextView>
@@ -79,7 +107,7 @@
 
       <s:Iterator Id="feature" Value="$features">
 
-        <c:HorizontalLayout OnClickAction="$Facade.ChangeFeatureAndRefresh($orderitem, $feature, $sku, $price, $discountEdit.Text)">
+        <c:HorizontalLayout OnClickAction="$Facade.ChangeFeatureAndRefresh($orderitem, $feature, $sku, $price, $discountEdit.Text, $showimage)">
           <c:VerticalLayout>
             <c:TextView Text="$feature.FeatureAsObject.Description" CssClass="main_row"></c:TextView>
           </c:VerticalLayout>

@@ -10,3 +10,9 @@
     width: 50%;
     height: 50%;
 }
+
+.snapshot {
+    height: 50%;
+    margin-top: 35%;
+    background-image: url(snapshot.png);
+}

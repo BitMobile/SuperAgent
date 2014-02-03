@@ -513,7 +513,10 @@ function MakeASnapshot(visit) {
     var path = String.Format("/private/Document.Visit/{0}/{1}.jpg", visit.Id, guid);
     Camera.Size = 300;
     Camera.Path = path;
-    Camera.MakeSnapshot();
+    Camera.MakeSnapshot(SaveAtVisit);
+}
+
+function SaveAtVisit() {
     question.Answer = guid;
 }
 

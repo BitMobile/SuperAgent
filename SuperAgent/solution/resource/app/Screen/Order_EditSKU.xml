@@ -36,10 +36,10 @@
         <c:VerticalLayout CssClass="quarter_width">
           <s:If Test="$sku.DefaultPicture != null">
             <s:If Test="$showimage == 'NotShow'">
-              <c:Button CssClass="btn_showpicture" OnClickAction="$Workflow.DoRefresh($param1, $param2, $param3, $param4, Show)"></c:Button>
+              <c:Button CssClass="btn_showpicture" OnClickAction="$Facade.RefreshEditSKU($orderitem, $sku, $price, $discountEdit.Text, Show)"></c:Button>
             </s:If >
             <s:If Test="$showimage == 'Show'">
-              <c:Button CssClass="btn_showpicture" OnClickAction="$Workflow.DoRefresh($param1, $param2, $param3, $param4, NotShow)"></c:Button>
+              <c:Button CssClass="btn_showpicture" OnClickAction="$Facade.RefreshEditSKU($orderitem, $sku, $price, $discountEdit.Text, NotShow)"></c:Button>
             </s:If >
           </s:If >
         </c:VerticalLayout>
@@ -107,7 +107,7 @@
 
       <s:Iterator Id="feature" Value="$features">
 
-        <c:HorizontalLayout OnClickAction="$Facade.ChangeFeatureAndRefresh($orderitem, $feature, $sku, $price, $discountEdit.Text, $showimage, $discCheckbox.Checked)">
+        <c:HorizontalLayout OnClickAction="$Facade.ChangeFeatureAndRefresh($orderitem, $feature, $sku, $price, $discountEdit.Text, $showimage)">
           <c:VerticalLayout>
             <c:TextView Text="$feature.FeatureAsObject.Description" CssClass="main_row"></c:TextView>
           </c:VerticalLayout>

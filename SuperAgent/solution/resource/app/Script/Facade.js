@@ -996,6 +996,10 @@ function ChangeUnit(sku, orderitem, discChBox, price) {
 
 function ChangeFeatureAndRefresh(orderItem, feature, sku, price, discountEdit, showimage) {
     orderItem.Feature = feature.Feature;
+    RefreshEditSKU(orderItem, sku, price, discountEdit, showimage);
+}
+
+function RefreshEditSKU(orderItem, sku, price, discountEdit, showimage) {
     var d = Variables["discountEdit"].Text;
     var ch = Variables["discCheckbox"]["Checked"];
     var arr = [sku, price, orderItem, d, showimage, ch];//, discountText];

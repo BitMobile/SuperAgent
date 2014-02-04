@@ -51,9 +51,9 @@
 
         <s:If Test="$showimage == 'Show'">
 
-          <c:VerticalLayout CssClass="60">
+          <c:ScrollView CssClass="60">
             <c:Image Source="$Facade.GetSharedImagePath(Catalog.SKU, $sku.Id, $sku.DefaultPicture, $sku.DefaultPictureExtension)"/>
-          </c:VerticalLayout>
+          </c:ScrollView>
           <c:HorizontalLine/>
 
         </s:If >

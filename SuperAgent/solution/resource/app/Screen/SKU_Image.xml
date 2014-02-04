@@ -12,9 +12,9 @@
 
     <s:If Test="$sku.DefaultPicture != null">
 		
-		<c:HorizontalLayout CssClass="StockSKU">
+		<c:ScrollView CssClass="StockSKU">
 			<c:Image Source="$Facade.GetSharedImagePath(Catalog.SKU, $sku.Id, $sku.DefaultPicture, $sku.DefaultPictureExtension)"/>
-		</c:HorizontalLayout>
+		</c:ScrollView>
 		<c:HorizontalLine/>
 		
 	</s:If >	

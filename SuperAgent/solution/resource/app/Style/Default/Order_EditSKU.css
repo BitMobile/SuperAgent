@@ -34,9 +34,8 @@
 }
 	
 	.60 Image {
-		height: 100%;
+		width: 100%;
 		margin-top: 0%;
-		horizontal-align: central;
 	}
 
 .grid hl half_width {

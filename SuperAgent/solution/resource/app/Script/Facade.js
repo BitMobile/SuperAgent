@@ -179,8 +179,8 @@ function S4() {
 
 function GetSharedImagePath(objectType, objectID, pictID, pictExt) {
 
-	return "/shared/" + objectType + "/" + objectID.ToString() + "/" + pictID.ToString() + pictExt;
-	
+    return "/shared/" + objectType + "/" + objectID.ToString() + "/" + pictID.ToString() + pictExt;
+
 }
 
 //--------------------Common Querys------------------
@@ -1053,6 +1053,31 @@ function CheckOrderAndCommit(order, workflowName) {
     }
 }
 
+
+function CalculateSKUAndForward(outlet, orderitem) {
+
+    var discChBox = Variables["discCheckbox"]["Checked"];
+
+    var discount = Variables["discountEdit"].Text;
+
+    if (discount == null || discount == "")
+        discount = 0;
+    if (discount < 0)
+        discount = -discount;
+
+    if (discChBox) {
+        discChBox = 1;
+    }
+    else
+        discChBox = -1
+
+    Variables["orderitem"].Discount = Converter.ToDecimal(discount * discChBox);
+    var p = CalculatePrice(orderitem.Price, (discount * discChBox), 1);
+    Variables["orderitem"].Total = p;
+    Dialog.Debug(orderitem);
+
+    Workflow.Forward([outlet]);
+}
 
 //----------------------------GetSKUs-------------------------
 

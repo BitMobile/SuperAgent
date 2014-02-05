@@ -28,7 +28,7 @@
           <c:VerticalLayout>
             <c:TextView Text="#newOrder#" CssClass="caption_row"></c:TextView>
           </c:VerticalLayout>
-          <c:Image/>
+          <c:Image CssClass="add_img"/>
         </c:HorizontalLayout>
       </c:VerticalLayout>
     </c:VerticalLayout>

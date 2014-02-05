@@ -74,6 +74,25 @@ function TextCheck (path, text) {
 	return result;
 }	
 
+function CurrDateTime(){
+
+	var curr=new Date();
+
+	var day=curr.getDate();
+	day= (day < 10 )? '0' + day : day;
+	var month=curr.getMonth() +1;
+	month= (month < 10 )? '0' + month : month;
+	var year= curr.getFullYear();
+	var hour = curr.getHours();
+	hour= (hour < 10 )? '0' + hour : hour;
+	var min = curr.getMinutes();
+	min= (min < 10 )? '0' + min : min;
+	var sec="00";
+	result=day+"."+month+"."+year+" "+hour+":"+min+":"+sec;
+
+	return result;
+}
+
 function main() {
 
 Console.CommandPause = 500;
@@ -131,24 +150,23 @@ Console.CommandPause = 500;
 	
 	Console.WriteLine(CheckScreen("ListChoice.xml"));
 	
-	var priceList=Device.GetValue("grScrollView.Controls[2].Controls[0].Controls[0].Text");
+	var priceList=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text");
 	var result=Device.Click("grScrollView.Controls[0]"); // Choose Price-list
 	Console.WriteLine(result+"Choose Price-list");
 	
 	Console.Pause(1000);
 	
 	Console.WriteLine(CheckScreen("Order.xml"));
+	var currDateTime=CurrDateTime();
+	Console.WriteLine(currDateTime);
 	
 	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[0].Text", priceList)+ "  Отображение названия выбранного прайс-листа");
 	
 	Console.WriteLine(CheckValue("Orderadd.Controls[0].Controls[0].Text", "0,00"));
 	
-
-	
 	var result = Device.Click("Orderadd");
 	Stopwatch.Start();
 	Console.WriteLine(result);
-	
 	
 	var result = CheckScreen("Order_SKUs.xml");
 	if (result=="Order_SKUs.xml") {
@@ -174,7 +192,7 @@ Console.CommandPause = 500;
 		Console.WriteLine(result);
 	}
 	
-	var result=Device.Click("grScrollView.Controls[2]"); // Add SKU to Order
+	var result=Device.Click("grScrollView.Controls[6]"); // Add SKU to Order
 	Console.WriteLine(result);
 
 	var result = CheckScreen("Order_EditSKU.xml");
@@ -253,7 +271,7 @@ Console.CommandPause = 500;
 	
 	Console.WriteLine(Search("edtSearch", "гв 10"));	
 	
-	var result=Device.Click("grScrollView.Controls[2]"); // Add SKU to Order
+	var result=Device.Click("grScrollView.Controls[6]"); // Add SKU to Order
 	Console.WriteLine(result);
 	
 	/*Console.WriteLine(CheckScreen("Features.xml"));
@@ -448,7 +466,7 @@ Console.CommandPause = 500;
 	Console.WriteLine(CheckValue("grScrollView.Controls[6].Controls[0].Controls[0].Text", "Тюльпан желтый, Красный")+ "Check SKU description and feature in order");
 	
 		Console.WriteLine(Device.GetValue("grScrollView.Controls[6].Controls[0].Controls[1].Text")+"456");
-	var result=CheckValue("grScrollView.Controls[6].Controls[0].Controls[1].Text", "Количество: 5   Итого: 357,50");
+	var result=CheckValue("grScrollView.Controls[6].Controls[0].Controls[1].Text", "Количество: 5   Итого: 6,50456");
 	Console.WriteLine(result);	
 	
 	var result = Device.Click("btnForward");
@@ -456,7 +474,36 @@ Console.CommandPause = 500;
 	
 	Console.WriteLine(CheckScreen("Order_Commentary.xml"));
 	
-	Console.WriteLine(TextCheck("grScrollView.Controls[0].Controls[0].Controls[2]", "Комментарий к заказу  "));	
+		var appDateTime=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text");
+	//appDateTime=appDateTime.slice(0, - 3);
+	Console.WriteLine(appDateTime);
+	
+	var result=(currDateTime==appDateTime)?"True":"False";
+	Console.WriteLine(result+"Проверка даты в Textview");
+	
+	var result = Device.Click("grScrollView.Controls[0]");
+	Console.WriteLine(result);
+
+	var appDateTime=Dialog.GetDateTime();
+	//appDateTime=appDateTime.toString();
+	//appDateTime=appDateTime.slice(0, - 3);
+	Console.WriteLine(appDateTime);
+	var result=(currDateTime==appDateTime)?"True":"False";
+	
+	var SetDT="2014.03.14 8:45";
+	Dialog.SetDateTime(SetDT);
+	
+	var appDateTime=Dialog.GetDateTime();
+	
+	var result=(SetDT==appDateTime)?"True":"False";
+	
+	Console.WriteLine(Dialog.ClickPositive());
+	
+	var result=CheckValue("grScrollView.Controls[0].Controls[0].Controls[1].Text",SetDT);
+	Console.WriteLine(result+"Проверка даты в Textview после внесения изменений");
+	
+
+	Console.WriteLine(TextCheck("grScrollView.Controls[2].Controls[0].Controls[1]", "Комментарий к заказу  "));
 	
 	var result = Device.Click("btnForward");
 	Console.WriteLine(result);	
@@ -569,7 +616,22 @@ Console.CommandPause = 500;
 	
 	Console.WriteLine(CheckScreen("Order_Commentary.xml"));
 	
-	var result=TextCheck("grScrollView.Controls[0].Controls[0].Controls[2]", "Комментарий изменен");	
+	var result = Device.Click("grScrollView.Controls[0]");
+	Console.WriteLine(result);
+
+	var SetDT="2014.04.10 8:35";
+	Dialog.SetDateTime(SetDT);
+	
+	var appDateTime=Dialog.GetDateTime();
+	
+	var result=(SetDT==appDateTime)?"True":"False";
+	
+	Console.WriteLine(Dialog.ClickPositive());
+	
+	var result=CheckValue("grScrollView.Controls[0].Controls[0].Controls[1].Text",SetDT);
+	Console.WriteLine(result+"Проверка даты в Textview после внесения изменений");
+	
+	var result=TextCheck("grScrollView.Controls[2].Controls[0].Controls[1]", "Комментарий изменен");	
 	if (result !="True; True; True"){
 		Console.WriteLine(result + "Проверка изменения комментария в новых заказах");
 	}

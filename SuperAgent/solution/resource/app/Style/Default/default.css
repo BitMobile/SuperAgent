@@ -85,6 +85,18 @@ WebMapGoogle {
 	.StockSKU Image {
 		width: 100%;
 	}
+	
+.NoImage {
+	height: 5%;
+	width: 96%;
+	margin-left: 2%;
+	margin-top: 5%;
+	padding-top: 0%;
+	padding-right: 0%;
+	text-align: center;
+	white-space: normal;
+	font: 69% Arial-BoldMT;
+}
 
 .btn_delete {
     background-image: url(trash_icon.png);
@@ -141,6 +153,7 @@ WebMapGoogle {
         height: auto;
         margin-top: 20%;
         margin-bottom: 20%;
+		padding-right: 0%;
         text-align: center;
         color: #FFF;
         font: 60% arial;

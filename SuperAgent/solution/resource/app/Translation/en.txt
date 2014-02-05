@@ -105,3 +105,4 @@ impossibleToDelete	Impossible to delete, order is already in base
 valueList	Value list
 deliveryDate	Delivery date
 enterDateTime	Enter date, time
+noImage	No image found

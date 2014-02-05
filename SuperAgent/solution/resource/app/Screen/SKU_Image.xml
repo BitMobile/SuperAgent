@@ -18,7 +18,10 @@
 		<c:HorizontalLine/>
 		
 	</s:If >	
-
+	<s:Else>
+		<c:TextView Text="#noImage#" CssClass="NoImage"/>
+	</s:Else>
+	
   </c:VerticalLayout>
 
 </c:Screen>

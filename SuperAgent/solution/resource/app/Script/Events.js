@@ -21,28 +21,31 @@ function OnWorkflowStart(name) {
 //function OnWorkflowForward(name, lastStep, nextStep, parameters) { }
 
 function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
-    if (nextStep == "Visit_Tasks" && workflowName == "UnscheduledVisit") {
-        var outlet = Variables["workflow"]["outlet"];
+    if (nextStep == "Visit_Tasks") {
+        if (workflowName == "ScheduledVisit" || workflowName == "UnscheduledVisit") {
 
-        var tasks = GetTasks(outlet);        
-        var questionaries = GetQuesttionaires(outlet);
-        var questions = GetQuestionsByOutlet(questionaries);
-        var SKUQuest = GetSKUsByOutlet(questionaries);
+            var outlet = Variables["workflow"]["outlet"];
 
-        if (tasks.Count() == 0) {
-            if (questions == null) {
-                if (SKUQuest == null) {
-                    Workflow.Action("Skip3", [outlet]);
+            var tasks = GetTasks(outlet);
+            var questionaries = GetQuesttionaires(outlet);
+            var questions = GetQuestionsByOutlet(questionaries);
+            var SKUQuest = GetSKUsByOutlet(questionaries);
+
+            if (tasks.Count() == 0) {
+                if (questions == null) {
+                    if (SKUQuest == null) {
+                        Workflow.Action("Skip3", [outlet]);
+                        return false;
+                    }
+                    Workflow.Action("Skip2", []);
                     return false;
                 }
-                Workflow.Action("Skip2", []);
+                Workflow.Action("Skip1", []);
                 return false;
             }
-            Workflow.Action("Skip1", []);
-            return false;
-        }
-        else {
-            parameters.Add("tasks", tasks);
+            else {
+                parameters.Add("tasks", tasks);
+            }
         }
     }
     return true;

@@ -46,6 +46,9 @@
 
     <bp:Step Name="Outlet" Screen="Outlet.xml">
       <bp:Action Name="Forward" NextStep="Visit_Tasks"></bp:Action>
+      <bp:Action Name="Skip1" NextStep="Questions"></bp:Action>
+      <bp:Action Name="Skip2" NextStep="SKUs"></bp:Action>
+      <bp:Action Name="Skip3" NextStep="Order"></bp:Action>
       <bp:Action Name="EditParameter" NextStep="EditOutletParameter"></bp:Action>
       <bp:Action Name="EditAddParameter" NextStep="EditOutletAddParameter"></bp:Action>
     </bp:Step>

@@ -431,7 +431,6 @@ function CreateVisitTaskValueIfNotExists(visit, task) {
 
     return taskValue;
 }
-
 function GetQuesttionaires(outlet) {
 
     var t2 = DB.Current.Catalog.Territory.Select().Distinct("Id");
@@ -450,6 +449,7 @@ function GetQuesttionaires(outlet) {
 
     return q2;
 }
+
 
 
 function GetQuestionsByOutlet(questionnaires) {
@@ -509,25 +509,22 @@ function GoToQuestionAction(answerType, question, visit) {
         Workflow.Action("Edit", parameters);
     }
     if (answerType == "Snapshot") {
-        MakeASnapshot(visit);
+        MakeASnapshot(visit, question);
     }
 }
 
-function MakeASnapshot(visit) {
+function MakeASnapshot(visit, question) {
     FileSystem.CreateDirectory("/private/Document.Visit");
     var guid = GenerateGuid();
+    Variables.Add("guid", guid);
     var path = String.Format("/private/Document.Visit/{0}/{1}.jpg", visit.Id, guid);
     Camera.Size = 300;
     Camera.Path = path;
-    Camera.MakeSnapshot(SaveAtVisit);
+    Camera.MakeSnapshot(SaveAtVisit, question);
 }
 
-function SaveAtVisit() {
-    question.Answer = guid;
-}
-
-function OnSnapshot(visit) {
-
+function SaveAtVisit(question) {
+    question.Answer = Variables["guid"];
 }
 
 function GetValueList(question) {

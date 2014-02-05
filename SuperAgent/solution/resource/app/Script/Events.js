@@ -20,6 +20,34 @@ function OnWorkflowStart(name) {
 
 //function OnWorkflowForward(name, lastStep, nextStep, parameters) { }
 
+function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
+    if (nextStep == "Visit_Tasks" && workflowName == "UnscheduledVisit") {
+        var outlet = Variables["workflow"]["outlet"];
+
+        var tasks = GetTasks(outlet);        
+        var questionaries = GetQuesttionaires(outlet);
+        var questions = GetQuestionsByOutlet(questionaries);
+        var SKUQuest = GetSKUsByOutlet(questionaries);
+
+        if (tasks.Count() == 0) {
+            if (questions == null) {
+                if (SKUQuest == null) {
+                    Workflow.Action("Skip3", [outlet]);
+                    return false;
+                }
+                Workflow.Action("Skip2", []);
+                return false;
+            }
+            Workflow.Action("Skip1", []);
+            return false;
+        }
+        else {
+            parameters.Add("tasks", tasks);
+        }
+    }
+    return true;
+}
+
 function OnWorkflowBack(name, lastStep, nextStep) {
 
     if (lastStep == "PriceLists" && nextStep == "Order")
@@ -82,4 +110,59 @@ function ReviseSKUs() {
                 k.Amount = k.Qty * k.Total;
             }
         }
+}
+
+function GetTasks(outlet) {
+
+    if (outlet == null)
+        var result = DB.Current.Document.Task.Select().Where("PlanDate >= @p1", [DateTime.Now.Date]).OrderBy("OutletAsObject.Description");
+    else
+        var result = DB.Current.Document.Task.SelectBy("Outlet", outlet.Id).Where("PlanDate >= @p1", [DateTime.Now.Date]).OrderBy("OutletAsObject.Description");
+    return result;
+
+}
+
+function GetQuesttionaires(outlet) {
+
+    var t2 = DB.Current.Catalog.Territory.Select().Distinct("Id");
+
+    var questByTerr = DB.Current.Document.Questionnaire_Territories.SelectBy("Territory", t2).Distinct("Ref");
+
+    var q2 = DB.Current.Document.Questionnaire.SelectBy("Id", questByTerr)
+        .Where("OutletType==@p1 && OutletClass==@p2 && Scale==@p3", [outlet.Type, outlet.Class, DB.Current.Constant.QuestionnaireScale.Region])
+        .OrderBy("Date", true)
+        .Top(1)
+        .UnionAll(DB.Current.Document.Questionnaire.SelectBy("Id", questByTerr)
+        .Where("OutletType==@p1 && OutletClass==@p2 && Scale==@p3", [outlet.Type, outlet.Class, DB.Current.Constant.QuestionnaireScale.Territory])
+        .OrderBy("Date", true)
+        .Top(1))
+        .Distinct("Id");
+
+    return q2;
+}
+
+function GetQuestionsByOutlet(questionnaires) {
+
+    if (questionnaires == null)
+        return null;
+    else {
+        var result = DB.Current.Document.Questionnaire_Questions.SelectBy("Ref", questionnaires).OrderBy("QuestionAsObject.Description").Distinct("Question");
+        if (result.Count() > 0)
+            return result;
+        else
+            return null;
+    }
+}
+
+function GetSKUsByOutlet(questionnaires) {
+    if (questionnaires == null)
+        return null;
+    else {
+        var s = DB.Current.Catalog.SKU.Select().Distinct("Id");
+        var result = DB.Current.Document.Questionnaire_SKUs.SelectBy("Ref", questionnaires).Union(DB.Current.Document.Questionnaire_SKUs.SelectBy("SKU", s)).OrderBy("SKUAsObject.Description");
+        if (result.Count() > 0)
+            return result;
+        else
+            return null;
+    }
 }

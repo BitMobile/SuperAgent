@@ -31,7 +31,7 @@
       <c:HorizontalLayout>
         <c:VerticalLayout>
           <s:Push Id="questions" Value="$Facade.CountEntities(Document, Visit_Questions, $workflow.visit.Id, Ref)"></s:Push>
-          <c:TextView Text="{$questions} of {$workflow.questions_qty}" CssClass="main_row"></c:TextView>
+          <c:TextView Text="{$questions} #of# {$workflow.questions_qty}" CssClass="main_row"></c:TextView>
           <c:TextView Text="#questions#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
@@ -39,7 +39,7 @@
 
       <c:HorizontalLayout>
         <c:VerticalLayout>
-          <c:TextView Text="{$workflow.sku_answ} of {$workflow.sku_qty}" CssClass="main_row"></c:TextView>
+          <c:TextView Text="{$workflow.sku_answ} #of# {$workflow.sku_qty}" CssClass="main_row"></c:TextView>
           <c:TextView Text="#sku# #questions#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>

@@ -26,69 +26,30 @@
 
 
     <s:If Test="$workflow.order.Status == $workflow.new">
-      <s:If Test="$workflow.order.PriceListAsRef != null">
         <c:VerticalLayout CssClass="header">
           <c:VerticalLayout  CssClass ="grid">
-            <c:HorizontalLayout Id="Orderadd" OnClickAction="$Workflow.DoAction(Add,$workflow.order)">
-              <c:VerticalLayout CssClass="half_width">
-                <s:If Test="$greater==True">
-                  <c:TextView Text="$sum" CssClass="main_row"></c:TextView>
-                </s:If>
-                <s:Else>
-                  <s:If Test="$maxAmount == 0">
-                    <c:TextView Text="$sum" CssClass="main_row"></c:TextView>
-                  </s:If>
-                  <s:Else>
-                    <c:TextView Text="$sum" CssClass="warning_row"></c:TextView>
-                  </s:Else>
-                </s:Else>
+            <c:HorizontalLayout>
+              <c:VerticalLayout CssClass="10" OnClickAction="$Workflow.DoAction(ShowInfo,$sum)">
+                <c:Image CssClass="info"/>
+              </c:VerticalLayout>
+              <c:VerticalLayout CssClass="60">
+                <c:TextView Text="$sum" CssClass="main_row"></c:TextView>
                 <c:TextView Text="#totalamount#" CssClass="description_row"></c:TextView>
               </c:VerticalLayout>
-              <c:VerticalLayout CssClass="half_width">
-                <s:If Test="$maxAmount == 0">
-                  <c:TextView Text="#NoLimit#" CssClass="main_row"></c:TextView>
-                </s:If>
-                <s:Else>
-                  <c:TextView Text="$maxAmount" CssClass="main_row"></c:TextView>
-                </s:Else>
-                <c:TextView Text="#maximumAmount#" CssClass="description_row"></c:TextView>
+              <c:VerticalLayout Id="Orderadd" OnClickAction="$Workflow.DoAction(Add,$workflow.order)">
+                <c:Image CssClass="add_img"/>
               </c:VerticalLayout>
-              <c:Image CssClass="add_img"/>
             </c:HorizontalLayout>
+            <c:HorizontalLine/>
           </c:VerticalLayout>
         </c:VerticalLayout>
 
         <c:HorizontalLine/>
-      </s:If>
 
 
 
       <c:ScrollView Id="grScrollView" CssClass="grid">
     
-        <s:If Test="$priceLists != 1">
-          <c:HorizontalLayout OnClickAction="$Facade.PriceListAction($workflow.order, $priceLists)">
-            <c:VerticalLayout>
-              <s:If Test="$workflow.order.PriceListAsRef != null">
-                <c:TextView Text="$workflow.order.PriceListAsObject.Description" CssClass="main_row"></c:TextView>
-              </s:If>
-              <s:Else>
-                <s:If Test="$priceLists == 0">                  
-                    <c:TextView Text="#noPriceLists#" CssClass="main_row"></c:TextView>                  
-                </s:If>
-                <s:Else>
-                  <c:TextView Text="#isntSelected#" CssClass="main_row"></c:TextView>
-                </s:Else>
-              </s:Else>
-              <c:TextView Text="#priceList#" CssClass="description_row"></c:TextView>
-            </c:VerticalLayout>
-            <s:If Test="$priceLists != 0">
-              <c:Image/>
-            </s:If>
-          </c:HorizontalLayout>
-          <c:HorizontalLine/>
-        </s:If>
-
-
         <s:Iterator Id="orderitem" Value="$items">
           <s:Push Id="orderitem" Value="$Facade.DeleteZeroItem($orderitem)"></s:Push>
 

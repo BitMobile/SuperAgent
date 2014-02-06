@@ -230,7 +230,7 @@ WebMapGoogle {
         }
 
            .add_img {
-                height: 30%;
+                height: 32%;
                 margin-top: 35%;
                 background-image: url(icon_add.png);
             }
@@ -239,6 +239,12 @@ WebMapGoogle {
                 height: 30%;
                 margin-top: 35%;
                 background-image: url(tick.png);
+            }
+
+            .info {
+                height: 35%;
+                margin-top: 35%;
+                background-image: url(info.png);
             }
 
         .grid hl CheckBox {

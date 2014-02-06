@@ -102,7 +102,6 @@ function UpdateValueAndBack(entity, attribute, value) {
     }
     else {
         entity[attribute] = value.Value;
-        Dialog.Debug(entity);
     }
 
     Workflow.Back();
@@ -397,7 +396,6 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
             parameterValue.Parameter = parameter.Id;
             parameterValue.Ref = outlet.Id;
         }
-        Dialog.Debug(parameterValue);
         Workflow.Action("EditParameter", [parameterValue, value, "Outlet_Parameters"]);
     }
     else
@@ -1093,7 +1091,6 @@ function CalculateSKUAndForward(outlet, orderitem) {
     Variables["orderitem"].Discount = Converter.ToDecimal(discount * discChBox);
     var p = CalculatePrice(orderitem.Price, (discount * discChBox), 1);
     Variables["orderitem"].Total = p;
-    Dialog.Debug(orderitem);
 
     Workflow.Forward([outlet]);
 }

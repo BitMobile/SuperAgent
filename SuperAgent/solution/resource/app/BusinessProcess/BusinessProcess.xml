@@ -256,8 +256,8 @@
 
     <bp:Step Name="Order" Screen="Order.xml">
       <bp:Action Name="Add" NextStep="AddSKU"></bp:Action>
-      <bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
-      <bp:Action Name="EditPriceList" NextStep="PriceLists"></bp:Action>
+      <bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>            
+      <bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
       <bp:Action Name="Forward" NextStep="Commentary"></bp:Action>
     </bp:Step>
 
@@ -273,6 +273,10 @@
       <bp:Action Name="Forward" NextStep="Order"></bp:Action>
     </bp:Step>
 
+    <bp:Step Name="OrderInfo" Screen="Order_Info.xml">
+      <bp:Action Name="EditPriceList" NextStep="PriceLists"></bp:Action>
+    </bp:Step>
+    
     <bp:Step Name="PriceLists" Screen="ListChoice.xml">
     </bp:Step>
 

@@ -106,3 +106,4 @@ valueList	Список значений
 deliveryDate	Дата доставки
 enterDateTime	Введите дату и время
 noImage	Изображение не найдено
+of	из

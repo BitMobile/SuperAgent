@@ -121,6 +121,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="resource\app\Screen\Features.xml" />
+    <Content Include="resource\app\Screen\Order_Info.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="resource\app\Script\DB.js" />
     <Content Include="resource\app\Script\Events.js" />
     <Content Include="resource\app\Script\Facade.js" />

@@ -175,7 +175,22 @@ Console.CommandPause = 500;
 	
 	Console.WriteLine(CheckScreen("Order_Commentary.xml"));
 	
-	Console.WriteLine(TextCheck("grScrollView.Controls[0].Controls[0].Controls[2]", "Комментарий к заказу  "));	
+	var result = Device.Click("grScrollView.Controls[0]");
+	Console.WriteLine(result);
+
+	var SetDT="2014.04.10 8:35";
+	Dialog.SetDateTime(SetDT);
+	
+	var appDateTime=Dialog.GetDateTime();
+	
+	var result=(SetDT==appDateTime)?"True":"False";
+	
+	Console.WriteLine(Dialog.ClickPositive());
+	
+	var result=CheckValue("grScrollView.Controls[0].Controls[0].Controls[1].Text",SetDT);
+	Console.WriteLine(result+"Проверка даты в Textview после внесения изменений");
+	
+	var result=TextCheck("grScrollView.Controls[2].Controls[0].Controls[1]",  "Комментарий к заказу  ");	
 	
 	var result = Device.Click("btnForward");
 	Console.WriteLine(result);	

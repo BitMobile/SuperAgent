@@ -87,8 +87,9 @@ function CurrDateTime(){
 	hour= (hour < 10 )? '0' + hour : hour;
 	var min = curr.getMinutes();
 	min= (min < 10 )? '0' + min : min;
-	var sec="00";
-	result=day+"."+month+"."+year+" "+hour+":"+min+":"+sec;
+	// var sec=curr.getSeconds();
+	// sec= (sec < 10 )? '0' + sec : sec;
+	result=day+"."+month+"."+year+" "+hour+":"+min;//+":"+sec;
 
 	return result;
 }
@@ -129,6 +130,7 @@ Console.CommandPause = 500;
 	
 	Console.WriteLine(CheckScreen("Order.xml"));
 	
+	
 	var outlet=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text");
 	if (outlet=="Error: Index has to be between upper and lower bound of the array.") {
 	
@@ -142,7 +144,6 @@ Console.CommandPause = 500;
 		
 	/* Took outlet descr from workflow in future*/
 	
-		
 	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[0].Text", "Не выбран"));
 	
 	var result=Device.Click("grScrollView.Controls[0]"); // Price-list
@@ -153,12 +154,12 @@ Console.CommandPause = 500;
 	var priceList=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text");
 	var result=Device.Click("grScrollView.Controls[0]"); // Choose Price-list
 	Console.WriteLine(result+"Choose Price-list");
-	
+		var currDateTime=CurrDateTime();
+	Console.WriteLine(currDateTime);
 	Console.Pause(1000);
 	
 	Console.WriteLine(CheckScreen("Order.xml"));
-	var currDateTime=CurrDateTime();
-	Console.WriteLine(currDateTime);
+
 	
 	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[0].Text", priceList)+ "  Отображение названия выбранного прайс-листа");
 	
@@ -179,11 +180,11 @@ Console.CommandPause = 500;
 		
 	/*ORDER WITHOUT DISCOUNT and First feature*/
 	
-	Console.WriteLine(Search("edtSearch", "гв 10"));	
+	Console.WriteLine(Search("edtSearch", "гв 10")+"111");	
 		Stopwatch.Start();
-	Console.WriteLine(result);
+//	Console.WriteLine(result);
 	
-	var result = CheckValue("grScrollView.Controls[2].Controls[0].Controls[0].Text", "Гвоздь 10ка");
+	var result = CheckValue("grScrollView.Controls[6].Controls[0].Controls[0].Text", "Гвоздь 10ка");
 	if (result=="True") {
 		var result = Stopwatch.Stop();
 		Console.WriteLine(result.TotalSeconds+"  SKU search loading time");
@@ -465,8 +466,8 @@ Console.CommandPause = 500;
 		Console.WriteLine(Device.GetValue("grScrollView.Controls[6].Controls[0].Controls[0].Text")+"7");
 	Console.WriteLine(CheckValue("grScrollView.Controls[6].Controls[0].Controls[0].Text", "Тюльпан желтый, Красный")+ "Check SKU description and feature in order");
 	
-		Console.WriteLine(Device.GetValue("grScrollView.Controls[6].Controls[0].Controls[1].Text")+"456");
-	var result=CheckValue("grScrollView.Controls[6].Controls[0].Controls[1].Text", "Количество: 5   Итого: 6,50456");
+		Console.WriteLine(Device.GetValue("grScrollView.Controls[6].Controls[0].Controls[1].Text"));
+	var result=CheckValue("grScrollView.Controls[6].Controls[0].Controls[1].Text", "Количество: 5   Итого: 188,50");
 	Console.WriteLine(result);	
 	
 	var result = Device.Click("btnForward");
@@ -475,8 +476,8 @@ Console.CommandPause = 500;
 	Console.WriteLine(CheckScreen("Order_Commentary.xml"));
 	
 		var appDateTime=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text");
-	//appDateTime=appDateTime.slice(0, - 3);
-	Console.WriteLine(appDateTime);
+	appDateTime=appDateTime.slice(0, - 3);
+	Console.WriteLine(appDateTime+"appDateTime");
 	
 	var result=(currDateTime==appDateTime)?"True":"False";
 	Console.WriteLine(result+"Проверка даты в Textview");
@@ -485,13 +486,14 @@ Console.CommandPause = 500;
 	Console.WriteLine(result);
 
 	var appDateTime=Dialog.GetDateTime();
-	//appDateTime=appDateTime.toString();
-	//appDateTime=appDateTime.slice(0, - 3);
+	appDateTime=String(appDateTime);
+	appDateTime=appDateTime.slice(0, - 3);
 	Console.WriteLine(appDateTime);
 	var result=(currDateTime==appDateTime)?"True":"False";
 	
-	var SetDT="2014.03.14 8:45";
+	var SetDT="14.03.2014 8:35";
 	Dialog.SetDateTime(SetDT);
+	var SetDT="14.04.2014 8:35";
 	
 	var appDateTime=Dialog.GetDateTime();
 	
@@ -499,7 +501,11 @@ Console.CommandPause = 500;
 	
 	Console.WriteLine(Dialog.ClickPositive());
 	
-	var result=CheckValue("grScrollView.Controls[0].Controls[0].Controls[1].Text",SetDT);
+	var appDateTime=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text");
+	appDateTime=String(appDateTime);
+	appDateTime=appDateTime.slice(0, - 3);
+	Console.WriteLine(appDateTime);
+	var result=(SetDT==appDateTime)?"True":"False";
 	Console.WriteLine(result+"Проверка даты в Textview после внесения изменений");
 	
 
@@ -570,9 +576,9 @@ Console.CommandPause = 500;
 	
 	Console.Pause(500);
 	
-	Console.WriteLine(CheckValue("Orderadd.Controls[0].Controls[0].Text", "1647,49"));
-		Console.WriteLine(Device.GetValue("grScrollView.Controls[6].Controls[0].Controls[1].Text")+"586");
-	Console.WriteLine(CheckValue("grScrollView.Controls[6].Controls[0].Controls[1].Text", "Количество: 5   Итого: 6,50"));
+	Console.WriteLine(CheckValue("Orderadd.Controls[0].Controls[0].Text", "489,84"));
+		Console.WriteLine(Device.GetValue("grScrollView.Controls[6].Controls[0].Controls[1].Text"));
+	Console.WriteLine(CheckValue("grScrollView.Controls[6].Controls[0].Controls[1].Text", "Количество: 5   Итого: 357,50"));
 	
 	Device.Click("grScrollView.Controls[6]");
 	
@@ -589,7 +595,7 @@ Console.CommandPause = 500;
 	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[0].Text", "Тюльпан желтый, Красный")+ "  Check SKU description and feature");
 	
 	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[1].Text", "Пересчитать цену")+ "  Check descriptions RecountPrice");
-	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[0].Controls[0].Text", "1,3"));
+	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[0].Controls[0].Text", "71,5"));
 	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[0].Controls[1].Text", "Цена")+ "  Check descriptions Price");
 	
 	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[1].Controls[0].Text", "5")+ "   Quantity value is  23");
@@ -619,8 +625,9 @@ Console.CommandPause = 500;
 	var result = Device.Click("grScrollView.Controls[0]");
 	Console.WriteLine(result);
 
-	var SetDT="2014.04.10 8:35";
-	Dialog.SetDateTime(SetDT);
+	var SetDT="14.03.2014 8:45";
+		Dialog.SetDateTime(SetDT);
+		var SetDT="14.04.2014 8:45";
 	
 	var appDateTime=Dialog.GetDateTime();
 	
@@ -628,7 +635,11 @@ Console.CommandPause = 500;
 	
 	Console.WriteLine(Dialog.ClickPositive());
 	
-	var result=CheckValue("grScrollView.Controls[0].Controls[0].Controls[1].Text",SetDT);
+var appDateTime=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text");
+	appDateTime=String(appDateTime);
+	appDateTime=appDateTime.slice(0, - 3);
+	Console.WriteLine(appDateTime);
+	var result=(SetDT==appDateTime)?"True":"False";
 	Console.WriteLine(result+"Проверка даты в Textview после внесения изменений");
 	
 	var result=TextCheck("grScrollView.Controls[2].Controls[0].Controls[1]", "Комментарий изменен");	

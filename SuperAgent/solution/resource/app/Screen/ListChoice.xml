@@ -10,6 +10,9 @@
   <s:If Test="$param3=='Visit_Questions'">
     <s:Push Id="items" Value="$Facade.GetValueList($param1)"></s:Push>
   </s:If>
+  <s:If Test="$param3=='Outlet_Parameters'">
+    <s:Push Id="items" Value="$Facade.GetParameterValueList($param1)"></s:Push>
+  </s:If>
 
 
   <c:VerticalLayout>
@@ -42,6 +45,9 @@
             <s:If Test="$param2=='Answer'">
               <c:TextView CssClass="main_row" Text="#valueList#"/>
             </s:If>
+            <s:If Test="$param2=='Value'">
+              <c:TextView CssClass="main_row" Text="#valueList#"/>
+            </s:If>
 
             <c:TextView Text="#select_answer#" CssClass="description_row"></c:TextView>
           </c:VerticalLayout>
@@ -69,6 +75,9 @@
         <s:If Test="$param3=='Visit_Questions'">
           <s:Push Id="itemId" Value="$item"></s:Push>
         </s:If>
+        <s:If Test="$param3=='Outlet_Parameters'">
+          <s:Push Id="itemId" Value="$item"></s:Push>
+        </s:If>
 
         <c:HorizontalLayout OnClickAction="$Facade.UpdateValueAndBack($param1,$param2,$itemId)">
           <c:VerticalLayout>
@@ -84,6 +93,9 @@
               </s:Else>
             </s:If>
             <s:If Test="$param3=='Visit_Questions'">
+              <c:TextView Text="$item.Value" CssClass="main_row"></c:TextView>
+            </s:If>
+            <s:If Test="$param3=='Outlet_Parameters'">
               <c:TextView Text="$item.Value" CssClass="main_row"></c:TextView>
             </s:If>
           </c:VerticalLayout>

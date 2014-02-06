@@ -91,7 +91,7 @@ function UpdateEntity(entity, value) {
 }
 
 function UpdateValueAndBack(entity, attribute, value) {
-    if (attribute != "Answer") {  //for Visit_Questions
+    if (attribute != "Answer" && attribute != "Value") {  //for Visit_Questions
         entity[attribute] = value;
         entity = UpdateEntity(entity, value); //set status 'New' for Outelt
         if (attribute == "PriceList") {
@@ -102,6 +102,7 @@ function UpdateValueAndBack(entity, attribute, value) {
     }
     else {
         entity[attribute] = value.Value;
+        Dialog.Debug(entity);
     }
 
     Workflow.Back();
@@ -389,6 +390,24 @@ function GetOutletParameters() {
     return DB.Current.Catalog.OutletParameter.Select();
 }
 
+function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter) {
+    if (typeDescription == "ValueList") {
+        if (parameterValue == null) {
+            parameterValue = DB.Create("Catalog.Outlet_Parameters");
+            parameterValue.Parameter = parameter.Id;
+            parameterValue.Ref = outlet.Id;
+        }
+        Dialog.Debug(parameterValue);
+        Workflow.Action("EditParameter", [parameterValue, value, "Outlet_Parameters"]);
+    }
+    else
+        Workflow.Action("EditAddParameter", [outlet, parameter, parameterValue]);
+    //="$Workflow.DoAction(EditAddParameter,$outlet,$parameter,$parameterValue)">
+}
+
+function GetParameterValueList(parameterValue) {
+    return DB.Current.Catalog.OutletParameter_ValueList.SelectBy("Ref", parameterValue.Parameter);
+}
 
 function GetOutletParameterValue(outlet, parameter) {
     return DB.Current.Catalog.Outlet_Parameters.SelectBy("Parameter", parameter.Id).Union(DB.Current.Catalog.Outlet_Parameters.SelectBy("Ref", outlet.Id)).First();

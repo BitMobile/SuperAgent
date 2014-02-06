@@ -131,7 +131,8 @@
 
         <s:Push Id="parameterValue" Value="$Facade.GetOutletParameterValue($outlet,$parameter)"/>
 
-        <c:HorizontalLayout OnClickAction="$Workflow.DoAction(EditAddParameter,$outlet,$parameter,$parameterValue)">
+        <s:Push Id="true" Value="$Facade.ConvertToBoolean(true)"></s:Push>
+        <c:HorizontalLayout OnClickAction="$Facade.GoToParameterAction($parameter.DataTypeAsObject.Description, $parameterValue, Value, $outlet, $parameter)">
 
           <c:VerticalLayout>
             <s:If Test="$parameterValue!=null">

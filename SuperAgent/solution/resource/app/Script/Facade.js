@@ -752,12 +752,15 @@ function CreateOrderIfNotExists(order, outlet, userId, visitId, executedOrder, p
             if (visitId != null) {
                 order.Visit = visitId;
             }
-            if (priceLists == parseInt(1)) {
-                var pl = GetpriceListRef(outlet.Id);
+            //if (priceLists == parseInt(1)) {
+            var pl = GetpriceListRef(outlet.Id);
+            Dialog.Debug(pl);
+            if (pl != null)
                 order.PriceList = pl;
-            }
+            //}
         }
     }
+    Dialog.Debug(order);
     return order;
 }
 
@@ -822,13 +825,18 @@ function GetPriceListQty(outlet) {
 function GetpriceListRef(outlet) {
     var pl = DB.Current.Catalog.Outlet_Prices.Select().Where("Ref==@p1", [outlet]).OrderBy("RefAsObject.Description").Count();
     if (parseInt(pl) == parseInt(1)) {
+        Dialog.Debug("1");
         return DB.Current.Catalog.Outlet_Prices.Select().Where("Ref==@p1", [outlet]).Distinct("PriceList").First();
+    }
+    if (parseInt(pl) > parseInt(1)) {
+        Dialog.Debug("2");
+        return DB.Current.Catalog.Outlet_Prices.Select().Where("Ref==@p1 && LineNumber==@p2", [outlet, parseInt(1)]).Distinct("PriceList").First();
     }
 
     dl = DB.Current.Document.PriceList.SelectBy("DefaultPriceList", true).Count();
-    if (parseInt(dl) == parseInt(1)) {
-        return DB.Current.Document.PriceList.SelectBy("DefaultPriceList", true).Distinct("Id").First();
-    }
+    Dialog.Debug("3");
+    return DB.Current.Document.PriceList.SelectBy("DefaultPriceList", true).Distinct("Id").First();
+
 }
 
 function PriceListAction(order, priceLists) {

@@ -26,30 +26,32 @@
 
 
     <s:If Test="$workflow.order.Status == $workflow.new">
-        <c:VerticalLayout CssClass="header">
-          <c:VerticalLayout  CssClass ="grid">
-            <c:HorizontalLayout>
-              <c:VerticalLayout CssClass="10" OnClickAction="$Workflow.DoAction(ShowInfo,$sum)">
-                <c:Image CssClass="info"/>
-              </c:VerticalLayout>
-              <c:VerticalLayout CssClass="60">
-                <c:TextView Text="$sum" CssClass="main_row"></c:TextView>
-                <c:TextView Text="#totalamount#" CssClass="description_row"></c:TextView>
-              </c:VerticalLayout>
+      <c:VerticalLayout CssClass="header">
+        <c:VerticalLayout  CssClass ="grid">
+          <c:HorizontalLayout>
+            <c:VerticalLayout CssClass="10" OnClickAction="$Workflow.DoAction(ShowInfo,$sum)">
+              <c:Image CssClass="info"/>
+            </c:VerticalLayout>
+            <c:VerticalLayout CssClass="60">
+              <c:TextView Text="$sum" CssClass="main_row"></c:TextView>
+              <c:TextView Text="#totalamount#" CssClass="description_row"></c:TextView>
+            </c:VerticalLayout>
+            <s:If Test="$workflow.order.PriceListAsRef != null">
               <c:VerticalLayout Id="Orderadd" OnClickAction="$Workflow.DoAction(Add,$workflow.order)">
                 <c:Image CssClass="add_img"/>
               </c:VerticalLayout>
-            </c:HorizontalLayout>
-            <c:HorizontalLine/>
-          </c:VerticalLayout>
+            </s:If>
+          </c:HorizontalLayout>
+          <c:HorizontalLine/>
         </c:VerticalLayout>
+      </c:VerticalLayout>
 
-        <c:HorizontalLine/>
+      <c:HorizontalLine/>
 
 
 
       <c:ScrollView Id="grScrollView" CssClass="grid">
-    
+
         <s:Iterator Id="orderitem" Value="$items">
           <s:Push Id="orderitem" Value="$Facade.DeleteZeroItem($orderitem)"></s:Push>
 

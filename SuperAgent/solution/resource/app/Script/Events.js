@@ -53,7 +53,7 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 
 function OnWorkflowBack(name, lastStep, nextStep) {
 
-    if (lastStep == "PriceLists" && nextStep == "Order")
+    if (lastStep == "PriceLists" && nextStep == "OrderInfo")
         ReviseSKUs();
 
 

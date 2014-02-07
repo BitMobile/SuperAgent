@@ -81,6 +81,18 @@
         </c:HorizontalLayout>
         <c:HorizontalLine/>
       </s:If>
+      
+      <s:Push Id="useInQuestionnaire" Value="$Facade.CheckQuestionExistence($questionnaires, Snapshot, $sku)"></s:Push>
+      <s:If Test="$useInQuestionnaire">
+        <c:HorizontalLayout>
+          <c:VerticalLayout>
+            <c:TextView Text="$skuValue.Snapshot" CssClass="main_row"></c:TextView>
+            <c:TextView Text="#outOfStock#" CssClass="description_row"></c:TextView>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+      </s:If>
+
 
     </c:ScrollView>
 

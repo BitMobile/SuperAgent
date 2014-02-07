@@ -79,31 +79,22 @@
     <s:Else>
       <c:VerticalLayout CssClass="header">
         <c:VerticalLayout  CssClass ="grid">
-          <c:HorizontalLayout Id="OrderAdd">
-            <c:VerticalLayout>
+          <c:HorizontalLayout>
+            <c:VerticalLayout CssClass="10" OnClickAction="$Workflow.DoAction(ShowInfo,$sum)">
+              <c:Image CssClass="info"/>
+            </c:VerticalLayout>
+            <c:VerticalLayout CssClass="60">
               <c:TextView Text="$sum" CssClass="main_row"></c:TextView>
               <c:TextView Text="#totalamount#" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
           </c:HorizontalLayout>
+          <c:HorizontalLine/>
         </c:VerticalLayout>
       </c:VerticalLayout>
       <c:HorizontalLine/>
 
 
       <c:ScrollView Id="grScrollView" CssClass="grid">
-
-        <c:HorizontalLayout>
-          <c:VerticalLayout>
-            <s:If Test="$workflow.order.PriceListAsRef != null">
-              <c:TextView Text="$workflow.order.PriceListAsObject.Description" CssClass="main_row"></c:TextView>
-            </s:If>
-            <s:Else>
-              <c:TextView Text="#isntSelected#" CssClass="main_row"></c:TextView>
-            </s:Else>
-            <c:TextView Text="#priceList#" CssClass="description_row"></c:TextView>
-          </c:VerticalLayout>
-        </c:HorizontalLayout>
-        <c:HorizontalLine/>
 
         <s:Iterator Id="orderitem" Value="$items">
 

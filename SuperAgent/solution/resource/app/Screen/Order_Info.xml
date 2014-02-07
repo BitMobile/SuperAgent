@@ -44,7 +44,9 @@
 
           </c:VerticalLayout>
           <s:If Test="$priceLists != 0">
-            <c:Image/>
+            <s:If Test="$workflow.order.Status == $workflow.new">
+              <c:Image/>
+            </s:If>              
 
           </s:If>
 

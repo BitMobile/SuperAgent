@@ -107,3 +107,5 @@ deliveryDate	Дата доставки
 enterDateTime	Введите дату и время
 noImage	Изображение не найдено
 of	из
+information	Информация
+snapshot	Фотоснимок

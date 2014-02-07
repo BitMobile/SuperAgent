@@ -107,3 +107,5 @@ deliveryDate	Delivery date
 enterDateTime	Enter date, time
 noImage	No image found
 of	of
+information	Information
+snapshot	Snapshot

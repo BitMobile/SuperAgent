@@ -1,10 +1,3 @@
-/*  Получить номера  заказов из 1С
-
-Запуск бат 
-var wsh = new ActiveXObject("WScript.Shell");
-wsh.Run(new ActiveXObject("Scripting.FileSystemObject").GetAbsolutePathName("")+"/Schedule.bat");
-*/
-
 function Search (path, text) {
 	var result1= Device.SetFocus(path);
 	
@@ -87,16 +80,15 @@ function CurrDateTime(){
 	hour= (hour < 10 )? '0' + hour : hour;
 	var min = curr.getMinutes();
 	min= (min < 10 )? '0' + min : min;
-	// var sec=curr.getSeconds();
-	// sec= (sec < 10 )? '0' + sec : sec;
-	result=day+"."+month+"."+year+" "+hour+":"+min;//+":"+sec;
+	
+	result=day+"."+month+"."+year+" "+hour+":"+min;
 
 	return result;
 }
 
 function main() {
 
-Console.CommandPause = 500;
+	Console.CommandPause = 500;
 	/*-----------------ADDING NEW ORDER-------------------------*/
 	
 	Console.WriteLine("Adding new order");
@@ -108,20 +100,30 @@ Console.CommandPause = 500;
 	
 	Console.WriteLine(CheckScreen("Outlets.xml"));
 	
- Console.WriteLine(Search("edtSearch", "new"));	
-  Stopwatch.Start();
+	Console.WriteLine(Search("edtSearch", "new"));	
+	Stopwatch.Start();
 	Console.WriteLine(result);
 	
 	var result=Device.GetValue("grScrollView.Controls[0].Controls[1].Controls[0].Text");
-		Console.WriteLine(result);
+	Console.WriteLine(result);
 	
 	if (result=="New iOS outlet"){
 		Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[1].Controls[0].Text", "New iOS outlet")); // проверка отображения названия т.т.
-		}
+	}
 	else{
 		
 		Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[0].Text", "New iOS outlet")); // проверка отображения названия т.т.
 		
+	}
+	
+	var outlet=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text");
+	if (outlet=="Error: Index has to be between upper and lower bound of the array.") {
+		
+		var outlet=Device.GetValue("grScrollView.Controls[0].Controls[1].Controls[0].Text");
+		Console.WriteLine("Заказ для "+ outlet);
+	}
+	else{
+		Console.WriteLine("Заказ для "+ outlet);
 	}
 	
 	
@@ -131,41 +133,9 @@ Console.CommandPause = 500;
 	Console.WriteLine(CheckScreen("Order.xml"));
 	
 	
-	var outlet=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text");
-	if (outlet=="Error: Index has to be between upper and lower bound of the array.") {
-	
-	var outlet=Device.GetValue("grScrollView.Controls[0].Controls[1].Controls[0].Text");
-	Console.WriteLine("Заказ для "+ outlet);
-	}
-	else{
-		Console.WriteLine("Заказ для "+ outlet);
-	}
-	
-		
 	/* Took outlet descr from workflow in future*/
 	
-	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[0].Text", "Не выбран"));
-	
-	var result=Device.Click("grScrollView.Controls[0]"); // Price-list
-	Console.WriteLine(result+"Price-list");
-	
-	Console.WriteLine(CheckScreen("ListChoice.xml"));
-	
-	var priceList=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text");
-	var result=Device.Click("grScrollView.Controls[0]"); // Choose Price-list
-	Console.WriteLine(result+"Choose Price-list");
-		var currDateTime=CurrDateTime();
-	Console.WriteLine(currDateTime);
-	Console.Pause(1000);
-	
-	Console.WriteLine(CheckScreen("Order.xml"));
-
-	
-	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[0].Text", priceList)+ "  Отображение названия выбранного прайс-листа");
-	
-	Console.WriteLine(CheckValue("Orderadd.Controls[0].Controls[0].Text", "0,00"));
-	
-	var result = Device.Click("Orderadd");
+	var result = Device.Click("Orderadd.Controls[0].Controls[0].Controls[2]");
 	Stopwatch.Start();
 	Console.WriteLine(result);
 	
@@ -177,12 +147,11 @@ Console.CommandPause = 500;
 	else{
 		Console.WriteLine(result);
 	}
-		
+	
 	/*ORDER WITHOUT DISCOUNT and First feature*/
 	
 	Console.WriteLine(Search("edtSearch", "гв 10")+"111");	
-		Stopwatch.Start();
-//	Console.WriteLine(result);
+	Stopwatch.Start();
 	
 	var result = CheckValue("grScrollView.Controls[6].Controls[0].Controls[0].Text", "Гвоздь 10ка");
 	if (result=="True") {
@@ -204,12 +173,9 @@ Console.CommandPause = 500;
 	else{
 		Console.WriteLine(result);
 	}
-		
-	/*var sku=Device.GetValue("workflow[orderitem].Description");
-	Console.WriteLine(sku);*/
 	
 	/*Check descriptions*/
-		
+	
 	Console.WriteLine(Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text"));
 	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[0].Text", "Гвоздь 10ка")+ "  Check SKU description");
 	
@@ -255,32 +221,20 @@ Console.CommandPause = 500;
 	
 	
 	Console.WriteLine(CheckScreen("Order.xml"));
-		Console.WriteLine(Device.GetValue("grScrollView.Controls[2].Controls[0].Controls[0].Text")+"1");
-	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[0].Controls[0].Text", "Гвоздь 10ка, синий, металл")+ "  Check SKU description and feature in order");
 	
-	/*var amount=price*quantity;*/
-	
-	
-	/*var result=CheckValue("grScrollView.Controls[2].Controls[0].Controls[1].Text", "Количество:"+quantity+ "Итого:"+ amount);
-	Console.WriteLine(result);	*/
+	Console.WriteLine(Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text")+"1");
+	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[0].Text", "Гвоздь 10ка, синий, металл")+ "  Check SKU description and feature in order");
 	
 	/*ORDER WITH DISCOUNT and second feature */
+	Console.WriteLine("------------------------ORDER WITH DISCOUNT and second feature----------------------------------------");
 	
-	
-	var result=Device.Click("Orderadd");
+	var result = Device.Click("Orderadd.Controls[0].Controls[0].Controls[2]");
 	Console.WriteLine(result);
 	
 	Console.WriteLine(Search("edtSearch", "гв 10"));	
 	
 	var result=Device.Click("grScrollView.Controls[6]"); // Add SKU to Order
 	Console.WriteLine(result);
-	
-	/*Console.WriteLine(CheckScreen("Features.xml"));
-	
-	var feature=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text");
-	
-	var result=Device.Click("grScrollView.Controls[4]"); // Choose feature
-	Console.WriteLine(result);*/
 	
 	Console.WriteLine(CheckScreen("Order_EditSKU.xml"));
 	Console.WriteLine(Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text")+"2");
@@ -353,21 +307,21 @@ Console.CommandPause = 500;
 	
 
 	var amount=price*quantity;
-	/*amount=amount.toFixed(2);*/
 	Console.WriteLine(amount);
 	
 	var result = Device.Click("btnForward");
 	Console.WriteLine(result);	
 	
 	Console.WriteLine(CheckScreen("Order.xml"));
-		Console.WriteLine(Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text")+"Price-list");
-	Console.WriteLine(Device.GetValue("grScrollView.Controls[4].Controls[0].Controls[0].Text")+"4");
-	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[0].Controls[0].Text", "Гвоздь 10ка, Красный, шоколад")+ "  Check SKU description and feature in order");
+	Console.WriteLine(Device.GetValue("grScrollView.Controls[2].Controls[0].Controls[0].Text")+"4");
+	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[0].Controls[0].Text", "Гвоздь 10ка, Красный, шоколад")+ "  Check SKU description and feature in order");
 	
 	
-	/*ORDER WITH MarkUP and */
+	/*ORDER WITH MarkUP */
 	
-	var result = Device.Click("Orderadd");
+	Console.WriteLine("------------------------ORDER WITH MarkUP----------------------------------------");
+	
+	var result = Device.Click("Orderadd.Controls[0].Controls[0].Controls[2]");
 	Stopwatch.Start();
 	Console.WriteLine(result);
 	
@@ -387,7 +341,7 @@ Console.CommandPause = 500;
 	
 	
 	Console.WriteLine(CheckScreen("Order_EditSKU.xml"));
-		Console.WriteLine(Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text")+"5");
+	Console.WriteLine(Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text")+"5");
 	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[0].Text", "Тюльпан желтый, Красный")+  "Check SKU description");
 	
 	
@@ -438,7 +392,7 @@ Console.CommandPause = 500;
 	
 	var result = Device.Click("grScrollView.Controls[0].Controls[0]");
 	Console.WriteLine(result);	
-		Console.WriteLine(Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text")+"6");
+	Console.WriteLine(Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text")+"6");
 	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[0].Text", "Тюльпан желтый, Красный")+ "  Check SKU description and feature");
 	
 	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[1].Text", "Пересчитать цену")+ "  Check descriptions RecountPrice");
@@ -462,12 +416,12 @@ Console.CommandPause = 500;
 	Console.WriteLine(result);	
 	
 	Console.WriteLine(CheckScreen("Order.xml"));
-		Console.WriteLine(Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text"));
-		Console.WriteLine(Device.GetValue("grScrollView.Controls[6].Controls[0].Controls[0].Text")+"7");
-	Console.WriteLine(CheckValue("grScrollView.Controls[6].Controls[0].Controls[0].Text", "Тюльпан желтый, Красный")+ "Check SKU description and feature in order");
 	
-		Console.WriteLine(Device.GetValue("grScrollView.Controls[6].Controls[0].Controls[1].Text"));
-	var result=CheckValue("grScrollView.Controls[6].Controls[0].Controls[1].Text", "Количество: 5   Итого: 188,50");
+	Console.WriteLine(Device.GetValue("grScrollView.Controls[4].Controls[0].Controls[0].Text")+"7");
+	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[0].Controls[0].Text", "Тюльпан желтый, Красный")+ "Check SKU description and feature in order");
+	
+	Console.WriteLine(Device.GetValue("grScrollView.Controls[4].Controls[0].Controls[1].Text"));
+	var result=CheckValue("grScrollView.Controls[4].Controls[0].Controls[1].Text", "Количество: 5   Итого: 188,50");
 	Console.WriteLine(result);	
 	
 	var result = Device.Click("btnForward");
@@ -475,7 +429,7 @@ Console.CommandPause = 500;
 	
 	Console.WriteLine(CheckScreen("Order_Commentary.xml"));
 	
-		var appDateTime=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text");
+	var appDateTime=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text");
 	appDateTime=appDateTime.slice(0, - 3);
 	Console.WriteLine(appDateTime+"appDateTime");
 	
@@ -518,7 +472,7 @@ Console.CommandPause = 500;
 	
 	/*-----------NEW ORDER---------------*/
 	
-	
+	Console.WriteLine("------------------------Checking new order----------------------------------------");
 	var result = Device.Click("btnOrder");
 	Console.WriteLine(result+"New orders Check");
 	
@@ -527,11 +481,6 @@ Console.CommandPause = 500;
 	Device.TakeScreenshot("NewOrdersList");
 	Console.WriteLine(Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text")+"8");
 	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[0].Text","New iOS outlet")+ "Проверка названия т.т. в новом заказе");	
-	
-	/*var er=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[1].Text");
-	Console.WriteLine(er)
-	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[1].Text", "Нет номера"+ "Проверка отображения надписи Нет номера"));	
-	*/
 	
 	var result = Device.Click("grScrollView.Controls[0]");
 	Console.WriteLine(result);
@@ -547,7 +496,7 @@ Console.CommandPause = 500;
 	}
 	Console.WriteLine(result);
 	
-	Device.Click("Orderadd");	
+	var result = Device.Click("Orderadd.Controls[0].Controls[0].Controls[2]");
 	var result = Device.GetValue("context.CurrentScreen.Name");
 	if (result != "Order.xml"){
 		result="True";
@@ -560,10 +509,10 @@ Console.CommandPause = 500;
 	var result = Device.Click("btnBack");
 	Console.WriteLine(result);
 	
-	var result= Device.Click("grScrollView.Controls[0]");
-	
+	var result=Device.Click("Orderadd.Controls[0].Controls[0].Controls[0]");
+	Console.WriteLine(result);
 	var result = Device.GetValue("context.CurrentScreen.Name");
-	if (result != "Order.xml"){
+	if (result != "Order_Info.xml"){
 		result="True";
 	}
 	else {
@@ -571,13 +520,16 @@ Console.CommandPause = 500;
 	}
 	Console.WriteLine (result+"New orders price-list editing")
 	
+	var result=Device.Click("grScrollView.Controls[2]");
+	
 	var result=Device.Click("grScrollView.Controls[2]"); // Change Price-list
 	Console.WriteLine(result+"Change Price-list");
 	
-	Console.Pause(500);
+	var result = Device.Click("btnBack");
+	Console.WriteLine(result);
 	
 	Console.WriteLine(CheckValue("Orderadd.Controls[0].Controls[0].Text", "489,84"));
-		Console.WriteLine(Device.GetValue("grScrollView.Controls[6].Controls[0].Controls[1].Text"));
+	Console.WriteLine(Device.GetValue("grScrollView.Controls[6].Controls[0].Controls[1].Text"));
 	Console.WriteLine(CheckValue("grScrollView.Controls[6].Controls[0].Controls[1].Text", "Количество: 5   Итого: 357,50"));
 	
 	Device.Click("grScrollView.Controls[6]");
@@ -626,8 +578,8 @@ Console.CommandPause = 500;
 	Console.WriteLine(result);
 
 	var SetDT="14.03.2014 8:45";
-		Dialog.SetDateTime(SetDT);
-		var SetDT="14.04.2014 8:45";
+	Dialog.SetDateTime(SetDT);
+	var SetDT="14.04.2014 8:45";
 	
 	var appDateTime=Dialog.GetDateTime();
 	
@@ -635,7 +587,7 @@ Console.CommandPause = 500;
 	
 	Console.WriteLine(Dialog.ClickPositive());
 	
-var appDateTime=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text");
+	var appDateTime=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text");
 	appDateTime=String(appDateTime);
 	appDateTime=appDateTime.slice(0, - 3);
 	Console.WriteLine(appDateTime);

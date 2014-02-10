@@ -150,46 +150,7 @@ function main() {
 	
 	Console.Pause(500);
 	
-	Console.WriteLine(CheckScreen("Tasks.xml"));
-	
-	var result=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text"); // Task
-	if (result=="Задач нет") {
-		result="True";
-	}
-	else { result="False";
-	}
-	
-	Console.WriteLine(result+"No task");
-	
-	var result = Device.Click("btnForward"); // Переход к экрану Общих вопросов
-	Console.WriteLine(result+"Переход к экрану Общих вопросов");
-	
-	Console.WriteLine(CheckScreen("Visit_Questions.xml"));
-	
-var result=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text"); // Questions
-	if (result=="Вопросов нет") {
-		result="True";
-	}
-	else { result="False";
-	}
-		
-	Console.WriteLine(result+"  No questions");
-	
-	var result = Device.Click("btnForward");
-	Console.WriteLine(result);
-
-	Console.WriteLine(CheckScreen("Visit_SKUs.xml"));
-	
-	var result=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text"); // SKU question 
-	if (result=="Вопросов нет") {
-		result="True";
-	}
-	else { result="False";
-	}
-	Console.WriteLine(result+"No SKU questions ");	
-	
-	var result = Device.Click("btnForward");
-	Console.WriteLine(result);	
+	/*Пропускаются пустые экраны*/
 	
 	Console.WriteLine(CheckScreen("Order.xml"));
 	
@@ -200,8 +161,7 @@ var result=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Tex
 	
 	var result=Device.Click("grScrollView.Controls[0]"); // Choose Price-list
 	Console.WriteLine(result+"Choose Price-list");
-	
-	Console.Pause(500);
+		Console.Pause(500);
 	
 	Console.WriteLine(CheckScreen("Order.xml"));
 	
@@ -250,10 +210,6 @@ var result=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Tex
 	Console.WriteLine(CheckScreen("Receivables.xml"));
 	
 	Console.WriteLine(TextCheck("grScrollView.Controls[0].Controls[1].Controls[0]", "54"));	//Quantity
-	
-	var result = Device.Click("grScrollView.Controls[2]");
-	Console.WriteLine(result);	
-	
 	
 	
 	var result = Device.Click("btnForward");

@@ -160,46 +160,7 @@ function main() {
 	
 	Console.Pause(500);
 	
-	Console.WriteLine(CheckScreen("Tasks.xml"));
-	
-	var result=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text"); // Task
-	if (result=="Задач нет") {
-		result="True";
-	}
-	else { result="False";
-	}
-	
-	Console.WriteLine(result+"No task");
-	
-	var result = Device.Click("btnForward"); // Переход к экрану Общих вопросов
-	Console.WriteLine(result+"Переход к экрану Общих вопросов");
-	
-	Console.WriteLine(CheckScreen("Visit_Questions.xml"));
-	
-var result=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text"); // Questions
-	if (result=="Вопросов нет") {
-		result="True";
-	}
-	else { result="False";
-	}
-		
-	Console.WriteLine(result+"  No questions");
-	
-	var result = Device.Click("btnForward");
-	Console.WriteLine(result);
-
-	Console.WriteLine(CheckScreen("Visit_SKUs.xml"));
-	
-	var result=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text"); // SKU question 
-	if (result=="Вопросов нет") {
-		result="True";
-	}
-	else { result="False";
-	}
-	Console.WriteLine(result+"No SKU questions ");	
-	
-	var result = Device.Click("btnForward");
-	Console.WriteLine(result);	
+	/*Пропускаются экраны с задачами, вопросами*/
 	
 	Console.WriteLine(CheckScreen("Order.xml"));
 	

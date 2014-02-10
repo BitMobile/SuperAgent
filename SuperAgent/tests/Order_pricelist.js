@@ -61,8 +61,6 @@ function main() {
 	else{
 		Console.WriteLine(result);
 	}
-	/*Old order*/
-	/*var a=getRandomArbitary(0,3);*/
 	
 	/*-----------------ORDER Whithout Price-List-------------------------*/
 	var result = Device.Click("NewOrder");
@@ -76,88 +74,10 @@ function main() {
 	Console.WriteLine(result);
 	
 	var outlet=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text");
-	Console.WriteLine("Заказ для "+ outlet);
-	
-	var result = Device.Click("grScrollView.Controls[0]");
-	Console.WriteLine(result);
-	/* Took outlet descr from workflow in future*/
-	
-	Console.WriteLine(CheckScreen("Order.xml"));
-	
-	var result = Device.Click("Orderadd");
-	result= (result=="Error: Cannot find Orderadd in Variables")? "True": "False";
-	Console.WriteLine(result);
-	
-	var result = Device.GetValue("context.CurrentScreen.Name");
-	if (result !="Order.xml") {
-		Device.Click("btnBack");
-		result="False";
-	}
-	else {
-		result="True";
-	}
-	Console.WriteLine(result);
-	
-	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[0].Text", "Для этой торговой точки нет прайс листов"));
-	
-	Console.Pause(500);
-	
-	var result = Device.Click("btnForward");
-	Console.WriteLine(result);	
-	
-	Console.WriteLine(CheckScreen("Order_Commentary.xml"));
-	
-	Console.WriteLine(TextCheck("grScrollView.Controls[0].Controls[0].Controls[2]", "Комментарий к заказу без прайс-листа "));	
-	
-	var result = Device.Click("btnForward");
-	Console.WriteLine(result);	
-	
-		Console.Pause(500);
-	
-	Console.WriteLine(CheckScreen("Main.xml"));
-	
-		
-	/*ORDER WITH ONE PRICE_LIST*/
-	
-	var result=Device.Click("btnOrder");
-	Console.WriteLine(result);
-	
-		Console.Pause(1000);
-		
-		Console.WriteLine(CheckScreen("OrderList.xml"));
-	
-	Device.TakeScreenshot("NewOrdersList");
-	
-//Console.WriteLine(Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text"));
-	var result=CheckValue("grScrollView.Controls[0].Controls[0].Controls[0].Text", "ООО Квант");	
-	if (result=="False") {
-	result="True";
-	}
-	else {
-	result="Пустой заказ был создан";
-	}
-	Console.WriteLine(result);
-	
-	Device.TakeScreenshot("Empty_order_was_created");
-	
-	var result = Device.Click("NewOrder");
-	Console.WriteLine(result);
-	
-	Console.Pause(1000);	
-	Console.WriteLine(CheckScreen("Outlets.xml"));
-	
-	Console.WriteLine(TextCheck("edtSearch", "призма"));
-	
-	var result=	Device.Click("btnSearch");
-	Console.WriteLine(result);
-	
-	Console.Pause(1000);	
-		
-	var outlet=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text");
 	if (outlet=="Error: Index has to be between upper and lower bound of the array.") {
-	
-	var outlet=Device.GetValue("grScrollView.Controls[0].Controls[1].Controls[0].Text");
-	Console.WriteLine("Заказ для "+ outlet);
+		
+		var outlet=Device.GetValue("grScrollView.Controls[0].Controls[1].Controls[0].Text");
+		Console.WriteLine("Заказ для "+ outlet);
 	}
 	else{
 		Console.WriteLine("Заказ для "+ outlet);
@@ -169,12 +89,106 @@ function main() {
 	
 	Console.WriteLine(CheckScreen("Order.xml"));
 	
-	var result  = Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text");
-	result = (result=="Error: Index has to be between upper and lower bound of the array.")? "True": "False";
+	var result = Device.Click("Orderadd.Controls[0].Controls[0].Controls[2]");
 	
-	Console.Pause(500);	
+	var result = Device.GetValue("context.CurrentScreen.Name");
+	if (result !="Order.xml") {
+		Device.Click("btnBack");
+		result="False";
+	}
+	else {
+		result="True";
+	}
+	Console.WriteLine(result);
 	
-	var result = Device.Click("Orderadd");
+	var result=Device.Click("Orderadd.Controls[0].Controls[0].Controls[0]");
+	Console.WriteLine(result);
+	Console.WriteLine(CheckScreen("Order_Info.xml"));
+	
+	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[0].Controls[0].Text", "Для этой торговой точки нет прайс - листов"));
+	
+	var result = Device.Click("btnForward");
+	Console.WriteLine(result);	
+	
+	var result = Device.Click("btnForward");
+	Console.WriteLine(result);	
+	
+	Console.WriteLine(CheckScreen("Order_Commentary.xml"));
+	
+	Console.WriteLine(TextCheck("grScrollView.Controls[2].Controls[0].Controls[1]", "Комментарий к заказу без прайс-листа "));	
+	
+	var result = Device.Click("btnForward");
+	Console.WriteLine(result);	
+	
+	Console.WriteLine(CheckScreen("Main.xml"));
+	
+	/*ORDER WITH ONE PRICE_LIST*/
+	
+	var result=Device.Click("btnOrder");
+	Console.WriteLine(result);
+	
+	Console.WriteLine(CheckScreen("OrderList.xml"));
+	
+	Device.TakeScreenshot("NewOrdersList");
+	
+	var result=CheckValue("grScrollView.Controls[0].Controls[0].Controls[0].Text", "ООО Квант");	
+	if (result=="False") {
+		result="True";
+	}
+	else {
+		result="Пустой заказ был создан";
+	}
+	Console.WriteLine(result);
+	
+	Device.TakeScreenshot("Empty_order_was_created");
+	
+	var result = Device.Click("NewOrder");
+	Console.WriteLine(result);
+	
+	Console.WriteLine(CheckScreen("Outlets.xml"));
+	
+	Console.WriteLine(TextCheck("edtSearch", "призма"));
+	
+	var result=	Device.Click("btnSearch");
+	Console.WriteLine(result);
+	
+	var outlet=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text");
+	if (outlet=="Error: Index has to be between upper and lower bound of the array.") {
+		
+		var outlet=Device.GetValue("grScrollView.Controls[0].Controls[1].Controls[0].Text");
+		Console.WriteLine("Заказ для "+ outlet);
+	}
+	else{
+		Console.WriteLine("Заказ для "+ outlet);
+	}
+	
+	var result = Device.Click("grScrollView.Controls[0]");
+	Console.WriteLine(result);
+	/* Took outlet descr from workflow in future*/
+	
+	Console.WriteLine(CheckScreen("Order.xml"));
+	
+	var result=Device.Click("Orderadd.Controls[0].Controls[0].Controls[0]");
+	Console.WriteLine(result);
+	
+	Console.WriteLine(CheckScreen("Order_Info.xml"));
+	
+	var result=Device.Click("grScrollView.Controls[2]");
+	Console.WriteLine(result);
+	
+	var result = Device.GetValue("context.CurrentScreen.Name");
+	if (result !="Order_Info.xml") {
+		Device.Click("btnBack");
+		result="False";
+	}
+	else {
+		result="True";
+	}
+	Console.WriteLine(result);
+	
+	Console.WriteLine(Device.Click("btnForward"));
+	
+	var result = Device.Click("Orderadd.Controls[0].Controls[0].Controls[2]");
 	Stopwatch.Start();
 	Console.WriteLine(result);
 	
@@ -187,8 +201,8 @@ function main() {
 		Console.WriteLine(result);
 	}
 	
-		Console.WriteLine(TextCheck("edtSearch", "тюль жел"));
-		var result=	Device.Click("btnSearch");
+	Console.WriteLine(TextCheck("edtSearch", "тюль жел"));
+	var result=	Device.Click("btnSearch");
 	
 	Console.WriteLine(result+"3");
 	
@@ -197,24 +211,20 @@ function main() {
 	
 	Console.WriteLine(CheckScreen("Order_EditSKU.xml"));
 	
-	
 	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[1].Text", "Пересчитать цену")+ "  Check descriptions RecountPrice");
 	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[0].Controls[1].Text", "Цена")+ "  Check descriptions Price");
-	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[1].Controls[0].Text", "0") +"Discount Value is 0");
-	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[1].Controls[1].Text", "Скидка") +"  Check descriptions Discount");
-	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[2].Controls[0].Checked", "False") + "  Discount/MarkUp value is false");
-	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[2].Controls[1].Text", "Скидка/Наценка") + "  Check descriptions Discount/MarkUp");
-	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[0].Controls[0].Text", "0")+ "   Quantity value is 0");
-	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[0].Controls[1].Text", "Количество")+ "  Check descriptions Quantity");
-	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[1].Controls[0].Text", "шт.") + "  Units шт");
-	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[1].Controls[1].Text", "Ед. упаковки") + "  Check descriptions Units");
-	Console.WriteLine(CheckValue("grScrollView.Controls[5].Controls[0].Controls[0].Text", "0") + "  Quantity 2 is 0");
-	Console.WriteLine(CheckValue("grScrollView.Controls[5].Controls[0].Controls[1].Text", "Количество") + "  Check descriptions Quantity 2");
-	Console.WriteLine(CheckValue("grScrollView.Controls[5].Controls[1].Controls[0].Text", "шт.")+ " Base Units шт.");
-	Console.WriteLine(CheckValue("grScrollView.Controls[5].Controls[1].Controls[1].Text", "Баз. единица изм.")+ "   Check descriptions Base Units");
-	Console.WriteLine(CheckValue("grScrollView.Controls[7].Controls[0].Controls[0].Text", "Выберите единицу измерения:")+ "  Check descriptions Choose units");
-	Console.WriteLine(CheckValue("grScrollView.Controls[11].Controls[0].Controls[0].Text", "Коробка")+ "Unit to Select коробка");
-	Console.WriteLine(CheckValue("grScrollView.Controls[9].Controls[0].Controls[0].Text", "шт.")+ "Units to Select шт");
+	
+	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[1].Controls[0].Text", "0") +"Discount Value is 0");
+	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[1].Controls[1].Text", "Скидка") +"  Check descriptions Discount");
+	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[0].Controls[0].Checked", "False") + "  Discount/MarkUp value is false");
+	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[0].Controls[1].Text", "Скидка/Наценка") + "  Check descriptions Discount/MarkUp");
+	
+	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[0].Controls[0].Text", "0")+ "   Quantity value is 0");
+	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[0].Controls[1].Text", "Количество")+ "  Check descriptions Quantity");
+	
+	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[2].Controls[0].Text", "шт.") + "  Units шт");
+	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[2].Controls[1].Text", "Ед. упаковки") + "  Check descriptions Units");
+
 	
 	var price = Device.GetValue("grScrollView.Controls[2].Controls[0].Controls[0].Text");
 	if (price != "0,00"  || price != "") {
@@ -268,27 +278,26 @@ function main() {
 	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[0].Controls[0].Text", changedPrice)+ "  Check Price");
 	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[1].Text", "Пересчитать цену")+ "  Check descriptions RecountPrice");
 	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[0].Controls[1].Text", "Цена")+ "  Check descriptions Price");
-	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[1].Controls[0].Text", "-30")+"  Discount Value is " + discount);
-	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[1].Controls[1].Text", "Скидка") +"  Check descriptions Discount");
-	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[2].Controls[0].Checked", "False") + "  Discount/MarkUp value is false");
-	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[2].Controls[1].Text", "Скидка/Наценка") + "  Check descriptions Discount/MarkUp");
-	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[0].Controls[0].Text", quantity)+ "   Quantity value is  " + quantity);
-	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[0].Controls[1].Text", "Количество")+ "  Check descriptions Quantity");
-	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[1].Controls[0].Text", "Коробка") + "  Units шт");
-	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[1].Controls[1].Text", "Ед. упаковки") + "  Check descriptions Units");
-	Console.WriteLine(CheckValue("grScrollView.Controls[5].Controls[0].Controls[0].Text", changedQuantity )+ "  Quantity 2 is  " + changedqQuantity);
-	Console.WriteLine(CheckValue("grScrollView.Controls[5].Controls[0].Controls[1].Text", "Количество") + "  Check descriptions Quantity 2");
-	Console.WriteLine(CheckValue("grScrollView.Controls[5].Controls[1].Controls[0].Text", "шт.")+ " Base Units шт.");
-	Console.WriteLine(CheckValue("grScrollView.Controls[5].Controls[1].Controls[1].Text", "Баз. единица изм.")+ "   Check descriptions Base Units");
-	Console.WriteLine(CheckValue("grScrollView.Controls[7].Controls[0].Controls[0].Text", "Выберите единицу измерения:")+ "  Check descriptions Choose units");
-	Console.WriteLine(CheckValue("grScrollView.Controls[11].Controls[0].Controls[0].Text", "Коробка")+ "Unit to Select коробка");
-	Console.WriteLine(CheckValue("grScrollView.Controls[9].Controls[0].Controls[0].Text", "шт.")+ "Units to Select шт");
+	
+	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[1].Controls[0].Text", quantity)+ "   Quantity value is  " + quantity);
+	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[1].Controls[1].Text", "Количество")+ "  Check descriptions Quantity");
+	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[2].Controls[0].Text", "Коробка") + "  Units шт");
+	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[2].Controls[1].Text", "Ед. упаковки") + "  Check descriptions Units");
+	
+	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[1].Controls[0].Text", "-30")+"  Discount Value is " + discount);
+	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[1].Controls[1].Text", "Скидка") +"  Check descriptions Discount");
+	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[0].Controls[0].Checked", "False") + "  Discount/MarkUp value is false");
+	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[0].Controls[1].Text", "Скидка/Наценка") + "  Check descriptions Discount/MarkUp");
+	
+	Console.WriteLine(CheckValue("grScrollView.Controls[6].Controls[0].Controls[0].Text", "Характеристики")+ " Check descriptions \" Характеристики\"");
+	Console.WriteLine(CheckValue("grScrollView.Controls[8].Controls[0].Controls[0].Text", "Красный")+ "Красный");	
+	
 	
 	var result = Device.Click("btnForward");
 	Console.WriteLine(result);	
 	/*проверка задвоения заказа*/
 	
-		var result = Device.Click("Orderadd");
+	var result = Device.Click("Orderadd");
 	Stopwatch.Start();
 	Console.WriteLine(result);
 	
@@ -310,26 +319,25 @@ function main() {
 	Console.WriteLine(result);
 	
 	Console.WriteLine(CheckScreen("Order_EditSKU.xml"));
-		
+	
 	Console.WriteLine(Device.GetValue("grScrollView.Controls[2].Controls[0].Controls[0].Text"));
 	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[0].Controls[0].Text", changedPrice)+ "  Check Price");
-	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[1].Text", "Пересчитать цену")+ "  Check descriptions RecountPrice");
+	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[1].Text", "Пересчитать цену")+ "  Check descriptions RecountPrice");	
 	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[0].Controls[1].Text", "Цена")+ "  Check descriptions Price");
-	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[1].Controls[0].Text", "-30")+"  Discount Value is " + discount);
-	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[1].Controls[1].Text", "Скидка") +"  Check descriptions Discount");
-	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[2].Controls[0].Checked", "False") + "  Discount/MarkUp value is false");
-	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[2].Controls[1].Text", "Скидка/Наценка") + "  Check descriptions Discount/MarkUp");
-	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[0].Controls[0].Text", quantity)+ "   Quantity value is  " + quantity);
-	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[0].Controls[1].Text", "Количество")+ "  Check descriptions Quantity");
-	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[1].Controls[0].Text", "Коробка") + "  Units шт");
-	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[1].Controls[1].Text", "Ед. упаковки") + "  Check descriptions Units");
-	Console.WriteLine(CheckValue("grScrollView.Controls[5].Controls[0].Controls[0].Text", changedQuantity )+ "  Quantity 2 is  " + changedQuantity);
-	Console.WriteLine(CheckValue("grScrollView.Controls[5].Controls[0].Controls[1].Text", "Количество") + "  Check descriptions Quantity 2");
-	Console.WriteLine(CheckValue("grScrollView.Controls[5].Controls[1].Controls[0].Text", "шт.")+ " Base Units шт.");
-	Console.WriteLine(CheckValue("grScrollView.Controls[5].Controls[1].Controls[1].Text", "Баз. единица изм.")+ "   Check descriptions Base Units");
-	Console.WriteLine(CheckValue("grScrollView.Controls[7].Controls[0].Controls[0].Text", "Выберите единицу измерения:")+ "  Check descriptions Choose units");
-	Console.WriteLine(CheckValue("grScrollView.Controls[11].Controls[0].Controls[0].Text", "Коробка")+ "Unit to Select коробка");
-	Console.WriteLine(CheckValue("grScrollView.Controls[9].Controls[0].Controls[0].Text", "шт.")+ "Units to Select шт");
+	
+	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[1].Controls[0].Text", quantity)+ "   Quantity value is  " + quantity);
+	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[1].Controls[1].Text", "Количество")+ "  Check descriptions Quantity");
+	
+	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[2].Controls[0].Text", "Коробка") + "  Units шт");
+	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[2].Controls[1].Text", "Ед. упаковки") + "  Check descriptions Units");
+	
+	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[1].Controls[0].Text", "-30")+"  Discount Value is " + discount);	
+	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[1].Controls[1].Text", "Скидка") +"  Check descriptions Discount");
+	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[0].Controls[0].Checked", "False") + "  Discount/MarkUp value is false");
+	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[0].Controls[1].Text", "Скидка/Наценка") + "  Check descriptions Discount/MarkUp");
+	
+	Console.WriteLine(CheckValue("grScrollView.Controls[6].Controls[0].Controls[0].Text", "Характеристики")+ " Check descriptions \" Характеристики\"");
+	Console.WriteLine(CheckValue("grScrollView.Controls[8].Controls[0].Controls[0].Text", "Красный")+ "Красный");	
 	
 	var quantity="15";
 	TextCheck("grScrollView.Controls[4].Controls[0].Controls[0]", quantity);
@@ -348,14 +356,14 @@ function main() {
 	var result=Device.GetValue("grScrollView.Controls[2].Controls[0].Controls[0].Text");
 	
 	result= (result == "Error: Index has to be between upper and lower bound of the array.")? "True": "False";
-		Console.WriteLine(result);
+	Console.WriteLine(result);
 	
 	var result = Device.Click("btnForward");
 	Console.WriteLine(result);	
 	
 	Console.WriteLine(CheckScreen("Order_Commentary.xml"));
 	
-	Console.WriteLine(TextCheck("grScrollView.Controls[0].Controls[0].Controls[2]", "Комментарий к заказу c одним прайс-листом "));	
+	Console.WriteLine(TextCheck("grScrollView.Controls[2].Controls[0].Controls[1]", "Комментарий к заказу c одним прайс-листом "));	
 	
 	var result = Device.Click("btnForward");
 	Console.WriteLine(result);	
@@ -372,11 +380,6 @@ function main() {
 	Device.TakeScreenshot("NewOrdersList");
 	
 	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[0].Text",outlet)+ "Проверка отображения нового заказа");	
-	
-	/*var er=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[1].Text");
-	Console.WriteLine(er)
-	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[1].Text", "Нет номера"+ "Проверка отображения надписи Нет номера"));	
-	*/
 	
 	var result = Device.Click("grScrollView.Controls[0]");
 	Console.WriteLine(result);
@@ -439,7 +442,7 @@ function main() {
 	
 	Console.WriteLine(CheckScreen("Order_Commentary.xml"));
 	
-	var result=TextCheck("grScrollView.Controls[0].Controls[0].Controls[2]", "Комментарий изменен");	
+	var result=TextCheck("grScrollView.Controls[2].Controls[0].Controls[1]", "Комментарий изменен");	
 	if (result !="True; True; True"){
 		Console.WriteLine(result + "Проверка изменения комментария в новых заказах");
 	}

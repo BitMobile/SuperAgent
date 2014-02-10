@@ -48,7 +48,6 @@ function main() {
 	var n=getRandomArbitary(1,865);
 	Console.WriteLine(n);
 
-
 	var result = Device.Click("btnVisit");
 	Console.WriteLine(result);
 	
@@ -217,7 +216,7 @@ function main() {
 	var result = Device.Click("btnForward"); // Переход к экрану Общих вопросов
 	Console.WriteLine(result+"Переход к экрану Общих вопросов");
 	
-var doubleQuestion=CheckValue("grScrollVIew.Controls[6].Controls[0].Controls[0].Text", "Доля полки %");//Проверка отображения дублирующихся вопросов
+	var doubleQuestion=CheckValue("grScrollVIew.Controls[6].Controls[0].Controls[0].Text", "Доля полки %");//Проверка отображения дублирующихся вопросов
 	doubleQuestion= (doubleQuestion=="False")? "True": "False";
 	Console.WriteLine(doubleQuestion);
 	Console.WriteLine("Question (string)");
@@ -233,7 +232,7 @@ var doubleQuestion=CheckValue("grScrollVIew.Controls[6].Controls[0].Controls[0].
 	Console.WriteLine(result+"Question (Boolean)"); // Question (Boolean)
 	Console.WriteLine(Device.GetValue("grScrollView.Controls[9].Controls[0].Controls[0].Text"));
 	Console.WriteLine(CheckValue("grScrollView.Controls[9].Controls[0].Controls[0].Text","Набор рекомендуемых  к размещению  POSM установлен"));
-	var result=Device.Click("grScrollView.Controls[10]")
+	var result=Device.Click("grScrollView.Controls[10].Controls[0].Controls[0]")
 
 	Console.WriteLine("Question (Decimal)");
 	Console.WriteLine(Device.GetValue("grScrollView.Controls[15].Controls[0].Controls[0].Text"));
@@ -359,7 +358,7 @@ var doubleQuestion=CheckValue("grScrollVIew.Controls[6].Controls[0].Controls[0].
 	
 	Console.WriteLine(CheckScreen("Order_EditSKU.xml"));
 	
-var result=TextCheck("grScrollView.Controls[2].Controls[1].Controls[0]", "54"); //Quantity
+	var result=TextCheck("grScrollView.Controls[2].Controls[1].Controls[0]", "54"); //Quantity
 	Console.WriteLine(result+"Quantity");
 	
 	var result = Device.Click("btnForward");
@@ -404,7 +403,7 @@ var result=TextCheck("grScrollView.Controls[2].Controls[1].Controls[0]", "54"); 
 	Console.WriteLine(Device.GetValue("grScrollView.Controls[6].Controls[0].Controls[1].Text"));
 	Console.WriteLine(CheckValue("grScrollView.Controls[6].Controls[0].Controls[1].Text", "Сумма инкассации: 28"));
 	
-	 Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[0].Text", "476")); //Проверка не изменились ли значения полей, после нажатия на кноку "Распределить на документы"
+	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[0].Text", "476")); //Проверка не изменились ли значения полей, после нажатия на кноку "Распределить на документы"
 	
 	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[1].Controls[0].Text", "462"));
 	
@@ -423,7 +422,7 @@ var result=TextCheck("grScrollView.Controls[2].Controls[1].Controls[0]", "54"); 
 	Console.WriteLine(result);	
 	
 	var result = Device.GetValue("grScrollView.Controls[6].Controls[0].Controls[0].Text");
-		Console.WriteLine(result);	
+	Console.WriteLine(result);	
 	if (result=="7 из 13") { result="True";
 	}
 	else{

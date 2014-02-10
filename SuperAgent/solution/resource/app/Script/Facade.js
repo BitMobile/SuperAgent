@@ -526,22 +526,31 @@ function GoToQuestionAction(answerType, question, visit) {
         Workflow.Action("Edit", parameters);
     }
     if (answerType == "Snapshot") {
-        MakeASnapshot(visit, question);
+        GetCameraObject(visit.Id);
+        Camera.MakeSnapshot(SaveAtVisit, question);
     }
 }
 
-function MakeASnapshot(visit, question) {
+function GetCameraObject(entity) {
     FileSystem.CreateDirectory("/private/Document.Visit");
     var guid = GenerateGuid();
     Variables.Add("guid", guid);
-    var path = String.Format("/private/Document.Visit/{0}/{1}.jpg", visit.Id, guid);
+    var path = String.Format("/private/Document.Visit/{0}/{1}.jpg", entity, guid);
     Camera.Size = 300;
     Camera.Path = path;
-    Camera.MakeSnapshot(SaveAtVisit, question);
 }
 
 function SaveAtVisit(question) {
     question.Answer = Variables["guid"];
+}
+
+function GetSKUShapshot(question) {
+    GetCameraObject(question.Ref);
+    Camera.MakeSnapshot(SaveAtSKUQuestion, question);
+}
+
+function SaveAtSKUQuestion(question) {
+    question.Snapshot = Variables["guid"];
 }
 
 function GetValueList(question) {

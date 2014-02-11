@@ -7,6 +7,10 @@ function ToFloat(text) {
     return parseFloat(text, 10);
 }
 
+function GetSKU(val) {
+    return DB.Current.Catalog.SKU.SelectBy("Id", val).First();
+}
+
 function ToInteger(text) {
     return parseInt(text);
 }
@@ -615,7 +619,7 @@ function GetSKUsByOutlet(questionnaires) {
         return null;
     else {
         var s = DB.Current.Catalog.SKU.Select().Distinct("Id");
-        var result = DB.Current.Document.Questionnaire_SKUs.SelectBy("Ref", questionnaires).Union(DB.Current.Document.Questionnaire_SKUs.SelectBy("SKU", s)).OrderBy("SKUAsObject.Description");
+        var result = DB.Current.Document.Questionnaire_SKUs.SelectBy("Ref", questionnaires).Union(DB.Current.Document.Questionnaire_SKUs.SelectBy("SKU", s)).OrderBy("SKUAsObject.Description").Distinct("SKU");
         if (result.Count() > 0)
             return result;
         else

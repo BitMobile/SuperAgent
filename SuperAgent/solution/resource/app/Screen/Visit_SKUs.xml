@@ -33,7 +33,7 @@
       <s:Else>
 
         <s:Iterator Id="item" Value="$questions">
-          <s:Push Id="sku" Value="$item.SKUAsObject"/>
+          <s:Push Id="sku" Value="$Facade.GetSKU($item)"/>
           <s:Push Id="skuValue" Value="$Facade.GetVisitSKUValue($visit,$sku)"/>
           <s:Push Id="sku_qty" Value="$Facade.GetSKUQty($questions, $workflow.questionnaires, $sku)"></s:Push>
           <s:Push Id="sku_answered" Value="$Facade.GetSKUAnswers($visit, $sku)"></s:Push>

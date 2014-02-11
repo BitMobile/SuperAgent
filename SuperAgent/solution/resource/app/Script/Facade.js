@@ -391,7 +391,13 @@ function LocationDialogHandler(answ) {
             var arg = [outlet];
             Workflow.Refresh(arg);
         }
+        else
+            NoLocationHandler();
     }
+}
+
+function NoLocationHandler(){
+    Dialog.Question("#locationSetFailed#", LocationDialogHandler);
 }
 
 function GetOutletParameters() {

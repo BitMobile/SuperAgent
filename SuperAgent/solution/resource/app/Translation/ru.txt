@@ -89,6 +89,7 @@ description	Наименование
 coordinatesAreSet	Координаты установлены
 setCoordinates	Установить координаты торговой точки по текущему расположению?
 location	Установить координаты
+locationSetFailed	Не удалось получить координаты. Повторить?
 saveChanges	Сохранить изменения?
 map			Карта
 showOnMap	Показать на карте

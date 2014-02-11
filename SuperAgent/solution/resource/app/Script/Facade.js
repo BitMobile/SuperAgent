@@ -363,6 +363,9 @@ function CreateVisitIfNotExists(outlet, userId, visit, planVisit) {
         visit.Encashment = 0;
     }
 
+    
+
+
     return visit;
 }
 

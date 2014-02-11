@@ -6,6 +6,10 @@
   <s:If Test="$workflow.name!='Outlets'">
     <s:Push Id="workflow.outlet" Value="$param1"></s:Push>
     <s:Push Id="planVisit" Value="$param2"></s:Push>
+    <s:Push Id="workflow.questions_qty" Value="$Facade.ToInteger(0)"></s:Push>
+    <s:Push Id="workflow.sku_qty" Value="$Facade.ToInteger(0)"></s:Push>
+    <s:Push Id="workflow.sku_answ" Value="$Facade.ToInteger(0)"></s:Push>
+    
 
     <s:Push Id="workflow.visit" Value="$Facade.CreateVisitIfNotExists($outlet,$common.UserId, $workflow.visit, $planVisit)"/>
   </s:If>

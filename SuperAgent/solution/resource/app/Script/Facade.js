@@ -852,8 +852,8 @@ function GetpriceListRef(outlet) {
 }
 
 function PriceListAction(order, priceLists) {
-    if (parseInt(priceLists) != parseInt(0) && order.StatusAsObject.Description=="New") {
-        var arr = [order, "PriceList", "Order"]
+    if (parseInt(priceLists) != parseInt(0) && order.StatusAsObject().Description == "New") {
+        var arr = [order, "PriceList", "Order"];
         Workflow.Action("EditPriceList", arr);
     }
 

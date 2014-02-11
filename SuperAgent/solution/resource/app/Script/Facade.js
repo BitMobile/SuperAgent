@@ -73,6 +73,10 @@ function ConvertToBoolean1(val1) {
         return false;
 }
 
+function IsNullOrEmpty(val1) {
+    return String.IsNullOrEmpty(val1);
+}
+
 function GetLookupList(entity, attribute) {
     var objectType = entity.Metadata[attribute].Type;
     var objectName = entity.Metadata[attribute].Name;
@@ -399,9 +403,26 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
         }
         Workflow.Action("EditParameter", [parameterValue, value, "Outlet_Parameters"]);
     }
-    else
-        Workflow.Action("EditAddParameter", [outlet, parameter, parameterValue]);
+    else {
+        if (typeDescription == "DateTime") {
+            parameterValue = CreateOutletParameterValueIfNotExists(outlet, parameter, parameterValue);
+            var header = Translate["#enterDateTime#"];
+            Dialog.ShowDateTime(header, DateTimeParameter, parameterValue);
+        }
+        else
+            Workflow.Action("EditAddParameter", [outlet, parameter, parameterValue]);
+    }
     //="$Workflow.DoAction(EditAddParameter,$outlet,$parameter,$parameterValue)">
+}
+
+function DateTimeParameter(paramValue, dateTime) {
+    paramValue.Value = dateTime;
+    if (Variables.Exists("planVisit"))
+        var plan = Variables.Exists("planVisit");
+    else
+        var plan = null;
+    var o = Variables["outlet"];
+    Workflow.Refresh([o, plan]);
 }
 
 function GetParameterValueList(parameterValue) {
@@ -530,7 +551,18 @@ function GoToQuestionAction(answerType, question, visit) {
         GetCameraObject(visit.Id);
         Camera.MakeSnapshot(SaveAtVisit, question);
     }
+
+    if (answerType == "DateTime") {
+        var Header = Translate["#enterDateTime#"];
+        Dialog.ShowDateTime(Header, DateTimeQuestion, question);
+    }
 }
+
+function DateTimeQuestion(question, dateTime) {
+    question.Answer = dateTime;
+    Variables["dateTimeText"].Text = dateTime;
+}
+
 
 function GetCameraObject(entity) {
     FileSystem.CreateDirectory("/private/Document.Visit");

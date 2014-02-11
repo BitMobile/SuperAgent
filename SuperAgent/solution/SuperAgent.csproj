@@ -138,6 +138,7 @@
     <Content Include="resource\app\Style\Default\Targets.css" />
     <Content Include="resource\app\Style\Default\Visit_Questions.css" />
     <Content Include="resource\app\Style\Default\Visit_Order.css" />
+    <Content Include="resource\app\Style\Default\Visit_SKU.css" />
     <Content Include="resource\app\Translation\en.txt" />
     <Content Include="resource\app\Translation\ru.txt" />
     <Content Include="resource\settings.xml">

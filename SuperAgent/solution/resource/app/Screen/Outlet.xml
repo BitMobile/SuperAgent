@@ -154,7 +154,7 @@
               </s:Else>
             </s:If>
             <s:Else>
-              <c:TextView Text="?" CssClass="main_row"></c:TextView>
+              <c:TextView Id="paramValueTextView" Text="?" CssClass="main_row"></c:TextView>
             </s:Else>
             <c:TextView Text="$parameter.Description" CssClass="description_row"></c:TextView>
           </c:VerticalLayout>

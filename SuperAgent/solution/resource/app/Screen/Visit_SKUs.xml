@@ -41,7 +41,7 @@
           <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Edit,$outlet,$visit,$sku,$skuValue,$workflow.questionnaires)">
 
             <c:VerticalLayout>
-              <c:TextView Text="{$sku_answered} of {$sku_qty}" CssClass="main_row"/>
+              <c:TextView Text="{$sku_answered} #of# {$sku_qty}" CssClass="main_row"/>
               <c:TextView Text="$sku.Description" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
 

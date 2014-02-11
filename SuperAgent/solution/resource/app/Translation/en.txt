@@ -111,3 +111,4 @@ information	Information
 snapshot	Snapshot
 noSnapshot	No snapshot
 snapshotAttached	Snapshot attached
+clickToInsert	Click to insert

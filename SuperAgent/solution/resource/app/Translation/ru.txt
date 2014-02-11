@@ -111,3 +111,4 @@ information	Информация
 snapshot	Фотоснимок
 noSnapshot	Нет фотоснимка
 snapshotAttached	Снимок прикреплен
+clickToInsert	Нажмите для ввода даты

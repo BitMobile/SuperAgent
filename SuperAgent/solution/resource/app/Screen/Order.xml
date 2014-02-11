@@ -26,7 +26,7 @@
 
 
     <s:If Test="$workflow.order.Status == $workflow.new">
-      <c:VerticalLayout CssClass="header">
+      <c:VerticalLayout Id="Orderadd" CssClass="header">
         <c:VerticalLayout  CssClass ="grid">
           <c:HorizontalLayout>
             <c:VerticalLayout CssClass="10" OnClickAction="$Workflow.DoAction(ShowInfo,$sum)">
@@ -37,7 +37,7 @@
               <c:TextView Text="#totalamount#" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
             <s:If Test="$workflow.order.PriceListAsRef != null">
-              <c:VerticalLayout Id="Orderadd" OnClickAction="$Workflow.DoAction(Add,$workflow.order)">
+              <c:VerticalLayout OnClickAction="$Workflow.DoAction(Add,$workflow.order)">
                 <c:Image CssClass="add_img"/>
               </c:VerticalLayout>
             </s:If>

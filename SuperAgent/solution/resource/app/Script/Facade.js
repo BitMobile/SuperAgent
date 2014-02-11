@@ -257,7 +257,7 @@ function CheckEmptyOutletFields(outlet) {
         Workflow.Forward(parameters);
     }
     else
-        Dialog.Message("#couldn't_be_cleaned#");
+        Dialog.Message("#couldnt_be_cleaned#");
 }
 
 function CreateAndForward() {
@@ -552,6 +552,13 @@ function GetSKUShapshot(question) {
 
 function SaveAtSKUQuestion(question) {
     question.Snapshot = Variables["guid"];
+}
+
+function GetSnapshotText(text) {
+    if (String.IsNullOrEmpty(text))
+        return Translate["#noSnapshot#"];
+    else
+        return Translate["#snapshotAttached#"];
 }
 
 function GetValueList(question) {

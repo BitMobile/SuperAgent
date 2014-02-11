@@ -247,6 +247,12 @@ WebMapGoogle {
                 background-image: url(info.png);
             }
 
+            .snapshot {
+                height: 45%;
+                margin-top: 35%;
+                background-image: url(snapshot.png);
+            }
+
         .grid hl CheckBox {
             selected-color: #6f6583;
             background-color: #c9c3d5;

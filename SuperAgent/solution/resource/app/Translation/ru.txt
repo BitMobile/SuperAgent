@@ -94,7 +94,7 @@ map			Карта
 showOnMap	Показать на карте
 no_visitPlans		Нет визитов для отображения
 current		Текущие
-couldn't_be_cleaned	Поле не может быть очищено
+couldnt_be_cleaned	Поле не может быть очищено
 priceList	Прайс-лист
 isntSelected	Не выбран
 SKUWillRevised	Заказ пересчитан
@@ -109,3 +109,5 @@ noImage	Изображение не найдено
 of	из
 information	Информация
 snapshot	Фотоснимок
+noSnapshot	Нет фотоснимка
+snapshotAttached	Снимок прикреплен

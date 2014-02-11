@@ -94,7 +94,7 @@ map			Map
 showOnMap	Show on map
 no_visitPlans	No visits to display 
 current		Current
-couldn't_be_cleaned	Field couldn't be cleaned
+couldnt_be_cleaned	Field couldn't be cleaned
 priceList	Price list
 isntSelected	Isn't selected
 SKUWillRevised	SKU list has been revised
@@ -109,3 +109,5 @@ noImage	No image found
 of	of
 information	Information
 snapshot	Snapshot
+noSnapshot	No snapshot
+snapshotAttached	Snapshot attached

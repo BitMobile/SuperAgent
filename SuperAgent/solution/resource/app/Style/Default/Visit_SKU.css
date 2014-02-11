@@ -1,0 +1,7 @@
+﻿.grid hl half_width {
+    width: 45%;    
+}
+
+.grid hl half_width TextView {
+    margin-top: 40%;
+}

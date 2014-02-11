@@ -45,39 +45,57 @@
 
           <c:HorizontalLayout OnClickAction="$Facade.GoToQuestionAction($question.AnswerTypeAsObject.Description, $questionValue, $visit)">
 
-            <c:VerticalLayout>
-              <s:If Test="$question.AnswerTypeAsObject.Description=='Boolean'">
+
+            <s:If Test="$question.AnswerTypeAsObject.Description=='Boolean'">
+              <c:VerticalLayout>
                 <c:CheckBox Value="$questionValue.Answer" CssClass="main_row"></c:CheckBox>
+              </c:VerticalLayout>
+            </s:If>
+            <s:Else>
+              <s:If Test="$question.AnswerTypeAsObject.Description=='Integer'">
+                <c:VerticalLayout>
+                  <c:EditText Value="$questionValue.Answer" CssClass="main_row" Keyboard="numeric"></c:EditText>
+                </c:VerticalLayout>
               </s:If>
               <s:Else>
-                <s:If Test="$question.AnswerTypeAsObject.Description=='Integer'">
-                  <c:EditText Value="$questionValue.Answer" CssClass="main_row" Keyboard="numeric"></c:EditText>
+                <s:If Test="$question.AnswerTypeAsObject.Description=='Decimal'">
+                  <c:VerticalLayout>
+                    <c:EditText Value="$questionValue.Answer" CssClass="main_row" Keyboard="numeric"></c:EditText>
+                  </c:VerticalLayout>
                 </s:If>
                 <s:Else>
-                  <s:If Test="$question.AnswerTypeAsObject.Description=='Decimal'">
-                    <c:EditText Value="$questionValue.Answer" CssClass="main_row" Keyboard="numeric"></c:EditText>
-                  </s:If>
-                  <s:Else>
-                    <s:If Test="$question.AnswerTypeAsObject.Description=='ValueList'">
-                      <s:If Test="$questionValue.Answer==''">
+                  <s:If Test="$question.AnswerTypeAsObject.Description=='ValueList'">
+                    <s:If Test="$questionValue.Answer==''">
+                      <c:VerticalLayout>
                         <c:TextView Text="#select_answer#" CssClass="main_row"></c:TextView>
-                      </s:If>
-                      <s:Else>
-                        <c:TextView Text="$questionValue.Answer" CssClass="main_row"></c:TextView>
-                      </s:Else>
+                      </c:VerticalLayout>
                     </s:If>
                     <s:Else>
-                      <s:If Test="$question.AnswerTypeAsObject.Description=='Snapshot'">
-                        <c:Image CssClass="snapshot"/>
-                      </s:If>
-                      <s:Else>
+                      <c:VerticalLayout>
+                        <c:TextView Text="$questionValue.Answer" CssClass="main_row"></c:TextView>
+                      </c:VerticalLayout>
+                    </s:Else>
+                  </s:If>
+                  <s:Else>
+                    <s:If Test="$question.AnswerTypeAsObject.Description=='Snapshot'">
+                      <c:VerticalLayout CssClass="half_width">
+                        <c:Image CssClass="snapshot"></c:Image>
+                      </c:VerticalLayout>
+                      <c:VerticalLayout CssClass="half_width">
+                        <s:Push Id="snapshotText" Value="$Facade.GetSnapshotText($skuValue.Snapshot)"></s:Push>
+                        <c:TextView Text="$snapshotText" CssClass="description_row"></c:TextView>
+                      </c:VerticalLayout>
+                    </s:If>
+                    <s:Else>
+                      <c:VerticalLayout>
                         <c:EditText Value="$questionValue.Answer" CssClass="main_row"></c:EditText>
-                      </s:Else>
+                      </c:VerticalLayout>
                     </s:Else>
                   </s:Else>
                 </s:Else>
               </s:Else>
-            </c:VerticalLayout>
+            </s:Else>
+
 
             <s:If Test="$question.AnswerTypeAsObject.Description=='ValueList'">
               <c:Image/>

@@ -48,7 +48,51 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
             }
         }
     }
+
+
+    if (nextStep == "Questions") {
+        if (workflowName == "ScheduledVisit" || workflowName == "UnscheduledVisit") {
+            var outlet = Variables["workflow"]["outlet"];
+
+            var questionaries = GetQuesttionaires(outlet);
+            var questions = GetQuestionsByOutlet(questionaries);
+            var SKUQuest = GetSKUsByOutlet(questionaries);
+
+            if (questions == null) {
+                if (SKUQuest == null) {
+                    Workflow.Action("Skip3", [outlet]);
+                    return false;
+                }
+                Workflow.Action("Skip2", []);
+                return false;
+            }
+            else
+                Workflow.Action("Skip1", []);
+        }
+    }
+
+
+    if (nextStep == "SKUs") {
+        if (workflowName == "ScheduledVisit" || workflowName == "UnscheduledVisit") {
+            var outlet = Variables["workflow"]["outlet"];
+
+            var questionaries = GetQuesttionaires(outlet);
+            var SKUQuest = GetSKUsByOutlet(questionaries);
+
+            if (SKUQuest == null) {
+                Workflow.Action("Skip3", [outlet]);
+                return false;
+            }
+            else
+                Workflow.Action("Skip2", []);
+        }
+    }
+
+
     return true;
+
+
+
 }
 
 function OnWorkflowBack(name, lastStep, nextStep) {

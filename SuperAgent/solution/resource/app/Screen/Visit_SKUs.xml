@@ -3,8 +3,7 @@
 
   <s:Push Id="outlet" Value="$workflow.outlet"></s:Push>
   <s:Push Id="visit" Value="$workflow.visit"></s:Push>
-  <s:Push Id="questionnaires" Value="$param1"></s:Push>
-  <s:Push Id="questions" Value="$Facade.GetSKUsByOutlet($questionnaires)"></s:Push>
+  <s:Push Id="questions" Value="$Facade.GetSKUsByOutlet($workflow.questionnaires)"></s:Push>
 
   <s:Push Id="workflow.sku_qty" Value="0"></s:Push>
 
@@ -36,10 +35,10 @@
         <s:Iterator Id="item" Value="$questions">
           <s:Push Id="sku" Value="$item.SKUAsObject"/>
           <s:Push Id="skuValue" Value="$Facade.GetVisitSKUValue($visit,$sku)"/>
-          <s:Push Id="sku_qty" Value="$Facade.GetSKUQty($questions, $questionnaires, $sku)"></s:Push>
+          <s:Push Id="sku_qty" Value="$Facade.GetSKUQty($questions, $workflow.questionnaires, $sku)"></s:Push>
           <s:Push Id="sku_answered" Value="$Facade.GetSKUAnswers($visit, $sku)"></s:Push>
 
-          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Edit,$outlet,$visit,$sku,$skuValue,$questionnaires)">
+          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Edit,$outlet,$visit,$sku,$skuValue,$workflow.questionnaires)">
 
             <c:VerticalLayout>
               <c:TextView Text="{$sku_answered} of {$sku_qty}" CssClass="main_row"/>

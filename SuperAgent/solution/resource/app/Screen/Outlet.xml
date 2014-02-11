@@ -9,6 +9,7 @@
     <s:Push Id="workflow.questions_qty" Value="$Facade.ToInteger(0)"></s:Push>
     <s:Push Id="workflow.sku_qty" Value="$Facade.ToInteger(0)"></s:Push>
     <s:Push Id="workflow.sku_answ" Value="$Facade.ToInteger(0)"></s:Push>
+    <s:Push Id="workflow.questionnaires" Value="$Facade.GetQuesttionaires($outlet)"></s:Push>
     
 
     <s:Push Id="workflow.visit" Value="$Facade.CreateVisitIfNotExists($outlet,$common.UserId, $workflow.visit, $planVisit)"/>

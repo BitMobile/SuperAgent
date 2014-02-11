@@ -5,14 +5,13 @@
   <s:Push Id="visit" Value="$workflow.visit"></s:Push>
   <s:Push Id="workflow.questions_qty" Value="$Facade.ToFloat(0)"></s:Push>
 
-  <s:Push Id="questionnaires" Value="$Facade.GetQuesttionaires($outlet)"></s:Push>
-  <s:Push Id="questions" Value="$Facade.GetQuestionsByOutlet($questionnaires)"></s:Push>
+  <s:Push Id="questions" Value="$Facade.GetQuestionsByOutlet($workflow.questionnaires)"></s:Push>
 
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
       <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckEmptyQuestionsAndForward($questionnaires, $visit)"/>
+      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckEmptyQuestionsAndForward($workflow.questionnaires, $visit)"/>
       <c:TextView Text="#questions#" />
     </c:DockLayout>
 

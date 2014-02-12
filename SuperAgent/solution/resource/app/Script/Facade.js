@@ -43,6 +43,13 @@ function AreEqual(val1, val2) {
         return false;
 }
 
+function NotEqualInt(val1, val2) {
+    if (parseInt(val1) == parseInt(val2))
+        return false;
+    else
+        return true;
+}
+
 function GetMultiple(val1, val2) {
     return (val1 * val2)
 }
@@ -761,7 +768,7 @@ function GetOrderList(searchText) {
         return DB.Current.Document.Order.Select().Top(100).OrderBy("Date", true);
     }
     else {
-        return DB.Current.Document.Order.Select().Where("OutletAsObject.Description.Contains(@p1)", [searchText]).Top(100).OrderBy("Date", true);
+        return DB.Current.Document.Order.Select().Where("OutletAsObject.Description.Contains(@p1)", [searchText]).OrderBy("Date", true).Top(100);
     }
 
 }
@@ -894,9 +901,11 @@ function GetpriceListRef(outlet) {
 }
 
 function PriceListAction(order, priceLists) {
-    if (parseInt(priceLists) != parseInt(0) && order.StatusAsObject().Description == "New") {
-        var arr = [order, "PriceList", "Order"];
-        Workflow.Action("EditPriceList", arr);
+    if (parseInt(priceLists) != parseInt(1) && order.StatusAsObject().Description == "New" && parseInt(priceLists) != parseInt(0)) {
+        //if (parseInt(priceLists) != parseInt(1)) {
+            var arr = [order, "PriceList", "Order"];
+            Workflow.Action("EditPriceList", arr);
+        //}
     }
 
 }

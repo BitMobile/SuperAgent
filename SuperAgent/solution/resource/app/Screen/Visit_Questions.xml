@@ -96,6 +96,9 @@
                 <s:If Test="$Facade.IsNullOrEmpty($questionValue.Answer)">
                   <s:Push Id="answerValue" Value="#clickToInsert#"></s:Push>
                 </s:If>
+                <s:Else>
+                  <s:Push Id="answerValue" Value="$questionValue.Answer"></s:Push>
+                </s:Else>
                 <c:TextView Id="dateTimeText" Text="$answerValue" CssClass="main_row"></c:TextView>
               </c:VerticalLayout>
             </s:If>

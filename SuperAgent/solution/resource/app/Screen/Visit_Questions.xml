@@ -80,8 +80,8 @@
                 <c:Image CssClass="snapshot"></c:Image>
               </c:VerticalLayout>
               <c:VerticalLayout CssClass="half_width">
-                <s:Push Id="snapshotText" Value="$Facade.GetSnapshotText($skuValue.Snapshot)"></s:Push>
-                <c:TextView Text="$snapshotText" CssClass="description_row"></c:TextView>
+                <s:Push Id="snapshotText" Value="$Facade.GetSnapshotText($questionValue.Answer)"></s:Push>
+                <c:TextView Id="snapshotInfo" Text="$snapshotText" CssClass="description_row"></c:TextView>
               </c:VerticalLayout>
             </s:If>
 

@@ -403,7 +403,7 @@ function LocationDialogHandler(answ) {
     }
 }
 
-function NoLocationHandler(){
+function NoLocationHandler() {
     Dialog.Question("#locationSetFailed#", LocationDialogHandler);
 }
 
@@ -592,6 +592,7 @@ function GetCameraObject(entity) {
 
 function SaveAtVisit(question) {
     question.Answer = Variables["guid"];
+    Variables["snapshotInfo"].Text = Translate["#snapshotAttached#"];
 }
 
 function GetSKUShapshot(question) {
@@ -605,8 +606,10 @@ function SaveAtSKUQuestion(question) {
 
 function GetSnapshotText(text) {
     if (String.IsNullOrEmpty(text))
+        //Variables["snapshotInfo"].Text = Translate["#noSnapshot#"];
         return Translate["#noSnapshot#"];
     else
+        //Variables["snapshotInfo"].Text = Translate["#snapshotAttached#"];
         return Translate["#snapshotAttached#"];
 }
 
@@ -903,8 +906,8 @@ function GetpriceListRef(outlet) {
 function PriceListAction(order, priceLists) {
     if (parseInt(priceLists) != parseInt(1) && order.StatusAsObject().Description == "New" && parseInt(priceLists) != parseInt(0)) {
         //if (parseInt(priceLists) != parseInt(1)) {
-            var arr = [order, "PriceList", "Order"];
-            Workflow.Action("EditPriceList", arr);
+        var arr = [order, "PriceList", "Order"];
+        Workflow.Action("EditPriceList", arr);
         //}
     }
 

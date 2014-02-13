@@ -1,9 +1,6 @@
 /*  Получить номера  заказов из 1С
-
-Запуск бат 
-var wsh = new ActiveXObject("WScript.Shell");
-wsh.Run(new ActiveXObject("Scripting.FileSystemObject").GetAbsolutePathName("")+"/Schedule.bat");
 */
+
 
 function CheckScreen(screen) {
 
@@ -32,8 +29,6 @@ function TextCheck (path, text) {
 	var result1= Device.SetFocus(path);
 	
 	var result2 = Device.SetText(path, text);
-	
-	
 	textp=path+".Text";
 	
 	var result3= Device.GetValue(textp);
@@ -48,7 +43,7 @@ function TextCheck (path, text) {
 }	
 
 function main() {
-Console.CommandPause = 500;
+	Console.CommandPause = 500;
 	var result = Device.Click("btnOrder");
 	Stopwatch.Start();
 	Console.WriteLine(result);
@@ -78,7 +73,7 @@ Console.CommandPause = 500;
 	
 	Console.Pause(1000);
 	
-	var result = Device.Click("Orderadd");
+	var result = Device.Click("Orderadd.Controls[0].Controls[0].Controls[2]");
 	Stopwatch.Start();
 	Console.WriteLine(result);
 	
@@ -90,7 +85,6 @@ Console.CommandPause = 500;
 	else{
 		Console.WriteLine(result);
 	}
-	
 	
 	/*ORDER WITH quantity = 0*/
 	
@@ -124,7 +118,7 @@ Console.CommandPause = 500;
 	
 	
 	/*Empty Order without quantity just "Forward"*/
-	var result=Device.Click("Orderadd");
+	var result = Device.Click("Orderadd.Controls[0].Controls[0].Controls[2]");
 	Console.WriteLine(result);
 	
 	var sku=Device.GetValue("grScrollView.Controls[2].Controls[0].Controls[0].Text");/*пробрасывает на следующий*/
@@ -141,7 +135,7 @@ Console.CommandPause = 500;
 	Console.WriteLine(result);	
 	
 	/*Empty Order without quantity just "Back"*/
-	var result = Device.Click("Orderadd");
+	var result = Device.Click("Orderadd.Controls[0].Controls[0].Controls[2]");
 	Stopwatch.Start();
 	Console.WriteLine(result);
 	
@@ -180,14 +174,18 @@ Console.CommandPause = 500;
 
 	var SetDT="2014.04.10 8:35";
 	Dialog.SetDateTime(SetDT);
-	
+	var SetDT="10.05.2014 8:35";
 	var appDateTime=Dialog.GetDateTime();
 	
 	var result=(SetDT==appDateTime)?"True":"False";
 	
 	Console.WriteLine(Dialog.ClickPositive());
 	
-	var result=CheckValue("grScrollView.Controls[0].Controls[0].Controls[1].Text",SetDT);
+	var appDateTime=Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text");
+	appDateTime=String(appDateTime);
+	appDateTime=appDateTime.slice(0, - 3);
+	Console.WriteLine(appDateTime);
+	var result=(SetDT==appDateTime)?"True":"False";
 	Console.WriteLine(result+"Проверка даты в Textview после внесения изменений");
 	
 	var result=TextCheck("grScrollView.Controls[2].Controls[0].Controls[1]",  "Комментарий к заказу  ");	
@@ -204,4 +202,7 @@ Console.CommandPause = 500;
 	var result=CheckValue("grScrollView.Controls[0].Controls[0].Controls[0]", "Гипермаркет \"Призма\" test");
 	result=(result=="False")? "True": "False";
 	Console.WriteLine(result);
+	
+	var result = Device.Click("btnBack");
+	Console.WriteLine(result);	
 }

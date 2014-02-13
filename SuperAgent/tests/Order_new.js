@@ -2,7 +2,6 @@ function Search (path, text) {
 	var result1= Device.SetFocus(path);
 	
 	var result2 = Device.SetText(path, text);
-	
 	textp=path+".Text";
 	var result3= Device.GetValue(textp);
 
@@ -107,12 +106,12 @@ function main() {
 	var result=Device.GetValue("grScrollView.Controls[0].Controls[1].Controls[0].Text");
 	Console.WriteLine(result);
 	
-	if (result=="New iOS outlet"){
-		Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[1].Controls[0].Text", "New iOS outlet")); // проверка отображения названия т.т.
-	}
+	 if (result=="New iOS outlet"){
+		 Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[1].Controls[0].Text", "New iOS outlet")); // проверка отображения названия т.т.
+	 }
 	else{
 		
-		Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[0].Text", "New iOS outlet")); // проверка отображения названия т.т.
+		 Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[0].Text", "New iOS outlet")); // проверка отображения названия т.т.
 		
 	}
 	
@@ -126,16 +125,32 @@ function main() {
 		Console.WriteLine("Заказ для "+ outlet);
 	}
 	
-	
 	var result = Device.Click("grScrollView.Controls[0]");
 	Console.WriteLine(result);
 	
 	Console.WriteLine(CheckScreen("Order.xml"));
 	
+	var currDateTime=CurrDateTime();
 	
 	/* Took outlet descr from workflow in future*/
+	var result = Device.Click("Orderadd.Controls[0].Controls[0].Controls[0]");
+	Console.WriteLine(result);
+	
+	var result=Device.GetValue("grScrollView.Controls[2].Controls[0].Controls[0].Text");
+	Console.WriteLine(result);	
+	
+	var result = Device.Click("btnForward");
+	Console.WriteLine(result);	
 	
 	var result = Device.Click("Orderadd.Controls[0].Controls[0].Controls[2]");
+	
+/*	var result=Device.Click("grScrollView.Controls[0]"); // Add SKU to Order
+	Console.WriteLine(result);
+	
+	var result=Device.Click("grScrollView.Controls[0]"); // Add SKU to Order
+	Console.WriteLine(result);
+	
+	var result = Device.Click("Orderadd");*/
 	Stopwatch.Start();
 	Console.WriteLine(result);
 	
@@ -150,10 +165,10 @@ function main() {
 	
 	/*ORDER WITHOUT DISCOUNT and First feature*/
 	
-	Console.WriteLine(Search("edtSearch", "гв 10")+"111");	
+	Console.WriteLine(Search("edtSearch", "оздь 10")+"111");	
 	Stopwatch.Start();
 	
-	var result = CheckValue("grScrollView.Controls[6].Controls[0].Controls[0].Text", "Гвоздь 10ка");
+	var result = CheckValue("grScrollView.Controls[2].Controls[0].Controls[0].Text", "Гвоздь 10ка");
 	if (result=="True") {
 		var result = Stopwatch.Stop();
 		Console.WriteLine(result.TotalSeconds+"  SKU search loading time");
@@ -162,7 +177,7 @@ function main() {
 		Console.WriteLine(result);
 	}
 	
-	var result=Device.Click("grScrollView.Controls[6]"); // Add SKU to Order
+	var result=Device.Click("grScrollView.Controls[2]"); // Add SKU to Order
 	Console.WriteLine(result);
 
 	var result = CheckScreen("Order_EditSKU.xml");
@@ -215,10 +230,8 @@ function main() {
 	var quantity="23";
 	Console.WriteLine(TextCheck("grScrollView.Controls[2].Controls[1].Controls[0]", quantity));
 	
-	
 	var result = Device.Click("btnForward");
 	Console.WriteLine(result);	
-	
 	
 	Console.WriteLine(CheckScreen("Order.xml"));
 	
@@ -228,8 +241,18 @@ function main() {
 	/*ORDER WITH DISCOUNT and second feature */
 	Console.WriteLine("------------------------ORDER WITH DISCOUNT and second feature----------------------------------------");
 	
-	var result = Device.Click("Orderadd.Controls[0].Controls[0].Controls[2]");
+var result = Device.Click("Orderadd.Controls[0].Controls[0].Controls[2]");
+	Stopwatch.Start();
 	Console.WriteLine(result);
+	
+	var result = CheckScreen("Order_SKUs.xml");
+	if (result=="Order_SKUs.xml") {
+		var result = Stopwatch.Stop();
+		Console.WriteLine(result.TotalSeconds+"  OrderSKUs loading time");
+	}
+	else{
+		Console.WriteLine(result);
+	}
 	
 	Console.WriteLine(Search("edtSearch", "гв 10"));	
 	
@@ -252,8 +275,9 @@ function main() {
 	}
 
 	var quantity="5";
-	TextCheck("grScrollView.Controls[2].Controls[1].Controls[0]", quantity);
+	var result=TextCheck("grScrollView.Controls[2].Controls[1].Controls[0]", quantity);
 	if (result !="True; True; True") {
+	result="False";
 		Console.WriteLine(result+"Количество не вводится");
 	}
 	else {
@@ -262,8 +286,9 @@ function main() {
 	}
 	
 	var discount="30.65";
-	TextCheck("grScrollView.Controls[4].Controls[1].Controls[0]", discount);
+	var result=TextCheck("grScrollView.Controls[4].Controls[1].Controls[0]", discount);
 	if (result !="True; True; True") {
+	result="False";
 		Console.WriteLine(result+ "Скидка не вводится");
 	}
 	else {
@@ -305,7 +330,6 @@ function main() {
 	
 	Console.WriteLine(CheckValue("grScrollView.Controls[12].Controls[0].Controls[0].Text", "Красный, шоколад")+ "Красный. шоколад");	
 	
-
 	var amount=price*quantity;
 	Console.WriteLine(amount);
 	
@@ -339,7 +363,6 @@ function main() {
 	var result=Device.Click("grScrollView.Controls[2]"); // Add SKU to Order
 	Console.WriteLine(result);
 	
-	
 	Console.WriteLine(CheckScreen("Order_EditSKU.xml"));
 	Console.WriteLine(Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text")+"5");
 	Console.WriteLine(CheckValue("grScrollView.Controls[0].Controls[0].Controls[0].Text", "Тюльпан желтый, Красный")+  "Check SKU description");
@@ -354,8 +377,9 @@ function main() {
 	}
 
 	var quantity="5";
-	TextCheck("grScrollView.Controls[2].Controls[1].Controls[0]", quantity);
+	var result=TextCheck("grScrollView.Controls[2].Controls[1].Controls[0]", quantity);
 	if (result !="True; True; True") {
+	result="False";
 		Console.WriteLine(result+"Количество не вводится");
 	}
 	else {
@@ -366,8 +390,9 @@ function main() {
 	Device.Click("grScrollView.Controls[4].Controls[0].Controls[0]");
 	
 	var markup="30";
-	TextCheck("grScrollView.Controls[4].Controls[1].Controls[0]", markup);
+	var result=TextCheck("grScrollView.Controls[4].Controls[1].Controls[0]", markup);
 	if (result !="True; True; True") {
+	result="False";
 		Console.WriteLine(result+ "Наценка не вводится");
 	}
 	else {
@@ -497,6 +522,31 @@ function main() {
 	Console.WriteLine(result);
 	
 	var result = Device.Click("Orderadd.Controls[0].Controls[0].Controls[2]");
+	
+// var result=Device.Click("grScrollView.Controls[0]"); 
+// Console.WriteLine(result);
+	
+/*	var result=Device.Click("grScrollView.Controls[0]"); // Price-list
+	Console.WriteLine(result+"Price-list");
+	Console.WriteLine(CheckScreen("ListChoice.xml"));
+	
+	var priceList=Device.GetValue("grScrollView.Controls[2].Controls[0].Controls[0].Text");
+	var result=Device.Click("grScrollView.Controls[0]"); // Choose Price-list
+	Console.WriteLine(result+"Choose Price-list");
+
+		var result = Device.Click("Orderadd");*/
+	Stopwatch.Start();
+	Console.WriteLine(result);
+	
+	var result = CheckScreen("Order_SKUs.xml");
+	if (result=="Order_SKUs.xml") {
+		var result = Stopwatch.Stop();
+		Console.WriteLine(result.TotalSeconds+"  OrderSKUs loading time");
+	}
+	else{
+		Console.WriteLine(result);
+	}	
+	
 	var result = Device.GetValue("context.CurrentScreen.Name");
 	if (result != "Order.xml"){
 		result="True";
@@ -506,13 +556,14 @@ function main() {
 	}
 	Console.WriteLine (result+"New orders editing")
 	
+	
 	var result = Device.Click("btnBack");
 	Console.WriteLine(result);
 	
 	var result=Device.Click("Orderadd.Controls[0].Controls[0].Controls[0]");
 	Console.WriteLine(result);
 	var result = Device.GetValue("context.CurrentScreen.Name");
-	if (result != "Order_Info.xml"){
+	if (result == "Order_Info.xml"){
 		result="True";
 	}
 	else {
@@ -522,17 +573,17 @@ function main() {
 	
 	var result=Device.Click("grScrollView.Controls[2]");
 	
-	var result=Device.Click("grScrollView.Controls[2]"); // Change Price-list
+	var result=Device.Click("grScrollView.Controls[0]"); // Change Price-list
 	Console.WriteLine(result+"Change Price-list");
 	
 	var result = Device.Click("btnBack");
 	Console.WriteLine(result);
 	
-	Console.WriteLine(CheckValue("Orderadd.Controls[0].Controls[0].Text", "489,84"));
-	Console.WriteLine(Device.GetValue("grScrollView.Controls[6].Controls[0].Controls[1].Text"));
-	Console.WriteLine(CheckValue("grScrollView.Controls[6].Controls[0].Controls[1].Text", "Количество: 5   Итого: 357,50"));
+	Console.WriteLine(CheckValue("Orderadd.Controls[0].Controls[0].Controls[1].Controls[0].Text", "489,84"));
+	Console.WriteLine(Device.GetValue("grScrollView.Controls[4].Controls[0].Controls[1].Text"));
+	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[0].Controls[1].Text", "Количество: 5   Итого: 357,50"));
 	
-	Device.Click("grScrollView.Controls[6]");
+	Device.Click("grScrollView.Controls[4]");
 	
 	var result = Device.GetValue("context.CurrentScreen.Name");
 	if (result != "Order.xml"){

@@ -1182,25 +1182,31 @@ function GetSKUs(searchText, owner, priceListId) {
             var q = DB.Current.Catalog.SKU.SelectBy("Owner", owner).Where("CommonStock!=0.00 && Description.Contains(@p1)", [searchText]).Top(100).OrderBy("Description");
         }
     }
+
         //for Order_SKUs.xml
     else {
 
+        //skus by group
         if (String.IsNullOrEmpty(searchText)) {
-            //skus by group
             var skus = DB.Current.Catalog.SKU
                 .SelectBy("Owner", owner)
+                .Top(200)
                 .Distinct("Id");
         }
         else {
             var skus = DB.Current.Catalog.SKU
                 .SelectBy("Owner", owner)
                 .Where("Description.Contains(@p1)", [searchText])
+                .Top(200)
                 .Distinct("Id");
         }
+
+        //price list selection
         if (skus.Count() < 100) {
             var q = DB.Current.Document.PriceList_Prices
                 .SelectBy("SKU", skus)
                 .Where("Ref==@p1", [priceListId])
+                .Top(100)
                 .OrderBy("SKUAsObject.Description");
         }
         else {
@@ -1224,8 +1230,7 @@ function GetSKUs(searchText, owner, priceListId) {
 function GetSKUGroups(searchText) {
 
     var ow = DB.Current.Catalog.SKU.Select().Distinct("Owner");
-    var terr = DB.Current.Catalog.Territory_SKUGroups.SelectBy("SKUGroup", ow).Distinct("SKUGroup");
-    return DB.Current.Catalog.SKUGroup.SelectBy("Id", terr).OrderBy("Description");
+    return DB.Current.Catalog.SKUGroup.SelectBy("Id", ow);
 
 }
 

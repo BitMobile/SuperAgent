@@ -424,7 +424,11 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
         if (typeDescription == "DateTime") {
             parameterValue = CreateOutletParameterValueIfNotExists(outlet, parameter, parameterValue);
             var header = Translate["#enterDateTime#"];
-            Dialog.ShowDateTime(header, DateTimeParameter, parameterValue);
+            if (IsNullOrEmpty(parameterValue.Value))
+                var date = DateTime.Now;
+            else
+                var date = DateTime.Parse(parameterValue.Value);
+            Dialog.ShowDateTime(header, date, DateTimeParameter, parameterValue);
         }
         else
             Workflow.Action("EditAddParameter", [outlet, parameter, parameterValue]);
@@ -571,7 +575,11 @@ function GoToQuestionAction(answerType, question, visit) {
 
     if (answerType == "DateTime") {
         var Header = Translate["#enterDateTime#"];
-        Dialog.ShowDateTime(Header, DateTimeQuestion, question);
+        if (IsNullOrEmpty(question.Answer))
+            var date = DateTime.Now;
+        else
+            var date = DateTime.Parse(question.Answer);
+        Dialog.ShowDateTime(Header, date, DateTimeQuestion, question);
     }
 }
 
@@ -602,6 +610,7 @@ function GetSKUShapshot(question) {
 
 function SaveAtSKUQuestion(question) {
     question.Snapshot = Variables["guid"];
+    Variables["snapshotInfo"].Text = Translate["#snapshotAttached#"];
 }
 
 function GetSnapshotText(text) {

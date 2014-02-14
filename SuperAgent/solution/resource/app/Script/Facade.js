@@ -777,7 +777,7 @@ function GetOrderList(searchText) {
     CreateOrderStatusVariables();
 
     if (String.IsNullOrEmpty(searchText)) {
-        return DB.Current.Document.Order.Select().Top(100).OrderBy("Date", true);
+        return DB.Current.Document.Order.Select().OrderBy("Date", true).Top(100);
     }
     else {
         return DB.Current.Document.Order.Select().Where("OutletAsObject.Description.Contains(@p1)", [searchText]).OrderBy("Date", true).Top(100);
@@ -1194,37 +1194,10 @@ function GetSKUs(searchText, owner, priceListId) {
 
         //for Order_SKUs.xml
     else {
-
-        //skus by group
-        if (String.IsNullOrEmpty(searchText)) {
-            var skus = DB.Current.Catalog.SKU
-                .SelectBy("Owner", owner)
-                .Top(200)
-                .Distinct("Id");
-        }
-        else {
-            var skus = DB.Current.Catalog.SKU
-                .SelectBy("Owner", owner)
-                .Where("Description.Contains(@p1)", [searchText])
-                .Top(200)
-                .Distinct("Id");
-        }
-
-        //price list selection
-        if (skus.Count() < 100) {
-            var q = DB.Current.Document.PriceList_Prices
-                .SelectBy("SKU", skus)
-                .Where("Ref==@p1", [priceListId])
-                .Top(100)
-                .OrderBy("SKUAsObject.Description");
-        }
-        else {
-            var q = DB.Current.Document.PriceList_Prices
-                .SelectBy("Ref", priceListId)
-                .Where("SKU.In(@p1)", [skus])
-                .Top(100)
-                .OrderBy("SKUAsObject.Description");
-        }
+        if (String.IsNullOrEmpty(searchText)) 
+            var q = DB.Current.Document.PriceList_Prices.SelectBy("Ref", priceListId).Top(100).OrderBy("SKUAsObject.Description");
+        else
+            var q = DB.Current.Document.PriceList_Prices.SelectBy("Ref", priceListId).Where("SKUAsObject.Description.Contains(@p1)", [searchText]).Top(100).OrderBy("SKUAsObject.Description");
     }
 
     //  to hide empty groups at the screen

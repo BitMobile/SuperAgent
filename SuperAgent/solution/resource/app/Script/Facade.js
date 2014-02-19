@@ -932,11 +932,11 @@ function GetpriceLists(outlet, order) {
     var pl = DB.Current.Catalog.Outlet_Prices.Select().Where("Ref==@p1", [outlet]).OrderBy("RefAsObject.Description").Count();
     if (parseInt(pl) != parseInt(0)) {
         Variables.Add("defaultPriceLists", parseInt(0));
-        return DB.Current.Catalog.Outlet_Prices.Select().Where("Ref==@p1", [outlet]).OrderBy("RefAsObject.Description");
+        return DB.Current.Catalog.Outlet_Prices.Select().Where("Ref==@p1", [outlet]).OrderBy("LineNumber");
     }
     else {
         Variables.Add("defaultPriceLists", parseInt(1));
-        return DB.Current.Document.PriceList.SelectBy("DefaultPriceList", true);
+        return DB.Current.Document.PriceList.SelectBy("DefaultPriceList", true).OrderBy("Date");
     }
 }
 
@@ -985,6 +985,8 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, price, features) {
     if (orderitem == null) {
 
         var feature = DB.Current.Catalog.SKU_Stocks.SelectBy("Ref", sku.Id).OrderBy("LineNumber").First();
+
+        CheckItemUniqueness(orderId, feature.Feature, sku.BaseUnit, sku.Id);
 
         var query = new Query();
         var r = DB.Current.Document.Order_SKUs.SelectBy("SKU", sku.Id).Where("Ref==@p1 && Feature==@p2", [orderId, feature]);
@@ -1072,6 +1074,36 @@ function GetUnits(skuId) {
 
 }
 
+function CheckItemUniqueness(reference, featureId, unitId, skuId, orderitem) {
+
+    var firstItem = DB.Current.Document.Order_SKUs.SelectBy("Ref", reference)
+                    .Union(DB.Current.Document.Order_SKUs.SelectBy("SKU", skuId))
+                    .Where("Feature==@p1 && Units==@p2", [featureId, unitId])
+                    .First();
+
+    //Dialog.Debug(firstItem);
+
+    if (firstItem != null) {
+        Dialog.Question(Translate["#itemAlreadyExist#"], ItemDialogHandler, firstItem);
+    }
+}
+
+function ItemDialogHandler(answ, firstItem) {
+    Dialog.Debug(firstItem);
+    //if (answ == DialogResult.Yes)
+        //CreateOrderItemIfNotExist(Variables["workflow"]["order"].Id, Variables["sku"], null, Variables["price"], null);
+    //else {
+    if (answ == DialogResult.No){
+        if (parseFloat(firstItem.Discount) > parseFloat(0))
+            var ch = true;
+        else
+            var ch = false;
+        Variables["orderitem"].Qty = parseInt(0);
+        Workflow.Refresh([firstItem.SKUAsObject(), firstItem.Price, firstItem, firstItem.Discount, "NotShow", ch]);
+    }
+    //CreateOrderItemIfNotExist(null, null, firstItem, null, null);
+}
+
 function ChangeUnit(sku, orderitem, discChBox, price) {
 
     var currUnit = DB.Current.Catalog.SKU_Packing.SelectBy("Ref", sku.Id).Where("Pack==@p1", [orderitem.Units]).First();
@@ -1079,6 +1111,9 @@ function ChangeUnit(sku, orderitem, discChBox, price) {
     var unit = DB.Current.Catalog.SKU_Packing.SelectBy("Ref", sku.Id).Where("LineNumber==@p1", [(currUnit.LineNumber + 1)]).First();
     if (unit == null)
         unit = DB.Current.Catalog.SKU_Packing.SelectBy("Ref", sku.Id).Where("LineNumber==@p1", [1]).First();
+
+    CheckItemUniqueness(orderitem.Ref, orderitem.Feature, unit.Pack, sku.Id);
+
 
     if (price == null) {
         price = DB.Current.Document.PriceList_Prices.SelectBy("Ref", orderitem.RefAsObject().PriceList).Where("SKU==@p1", [orderitem.SKU]).First();
@@ -1097,6 +1132,7 @@ function ChangeUnit(sku, orderitem, discChBox, price) {
 }
 
 function ChangeFeatureAndRefresh(orderItem, feature, sku, price, discountEdit, showimage) {
+    CheckItemUniqueness(orderItem.Ref, feature.Feature, orderItem.Units, orderItem.SKU);
     orderItem.Feature = feature.Feature;
     RefreshEditSKU(orderItem, sku, price, discountEdit, showimage);
 }
@@ -1221,21 +1257,21 @@ function GetSKUs(searchText, owner, priceListId) {
             else {
                 var qt = parseInt(0);
             }
-                //100 control<--
+            //100 control<--
 
-            }
+        }
         else {
             var dif = 100 - Variables["SKUcount"];
 
             if (parseInt(dif) > parseInt(0)) {
                 var qt = DB.Current.Document.PriceList_Prices.SelectBy("Ref", priceListId).Where("SKUAsObject.Description.Contains(@p1) && SKUAsObject.Owner==@p2", [searchText, owner]).Top(dif).OrderBy("SKUAsObject.Description");
             }
-            else{
+            else {
                 var qt = parseInt(0);
             }
         }
     }
-    
+
     if (qt != parseInt(0)) {
         var count = qt.Count();
     }
@@ -1249,7 +1285,7 @@ function GetSKUs(searchText, owner, priceListId) {
     if (parseInt(count) != parseInt(0))
         Variables.Add("groupIsNotEmpty", true);
     else
-        Variables.Add("groupIsNotEmpty", false);   
+        Variables.Add("groupIsNotEmpty", false);
 
     return qt;
 }

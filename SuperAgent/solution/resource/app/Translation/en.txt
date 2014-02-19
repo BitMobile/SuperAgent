@@ -113,3 +113,4 @@ snapshot	Snapshot
 noSnapshot	No snapshot
 snapshotAttached	Snapshot attached
 clickToInsert	Click to insert
+itemAlreadyExist	This item already exists. Continue edit? ("No" - don't add this item to order)

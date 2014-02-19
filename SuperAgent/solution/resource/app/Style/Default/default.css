@@ -438,6 +438,8 @@ WebMapGoogle {
 
 .caption_row {
     color: #b2749b;
+    vertical-align: central;
+    horizontal-align: central;
 }
 
 .warning_row {

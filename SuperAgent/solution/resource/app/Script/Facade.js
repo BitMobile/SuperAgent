@@ -556,9 +556,9 @@ function CreateVisitQuestionValueIfNotExists(visit, question, questionValue) {
         p.Ref = visit.Id;
         p.Question = question.Id;
 
-        if (question.AnswerTypeAsObject().Description == "Boolean")
-            p.Answer = "false";
-        else
+        //if (question.AnswerTypeAsObject().Description == "Boolean")
+        //    p.Answer = "false";
+        //else
             p.Answer = "";
 
         result = p;
@@ -626,6 +626,15 @@ function GetSnapshotText(text) {
         //Variables["snapshotInfo"].Text = Translate["#snapshotAttached#"];
         return Translate["#snapshotAttached#"];
 }
+
+function AssignBooleanValue(entity, attribute,value) {
+    if (value=="true")
+        entity[attribute] = Translate["#YES#"];
+    if (value=="false")
+        entity[attribute] = Translate["#NO#"];
+    Workflow.Refresh([]);
+}
+
 
 function GetValueList(question) {
     return DB.Current.Catalog.Question_ValueList.SelectBy("Ref", question.Question).OrderBy("Value");
@@ -1089,7 +1098,7 @@ function CheckItemUniqueness(reference, featureId, unitId, skuId, orderitem) {
 }
 
 function ItemDialogHandler(answ, firstItem) {
-    Dialog.Debug(firstItem);
+    //Dialog.Debug(firstItem);
     //if (answ == DialogResult.Yes)
         //CreateOrderItemIfNotExist(Variables["workflow"]["order"].Id, Variables["sku"], null, Variables["price"], null);
     //else {

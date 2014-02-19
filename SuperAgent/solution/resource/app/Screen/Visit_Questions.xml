@@ -47,8 +47,16 @@
 
 
             <s:If Test="$question.AnswerTypeAsObject.Description=='Boolean'">
-              <c:VerticalLayout>
-                <c:CheckBox Value="$questionValue.Answer" CssClass="main_row"></c:CheckBox>
+              <c:VerticalLayout CssClass="answerfield" OnClickAction="$Facade.AssignBooleanValue($questionValue, Answer, true)">
+                <c:TextView Text="$questionValue.Answer" CssClass="center_caption"></c:TextView>
+              </c:VerticalLayout>
+              <c:VerticalLayout CssClass="header" OnClickAction="$Facade.AssignBooleanValue($questionValue, Answer, true)">
+                <c:TextView Text="#YES#" CssClass="center_caption"></c:TextView>
+              </c:VerticalLayout>
+              <c:VerticalLayout CssClass="white">                
+              </c:VerticalLayout>
+              <c:VerticalLayout CssClass="header" OnClickAction="$Facade.AssignBooleanValue($questionValue, Answer, false)">
+                <c:TextView Text="#NO#" CssClass="center_caption"></c:TextView>
               </c:VerticalLayout>
             </s:If>
 
@@ -86,9 +94,9 @@
             </s:If>
 
             <s:If Test="$question.AnswerTypeAsObject.Description=='String'">
-            <c:VerticalLayout>
-              <c:EditText Value="$questionValue.Answer" CssClass="main_row"></c:EditText>
-            </c:VerticalLayout>
+              <c:VerticalLayout>
+                <c:EditText Value="$questionValue.Answer" CssClass="main_row"></c:EditText>
+              </c:VerticalLayout>
             </s:If>
 
             <s:If Test="$question.AnswerTypeAsObject.Description=='DateTime'">

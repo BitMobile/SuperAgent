@@ -20,7 +20,21 @@
       <s:If Test="$useInQuestionnaire">
         <c:HorizontalLayout>
           <c:VerticalLayout>
-            <c:CheckBox Value="$skuValue.Available" CssClass="main_row"></c:CheckBox>
+            
+            <c:HorizontalLayout CssClass="boolean_box">
+              <c:VerticalLayout CssClass="answerfield">
+                <c:TextView Text="$skuValue.Available" CssClass="main_row"></c:TextView>
+              </c:VerticalLayout>
+              <c:VerticalLayout CssClass="header" OnClickAction="$Facade.AssignAvailableValue($skuValue, Available, true)">
+                <c:TextView Text="#YES#" CssClass="center_caption"></c:TextView>
+              </c:VerticalLayout>
+              <c:VerticalLayout CssClass="white">
+              </c:VerticalLayout>
+              <c:VerticalLayout CssClass="header" OnClickAction="$Facade.AssignAvailableValue($skuValue, Available, false)">
+                <c:TextView Text="#NO#" CssClass="center_caption"></c:TextView>
+              </c:VerticalLayout>
+            </c:HorizontalLayout>
+            
             <c:TextView Text="#available#" CssClass="description_row"></c:TextView>
           </c:VerticalLayout>
         </c:HorizontalLayout>
@@ -75,7 +89,21 @@
       <s:If Test="$useInQuestionnaire">
         <c:HorizontalLayout>
           <c:VerticalLayout>
-            <c:CheckBox Value="$skuValue.OutOfStock" CssClass="main_row"></c:CheckBox>
+
+            <c:HorizontalLayout CssClass="boolean_box">
+              <c:VerticalLayout CssClass="answerfield">
+                <c:TextView Text="$skuValue.OutOfStock" CssClass="main_row"></c:TextView>
+              </c:VerticalLayout>
+              <c:VerticalLayout CssClass="header" OnClickAction="$Facade.AssignAvailableValue($skuValue, OutOfStock, true)">
+                <c:TextView Text="#YES#" CssClass="center_caption"></c:TextView>
+              </c:VerticalLayout>
+              <c:VerticalLayout CssClass="white">
+              </c:VerticalLayout>
+              <c:VerticalLayout CssClass="header" OnClickAction="$Facade.AssignAvailableValue($skuValue, OutOfStock, false)">
+                <c:TextView Text="#NO#" CssClass="center_caption"></c:TextView>
+              </c:VerticalLayout>
+            </c:HorizontalLayout>
+            
             <c:TextView Text="#outOfStock#" CssClass="description_row"></c:TextView>
           </c:VerticalLayout>
         </c:HorizontalLayout>

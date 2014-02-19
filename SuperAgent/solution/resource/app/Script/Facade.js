@@ -646,6 +646,12 @@ function AssignParameterValue(entity, attribute,value) {
     Workflow.Refresh(arr);
 }
 
+function AssignAvailableValue(entity, attribute,value) {
+    var p = AssignBooleanValue(entity, attribute, value);
+    var arr = [Variables["param1"], Variables["param2"], Variables["param3"], p, Variables["param5"]];
+    Workflow.Refresh(arr);
+}
+
 function GetValueList(question) {
     return DB.Current.Catalog.Question_ValueList.SelectBy("Ref", question.Question).OrderBy("Value");
 }
@@ -712,10 +718,6 @@ function CreateVisitSKUValueIfNotExists(visit, sku, skuValue, questionnaires) {
 
     p.Ref = visit.Id;
     p.SKU = sku.Id;
-    if (CheckQuestionExistence(questionnaires, "Available", sku))
-        p.Available = "false";
-    if (CheckQuestionExistence(questionnaires, "OutOfStock", sku))
-        p.OutOfStock = "false";
 
     return p;
 }

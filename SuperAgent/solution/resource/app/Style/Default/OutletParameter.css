@@ -1,0 +1,23 @@
+﻿.header {
+    background-color: #dbd7e1;
+    width: 30%;
+}
+
+    .header TextView {
+        vertical-align: central;
+        horizontal-align: central;
+    }
+
+.white {
+    width: 5%;
+}
+
+.answerfield {
+       width: 32%;
+}
+
+    .center_caption {
+    color: #b2749b;
+    margin-left: 30%;
+    margin-top: 22%;
+}

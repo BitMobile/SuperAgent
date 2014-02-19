@@ -26,7 +26,17 @@
 
       <c:HorizontalLayout>        
           <s:If Test="$parameter.DataTypeAsObject.Description=='Boolean'">
-            <c:CheckBox Value="$parameterValue.Value" CssClass="main_row"></c:CheckBox>
+            <c:VerticalLayout CssClass="answerfield" OnClickAction="$Facade.AssignParameterValue($parameterValue, Value, true)">
+              <c:TextView Text="$parameterValue.Value" CssClass="main_row"></c:TextView>
+            </c:VerticalLayout>
+            <c:VerticalLayout CssClass="header" OnClickAction="$Facade.AssignParameterValue($parameterValue, Value, true)">
+              <c:TextView Text="#YES#" CssClass="center_caption"></c:TextView>
+            </c:VerticalLayout>
+            <c:VerticalLayout CssClass="white">
+            </c:VerticalLayout>
+            <c:VerticalLayout CssClass="header" OnClickAction="$Facade.AssignParameterValue($parameterValue, Value, false)">
+              <c:TextView Text="#NO#" CssClass="center_caption"></c:TextView>
+            </c:VerticalLayout>
           </s:If>
           <s:Else>
             <s:If Test="$parameter.DataTypeAsObject.Description=='Integer'">

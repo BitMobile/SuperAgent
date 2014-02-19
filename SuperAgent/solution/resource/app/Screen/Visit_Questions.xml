@@ -47,15 +47,15 @@
 
 
             <s:If Test="$question.AnswerTypeAsObject.Description=='Boolean'">
-              <c:VerticalLayout CssClass="answerfield" OnClickAction="$Facade.AssignBooleanValue($questionValue, Answer, true)">
-                <c:TextView Text="$questionValue.Answer" CssClass="center_caption"></c:TextView>
+              <c:VerticalLayout CssClass="answerfield">
+                <c:TextView Text="$questionValue.Answer" CssClass="main_row"></c:TextView>
               </c:VerticalLayout>
-              <c:VerticalLayout CssClass="header" OnClickAction="$Facade.AssignBooleanValue($questionValue, Answer, true)">
+              <c:VerticalLayout CssClass="header" OnClickAction="$Facade.AssignQuestionValue($questionValue, Answer, true)">
                 <c:TextView Text="#YES#" CssClass="center_caption"></c:TextView>
               </c:VerticalLayout>
               <c:VerticalLayout CssClass="white">                
               </c:VerticalLayout>
-              <c:VerticalLayout CssClass="header" OnClickAction="$Facade.AssignBooleanValue($questionValue, Answer, false)">
+              <c:VerticalLayout CssClass="header" OnClickAction="$Facade.AssignQuestionValue($questionValue, Answer, false)">
                 <c:TextView Text="#NO#" CssClass="center_caption"></c:TextView>
               </c:VerticalLayout>
             </s:If>

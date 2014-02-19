@@ -240,9 +240,9 @@ function CreateOutletParameterValueIfNotExists(outlet, parameter, parameterValue
     p.Ref = outlet.Id;
     p.Parameter = parameter.Id;
 
-    if (parameter.DataTypeAsObject().Description == "Boolean")
-        p.Value = false;
-    else
+    //if (parameter.DataTypeAsObject().Description == "Boolean")
+    //    p.Value = false;
+    //else
         p.Value = "";
 
     return p;
@@ -627,14 +627,24 @@ function GetSnapshotText(text) {
         return Translate["#snapshotAttached#"];
 }
 
+function AssignQuestionValue(entity, attribute,value) {
+    var q = AssignBooleanValue(entity, attribute, value);
+    Workflow.Refresh([]);
+}
+
 function AssignBooleanValue(entity, attribute,value) {
     if (value=="true")
         entity[attribute] = Translate["#YES#"];
     if (value=="false")
         entity[attribute] = Translate["#NO#"];
-    Workflow.Refresh([]);
+    return entity;
 }
 
+function AssignParameterValue(entity, attribute,value) {
+    var p = AssignBooleanValue(entity, attribute, value);
+    var arr = [Variables["param1"], p.ParameterAsObject(), p];
+    Workflow.Refresh(arr);
+}
 
 function GetValueList(question) {
     return DB.Current.Catalog.Question_ValueList.SelectBy("Ref", question.Question).OrderBy("Value");
@@ -1090,18 +1100,13 @@ function CheckItemUniqueness(reference, featureId, unitId, skuId, orderitem) {
                     .Where("Feature==@p1 && Units==@p2", [featureId, unitId])
                     .First();
 
-    //Dialog.Debug(firstItem);
-
     if (firstItem != null) {
         Dialog.Question(Translate["#itemAlreadyExist#"], ItemDialogHandler, firstItem);
     }
 }
 
 function ItemDialogHandler(answ, firstItem) {
-    //Dialog.Debug(firstItem);
-    //if (answ == DialogResult.Yes)
-        //CreateOrderItemIfNotExist(Variables["workflow"]["order"].Id, Variables["sku"], null, Variables["price"], null);
-    //else {
+
     if (answ == DialogResult.No){
         if (parseFloat(firstItem.Discount) > parseFloat(0))
             var ch = true;
@@ -1110,7 +1115,7 @@ function ItemDialogHandler(answ, firstItem) {
         Variables["orderitem"].Qty = parseInt(0);
         Workflow.Refresh([firstItem.SKUAsObject(), firstItem.Price, firstItem, firstItem.Discount, "NotShow", ch]);
     }
-    //CreateOrderItemIfNotExist(null, null, firstItem, null, null);
+
 }
 
 function ChangeUnit(sku, orderitem, discChBox, price) {
@@ -1248,9 +1253,6 @@ function GetSKUs(searchText, owner, priceListId) {
         //for Order_SKUs.xml
     else {
         if (String.IsNullOrEmpty(searchText)) {
-            //var qt = DB.Current.Document.PriceList_Prices.SelectBy("Ref", priceListId).Top(100).OrderBy("SKUAsObject.Description");
-            //qt = CheckSKUQTY(qt, priceListId);
-
             //100 control-->
 
             var dif = 100 - Variables["SKUcount"];
@@ -1303,31 +1305,6 @@ function GetSKUGroups(searchText) {
 
     var ow = DB.Current.Catalog.SKU.Select().Distinct("Owner");
     return DB.Current.Catalog.SKUGroup.SelectBy("Id", ow);
-
-}
-
-function CheckSKUQTY(collection, priceListId) {
-    if (Variables.Exists("SKUcount") == false)
-        Variables.Add("SKUcount", parseInt(0));
-
-    var sum = parseInt(Variables["SKUcount"]) + collection.Count();
-    if (parseInt(sum) < parseInt(100) || parseInt(sum) == parseInt(100)) {
-        Variables["SKUcount"] = Variables["SKUcount"] + collection.Count();
-        //Dialog.Debug(String.Format("1: {0}", collection.Count())); ////
-        return collection;
-    }
-
-    else {
-        var dif = 100 - Variables["SKUcount"];
-        if (parseInt(dif) > parseInt(0)) {
-            var collection1 = DB.Current.Document.PriceList_Prices.SelectBy("Ref", priceListId).Top(dif).OrderBy("SKUAsObject.Description");
-            Variables["SKUcount"] = Variables["SKUcount"] + collection1.Count();
-            Dialog.Debug(String.Format("2: {0}", collection1.Count())); ////
-            return collection1;
-        }
-        else
-            return DB.Current.Document.PriceList_Prices.SelectBy("Ref", priceListId).Top(0);
-    }
 
 }
 

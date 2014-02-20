@@ -13,11 +13,23 @@
 }
 
 .answerfield {
-       width: 32%;
+    width: 32%;
 }
 
-    .center_caption {
+.center_caption {
     color: #b2749b;
-    margin-left: 30%;
+    margin-left: 32%;
+    margin-top: 22%;
+}
+
+.yes_caption {
+    color: #b2749b;
+    margin-left: 35%;
+    margin-top: 22%;
+}
+
+.caption_answer {
+    vertical-align: central;
+    margin-left: 10%;
     margin-top: 22%;
 }

@@ -243,7 +243,7 @@ function CreateOutletParameterValueIfNotExists(outlet, parameter, parameterValue
     //if (parameter.DataTypeAsObject().Description == "Boolean")
     //    p.Value = false;
     //else
-        p.Value = "";
+    p.Value = "";
 
     return p;
 }
@@ -559,7 +559,7 @@ function CreateVisitQuestionValueIfNotExists(visit, question, questionValue) {
         //if (question.AnswerTypeAsObject().Description == "Boolean")
         //    p.Answer = "false";
         //else
-            p.Answer = "";
+        p.Answer = "";
 
         result = p;
     }
@@ -627,26 +627,26 @@ function GetSnapshotText(text) {
         return Translate["#snapshotAttached#"];
 }
 
-function AssignQuestionValue(entity, attribute,value) {
+function AssignQuestionValue(entity, attribute, value) {
     var q = AssignBooleanValue(entity, attribute, value);
     Workflow.Refresh([]);
 }
 
-function AssignBooleanValue(entity, attribute,value) {
-    if (value=="true")
+function AssignBooleanValue(entity, attribute, value) {
+    if (value == "true")
         entity[attribute] = Translate["#YES#"];
-    if (value=="false")
+    if (value == "false")
         entity[attribute] = Translate["#NO#"];
     return entity;
 }
 
-function AssignParameterValue(entity, attribute,value) {
+function AssignParameterValue(entity, attribute, value) {
     var p = AssignBooleanValue(entity, attribute, value);
     var arr = [Variables["param1"], p.ParameterAsObject(), p];
     Workflow.Refresh(arr);
 }
 
-function AssignAvailableValue(entity, attribute,value) {
+function AssignAvailableValue(entity, attribute, value) {
     var p = AssignBooleanValue(entity, attribute, value);
     var arr = [Variables["param1"], Variables["param2"], Variables["param3"], p, Variables["param5"]];
     Workflow.Refresh(arr);
@@ -760,6 +760,17 @@ function IsAnswered(visit, qName, sku) {
 
     return n;
 
+}
+
+function CheckEmtySKUAndForward(outlet, visit) {
+    var emptyQuestion = DB.Current.Document.Visit_SKUs.SelectBy("Ref", visit.Id).Where("Available==@p1 && Facing==@p1 && Stock==@p1 && Price==@p1 && MarkUp==@p1 && OutOfStock==@p1 && Snapshot==@p1", [null]).First();
+    while (emptyQuestion != null) {
+        DB.Current.Document.Visit_SKUs.Delete(emptyQuestion);
+        emptyQuestion = DB.Current.Document.Visit_SKUs.SelectBy("Ref", visit.Id).Where("Available==@p1 && Facing==@p1 && Stock==@p1 && Price==@p1 && MarkUp==@p1 && OutOfStock==@p1 && Snapshot==@p1", [null]).First();
+    }
+
+    var p = [outlet, visit];
+    Workflow.Forward(p);
 }
 
 function CheckAndCommit() {
@@ -1109,7 +1120,7 @@ function CheckItemUniqueness(reference, featureId, unitId, skuId, orderitem) {
 
 function ItemDialogHandler(answ, firstItem) {
 
-    if (answ == DialogResult.No){
+    if (answ == DialogResult.No) {
         if (parseFloat(firstItem.Discount) > parseFloat(0))
             var ch = true;
         else
@@ -1128,7 +1139,8 @@ function ChangeUnit(sku, orderitem, discChBox, price) {
     if (unit == null)
         unit = DB.Current.Catalog.SKU_Packing.SelectBy("Ref", sku.Id).Where("LineNumber==@p1", [1]).First();
 
-    CheckItemUniqueness(orderitem.Ref, orderitem.Feature, unit.Pack, sku.Id);
+    if (orderitem.Units != unit.Pack)
+        CheckItemUniqueness(orderitem.Ref, orderitem.Feature, unit.Pack, sku.Id);
 
 
     if (price == null) {
@@ -1148,9 +1160,12 @@ function ChangeUnit(sku, orderitem, discChBox, price) {
 }
 
 function ChangeFeatureAndRefresh(orderItem, feature, sku, price, discountEdit, showimage) {
-    CheckItemUniqueness(orderItem.Ref, feature.Feature, orderItem.Units, orderItem.SKU);
-    orderItem.Feature = feature.Feature;
-    RefreshEditSKU(orderItem, sku, price, discountEdit, showimage);
+
+    if (orderItem.Feature != feature.Feature) {
+        CheckItemUniqueness(orderItem.Ref, feature.Feature, orderItem.Units, orderItem.SKU);
+        orderItem.Feature = feature.Feature;
+        RefreshEditSKU(orderItem, sku, price, discountEdit, showimage);
+    }
 }
 
 function RefreshEditSKU(orderItem, sku, price, discountEdit, showimage) {

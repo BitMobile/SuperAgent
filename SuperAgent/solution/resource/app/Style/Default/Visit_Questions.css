@@ -5,7 +5,7 @@
 .header {
     background-color: #dbd7e1;
     width: 30%;
-    height: 90%;    
+    height: 90%;
 }
 
     .header TextView {
@@ -18,7 +18,7 @@
 }
 
 .answerfield {
-       width: 32%;
+    width: 32%;
 }
 
 .grid hi vl hl TextView {
@@ -55,8 +55,20 @@
     }
 
 
-    .center_caption {
+.center_caption {
     color: #b2749b;
-    margin-left: 30%;
+    margin-left: 32%;
+    margin-top: 22%;
+}
+
+.yes_caption {
+    color: #b2749b;
+    margin-left: 35%;
+    margin-top: 22%;
+}
+
+.caption_answer {
+    vertical-align: central;
+    margin-left: 10%;
     margin-top: 22%;
 }

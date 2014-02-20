@@ -1,0 +1,658 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Configuration Version="1.1.5.24" Name="BitCatch">
+	<GlobalParameters/>
+	<Entities>
+		<Entity Schema="Enum" Name="DataStatus">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Name" Type="String" Length="100" AllowNull="false"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+			</Fields>
+		</Entity>
+		<Entity Schema="Enum" Name="DataType">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Name" Type="String" Length="100" AllowNull="false"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+			</Fields>
+		</Entity>
+		<Entity Schema="Enum" Name="OutletConfirmationStatus">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Name" Type="String" Length="100" AllowNull="false"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+			</Fields>
+		</Entity>
+		<Entity Schema="Enum" Name="TypesOfUsers">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Name" Type="String" Length="100" AllowNull="false"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+			</Fields>
+		</Entity>
+		<Entity Schema="Enum" Name="UploadType">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Name" Type="String" Length="100" AllowNull="false"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+			</Fields>
+		</Entity>
+		<Entity Schema="Enum" Name="VisitStatus">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Name" Type="String" Length="100" AllowNull="false"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+			</Fields>
+		</Entity>
+		<Entity Schema="Enum" Name="StatusTask">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Name" Type="String" Length="100" AllowNull="false"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+			</Fields>
+		</Entity>
+		<Entity Schema="Enum" Name="OrderSatus">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Name" Type="String" Length="100" AllowNull="false"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+			</Fields>
+		</Entity>
+		<Entity Schema="Enum" Name="SKUQuestions">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Name" Type="String" Length="100" AllowNull="false"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+			</Fields>
+		</Entity>
+		<Entity Schema="Enum" Name="QuestionnaireScale">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Name" Type="String" Length="100" AllowNull="false"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+			</Fields>
+		</Entity>
+		<Entity Schema="Enum" Name="LogicAnswers">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Name" Type="String" Length="100" AllowNull="false"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+			</Fields>
+		</Entity>
+		<Entity Schema="Enum" Name="SyncDirections">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Name" Type="String" Length="100" AllowNull="false"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+			</Fields>
+		</Entity>
+		<Entity Schema="Enum" Name="SyncAction">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Name" Type="String" Length="100" AllowNull="false"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+			</Fields>
+		</Entity>
+		<Entity Schema="Catalog" Name="Positions" SyncUpload="True" SyncDownload="False" SyncFilter="">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Code" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+			</Fields>
+			<TabularSections/>
+		</Entity>
+		<Entity Schema="Catalog" Name="User" SyncUpload="True" SyncDownload="False" SyncFilter="">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Code" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+				<Field Name="Manager" AllowNull="true" Type="Catalog.User"/>
+				<Field Name="EMail" AllowNull="true" Type="String" Length="50"/>
+				<Field Name="UserID" AllowNull="true" Type="Guid"/>
+				<Field Name="UserName" AllowNull="false" Type="String" Length="100"/>
+				<Field Name="Role" AllowNull="false" Type="String" Length="25"/>
+				<Field Name="Password" AllowNull="false" Type="String" Length="100"/>
+				<Field Name="Position" AllowNull="true" Type="Catalog.Positions"/>
+				<Field Name="InterfaceLanguage" AllowNull="true" Type="String" Length="10"/>
+			</Fields>
+			<TabularSections/>
+		</Entity>
+		<Entity Schema="Catalog" Name="Region" SyncUpload="True" SyncDownload="False" SyncFilter="">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Code" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+				<Field Name="Parent" Type="Catalog.Region"/>
+				<Field Name="Manager" AllowNull="false" Type="Catalog.User"/>
+			</Fields>
+			<TabularSections/>
+		</Entity>
+		<Entity Schema="Catalog" Name="Distributor" SyncUpload="True" SyncDownload="False" SyncFilter="">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Code" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+			</Fields>
+			<TabularSections/>
+		</Entity>
+		<Entity Schema="Catalog" Name="OutletParameter" SyncUpload="True" SyncDownload="False" SyncFilter="">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Code" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+				<Field Name="DataType" AllowNull="false" Type="Enum.DataType"/>
+			</Fields>
+			<TabularSections>
+				<TabularSection Name="ValueList">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="Value" AllowNull="true" Type="String" Length="100"/>
+				</TabularSection>
+			</TabularSections>
+		</Entity>
+		<Entity Schema="Catalog" Name="OutletType" SyncUpload="True" SyncDownload="False" SyncFilter="">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Code" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+			</Fields>
+			<TabularSections/>
+		</Entity>
+		<Entity Schema="Catalog" Name="OutletClass" SyncUpload="True" SyncDownload="False" SyncFilter="">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Code" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+			</Fields>
+			<TabularSections/>
+		</Entity>
+		<Entity Schema="Catalog" Name="SKUGroup" SyncUpload="True" SyncDownload="False" SyncFilter="T.[Id] IN (SELECT SKUGroup FROM [Catalog].[Territory_SKUGroups] G JOIN [Catalog].[Territory] Territory ON Territory.Id = G.Ref AND Territory.SR = @UserId)">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Code" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+				<Field Name="Parent" Type="Catalog.SKUGroup"/>
+			</Fields>
+			<TabularSections/>
+		</Entity>
+		<Entity Schema="Catalog" Name="Brands" SyncUpload="True" SyncDownload="False" SyncFilter="">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Code" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+			</Fields>
+			<TabularSections/>
+		</Entity>
+		<Entity Schema="Catalog" Name="UnitsOfMeasure" SyncUpload="True" SyncDownload="False" SyncFilter="">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Code" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Description" Type="String" Length="25" AllowNull="false"/>
+				<Field Name="FullDescription" AllowNull="true" Type="String" Length="50"/>
+			</Fields>
+			<TabularSections/>
+		</Entity>
+		<Entity Schema="Catalog" Name="SKUProperties" SyncUpload="True" SyncDownload="False" SyncFilter="">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Code" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Description" Type="String" Length="25" AllowNull="false"/>
+			</Fields>
+			<TabularSections/>
+		</Entity>
+		<Entity Schema="Catalog" Name="SKUPropertiesValues" SyncUpload="True" SyncDownload="False" SyncFilter="">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Code" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Description" Type="String" Length="25" AllowNull="false"/>
+			</Fields>
+			<TabularSections/>
+		</Entity>
+		<Entity Schema="Catalog" Name="SKUFeatures" SyncUpload="True" SyncDownload="False" SyncFilter="">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Code" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+			</Fields>
+			<TabularSections>
+				<TabularSection Name="Features">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="Property" AllowNull="true" Type="Catalog.SKUProperties"/>
+					<Field Name="Value" AllowNull="true" Type="Catalog.SKUPropertiesValues"/>
+				</TabularSection>
+			</TabularSections>
+		</Entity>
+		<Entity Schema="Catalog" Name="SKU" SyncUpload="True" SyncDownload="False" SyncFilter="T.[Owner] IN (SELECT SKUGroup FROM [Catalog].[Territory_SKUGroups] G JOIN [Catalog].[Territory] Territory ON Territory.Id = G.Ref AND Territory.SR = @UserId)">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Code" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+				<Field Name="Owner" Type="Catalog.SKUGroup"/>
+				<Field Name="Brand" AllowNull="false" Type="Catalog.Brands"/>
+				<Field Name="CommonStock" AllowNull="true" Type="Decimal" Precision="10" Scale="2"/>
+				<Field Name="BaseUnit" AllowNull="false" Type="Catalog.UnitsOfMeasure"/>
+				<Field Name="DefaultPicture" AllowNull="true" Type="Guid"/>
+				<Field Name="DefaultPictureExtension" AllowNull="true" Type="String" Length="5"/>
+			</Fields>
+			<TabularSections>
+				<TabularSection Name="Packing">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="Pack" AllowNull="true" Type="Catalog.UnitsOfMeasure"/>
+					<Field Name="Multiplier" AllowNull="false" Type="Decimal" Precision="10" Scale="2"/>
+				</TabularSection>
+				<TabularSection Name="Stocks">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="Feature" AllowNull="false" Type="Catalog.SKUFeatures"/>
+					<Field Name="StockValue" AllowNull="true" Type="Decimal" Precision="15" Scale="2"/>
+				</TabularSection>
+			</TabularSections>
+		</Entity>
+		<Entity Schema="Document" Name="PriceList" SyncUpload="True" SyncDownload="False" SyncFilter="">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Number" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Date" Type="DateTime" AllowNull="false"/>
+				<Field Name="Posted" AllowNull="true" Type="Boolean"/>
+				<Field Name="Description" AllowNull="true" Type="String" Length="200"/>
+				<Field Name="DefaultPriceList" AllowNull="true" Type="Boolean"/>
+			</Fields>
+			<TabularSections>
+				<TabularSection Name="Prices" SyncFilter="T.SKU IN (SELECT Id FROM Catalog.SKU WHERE Owner IN (SELECT SKUGroup FROM [Catalog].[Territory_SKUGroups] G JOIN [Catalog].[Territory] Territory ON Territory.Id = G.Ref AND Territory.SR = @UserId))">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="SKU" AllowNull="false" Type="Catalog.SKU"/>
+					<Field Name="Price" AllowNull="false" Type="Decimal" Precision="10" Scale="2"/>
+				</TabularSection>
+			</TabularSections>
+		</Entity>
+		<Entity Schema="Catalog" Name="Outlet" SyncUpload="True" SyncDownload="True" SyncFilter="">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Code" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+				<Field Name="Type" AllowNull="false" Type="Catalog.OutletType"/>
+				<Field Name="Class" AllowNull="false" Type="Catalog.OutletClass"/>
+				<Field Name="Distributor" AllowNull="false" Type="Catalog.Distributor"/>
+				<Field Name="Address" AllowNull="false" Type="String" Length="100"/>
+				<Field Name="ConfirmationStatus" AllowNull="false" Type="Enum.OutletConfirmationStatus"/>
+				<Field Name="Lattitude" AllowNull="true" Type="Decimal" Precision="12" Scale="8"/>
+				<Field Name="Longitude" AllowNull="true" Type="Decimal" Precision="12" Scale="8"/>
+				<Field Name="ReceivableLimit" AllowNull="true" Type="Decimal" Precision="10" Scale="2"/>
+			</Fields>
+			<TabularSections>
+				<TabularSection Name="Parameters">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="Parameter" AllowNull="false" Type="Catalog.OutletParameter"/>
+					<Field Name="Value" AllowNull="false" Type="String" Length="100"/>
+				</TabularSection>
+				<TabularSection Name="Prices">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="PriceList" AllowNull="true" Type="Document.PriceList"/>
+				</TabularSection>
+			</TabularSections>
+		</Entity>
+		<Entity Schema="Catalog" Name="Territory" SyncUpload="True" SyncDownload="True" SyncFilter="t.SR = @UserId">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Code" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+				<Field Name="Owner" Type="Catalog.Region"/>
+				<Field Name="SR" AllowNull="false" Type="Catalog.User"/>
+			</Fields>
+			<TabularSections>
+				<TabularSection Name="Outlets">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="Outlet" AllowNull="true" Type="Catalog.Outlet"/>
+				</TabularSection>
+				<TabularSection Name="SKUGroups">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="SKUGroup" AllowNull="true" Type="Catalog.SKUGroup"/>
+				</TabularSection>
+			</TabularSections>
+		</Entity>
+		<Entity Schema="Catalog" Name="QuestionGroup" SyncUpload="True" SyncDownload="False" SyncFilter="">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Code" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+			</Fields>
+			<TabularSections/>
+		</Entity>
+		<Entity Schema="Catalog" Name="Question" SyncUpload="True" SyncDownload="False" SyncFilter="">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Code" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Description" Type="String" Length="100" AllowNull="false"/>
+				<Field Name="Owner" Type="Catalog.QuestionGroup"/>
+				<Field Name="AnswerType" AllowNull="false" Type="Enum.DataType"/>
+			</Fields>
+			<TabularSections>
+				<TabularSection Name="ValueList">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="Value" AllowNull="false" Type="String" Length="100"/>
+				</TabularSection>
+			</TabularSections>
+		</Entity>
+		<Entity Schema="Document" Name="Questionnaire" SyncUpload="True" SyncDownload="False" SyncFilter="">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Number" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Date" Type="DateTime" AllowNull="false"/>
+				<Field Name="Posted" AllowNull="true" Type="Boolean"/>
+				<Field Name="OutletType" AllowNull="false" Type="Catalog.OutletType"/>
+				<Field Name="OutletClass" AllowNull="false" Type="Catalog.OutletClass"/>
+				<Field Name="Scale" AllowNull="false" Type="Enum.QuestionnaireScale"/>
+			</Fields>
+			<TabularSections>
+				<TabularSection Name="Questions">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="Question" AllowNull="false" Type="Catalog.Question"/>
+				</TabularSection>
+				<TabularSection Name="SKUs">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="SKU" AllowNull="false" Type="Catalog.SKU"/>
+				</TabularSection>
+				<TabularSection Name="SKUGroups">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="SKUGroup" AllowNull="false" Type="Catalog.SKUGroup"/>
+				</TabularSection>
+				<TabularSection Name="SKUQuestions">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="SKUQuestion" AllowNull="true" Type="Enum.SKUQuestions"/>
+					<Field Name="UseInQuestionaire" AllowNull="true" Type="Boolean"/>
+				</TabularSection>
+				<TabularSection Name="Territories">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="Territory" AllowNull="true" Type="Catalog.Territory"/>
+				</TabularSection>
+			</TabularSections>
+		</Entity>
+		<Entity Schema="Document" Name="Target" SyncUpload="True" SyncDownload="False" SyncFilter="">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Number" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Date" Type="DateTime" AllowNull="false"/>
+				<Field Name="Posted" AllowNull="true" Type="Boolean"/>
+				<Field Name="Territory" AllowNull="false" Type="Catalog.Territory"/>
+				<Field Name="OutletType" AllowNull="false" Type="Catalog.OutletType"/>
+				<Field Name="OutletClass" AllowNull="false" Type="Catalog.OutletClass"/>
+			</Fields>
+			<TabularSections>
+				<TabularSection Name="Targets">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="Question" AllowNull="false" Type="Catalog.Question"/>
+					<Field Name="Value" AllowNull="false" Type="Decimal" Precision="10" Scale="2"/>
+				</TabularSection>
+			</TabularSections>
+		</Entity>
+		<Entity Schema="Document" Name="VisitPlan" SyncUpload="True" SyncDownload="False" SyncFilter="t.SR = @UserId">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Number" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Date" Type="DateTime" AllowNull="false"/>
+				<Field Name="Posted" AllowNull="true" Type="Boolean"/>
+				<Field Name="Year" AllowNull="false" Type="DateTime"/>
+				<Field Name="WeekNumber" AllowNull="false" Type="Integer"/>
+				<Field Name="SR" AllowNull="false" Type="Catalog.User"/>
+				<Field Name="Owner" AllowNull="false" Type="Catalog.User"/>
+				<Field Name="DateFrom" AllowNull="false" Type="DateTime"/>
+				<Field Name="DateTo" AllowNull="false" Type="DateTime"/>
+			</Fields>
+			<TabularSections>
+				<TabularSection Name="Outlets">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="Outlet" AllowNull="false" Type="Catalog.Outlet"/>
+					<Field Name="Date" AllowNull="false" Type="DateTime"/>
+				</TabularSection>
+			</TabularSections>
+		</Entity>
+		<Entity Schema="Document" Name="Task" SyncUpload="True" SyncDownload="False" SyncFilter="">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Number" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Date" Type="DateTime" AllowNull="false"/>
+				<Field Name="Posted" AllowNull="true" Type="Boolean"/>
+				<Field Name="Territory" AllowNull="true" Type="Catalog.Territory"/>
+				<Field Name="Outlet" AllowNull="false" Type="Catalog.Outlet"/>
+				<Field Name="StatusTask" AllowNull="true" Type="Enum.StatusTask"/>
+				<Field Name="TextTask" AllowNull="false" Type="String" Length="100"/>
+				<Field Name="VisitPlan" AllowNull="true" Type="Document.VisitPlan"/>
+				<Field Name="PlanDate" AllowNull="false" Type="DateTime"/>
+				<Field Name="Result" AllowNull="true" Type="String" Length="100"/>
+				<Field Name="Target" AllowNull="true" Type="String" Length="100"/>
+			</Fields>
+			<TabularSections/>
+		</Entity>
+		<Entity Schema="Document" Name="Visit" SyncUpload="True" SyncDownload="True" SyncFilter="t.SR = @UserId AND t.Date > (getDate()-30)">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Number" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Date" Type="DateTime" AllowNull="false"/>
+				<Field Name="Posted" AllowNull="true" Type="Boolean"/>
+				<Field Name="Outlet" AllowNull="false" Type="Catalog.Outlet"/>
+				<Field Name="SR" AllowNull="false" Type="Catalog.User"/>
+				<Field Name="Status" AllowNull="false" Type="Enum.VisitStatus"/>
+				<Field Name="StartTime" AllowNull="false" Type="DateTime"/>
+				<Field Name="EndTime" AllowNull="true" Type="DateTime"/>
+				<Field Name="Plan" AllowNull="true" Type="Document.VisitPlan"/>
+				<Field Name="Lattitude" AllowNull="true" Type="Decimal" Precision="15" Scale="8"/>
+				<Field Name="Longitude" AllowNull="true" Type="Decimal" Precision="15" Scale="8"/>
+				<Field Name="GPSDifference" AllowNull="true" Type="Decimal" Precision="20" Scale="10"/>
+			</Fields>
+			<TabularSections>
+				<TabularSection Name="Questions">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="Question" AllowNull="false" Type="Catalog.Question"/>
+					<Field Name="Answer" AllowNull="false" Type="String" Length="100"/>
+				</TabularSection>
+				<TabularSection Name="SKUs">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="SKU" AllowNull="false" Type="Catalog.SKU"/>
+					<Field Name="AvailableBool" AllowNull="false" Type="Boolean"/>
+					<Field Name="Available" AllowNull="true" Type="String" Length="10"/>
+					<Field Name="Facing" AllowNull="true" Type="Integer"/>
+					<Field Name="Stock" AllowNull="true" Type="Integer"/>
+					<Field Name="Price" AllowNull="true" Type="Integer"/>
+					<Field Name="OutOfStockBool" AllowNull="false" Type="Boolean"/>
+					<Field Name="MarkUp" AllowNull="true" Type="Integer"/>
+					<Field Name="OutOfStock" AllowNull="true" Type="String" Length="10"/>
+					<Field Name="Snapshot" AllowNull="true" Type="String" Length="50"/>
+				</TabularSection>
+				<TabularSection Name="SKUGroups">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="SKUGroup" AllowNull="false" Type="Catalog.SKUGroup"/>
+					<Field Name="Available" AllowNull="false" Type="Boolean"/>
+				</TabularSection>
+				<TabularSection Name="Task">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="TextTask" AllowNull="true" Type="String" Length="100"/>
+					<Field Name="Result" AllowNull="true" Type="Boolean"/>
+					<Field Name="TaskRef" AllowNull="true" Type="Document.Task"/>
+				</TabularSection>
+			</TabularSections>
+		</Entity>
+		<Entity Schema="Document" Name="Order" SyncUpload="True" SyncDownload="True" SyncFilter="t.SR = @UserId AND t.Date > (getDate()-30)">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Number" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Date" Type="DateTime" AllowNull="false"/>
+				<Field Name="Posted" AllowNull="true" Type="Boolean"/>
+				<Field Name="Outlet" AllowNull="false" Type="Catalog.Outlet"/>
+				<Field Name="SR" AllowNull="false" Type="Catalog.User"/>
+				<Field Name="DeliveryDate" AllowNull="false" Type="DateTime"/>
+				<Field Name="Commentary" AllowNull="true" Type="String" Length="500"/>
+				<Field Name="Visit" AllowNull="true" Type="Document.Visit"/>
+				<Field Name="Lattitude" AllowNull="true" Type="Decimal" Precision="12" Scale="8"/>
+				<Field Name="Longitude" AllowNull="true" Type="Decimal" Precision="12" Scale="8"/>
+				<Field Name="Status" AllowNull="true" Type="Enum.OrderSatus"/>
+				<Field Name="PriceList" AllowNull="true" Type="Document.PriceList"/>
+			</Fields>
+			<TabularSections>
+				<TabularSection Name="SKUs">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="SKU" AllowNull="false" Type="Catalog.SKU"/>
+					<Field Name="Feature" AllowNull="false" Type="Catalog.SKUFeatures"/>
+					<Field Name="Qty" AllowNull="false" Type="Decimal" Precision="15" Scale="1"/>
+					<Field Name="Price" AllowNull="false" Type="Decimal" Precision="15" Scale="2"/>
+					<Field Name="Discount" AllowNull="true" Type="Decimal" Precision="15" Scale="5"/>
+					<Field Name="Total" AllowNull="false" Type="Decimal" Precision="10" Scale="2"/>
+					<Field Name="Amount" AllowNull="false" Type="Decimal" Precision="15" Scale="2"/>
+					<Field Name="Units" AllowNull="true" Type="Catalog.UnitsOfMeasure"/>
+				</TabularSection>
+			</TabularSections>
+		</Entity>
+		<Entity Schema="Document" Name="AccountReceivable" SyncUpload="True" SyncDownload="False" SyncFilter="">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Number" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Date" Type="DateTime" AllowNull="false"/>
+				<Field Name="Posted" AllowNull="true" Type="Boolean"/>
+				<Field Name="Outlet" AllowNull="false" Type="Catalog.Outlet"/>
+			</Fields>
+			<TabularSections>
+				<TabularSection Name="ReceivableDocuments">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="DocumentName" AllowNull="false" Type="String" Length="100"/>
+					<Field Name="DocumentSum" AllowNull="false" Type="Decimal" Precision="10" Scale="2"/>
+				</TabularSection>
+			</TabularSections>
+		</Entity>
+		<Entity Schema="Document" Name="Encashment" SyncUpload="True" SyncDownload="True" SyncFilter="">
+			<Fields>
+				<Field Name="Id" Type="Guid" KeyField="true"/>
+				<Field Name="Number" Type="String" Length="9" AllowNull="true"/>
+				<Field Name="Date" Type="DateTime" AllowNull="false"/>
+				<Field Name="Posted" AllowNull="true" Type="Boolean"/>
+				<Field Name="Visit" AllowNull="true" Type="Document.Visit"/>
+				<Field Name="EncashmentAmount" AllowNull="true" Type="Decimal" Precision="10" Scale="2"/>
+				<Field Name="DocNumber" AllowNull="true" Type="Integer"/>
+				<Field Name="NameSurname" AllowNull="true" Type="String" Length="100"/>
+				<Field Name="Commentary" AllowNull="true" Type="String" Length="100"/>
+			</Fields>
+			<TabularSections>
+				<TabularSection Name="EncashmentDocuments">
+					<Field Name="Id" Type="Guid" KeyField="true"/>
+					<Field Name="Ref" Type="Guid" KeyField="false" AllowNull="false"/>
+					<Field Name="LineNumber" Type="Integer" KeyField="false" AllowNull="false"/>
+					<Field Name="DocumentName" AllowNull="false" Type="String" Length="100"/>
+					<Field Name="EncashmentSum" AllowNull="false" Type="Decimal" Precision="10" Scale="2"/>
+				</TabularSection>
+			</TabularSections>
+		</Entity>
+	</Entities>
+	<Constants>
+		<Entity Name="Enum.DataStatus">
+			<Row _RS="0" Id="b8af7458-9c96-c1a7-480c-61d815a9dd30" Name="New" Description="New"/>
+			<Row _RS="0" Id="a5ca29e2-a197-9dea-46b3-c0e51d1bb189" Name="Modified" Description="Modified"/>
+			<Row _RS="0" Id="aa1e979b-5854-7dce-4524-23037e5a9c3e" Name="Deleted" Description="Deleted"/>
+			<Row _RS="0" Id="8717efd1-ca96-b9cf-4e72-3b14f0e2bd23" Name="DeletedNew" Description="DeletedNew"/>
+		</Entity>
+		<Entity Name="Enum.DataType">
+			<Row _RS="0" Id="bf881ca0-0b63-0375-4703-efa9351a88fc" Name="String" Description="String"/>
+			<Row _RS="0" Id="9b43c06c-5c07-f577-4da2-14a37feed74d" Name="Integer" Description="Integer"/>
+			<Row _RS="0" Id="b32b9f64-9e54-f1f1-489d-ff2076ef0a07" Name="Decimal" Description="Decimal"/>
+			<Row _RS="0" Id="978900d9-950e-a1ef-4268-a0203742b6db" Name="Boolean" Description="Boolean"/>
+			<Row _RS="0" Id="9e754d97-c312-771b-4a43-7a6929819a89" Name="DateTime" Description="DateTime"/>
+			<Row _RS="0" Id="b4d13435-6c14-fe90-4b62-f5a31aaa6e9c" Name="ValueList" Description="ValueList"/>
+			<Row _RS="0" Id="bba685ba-3585-3d68-4746-915448317d47" Name="Snapshot" Description="Snapshot"/>
+		</Entity>
+		<Entity Name="Enum.OutletConfirmationStatus">
+			<Row _RS="0" Id="8d9b66fd-daa4-a3bb-446e-759a0a86b6f4" Name="Approved" Description="Approved"/>
+			<Row _RS="0" Id="8720f96b-c73a-80fd-4db3-74497cd5a32a" Name="New" Description="New"/>
+		</Entity>
+		<Entity Name="Enum.TypesOfUsers">
+			<Row _RS="0" Id="83f79d2f-b7a0-6476-4527-7818d7d2adba" Name="ПользовательЛокальногоРешения" Description="ПользовательЛокальногоРешения"/>
+			<Row _RS="0" Id="a9d1342c-3f9c-3088-47a6-ad128955afe7" Name="ПользовательОбластиДанных" Description="ПользовательОбластиДанных"/>
+		</Entity>
+		<Entity Name="Enum.UploadType">
+			<Row _RS="0" Id="87ff0170-582b-8c98-4c37-432e3e09f311" Name="New" Description="New"/>
+			<Row _RS="0" Id="87b6be2a-b61b-11aa-46d7-13e776a18e39" Name="Reversed" Description="Reversed"/>
+		</Entity>
+		<Entity Name="Enum.VisitStatus">
+			<Row _RS="0" Id="88babd68-1d49-88cd-4baf-dc75168a172f" Name="Exprected" Description="Exprected"/>
+			<Row _RS="0" Id="a292b675-ec7a-ab7d-4a0d-b0d8c4ce3d0a" Name="Processing" Description="Processing"/>
+			<Row _RS="0" Id="a726738c-984b-adc0-4d64-909dd0ababe3" Name="Completed" Description="Completed"/>
+			<Row _RS="0" Id="be6494bc-d2a1-f680-400e-c22c2ab9c87e" Name="Expired" Description="Expired"/>
+		</Entity>
+		<Entity Name="Enum.StatusTask">
+			<Row _RS="0" Id="a98a725f-3e05-3fb9-4d8a-beddd55e8fe6" Name="Planned" Description="Planned"/>
+			<Row _RS="0" Id="9f7f53b8-b160-6717-456e-0a70d18e2e64" Name="Processing" Description="Processing"/>
+			<Row _RS="0" Id="8447ceee-c13a-8f97-4604-4f2e48b1c05a" Name="Completed" Description="Completed"/>
+		</Entity>
+		<Entity Name="Enum.OrderSatus">
+			<Row _RS="0" Id="9606bdd8-9940-cd6f-42d9-22b50d6f0852" Name="New" Description="New"/>
+			<Row _RS="0" Id="b664d130-0948-c759-4ee7-6c1b034533ba" Name="Sent" Description="Sent"/>
+			<Row _RS="0" Id="8e839186-b30a-26e4-48d5-7c92de081596" Name="Closed" Description="Closed"/>
+			<Row _RS="0" Id="9ffdbcbc-d5d8-2de4-4af1-9df872517068" Name="Canceled" Description="Canceled"/>
+		</Entity>
+		<Entity Name="Enum.SKUQuestions">
+			<Row _RS="0" Id="826c4242-19ce-d4ca-48b2-284dd8b5fa84" Name="Available" Description="Available"/>
+			<Row _RS="0" Id="a69148cd-19e9-363d-4956-7260db06f2bf" Name="Facing" Description="Facing"/>
+			<Row _RS="0" Id="a9581f7f-1823-1663-4227-65bf4ba04c71" Name="MarkUp" Description="MarkUp"/>
+			<Row _RS="0" Id="b9d893ae-caef-69ce-4309-7424629cc40e" Name="OutOfStock" Description="OutOfStock"/>
+			<Row _RS="0" Id="86414b49-60bf-de1a-4e94-e3a4ea44c74f" Name="Price" Description="Price"/>
+			<Row _RS="0" Id="905fafa4-684f-34d0-48bb-6c30ef935eb2" Name="Stock" Description="Stock"/>
+			<Row _RS="0" Id="a25d1a98-077f-5e7b-42b9-1ae5daa1257e" Name="Snapshot" Description="Snapshot"/>
+		</Entity>
+		<Entity Name="Enum.QuestionnaireScale">
+			<Row _RS="0" Id="9f4e77d2-3a46-76c5-42aa-204ca0db42c1" Name="Region" Description="Region"/>
+			<Row _RS="0" Id="89c750e5-efee-c0e0-491c-24830822d3a3" Name="Territory" Description="Territory"/>
+		</Entity>
+		<Entity Name="Enum.LogicAnswers">
+			<Row _RS="0" Id="a28dab07-5178-2a90-4599-51cd374e9b21" Name="Yes" Description="Yes"/>
+			<Row _RS="0" Id="abb46cb9-55bf-15d1-4eb7-9ade998cb994" Name="No" Description="No"/>
+		</Entity>
+		<Entity Name="Enum.SyncDirections">
+			<Row _RS="0" Id="8693e9b8-9b56-63af-422e-331085dc6106" Name="Private" Description="Private"/>
+			<Row _RS="0" Id="bbc7cdcc-4b9a-2688-4c6b-828e75094cd3" Name="Shared" Description="Shared"/>
+		</Entity>
+		<Entity Name="Enum.SyncAction">
+			<Row _RS="0" Id="90b29e82-3143-60b0-4bb9-c45e467baf67" Name="AddFile" Description="AddFile"/>
+			<Row _RS="0" Id="a17f54a6-c222-743b-447c-7be043fa3dab" Name="DeleteFile" Description="DeleteFile"/>
+		</Entity>
+	</Constants>
+</Configuration>

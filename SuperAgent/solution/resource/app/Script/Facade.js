@@ -1538,10 +1538,27 @@ function ShowDialog(v1) {
 
 function Sync() {
 
-    DB.Sync();
-    FileSystem.UploadPrivate();
-    FileSystem.SyncShared();
+    DB.Sync(SyncCallback);
+}
 
+function SyncCallback() {
+    if (DB.LastError == null) {
+        FileSystem.UploadPrivate(UploadPrivateCallback);
+    }
+}
+
+function UploadPrivateCallback(args) {
+    if (args.Result) {
+        FileSystem.SyncShared(SyncSharedCallback);
+    }
+    else
+        FileSystem.HandleLastError();
+}
+
+function SyncSharedCallback(args) {
+    if (!args.Result) {
+        FileSystem.HandleLastError();
+    }
 }
 
 

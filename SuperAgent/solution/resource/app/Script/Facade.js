@@ -521,7 +521,7 @@ function GetQuestionsByOutlet(questionnaires) {
     if (questionnaires == null)
         return null;
     else {
-        var result = DB.Current.Document.Questionnaire_Questions.SelectBy("Ref", questionnaires).OrderBy("QuestionAsObject.Description").Distinct("Question");
+        var result = DB.Current.Document.Questionnaire_Questions.SelectBy("Ref", questionnaires).OrderBy("LineNumber").Distinct("Question");
         if (result.Count() > 0)
             return result;
         else
@@ -674,7 +674,7 @@ function GetSKUsByOutlet(questionnaires) {
         return null;
     else {
         var s = DB.Current.Catalog.SKU.Select().Distinct("Id");
-        var result = DB.Current.Document.Questionnaire_SKUs.SelectBy("Ref", questionnaires).Union(DB.Current.Document.Questionnaire_SKUs.SelectBy("SKU", s)).OrderBy("SKUAsObject.Description").Distinct("SKU");
+        var result = DB.Current.Document.Questionnaire_SKUs.SelectBy("Ref", questionnaires).Union(DB.Current.Document.Questionnaire_SKUs.SelectBy("SKU", s)).OrderBy("LineNumber").Distinct("SKU");
         if (result.Count() > 0)
             return result;
         else
@@ -1292,7 +1292,10 @@ function GetSKUs(searchText, owner, priceListId) {
             var dif = 100 - Variables["SKUcount"];
 
             if (parseInt(dif) > parseInt(0)) {
-                var qt = DB.Current.Document.PriceList_Prices.SelectBy("Ref", priceListId).Where("SKUAsObject.Description.Contains(@p1) && SKUAsObject.Owner==@p2", [searchText, owner]).Top(dif).OrderBy("SKUAsObject.Description");
+                var qt = DB.Current.Document.PriceList_Prices.SelectBy("Ref", priceListId)
+                    .Where("SKUAsObject.Description.Contains(@p1) && SKUAsObject.Owner==@p2", [searchText, owner])
+                    .Top(dif)
+                    .OrderBy("SKUAsObject.Description");
             }
             else {
                 var qt = parseInt(0);
@@ -1325,6 +1328,85 @@ function GetSKUGroups(searchText) {
 
 }
 
+function ClearAndRefresh(p1, p2) {
+    //$Workflow.DoRefresh
+    Variables.Remove("SKUcount");
+    Workflow.Refresh([p1, p2]);
+}
+
+function GetParentGroups(ref) {
+
+    //var groups = DB.Current.Catalog.SKUGroup.Select().Distinct("Parent");
+    //return p = DB.Current.Catalog.SKUGroup.SelectBy("Id", groups).
+    //            UnionAll(
+
+    var groups = DB.Current.Catalog.SKUGroup.Select().Distinct("Id");
+    return DB.Current.Catalog.SKUGroup.SelectBy("Parent", groups, "<>").OrderBy("Description");
+
+}
+
+function GetChildren(parent) {
+    var c = DB.Current.Catalog.SKUGroup.SelectBy("Parent", parent.Id);
+    if (parseInt(c.Count()) == parseInt(0))
+        return null;
+    else
+        return c;
+}
+
+function AddFilterAndRefresh(group) { //refactoring is needed after platform update
+
+    if (Variables.Exists("filter")) {
+        var f = Variables["filter"];
+        Variables.Remove("filter");
+    }
+    else
+        var f = [];
+
+    var nCollection = [];
+    for (var i in f) {
+        nCollection.push(i);
+    }
+
+    var isInCollection = IsInCollection(group.Id, f);
+    if (isInCollection) {
+        nCollection = DeleteFromCollection(group.Id, nCollection);
+    }
+    else
+        nCollection.push(group.Id);
+
+    Variables.AddGlobal("filter", nCollection);
+
+    Workflow.Refresh([]);
+}
+
+function FilterIsSet(itemId) {
+    if (Variables.Exists("filter")) {
+        var result = IsInCollection(itemId, Variables["filter"]);
+        return result;
+    }
+    else
+        return false;
+
+}
+
+function IsInCollection(item, collection) {
+    var res = false;
+    for (var i in collection) {
+        if (item.ToString() == i.ToString())
+            res = true;
+    }
+    return res
+}
+
+function DeleteFromCollection(item, collection) {
+    var arr = [];
+    for (var i in collection) {
+        if (item.ToString() != collection[i].ToString())
+            arr.push(collection[i]);
+    }
+    return arr;
+}
+
 
 //-------------------------------Receivables--------------------
 
@@ -1332,7 +1414,7 @@ function GetReceivables(outletId) {
 
     var receivables = new Query;
     receivables.AddParameter("outletRef", outletId);
-    receivables.Text = "select * from Document.AccountReceivable_ReceivableDocuments where RefAsObject.Outlet == @outletRef orderby DocumentName";
+    receivables.Text = "select * from Document.AccountReceivable_ReceivableDocuments where RefAsObject.Outlet == @outletRef orderby LineNumber";
     var d = receivables.Execute();
     var r = GetAmount(d);
     Variables.Add("receivableAmount", r);

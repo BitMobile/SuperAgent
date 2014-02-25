@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+
+  <c:VerticalLayout>
+
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward()"/>
+      <c:TextView Text="#filters#" />
+    </c:DockLayout>
+    <c:HorizontalLine/>
+
+    <s:Push Id="parents" Value="$Facade.GetParentGroups($common.UserId)"></s:Push>
+
+    <c:ScrollView Id="grScrollView" CssClass="grid">
+
+      <s:Iterator Id="parent" Value="$parents">
+
+        <c:HorizontalLayout OnClickAction="$Facade.AddFilterAndRefresh($parent)">
+          <c:VerticalLayout>
+            <c:TextView Text = "$parent.Description" CssClass = "main_row"></c:TextView>
+          </c:VerticalLayout>
+          <s:Push Id="isSet" Value="$Facade.FilterIsSet($parent.Id)"></s:Push>
+          <s:If Test="$isSet">
+            <c:Image CssClass="tick"/>
+          </s:If>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+
+      </s:Iterator>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>

@@ -18,11 +18,12 @@
 
     <c:HorizontalLayout CssClass="search">
 
+      <c:Button Id="btnFilter" Text="#filter#" CssClass="filter" OnClickAction="$Workflow.DoAction(SetFilter)"></c:Button>
       <c:DockLayout >
         <c:Image />
         <c:EditText Id="edtSearch" Text="$search"></c:EditText>
       </c:DockLayout>
-      <c:Button Id="btnSearch" Text="#search#" OnClickAction="$Workflow.DoRefresh($param1,$edtSearch.Text)"></c:Button>
+      <c:Button Id="btnSearch" Text="#search#" OnClickAction="$Facade.ClearAndRefresh($param1,$edtSearch.Text)"></c:Button>
 
     </c:HorizontalLayout>
 

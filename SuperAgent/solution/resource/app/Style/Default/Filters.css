@@ -1,0 +1,31 @@
+﻿.layout_on {
+    margin-left: 15%;
+    margin-top: 20%;
+    width: 60%;
+    height: 60%;
+    background-color: #282f5a;
+    color: #282f5a;
+    border-width: 1px;
+    border-color: #283636;
+    border-radius: 10px;
+}
+
+.layout_off {
+    margin-left: 6%;
+    margin-top: 20%;
+    width: 60%;
+    height: 60%;
+    background-color: #a57a9c;
+    color: #282f5a;
+    border-width: 1px;
+    border-color: #283636;
+    border-radius: 10px;
+}
+
+.grid hl half_width {
+    width: 50%;
+}
+
+.gridEdit {
+    background-color: #dbd7e1;
+}

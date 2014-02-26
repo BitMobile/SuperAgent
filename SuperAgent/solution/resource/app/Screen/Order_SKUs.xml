@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
 
-  <s:Push Id="order" Value="$param1"></s:Push>
+  <s:Push Id="order" Value="$workflow.order"></s:Push>
   <s:Push Id="search" Value="$param2"></s:Push>
 
   <s:Push Id="groups" Value="$Facade.GetSKUGroups($search)"></s:Push>
@@ -10,15 +10,16 @@
 
     <c:DockLayout CssClass="top_navigator">
       <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button Id="btnForward" CssClass="btn_grey_forward"/>
       <c:TextView Text="#sku#" />
     </c:DockLayout>
 
     <c:HorizontalLine/>
 
     <c:HorizontalLayout CssClass="search">
-
-      <c:Button Id="btnFilter" Text="#filter#" CssClass="filter" OnClickAction="$Workflow.DoAction(SetFilter)"></c:Button>
+      
+      <s:Push Id="filterClass" Value="$Facade.FilterButtonClass()"></s:Push>
+      <c:Button Id="btnFilter" CssClass="$filterClass" OnClickAction="$Workflow.DoAction(SetFilter)"></c:Button>
       <c:DockLayout >
         <c:Image />
         <c:EditText Id="edtSearch" Text="$search"></c:EditText>
@@ -41,17 +42,16 @@
             </c:VerticalLayout>
           </c:HorizontalLayout>
           <c:HorizontalLine CssClass="editLine"/>
-        </s:If>
 
-        <s:Iterator Id="sku" Value="$skusByGroup">
+          <s:Iterator Id="sku" Value="$skusByGroup">
             <c:HorizontalLayout OnClickAction="$Workflow.DoAction(SelectSKU, $sku.SKUAsObject, $sku.Price)" CssClass="gridWhite">
               <c:VerticalLayout>
                 <c:TextView Text="$sku.SKUAsObject.Description" CssClass="main_row"></c:TextView>
-                
+
                 <c:HorizontalLayout>
                   <c:TextView Text="#price2# {$sku.Price}  #stock#: {$sku.SKUAsObject.CommonStock}" CssClass="description_row"></c:TextView>
                 </c:HorizontalLayout>
-                
+
               </c:VerticalLayout>
               <c:Image/>
 
@@ -60,6 +60,8 @@
 
           </s:Iterator>
 
+        </s:If>
+        
       </s:Iterator>
 
     </c:ScrollView>

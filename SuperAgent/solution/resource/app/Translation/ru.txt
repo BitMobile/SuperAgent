@@ -117,3 +117,4 @@ itemAlreadyExist	Такая позиция уже есть в заказе. Пр
 NO		Нет
 YES		Да
 filter	Фильтр
+clearFilter		Очистить фильтр?

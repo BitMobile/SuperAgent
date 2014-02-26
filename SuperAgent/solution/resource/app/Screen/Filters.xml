@@ -4,15 +4,30 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Facade.AskAndBack()"/>
       <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward()"/>
-      <c:TextView Text="#filters#" />
+      <c:TextView Text="#filter#" />
     </c:DockLayout>
     <c:HorizontalLine/>
+    
 
     <s:Push Id="parents" Value="$Facade.GetParentGroups($common.UserId)"></s:Push>
 
     <c:ScrollView Id="grScrollView" CssClass="grid">
+
+      
+      <c:HorizontalLayout CssClass="gridEdit">
+        <c:VerticalLayout CssClass="half_width">
+          <s:Push Id="groupFilter" Value="$Facade.GetGroupFilterStyle()"></s:Push>
+          <c:Button Text="#groups#" CssClass="layout_on"></c:Button>
+        </c:VerticalLayout>
+        <c:VerticalLayout CssClass="half_width">
+          <s:Push Id="brandFilter" Value="$Facade.GetBrandFilterStyle()"></s:Push>
+          <c:Button Text="#brands#" CssClass="layout_on"></c:Button>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+      
 
       <s:Iterator Id="parent" Value="$parents">
 
@@ -24,8 +39,30 @@
           <s:If Test="$isSet">
             <c:Image CssClass="tick"/>
           </s:If>
+          <s:Else>
+            <c:Image CssClass="empty_tick"/>
+          </s:Else>
         </c:HorizontalLayout>
         <c:HorizontalLine/>
+
+        <s:Push Id="children" Value="$Facade.GetChildren($parent)"></s:Push>
+        <s:Iterator Id="child" Value="$children">
+          <c:HorizontalLayout OnClickAction="$Facade.AddFilterAndRefresh($child)">
+            <c:VerticalLayout>
+              <s:Push Id="margin" Value="$Facade.GetChildDescription($child.Description)"></s:Push>
+              <c:TextView Text = "$margin" CssClass = "main_row"></c:TextView>
+            </c:VerticalLayout>
+            <s:Push Id="isSet" Value="$Facade.FilterIsSet($child.Id)"></s:Push>
+            <s:If Test="$isSet">
+              <c:Image CssClass="tick"/>
+            </s:If>
+            <s:Else>
+              <c:Image CssClass="empty_tick"/>
+            </s:Else>
+          </c:HorizontalLayout>
+          <c:HorizontalLine/>
+
+        </s:Iterator>
 
       </s:Iterator>
 

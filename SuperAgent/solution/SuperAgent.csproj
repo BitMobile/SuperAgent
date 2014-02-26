@@ -42,8 +42,13 @@
     <Content Include="resource\app\Image\Default\button_right.png" />
     <Content Include="resource\app\Image\Default\button_right_disabled.png" />
     <Content Include="resource\app\Image\Default\distr_active.png" />
+    <Content Include="resource\app\Image\Default\filterOff.png" />
+    <Content Include="resource\app\Image\Default\filterOn.png" />
+    <Content Include="resource\app\Image\Default\icon_add.png" />
+    <Content Include="resource\app\Image\Default\icon_image.png" />
     <Content Include="resource\app\Image\Default\icon_more.png" />
     <Content Include="resource\app\Image\Default\icon_zoom.png" />
+    <Content Include="resource\app\Image\Default\info.png" />
     <Content Include="resource\app\Image\Default\kpi.png" />
     <Content Include="resource\app\Image\Default\kpi_disabled.png" />
     <Content Include="resource\app\Image\Default\LogoEn.png" />
@@ -55,9 +60,12 @@
     <Content Include="resource\app\Image\Default\schedule.png" />
     <Content Include="resource\app\Image\Default\settings.png" />
     <Content Include="resource\app\Image\Default\settings_disabled.png" />
+    <Content Include="resource\app\Image\Default\snapshot.png" />
     <Content Include="resource\app\Image\Default\sync.png" />
+    <Content Include="resource\app\Image\Default\tick-white.png" />
+    <Content Include="resource\app\Image\Default\tick.png" />
     <Content Include="resource\app\Image\Default\todo.png" />
-    <Content Include="resource\app\Image\Default\trash.png" />
+    <Content Include="resource\app\Image\Default\trash_icon.png" />
     <Content Include="resource\app\Image\Default\visit.png" />
     <Content Include="resource\app\Screen\ScheduledVisits_Map.xml" />
     <Content Include="resource\app\Screen\Encashment.xml" />
@@ -129,6 +137,7 @@
     <Content Include="resource\app\Script\Facade.js" />
     <Content Include="resource\app\Script\Workflow.js" />
     <Content Include="resource\app\Style\Default\default.css" />
+    <Content Include="resource\app\Style\Default\Filters.css" />
     <Content Include="resource\app\Style\Default\Main.css" />
     <Content Include="resource\app\Style\Default\Order.css" />
     <Content Include="resource\app\Style\Default\Order_EditSKU.css" />

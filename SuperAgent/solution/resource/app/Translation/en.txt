@@ -117,3 +117,4 @@ itemAlreadyExist	This item already exists. Continue edit? ("No" - don't add this
 YES		Yes
 NO		No
 filter	Filter
+clearFilter		clearFilter

@@ -242,6 +242,12 @@ WebMapGoogle {
                 background-image: url(tick.png);
             }
 
+            .empty_tick {
+                height: 30%;
+                margin-top: 35%;
+                background-image: url(tick-white.png);
+            }
+
             .info {
                 height: 35%;
                 margin-top: 35%;

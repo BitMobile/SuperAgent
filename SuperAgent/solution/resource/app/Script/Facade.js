@@ -1283,7 +1283,12 @@ function GetSKUs(searchText, owner, priceListId) {
             var dif = 100 - Variables["SKUcount"];
 
             if (parseInt(dif) > parseInt(0)) {
-                var skus = DB.Current.Catalog.SKU.SelectBy("Owner", owner).Distinct("Id");
+                if (Variables.Exists("brand_filter")) {
+                    var p = Variables["brand_filter"];
+                    var skus = DB.Current.Catalog.SKU.SelectBy("Owner", owner).Where("Brand.In(@p1)", [p]).Distinct("Id");
+                }
+                else
+                    var skus = DB.Current.Catalog.SKU.SelectBy("Owner", owner).Distinct("Id");
 
                 var qt = DB.Current.Document.PriceList_Prices.SelectBy("Ref", priceListId)
                     .Union(DB.Current.Document.PriceList_Prices.SelectBy("SKU", skus))
@@ -1435,6 +1440,16 @@ function GetBrands() {
     return DB.Current.Catalog.Brands.SelectBy("Id", sku);
 }
 
+function FilteredByBrand(sku) {
+    //Dialog.Debug(sku);
+    if (Variables.Exists("brand_filter")) {
+        //Dialog.Debug(Variables["brand_filter"]);
+        return IsInCollection(sku.Brand, Variables["brand_filter"]);
+    }
+    else
+        return true;
+}
+
 function FilterIsSet(itemId, filterName) {
     if (Variables.Exists(filterName)) {
         var result = IsInCollection(itemId, Variables[filterName]);
@@ -1473,6 +1488,26 @@ function ClearFilterHandler(answ, state) {
         Variables.Remove("brand_filter");
     }
     Workflow.Back();
+}
+
+function CheckFilterAndForward() {
+    //if (Variables.Exists("group_filter")){
+    //    var t = Variables["group_filter"];
+    //    if (parseInt(t.Count()) == parseInt(0))
+    //        Variables.Remove("group_filter");
+    //}
+    CheckFilter("group_filter");
+    CheckFilter("brand_filter");
+
+    Workflow.Forward([]);
+}
+
+function CheckFilter(filterName) {
+    if (Variables.Exists(filterName)) {
+        var t = Variables[filterName];
+        if (parseInt(t.Count()) == parseInt(0))
+            Variables.Remove(filterName);
+    }
 }
 
 

@@ -7,7 +7,7 @@
 
     <c:DockLayout CssClass="top_navigator">
       <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Facade.AskAndBack()"/>
-      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward()"/>
+      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckFilterAndForward()"/>
       <c:TextView Text="#filter#" />
     </c:DockLayout>
     <c:HorizontalLine/>

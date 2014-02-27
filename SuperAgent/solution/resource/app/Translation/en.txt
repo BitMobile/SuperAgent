@@ -118,3 +118,5 @@ YES		Yes
 NO		No
 filter	Filter
 clearFilter		clearFilter
+groups	Groups
+brands	Brands

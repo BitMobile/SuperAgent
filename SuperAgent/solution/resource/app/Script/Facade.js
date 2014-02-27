@@ -1347,20 +1347,31 @@ function ClearAndRefresh(p1, p2) {
 //---------------------------------- filters, collections --------------------------
 
 function FilterButtonClass() {
-    if (Variables.Exists("group_filter"))
+    if (Variables.Exists("group_filter") || Variables.Exists("brand_filter"))
         return "set_filter";
     else
         return "off_filter";
 }
 
-function GetGroupFilterStyle() {
-    if (Variables.Exists["filterOn"] == false)
-        return "layout_on";
+function SetFilter() {
+    if (Variables.Exists("filterType") == false)
+        Variables.AddGlobal("filterType", "group");
+    else
+        return Variables["filterType"];
 }
 
-function GetBrandFilterStyle() {
-    if (Variables.Exists["filterOn"] == false)
+function GetFilterStyle(val) {
+    if (Variables["filterType"] == val)
+        return "layout_on";
+    else
         return "layout_off";
+}
+
+function ChangeFilterAndRefresh(type) {
+    Variables.Remove("filterType");
+    Variables.AddGlobal("filterType", type);
+    Workflow.Refresh([]);
+
 }
 
 function GetParentGroups(ref) {
@@ -1382,11 +1393,11 @@ function GetChildDescription(d) {
     return ("      " + d.ToString());
 }
 
-function AddFilterAndRefresh(group) { //refactoring is needed after platform update
+function AddFilterAndRefresh(item, filterName) { //refactoring is needed after platform update
 
-    if (Variables.Exists("group_filter")) {
-        var f = Variables["group_filter"];
-        Variables.Remove("group_filter");
+    if (Variables.Exists(filterName)) {
+        var f = Variables[filterName];
+        Variables.Remove(filterName);
     }
     else
         var f = [];
@@ -1396,32 +1407,37 @@ function AddFilterAndRefresh(group) { //refactoring is needed after platform upd
         nCollection.push(i);
     }
 
-    var isInCollection = IsInCollection(group.Id, f);
+    var isInCollection = IsInCollection(item.Id, f);
     if (isInCollection) {
-        nCollection = DeleteFromCollection(group.Id, nCollection);
-        if (group.IsFolder) {
-            var chld = GetChildren(group);
+        nCollection = DeleteFromCollection(item.Id, nCollection);
+        if (item.IsFolder) {
+            var chld = GetChildren(item);
             for (var i in chld)
                 nCollection = DeleteFromCollection(i.Id, nCollection);
         }
     }
     else {
-        nCollection.push(group.Id);
-        if (group.IsFolder) {
-            var chld = GetChildren(group);
+        nCollection.push(item.Id);
+        if (item.IsFolder) {
+            var chld = GetChildren(item);
             for (var i in chld)
                 nCollection.push(i.Id);
         }
     }
 
-    Variables.AddGlobal("group_filter", nCollection);
+    Variables.AddGlobal(filterName, nCollection);
 
     Workflow.Refresh([]);
 }
 
-function FilterIsSet(itemId) {
-    if (Variables.Exists("group_filter")) {
-        var result = IsInCollection(itemId, Variables["group_filter"]);
+function GetBrands() {
+    var sku = DB.Current.Catalog.SKU.Select().Distinct("Brand");
+    return DB.Current.Catalog.Brands.SelectBy("Id", sku);
+}
+
+function FilterIsSet(itemId, filterName) {
+    if (Variables.Exists(filterName)) {
+        var result = IsInCollection(itemId, Variables[filterName]);
         return result;
     }
     else
@@ -1452,8 +1468,10 @@ function AskAndBack() {
 }
 
 function ClearFilterHandler(answ, state) {
-    if (answ == DialogResult.Yes)
+    if (answ == DialogResult.Yes) {
         Variables.Remove("group_filter");
+        Variables.Remove("brand_filter");
+    }
     Workflow.Back();
 }
 

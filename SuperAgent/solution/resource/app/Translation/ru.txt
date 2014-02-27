@@ -118,3 +118,5 @@ NO		Нет
 YES		Да
 filter	Фильтр
 clearFilter		Очистить фильтр?
+groups	Группы
+brands	Бренды

@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
 
+  <s:Push Id="screenFilter" Value="$Facade.SetFilter()"></s:Push>
+
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
@@ -9,50 +11,33 @@
       <c:TextView Text="#filter#" />
     </c:DockLayout>
     <c:HorizontalLine/>
-    
 
-    <s:Push Id="parents" Value="$Facade.GetParentGroups($common.UserId)"></s:Push>
 
     <c:ScrollView Id="grScrollView" CssClass="grid">
 
-      
+
       <c:HorizontalLayout CssClass="gridEdit">
         <c:VerticalLayout CssClass="half_width">
-          <s:Push Id="groupFilter" Value="$Facade.GetGroupFilterStyle()"></s:Push>
-          <c:Button Text="#groups#" CssClass="layout_on"></c:Button>
+          <s:Push Id="groupFilter" Value="$Facade.GetFilterStyle(group)"></s:Push>
+          <c:Button Text="#groups#" CssClass="$groupFilter" OnClickAction="$Facade.ChangeFilterAndRefresh(group)"></c:Button>
         </c:VerticalLayout>
         <c:VerticalLayout CssClass="half_width">
-          <s:Push Id="brandFilter" Value="$Facade.GetBrandFilterStyle()"></s:Push>
-          <c:Button Text="#brands#" CssClass="layout_on"></c:Button>
+          <s:Push Id="brandFilter" Value="$Facade.GetFilterStyle(brand)"></s:Push>
+          <c:Button Text="#brands#" CssClass="$brandFilter" OnClickAction="$Facade.ChangeFilterAndRefresh(brand)"></c:Button>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
-      
 
-      <s:Iterator Id="parent" Value="$parents">
 
-        <c:HorizontalLayout OnClickAction="$Facade.AddFilterAndRefresh($parent)">
-          <c:VerticalLayout>
-            <c:TextView Text = "$parent.Description" CssClass = "main_row"></c:TextView>
-          </c:VerticalLayout>
-          <s:Push Id="isSet" Value="$Facade.FilterIsSet($parent.Id)"></s:Push>
-          <s:If Test="$isSet">
-            <c:Image CssClass="tick"/>
-          </s:If>
-          <s:Else>
-            <c:Image CssClass="empty_tick"/>
-          </s:Else>
-        </c:HorizontalLayout>
-        <c:HorizontalLine/>
+      <s:If Test="$filterType=='group'">
+        <s:Push Id="parents" Value="$Facade.GetParentGroups($common.UserId)"></s:Push>
+        <s:Iterator Id="parent" Value="$parents">
 
-        <s:Push Id="children" Value="$Facade.GetChildren($parent)"></s:Push>
-        <s:Iterator Id="child" Value="$children">
-          <c:HorizontalLayout OnClickAction="$Facade.AddFilterAndRefresh($child)">
+          <c:HorizontalLayout OnClickAction="$Facade.AddFilterAndRefresh($parent, group_filter)">
             <c:VerticalLayout>
-              <s:Push Id="margin" Value="$Facade.GetChildDescription($child.Description)"></s:Push>
-              <c:TextView Text = "$margin" CssClass = "main_row"></c:TextView>
+              <c:TextView Text = "$parent.Description" CssClass = "main_row"></c:TextView>
             </c:VerticalLayout>
-            <s:Push Id="isSet" Value="$Facade.FilterIsSet($child.Id)"></s:Push>
+            <s:Push Id="isSet" Value="$Facade.FilterIsSet($parent.Id, group_filter)"></s:Push>
             <s:If Test="$isSet">
               <c:Image CssClass="tick"/>
             </s:If>
@@ -62,9 +47,49 @@
           </c:HorizontalLayout>
           <c:HorizontalLine/>
 
-        </s:Iterator>
+          <s:Push Id="children" Value="$Facade.GetChildren($parent)"></s:Push>
+          <s:Iterator Id="child" Value="$children">
+            <c:HorizontalLayout OnClickAction="$Facade.AddFilterAndRefresh($child, group_filter)">
+              <c:VerticalLayout>
+                <s:Push Id="margin" Value="$Facade.GetChildDescription($child.Description)"></s:Push>
+                <c:TextView Text = "$margin" CssClass = "main_row"></c:TextView>
+              </c:VerticalLayout>
+              <s:Push Id="isSet" Value="$Facade.FilterIsSet($child.Id, group_filter)"></s:Push>
+              <s:If Test="$isSet">
+                <c:Image CssClass="tick"/>
+              </s:If>
+              <s:Else>
+                <c:Image CssClass="empty_tick"/>
+              </s:Else>
+            </c:HorizontalLayout>
+            <c:HorizontalLine/>
 
-      </s:Iterator>
+          </s:Iterator>
+
+        </s:Iterator>
+      </s:If>
+
+
+      <s:Else>
+        <s:Push Id="brands" Value="$Facade.GetBrands()"></s:Push>
+        <s:Iterator Id="brand" Value="$brands">
+
+          <c:HorizontalLayout OnClickAction="$Facade.AddFilterAndRefresh($brand, brand_filter)">
+            <c:VerticalLayout>
+              <c:TextView Text = "$brand.Description" CssClass = "main_row"></c:TextView>
+            </c:VerticalLayout>
+            <s:Push Id="isSet" Value="$Facade.FilterIsSet($brand.Id, brand_filter)"></s:Push>
+            <s:If Test="$isSet">
+              <c:Image CssClass="tick"/>
+            </s:If>
+            <s:Else>
+              <c:Image CssClass="empty_tick"/>
+            </s:Else>
+          </c:HorizontalLayout>
+          <c:HorizontalLine/>
+          
+        </s:Iterator>
+      </s:Else>
 
     </c:ScrollView>
 

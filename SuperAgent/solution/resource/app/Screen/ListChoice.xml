@@ -48,6 +48,9 @@
             <s:If Test="$param2=='Value'">
               <c:TextView CssClass="main_row" Text="#valueList#"/>
             </s:If>
+            <s:If Test="$param2=='ReasonForNotOfTakingOrderAsObject'">
+              <c:TextView CssClass="main_row" Text="#reasonForEmptyOrder#"/>
+            </s:If>
 
             <c:TextView Text="#select_answer#" CssClass="description_row"></c:TextView>
           </c:VerticalLayout>

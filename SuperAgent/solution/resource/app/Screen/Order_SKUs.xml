@@ -39,19 +39,19 @@
           <s:Push Id="groupPath" Value="$Facade.GetGroupPath($group)"></s:Push>
           <c:HorizontalLayout CssClass ="gridEdit">
             <c:VerticalLayout>
-              <c:TextView Text = "$group.Description" CssClass = "main_row"></c:TextView>
-              <c:TextView Text="$groupPath" CssClass="description_row"></c:TextView>
+              <c:TextView Text = "{$groupPath}{ } /{ } {$group.Description}" CssClass = "main_row"></c:TextView>
             </c:VerticalLayout>
           </c:HorizontalLayout>
           <c:HorizontalLine CssClass="editLine"/>
 
           <s:Iterator Id="sku" Value="$skusByGroup">
-            <c:HorizontalLayout OnClickAction="$Workflow.DoAction(SelectSKU, $sku.SKUAsObject, $sku.Price)" CssClass="gridWhite">
+            <s:Push Id="skuObj" Value="$sku.SKUAsObject"></s:Push>
+            <c:HorizontalLayout OnClickAction="$Workflow.DoAction(SelectSKU, $skuObj, $sku.Price)" CssClass="gridWhite">
               <c:VerticalLayout>
-                <c:TextView Text="$sku.SKUAsObject.Description" CssClass="main_row"></c:TextView>
+                <c:TextView Text="$skuObj.Description" CssClass="main_row"></c:TextView>
 
                 <c:HorizontalLayout>
-                  <c:TextView Text="#price2# {$sku.Price}  #stock#: {$sku.SKUAsObject.CommonStock}" CssClass="description_row"></c:TextView>
+                  <c:TextView Text="#price2# {$sku.Price}  #stock#: {$skuObj.CommonStock}  #brand#: {$skuObj.BrandAsObject.Description}" CssClass="description_row"></c:TextView>
                 </c:HorizontalLayout>
 
               </c:VerticalLayout>

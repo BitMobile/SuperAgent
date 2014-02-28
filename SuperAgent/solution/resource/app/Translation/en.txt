@@ -123,4 +123,9 @@ filter	Filter
 clearFilter		clearFilter
 groups	Groups
 brands	Brands
+brand	Brand
 impossibleToCreateVisit	Impossible to create plan visit untill coordinates aren't set. Rollback visit?
+fillNoOrderReason	Reason for not taking the order should be filled.
+reasonForEmptyOrder	Reason for not taking the order
+fillInVisitReason	Reason of visit should be filled
+visitReason	Visit reason

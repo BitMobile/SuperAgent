@@ -122,4 +122,9 @@ filter	Фильтр
 clearFilter		Очистить фильтр?
 groups	Группы
 brands	Бренды
+brand	Бренд
 impossibleToCreateVisit		Невозможно создать планоывй визит пока не записаны координаты. Отменить создание визита?
+fillNoOrderReason	 Причина отсутствия заказа должна быть заполнена.
+reasonForEmptyOrder	Причина отсутствия заказа
+fillInVisitReason	Причина визита должна быть заполнена
+visitReason	Причина визита

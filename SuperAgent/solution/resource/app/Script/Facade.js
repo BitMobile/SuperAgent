@@ -774,25 +774,62 @@ function CheckEmtySKUAndForward(outlet, visit) {
 }
 
 function CheckAndCommit() {
-    var coordControl = DB.Current.Catalog.MobileApplicationSettings.SelectBy("Description", "PlVisitCoordControl");
-    var visit = Variables["workflow"]["visit"];
-    if (Variables["workflow"]["name"] == "ScheduledVisit" && coordControl && visit.Lattitude == null && visit.Longitude == null)
-        Dialog.Question(Translate["#impossibleToCreateVisit#"], RolbackVisitHandler, visit);
-    else {
+
+    var order = Variables["workflow"]["order"];
+    var c = CountEntities("Document", "Order_SKUs", order.Id, "Ref");
+
+    //check smth more
+    var visitChecked = VisitIsChecked(c);
+    if (visitChecked) {
         //set time of visit
         Variables["workflow"]["visit"].EndTime = DateTime.Now;
 
         //check empty order
         var order = Variables["workflow"]["order"];
         var c = CountEntities("Document", "Order_SKUs", order.Id, "Ref");
-        if (c == 0)
+        if (c == 0) {
             DB.Current.Document.Order.Delete(order);
+        }
 
         //TODO:check empty encashment
 
         //commit
         Workflow.Commit();
     }
+}
+
+function VisitIsChecked(c) {
+
+    var visit = Variables["workflow"]["visit"];
+    if (Variables["workflow"]["name"] == "ScheduledVisit") {
+        var coordControl = DB.Current.Catalog.MobileApplicationSettings.SelectBy("Description", "PlVisitCoordControl");
+        if (coordControl && visit.Lattitude == null && visit.Longitude == null) {
+            Dialog.Question(Translate["#impossibleToCreateVisit#"], RolbackVisitHandler, visit);
+            return false;
+        }
+        //var order = DB.Current.Document.Order.SelectBy("Visit", visit.Id).First();
+        var r = visit.ReasonForNotOfTakingOrder;
+        if (c == 0 && r.ToString() == "00000000-0000-0000-0000-000000000000") {
+            Dialog.Message(Translate["#fillNoOrderReason#"]);
+            return false;
+        }
+    }
+    if (Variables["workflow"]["name"] == "UnscheduledVisit") {
+        var v = visit.ReasonForVisit;
+        if (v.ToString() == "00000000-0000-0000-0000-000000000000") {
+            Dialog.Message(Translate["#fillInVisitReason#"]);
+            return false;
+        }
+    }
+    return true
+}
+
+function OrderExists(visit) {
+    var p = DB.Current.Document.Order.SelectBy("Visit", visit.Id).First();
+    if (p == null && Variables["workflow"]["name"] == "ScheduledVisit")
+        return false;
+    else
+        return true;
 }
 
 function RolbackVisitHandler(answ, visit) {
@@ -816,8 +853,8 @@ function HasCoordinates(visitPlans) {
     return false;
 }
 
-function GetCoordinatesState(visit){
-    if (visit.Lattitude==null && visit.Longitude==null){
+function GetCoordinatesState(visit) {
+    if (visit.Lattitude == null && visit.Longitude == null) {
         return Translate["#setCoords#"];
     }
     else
@@ -1395,7 +1432,7 @@ function GetGroupPath(group) {
     var g = group.Parent;
     var string = "";
     if (g.ToString() != "00000000-0000-0000-0000-000000000000") {
-        string = string + "/" + group.ParentAsObject().Description;
+        string = string + "/ " + group.ParentAsObject().Description;
     }
     return string;
 }

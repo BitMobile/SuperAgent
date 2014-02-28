@@ -1305,8 +1305,18 @@ function GetSKUs(searchText, owner, priceListId) {
             var dif = 100 - Variables["SKUcount"];
 
             if (parseInt(dif) > parseInt(0)) {
+                if (Variables.Exists("brand_filter")) {
+                    var p = Variables["brand_filter"];
+                    var string = "SKUAsObject.Description.Contains(@p1) && SKUAsObject.Owner==@p2 && SKUAsObject.Brand.In(@p3)";
+                    var arr = [searchText, owner, p];
+                }
+                else {
+                    var string = "SKUAsObject.Description.Contains(@p1) && SKUAsObject.Owner==@p2";
+                    var arr = [searchText, owner];
+                }
+
                 var qt = DB.Current.Document.PriceList_Prices.SelectBy("Ref", priceListId)
-                    .Where("SKUAsObject.Description.Contains(@p1) && SKUAsObject.Owner==@p2", [searchText, owner])
+                    .Where(string, arr)
                     .Top(dif)
                     .OrderBy("SKUAsObject.Description");
             }
@@ -1339,6 +1349,15 @@ function GetSKUGroups(searchText) {
     var ow = DB.Current.Catalog.SKU.Select().Distinct("Owner");
     return DB.Current.Catalog.SKUGroup.SelectBy("Id", ow);
 
+}
+
+function GetGroupPath(group) {
+    var g = group.Parent;
+    var string = "";
+    if (g.ToString() != "00000000-0000-0000-0000-000000000000") {
+        string = string "/" + group.ParentAsObject().Description;
+    }
+    return string;
 }
 
 function ClearAndRefresh(p1, p2) {

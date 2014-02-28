@@ -17,7 +17,7 @@
     <c:HorizontalLine/>
 
     <c:HorizontalLayout CssClass="search">
-      
+
       <s:Push Id="filterClass" Value="$Facade.FilterButtonClass()"></s:Push>
       <c:Button Id="btnFilter" CssClass="$filterClass" OnClickAction="$Workflow.DoAction(SetFilter)"></c:Button>
       <c:DockLayout >
@@ -36,9 +36,11 @@
         <s:Push Id="skusByGroup" Value="$Facade.GetSKUs($search,$group.Id,$order.PriceList)"></s:Push>
 
         <s:If Test="$groupIsNotEmpty">
-        <c:HorizontalLayout CssClass ="gridEdit">
+          <s:Push Id="groupPath" Value="$Facade.GetGroupPath($group)"></s:Push>
+          <c:HorizontalLayout CssClass ="gridEdit">
             <c:VerticalLayout>
               <c:TextView Text = "$group.Description" CssClass = "main_row"></c:TextView>
+              <c:TextView Text="$groupPath" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
           </c:HorizontalLayout>
           <c:HorizontalLine CssClass="editLine"/>
@@ -61,7 +63,7 @@
           </s:Iterator>
 
         </s:If>
-        
+
       </s:Iterator>
 
     </c:ScrollView>

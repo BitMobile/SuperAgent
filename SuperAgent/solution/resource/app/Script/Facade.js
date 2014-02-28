@@ -802,19 +802,33 @@ function VisitIsChecked(c) {
 
     var visit = Variables["workflow"]["visit"];
     if (Variables["workflow"]["name"] == "ScheduledVisit") {
-        var coordControl = DB.Current.Catalog.MobileApplicationSettings.SelectBy("Description", "PlVisitCoordControl");
-        if (coordControl && visit.Lattitude == null && visit.Longitude == null) {
+        var coordControl = DB.Current.Catalog.MobileApplicationSettings.SelectBy("Description", "PlVisitCoordControl").First();
+        if (coordControl == null)
+            var s = false;
+        else
+            var s = coordControl.Use;
+        if (s && visit.Lattitude == null && visit.Longitude == null) {
             Dialog.Question(Translate["#impossibleToCreateVisit#"], RolbackVisitHandler, visit);
             return false;
         }
         //var order = DB.Current.Document.Order.SelectBy("Visit", visit.Id).First();
+        var orderFillCheck = DB.Current.Catalog.MobileApplicationSettings.SelectBy("Description", "NoOrderReason").First();
+        if (orderFillCheck == null)
+            var or = false;
+        else
+            var or = coordControl.Use;
         var r = visit.ReasonForNotOfTakingOrder;
-        if (c == 0 && r.ToString() == "00000000-0000-0000-0000-000000000000") {
+        if (c == 0 && r.ToString() == "00000000-0000-0000-0000-000000000000" && or) {
             Dialog.Message(Translate["#fillNoOrderReason#"]);
             return false;
         }
     }
-    if (Variables["workflow"]["name"] == "UnscheduledVisit") {
+    var visitFillCheck = DB.Current.Catalog.MobileApplicationSettings.SelectBy("Description", "UnscheduledVisitReason").First();
+    if (visitFillCheck == null)
+        var visCh = false;
+    else
+        var visCh = visitFillCheck.Use;
+    if (Variables["workflow"]["name"] == "UnscheduledVisit" && visCh) {
         var v = visit.ReasonForVisit;
         if (v.ToString() == "00000000-0000-0000-0000-000000000000") {
             Dialog.Message(Translate["#fillInVisitReason#"]);

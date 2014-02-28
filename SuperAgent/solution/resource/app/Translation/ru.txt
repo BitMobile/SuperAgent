@@ -87,7 +87,9 @@ countPrice	Пересчитать цену
 address		Адрес
 description	Наименование
 coordinatesAreSet	Координаты установлены
-setCoordinates	Установить координаты торговой точки по текущему расположению?
+setVisitCoordinates		Повторить попытку установить координаты?
+setCoords	Установить координаты
+setCoordinates	Установить координаты по текущему расположению?
 location	Установить координаты
 locationSetFailed	Не удалось получить координаты. Повторить?
 saveChanges	Сохранить изменения?
@@ -120,3 +122,4 @@ filter	Фильтр
 clearFilter		Очистить фильтр?
 groups	Группы
 brands	Бренды
+impossibleToCreateVisit		Невозможно создать планоывй визит пока не записаны координаты. Отменить создание визита?

@@ -774,19 +774,31 @@ function CheckEmtySKUAndForward(outlet, visit) {
 }
 
 function CheckAndCommit() {
-    //set time of visit
-    Variables["workflow"]["visit"].EndTime = DateTime.Now;
+    var coordControl = DB.Current.Catalog.MobileApplicationSettings.SelectBy("Description", "PlVisitCoordControl");
+    var visit = Variables["workflow"]["visit"];
+    if (Variables["workflow"]["name"] == "ScheduledVisit" && coordControl && visit.Lattitude == null && visit.Longitude == null)
+        Dialog.Question(Translate["#impossibleToCreateVisit#"], RolbackVisitHandler, visit);
+    else {
+        //set time of visit
+        Variables["workflow"]["visit"].EndTime = DateTime.Now;
 
-    //check empty order
-    var order = Variables["workflow"]["order"];
-    var c = CountEntities("Document", "Order_SKUs", order.Id, "Ref");
-    if (c == 0)
-        DB.Current.Document.Order.Delete(order);
+        //check empty order
+        var order = Variables["workflow"]["order"];
+        var c = CountEntities("Document", "Order_SKUs", order.Id, "Ref");
+        if (c == 0)
+            DB.Current.Document.Order.Delete(order);
 
-    //TODO:check empty encashment
+        //TODO:check empty encashment
 
-    //commit
-    Workflow.Commit();
+        //commit
+        Workflow.Commit();
+    }
+}
+
+function RolbackVisitHandler(answ, visit) {
+    if (answ == DialogResult.Yes) {
+        Workflow.Rollback();
+    }
 }
 
 function HasCoordinates(visitPlans) {
@@ -803,6 +815,34 @@ function HasCoordinates(visitPlans) {
 
     return false;
 }
+
+function GetCoordinatesState(visit){
+    if (visit.Lattitude==null && visit.Longitude==null){
+        return Translate["#setCoords#"];
+    }
+    else
+        return Translate["#coordinatesAreSet#"];
+}
+
+function SetCoordinatesHandler(visit) {
+    if (visit.Lattitude == null && visit.Longitude == null) {
+        Dialog.Question(Translate["#setVisitCoordinates#"], TotalCoordinatesHandler, visit);
+    }
+}
+
+function TotalCoordinatesHandler(answ, visit) {
+    if (answ == DialogResult.Yes) {
+        var location = GPS.CurrentLocation;
+        if (location.NotEmpty) {
+            visit.Lattitude = location.Latitude;
+            visit.Longitude = location.Longitude;
+            Variables["coordStateText"].Text = Translate["#coordinatesAreSet#"];
+        }
+        else
+            Variables["coordStateText"].Text = Translate["#setCoords#"];
+    }
+}
+
 
 //------------------------------UnscheduledVisit--------------
 
@@ -1355,7 +1395,7 @@ function GetGroupPath(group) {
     var g = group.Parent;
     var string = "";
     if (g.ToString() != "00000000-0000-0000-0000-000000000000") {
-        string = string "/" + group.ParentAsObject().Description;
+        string = string + "/" + group.ParentAsObject().Description;
     }
     return string;
 }

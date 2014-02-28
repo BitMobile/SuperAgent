@@ -87,6 +87,9 @@ countPrice	Count price
 address		Address
 description	Description
 coordinatesAreSet	Coordinates Are Set
+noCoordinates	Coordinates aren't set
+setVisitCoordinates		Retry to set ciirdinates?
+setCoords	Set coordinates
 setCoordinates	Set outlet coordinates by current location?
 location	Set coordinates
 locationSetFailed	Location set is failed. Repeat?
@@ -120,3 +123,4 @@ filter	Filter
 clearFilter		clearFilter
 groups	Groups
 brands	Brands
+impossibleToCreateVisit	Impossible to create plan visit untill coordinates aren't set. Rollback visit?

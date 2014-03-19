@@ -18,7 +18,7 @@
 
     <c:DockLayout CssClass="top_navigator">
       <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
-      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($workflow.order)"/>
+      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CommentOrder($workflow.name, $items)"/>
       <c:TextView Text="#order#" />
     </c:DockLayout>
     <c:HorizontalLine/>

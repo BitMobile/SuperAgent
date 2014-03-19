@@ -1094,6 +1094,23 @@ function GetFeatureDescr(feature) {
         return (", " + feature.Description);
 }
 
+function CommentOrder(wflowName, items) {
+    //if (wflowName != "Order") {
+    //    if (items
+    //}
+    //else
+    //    Workflow.Action("");
+    if (parseInt(items.Count()) == parseInt(0)) {
+        if (wflowName == "Order")
+            Workflow.Rollback();
+        else
+            Workflow.Action("SkipCommentary",[]);
+    }
+    else {
+        Workflow.Action("Forward",[]);
+    }
+}
+
 function SetDeliveryDate(order, attrName) {
     SetDateTime(order, attrName);
     //Workflow.Refresh([order]);

@@ -19,8 +19,10 @@ function OnWorkflowStart(name) {
 }
 
 function OnWorkflowForward(name, lastStep, nextStep, parameters) {
-    if (lastStep == "Order" && nextStep == "EditSKU")
-        Variables.Add("NotARefresh", true);
+    //Dialog.Debug(String.Format("last: {0}, next: {1}", lastStep, nextStep));
+    if (lastStep == "Order" && nextStep == "EditSKU") {
+        Variables.AddGlobal("AlreadyAdded", true);
+    }
 }
 
 function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
@@ -99,11 +101,8 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 }
 
 function OnWorkflowBack(name, lastStep, nextStep) {
-
     if (lastStep == "PriceLists" && nextStep == "OrderInfo")
         ReviseSKUs();
-
-
 }
 
 function OnWorkflowFinish(name, reason) {

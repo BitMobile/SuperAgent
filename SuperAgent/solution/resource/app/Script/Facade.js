@@ -1094,6 +1094,7 @@ function GetFeatureDescr(feature) {
         return (", " + feature.Description);
 }
 
+
 function CommentOrder(wflowName, items) {
     //if (wflowName != "Order") {
     //    if (items
@@ -1235,6 +1236,8 @@ function ItemDialogHandler(answ, firstItem) {
             var ch = false;
         Variables["orderitem"].Qty = parseInt(0);
         Workflow.Refresh([firstItem.SKUAsObject(), firstItem.Price, firstItem, firstItem.Discount, "NotShow", ch]);
+        Variables.AddGlobal("AlreadyAdded", true);
+        Dialog.Debug("added");
     }
 
 }
@@ -1358,6 +1361,17 @@ function CalculateSKUAndForward(outlet, orderitem) {
     Workflow.Forward([outlet]);
 }
 
+function DeleteifNewItemAndBack() {
+    if (Variables.Exists("AlreadyAdded") == false) {
+        Dialog.Debug("delete");
+        var e = Variables["orderitem"];
+        DB.Current.Document.Order_SKUs.Delete(e);
+    }
+    else
+        Dialog.Debug("2");
+    Variables.Remove("AlreadyAdded");
+    Workflow.Back();
+}
 //----------------------------GetSKUs-------------------------
 
 

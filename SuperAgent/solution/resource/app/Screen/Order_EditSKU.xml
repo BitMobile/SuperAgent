@@ -19,7 +19,7 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Facade.DeleteAndBack($orderitem, Document, Order_SKUs, null)"/>
+      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Facade.DeleteifNewItemAndBack()"/>
       <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CalculateSKUAndForward($order.OutletAsObject, $orderitem)"/>
       <c:TextView Text="#edit#" />
     </c:DockLayout>

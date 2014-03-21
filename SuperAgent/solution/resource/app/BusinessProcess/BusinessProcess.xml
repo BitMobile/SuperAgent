@@ -102,6 +102,7 @@
     <bp:Step Name="AddSKU" Screen="Order_SKUs.xml">
       <bp:Action Name="SetFilter" NextStep="Filters"></bp:Action>
       <bp:Action Name="SelectSKU" NextStep="EditSKU"></bp:Action>
+      <bp:Action Name="Forward" NextStep="Order"></bp:Action>
     </bp:Step>
 
     <bp:Step Name="Filters" Screen="Filters.xml">
@@ -109,7 +110,7 @@
     </bp:Step>
 
     <bp:Step Name="EditSKU" Screen="Order_EditSKU.xml">
-      <bp:Action Name="Forward" NextStep="Order"></bp:Action>
+      <bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>
     </bp:Step>
 
     <bp:Step Name="PriceLists" Screen="ListChoice.xml">
@@ -206,6 +207,7 @@
     <bp:Step Name="AddSKU" Screen="Order_SKUs.xml">
       <bp:Action Name="SetFilter" NextStep="Filters"></bp:Action>
       <bp:Action Name="SelectSKU" NextStep="EditSKU"></bp:Action>
+      <bp:Action Name="Forward" NextStep="Order"></bp:Action>
     </bp:Step>
 
     <bp:Step Name="Filters" Screen="Filters.xml">
@@ -213,7 +215,7 @@
     </bp:Step>
 
     <bp:Step Name="EditSKU" Screen="Order_EditSKU.xml">
-      <bp:Action Name="Forward" NextStep="Order"></bp:Action>
+      <bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>
     </bp:Step>
 
     <bp:Step Name="PriceLists" Screen="ListChoice.xml">
@@ -288,6 +290,7 @@
     <bp:Step Name="AddSKU" Screen="Order_SKUs.xml">
       <bp:Action Name="SetFilter" NextStep="Filters"></bp:Action>
       <bp:Action Name="SelectSKU" NextStep="EditSKU"></bp:Action>
+      <bp:Action Name="Forward" NextStep="Order"></bp:Action>
     </bp:Step>
 
     <bp:Step Name="Filters" Screen="Filters.xml">
@@ -295,7 +298,7 @@
     </bp:Step>
     
     <bp:Step Name="EditSKU" Screen="Order_EditSKU.xml">
-      <bp:Action Name="Forward" NextStep="Order"></bp:Action>
+      <bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>
     </bp:Step>
 
     <bp:Step Name="OrderInfo" Screen="Order_Info.xml">

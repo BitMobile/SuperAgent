@@ -1864,13 +1864,11 @@ function ShowDialog(v1) {
 
 function Sync() {
 
-    DB.Sync(SyncCallback);
+    DB.Sync();
 }
 
-function SyncCallback() {
-    if (DB.LastError == null) {
-        FileSystem.UploadPrivate(UploadPrivateCallback);
-    }
+function SyncFTP() {
+    FileSystem.UploadPrivate(UploadPrivateCallback);
 }
 
 function UploadPrivateCallback(args) {

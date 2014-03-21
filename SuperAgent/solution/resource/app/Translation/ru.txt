@@ -8,6 +8,7 @@ targets		Цели
 target		Цель
 settings	Настройки
 sync		Обновить
+syncPhoto	Обновить фоторграфии
 search		Поиск
 outlet		Торговая точка
 outlet_class	Класс торговой точки

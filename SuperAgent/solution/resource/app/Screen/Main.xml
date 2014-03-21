@@ -28,14 +28,15 @@
 
       <c:HorizontalLayout>
         <c:Button Id="btnDistr" CssClass="btn_distr" OnClickAction="$Workflow.DoAction(Distr)"/>
-        <c:Button Id="btnSettings" CssClass="btn_settings"/>
+        <c:HorizontalLayout Id="btnSettings" CssClass="btn_settings" OnClickAction="$Facade.SyncFTP()">
+        </c:HorizontalLayout>
         <c:HorizontalLayout Id="btnSync" CssClass="btn_sync" OnClickAction="$Facade.Sync()">
           <c:Indicator/>
         </c:HorizontalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLayout CssClass="title">
         <c:TextView Text="#stock#"/>
-        <c:TextView Text="#settings#"/>
+        <c:TextView Text="#syncPhoto#"/>
         <c:TextView Text="#sync#"/>
       </c:HorizontalLayout>
     </c:VerticalLayout>

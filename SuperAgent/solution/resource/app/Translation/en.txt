@@ -8,6 +8,7 @@ targets		Targets
 target		Target
 settings	Settings
 sync		Sync
+syncPhoto	Sync photo
 search		Search
 outlet		Outlet
 outlet_class	Outlet class

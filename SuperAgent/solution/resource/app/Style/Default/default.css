@@ -335,6 +335,22 @@ WebMapGoogle {
                 font: 60% Arial;
             }
 
+            .grid hl vl hl left_description_row {
+                width: 70%;
+                height: 100%;
+                white-space: nowrap;
+                font: 60% Arial;
+                color: #b2749b;
+            }
+
+            .grid hl vl hl right_description_row {
+                width: 30%;
+                height: 100%;
+                white-space: nowrap;
+                font: 60% Arial;
+                color: #b2749b;
+            }
+
         .grid hl half_width {
             width: 45%;
         }

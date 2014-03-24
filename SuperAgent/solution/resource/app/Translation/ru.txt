@@ -130,3 +130,4 @@ fillNoOrderReason	 Причина отсутствия заказа должна
 reasonForEmptyOrder	Причина отсутствия заказа
 fillInVisitReason	Причина визита должна быть заполнена
 visitReason	Причина визита
+debt	Долг

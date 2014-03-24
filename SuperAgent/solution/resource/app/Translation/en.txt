@@ -131,3 +131,4 @@ fillNoOrderReason	Reason for not taking the order should be filled.
 reasonForEmptyOrder	Reason for not taking the order
 fillInVisitReason	Reason of visit should be filled
 visitReason	Visit reason
+debt	Debt

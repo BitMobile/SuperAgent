@@ -26,22 +26,48 @@
 
     <c:HorizontalLine/>
 
+    <s:If Test="$workflow.name=='Outlets'">
+      <c:VerticalLayout Id="NewOutlet" CssClass="header">
+        <c:VerticalLayout  CssClass ="grid">
+          <c:HorizontalLayout OnEvent="Forward" OnClickAction="$Facade.CreateAndForward()">
+            <c:VerticalLayout>
+              <c:TextView Text="#newOutlet#" CssClass="caption_row"></c:TextView>
+            </c:VerticalLayout>
+            <c:Image CssClass="add_img"/>
+          </c:HorizontalLayout>
+        </c:VerticalLayout>
+      </c:VerticalLayout>
+
+      <c:HorizontalLine/>
+    </s:If>
+
     <c:ScrollView Id="grScrollView" CssClass="grid">
 
       <s:Iterator Id="outlet" Value="$outlets">
+        <s:Push Id="debt" Value="$Facade.GetDebt($outlet.Id)"></s:Push>
 
         <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$outlet)">
           <s:If Test="$outlet.ConfirmationStatusAsObject.Description == 'New'">
             <c:VerticalLayout CssClass="blue_mark"/>
             <c:VerticalLayout CssClass="clipped">
               <c:TextView Text="$outlet.Description" CssClass="main_row"></c:TextView>
-              <c:TextView Text="$outlet.Address" CssClass="description_row"></c:TextView>
+              <c:HorizontalLayout>
+                <c:TextView Text="$outlet.Address" CssClass="left_description_row"></c:TextView>
+                <s:If Test="$debt!=0">
+                  <c:TextView Text="#debt#: {$debt}" CssClass="right_description_row"></c:TextView>
+                </s:If>
+              </c:HorizontalLayout>
             </c:VerticalLayout>
           </s:If>
           <s:Else>
             <c:VerticalLayout>
               <c:TextView Text="$outlet.Description" CssClass="main_row"></c:TextView>
-              <c:TextView Text="$outlet.Address" CssClass="description_row"></c:TextView>
+              <c:HorizontalLayout>
+                <c:TextView Text="$outlet.Address" CssClass="left_description_row"></c:TextView>
+                <s:If Test="$debt!=0">
+                  <c:TextView Text="#debt#: {$debt}" CssClass="right_description_row"></c:TextView>
+                </s:If>
+              </c:HorizontalLayout>
             </c:VerticalLayout>
           </s:Else>
           <c:Image/>

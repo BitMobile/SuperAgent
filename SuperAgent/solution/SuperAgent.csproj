@@ -125,9 +125,6 @@
     <Content Include="resource\app\Screen\Visit_Total.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="resource\app\Screen\Outlets_Outlets.xml">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="resource\app\Screen\Filters.xml" />
     <Content Include="resource\app\Screen\Order_Info.xml">
       <SubType>Designer</SubType>

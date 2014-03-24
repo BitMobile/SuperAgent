@@ -258,6 +258,11 @@ function GetOutlets(searchText) {
     }
 }
 
+function GetDebt(outletId) {
+    var byOutlets = DB.Current.Document.AccountReceivable.SelectBy("Outlet", outletId).Distinct("Id");
+    return DB.Current.Document.AccountReceivable_ReceivableDocuments.SelectBy("Ref", byOutlets).Sum("DocumentSum");
+}
+
 function CreateOutletIfNotExist(outlet) {
     if (outlet == null) {
         var p = DB.Create("Catalog.Outlet");

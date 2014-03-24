@@ -241,7 +241,7 @@
 
   <bp:Workflow Name="Outlets">
 
-    <bp:Step Name="Outlets" Screen="Outlets_Outlets.xml">
+    <bp:Step Name="Outlets" Screen="Outlets.xml">
       <bp:Action Name="Select" NextStep="Outlet"></bp:Action>
       <bp:Action Name="Create" NextStep="CreateOutlet"></bp:Action>
     </bp:Step>

@@ -96,6 +96,19 @@
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
+      <c:HorizontalLayout CssClass="44">
+        <s:Push Id="historyItems" Value="$Facade.GetItemHistory($sku, $order.Id)"></s:Push>
+        <s:Iterator Id="historyItem" Value="$historyItems">
+          <c:VerticalLayout>
+            <c:TextView Text="#quantity#"></c:TextView>
+            <c:TextView Text="#date#"></c:TextView>
+            <c:TextView Text="$historyItem.Qty" CssClass="bold_text"></c:TextView>
+            <c:TextView Text="$historyItem.RefAsObject.Date" CssClass="bold_text"></c:TextView>
+          </c:VerticalLayout>
+        </s:Iterator>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
 
 
       <c:HorizontalLayout CssClass="header_edit_block">

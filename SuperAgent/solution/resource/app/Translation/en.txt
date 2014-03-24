@@ -41,6 +41,7 @@ task		Task
 description	Description
 result		Result
 plandate	Plan date
+date		Date
 distributor	Distributor
 outletType	Outlet type
 outletClass	Outlet class

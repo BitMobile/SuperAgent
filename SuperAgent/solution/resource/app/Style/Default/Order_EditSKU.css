@@ -42,6 +42,35 @@
     width: 50%;
 }
 
+
+.44 vl{
+    width: 25%;
+    margin-top: 0%;
+    horizontal-align: central;
+    padding-left: 0%;
+}
+
+    .44 vl TextView{
+        width: 100%;
+        height: 23%;
+        margin-top: 2%;
+        white-space: normal;
+        font: 80% Arial;
+        color: #b2749b;
+        text-align: center;
+}
+
+    
+        .bold_text{
+        width: 100%;
+        height: 23%;
+        margin-top: 2%;
+        white-space: normal;
+        font: 80% Arial;
+        color: #444444;
+        text-align: center;
+}
+
 .header {
     background-color: #dbd7e1;
     

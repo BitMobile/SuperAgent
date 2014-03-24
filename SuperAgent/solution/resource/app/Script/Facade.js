@@ -1118,8 +1118,13 @@ function SetDeliveryDate(order, attrName) {
 }
 
 //-----------------------OrderItem-------------------
+function GetItemHistory(sku, orderId) {
+    //var coll = DB.Current.Document.Order_SKUs.SelectBy("SKU", sku.Id).OrderBy("RefAsObject.Date").Top(5).Count();
+    //for (var i in r) {
 
-
+    //}
+    return DB.Current.Document.Order_SKUs.SelectBy("SKU", sku.Id).Where("Ref != @p1", [orderId]).Top(4);
+}
 
 function CreateOrderItemIfNotExist(orderId, sku, orderitem, price, features) {
 
@@ -1237,7 +1242,6 @@ function ItemDialogHandler(answ, firstItem) {
         Variables["orderitem"].Qty = parseInt(0);
         Workflow.Refresh([firstItem.SKUAsObject(), firstItem.Price, firstItem, firstItem.Discount, "NotShow", ch]);
         Variables.AddGlobal("AlreadyAdded", true);
-        Dialog.Debug("added");
     }
 
 }
@@ -1363,12 +1367,10 @@ function CalculateSKUAndForward(outlet, orderitem) {
 
 function DeleteifNewItemAndBack() {
     if (Variables.Exists("AlreadyAdded") == false) {
-        Dialog.Debug("delete");
         var e = Variables["orderitem"];
         DB.Current.Document.Order_SKUs.Delete(e);
     }
     else
-        Dialog.Debug("2");
     Variables.Remove("AlreadyAdded");
     Workflow.Back();
 }

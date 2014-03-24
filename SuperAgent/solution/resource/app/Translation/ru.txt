@@ -41,6 +41,7 @@ task		Задача
 description	Наименование
 result		Результат
 plandate	Плановый срок
+date		Дата
 distributor	Дистрибьютор
 outletType	Тип торговой точки
 outletClass	Класс торговой точки

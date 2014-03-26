@@ -295,9 +295,39 @@ function CreateAndForward() {
     Workflow.Action("Create", parameters);
 }
 
+function CoordsChecked() {
+    if (Variables["workflow"]["name"] == "ScheduledVisit") {
+        var visit = Variables["workflow"]["visit"];
+        var coordControl = DB.Current.Catalog.MobileApplicationSettings.SelectBy("Description", "PlVisitCoordControl").First();
+        if (coordControl == null)
+            var s = false;
+        else
+            var s = coordControl.Use;
+        if (s && visit.Lattitude == null && visit.Longitude == null) {
+            Dialog.Question(Translate["#impossibleToCreateVisit#"], VisitCoordsHandler, visit);
+            return false;
+        }
+    }
+    return true;
+}
 
+function VisitCoordsHandler(answ, visit) {
+    if (answ == DialogResult.Yes) {
+        var location = GPS.CurrentLocation;
+        if (location.NotEmpty) {
+            visit.Lattitude = location.Latitude;
+            visit.Longitude = location.Longitude;
+            Dialog.Message("#coordinatesAreSet#");            
+        }
+        else
+            NoLocationHandler(VisitCoordsHandler);
+    }
+}
 
 function CheckNotNullAndCommit(outlet) {
+
+    var c = CoordsChecked();
+
     if (Variables["workflow"]["name"] == "Outlets") {
         var attributes = ["outletDescr", "outletAddress", "outletClass", "outletType", "outletDistr"];//"Description", "Address", "Type", "Class", "Distributor"];
         var areNulls = false;
@@ -313,7 +343,8 @@ function CheckNotNullAndCommit(outlet) {
             Dialog.Question("#saveChanges#", ChangeHandler);
     }
     else {
-        CheckEmptyOutletFields(outlet);
+        if (c)
+            CheckEmptyOutletFields(outlet);
     }
 
 }
@@ -409,12 +440,12 @@ function LocationDialogHandler(answ) {
             Workflow.Refresh(arg);
         }
         else
-            NoLocationHandler();
+            NoLocationHandler(LocationDialogHandler);
     }
 }
 
-function NoLocationHandler() {
-    Dialog.Question("#locationSetFailed#", LocationDialogHandler);
+function NoLocationHandler(descriptor) {
+    Dialog.Question("#locationSetFailed#", descriptor);
 }
 
 function GetOutletParameters() {
@@ -1114,10 +1145,10 @@ function CommentOrder(wflowName, items) {
         if (wflowName == "Order")
             Workflow.Rollback();
         else
-            Workflow.Action("SkipCommentary",[]);
+            Workflow.Action("SkipCommentary", []);
     }
     else {
-        Workflow.Action("Forward",[]);
+        Workflow.Action("Forward", []);
     }
 }
 
@@ -1380,7 +1411,7 @@ function DeleteifNewItemAndBack() {
         DB.Current.Document.Order_SKUs.Delete(e);
     }
     else
-    Variables.Remove("AlreadyAdded");
+        Variables.Remove("AlreadyAdded");
     Workflow.Back();
 }
 //----------------------------GetSKUs-------------------------
@@ -1488,7 +1519,7 @@ function GetGroupPath(group) {
     var g = group.Parent;
     var string = "";
     if (g.ToString() != "00000000-0000-0000-0000-000000000000" && group.ParentAsObject() != null) {
-        
+
         string = string + "/ " + group.ParentAsObject().Description;
     }
     return string;

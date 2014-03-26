@@ -8,19 +8,23 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
       <c:Button Id="btnForward" CssClass="btn_grey_forward" OnEvent="Forward"/>
       <c:TextView Text="#stock#" />
     </c:DockLayout>
     <c:HorizontalLine/>
 
     <c:HorizontalLayout CssClass="search">
+      <s:Push Id="filterClass" Value="$Facade.FilterButtonClass()"></s:Push>
+      <c:Button Id="btnFilter" CssClass="$filterClass" OnClickAction="$Workflow.DoAction(SetFilter)"></c:Button>
       <c:DockLayout >
         <c:Image />
         <c:EditText Id="edtSearch" Text="$search"></c:EditText>
       </c:DockLayout>
-      <c:Button Id="btnSearch" Text="#search#" OnClickAction="$Workflow.DoRefresh($edtSearch.Text)"></c:Button>
+      <c:Button Id="btnSearch" Text="#search#" OnClickAction="$Facade.ClearAndRefresh($param1,$edtSearch.Text)"></c:Button>
+
     </c:HorizontalLayout>
+
     <c:HorizontalLine/>
 
     <c:ScrollView Id="grScrollView" CssClass="grid">
@@ -28,7 +32,7 @@
       <s:Iterator Id="group" Value="$groups">
         <s:Push Id="skusByGroup" Value="$Facade.GetSKUs($search,$group.Id, null)"></s:Push>
         <s:If Test="$groupIsNotEmpty">
-        <c:HorizontalLayout CssClass ="blockEdit">
+          <c:HorizontalLayout CssClass ="blockEdit">
             <c:VerticalLayout>
               <c:TextView Text = "$group.Description" CssClass = "main_row"></c:TextView>
             </c:VerticalLayout>
@@ -38,16 +42,16 @@
 
         <s:Iterator Id="sku" Value="$skusByGroup">
 
-            <c:HorizontalLayout Id="grSKU" OnClickAction="$Workflow.DoAction(Select, $sku)">
-              <c:VerticalLayout>
-                <c:TextView Text="$sku.Description" CssClass="main_row"></c:TextView>
-                <c:TextView Text="{$sku.CommonStock} {$sku.BaseUnitAsObject.Description}" CssClass="description_row"></c:TextView>
-              </c:VerticalLayout>
-              <c:Image/>
-            </c:HorizontalLayout>
-            <c:HorizontalLine/>
+          <c:HorizontalLayout Id="grSKU" OnClickAction="$Workflow.DoAction(Select, $sku)">
+            <c:VerticalLayout>
+              <c:TextView Text="$sku.Description" CssClass="main_row"></c:TextView>
+              <c:TextView Text="{$sku.CommonStock} {$sku.BaseUnitAsObject.Description}" CssClass="description_row"></c:TextView>
+            </c:VerticalLayout>
+            <c:Image/>
+          </c:HorizontalLayout>
+          <c:HorizontalLine/>
 
-          </s:Iterator>
+        </s:Iterator>
       </s:Iterator>
 
     </c:ScrollView>

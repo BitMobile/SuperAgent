@@ -93,7 +93,7 @@ noCoordinates	Coordinates aren't set
 setVisitCoordinates		Retry to set ciirdinates?
 setCoords	Set coordinates
 setCoordinates	Set outlet coordinates by current location?
-location	Set coordinates
+location	Set outlet location
 locationSetFailed	Location set is failed. Repeat?
 saveChanges	Save changes?
 map			Map
@@ -126,7 +126,7 @@ clearFilter		clearFilter
 groups	Groups
 brands	Brands
 brand	Brand
-impossibleToCreateVisit	Impossible to create plan visit untill coordinates aren't set. Rollback visit?
+impossibleToCreateVisit	Impossible to create plan visit untill coordinates aren't set. Retry to get location?
 fillNoOrderReason	Reason for not taking the order should be filled.
 reasonForEmptyOrder	Reason for not taking the order
 fillInVisitReason	Reason of visit should be filled

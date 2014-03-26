@@ -821,7 +821,7 @@ function VisitIsChecked(c) {
         if (orderFillCheck == null)
             var or = false;
         else
-            var or = coordControl.Use;
+            var or = orderFillCheck.Use;
         var r = visit.ReasonForNotOfTakingOrder;
         if (c == 0 && r.ToString() == "00000000-0000-0000-0000-000000000000" && or) {
             Dialog.Message(Translate["#fillNoOrderReason#"]);
@@ -842,6 +842,8 @@ function VisitIsChecked(c) {
     }
     return true
 }
+
+
 
 function OrderExists(visit) {
     var p = DB.Current.Document.Order.SelectBy("Visit", visit.Id).First();
@@ -894,8 +896,10 @@ function TotalCoordinatesHandler(answ, visit) {
             visit.Longitude = location.Longitude;
             Variables["coordStateText"].Text = Translate["#coordinatesAreSet#"];
         }
-        else
+        else {
+            Dialog.Message(Translate["#noCoordinates#"]);
             Variables["coordStateText"].Text = Translate["#setCoords#"];
+        }
     }
 }
 
@@ -1128,7 +1132,7 @@ function GetItemHistory(sku, orderId) {
     //for (var i in r) {
 
     //}
-    return DB.Current.Document.Order_SKUs.SelectBy("SKU", sku.Id).Where("Ref != @p1", [orderId]).Top(4);
+    return DB.Current.Document.Order_SKUs.SelectBy("SKU", sku.Id).Where("Ref != @p1", [orderId]).OrderBy("RefAsObject.Date", true).Top(4);
 }
 
 function CreateOrderItemIfNotExist(orderId, sku, orderitem, price, features) {
@@ -1483,7 +1487,8 @@ function GetSKUGroups(searchText) {
 function GetGroupPath(group) {
     var g = group.Parent;
     var string = "";
-    if (g.ToString() != "00000000-0000-0000-0000-000000000000") {
+    if (g.ToString() != "00000000-0000-0000-0000-000000000000" && group.ParentAsObject() != null) {
+        
         string = string + "/ " + group.ParentAsObject().Description;
     }
     return string;

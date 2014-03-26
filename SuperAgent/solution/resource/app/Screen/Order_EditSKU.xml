@@ -66,7 +66,7 @@
           <c:TextView Text="#price#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
         <c:VerticalLayout>
-          <c:EditText Value="$orderitem.Qty" CssClass="main_row" Keyboard="numeric"></c:EditText>
+          <c:EditText Value="$orderitem.Qty" CssClass="main_row" Keyboard="numeric" AutoFocus="True"></c:EditText>
           <c:TextView Text="#quantity#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
         <c:VerticalLayout OnClickAction="$Facade.ChangeUnit($sku, $orderitem, $discCheckbox.Checked, $price)" CssClass="header">
@@ -96,19 +96,21 @@
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
-      <c:HorizontalLayout CssClass="44">
-        <s:Push Id="historyItems" Value="$Facade.GetItemHistory($sku, $order.Id)"></s:Push>
-        <s:Iterator Id="historyItem" Value="$historyItems">
-          <c:VerticalLayout>
-            <c:TextView Text="#quantity#"></c:TextView>
-            <c:TextView Text="#date#"></c:TextView>
-            <c:TextView Text="$historyItem.Qty" CssClass="bold_text"></c:TextView>
-            <c:TextView Text="$historyItem.RefAsObject.Date" CssClass="bold_text"></c:TextView>
-          </c:VerticalLayout>
-        </s:Iterator>
-      </c:HorizontalLayout>
-      <c:HorizontalLine/>
-
+      <s:Push Id="historyItems" Value="$Facade.GetItemHistory($sku, $order.Id)"></s:Push>
+      <s:Push Id="historyCount" Value="$Facade.CountCollection($historyItems)"></s:Push>
+      <s:If Test="$historyCount != 0">
+        <c:HorizontalLayout CssClass="44">
+          <s:Iterator Id="historyItem" Value="$historyItems">
+            <c:VerticalLayout>
+              <c:TextView Text="#quantity#"></c:TextView>
+              <c:TextView Text="#date#"></c:TextView>
+              <c:TextView Text="$historyItem.Qty" CssClass="bold_text"></c:TextView>
+              <c:TextView Text="$historyItem.RefAsObject.Date" CssClass="bold_text"></c:TextView>
+            </c:VerticalLayout>
+          </s:Iterator>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+      </s:If>
 
 
       <c:HorizontalLayout CssClass="header_edit_block">

@@ -63,10 +63,13 @@
             <c:VerticalLayout>
               <c:TextView Text="$outlet.Description" CssClass="main_row"></c:TextView>
               <c:HorizontalLayout>
-                <c:TextView Text="$outlet.Address" CssClass="left_description_row"></c:TextView>
                 <s:If Test="$debt!=0">
+                  <c:TextView Text="$outlet.Address" CssClass="left_description_row"></c:TextView>
                   <c:TextView Text="#debt#: {$debt}" CssClass="right_description_row"></c:TextView>
                 </s:If>
+                <s:Else>
+                  <c:TextView Text="$outlet.Address" CssClass="description_row"></c:TextView>
+                </s:Else>
               </c:HorizontalLayout>
             </c:VerticalLayout>
           </s:Else>

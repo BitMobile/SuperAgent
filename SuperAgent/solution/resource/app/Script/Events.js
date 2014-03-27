@@ -20,7 +20,7 @@ function OnWorkflowStart(name) {
 
 function OnWorkflowForward(name, lastStep, nextStep, parameters) {
     //Dialog.Debug(String.Format("last: {0}, next: {1}", lastStep, nextStep));
-    if (lastStep == "Order" && nextStep == "EditSKU") {
+    if (lastStep == "Order" && nextStep == "EditSKU" && Variables.Exists("AlreadyAdded") == false) {
         Variables.AddGlobal("AlreadyAdded", true);
     }
 }

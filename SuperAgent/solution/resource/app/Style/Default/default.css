@@ -336,7 +336,7 @@ WebMapGoogle {
             }
 
             .grid hl vl hl left_description_row {
-                width: 70%;
+                width: 65%;
                 height: 100%;
                 white-space: nowrap;
                 font: 60% Arial;
@@ -344,7 +344,7 @@ WebMapGoogle {
             }
 
             .grid hl vl hl right_description_row {
-                width: 30%;
+                width: 35%;
                 height: 100%;
                 white-space: nowrap;
                 font: 60% Arial;

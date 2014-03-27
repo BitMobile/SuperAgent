@@ -26,15 +26,7 @@
           <c:TextView Text="#startTime#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
-      <c:HorizontalLine/>
-
-      <c:HorizontalLayout OnClickAction="$Facade.SetCoordinatesHandler($workflow.visit)">
-        <c:VerticalLayout>
-          <s:Push Id="coordinatesState" Value="$Facade.GetCoordinatesState($workflow.visit)"></s:Push>
-          <c:TextView Id="coordStateText" Text="$coordinatesState" CssClass="caption_row"></c:TextView>
-        </c:VerticalLayout>
-      </c:HorizontalLayout>
-      <c:HorizontalLine/>
+      <c:HorizontalLine/>  
 
       <c:HorizontalLayout>
         <c:VerticalLayout>

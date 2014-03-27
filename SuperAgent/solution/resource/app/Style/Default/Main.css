@@ -99,3 +99,7 @@ Indicator {
 .btn_sync {
     background-image: url(sync.png);
 }
+
+.ftp_sync {
+    background-image: url(ftpSync.png);
+}

@@ -317,7 +317,7 @@ function VisitCoordsHandler(answ, visit) {
         if (location.NotEmpty) {
             visit.Lattitude = location.Latitude;
             visit.Longitude = location.Longitude;
-            Dialog.Message("#coordinatesAreSet#");            
+            Dialog.Message("#coordinatesAreSet#");
         }
         else
             NoLocationHandler(VisitCoordsHandler);
@@ -367,6 +367,7 @@ function ChangeHandler(answ) {
 function UpdateOtletStatus() {
     Variables["outlet"].ConfirmationStatus = DB.Current.Constant.OutletConfirmationStatus.New;
 }
+
 
 //----------------------Schedules visits----------------
 
@@ -1281,7 +1282,8 @@ function ItemDialogHandler(answ, firstItem) {
             var ch = false;
         Variables["orderitem"].Qty = parseInt(0);
         Workflow.Refresh([firstItem.SKUAsObject(), firstItem.Price, firstItem, firstItem.Discount, "NotShow", ch]);
-        Variables.AddGlobal("AlreadyAdded", true);
+        if (Variables.Exists("AlreadyAdded") == false)
+            Variables.AddGlobal("AlreadyAdded", true);
     }
 
 }
@@ -1907,10 +1909,16 @@ function ShowDialog(v1) {
 
 function Sync() {
 
-    DB.Sync();
+    Variables["dbIndicator"].Start();
+    DB.Sync(StopIndicator);
+}
+
+function StopIndicator() {
+    Variables["dbIndicator"].Stop();
 }
 
 function SyncFTP() {
+    Variables["fotoIndicator"].Start();
     FileSystem.UploadPrivate(UploadPrivateCallback);
 }
 
@@ -1920,12 +1928,13 @@ function UploadPrivateCallback(args) {
     }
     else
         FileSystem.HandleLastError();
+    Variables["fotoIndicator"].Stop();
 }
 
 function SyncSharedCallback(args) {
     if (!args.Result) {
         FileSystem.HandleLastError();
-    }
+    }    
 }
 
 

@@ -21,7 +21,7 @@
         <c:Image />
         <c:EditText Id="edtSearch" Text="$search"></c:EditText>
       </c:DockLayout>
-      <c:Button Id="btnSearch" Text="#search#" OnClickAction="$Facade.ClearAndRefresh($param1,$edtSearch.Text)"></c:Button>
+      <c:Button Id="btnSearch" Text="#search#" OnClickAction="$Workflow.DoRefresh($edtSearch.Text)"></c:Button>
 
     </c:HorizontalLayout>
 

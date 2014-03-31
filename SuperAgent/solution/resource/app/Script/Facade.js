@@ -1163,13 +1163,21 @@ function GetItemHistory(sku, order) {
     var byOutlets = DB.Current.Document.Order.SelectBy("Outlet", order.Outlet).Distinct("Id");
     //Dialog.Debug(byOutlets.Count());    
     var hist = DB.Current.Document.Order_SKUs.SelectBy("Ref", byOutlets).Where("Ref != @p1 && SKU == @p2", [order.Id, sku.Id]).OrderBy("RefAsObject.Date", true).Top(4);
-    for (var i in hist) {
-        if (i.Units != sku.BaseUnit) {
-            var mult = DB.Current.Catalog.SKU_Packing.SelectBy("Ref", sku.Id).Where("Pack == @p1", [i.Units]).First();
-            i.Qty = i.Qty * mult.Multiplier;
-        }
-    }
+    //for (var i in hist) {
+    //    if (i.Units != sku.BaseUnit) {
+    //        var mult = DB.Current.Catalog.SKU_Packing.SelectBy("Ref", sku.Id).Where("Pack == @p1", [i.Units]).First();            
+    //    }
+    //}
     return hist;
+}
+
+function GetBaseQty(sku, orderitem) {
+    if (orderitem.Units != sku.BaseUnit) {
+        var mult = DB.Current.Catalog.SKU_Packing.SelectBy("Ref", sku.Id).Where("Pack == @p1", [orderitem.Units]).First();
+        return orderitem.Qty * mult.Multiplier;
+    }
+    else
+        return orderitem.Qty;
 }
 
 function CreateOrderItemIfNotExist(orderId, sku, orderitem, price, features) {

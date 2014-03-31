@@ -106,7 +106,7 @@ SKUWillRevised	Заказ пересчитан
 features	Характеристики
 noPriceLists	Для этой торговой точки нет прайс-листов
 emptyList	Список пуст
-impossibleToDelete	Невозможно удалить, заказ уже в базе
+impossibleToDelete	Невозможно удалить, заказ уже передан в базу
 valueList	Список значений
 deliveryDate	Дата доставки
 enterDateTime	Введите дату и время

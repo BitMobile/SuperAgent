@@ -14,7 +14,7 @@
     <c:ScrollView Id="grScrollView" CssClass="grid">
 
       
-      <s:If Test="$workflow.order.Status == $workflow.new">
+      <s:If Test="$workflow.order.IsNew == True">
 
         <c:HorizontalLayout  OnClickAction="$Facade.SetDeliveryDate($order, DeliveryDate, $workflow.new)">
           <c:VerticalLayout>

@@ -19,14 +19,13 @@
 
     <c:DockLayout CssClass="top_navigator">
       <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
-      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CommentOrder($workflow.name, $items)"/>
+      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CommentOrder($workflow.name, $items, $workflow.order)"/>
       <c:TextView Text="#order#" />
     </c:DockLayout>
     <c:HorizontalLine/>
 
 
-
-    <s:If Test="$workflow.order.Status == $workflow.new">
+    <s:If Test="$workflow.order.IsNew == True">
       <c:VerticalLayout Id="Orderadd" CssClass="header">
         <c:VerticalLayout  CssClass ="grid">
           <c:HorizontalLayout>

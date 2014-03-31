@@ -353,10 +353,12 @@ function ChangeHandler(answ) {
     if (answ == DialogResult.Yes) {
         var outlet = Variables["outlet"];
         UpdateOtletStatus();
-        var territory = DB.Current.Catalog.Territory.Select().First();
-        var to = DB.Create("Catalog.Territory_Outlets");
-        to.Ref = territory.Id;
-        to.Outlet = outlet.Id;
+        if (outlet.IsNew) {
+            var territory = DB.Current.Catalog.Territory.Select().First();
+            var to = DB.Create("Catalog.Territory_Outlets");
+            to.Ref = territory.Id;
+            to.Outlet = outlet.Id;
+        }
         Workflow.Commit();
     }
     else
@@ -1136,21 +1138,37 @@ function GetFeatureDescr(feature) {
 }
 
 
-function CommentOrder(wflowName, items) {
-    //if (wflowName != "Order") {
-    //    if (items
-    //}
-    //else
-    //    Workflow.Action("");
+function CommentOrder(wflowName, items, order) {
     if (parseInt(items.Count()) == parseInt(0)) {
-        if (wflowName == "Order")
-            Workflow.Rollback();
+        if (wflowName == "Order") {
+            DB.Current.Document.Order.Delete(order);
+            Workflow.Commit();
+        }
         else
             Workflow.Action("SkipCommentary", []);
     }
     else {
         Workflow.Action("Forward", []);
     }
+
+    //if (workflowName == "Order") {
+    //    var c = CountEntities("Document", "Order_SKUs", order.Id, "Ref");
+    //    if (c == 0) {
+    //        if (order.IsNew) {
+    //            DB.Current.Document.Order.Delete(order);
+    //            Workflow.Commit();
+    //        }
+    //        else {
+    //            Dialog.Message("#impossibleToDelete#");
+    //            Workflow.Rollback();
+    //        }
+    //    }
+    //    else
+    //        Workflow.Commit();
+    //}
+    //else {
+    //    Workflow.Forward([]);
+    //}
 }
 
 function SetDeliveryDate(order, attrName) {
@@ -1362,24 +1380,10 @@ function DeleteZeroItem(orderitem) {
 
 function CheckOrderAndCommit(order, workflowName) {
 
-    if (workflowName == "Order") {
-        var c = CountEntities("Document", "Order_SKUs", order.Id, "Ref");
-        if (c == 0) {
-            if (order.IsNew) {
-                DB.Current.Document.Order.Delete(order);
-                Workflow.Commit();
-            }
-            else {
-                Dialog.Message("#impossibleToDelete#");
-                Workflow.Rollback();
-            }
-        }
-        else
-            Workflow.Commit();
-    }
-    else {
+    if (workflowName == "Order") 
+        Workflow.Commit();
+    else 
         Workflow.Forward([]);
-    }
 }
 
 
@@ -1934,7 +1938,7 @@ function UploadPrivateCallback(args) {
 function SyncSharedCallback(args) {
     if (!args.Result) {
         FileSystem.HandleLastError();
-    }    
+    }
 }
 
 

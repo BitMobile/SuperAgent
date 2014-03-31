@@ -37,7 +37,6 @@ function GetGreater(val1, val2) {
 }
 
 function CountCollection(collection) {
-    Dialog.Debug(collection);
     return parseInt(collection.Count());
 }
 
@@ -1167,7 +1166,6 @@ function GetItemHistory(sku, order) {
     for (var i in hist) {
         if (i.Units != sku.BaseUnit) {
             var mult = DB.Current.Catalog.SKU_Packing.SelectBy("Ref", sku.Id).Where("Pack == @p1", [i.Units]).First();
-            Dialog.Debug(mult.Multiplier);
             i.Qty = i.Qty * mult.Multiplier;
         }
     }

@@ -109,6 +109,12 @@ function OnWorkflowFinish(name, reason) {
     if (name == "UnscheduledVisit" || name == "ScheduledVisit")
         GPS.StopTracking();
     Variables.Remove("workflow");
+
+    if (Variables.Exists("group_filter"))
+        Variables.Remove("group_filter");
+
+    if (Variables.Exists("brand_filter"))
+        Variables.Remove("brand_filter");
 }
 
 function OnWorkflowPause(name) {

@@ -96,7 +96,7 @@
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
-      <s:Push Id="historyItems" Value="$Facade.GetItemHistory($sku, $order.Id)"></s:Push>
+      <s:Push Id="historyItems" Value="$Facade.GetItemHistory($sku, $order)"></s:Push>
       <s:Push Id="historyCount" Value="$Facade.CountCollection($historyItems)"></s:Push>
       <s:If Test="$historyCount != 0">
         <c:HorizontalLayout CssClass="44">

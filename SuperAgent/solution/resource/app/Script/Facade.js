@@ -37,6 +37,7 @@ function GetGreater(val1, val2) {
 }
 
 function CountCollection(collection) {
+    Dialog.Debug(collection);
     return parseInt(collection.Count());
 }
 
@@ -1151,24 +1152,6 @@ function CommentOrder(wflowName, items, order) {
         Workflow.Action("Forward", []);
     }
 
-    //if (workflowName == "Order") {
-    //    var c = CountEntities("Document", "Order_SKUs", order.Id, "Ref");
-    //    if (c == 0) {
-    //        if (order.IsNew) {
-    //            DB.Current.Document.Order.Delete(order);
-    //            Workflow.Commit();
-    //        }
-    //        else {
-    //            Dialog.Message("#impossibleToDelete#");
-    //            Workflow.Rollback();
-    //        }
-    //    }
-    //    else
-    //        Workflow.Commit();
-    //}
-    //else {
-    //    Workflow.Forward([]);
-    //}
 }
 
 function SetDeliveryDate(order, attrName) {
@@ -1177,12 +1160,18 @@ function SetDeliveryDate(order, attrName) {
 }
 
 //-----------------------OrderItem-------------------
-function GetItemHistory(sku, orderId) {
-    //var coll = DB.Current.Document.Order_SKUs.SelectBy("SKU", sku.Id).OrderBy("RefAsObject.Date").Top(5).Count();
-    //for (var i in r) {
-
-    //}
-    return DB.Current.Document.Order_SKUs.SelectBy("SKU", sku.Id).Where("Ref != @p1", [orderId]).OrderBy("RefAsObject.Date", true).Top(4);
+function GetItemHistory(sku, order) {
+    var byOutlets = DB.Current.Document.Order.SelectBy("Outlet", order.Outlet).Distinct("Id");
+    //Dialog.Debug(byOutlets.Count());    
+    var hist = DB.Current.Document.Order_SKUs.SelectBy("Ref", byOutlets).Where("Ref != @p1 && SKU == @p2", [order.Id, sku.Id]).OrderBy("RefAsObject.Date", true).Top(4);
+    for (var i in hist) {
+        if (i.Units != sku.BaseUnit) {
+            var mult = DB.Current.Catalog.SKU_Packing.SelectBy("Ref", sku.Id).Where("Pack == @p1", [i.Units]).First();
+            Dialog.Debug(mult.Multiplier);
+            i.Qty = i.Qty * mult.Multiplier;
+        }
+    }
+    return hist;
 }
 
 function CreateOrderItemIfNotExist(orderId, sku, orderitem, price, features) {

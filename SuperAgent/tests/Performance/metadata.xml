@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Configuration Version="1.1.5.24" Name="BitCatch">
+<Configuration Version="1.1.5.23" Name="BitCatch">
 	<GlobalParameters/>
 	<Entities>
 		<Entity Schema="Enum" Name="DataStatus">

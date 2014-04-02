@@ -298,7 +298,7 @@ function CreateAndForward() {
 function CoordsChecked() {
     if (Variables["workflow"]["name"] == "ScheduledVisit") {
         var visit = Variables["workflow"]["visit"];
-        var coordControl = DB.Current.Catalog.MobileApplicationSettings.SelectBy("Description", "PlVisitCoordControl").First();
+        var coordControl = DB.Current.Catalog.MobileApplicationSettings.SelectBy("Code", "CoordCtrl").First();
         if (coordControl == null)
             var s = false;
         else
@@ -812,6 +812,22 @@ function CheckEmtySKUAndForward(outlet, visit) {
     Workflow.Forward(p);
 }
 
+function GetOrderControlValue() {
+    var orderFillCheck = DB.Current.Catalog.MobileApplicationSettings.SelectBy("Code", "NOR").First();
+    if (orderFillCheck == null)
+        return false;
+    else
+        return orderFillCheck.Use;
+}
+
+function GetUVRvalue() {
+    var uvr = DB.Current.Catalog.MobileApplicationSettings.SelectBy("Code", "UVR").First();
+    if (uvr == null)
+        return false;
+    else
+        return uvr.Use;
+}
+
 function CheckAndCommit() {
 
     var order = Variables["workflow"]["order"];
@@ -841,7 +857,7 @@ function VisitIsChecked(c) {
 
     var visit = Variables["workflow"]["visit"];
     if (Variables["workflow"]["name"] == "ScheduledVisit") {
-        var coordControl = DB.Current.Catalog.MobileApplicationSettings.SelectBy("Description", "PlVisitCoordControl").First();
+        var coordControl = DB.Current.Catalog.MobileApplicationSettings.SelectBy("Code", "CoordCtrl").First();
         if (coordControl == null)
             var s = false;
         else
@@ -851,7 +867,7 @@ function VisitIsChecked(c) {
             return false;
         }
         //var order = DB.Current.Document.Order.SelectBy("Visit", visit.Id).First();
-        var orderFillCheck = DB.Current.Catalog.MobileApplicationSettings.SelectBy("Description", "NoOrderReason").First();
+        var orderFillCheck = DB.Current.Catalog.MobileApplicationSettings.SelectBy("Code", "NOR").First();
         if (orderFillCheck == null)
             var or = false;
         else
@@ -862,7 +878,7 @@ function VisitIsChecked(c) {
             return false;
         }
     }
-    var visitFillCheck = DB.Current.Catalog.MobileApplicationSettings.SelectBy("Description", "UnscheduledVisitReason").First();
+    var visitFillCheck = DB.Current.Catalog.MobileApplicationSettings.SelectBy("Code", "UVR").First();
     if (visitFillCheck == null)
         var visCh = false;
     else

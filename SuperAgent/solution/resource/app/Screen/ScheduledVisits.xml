@@ -46,11 +46,17 @@
           <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$planOutlet,$planVisit)">
             <s:If Test="$planOutlet.ConfirmationStatusAsObject.Description == 'New'">
               <c:VerticalLayout CssClass="blue_mark"/>
+              <c:VerticalLayout CssClass="clipped">
+                <c:TextView Text="$planOutlet.Description" CssClass="main_row"></c:TextView>
+                <c:TextView Text="$planOutlet.Address" CssClass="description_row"></c:TextView>
+              </c:VerticalLayout>
             </s:If>
-            <c:VerticalLayout>
-              <c:TextView Text="$planOutlet.Description" CssClass="main_row"></c:TextView>
-              <c:TextView Text="$planOutlet.Address" CssClass="description_row"></c:TextView>
-            </c:VerticalLayout>
+            <s:Else>
+              <c:VerticalLayout>
+                <c:TextView Text="$planOutlet.Description" CssClass="main_row"></c:TextView>
+                <c:TextView Text="$planOutlet.Address" CssClass="description_row"></c:TextView>
+              </c:VerticalLayout>
+            </s:Else>
 
             <c:Image/>
 
@@ -63,11 +69,17 @@
           <c:HorizontalLayout>
             <s:If Test="$planOutlet.ConfirmationStatusAsObject.Description == 'New'">
               <c:VerticalLayout CssClass="blue_mark"/>
+              <c:VerticalLayout  CssClass="new_time_mark">
+                <c:TextView Text="$planOutlet.Description" CssClass="main_row"></c:TextView>
+                <c:TextView Text="$planOutlet.Address" CssClass="description_row"></c:TextView>
+              </c:VerticalLayout>
             </s:If>
-            <c:VerticalLayout  CssClass="clipped">
-              <c:TextView Text="$planOutlet.Description" CssClass="main_row"></c:TextView>
-              <c:TextView Text="$planOutlet.Address" CssClass="description_row"></c:TextView>
-            </c:VerticalLayout>
+            <s:Else>
+              <c:VerticalLayout CssClass="time_mark">
+                <c:TextView Text="$planOutlet.Description" CssClass="main_row"></c:TextView>
+                <c:TextView Text="$planOutlet.Address" CssClass="description_row"></c:TextView>
+              </c:VerticalLayout>
+            </s:Else>
 
             <c:TextView Text="$todayVisit.Date.TimeString" CssClass="description_row"></c:TextView>
 

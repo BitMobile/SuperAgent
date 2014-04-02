@@ -1,5 +1,11 @@
-.grid hl clipped {
+.time_mark {
     width: 80%;
+    padding-left: 3%;
+}
+
+.new_time_mark {
+    width: 78%;
+    padding-left: 3%;
 }
 
 .grid hl description_row {

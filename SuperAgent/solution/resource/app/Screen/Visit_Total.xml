@@ -26,7 +26,7 @@
           <c:TextView Text="#startTime#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
-      <c:HorizontalLine/>  
+      <c:HorizontalLine/>
 
       <c:HorizontalLayout>
         <c:VerticalLayout>
@@ -47,36 +47,42 @@
 
       <s:Push Id="scheduledVisit" Value="$Facade.AreEqual(ScheduledVisit, $workflow.name)"></s:Push>
       <s:If Test="$scheduledVisit">
-        <s:If Test="$Facade.OrderExists($workflow.visit)">
-          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(attributesFill, $workflow.visit, ReasonForNotOfTakingOrder, null)">
-            <c:VerticalLayout>
-              <s:If Test="$workflow.visit.ReasonForNotOfTakingOrder==null">
-                <c:TextView Text="?" CssClass="main_row"></c:TextView>
-              </s:If>
-              <s:Else>
-                <c:TextView Text="$workflow.visit.ReasonForNotOfTakingOrderAsObject.Description" CssClass="main_row"></c:TextView>
-              </s:Else>
-              <c:TextView Text="#reasonForEmptyOrder#" CssClass="description_row"></c:TextView>
-            </c:VerticalLayout>
-          </c:HorizontalLayout>
-          <c:HorizontalLine/>
+        <s:Push Id="NORIsSwichedOn" Value="$Facade.GetOrderControlValue()"></s:Push>
+        <s:If Test="$NORIsSwichedOn">
+          <s:If Test="$Facade.OrderExists($workflow.visit)">
+            <c:HorizontalLayout OnClickAction="$Workflow.DoAction(attributesFill, $workflow.visit, ReasonForNotOfTakingOrder, null)">
+              <c:VerticalLayout>
+                <s:If Test="$workflow.visit.ReasonForNotOfTakingOrder==null">
+                  <c:TextView Text="?" CssClass="main_row"></c:TextView>
+                </s:If>
+                <s:Else>
+                  <c:TextView Text="$workflow.visit.ReasonForNotOfTakingOrderAsObject.Description" CssClass="main_row"></c:TextView>
+                </s:Else>
+                <c:TextView Text="#reasonForEmptyOrder#" CssClass="description_row"></c:TextView>
+              </c:VerticalLayout>
+            </c:HorizontalLayout>
+            <c:HorizontalLine/>
+          </s:If>
         </s:If>
       </s:If>
 
       <s:Push Id="unscheduledVisit" Value="$Facade.AreEqual(UnscheduledVisit, $workflow.name)"></s:Push>
       <s:If Test="$unscheduledVisit">
-        <c:HorizontalLayout OnClickAction="$Workflow.DoAction(attributesFill, $workflow.visit, ReasonForVisit, null)">
-          <c:VerticalLayout>
-            <s:If Test="$workflow.visit.ReasonForVisit==null">
-              <c:TextView Text="?" CssClass="main_row"></c:TextView>
-            </s:If>
-            <s:Else>
-              <c:TextView Text="$workflow.visit.ReasonForVisitAsObject.Description" CssClass="main_row"></c:TextView>
-            </s:Else>
-            <c:TextView Text="#visitReason#" CssClass="description_row"></c:TextView>
-          </c:VerticalLayout>
-        </c:HorizontalLayout>
-        <c:HorizontalLine/>
+        <s:Push Id="UVRcontrol" Value="$Facade.GetUVRvalue()"></s:Push>
+        <s:If Test="$UVRcontrol">
+          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(attributesFill, $workflow.visit, ReasonForVisit, null)">
+            <c:VerticalLayout>
+              <s:If Test="$workflow.visit.ReasonForVisit==null">
+                <c:TextView Text="?" CssClass="main_row"></c:TextView>
+              </s:If>
+              <s:Else>
+                <c:TextView Text="$workflow.visit.ReasonForVisitAsObject.Description" CssClass="main_row"></c:TextView>
+              </s:Else>
+              <c:TextView Text="#visitReason#" CssClass="description_row"></c:TextView>
+            </c:VerticalLayout>
+          </c:HorizontalLayout>
+          <c:HorizontalLine/>
+        </s:If>
       </s:If>
 
     </c:ScrollView>

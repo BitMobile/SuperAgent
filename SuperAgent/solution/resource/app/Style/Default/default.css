@@ -378,6 +378,15 @@ WebMapGoogle {
             background-color: #78e4fc;
         }
 
+       .grid hl white_mark {
+            width: 2%;
+            background-color: #ffffff;
+        }
+
+       .grid hl purple_mark{
+              width: 2%;
+            background-color: #dbd7e1;
+        }
 
     .grid header_edit_block {
         background-color: #dbd7e1;

@@ -1176,14 +1176,9 @@ function SetDeliveryDate(order, attrName) {
 
 //-----------------------OrderItem-------------------
 function GetItemHistory(sku, order) {
-    var byOutlets = DB.Current.Document.Order.SelectBy("Outlet", order.Outlet).Distinct("Id");
-    //Dialog.Debug(byOutlets.Count());    
+    var byOutlets = DB.Current.Document.Order.SelectBy("Outlet", order.Outlet).Distinct("Id");   
     var hist = DB.Current.Document.Order_SKUs.SelectBy("Ref", byOutlets).Where("Ref != @p1 && SKU == @p2", [order.Id, sku.Id]).OrderBy("RefAsObject.Date", true).Top(4);
-    //for (var i in hist) {
-    //    if (i.Units != sku.BaseUnit) {
-    //        var mult = DB.Current.Catalog.SKU_Packing.SelectBy("Ref", sku.Id).Where("Pack == @p1", [i.Units]).First();            
-    //    }
-    //}
+
     return hist;
 }
 
@@ -1400,24 +1395,28 @@ function CheckOrderAndCommit(order, workflowName) {
 
 function CalculateSKUAndForward(outlet, orderitem) {
 
-    var discChBox = Variables["discCheckbox"]["Checked"];
+    if (Converter.ToDecimal(orderitem.Qty) == Converter.ToDecimal(0))
+        DB.Current.Document.Order_SKUs.Delete(orderitem);
+    else {
+        var discChBox = Variables["discCheckbox"]["Checked"];
 
-    var discount = Variables["discountEdit"].Text;
+        var discount = Variables["discountEdit"].Text;
 
-    if (discount == null || discount == "")
-        discount = 0;
-    if (discount < 0)
-        discount = -discount;
+        if (discount == null || discount == "")
+            discount = 0;
+        if (discount < 0)
+            discount = -discount;
 
-    if (discChBox) {
-        discChBox = 1;
-    }
-    else
-        discChBox = -1
+        if (discChBox) {
+            discChBox = 1;
+        }
+        else
+            discChBox = -1
 
-    Variables["orderitem"].Discount = Converter.ToDecimal(discount * discChBox);
-    var p = CalculatePrice(orderitem.Price, (discount * discChBox), 1);
-    Variables["orderitem"].Total = p;
+        Variables["orderitem"].Discount = Converter.ToDecimal(discount * discChBox);
+        var p = CalculatePrice(orderitem.Price, (discount * discChBox), 1);
+        Variables["orderitem"].Total = p;
+    }    
 
     Workflow.Forward([outlet]);
 }

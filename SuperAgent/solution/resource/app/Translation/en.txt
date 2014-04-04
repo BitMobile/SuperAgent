@@ -1,4 +1,4 @@
-﻿todo		ToDo
+﻿ todo		ToDo
 stock		Stock
 schedule	Schedule
 order		Order

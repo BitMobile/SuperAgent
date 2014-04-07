@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
+
+  <s:Push Id="outlet" Value="$param1"></s:Push>
+  <s:Push Id="parameter" Value="$param2"></s:Push>
+  <s:Push Id="parameterValue" Value="$Facade.CreateOutletParameterValueIfNotExists($outlet,$parameter,$param3)"></s:Push>
+
+  <c:VerticalLayout>
+
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Facade.CheckIfEmptyAndBack($parameterValue, Value, Catalog, Outlet_Parameters)"/>
+      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckIfEmptyAndBack($parameterValue, Value, Catalog, Outlet_Parameters)"/>
+      <c:TextView Text="#parameters#" />
+    </c:DockLayout>
+
+    <c:ScrollView Id="grScrollView" CssClass="grid">
+
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <c:TextView Text="$parameter.Description" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#insert_answer#" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout>        
+          <s:If Test="$parameter.DataTypeAsObject.Description=='Boolean'">
+            <c:VerticalLayout CssClass="answerfield" OnClickAction="$Facade.AssignParameterValue($parameterValue, Value, true)">
+              <c:TextView Text="$parameterValue.Value" CssClass="caption_answer"></c:TextView>
+            </c:VerticalLayout>
+            <c:VerticalLayout CssClass="header" OnClickAction="$Facade.AssignParameterValue($parameterValue, Value, true)">
+              <c:TextView Text="#YES#" CssClass="yes_caption"></c:TextView>
+            </c:VerticalLayout>
+            <c:VerticalLayout CssClass="white">
+            </c:VerticalLayout>
+            <c:VerticalLayout CssClass="header" OnClickAction="$Facade.AssignParameterValue($parameterValue, Value, false)">
+              <c:TextView Text="#NO#" CssClass="center_caption"></c:TextView>
+            </c:VerticalLayout>
+          </s:If>
+          <s:Else>
+            <s:If Test="$parameter.DataTypeAsObject.Description=='Integer'">
+              <c:EditText Value="$parameterValue.Value" CssClass="main_row" AutoFocus="true" Keyboard="numeric"></c:EditText>
+            </s:If>
+            <s:Else>
+              <s:If Test="$parameter.DataTypeAsObject.Description=='Decimal'">
+                <c:EditText Value="$parameterValue.Value" CssClass="main_row" AutoFocus="True" Keyboard="numeric"></c:EditText>
+              </s:If>
+              <s:Else>
+                <c:EditText Value="$parameterValue.Value" CssClass="main_row" AutoFocus="True"></c:EditText>
+              </s:Else>
+            </s:Else>
+          </s:Else>        
+      </c:HorizontalLayout>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>
+
+
+

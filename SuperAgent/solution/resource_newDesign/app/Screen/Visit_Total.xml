@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+
+  <c:VerticalLayout>
+
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckAndCommit()"/>
+      <c:TextView Text="#save#" />
+    </c:DockLayout>
+    <c:HorizontalLine/>
+
+    <c:ScrollView Id="grScrollView" CssClass="grid">
+
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <c:TextView Text="$workflow.visit.OutletAsObject.Description" CssClass="main_row"></c:TextView>
+          <c:TextView Text="$workflow.visit.OutletAsObject.Address" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <c:TextView Text="$workflow.visit.StartTime" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#startTime#" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <s:Push Id="questions" Value="$Facade.CountEntities(Document, Visit_Questions, $workflow.visit.Id, Ref)"></s:Push>
+          <c:TextView Text="{$questions} #of# {$workflow.questions_qty}" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#questions#" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout>
+        <c:VerticalLayout>
+          <c:TextView Text="{$workflow.sku_answ} #of# {$workflow.sku_qty}" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#sku# #questions#" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <s:Push Id="scheduledVisit" Value="$Facade.AreEqual(ScheduledVisit, $workflow.name)"></s:Push>
+      <s:If Test="$scheduledVisit">
+        <s:Push Id="NORIsSwichedOn" Value="$Facade.GetOrderControlValue()"></s:Push>
+        <s:If Test="$NORIsSwichedOn">
+          <s:If Test="$Facade.OrderExists($workflow.visit)">
+            <c:HorizontalLayout OnClickAction="$Workflow.DoAction(attributesFill, $workflow.visit, ReasonForNotOfTakingOrder, null)">
+              <c:VerticalLayout>
+                <s:If Test="$workflow.visit.ReasonForNotOfTakingOrder==null">
+                  <c:TextView Text="?" CssClass="main_row"></c:TextView>
+                </s:If>
+                <s:Else>
+                  <c:TextView Text="$workflow.visit.ReasonForNotOfTakingOrderAsObject.Description" CssClass="main_row"></c:TextView>
+                </s:Else>
+                <c:TextView Text="#reasonForEmptyOrder#" CssClass="description_row"></c:TextView>
+              </c:VerticalLayout>
+            </c:HorizontalLayout>
+            <c:HorizontalLine/>
+          </s:If>
+        </s:If>
+      </s:If>
+
+      <s:Push Id="unscheduledVisit" Value="$Facade.AreEqual(UnscheduledVisit, $workflow.name)"></s:Push>
+      <s:If Test="$unscheduledVisit">
+        <s:Push Id="UVRcontrol" Value="$Facade.GetUVRvalue()"></s:Push>
+        <s:If Test="$UVRcontrol">
+          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(attributesFill, $workflow.visit, ReasonForVisit, null)">
+            <c:VerticalLayout>
+              <s:If Test="$workflow.visit.ReasonForVisit==null">
+                <c:TextView Text="?" CssClass="main_row"></c:TextView>
+              </s:If>
+              <s:Else>
+                <c:TextView Text="$workflow.visit.ReasonForVisitAsObject.Description" CssClass="main_row"></c:TextView>
+              </s:Else>
+              <c:TextView Text="#visitReason#" CssClass="description_row"></c:TextView>
+            </c:VerticalLayout>
+          </c:HorizontalLayout>
+          <c:HorizontalLine/>
+        </s:If>
+      </s:If>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>
+
+
+

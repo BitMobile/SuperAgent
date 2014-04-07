@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+
+  <s:Push Id="search" Value="$param1"/>
+  <s:Push Id="outlets" Value="$Facade.GetScheduledVisits($search)" />
+
+  <c:VerticalLayout>
+
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button Id="btnForward" CssClass="btn_grey_forward" />
+      <c:TextView Text="#schedule#" />
+    </c:DockLayout>
+    <c:HorizontalLine/>
+
+    <c:HorizontalLayout CssClass="search">
+      <c:DockLayout >
+        <c:Image />
+        <c:EditText Id="edtSearch" Text="$search"></c:EditText>
+      </c:DockLayout>
+      <c:Button Id="btnSearch" Text="#search#" OnClickAction="$Workflow.DoRefresh($edtSearch.Text)"></c:Button>
+    </c:HorizontalLayout>
+    <c:HorizontalLine/>
+
+    <c:VerticalLayout CssClass="header">
+      <c:VerticalLayout  CssClass ="grid">
+        <c:HorizontalLayout Id="btnShowmap" OnEvent="Forward" OnClickAction="$Workflow.DoAction(ShowMap, $outlets)">
+          <c:VerticalLayout>
+            <c:TextView Text="#showOnMap#" CssClass="caption_row"></c:TextView>
+          </c:VerticalLayout>
+          <c:Image/>
+        </c:HorizontalLayout>
+      </c:VerticalLayout>
+    </c:VerticalLayout>
+    <c:HorizontalLine/>
+
+    <c:ScrollView Id="grScrollView" CssClass="grid">
+
+      <s:Iterator Id="outlet" Value="$outlets">
+
+        <s:Push Id="planVisit" Value="$outlet.RefAsObject"></s:Push>
+        <s:Push Id="planOutlet" Value="$outlet.OutletAsObject"></s:Push>
+        <s:Push Id="todayVisit" Value="$Facade.GetTodayVisit($planOutlet)" />
+        <s:Push Id="debt" Value="$Facade.GetDebt($planOutlet.Id)"></s:Push>
+
+        <s:If Test="$todayVisit==NULL">
+          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$planOutlet,$planVisit)">
+            <s:If Test="$planOutlet.ConfirmationStatusAsObject.Description == 'New'">
+              <c:VerticalLayout CssClass="blue_mark"/>
+              <c:VerticalLayout CssClass="clipped">
+                <c:TextView Text="$planOutlet.Description" CssClass="main_row"></c:TextView>
+                <c:HorizontalLayout>
+                  <s:If Test="$debt!=0">
+                    <c:TextView Text="{$planOutlet.Address}" CssClass="left_description_row"></c:TextView>
+                    <c:TextView Text="#debt#: {$debt}" CssClass="right_description_row"></c:TextView>
+                  </s:If>
+                  <s:Else>
+                    <c:TextView Text="{$planOutlet.Address}" CssClass="description_row"></c:TextView>
+                  </s:Else>
+                </c:HorizontalLayout>
+              </c:VerticalLayout>
+            </s:If>
+            <s:Else>
+              <c:VerticalLayout>
+                <c:TextView Text="$planOutlet.Description" CssClass="main_row"></c:TextView>
+                <c:HorizontalLayout>
+                  <s:If Test="$debt!=0">
+                    <c:TextView Text="{$planOutlet.Address}" CssClass="left_description_row"></c:TextView>
+                    <c:TextView Text="#debt#: {$debt}" CssClass="right_description_row"></c:TextView>
+                  </s:If>
+                  <s:Else>
+                    <c:TextView Text="{$planOutlet.Address}" CssClass="description_row"></c:TextView>
+                  </s:Else>
+                </c:HorizontalLayout>
+              </c:VerticalLayout>
+            </s:Else>
+
+            <c:Image/>
+
+          </c:HorizontalLayout>
+
+          <c:HorizontalLine/>
+        </s:If>
+
+        <s:Else>
+          <c:HorizontalLayout>
+            <s:If Test="$planOutlet.ConfirmationStatusAsObject.Description == 'New'">
+              <c:VerticalLayout CssClass="blue_mark"/>
+              <c:VerticalLayout  CssClass="new_time_mark">
+                <c:TextView Text="$planOutlet.Description" CssClass="main_row"></c:TextView>
+                <c:HorizontalLayout>
+                  <s:If Test="$debt!=0">
+                    <c:TextView Text="$planOutlet.Address" CssClass="left_description_row"></c:TextView>
+                    <c:TextView Text="#debt#: {$debt}" CssClass="right_description_row"></c:TextView>
+                  </s:If>
+                  <s:Else>
+                    <c:TextView Text="$planOutlet.Address" CssClass="description_row"></c:TextView>
+                  </s:Else>
+                </c:HorizontalLayout>
+              </c:VerticalLayout>
+            </s:If>
+            <s:Else>
+              <c:VerticalLayout CssClass="time_mark">
+                <c:TextView Text="$planOutlet.Description" CssClass="main_row"></c:TextView>
+                <c:HorizontalLayout>
+                  <s:If Test="$debt!=0">
+                    <c:TextView Text="$planOutlet.Address" CssClass="left_description_row"></c:TextView>
+                    <c:TextView Text="#debt#: {$debt}" CssClass="right_description_row"></c:TextView>
+                  </s:If>
+                  <s:Else>
+                    <c:TextView Text="$planOutlet.Address" CssClass="description_row"></c:TextView>
+                  </s:Else>
+                </c:HorizontalLayout>
+              </c:VerticalLayout>
+            </s:Else>
+
+            <c:TextView Text="$todayVisit.Date.TimeString" CssClass="description_row"></c:TextView>
+
+          </c:HorizontalLayout>
+
+          <c:HorizontalLine/>
+        </s:Else>
+
+      </s:Iterator>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>

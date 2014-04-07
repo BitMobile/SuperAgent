@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
+
+  <s:Push Id="outlet" Value="$param1"></s:Push>
+
+  <s:If Test="$workflow.name!='Outlets'">
+    <s:Push Id="workflow.outlet" Value="$param1"></s:Push>
+    <s:Push Id="planVisit" Value="$param2"></s:Push>
+    <s:Push Id="workflow.questions_qty" Value="$Facade.ToInteger(0)"></s:Push>
+    <s:Push Id="workflow.sku_qty" Value="$Facade.ToInteger(0)"></s:Push>
+    <s:Push Id="workflow.sku_answ" Value="$Facade.ToInteger(0)"></s:Push>
+    <s:Push Id="workflow.questionnaires" Value="$Facade.GetQuesttionaires($outlet)"></s:Push>
+
+
+    <s:Push Id="workflow.visit" Value="$Facade.CreateVisitIfNotExists($outlet,$common.UserId, $workflow.visit, $planVisit)"/>
+  </s:If>
+
+  <c:VerticalLayout Id="vOutlet">
+
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
+      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckNotNullAndCommit($outlet)"/>
+      <c:TextView Text="#outlet#" />
+    </c:DockLayout>
+    <c:HorizontalLine/>
+
+    <s:If Test="$workflow.name=='Outlets'">
+      <s:If Test="$outlet.IsNew">
+        <c:VerticalLayout Id="headerDescr" CssClass="memo_header">
+          <c:VerticalLayout  CssClass ="grid">
+
+            <c:HorizontalLayout CssClass ="two_row_memo">
+              <c:VerticalLayout>
+                <c:MemoEdit Id="outletDescr" Value="$outlet.Description" CssClass="main_row"></c:MemoEdit>
+                <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
+              </c:VerticalLayout>
+            </c:HorizontalLayout>
+
+            <c:HorizontalLine/>
+          </c:VerticalLayout>
+        </c:VerticalLayout>
+        <c:HorizontalLine/>
+      </s:If>
+      <s:Else>
+        <c:VerticalLayout Id="headerDescr" CssClass="header">
+          <c:VerticalLayout  CssClass ="grid">
+
+            <c:HorizontalLayout>
+              <c:VerticalLayout>
+                <c:TextView Id="outletDescr" Text="$outlet.Description" CssClass="main_row"></c:TextView>
+                <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
+              </c:VerticalLayout>
+            </c:HorizontalLayout>
+
+            <c:HorizontalLine/>
+          </c:VerticalLayout>
+        </c:VerticalLayout>
+        <c:HorizontalLine/>
+      </s:Else>
+    </s:If>
+    <s:Else>
+      <c:VerticalLayout Id="headerDescr" CssClass="header">
+        <c:VerticalLayout  CssClass ="grid">
+
+          <c:HorizontalLayout>
+            <c:VerticalLayout>
+              <c:TextView Id="outletDescr" Text="$outlet.Description" CssClass="main_row"></c:TextView>
+              <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
+            </c:VerticalLayout>
+          </c:HorizontalLayout>
+
+          <c:HorizontalLine/>
+        </c:VerticalLayout>
+      </c:VerticalLayout>
+      <c:HorizontalLine/>
+    </s:Else>
+
+    <c:ScrollView Id="grScrollView" CssClass="grid">
+
+      <c:HorizontalLayout CssClass="two_row_memo">
+        <c:VerticalLayout>
+          <c:MemoEdit Id="outletAddress" Value="$outlet.Address" CssClass="main_row"></c:MemoEdit>
+          <c:TextView Text="#address#" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <s:If Test="$workflow.name=='Outlets'">
+        <s:If Test="$outlet.IsNew == false">
+          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(ShowMap, $outlet)">
+            <c:VerticalLayout>
+              <c:TextView Text="#showOnMap#" CssClass="main_row"></c:TextView>
+            </c:VerticalLayout>
+            <c:Image/>
+          </c:HorizontalLayout>
+          <c:HorizontalLine/>
+        </s:If>
+      </s:If>
+
+      <c:HorizontalLayout OnClickAction="$Facade.SetLocation()">
+        <c:VerticalLayout>
+          <c:TextView Text="#location#" CssClass="caption_row"></c:TextView>
+          <c:TextView Text="#current#: {$outlet.Lattitude}, {$outlet.Longitude}," CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout OnClickAction="$Workflow.DoAction(EditParameter,$outlet,Class,null)">
+        <c:VerticalLayout>
+          <c:TextView Id="outletClass" Text="$outlet.ClassAsObject.Description" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#outlet_class#" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+        <c:Image/>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout OnClickAction="$Workflow.DoAction(EditParameter,$outlet,Type,null)">
+        <c:VerticalLayout>
+          <c:TextView Id="outletType" Text="$outlet.TypeAsObject.Description" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#outlet_type#" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+        <c:Image/>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout OnClickAction="$Workflow.DoAction(EditParameter,$outlet,Distributor,null)">
+        <c:VerticalLayout>
+          <c:TextView Id="outletDistr" Text="$outlet.DistributorAsObject.Description" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#distributor#" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+        <c:Image/>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <s:Iterator Id="parameter" Value="$Facade.GetOutletParameters()">
+
+        <s:Push Id="parameterValue" Value="$Facade.GetOutletParameterValue($outlet,$parameter)"/>
+
+        <s:Push Id="true" Value="$Facade.ConvertToBoolean(true)"></s:Push>
+        <c:HorizontalLayout OnClickAction="$Facade.GoToParameterAction($parameter.DataTypeAsObject.Description, $parameterValue, Value, $outlet, $parameter)">
+
+          <c:VerticalLayout>
+            <s:If Test="$parameterValue!=null">
+              <c:TextView Text="$parameterValue.Value" CssClass="main_row"></c:TextView>
+            </s:If>
+            <s:Else>
+              <c:TextView Id="paramValueTextView" Text="?" CssClass="main_row"></c:TextView>
+            </s:Else>
+            <c:TextView Text="$parameter.Description" CssClass="description_row"></c:TextView>
+          </c:VerticalLayout>
+          <c:Image/>
+
+        </c:HorizontalLayout>
+
+        <c:HorizontalLine/>
+
+      </s:Iterator>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>

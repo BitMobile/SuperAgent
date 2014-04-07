@@ -1,0 +1,117 @@
+﻿body {
+    background-color: #f8f8f8;
+}
+
+line {
+    width: 100%;
+    height: 1px;
+    background-color: #c8c7cc;
+}
+
+sv {
+    width: 100%;
+    height: 100%;
+}
+
+vl {
+    width: 100%;
+    height: 100%;
+}
+
+hl {
+    width: 100%;
+}
+
+dl {
+    width: 100%;
+}
+
+    dl hl {
+        width: 100%;
+        height: 100%;
+    }
+
+TextView {
+    padding-right: 5%;
+    background-color: none;
+    color: #000000;
+}
+
+Button {
+    color: #2d89cf;
+}
+
+.top_navigator {
+    height: 7.6%;
+}
+
+    .top_navigator TextView {
+        width: auto;
+        height: auto;
+        margin-top: 20%;
+        margin-bottom: 32%;
+        padding-right: 0%;
+        text-align: center;
+        color: #000000;
+        font: 100% arial;
+    }
+
+.btn_menu {
+    background-image: url(button_menu.png);
+    padding-right: 10%;
+    height: 40%;
+    margin-top: 30%;
+    margin-left: 2.7%;
+    margin-bottom: 20%;
+    margin-right: 10%;
+    dock-align: left;
+}
+
+.btn_forward {
+    width: 17%;
+    height: auto;
+    margin-top: 30%;
+    margin-right: 2.7%;
+    margin-bottom: 23%;
+    dock-align: right;
+    color: #2d89cf;
+    text-align: right;
+    font: 100% arial;
+}
+
+.small_grid {
+}
+
+.small_grid {
+    height: 7.6%;
+    selected-color: #bacdce;
+}
+
+.mode_left_button_on {
+    background-image: url(mode_left_button_on.png);
+    width: 48%;
+    height: 67%;
+    color: #f8f8f8;
+    text-align: center;
+    font: 50% arial;
+    margin-top:5.7%;
+    margin-left:2.3%;
+}
+
+.mode_right_button_off {
+    background-image: url(mode_right_button_off.png);
+    width: 48%;
+    height: 67%;
+    color: #2d89cf;
+    text-align: center;
+    font: 50% arial;
+    margin-top:5.7%;
+}
+
+
+.mode_right_button_on {
+}
+
+
+.mode_left_button_off {
+}

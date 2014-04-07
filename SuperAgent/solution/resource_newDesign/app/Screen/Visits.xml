@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+
+  <s:Push Id="search" Value="$param1"/>
+  <s:Push Id="outlets" Value="$Facade.GetScheduledVisits($search)" />
+
+  <c:VerticalLayout>
+
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button Id="btnBack" CssClass="btn_menu" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button Id="btnForward" Text="#map#" CssClass="btn_forward" />
+      <c:TextView Text="#visits#" />
+    </c:DockLayout>
+
+    <c:HorizontalLayout CssClass="small_grid">
+      <c:Button CssClass="mode_left_button_on" Text="#planVisit# ()"></c:Button>
+      <c:Button CssClass="mode_right_button_off" Text="#unplanned# ()"></c:Button>
+    </c:HorizontalLayout>
+    <c:HorizontalLine/>
+    
+
+  </c:VerticalLayout>
+
+</c:Screen>

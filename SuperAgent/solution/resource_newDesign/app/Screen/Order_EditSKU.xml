@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
+
+  <s:Push Id="order" Value="$workflow.order"></s:Push>
+  <s:Push Id="sku" Value="$param1"></s:Push>
+  <s:Push Id="price" Value="$param2"></s:Push>
+  <s:Push Id="orderitem" Value="$param3"></s:Push>
+  <s:Push Id="showimage" Value="$param5"></s:Push>
+  <s:Push Id="multiplier" Value="$Facade.GetMultiplier($sku.Id, $orderitem)"></s:Push>
+  <s:Push Id="features" Value="$Facade.GetFeatures($sku.Id)"></s:Push>
+  <s:Push Id="orderitem" Value="$Facade.CreateOrderItemIfNotExist($order.Id,$sku,$orderitem,$price,$features)"></s:Push>
+  <s:Push Id="baseQty" Value="$Facade.GetMultiple($orderitem.Qty, $multiplier)"></s:Push>
+  <s:Push Id="ismarkup" Value="$Facade.GetCheckBoxValue($orderitem.Discount)" />
+
+  <s:If Test="$showimage == null">
+    <s:Push Id="showimage" Value="NotShow"></s:Push>
+  </s:If >
+
+  <c:VerticalLayout>
+
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Facade.DeleteifNewItemAndBack()"/>
+      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CalculateSKUAndForward($order.OutletAsObject, $orderitem)"/>
+      <c:TextView Text="#edit#" />
+    </c:DockLayout>
+
+    <c:ScrollView Id="grScrollView" CssClass="grid">
+
+      <s:Push Id="featureDescr" Value="$Facade.GetFeatureDescr($orderitem.FeatureAsObject)"></s:Push>
+
+      <c:HorizontalLayout CssClass="header_edit_block">
+        <c:VerticalLayout CssClass="partial_width" OnClickAction="$Facade.CountPrice($orderitem,$discCheckbox.Checked)">
+          <c:TextView Text="{$sku.Description}{$featureDescr}" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#countPrice#" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+        <c:VerticalLayout CssClass="quarter_width">
+          <s:If Test="$sku.DefaultPicture != null">
+            <s:If Test="$showimage == 'NotShow'">
+              <c:Button CssClass="btn_showpicture" OnClickAction="$Facade.RefreshEditSKU($orderitem, $sku, $price, $discountEdit.Text, Show)"></c:Button>
+            </s:If >
+            <s:If Test="$showimage == 'Show'">
+              <c:Button CssClass="btn_showpicture" OnClickAction="$Facade.RefreshEditSKU($orderitem, $sku, $price, $discountEdit.Text, NotShow)"></c:Button>
+            </s:If >
+          </s:If >
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+
+      <c:HorizontalLine/>
+
+      <s:If Test="$sku.DefaultPicture != null">
+
+        <s:If Test="$showimage == 'Show'">
+
+          <c:ScrollView CssClass="60">
+            <c:Image Source="$Facade.GetSharedImagePath(Catalog.SKU, $sku.Id, $sku.DefaultPicture, $sku.DefaultPictureExtension)"/>
+          </c:ScrollView>
+          <c:HorizontalLine/>
+
+        </s:If >
+
+      </s:If >
+
+      <c:HorizontalLayout CssClass="33">
+        <c:VerticalLayout>
+          <c:TextView Id ="orderItemTotalId" Text="$orderitem.Total" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#price#" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+        <c:VerticalLayout>
+          <c:EditText Value="$orderitem.Qty" CssClass="main_row" Keyboard="numeric" AutoFocus="True"></c:EditText>
+          <c:TextView Text="#quantity#" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+        <c:VerticalLayout OnClickAction="$Facade.ChangeUnit($sku, $orderitem, $discCheckbox.Checked, $price)" CssClass="header">
+          <c:TextView Id="itemUnits" Text="$orderitem.UnitsAsObject.Description" CssClass="main_row"></c:TextView>
+          <c:TextView Text="#packUnit#" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout  Id="btnSpread" CssClass="33">
+        <c:VerticalLayout>
+          <c:CheckBox Id="discCheckbox" Checked="$ismarkup" CssClass="main_row"></c:CheckBox>
+          <c:TextView Text="#discount#/#markUp#" CssClass="description_row"></c:TextView>
+        </c:VerticalLayout>
+        <c:VerticalLayout>
+          <c:EditText Id="discountEdit" Text="$param4" CssClass="main_row" Keyboard="numeric"></c:EditText>
+          <s:If Test="$ismarkup">
+            <c:TextView Id="discTextView" Text="#markUp#" CssClass="description_row"></c:TextView>
+          </s:If>
+          <s:Else>
+            <c:TextView Id="discTextView" Text="#discount#" CssClass="description_row"></c:TextView>
+          </s:Else>
+        </c:VerticalLayout>
+        <c:VerticalLayout CssClass="quarter_width">
+          <c:Button CssClass="btn_delete" OnClickAction="$Facade.DeleteItemAndBack($orderitem)"></c:Button>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <s:Push Id="historyItems" Value="$Facade.GetItemHistory($sku, $order)"></s:Push>
+      <s:Push Id="historyCount" Value="$Facade.CountCollection($historyItems)"></s:Push>
+      <s:If Test="$historyCount != 0">
+        <c:HorizontalLayout CssClass="44">
+          <s:Iterator Id="historyItem" Value="$historyItems">
+            <c:VerticalLayout>
+              <c:TextView Text="#quantity#"></c:TextView>
+              <c:TextView Text="#date#"></c:TextView>
+              <s:Push Id="baseQty" Value="$Facade.GetBaseQty($sku, $historyItem)"></s:Push>
+              <c:TextView Text="$baseQty" CssClass="bold_text"></c:TextView>
+              <c:TextView Text="$historyItem.RefAsObject.Date" CssClass="bold_text"></c:TextView>
+            </c:VerticalLayout>
+          </s:Iterator>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+      </s:If>
+
+
+      <c:HorizontalLayout CssClass="header_edit_block">
+        <c:VerticalLayout>
+          <c:TextView Text="#features#" CssClass="caption_row"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <s:Iterator Id="feature" Value="$features">
+
+        <c:HorizontalLayout OnClickAction="$Facade.ChangeFeatureAndRefresh($orderitem, $feature, $sku, $price, $discountEdit.Text, $showimage)">
+          <c:VerticalLayout>
+            <c:TextView Text="$feature.FeatureAsObject.Description" CssClass="main_row"></c:TextView>
+          </c:VerticalLayout>
+          <s:If Test="$orderitem.Feature==$feature.Feature">
+            <c:Image CssClass="tick"/>
+          </s:If>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+
+      </s:Iterator>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>
+
+
+

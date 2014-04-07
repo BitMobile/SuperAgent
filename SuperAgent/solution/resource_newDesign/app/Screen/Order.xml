@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
+
+  <s:Push Id="outlet" Value="$param1"></s:Push>
+  <s:Push Id="workflow.outlet" Value="$outlet"></s:Push>
+  <s:Push Id="executedOrder" Value="$param3"></s:Push>
+  <s:Push Id="priceLists" Value="$Facade.GetPriceListQty($outlet.Id)"></s:Push>
+
+  <s:Push Id="workflow.order" Value ="$Facade.CreateOrderIfNotExists($workflow.order, $outlet, $common.UserId, $workflow.visit.Id, $executedOrder, $priceLists)"></s:Push>
+
+  <s:Push Id="items" Value="$Facade.GetOrderedSKUs($workflow.order.Id)"></s:Push>
+  <s:Push Id="qty" Value="$Facade.GetOrderQTY($workflow.order.Id)"></s:Push>
+  <s:Push Id="sum" Value="$Facade.GetOrderSUM($workflow.order.Id)"></s:Push>
+  <s:Push Id="maxAmount" Value="$Facade.GetMaxOrderAmount($workflow.order.OutletAsObject)"></s:Push>
+  <s:Push Id="greater" Value="$Facade.GetGreater($sum,$maxAmount)"></s:Push>
+  <s:Push Id="null" Value="$Facade.CreateOrderStatusVariables()"></s:Push>
+
+  <c:VerticalLayout>
+
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
+      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CommentOrder($workflow.name, $items, $workflow.order)"/>
+      <c:TextView Text="#order#" />
+    </c:DockLayout>
+    <c:HorizontalLine/>
+
+
+    <s:If Test="$workflow.order.IsNew == True">
+      <c:VerticalLayout Id="Orderadd" CssClass="header">
+        <c:VerticalLayout  CssClass ="grid">
+          <c:HorizontalLayout>
+            <c:VerticalLayout CssClass="10" OnClickAction="$Workflow.DoAction(ShowInfo,$sum)">
+              <c:Image CssClass="info"/>
+            </c:VerticalLayout>
+            <c:VerticalLayout CssClass="60">
+              <c:TextView Text="$sum" CssClass="main_row"></c:TextView>
+              <c:TextView Text="#totalamount#" CssClass="description_row"></c:TextView>
+            </c:VerticalLayout>
+            <s:If Test="$workflow.order.PriceListAsRef != null">
+              <c:VerticalLayout OnClickAction="$Workflow.DoAction(Add,$workflow.order)">
+                <c:Image CssClass="add_img"/>
+              </c:VerticalLayout>
+            </s:If>
+          </c:HorizontalLayout>
+          <c:HorizontalLine/>
+        </c:VerticalLayout>
+      </c:VerticalLayout>
+
+      <c:HorizontalLine/>
+
+
+
+      <c:ScrollView Id="grScrollView" CssClass="grid">
+
+        <s:Iterator Id="orderitem" Value="$items">
+          <s:Push Id="orderitem" Value="$Facade.DeleteZeroItem($orderitem)"></s:Push>
+
+          <s:If Test="$orderitem != null">
+            <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Edit,$orderitem.SKUAsObject,null,$orderitem)">
+              <c:VerticalLayout>
+                <s:Push Id="featureDescr" Value="$Facade.GetFeatureDescr($orderitem.FeatureAsObject)"></s:Push>
+                <c:TextView Text="{$orderitem.SKUAsObject.Description}{$featureDescr}" CssClass="main_row"></c:TextView>
+                <s:Push Value="$Facade.GetSKUAmount($workflow.order.Id, $orderitem)" Id="amount"/>
+                <c:TextView Text="#quantity#: {$orderitem.Qty}   #amount#: {$amount}" CssClass="description_row"></c:TextView>
+              </c:VerticalLayout>
+              <c:Image/>
+            </c:HorizontalLayout>
+            <c:HorizontalLine/>
+          </s:If>
+
+        </s:Iterator>
+
+      </c:ScrollView>
+    </s:If>
+
+
+
+
+    <s:Else>
+      <c:VerticalLayout CssClass="header">
+        <c:VerticalLayout  CssClass ="grid">
+          <c:HorizontalLayout>
+            <c:VerticalLayout CssClass="10" OnClickAction="$Workflow.DoAction(ShowInfo,$sum)">
+              <c:Image CssClass="info"/>
+            </c:VerticalLayout>
+            <c:VerticalLayout CssClass="60">
+              <c:TextView Text="$sum" CssClass="main_row"></c:TextView>
+              <c:TextView Text="#totalamount#" CssClass="description_row"></c:TextView>
+            </c:VerticalLayout>
+          </c:HorizontalLayout>
+          <c:HorizontalLine/>
+        </c:VerticalLayout>
+      </c:VerticalLayout>
+      <c:HorizontalLine/>
+
+
+      <c:ScrollView Id="grScrollView" CssClass="grid">
+
+        <s:Iterator Id="orderitem" Value="$items">
+
+          <c:HorizontalLayout>
+            <c:VerticalLayout>
+              <c:TextView Text="$orderitem.SKUAsObject.Description" CssClass="main_row"></c:TextView>
+              <s:Push Value="$Facade.GetSKUAmount($workflow.order.Id, $orderitem)" Id="amount"/>
+              <c:TextView Text="#quantity#: {$orderitem.Qty}   #amount#: {$amount}" CssClass="description_row"></c:TextView>
+            </c:VerticalLayout>
+          </c:HorizontalLayout>
+          <c:HorizontalLine/>
+
+        </s:Iterator>
+
+      </c:ScrollView>
+
+    </s:Else>
+
+  </c:VerticalLayout>
+
+</c:Screen>

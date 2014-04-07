@@ -1,0 +1,136 @@
+﻿todo		Задачи
+stock		Остатки
+schedule	Расписание
+order		Заказ
+visit		Визит
+visits		Визиты
+planVisit	Плановые
+unplanned	Внеплановые
+outlets		Магазины
+targets		Цели
+target		Цель
+settings	Настройки
+sync		Обновить
+syncPhoto	Обмен фото
+search		Поиск
+outlet		Торговая точка
+outlet_class	Класс торговой точки
+outlet_type	Тип торговой точки
+distributor	Дистрибьютор
+answer		Ответ
+typeanswer	Введите значения..
+username	Имя пользователя
+password	Пароль
+cancel		Отмена
+Ok		Ок
+parameters	Параметры
+select_answer	Выберите значение..
+save		Сохранить
+no_questions	Вопросов нет
+questions	Вопросы
+commentary	Комментарий
+insert_answer	Введите значение..
+amount		Итого
+sku		Номенклатура
+quantity	Количество
+price		Цена
+edit		Редактирование
+insert_text	Введите текст..
+totalamount	Итого
+price2		Цена:
+kpi			KPI
+tasks		Задачи
+task		Задача
+description	Наименование
+result		Результат
+plandate	Плановый срок
+date		Дата
+distributor	Дистрибьютор
+outletType	Тип торговой точки
+outletClass	Класс торговой точки
+available	Доступность
+facing		Фейсинг
+stock		Остатки
+price		Цена
+markUp		Наценка
+outOfStock	Наличие на складе
+false		Нет
+true		Да
+done		Заполнен
+pcs			шт.
+orders		Заказы
+newOrder	Создать новый заказ
+discount	Скидка
+noNumber	Нет номера
+markUp		Наценка
+unit		Единица изм.
+baseUnit	Баз. единица изм.
+selectUnit	Выберите единицу измерения:
+logo		logoRu
+packUnit	Ед. упаковки
+refreshScreen	Пересчитать заказ
+no_tasks	Задач нет
+documentSum	Сумма документа
+document	Документ
+receivables	Задолженность
+receivable	Задолженность
+encashment	Инкассация
+sum			Сумма
+encashmentSum	Сумма инкассации
+spreadOnDocuments	Распределить на документы
+docNumber	Номер документа
+receivableAmount	Сумма задолженности
+encashmentAmount	Сумма инкассации
+nameSurname	ФИО
+maximumAmount	Лимит
+NoLimit		Не ограничен
+deleteItem	Удалить эту строку
+startTime	Время начала
+newOutlet	Создать новую торговую точку
+messageNulls	Все поля на экране должны быть заполнены.
+countPrice	Пересчитать цену
+address		Адрес
+description	Наименование
+coordinatesAreSet	Координаты установлены
+setVisitCoordinates		Повторить попытку установить координаты?
+setCoords	Установить координаты
+setCoordinates	Установить координаты по текущему расположению?
+location	Установить координаты торговой точки
+locationSetFailed	Не удалось получить координаты. Повторить?
+saveChanges	Сохранить изменения?
+map			Карта
+showOnMap	Показать на карте
+no_visitPlans		Нет визитов для отображения
+current		Текущие
+couldnt_be_cleaned	Поле не может быть очищено
+priceList	Прайс-лист
+isntSelected	Не выбран
+SKUWillRevised	Заказ пересчитан
+features	Характеристики
+noPriceLists	Для этой торговой точки нет прайс-листов
+emptyList	Список пуст
+impossibleToDelete	Невозможно удалить, заказ уже передан в базу
+valueList	Список значений
+deliveryDate	Дата доставки
+enterDateTime	Введите дату и время
+noImage	Изображение не найдено
+of	из
+information	Информация
+snapshot	Фотоснимок
+noSnapshot	Нет фотоснимка
+snapshotAttached	Снимок прикреплен
+clickToInsert	Нажмите для ввода даты
+itemAlreadyExist	Такая позиция уже есть в заказе. Продолжить редактирование? ("Нет" - не добавлять новую позицию к заказу)
+NO		Нет
+YES		Да
+filter	Фильтр
+clearFilter		Очистить фильтр?
+groups	Группы
+brands	Бренды
+brand	Бренд
+impossibleToCreateVisit		Невозможно создать плановый визит пока не записаны координаты. Повторить попытку получить координаты?
+fillNoOrderReason	 Причина отсутствия заказа должна быть заполнена.
+reasonForEmptyOrder	Причина отсутствия заказа
+fillInVisitReason	Причина визита должна быть заполнена
+visitReason	Причина визита
+debt	Долг

@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
+
+  <s:Push Id="order" Value="$workflow.order"></s:Push>
+
+  <c:VerticalLayout>
+
+    <c:DockLayout CssClass="top_navigator">
+      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
+      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckOrderAndCommit($order, $workflow.name)"/>
+      <c:TextView Text="#commentary#" />
+    </c:DockLayout>
+
+    <c:ScrollView Id="grScrollView" CssClass="grid">
+
+      
+      <s:If Test="$workflow.order.IsNew == True">
+
+        <c:HorizontalLayout  OnClickAction="$Facade.SetDeliveryDate($order, DeliveryDate, $workflow.new)">
+          <c:VerticalLayout>
+            <c:TextView Id="deliveryDate" Text="$workflow.order.DeliveryDate" CssClass="main_row"></c:TextView>
+            <c:TextView Text="#deliveryDate#" CssClass="description_row"></c:TextView>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+        
+      <c:HorizontalLayout CssClass="memo_block">
+        <c:VerticalLayout>
+          <c:TextView Text="#insert_text#" CssClass="description_row"></c:TextView>
+          <c:MemoEdit Value="$order.Commentary" CssClass="main_row"></c:MemoEdit>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      </s:If>
+      
+      <s:Else>
+        <c:HorizontalLayout>
+          <c:VerticalLayout>
+            <c:TextView Id="deliveryDate" Text="$workflow.order.DeliveryDate" CssClass="main_row"></c:TextView>
+            <c:TextView Text="#deliveryDate#" CssClass="description_row"></c:TextView>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+        
+        <c:HorizontalLayout>
+          <c:VerticalLayout>
+            <c:TextView Text="$order.Commentary" CssClass="main_row"></c:TextView>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+      </s:Else>
+
+    </c:ScrollView>
+  </c:VerticalLayout>
+
+</c:Screen>
+
+
+

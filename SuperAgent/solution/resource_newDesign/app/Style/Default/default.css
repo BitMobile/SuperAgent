@@ -79,28 +79,6 @@ Button {
     font: 100% arial;
 }
 
-.small_grid {
-    height: 7.6%;
-    selected-color: #bacdce;
-}
-
-.caption_grid {
-    height: 7.6%;
-    selected-color: #bacdce;
-    background-color:#efeff4;
-}
-
-    .caption_grid TextView {
-        width: 100%;
-        height: 30%;
-        text-align: left;
-        margin-left: 3.5%;
-        margin-top:50%;
-        font: 100% arial;
-        color: #4d4d4d;
-
-    }
-
 .mode_left_button_on {
     background-image: url(mode_left_button_on.png);
     width: 48%;
@@ -128,6 +106,11 @@ Button {
 
 
 .mode_left_button_off {
+}
+
+.small_grid {
+    height: 7.6%;
+    selected-color: #bacdce;
 }
 
 .search {
@@ -165,3 +148,64 @@ Button {
             dock-align: right;
             font: 60% arial;
         }
+
+
+.caption_grid {
+    height: 7.6sp;
+    selected-color: #bacdce;
+    background-color:#efeff4;
+}
+
+    .caption_grid TextView {
+        width: 100%;
+        height: 30%;
+        text-align: left;
+        margin-left: 3.5%;
+        margin-top:50%;
+        font: 100% arial;
+        color: #4d4d4d;
+
+    }
+
+.grid {
+}
+
+    .grid line {
+        width: 100%;
+        height: 1px;
+        background-color: #c8c7cc;
+    }    
+
+    .grid hl{
+        height:15.3sp;
+        background-color:#ffffff;
+    }
+
+        .grid hl img{ 
+            height: 18.5%;
+            margin-top: 16%;
+            margin-left: 2.5%;
+            background-image: url(arrow.png);
+        }
+
+        .grid hl vl{
+            width: 90%;
+            height: 100%;
+            margin-top: 16%;
+            padding-left: 5%;
+        }
+
+.main_row {
+    width: 100%;
+    height: 38%;
+    white-space: normal;
+    font: 40% Arial;
+}
+
+.description_row {
+    width: 100%;
+    height: 29.7%;
+    white-space: normal;
+    font: 40% Arial;
+    color:#8e8e93;
+}

@@ -1176,7 +1176,7 @@ function SetDeliveryDate(order, attrName) {
 
 //-----------------------OrderItem-------------------
 function GetItemHistory(sku, order) {
-    var byOutlets = DB.Current.Document.Order.SelectBy("Outlet", order.Outlet).Distinct("Id");   
+    var byOutlets = DB.Current.Document.Order.SelectBy("Outlet", order.Outlet).Distinct("Id");
     var hist = DB.Current.Document.Order_SKUs.SelectBy("Ref", byOutlets).Where("Ref != @p1 && SKU == @p2", [order.Id, sku.Id]).OrderBy("RefAsObject.Date", true).Top(4);
 
     return hist;
@@ -1386,9 +1386,9 @@ function DeleteZeroItem(orderitem) {
 
 function CheckOrderAndCommit(order, workflowName) {
 
-    if (workflowName == "Order") 
+    if (workflowName == "Order")
         Workflow.Commit();
-    else 
+    else
         Workflow.Forward([]);
 }
 
@@ -1416,7 +1416,7 @@ function CalculateSKUAndForward(outlet, orderitem) {
         Variables["orderitem"].Discount = Converter.ToDecimal(discount * discChBox);
         var p = CalculatePrice(orderitem.Price, (discount * discChBox), 1);
         Variables["orderitem"].Total = p;
-    }    
+    }
 
     Workflow.Forward([outlet]);
 }
@@ -1448,10 +1448,20 @@ function GetSKUs(searchText, owner, priceListId) {
     //for Stock_SKUs.xml   
     if (priceListId == null) {
         if (String.IsNullOrEmpty(searchText)) {
-            var qt = DB.Current.Catalog.SKU.SelectBy("Owner", owner).Where("CommonStock!=0.00").Top(100).OrderBy("Description");
+            if (Variables.Exists("brand_filter")) {
+                var p = Variables["brand_filter"];
+                var qt = DB.Current.Catalog.SKU.SelectBy("Owner", owner).Where("CommonStock!=0.00 && Brand.In(@p1)", [p]).Top(100).OrderBy("Description");
+            }
+            else
+                var qt = DB.Current.Catalog.SKU.SelectBy("Owner", owner).Where("CommonStock!=0.00").Top(100).OrderBy("Description");
         }
         else {
-            var qt = DB.Current.Catalog.SKU.SelectBy("Owner", owner).Where("CommonStock!=0.00 && Description.Contains(@p1)", [searchText]).Top(100).OrderBy("Description");
+            if (Variables.Exists("brand_filter")) {
+                var p = Variables["brand_filter"];
+                var qt = DB.Current.Catalog.SKU.SelectBy("Owner", owner).Where("CommonStock!=0.00 && Description.Contains(@p1)  && Brand.In(@p2)", [searchText, p]).Top(100).OrderBy("Description");
+            }
+            else
+                var qt = DB.Current.Catalog.SKU.SelectBy("Owner", owner).Where("CommonStock!=0.00 && Description.Contains(@p1)", [searchText]).Top(100).OrderBy("Description");
         }
     }
 

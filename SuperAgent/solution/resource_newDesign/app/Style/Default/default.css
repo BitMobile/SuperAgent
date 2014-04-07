@@ -80,12 +80,26 @@ Button {
 }
 
 .small_grid {
-}
-
-.small_grid {
     height: 7.6%;
     selected-color: #bacdce;
 }
+
+.caption_grid {
+    height: 7.6%;
+    selected-color: #bacdce;
+    background-color:#efeff4;
+}
+
+    .caption_grid TextView {
+        width: 100%;
+        height: 30%;
+        text-align: left;
+        margin-left: 3.5%;
+        margin-top:50%;
+        font: 100% arial;
+        color: #4d4d4d;
+
+    }
 
 .mode_left_button_on {
     background-image: url(mode_left_button_on.png);
@@ -115,3 +129,39 @@ Button {
 
 .mode_left_button_off {
 }
+
+.search {
+    height:7.6%;
+}
+
+   .search dl {        
+        height: 64%;
+        width: 95%;
+        vertical-align: central;
+        margin-left: 2.5%;
+        background-color: #ffffff;
+        border-radius: 5px;
+    }
+
+        .search dl img {
+            background-image:url(search.png);
+            height: 46.4%;
+            margin-top: 25%;
+            margin-left: 1%;            
+            background-color: #ffffff;
+            dock-align: left;
+        }
+
+        .search dl EditText {
+            width: auto;
+            height: auto;
+            margin-top: 10%;
+            margin-right: 5%;
+            padding-left: 5%;
+            padding-top: 5%;
+            background-color: #ffffff;
+            color: #000000;
+            border-style: none;
+            dock-align: right;
+            font: 60% arial;
+        }

@@ -106,15 +106,15 @@ function CheckEmptyScreens(){
 		
 	case "Visit_Questions.xml":
 		Console.WriteLine("Экран "+screen);	
-		Console.WriteLine(TextCheck("grScrollView.Controls[7].Controls[0].Controls[0]", "String"+n));	//Каталог товара есть в магазине" Question string
+		Console.WriteLine(TextCheck("grScrollView.Controls[10].Controls[0].Controls[0]", "String"+n));	//Каталог товара есть в магазине" Question string
 		
-		Console.WriteLine(TextCheck("grScrollView.Controls[4].Controls[0].Controls[0]", "123546"+n));	//,"Доля полки %" //Question int
+		Console.WriteLine(TextCheck("grScrollView.Controls[7].Controls[0].Controls[0]", "123546"+n));	//,"Доля полки %" //Question int
 		
-		Console.WriteLine(CheckValue("grScrollView.Controls[9].Controls[0].Controls[0].Text","Набор рекомендуемых  к размещению  POSM установлен"));//,"Набор рекомендуемых  к размещению  POSM установлен"   Question (Boolean)
+		Console.WriteLine(CheckValue("grScrollView.Controls[12].Controls[0].Controls[0].Text","Набор рекомендуемых  к размещению  POSM установлен"));//,"Набор рекомендуемых  к размещению  POSM установлен"   Question (Boolean)
 		
-		var result=Device.Click("grScrollView.Controls[10].Controls[0].Controls[0]")
+		var result=Device.Click("grScrollView.Controls[13].Controls[0].Controls[0]")
 
-		Console.WriteLine(TextCheck("grScrollView.Controls[16].Controls[0].Controls[0]", "123.6"+n));	//Стандарт по доле полки относительно конкурентов  выполнен"));   Question (Decimal)
+		Console.WriteLine(TextCheck("grScrollView.Controls[19].Controls[0].Controls[0]", "123.6"+n));	//Стандарт по доле полки относительно конкурентов  выполнен"));   Question (Decimal)
 		
 		var result = Device.Click("btnForward");
 		Console.WriteLine(result);
@@ -146,11 +146,11 @@ function CheckEmptyScreens(){
 
 function main() {
 
-	//Console.CommandPause = 300;
+	Console.CommandPause = 300;
 
 	var i=0;
 	var st=0;
-	while (i<600){
+	while (i<3000){
 		if (st==1){
 			Console.WriteLine("Continue...");
 			
@@ -200,6 +200,7 @@ function main() {
 		var result = Device.Click("btnForward");
 		Console.WriteLine(result);
 		
+		Console.Pause(500);
 		var screen=Device.GetValue("context.CurrentScreen.Name");
 		while (screen!="Order.xml"){
 			CheckEmptyScreens();

@@ -217,24 +217,24 @@ Console.CommandPause = 500;
 	
 	Console.WriteLine(CheckScreen("Visit_Questions.xml"));
 	
-	var result=Device.Click("grScrollView.Controls[16]"); // Question (List )
-	Console.WriteLine(result+"Question (List)");
-	Console.WriteLine(CheckScreen("ListChoice.xml"));
+	// var result=Device.Click("grScrollView.Controls[16]"); // Question (List )
+	// Console.WriteLine(result+"Question (List)");
+	// Console.WriteLine(CheckScreen("ListChoice.xml"));
 	
-	var result = Device.Click("btnForward");
-	Console.WriteLine(result);	
+	// var result = Device.Click("btnForward");
+	// Console.WriteLine(result);	
 	
-	var result=Device.Click("grScrollView.Controls[16]"); // Question (List )
-	Console.WriteLine(result+"Question (List)");
+	// var result=Device.Click("grScrollView.Controls[16]"); // Question (List )
+	// Console.WriteLine(result+"Question (List)");
 	
-	var result = Device.Click("btnBack");
-	Console.WriteLine(result);	
+	// var result = Device.Click("btnBack");
+	// Console.WriteLine(result);	
 	
-	var result=Device.Click("grScrollView.Controls[16]"); // Question (List )
-	Console.WriteLine(result+"Question (List)");
+	// var result=Device.Click("grScrollView.Controls[16]"); // Question (List )
+	// Console.WriteLine(result+"Question (List)");
 	
-	var result = Device.Click("grScrollView.Controls[2]");
-	Console.WriteLine(result);	
+	// var result = Device.Click("grScrollView.Controls[2]");
+	// Console.WriteLine(result);	
 	
 	Console.Pause(500);
 	
@@ -468,30 +468,30 @@ Console.CommandPause = 500;
 	
 	Console.WriteLine(CheckScreen("Visit_Questions.xml"));
 	
-	Console.Pause(500);
+	// Console.Pause(500);
 	
-	var result=Device.Click("grScrollView.Controls[16]"); // Question (List )
-	Console.WriteLine(result+"Question (ValueList)");
+	// var result=Device.Click("grScrollView.Controls[16]"); // Question (List )
+	// Console.WriteLine(result+"Question (ValueList)");
 	
-	Console.WriteLine(CheckScreen("ListChoice.xml"));
+	// Console.WriteLine(CheckScreen("ListChoice.xml"));
 	
-	var result = Device.Click("btnForward");
-	Console.WriteLine(result);	
+	// var result = Device.Click("btnForward");
+	// Console.WriteLine(result);	
 	
-	var result=Device.Click("grScrollView.Controls[16]"); // Question (List )
-	Console.WriteLine(result+"Question (ValueList1)");
+	// var result=Device.Click("grScrollView.Controls[16]"); // Question (List )
+	// Console.WriteLine(result+"Question (ValueList1)");
 	
-	var result = Device.Click("btnBack");
-	Console.WriteLine(result);	
+	// var result = Device.Click("btnBack");
+	// Console.WriteLine(result);	
 	
-	var result=Device.Click("grScrollView.Controls[16]"); // Question (List )
-	Console.WriteLine(result+"Question (ValueList2)");
+	// var result=Device.Click("grScrollView.Controls[16]"); // Question (List )
+	// Console.WriteLine(result+"Question (ValueList2)");
 	
-	var result = Device.Click("grScrollView.Controls[5]");
-	Console.WriteLine(result);	
+	// var result = Device.Click("grScrollView.Controls[5]");
+	// Console.WriteLine(result);	
 	
-	var result = Device.Click("btnForward");
-	Console.WriteLine(result);	
+	// var result = Device.Click("btnForward");
+	// Console.WriteLine(result);	
 	
 	Console.Pause(500);
 	
@@ -696,37 +696,37 @@ Console.CommandPause = 500;
 	
 	Console.WriteLine(CheckScreen("Order.xml"));
 	
-	var result=Device.Click("grScrollView.Controls[0]"); // Price-list
-	Console.WriteLine(result+"Price-list");
+	// var result=Device.Click("grScrollView.Controls[0]"); // Price-list
+	// Console.WriteLine(result+"Price-list");
 	
-	Console.Pause(500);
+	// Console.Pause(500);
 	
-	Console.WriteLine(CheckScreen("ListChoice.xml"));
+	// Console.WriteLine(CheckScreen("ListChoice.xml"));
 	
-	var result = Device.Click("btnForward");
-	Console.WriteLine(result);	
+	// var result = Device.Click("btnForward");
+	// Console.WriteLine(result);	
 	
-	Console.Pause(500);
+	// Console.Pause(500);
 	
-	Console.WriteLine(CheckScreen("Order.xml"));
+	// Console.WriteLine(CheckScreen("Order.xml"));
 	
-	var result=Device.Click("grScrollView.Controls[0]"); // Price-list
-	Console.WriteLine(result+"Price-list");
+	// var result=Device.Click("grScrollView.Controls[0]"); // Price-list
+	// Console.WriteLine(result+"Price-list");
 	
-	var result = Device.Click("btnBack");
-	Console.WriteLine(result);	
+	// var result = Device.Click("btnBack");
+	// Console.WriteLine(result);	
 	
-	Console.WriteLine(CheckScreen("Order.xml"));
+	// Console.WriteLine(CheckScreen("Order.xml"));
 	
-	var result=Device.Click("grScrollView.Controls[0]"); // Price-list
-	Console.WriteLine(result+"Price-list");
+	// var result=Device.Click("grScrollView.Controls[0]"); // Price-list
+	// Console.WriteLine(result+"Price-list");
 	
-	var result=Device.Click("grScrollView.Controls[0]"); // Choose Price-list
-	Console.WriteLine(result+"Choose Price-list");
+	// var result=Device.Click("grScrollView.Controls[0]"); // Choose Price-list
+	// Console.WriteLine(result+"Choose Price-list");
 	
-	Console.WriteLine(CheckScreen("Order.xml"));
+	// Console.WriteLine(CheckScreen("Order.xml"));
 	
-	var result=Device.Click("Orderadd"); // Order
+	var result = Device.Click("Orderadd.Controls[0].Controls[0].Controls[2]"); // Order
 	Stopwatch.Start();
 	Console.WriteLine(result);
 	
@@ -744,7 +744,7 @@ Console.CommandPause = 500;
 	
 	Console.WriteLine(CheckScreen("Order.xml"));
 	
-	var result=Device.Click("Orderadd"); // Order
+	var result = Device.Click("Orderadd.Controls[0].Controls[0].Controls[2]");// Order
 	Console.WriteLine(result);
 	
 	var result = Device.Click("btnForward");
@@ -752,7 +752,7 @@ Console.CommandPause = 500;
 	
 	Console.WriteLine(CheckScreen("Order.xml"));
 	
-	var result=Device.Click("Orderadd"); // Order
+	var result = Device.Click("Orderadd.Controls[0].Controls[0].Controls[2]");// Order
 	Console.WriteLine(result+"Order");
 	
 	var result=Device.Click("grScrollView.Controls[12]"); // Add SKU to Order
@@ -823,13 +823,13 @@ Console.CommandPause = 500;
 	
 	Console.WriteLine(CheckScreen("Outlet.xml"));
 	
-	var result = Device.Click("btnForward");
-	Console.WriteLine(result);
+	// var result = Device.Click("btnForward");
+	// Console.WriteLine(result);
 	
-	Console.WriteLine(Dialog.ClickNegative());	
+	// Console.WriteLine(Dialog.ClickNegative());	
 	
-	var result = Device.Click("btnOutlets");
-	Console.WriteLine(result);
+	// var result = Device.Click("btnOutlets");
+	// Console.WriteLine(result);
 	
 	var result = Device.Click("grScrollView.Controls[0]");
 	Console.WriteLine(result);

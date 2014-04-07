@@ -57,8 +57,12 @@ function main() {
 	
 	Console.WriteLine(CheckScreen("Outlet.xml"));
 	
-	var outlet=Device.GetValue("workflow[outlet].Description");
-	Console.WriteLine(CheckValue("headerDescr.Controls[0].Controls[0].Controls[0].Controls[0].Text", outlet));
+	Console.Pause(500);
+	
+	// var outlet=Device.GetValue("workflow[outlet].Description");
+	// Console.WriteLine(outlet);
+	// Console.WriteLine(CheckValue("headerDescr.Controls[0].Controls[0].Controls[0].Controls[0].Text", outlet));
+	Console.WriteLine(Device.GetValue("headerDescr.Controls[0].Controls[0].Controls[0].Controls[0].Text"));
 	
 	var result = TextCheck("headerDescr.Controls[0].Controls[0].Controls[0].Controls[0]", "Наименование");  //Проверка изменения названия т.т. из мобильного приложения
 	if (result !=="True; True; True"){ 		result="True";
@@ -115,6 +119,31 @@ function main() {
 	
 	Console.WriteLine(CheckValue("grScrollView.Controls[40].Controls[0].Controls[0].Text", "125.4"));
 	
+	var result=Device.Click("grScrollView.Controls[24]") //Проверка отображения Даты
+	Console.WriteLine(result+"Дата");
+	
+	var SetDT="14.03.2014 8:45";
+	Dialog.SetDateTime(SetDT);
+	var SetDT="14.04.2014 8:45";
+	
+	var appDateTime=Dialog.GetDateTime();
+	appDateTime=String(appDateTime);
+		appDateTime=appDateTime.slice(0, - 3);
+	var result=(SetDT==appDateTime)?"True":"False";
+	Console.WriteLine(result+" Check Date");
+	
+	Console.WriteLine(Dialog.ClickPositive());
+	
+	Console.WriteLine(Device.GetValue("grScrollView.Controls[24].Controls[0].Controls[0].Text")); //Проверка отображения Даты
+	Console.WriteLine(CheckValue("grScrollView.Controls[24].Controls[0].Controls[0].Text", "14.04.2014 8:45:00"));
+	
+	var result=Device.Click("grScrollView.Controls[18]") //Проверка отображения ?
+	Console.WriteLine(result);
+	var result = Device.Click("btnForward");
+		Console.WriteLine(result);
+	Console.WriteLine(Device.GetValue("grScrollView.Controls[18].Controls[0].Controls[0].Text")); //Проверка отображения ?
+	Console.WriteLine(CheckValue("grScrollView.Controls[18].Controls[0].Controls[0].Text", "?"));
+	
 	var result=Device.Click("grScrollView.Controls[16]") //Выбор параметра Логического типа (Оформление витрины samsung)
 	Console.WriteLine(result+"Выбор параметра Логического типа (Оформление витрины samsung)");
 	
@@ -133,17 +162,16 @@ function main() {
 		Console.WriteLine(CheckValue("grScrollView.Controls[16].Controls[0].Controls[0].Text", "Нет"));
 	}
 	
-	var result=Device.Click("grScrollView.Controls[12]") //Выбор параметра строкового типа(Правильная выкладка)
+	var result = Device.Click("btnForward");
+		Console.WriteLine(result);
+		
+		
+	 var SaveMess=Dialog.GetMessage();
+	var result =(SaveMess =="Сохранить изменения?")?"True": "False";
 	Console.WriteLine(result);
 	
-	var result = Device.Click("btnBack");
-	Console.WriteLine(result);
+	var result=Dialog.ClickPositive();
 	
-	Console.WriteLine(CheckScreen("Outlet.xml"));
-	
-	Console.WriteLine(CheckValue("grScrollView.Controls[12].Controls[0].Controls[0].Text", "?"));
-	
-	var result = Device.Click("btnBack");
 	Console.WriteLine(result);
 	
 	Console.WriteLine(CheckScreen("Main.xml"));

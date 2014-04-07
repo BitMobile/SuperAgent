@@ -1,10 +1,3 @@
-/*  Получить номера  заказов из 1С
-
-Запуск бат 
-var wsh = new ActiveXObject("WScript.Shell");
-wsh.Run(new ActiveXObject("Scripting.FileSystemObject").GetAbsolutePathName("")+"/Schedule.bat");
-*/
-
 function CheckScreen(screen) {
 
 	var result = Device.GetValue("context.CurrentScreen.Name");
@@ -32,8 +25,6 @@ function TextCheck (path, text) {
 	var result1= Device.SetFocus(path);
 	
 	var result2 = Device.SetText(path, text);
-	
-	
 	textp=path+".Text";
 	
 	var result3= Device.GetValue(textp);
@@ -63,6 +54,9 @@ function main() {
 	}
 	
 	/*-----------------ORDER Whithout Price-List-------------------------*/
+	
+	Console.WriteLine("----------------------------------------------ORDER Whithout Price-List--------------------------------------");
+	
 	var result = Device.Click("NewOrder");
 	Console.WriteLine(result);
 	
@@ -105,7 +99,7 @@ function main() {
 	Console.WriteLine(result);
 	Console.WriteLine(CheckScreen("Order_Info.xml"));
 	
-	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[0].Controls[0].Text", "Для этой торговой точки нет прайс - листов"));
+	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[0].Controls[0].Text", "Для этой торговой точки нет прайс-листов"));
 	
 	var result = Device.Click("btnForward");
 	Console.WriteLine(result);	
@@ -123,6 +117,8 @@ function main() {
 	Console.WriteLine(CheckScreen("Main.xml"));
 	
 	/*ORDER WITH ONE PRICE_LIST*/
+	
+	Console.WriteLine("----------------------------------------------ORDER WITH ONE PRICE_LIST-------------------------------------");
 	
 	var result=Device.Click("btnOrder");
 	Console.WriteLine(result);
@@ -219,8 +215,8 @@ function main() {
 	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[0].Controls[0].Checked", "False") + "  Discount/MarkUp value is false");
 	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[0].Controls[1].Text", "Скидка/Наценка") + "  Check descriptions Discount/MarkUp");
 	
-	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[0].Controls[0].Text", "0")+ "   Quantity value is 0");
-	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[0].Controls[1].Text", "Количество")+ "  Check descriptions Quantity");
+	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[1].Controls[0].Text", "0")+ "   Quantity value is 0");
+	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[1].Controls[1].Text", "Количество")+ "  Check descriptions Quantity");
 	
 	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[2].Controls[0].Text", "шт.") + "  Units шт");
 	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[2].Controls[1].Text", "Ед. упаковки") + "  Check descriptions Units");
@@ -235,8 +231,9 @@ function main() {
 	}
 
 	var quantity="5";
-	TextCheck("grScrollView.Controls[4].Controls[0].Controls[0]", quantity);
+	var result=TextCheck("grScrollView.Controls[2].Controls[1].Controls[0]", quantity);
 	if (result !="True; True; True") {
+		result="False";
 		Console.WriteLine(result+"Количество не вводится");
 	}
 	else {
@@ -245,8 +242,9 @@ function main() {
 	}
 	
 	var discount="30";
-	TextCheck("grScrollView.Controls[2].Controls[1].Controls[0]", discount);
+	var result=TextCheck("grScrollView.Controls[4].Controls[1].Controls[0]", discount);
 	if (result !="True; True; True") {
+		result="False";
 		Console.WriteLine(result+ "Скидка не вводится");
 	}
 	else {
@@ -257,18 +255,24 @@ function main() {
 	var result = Device.Click("grScrollView.Controls[0].Controls[0]");
 	Console.WriteLine(result);	
 	
-	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[1].Controls[1].Text", "Скидка") +"  Check descriptions Disc");
+	Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[1].Controls[1].Text", "Скидка") +"  Check descriptions Disc");
 	
 	price= price*((-discount/100)+1);
 	Console.WriteLine(price);
-	
+	Console.WriteLine(Device.GetValue("grScrollView.Controls[2].Controls[0].Controls[0].Text"));
 	Console.WriteLine(CheckValue("grScrollView.Controls[2].Controls[0].Controls[0].Text", price)+ "  Check Price");
 	
 	var amount=price*quantity;
 	/*amount=amount.toFixed(2);*/
 	Console.WriteLine(amount);
 	
-	Console.WriteLine(Device.Click("grScrollView.Controls[11]"));
+	var result = Device.Click("btnForward");
+	Console.WriteLine(result);	
+	
+	var result = Device.Click("Orderadd.Controls[0].Controls[0].Controls[2]");
+	Console.WriteLine(result);
+	
+	Console.WriteLine(Device.Click("grScrollView.Controls[6]"));
 	
 	var changedQuantity=quantity*50;
 	
@@ -297,7 +301,7 @@ function main() {
 	Console.WriteLine(result);	
 	/*проверка задвоения заказа*/
 	
-	var result = Device.Click("Orderadd");
+	var result = Device.Click("Orderadd.Controls[0].Controls[0].Controls[2]");
 	Stopwatch.Start();
 	Console.WriteLine(result);
 	
@@ -340,7 +344,7 @@ function main() {
 	Console.WriteLine(CheckValue("grScrollView.Controls[8].Controls[0].Controls[0].Text", "Красный")+ "Красный");	
 	
 	var quantity="15";
-	TextCheck("grScrollView.Controls[4].Controls[0].Controls[0]", quantity);
+	var result=TextCheck("grScrollView.Controls[4].Controls[0].Controls[0]", quantity);
 	if (result !="True; True; True") {
 		Console.WriteLine(result+"Количество не вводится");
 	}
@@ -370,9 +374,9 @@ function main() {
 	
 	Console.WriteLine(CheckScreen("Main.xml"));
 	
-	
 	/*-----------NEW ORDER---------------*/
 	
+	Console.WriteLine("----------------------------------------------NEW ORDER-------------------------------------");
 	
 	var result = Device.Click("btnOrder");
 	Console.WriteLine(result+"New orders Check");
@@ -393,7 +397,7 @@ function main() {
 	}
 	Console.WriteLine(result);
 	
-	Device.Click("Orderadd");	
+var result = Device.Click("Orderadd.Controls[0].Controls[0].Controls[2]");
 	var result = Device.GetValue("context.CurrentScreen.Name");
 	if (result != "Order.xml"){
 		result="True";
@@ -421,7 +425,7 @@ function main() {
 	var result = Device.Click("btnBack");
 	Console.WriteLine(result);
 	
-	Device.Click("grScrollView.Controls[2]");
+	Device.Click("grScrollView.Controls[0]");
 	
 	var result = Device.GetValue("context.CurrentScreen.Name");
 	if (result != "Order.xml"){

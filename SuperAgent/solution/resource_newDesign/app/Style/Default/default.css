@@ -189,10 +189,10 @@ Button {
         }
 
         .grid hl vl{
-            width: 90%;
+            width: 83.3%;
             height: 100%;
             margin-top: 16%;
-            padding-left: 5%;
+            padding-left:2.7%;
         }
 
 .main_row {
@@ -208,4 +208,16 @@ Button {
     white-space: normal;
     font: 40% Arial;
     color:#8e8e93;
+}
+
+.yellow_mark {
+    background-image:url(yellow_mark.png);
+    height:14%;
+    margin-top:17.1%;
+    margin-left:2.7%;
+}
+
+.no_mark {
+    height:100%;
+    width: 6.1%
 }

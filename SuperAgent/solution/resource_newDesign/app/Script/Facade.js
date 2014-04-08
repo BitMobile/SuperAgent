@@ -382,6 +382,21 @@ function GetScheduledVisits(searchText) {
 
 }
 
+function GetUncommitedScheduledVisits(searchText) {
+
+    if (String.IsNullOrEmpty(searchText))
+        return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date).Top(100).OrderBy("OutletAsObject.Description");
+    else
+        return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date).Where("OutletAsObject.Description.Contains(@p1)", [searchText]).Top(100).OrderBy("OutletAsObject.Description");
+}
+
+function GetCommitedScheduledVisits(searchText) {
+    if (String.IsNullOrEmpty(searchText))
+        return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date).Top(100).OrderBy("OutletAsObject.Description");
+    else
+        return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date).Where("OutletAsObject.Description.Contains(@p1)", [searchText]).Top(100).OrderBy("OutletAsObject.Description");
+}
+
 //checks whether this visit is already done today
 function GetTodayVisit(outlet) {
     var query = new Query();

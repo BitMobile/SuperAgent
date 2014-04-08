@@ -176,19 +176,19 @@ Button {
         background-color: #c8c7cc;
     }    
 
-    .grid hl{
+    .grid{
         height:15.3sp;
         background-color:#ffffff;
     }
 
-        .grid hl img{ 
+        .grid img{ 
             height: 18.5%;
             margin-top: 16%;
             margin-left: 2.5%;
             background-image: url(arrow.png);
         }
 
-        .grid hl vl{
+        .grid vl{
             width: 83.3%;
             height: 100%;
             margin-top: 16%;

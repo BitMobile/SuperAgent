@@ -38,13 +38,12 @@
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
-      <c:VerticalLayout CssClass="grid">
 
         <s:Iterator Id="outlet" Value="$outlets">
           <s:Push Id="planVisit" Value="$outlet.RefAsObject"></s:Push>
           <s:Push Id="planOutlet" Value="$outlet.OutletAsObject"></s:Push>
 
-          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$planOutlet,$planVisit)">
+          <c:HorizontalLayout CssClass="grid" OnClickAction="$Workflow.DoAction(Select,$planOutlet,$planVisit)">
             <s:If Test="$planOutlet.ConfirmationStatusAsObject.Description == 'New'">
               <c:Image CssClass="yellow_mark"/>
             </s:If>
@@ -60,7 +59,6 @@
           <c:HorizontalLine/>
 
         </s:Iterator>
-      </c:VerticalLayout>
       
 
       <c:HorizontalLayout CssClass="caption_grid">
@@ -71,13 +69,12 @@
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
-      <c:VerticalLayout CssClass="grid">
 
         <s:Iterator Id="outlet" Value="$outlets">
           <s:Push Id="planVisit" Value="$outlet.RefAsObject"></s:Push>
           <s:Push Id="planOutlet" Value="$outlet.OutletAsObject"></s:Push>
 
-          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$planOutlet,$planVisit)">
+          <c:HorizontalLayout CssClass="grid" OnClickAction="$Workflow.DoAction(Select,$planOutlet,$planVisit)">
             <s:If Test="$planOutlet.ConfirmationStatusAsObject.Description == 'New'">
               <c:Image CssClass="yellow_mark"/>
             </s:If>
@@ -93,7 +90,6 @@
           <c:HorizontalLine/>
 
         </s:Iterator>
-      </c:VerticalLayout>
       
 
     </c:ScrollView>

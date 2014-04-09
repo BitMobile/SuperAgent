@@ -1,4 +1,6 @@
-﻿ todo		ToDo
+﻿forward		Forward
+client		Client
+ todo		ToDo
 stock		Stock
 schedule	Schedule
 order		Order

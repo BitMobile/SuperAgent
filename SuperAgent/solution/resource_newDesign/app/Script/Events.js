@@ -126,7 +126,7 @@ function OnWorkflowPause(name) {
 function PrepareScheduledVisits_Map() {
     var visitPlans = Variables["visitPlans"];
     for (var visitPlan in visitPlans) {
-        var outlet = visitPlan.OutletAsObject();
+        var outlet = DB.Current.Catalog.Outlet.SelectBy("Id", visitPlan).First();
         if (!isDefault(outlet.Lattitude) && !isDefault(outlet.Longitude)) {
             var query = new Query();
             query.AddParameter("Date", DateTime.Now.Date);

@@ -7,6 +7,11 @@ function ToFloat(text) {
     return parseFloat(text, 10);
 }
 
+function AddGlobalAndAction(name, value, actionName) {
+    Variables.AddGlobal(name, value);
+    Workflow.Action(actionName, []);
+}
+
 function GetSKU(val) {
     return DB.Current.Catalog.SKU.SelectBy("Id", val).First();
 }
@@ -953,7 +958,7 @@ function HasCoordinates(visitPlans) {
     }
 
     for (var visitPlan in visitPlans) {
-        var outlet = visitPlan.OutletAsObject();
+        var outlet = DB.Current.Catalog.Outlet.SelectBy("Id", visitPlan);
         if (!isDefault(outlet.Lattitude) && !isDefault(outlet.Longitude)) {
             return true;
         }

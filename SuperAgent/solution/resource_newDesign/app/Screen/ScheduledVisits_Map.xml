@@ -5,8 +5,8 @@
 
   <c:VerticalLayout>
     <c:DockLayout CssClass="top_navigator">
-      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()" />
-      <c:Button Id="btnForward" CssClass="btn_grey_forward" OnEvent="Forward" />
+      <c:HorizontalLayout CssClass="btn_back" OnClickAction="$Workflow.DoBack()"><c:Image/><c:TextView Text="#map#"/></c:HorizontalLayout>
+      <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnClickAction="$Workflow.DoBack()"/>
       <c:TextView Text="#map#" />
     </c:DockLayout>
 
@@ -14,8 +14,8 @@
       <c:WebMapGoogle Id="map"/>
     </s:If>
     <s:Else>
-      <c:ScrollView CssClass="grid">
-        <c:HorizontalLayout>
+      <c:ScrollView>
+        <c:HorizontalLayout CssClass="grid">
           <c:VerticalLayout>
             <c:TextView Text="#no_visitPlans#" CssClass="main_row"></c:TextView>
           </c:VerticalLayout>

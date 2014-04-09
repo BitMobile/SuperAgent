@@ -1,4 +1,6 @@
-﻿todo		Задачи
+﻿forward		Далее
+client		Клиент
+todo		Задачи
 stock		Остатки
 schedule	Расписание
 order		Заказ

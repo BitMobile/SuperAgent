@@ -7,8 +7,8 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:Button Id="btnBack" CssClass="btn_menu" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button Id="btnForward" Text="#map#" CssClass="btn_forward" />
+      <c:Button Id="btnBack" CssClass="btn_menu" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
+      <c:Button Id="btnForward" Text="#map#" CssClass="btn_forward" OnClickAction="$Workflow.DoAction(ShowMap, $outlets)"/>
       <c:TextView Text="#visits#" />
     </c:DockLayout>
 
@@ -40,11 +40,10 @@
       <c:HorizontalLine/>
 
 
-        <s:Iterator Id="outlet" Value="$uncommitedVisits">
-          <s:Push Id="planVisit" Value="$outlet.RefAsObject"></s:Push>
-          <s:Push Id="planOutlet" Value="$outlet.OutletAsObject"></s:Push>
-
-          <c:HorizontalLayout CssClass="grid" OnClickAction="$Workflow.DoAction(Select,$planOutlet,$planVisit)">
+        <s:Iterator Id="pOutlet" Value="$uncommitedVisits">
+          <s:Push Id="planOutlet" Value="$pOutlet.OutletAsObject"></s:Push>
+          
+          <c:HorizontalLayout CssClass="grid" OnClickAction="$Facade.AddGlobalAndAction(outlet, $planOutlet, Select)">
             <s:If Test="$planOutlet.ConfirmationStatusAsObject.Description == 'New'">
               <c:Image CssClass="yellow_mark"/>
             </s:If>
@@ -71,8 +70,8 @@
       <c:HorizontalLine/>
 
 
-        <s:Iterator Id="outlet" Value="$commitedVisits">
-          <s:Push Id="planOutlet" Value="$outlet.OutletAsObject"></s:Push>
+        <s:Iterator Id="pOutlet" Value="$commitedVisits">
+          <s:Push Id="planOutlet" Value="$pOutlet.OutletAsObject"></s:Push>
 
           <c:HorizontalLayout CssClass="grid">
             <s:If Test="$planOutlet.ConfirmationStatusAsObject.Description == 'New'">
@@ -85,7 +84,6 @@
               <c:TextView Text="$planOutlet.Description" CssClass="main_row"></c:TextView>
               <c:TextView Text="{$planOutlet.Address}" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
-            <c:Image/>
           </c:HorizontalLayout>
           <c:HorizontalLine/>
 

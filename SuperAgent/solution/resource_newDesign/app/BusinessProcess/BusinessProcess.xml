@@ -19,41 +19,18 @@
   </bp:Workflow>
 
   <bp:Workflow Name="Visits">
+    
     <bp:Step Name="Visits" Screen="Visits.xml">
-      
-    </bp:Step>
-  </bp:Workflow>
-  
-  <bp:Workflow Name="ToDo">
-    <bp:Step Name="ToDo" Screen="Tasks.xml">
-      <bp:Action Name="Select" NextStep="Task"></bp:Action>
-      <bp:Action Name="Forward" NextStep=""></bp:Action>
-    </bp:Step>
-    <bp:Step Name="Task" Screen="Task.xml">
-    </bp:Step>
-  </bp:Workflow>
-
-  <bp:Workflow Name="Stocks">
-    <bp:Step Name="Stocks" Screen="Stock_SKUs.xml">
-      <bp:Action Name="Select" NextStep="SKUImage"/>
-      <bp:Action Name="SetFilter" NextStep="Filters"></bp:Action>
-    </bp:Step>
-
-    <bp:Step Name="SKUImage" Screen="SKU_Image.xml">
-    </bp:Step>
-
-    <bp:Step Name="Filters" Screen="Filters.xml">
-      <bp:Action Name="Forward" NextStep="Stocks"></bp:Action>
-    </bp:Step>
-
-  </bp:Workflow>
-
-  <bp:Workflow Name="ScheduledVisit">
-
-    <bp:Step Name="Visits" Screen="ScheduledVisits.xml">
-      <bp:Action Name="Select" NextStep="Outlet"></bp:Action>
       <bp:Action Name="ShowMap" NextStep="ShowMap"></bp:Action>
+      <bp:Action Name="Select" NextWorkflow="ScheduledVisit"></bp:Action>
     </bp:Step>
+
+    <bp:Step Name="ShowMap" Screen="ScheduledVisits_Map.xml">
+    </bp:Step>
+    
+  </bp:Workflow>    
+  
+  <bp:Workflow Name="ScheduledVisit">
 
     <bp:Step Name="Outlet" Screen="Outlet.xml">
       <bp:Action Name="Forward" NextStep="Visit_Tasks"></bp:Action>
@@ -146,6 +123,32 @@
     </bp:Step>
 
     <bp:Step Name="ShowMap" Screen="ScheduledVisits_Map.xml">
+    </bp:Step>
+
+  </bp:Workflow>
+  
+  
+  <bp:Workflow Name="ToDo">
+    <bp:Step Name="ToDo" Screen="Tasks.xml">
+      <bp:Action Name="Select" NextStep="Task"></bp:Action>
+      <bp:Action Name="Forward" NextStep=""></bp:Action>
+    </bp:Step>
+    <bp:Step Name="Task" Screen="Task.xml">
+    </bp:Step>
+  </bp:Workflow>
+
+  
+  <bp:Workflow Name="Stocks">
+    <bp:Step Name="Stocks" Screen="Stock_SKUs.xml">
+      <bp:Action Name="Select" NextStep="SKUImage"/>
+      <bp:Action Name="SetFilter" NextStep="Filters"></bp:Action>
+    </bp:Step>
+
+    <bp:Step Name="SKUImage" Screen="SKU_Image.xml">
+    </bp:Step>
+
+    <bp:Step Name="Filters" Screen="Filters.xml">
+      <bp:Action Name="Forward" NextStep="Stocks"></bp:Action>
     </bp:Step>
 
   </bp:Workflow>

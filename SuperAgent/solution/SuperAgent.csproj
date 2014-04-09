@@ -202,7 +202,6 @@
     <Content Include="resource_newDesign\app\Screen\Outlets.xml" />
     <Content Include="resource_newDesign\app\Screen\Outlet_Map.xml" />
     <Content Include="resource_newDesign\app\Screen\Receivables.xml" />
-    <Content Include="resource_newDesign\app\Screen\ScheduledVisits.xml" />
     <Content Include="resource_newDesign\app\Screen\ScheduledVisits_Map.xml" />
     <Content Include="resource_newDesign\app\Screen\Settings.xml" />
     <Content Include="resource_newDesign\app\Screen\SKU_Image.xml" />

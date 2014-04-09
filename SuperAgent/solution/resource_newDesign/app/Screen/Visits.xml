@@ -24,6 +24,7 @@
         <c:Image />
         <c:EditText Id="edtSearch" Text="$search"></c:EditText>
       </c:DockLayout>
+      <c:Button Id="btnSearch" Text="#search#" OnClickAction="$Workflow.DoRefresh($edtSearch.Text)"></c:Button>
     </c:HorizontalLayout>
     <c:HorizontalLine/>
     <c:HorizontalLine/>
@@ -31,15 +32,14 @@
     <c:ScrollView>
 
       <c:HorizontalLayout CssClass="caption_grid">
-
-        <s:Push Id="uncommitedVisits" Value="$Facade.GetUncommitedScheduledVisits($search)"></s:Push>
-        <s:Push Id="sv" Value="$Facade.CountCollection($outlets)"></s:Push>
+        <s:Push Id="uncommitedVisits" Value="$Facade.GetUncommitedScheduledVisits($search, $outlets)"></s:Push>
+        <s:Push Id="sv" Value="$Facade.CountCollection($uncommitedVisits)"></s:Push>
         <c:TextView Text="НЕВЫПОЛНЕННЫЕ_ВИЗИТЫ ({$sv}):"></c:TextView>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
 
-        <s:Iterator Id="outlet" Value="$outlets">
+        <s:Iterator Id="outlet" Value="$uncommitedVisits">
           <s:Push Id="planVisit" Value="$outlet.RefAsObject"></s:Push>
           <s:Push Id="planOutlet" Value="$outlet.OutletAsObject"></s:Push>
 
@@ -63,18 +63,17 @@
 
       <c:HorizontalLayout CssClass="caption_grid">
 
-        <s:Push Id="uncommitedVisits" Value="$Facade.GetCommitedScheduledVisits($search)"></s:Push>
-        <s:Push Id="sv" Value="$Facade.CountCollection($outlets)"></s:Push>
-        <c:TextView Text="ВЫПОЛНЕННЫЕ_ВИЗИТЫ ({$sv}):"></c:TextView>
+        <s:Push Id="commitedVisits" Value="$Facade.GetCommitedScheduledVisits($search, $outlets)"></s:Push>
+        <s:Push Id="cv" Value="$Facade.CountCollection($commitedVisits)"></s:Push>
+        <c:TextView Text="ВЫПОЛНЕННЫЕ_ВИЗИТЫ ({$cv}):"></c:TextView>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
 
-        <s:Iterator Id="outlet" Value="$outlets">
-          <s:Push Id="planVisit" Value="$outlet.RefAsObject"></s:Push>
+        <s:Iterator Id="outlet" Value="$commitedVisits">
           <s:Push Id="planOutlet" Value="$outlet.OutletAsObject"></s:Push>
 
-          <c:HorizontalLayout CssClass="grid" OnClickAction="$Workflow.DoAction(Select,$planOutlet,$planVisit)">
+          <c:HorizontalLayout CssClass="grid">
             <s:If Test="$planOutlet.ConfirmationStatusAsObject.Description == 'New'">
               <c:Image CssClass="yellow_mark"/>
             </s:If>

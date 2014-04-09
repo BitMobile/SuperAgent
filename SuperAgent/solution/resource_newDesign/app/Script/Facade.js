@@ -376,25 +376,45 @@ function UpdateOtletStatus() {
 function GetScheduledVisits(searchText) {
 
     if (String.IsNullOrEmpty(searchText))
-        return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date).Top(100).OrderBy("OutletAsObject.Description");
+        return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date).Top(100).OrderBy("OutletAsObject.Description").Distinct("Outlet");
     else
-        return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date).Where("OutletAsObject.Description.Contains(@p1)", [searchText]).Top(100).OrderBy("OutletAsObject.Description");
+        return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date).Where("OutletAsObject.Description.Contains(@p1)", [searchText]).Top(100).OrderBy("OutletAsObject.Description").Distinct("Outlet");
 
 }
 
-function GetUncommitedScheduledVisits(searchText) {
+function GetUncommitedScheduledVisits(searchText, planOutlets) {
+
+    var cv = DB.Current.Document.Visit.SelectBy("Outlet", planOutlets).Where("Date.Date == @p1", [DateTime.Now.Date]).Top(100).Distinct("Outlet");
+    Dialog.Debug(cv.Count());
 
     if (String.IsNullOrEmpty(searchText))
-        return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date).Top(100).OrderBy("OutletAsObject.Description");
+        return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date)
+            .Union(
+            DB.Current.Document.VisitPlan_Outlets.SelectBy("Outlet", cv, "<>")
+            )
+            .Top(100).OrderBy("OutletAsObject.Description");
     else
-        return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date).Where("OutletAsObject.Description.Contains(@p1)", [searchText]).Top(100).OrderBy("OutletAsObject.Description");
+    //return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date).Where("OutletAsObject.Description.Contains(@p1)", [searchText]).Top(100).OrderBy("OutletAsObject.Description");
+        if (parseInt(cv.Count()) != parseInt(0)) {
+            return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date)
+                .Where("OutletAsObject.Description.Contains(@p1)", [searchText])
+                .Union(
+                DB.Current.Document.VisitPlan_Outlets.SelectBy("Outlet", cv, "<>")
+
+                )
+                .Top(100).OrderBy("OutletAsObject.Description");
+        }
+        else
+            return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date)
+                .Where("OutletAsObject.Description.Contains(@p1)", [searchText])
+                .Top(100).OrderBy("OutletAsObject.Description");
 }
 
-function GetCommitedScheduledVisits(searchText) {
-    if (String.IsNullOrEmpty(searchText))
-        return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date).Top(100).OrderBy("OutletAsObject.Description");
-    else
-        return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date).Where("OutletAsObject.Description.Contains(@p1)", [searchText]).Top(100).OrderBy("OutletAsObject.Description");
+function GetCommitedScheduledVisits(searchText, planOutlets) {
+    //if (String.IsNullOrEmpty(searchText))
+        return DB.Current.Document.Visit.SelectBy("Outlet", planOutlets).Where("Date.Date == @p1", [DateTime.Now.Date]).Top(100).OrderBy("OutletAsObject.Description");
+    //else
+    //    return DB.Current.Document.Visit.SelectBy("Date", DateTime.Now.Date).Where("OutletAsObject.Description.Contains(@p1) && Plan!=@p2", [searchText, null]).Top(100).OrderBy("OutletAsObject.Description");
 }
 
 //checks whether this visit is already done today

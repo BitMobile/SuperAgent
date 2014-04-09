@@ -119,7 +119,7 @@ Button {
 
    .search dl {        
         height: 64%;
-        width: 95%;
+        width: 65%;
         vertical-align: central;
         margin-left: 2.5%;
         background-color: #ffffff;
@@ -133,6 +133,19 @@ Button {
             margin-left: 1%;            
             background-color: #ffffff;
             dock-align: left;
+        }
+
+        .search Button {
+            margin-left: 1%;
+            margin-top: 20%;
+            width: 30%;
+            height: 60%;
+            background-color: #43acfd;
+            color: #f8f8f8;
+            border-width: 1px;
+            border-color: #43acfd;
+            border-radius: 5px;
+            font: 60% arial;
         }
 
         .search dl EditText {
@@ -182,7 +195,7 @@ Button {
     }
 
         .grid img{ 
-            height: 18.5%;
+            height: 15.4%;
             margin-top: 16%;
             margin-left: 2.5%;
             background-image: url(arrow.png);

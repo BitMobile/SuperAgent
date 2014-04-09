@@ -385,7 +385,6 @@ function GetScheduledVisits(searchText) {
 function GetUncommitedScheduledVisits(searchText, planOutlets) {
 
     var cv = DB.Current.Document.Visit.SelectBy("Outlet", planOutlets).Where("Date.Date == @p1", [DateTime.Now.Date]).Top(100).Distinct("Outlet");
-    Dialog.Debug(cv.Count());
 
     if (String.IsNullOrEmpty(searchText))
         return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date)
@@ -415,6 +414,10 @@ function GetCommitedScheduledVisits(searchText, planOutlets) {
         return DB.Current.Document.Visit.SelectBy("Outlet", planOutlets).Where("Date.Date == @p1", [DateTime.Now.Date]).Top(100).OrderBy("OutletAsObject.Description");
     //else
     //    return DB.Current.Document.Visit.SelectBy("Date", DateTime.Now.Date).Where("OutletAsObject.Description.Contains(@p1) && Plan!=@p2", [searchText, null]).Top(100).OrderBy("OutletAsObject.Description");
+}
+
+function GetUnplannedCommitedVisitsCount(searchText, planOutlets) {
+    return DB.Current.Document.Visit.SelectBy("Outlet", planOutlets, "<>").Where("Date.Date == @p1", [DateTime.Now.Date]).Top(100).Count();
 }
 
 //checks whether this visit is already done today

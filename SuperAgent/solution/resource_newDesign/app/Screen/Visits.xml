@@ -2,7 +2,7 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
 
   <s:Push Id="search" Value="$param1"/>
-  <s:Push Id="outlets" Value="$Facade.GetScheduledVisits($search)" />
+  <s:Push Id="outlets" Value="$Facade.GetScheduledVisits($search)" />  
 
   <c:VerticalLayout>
 
@@ -14,8 +14,9 @@
 
     <c:HorizontalLayout CssClass="small_grid">
       <s:Push Id="sv" Value="$Facade.CountCollection($outlets)"></s:Push>
+      <s:Push Id="ucv" Value="$Facade.GetUnplannedCommitedVisitsCount(null, $outlets)"></s:Push>
       <c:Button CssClass="mode_left_button_on" Text="#planVisit# ({$sv})"></c:Button>
-      <c:Button CssClass="mode_right_button_off" Text="#unplanned# ()"></c:Button>
+      <c:Button CssClass="mode_right_button_off" Text="#unplanned# ({$ucv})"></c:Button>
     </c:HorizontalLayout>
     <c:HorizontalLine/>
 

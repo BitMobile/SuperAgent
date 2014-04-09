@@ -112,6 +112,7 @@
     <Content Include="resource\app\Screen\Outlet.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="resource\app\Screen\Visits.xml" />
     <Content Include="resource\app\Screen\Visit_Questions.xml">
       <SubType>Designer</SubType>
     </Content>

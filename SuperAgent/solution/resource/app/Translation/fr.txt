@@ -1,0 +1,135 @@
+SE	FR
+ todo	ToDo
+stock	Stock
+schedule	Calendrier
+order	Commande
+visit	Visite
+outlets	Points de vente
+targets	Cibles
+target	Cible
+settings	Paramètres
+sync	Synchroniser
+syncPhoto	Synchroniser les photos
+search	Recherche
+outlet	Point de vente
+outlet_class	Classe du point de ventes
+outlet_type	Type du point de ventes
+distributor	Distributeur
+answer	Réponse
+typeanswer	Entrer les réponses..
+username	Nom d'utilisateur
+password	Mot de passe
+cancel	Annuler
+Ok	Ok
+parameters	Paramètres
+select_answer	Sélectionnez la valeur..
+save	Enregistrer
+no_questions	Aucune question
+questions	Questions
+commentary	Commentaire
+insert_answer	Insérer la valeur..
+amount	Montant
+sku	SKU
+quantity	Quantité
+price	Prix
+edit	Modifier
+insert_text	Insérer le texte..
+totalamount	Montant total
+price2	Prix:
+kpi	KPI
+tasks	Tâches
+task	Tâche
+description	Description
+result	Résultat
+plandate	Date du plan
+date	Date
+distributor	Distributeur
+outletType	Type de point de vente
+outletClass	Classe de point de vente
+available	Disponible
+facing	Facing
+stock	Stock
+price	Prix
+markUp	Mark Up
+outOfStock	Rupture de stock
+FALSE	FAUX
+TRUE	VRAI
+done	Terminé
+pcs	pcs.
+orders	Commandes
+newOrder	Nouvelle commande
+discount	Rabais
+noNumber	Aucun numéro
+markUp	MarkUp
+unit	Unité
+baseUnit	Unité de base
+selectUnit	Sélection de l'unité:
+logo	logoEn
+packUnit	Unité d'emballage
+refreshScreen	Actualisation de l'écran
+no_tasks	Aucune tâche
+documentSum	Montant du document
+document	Document
+receivables	Recevables
+receivable	Recevable
+encashment	Encaissement
+sum	Somme
+encashmentSum	Montant d'encaissement
+spreadOnDocuments	Étendre sur les documents
+docNumber	Numéro de document
+receivableAmount	Montant de recevables
+encashmentAmount	Montant d'encaissements
+nameSurname	Prénom, nom
+maximumAmount	Limite de montant
+NoLimit	Aucune limite
+deleteItem	Supprimer cet item
+startTime	Heure de début
+newOutlet	Nouveau point de ventes
+messageNulls	Tous les champs sont mandataires.
+countPrice	Comptez les prix
+address	Adresse
+description	Description
+coordinatesAreSet	Coordonnées sont enregistrées
+noCoordinates	Coordonnées ne sont pas enregistrées
+setVisitCoordinates	Réessayez d'enregistrer les coordonnées?
+setCoords	Enregistrer les coordonnées
+setCoordinates	Enregistrer les coordonnées du point de ventes par l'emplacement actuel?
+location	Enregistrer l'emplacement du point de ventes
+locationSetFailed	Enregistrement de l'emplacement a échoué. Ressayez?
+saveChanges	Enregistrer les modifications ?
+map	Carte
+showOnMap	Voir sur la carte
+no_visitPlans	Aucune visite à afficher
+current	Courant
+couldnt_be_cleaned	Le champ n'a pas pu être effacé
+priceList	Liste des prix
+isntSelected	N'est pas sélectionné
+SKUWillRevised	La liste SKU a été révisée
+features	Fonctionnalités
+noPriceLists	Aucune liste de prix pour ce point de ventes
+emptyList	Liste est vide
+impossibleToDelete	Impossible de supprimer, la commande est déjà dans la BD centrale
+valueList	Liste des valeurs
+deliveryDate	Date de livraison
+enterDateTime	Entrez la date, l'heure
+noImage	Aucune image trouvée
+of	de
+information	Information
+snapshot	Photo
+noSnapshot	Aucune photo
+snapshotAttached	Photo est jointe
+clickToInsert	Cliquer pour insérer
+itemAlreadyExist	Cet item existe déjà. Continuer la modification? ("Non" - ne pas ajouter nouvel élément dans la commande)
+YES	Oui
+NO	Non
+filter	Filtre
+clearFilter	Annuler le filtre
+groups	Groupes
+brands	Marques
+brand	Marque
+impossibleToCreateVisit	Impossible de créer le plan si les coordonnées ne sont pas définies. Réessayez d'obtenir l'emplacement?
+fillNoOrderReason	La raison pour ne pas prendre la commande doit être spécifiée.
+reasonForEmptyOrder	Raison pour ne pas prendre la commande
+fillInVisitReason	La raison de la visite doit être spécifiée
+visitReason	Raison de la visite
+debt	Dette

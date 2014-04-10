@@ -629,7 +629,7 @@ function GoToQuestionAction(answerType, question, visit) {
 
 function DateTimeQuestion(question, dateTime) {
     question.Answer = dateTime;
-    Variables["dateTimeText"].Text = dateTime;
+    Workflow.Refresh([]);
 }
 
 
@@ -644,7 +644,7 @@ function GetCameraObject(entity) {
 
 function SaveAtVisit(question) {
     question.Answer = Variables["guid"];
-    Variables["snapshotInfo"].Text = Translate["#snapshotAttached#"];
+    Workflow.Refresh([]);
 }
 
 function GetSKUShapshot(question) {
@@ -1752,7 +1752,7 @@ function CreateEncashmentIfNotExist(visit, textValue, autospread) {
     }
     if (textValue == "" || textValue == null)
         textValue = 0;
-    encashment.EncashmentAmount = textValue;
+    encashment.EncashmentAmount = Converter.ToDecimal(textValue);
     var e = GetEncAmount(textValue, autospread, encashment);
     Variables.Add("encashmentAmount", e);
 
@@ -1815,7 +1815,7 @@ function SpreadOnItem(encItem, sumToSpread, encashment, receivableDoc) {
 
 function GetEncashments(receivables, autoSpread, encashmentAmount, encashmentId) {
     var parent = [];
-    var sumToSpread = encashmentAmount;
+    var sumToSpread = Converter.ToDecimal(encashmentAmount);
     for (var i in receivables) {
         var document = [];
         document.push(i.DocumentName);
@@ -1902,7 +1902,9 @@ function GetEncAmount(encashmentText, autoSpread, encashment) {
 }
 
 function SetAmountAndForward(encashment, sum) {
-    encashment.EncashmentAmount = sum;
+    if (String.IsNullOrEmpty(sum))
+        sum = parseInt(0);
+    encashment.EncashmentAmount = Converter.ToDecimal(sum);
 
     Workflow.Forward([]);
 }

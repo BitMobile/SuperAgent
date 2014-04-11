@@ -1,5 +1,7 @@
 ﻿forward		Далее
+summary		Сводная информация
 client		Клиент
+clients		Клиенты
 main		ОСНОВНОЕ
 todo		Задачи
 stock		Остатки
@@ -7,13 +9,14 @@ schedule	Расписание
 order		Заказ
 visit		Визит
 visits		Визиты
+info		О приложении
 planVisit	Плановые
 unplanned	Внеплановые
 outlets		Магазины
 targets		Цели
 target		Цель
 settings	Настройки
-sync		Обновить
+sync		Синхронизация
 syncPhoto	Обмен фото
 search		Поиск
 outlet		Торговая точка
@@ -41,7 +44,7 @@ edit		Редактирование
 insert_text	Введите текст..
 totalamount	Итого
 price2		Цена:
-kpi			KPI
+kpi			Отчеты/KPI
 tasks		Задачи
 task		Задача
 description	Наименование

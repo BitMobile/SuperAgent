@@ -3,14 +3,13 @@
 
   <bp:Workflow Name="Main">
 
-    <bp:Step Name="Main" Screen="Main.xml">
+    <bp:Step Name="Main" Screen="Main2.xml">
 
-      <bp:Action Name="Distr" NextWorkflow="Stocks"></bp:Action>
-      <bp:Action Name="ToDo" NextWorkflow="ToDo"></bp:Action>
+      <bp:Action Name="Visits" NextWorkflow="Visits"></bp:Action>
       <bp:Action Name="Order" NextWorkflow="Order"></bp:Action>
-      <bp:Action Name="UnscheduledVisit" NextWorkflow="UnscheduledVisit"></bp:Action>
-      <bp:Action Name="ScheduledVisit" NextWorkflow="Visits"></bp:Action>
       <bp:Action Name="Outlets" NextWorkflow="Outlets"></bp:Action>
+      <bp:Action Name="Stocks" NextWorkflow="Stocks"></bp:Action>
+      <bp:Action Name="ToDo" NextWorkflow="ToDo"></bp:Action>
       <bp:Action Name="Targets" NextWorkflow="Targets"></bp:Action>
       <bp:Action Name="Settings" NextWorkflow="Settings"></bp:Action>
 

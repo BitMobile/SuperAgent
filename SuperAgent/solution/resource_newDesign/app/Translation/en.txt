@@ -1,5 +1,7 @@
 ﻿forward		Forward
+summary		Summary
 client		Client
+clients		Clients
 main		MAIN
  todo		ToDo
 stock		Stock
@@ -7,6 +9,7 @@ schedule	Schedule
 order		Order
 visit		Visit
 visits		Visits
+info		About
 planVisit	Planned
 unplanned	Unplanned
 outlets		Outlets

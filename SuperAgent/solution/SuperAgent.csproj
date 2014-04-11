@@ -215,6 +215,8 @@
     <Content Include="resource_newDesign\app\Screen\Visit_SKUs.xml" />
     <Content Include="resource_newDesign\app\Screen\Visit_Task.xml" />
     <Content Include="resource_newDesign\app\Screen\Visit_Total.xml" />
+    <Content Include="resource_newDesign\app\Screen\Main1.xml" />
+    <Content Include="resource_newDesign\app\Screen\Main2.xml" />
     <Content Include="resource_newDesign\app\Script\DB.js" />
     <Content Include="resource_newDesign\app\Script\Events.js" />
     <Content Include="resource_newDesign\app\Script\Facade.js" />
@@ -222,6 +224,8 @@
     <Content Include="resource_newDesign\app\Style\Default\default.css" />
     <Content Include="resource_newDesign\app\Style\Default\Main.css" />
     <Content Include="resource_newDesign\app\Style\Default\Visits.css" />
+    <Content Include="resource_newDesign\app\Style\Default\Main1.css" />
+    <Content Include="resource_newDesign\app\Style\Default\Main2.css" />
     <Content Include="resource_newDesign\app\Translation\en.txt" />
     <Content Include="resource_newDesign\app\Translation\ru.txt" />
     <Content Include="resource_newDesign\settings.xml" />

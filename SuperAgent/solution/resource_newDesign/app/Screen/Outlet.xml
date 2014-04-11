@@ -67,8 +67,8 @@
 
           <c:HorizontalLayout CssClass="grid">
             <c:VerticalLayout>
-              <c:TextView Id="outletDescr" Text="$outlet.Description" CssClass="main_row"></c:TextView>
               <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
+              <c:TextView Id="outletDescr" Text="$outlet.Description" CssClass="main_row"></c:TextView>
             </c:VerticalLayout>
           </c:HorizontalLayout>
 

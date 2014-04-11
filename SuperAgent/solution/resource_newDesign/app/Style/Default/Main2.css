@@ -1,0 +1,140 @@
+﻿body {
+    background-color: #2d89cf;
+}
+
+TextView {
+    width: 100%;
+    height: 100%;
+    margin-left: 4%;
+    color: #ffffff;
+    font: 34.1% arial;
+}
+
+dl {
+    width: 100%;
+}
+
+    dl hl {
+        width: 100%;
+        height: 100%;
+    }
+
+
+.grid {
+    background-color: #2d89cf;
+}
+
+    .grid line {
+        width: 100%;
+        height: 1px;
+        margin-left: 2.8%;
+        background-color: #43acfd;
+    }
+
+    .grid hl {
+        height: 8sp;
+        width: 100%;
+    }
+
+    .grid dl {
+        width: 100%;
+        height: 8sp;
+    }
+
+        .grid dl TextView {
+            width: 40%;
+            height: 100%;
+            dock-align: right;
+            text-align: right;
+            margin-right: 6%;
+            color: #c5e3f7;
+            font: 30% arial;
+        }
+
+        .grid dl hl {
+            width: 100%;
+            height: 8sp;
+            margin-left: 5%;
+            dock-align: left;
+        }
+
+            .grid dl hl TextView {
+                width: 60%;
+                height: 100%;
+                margin-left: 4%;
+                color: #ffffff;
+                font: 35% arial;
+            }
+
+.description {
+    width: 100%;
+    height: 100%;
+    dock-align: right;
+    margin-right: 4%;
+    color: #c5e3f7;
+    font: 30% arial;
+}
+
+.header {
+    height: 8sp;
+    width: 100%;
+    margin-top: 2%;
+    background-color: #43acfd;
+}
+
+.btn_summary {
+    height: 65%;
+    margin-left: 5%;
+    vertical-align: central;
+    background-image: url(SuperShield.png);
+}
+
+.btn_visits {
+    height: 44%;
+    vertical-align: central;
+    background-image: url(BiBiCar.png);
+}
+
+.btn_orders {
+    height: 58%;
+    vertical-align: central;
+    background-image: url(BITiPhone.png);
+}
+
+.btn_clients {
+    height: 48.9%;
+    vertical-align: central;
+    background-image: url(Cheloveki.png);
+}
+
+.btn_stocks {
+    height: 48.9%;
+    vertical-align: central;
+    background-image: url(Posilka.png);
+}
+
+.btn_kpi {
+    height: 54.5%;
+    vertical-align: central;
+    background-image: url(AllRight.png);
+}
+
+.btn_set {
+    height: 58%;
+    vertical-align: central;
+    background-image: url(Detalka.png);
+}
+
+.btn_sync {
+    height: 48%;
+    padding-right: 3%;
+    vertical-align: central;
+    margin-left: 1%;
+    background-image: url(TudaSuda.png);
+}
+
+.btn_info {
+    height: 56.8%;
+    vertical-align: central;
+    background-image: url(interesno.png);
+}

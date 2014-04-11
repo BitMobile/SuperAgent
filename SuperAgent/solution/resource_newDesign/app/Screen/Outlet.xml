@@ -18,11 +18,16 @@
     <c:DockLayout CssClass="top_navigator">
       <c:HorizontalLayout CssClass="btn_back" OnClickAction="$Workflow.DoBack()">
         <c:Image/>
-        <c:TextView Text="#map#"/>
+        <c:TextView Text="#visits#"/>
       </c:HorizontalLayout>
       <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnClickAction="$Facade.CheckNotNullAndCommit($outlet)"/>
       <c:TextView Text="#client#" />
     </c:DockLayout>
+
+    <c:HorizontalLayout CssClass="caption_grid">
+      <c:TextView Text="#main#:"></c:TextView>
+    </c:HorizontalLayout>
+    <c:HorizontalLine/>
 
     <s:If Test="$workflow.name=='Outlets'">
       <s:If Test="$outlet.IsNew">
@@ -59,19 +64,14 @@
       </s:Else>
     </s:If>
     <s:Else>
-      <c:VerticalLayout Id="headerDescr" CssClass="header">
-        <c:VerticalLayout  CssClass ="grid">
 
-          <c:HorizontalLayout>
+          <c:HorizontalLayout CssClass="grid">
             <c:VerticalLayout>
               <c:TextView Id="outletDescr" Text="$outlet.Description" CssClass="main_row"></c:TextView>
               <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
           </c:HorizontalLayout>
 
-          <c:HorizontalLine/>
-        </c:VerticalLayout>
-      </c:VerticalLayout>
       <c:HorizontalLine/>
     </s:Else>
 

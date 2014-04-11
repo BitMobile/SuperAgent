@@ -1,5 +1,6 @@
 ﻿forward		Forward
 client		Client
+main		MAIN
  todo		ToDo
 stock		Stock
 schedule	Schedule
@@ -95,7 +96,7 @@ address		Address
 description	Description
 coordinatesAreSet	Coordinates Are Set
 noCoordinates	Coordinates aren't set
-setVisitCoordinates		Retry to set ciirdinates?
+setVisitCoordinates		Retry to set coordinates?
 setCoords	Set coordinates
 setCoordinates	Set outlet coordinates by current location?
 location	Set outlet location
@@ -131,7 +132,7 @@ clearFilter		clearFilter
 groups	Groups
 brands	Brands
 brand	Brand
-impossibleToCreateVisit	Impossible to create plan visit untill coordinates aren't set. Retry to get location?
+impossibleToCreateVisit	Impossible to create plan visit until coordinates aren't set. Retry to get location?
 fillNoOrderReason	Reason for not taking the order should be filled.
 reasonForEmptyOrder	Reason for not taking the order
 fillInVisitReason	Reason of visit should be filled

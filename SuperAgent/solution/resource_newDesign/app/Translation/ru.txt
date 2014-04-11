@@ -1,5 +1,6 @@
 ﻿forward		Далее
 client		Клиент
+main		ОСНОВНОЕ
 todo		Задачи
 stock		Остатки
 schedule	Расписание

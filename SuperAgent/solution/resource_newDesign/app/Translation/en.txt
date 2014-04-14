@@ -1,5 +1,6 @@
 ﻿forward		Forward
 summary		Summary
+new			New
 client		Client
 clients		Clients
 main		MAIN

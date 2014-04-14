@@ -1,5 +1,6 @@
 ﻿forward		Далее
 summary		Сводная информация
+new			Новое
 client		Клиент
 clients		Клиенты
 main		ОСНОВНОЕ

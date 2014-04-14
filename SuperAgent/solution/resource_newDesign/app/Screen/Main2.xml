@@ -3,7 +3,7 @@
 
   <c:VerticalLayout CssClass="grid">
 
-    <c:HorizontalLayout CssClass="header">
+    <c:HorizontalLayout CssClass="header" OnEvent="Forward" OnClickAction="$Workflow.DoAction(Summary)">
       <c:Image CssClass="btn_summary"/>
       <c:TextView Text="#summary#"></c:TextView>
     </c:HorizontalLayout>

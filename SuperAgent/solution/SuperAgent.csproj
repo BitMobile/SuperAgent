@@ -72,7 +72,9 @@
     <Content Include="resource\app\Screen\ListChoice.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="resource\app\Screen\Main.xml" />
+    <Content Include="resource\app\Screen\Main.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="resource\app\Screen\Order.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -223,7 +225,6 @@
     <Content Include="resource_newDesign\app\Script\Workflow.js" />
     <Content Include="resource_newDesign\app\Style\Default\default.css" />
     <Content Include="resource_newDesign\app\Style\Default\Main.css" />
-    <Content Include="resource_newDesign\app\Style\Default\Visits.css" />
     <Content Include="resource_newDesign\app\Style\Default\Main1.css" />
     <Content Include="resource_newDesign\app\Style\Default\Main2.css" />
     <Content Include="resource_newDesign\app\Translation\en.txt" />

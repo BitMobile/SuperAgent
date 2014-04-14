@@ -3,22 +3,25 @@
 
   <bp:Workflow Name="Main">
 
-    <bp:Step Name="Main" Screen="Main2.xml">
-
+    <bp:Step Name="Menu" Screen="Main2.xml">
       <bp:Action Name="Visits" NextWorkflow="Visits"></bp:Action>
+      <bp:Action Name="Summary" NextStep="Summary"></bp:Action>
       <bp:Action Name="Order" NextWorkflow="Order"></bp:Action>
       <bp:Action Name="Outlets" NextWorkflow="Outlets"></bp:Action>
       <bp:Action Name="Stocks" NextWorkflow="Stocks"></bp:Action>
       <bp:Action Name="ToDo" NextWorkflow="ToDo"></bp:Action>
       <bp:Action Name="Targets" NextWorkflow="Targets"></bp:Action>
       <bp:Action Name="Settings" NextWorkflow="Settings"></bp:Action>
+    </bp:Step>
 
+    <bp:Step Name="Summary" Screen="Main1.xml">      
+      <bp:Action Name="Menu" NextStep="Menu"></bp:Action>
     </bp:Step>
 
   </bp:Workflow>
 
   <bp:Workflow Name="Visits">
-    
+
     <bp:Step Name="Visits" Screen="Visits.xml">
       <bp:Action Name="ShowMap" NextStep="ShowMap"></bp:Action>
       <bp:Action Name="Select" NextWorkflow="ScheduledVisit"></bp:Action>
@@ -26,9 +29,9 @@
 
     <bp:Step Name="ShowMap" Screen="ScheduledVisits_Map.xml">
     </bp:Step>
-    
-  </bp:Workflow>    
-  
+
+  </bp:Workflow>
+
   <bp:Workflow Name="ScheduledVisit">
 
     <bp:Step Name="Outlet" Screen="Outlet.xml">
@@ -125,8 +128,8 @@
     </bp:Step>
 
   </bp:Workflow>
-  
-  
+
+
   <bp:Workflow Name="ToDo">
     <bp:Step Name="ToDo" Screen="Tasks.xml">
       <bp:Action Name="Select" NextStep="Task"></bp:Action>
@@ -136,7 +139,7 @@
     </bp:Step>
   </bp:Workflow>
 
-  
+
   <bp:Workflow Name="Stocks">
     <bp:Step Name="Stocks" Screen="Stock_SKUs.xml">
       <bp:Action Name="Select" NextStep="SKUImage"/>
@@ -232,7 +235,7 @@
     </bp:Step>
 
     <bp:Step Name="PriceLists" Screen="ListChoice.xml">
-    </bp:Step>    
+    </bp:Step>
 
     <bp:Step Name="EditOutletParameter" Screen="ListChoice.xml">
     </bp:Step>
@@ -261,7 +264,7 @@
 
     <bp:Step Name="Outlet" Screen="Outlet.xml">
       <bp:Action Name="EditParameter" NextStep="EditOutletParameter"></bp:Action>
-      <bp:Action Name="EditAddParameter" NextStep="EditOutletAddParameter"></bp:Action>      
+      <bp:Action Name="EditAddParameter" NextStep="EditOutletAddParameter"></bp:Action>
       <bp:Action Name="ShowMap" NextStep="ShowMap"></bp:Action>
     </bp:Step>
 
@@ -295,7 +298,7 @@
 
     <bp:Step Name="Order" Screen="Order.xml">
       <bp:Action Name="Add" NextStep="AddSKU"></bp:Action>
-      <bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>            
+      <bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
       <bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
       <bp:Action Name="Forward" NextStep="Commentary"></bp:Action>
     </bp:Step>
@@ -309,7 +312,7 @@
     <bp:Step Name="Filters" Screen="Filters.xml">
       <bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>
     </bp:Step>
-    
+
     <bp:Step Name="EditSKU" Screen="Order_EditSKU.xml">
       <bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>
     </bp:Step>
@@ -317,7 +320,7 @@
     <bp:Step Name="OrderInfo" Screen="Order_Info.xml">
       <bp:Action Name="EditPriceList" NextStep="PriceLists"></bp:Action>
     </bp:Step>
-    
+
     <bp:Step Name="PriceLists" Screen="ListChoice.xml">
     </bp:Step>
 

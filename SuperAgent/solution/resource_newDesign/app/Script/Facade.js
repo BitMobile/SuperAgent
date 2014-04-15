@@ -329,6 +329,12 @@ function VisitCoordsHandler(answ, visit) {
     }
 }
 
+function ShowMapIfNotNew(outlet) {
+    if (outlet.IsNew == false) {
+        Workflow.Action("ShowMap", [outlet]);
+    }
+}
+
 function CheckNotNullAndCommit(outlet) {
 
     var c = CoordsChecked();
@@ -391,14 +397,20 @@ function GetUncommitedScheduledVisits(searchText, planOutlets) {
 
     var cv = DB.Current.Document.Visit.SelectBy("Outlet", planOutlets).Where("Date.Date == @p1", [DateTime.Now.Date]).Top(100).Distinct("Outlet");
 
-    if (String.IsNullOrEmpty(searchText))
-        return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date)
-            .Union(
-            DB.Current.Document.VisitPlan_Outlets.SelectBy("Outlet", cv, "<>")
-            )
-            .Top(100).OrderBy("OutletAsObject.Description");
-    else
-    //return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date).Where("OutletAsObject.Description.Contains(@p1)", [searchText]).Top(100).OrderBy("OutletAsObject.Description");
+    if (String.IsNullOrEmpty(searchText)) {
+        if (parseInt(cv.Count()) != parseInt(0)) {
+            return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date)
+                .Union(
+                DB.Current.Document.VisitPlan_Outlets.SelectBy("Outlet", cv, "<>")
+                )
+                .Top(100).OrderBy("OutletAsObject.Description");
+        }
+        else
+            return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date)
+                .Top(100).OrderBy("OutletAsObject.Description");
+    }
+    else {
+        //return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date).Where("OutletAsObject.Description.Contains(@p1)", [searchText]).Top(100).OrderBy("OutletAsObject.Description");
         if (parseInt(cv.Count()) != parseInt(0)) {
             return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date)
                 .Where("OutletAsObject.Description.Contains(@p1)", [searchText])
@@ -412,11 +424,12 @@ function GetUncommitedScheduledVisits(searchText, planOutlets) {
             return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date)
                 .Where("OutletAsObject.Description.Contains(@p1)", [searchText])
                 .Top(100).OrderBy("OutletAsObject.Description");
+    }
 }
 
 function GetCommitedScheduledVisits(searchText, planOutlets) {
     //if (String.IsNullOrEmpty(searchText))
-        return DB.Current.Document.Visit.SelectBy("Outlet", planOutlets).Where("Date.Date == @p1", [DateTime.Now.Date]).Top(100).OrderBy("OutletAsObject.Description");
+    return DB.Current.Document.Visit.SelectBy("Outlet", planOutlets).Where("Date.Date == @p1", [DateTime.Now.Date]).Top(100).OrderBy("OutletAsObject.Description");
     //else
     //    return DB.Current.Document.Visit.SelectBy("Date", DateTime.Now.Date).Where("OutletAsObject.Description.Contains(@p1) && Plan!=@p2", [searchText, null]).Top(100).OrderBy("OutletAsObject.Description");
 }
@@ -476,6 +489,7 @@ function SetLocation() {
 function LocationDialogHandler(answ) {
     if (answ == DialogResult.Yes) {
         var location = GPS.CurrentLocation;
+        //Dialog.Debug(location);
         if (location.NotEmpty) {
             Variables["outlet"].Lattitude = location.Latitude;
             Variables["outlet"].Longitude = location.Longitude;
@@ -1219,7 +1233,7 @@ function SetDeliveryDate(order, attrName) {
 
 //-----------------------OrderItem-------------------
 function GetItemHistory(sku, order) {
-    var byOutlets = DB.Current.Document.Order.SelectBy("Outlet", order.Outlet).Distinct("Id");   
+    var byOutlets = DB.Current.Document.Order.SelectBy("Outlet", order.Outlet).Distinct("Id");
     var hist = DB.Current.Document.Order_SKUs.SelectBy("Ref", byOutlets).Where("Ref != @p1 && SKU == @p2", [order.Id, sku.Id]).OrderBy("RefAsObject.Date", true).Top(4);
 
     return hist;
@@ -1429,9 +1443,9 @@ function DeleteZeroItem(orderitem) {
 
 function CheckOrderAndCommit(order, workflowName) {
 
-    if (workflowName == "Order") 
+    if (workflowName == "Order")
         Workflow.Commit();
-    else 
+    else
         Workflow.Forward([]);
 }
 
@@ -1459,7 +1473,7 @@ function CalculateSKUAndForward(outlet, orderitem) {
         Variables["orderitem"].Discount = Converter.ToDecimal(discount * discChBox);
         var p = CalculatePrice(orderitem.Price, (discount * discChBox), 1);
         Variables["orderitem"].Total = p;
-    }    
+    }
 
     Workflow.Forward([outlet]);
 }

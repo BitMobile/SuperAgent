@@ -12,7 +12,7 @@ function OnLoad(screenName) {
 
 function OnWorkflowStart(name) {
     Variables.AddGlobal("workflow", new Dictionary());
-    if (name == "UnscheduledVisit" || name == "ScheduledVisit" || name == "Outlets") {
+    if (name == "Visits" || name == "Outlets") {
         GPS.StartTracking();
     }
     Variables["workflow"].Add("name", name);

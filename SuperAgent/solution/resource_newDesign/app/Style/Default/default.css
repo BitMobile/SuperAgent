@@ -330,6 +330,37 @@ MemoEdit {
         background-image: url(arrow.png);
     }
 
+    .parameter_grid EditText {
+        width: 74%;
+        height: 100%;
+        margin-left: 3.5%;
+        color: #2d89cf;
+        dock-align: left;
+        font: 37% arial;
+    }
+
+.yes_TextView {
+    width: 25%;
+    height: 100%;
+    margin-left: 3.5%;
+    color: #2d89cf;
+    dock-align: left;
+    font: 37% arial;
+}
+
+.yes_button {
+    width: 29.4%;
+    height: 50%;
+    margin-top: 25%;
+    margin-left: 5%;
+    border-width: 1px;
+    border-color: #43acfd;
+    border-radius: 5px;
+    color: #2d89cf;
+    text-align: center;
+    font: 63% arial;
+}
+
 .value {
     width: 26%;
     height: 100%;

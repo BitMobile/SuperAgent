@@ -26,12 +26,12 @@
 
     <c:Image CssClass="1_scroll"></c:Image>
 
-    <c:HorizontalLayout CssClass="caption_grid">
-      <c:TextView Text="#main#:"></c:TextView>
-    </c:HorizontalLayout>
-    <c:HorizontalLine/>
-
     <c:ScrollView Id="grScrollView">
+
+      <c:HorizontalLayout CssClass="caption_grid">
+        <c:TextView Text="#main#:"></c:TextView>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
 
       <s:If Test="$workflow.name=='Outlets'">
         <s:If Test="$outlet.IsNew">
@@ -119,7 +119,7 @@
         <c:TextView Text="#distributor#"></c:TextView>
         <c:TextView Id="outletDistr" Text="$outlet.DistributorAsObject.Description" CssClass="value"></c:TextView>
       </c:DockLayout>
-      <c:HorizontalLine/>      
+      <c:HorizontalLine/>
 
       <s:Iterator Id="parameter" Value="$Facade.GetOutletParameters()">
 
@@ -129,12 +129,12 @@
         <c:DockLayout CssClass="parameter_grid" OnClickAction="$Facade.GoToParameterAction($parameter.DataTypeAsObject.Description, $parameterValue, Value, $outlet, $parameter)">
 
           <c:TextView Text="$parameter.Description"></c:TextView>
-            <s:If Test="$parameterValue!=null">
-              <c:TextView Text="$parameterValue.Value" CssClass="value"></c:TextView>
-            </s:If>
-            <s:Else>
-              <c:TextView Id="paramValueTextView" Text="?" CssClass="value"></c:TextView>
-            </s:Else>
+          <s:If Test="$parameterValue!=null">
+            <c:TextView Text="$parameterValue.Value" CssClass="value"></c:TextView>
+          </s:If>
+          <s:Else>
+            <c:TextView Id="paramValueTextView" Text="?" CssClass="value"></c:TextView>
+          </s:Else>
 
         </c:DockLayout>
 

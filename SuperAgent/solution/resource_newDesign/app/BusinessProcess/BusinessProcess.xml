@@ -41,6 +41,7 @@
       <bp:Action Name="Skip3" NextStep="Order"></bp:Action>
       <bp:Action Name="EditParameter" NextStep="EditOutletParameter"></bp:Action>
       <bp:Action Name="EditAddParameter" NextStep="EditOutletAddParameter"></bp:Action>
+      <bp:Action Name="ShowMap" NextStep="ShowMap"></bp:Action>
     </bp:Step>
 
     <bp:Step Name="Visit_Tasks" Screen="Tasks.xml">

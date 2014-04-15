@@ -137,14 +137,20 @@ function CheckIfEmptyAndBack(entity, attribute, objectType, objectName) {
     if (entity.IsNew) {
         if (entity[attribute] == "" || String(entity[attribute]) == "0")//String(entity[attribute]) == "0")
             DB.Current[objectType][objectName].Delete(entity);
+        var r = entity.RefAsObject;
+        if (getType(r) == "DefaultScope.Catalog.Outlet") {
+            UpdateOtletStatus();
+        }
+
+        Workflow.Back();
+    }
+    else {
+        if (entity[attribute] == "" || String(entity[attribute]) == "0")//String(entity[attribute]) == "0")
+            Dialog.Message("#empty_field#")
+        else
+            Workflow.Back();
     }
 
-    var r = entity.RefAsObject;
-    if (getType(r) == "DefaultScope.Catalog.Outlet") {
-        UpdateOtletStatus();
-    }
-
-    Workflow.Back();
 }
 
 function CheckIfEmpty(entity, attribute, objectType, objectName, deleteIfEmpty) {

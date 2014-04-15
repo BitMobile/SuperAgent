@@ -33,12 +33,14 @@ password	Password
 cancel		Cancel
 Ok		Ok
 parameters	Parameters
+parameter	Parameter
 select_answer	SELECT VALUE..
 save		Save
 no_questions	No questions
+empty_field	Field couldn't be cleaned
 questions	Questions
 commentary	Commentary
-insert_answer	Insert value..
+insert_answer	INSERT VALUE..
 amount		Amount
 sku		SKU
 quantity	Quantity

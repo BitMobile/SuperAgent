@@ -31,6 +31,16 @@ dl {
         height: 100%;
     }
 
+shl {
+    width: 100%;
+    height: 100%;
+}
+
+svl {
+    width: 100%;
+    height: 100%;
+}
+
 TextView {
     padding-right: 5%;
     background-color: none;

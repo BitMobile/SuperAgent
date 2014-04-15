@@ -234,6 +234,18 @@ function CountEntities(type, name, paramValue, parameter) {
 }
 
 
+//-----------------Main-------------------------------
+
+function OpenMenu() {
+    var sl = Variables["swipe_layout"];
+    if (sl.Index == 1) {
+        sl.Index = 0;
+    }
+    else if (sl.Index == 0) {
+        sl.Index = 1;
+    }
+}
+
 //-----------------Outlets----------------------------
 
 function CreateOutletParameterValueIfNotExists(outlet, parameter, parameterValue) {
@@ -489,7 +501,6 @@ function SetLocation() {
 function LocationDialogHandler(answ) {
     if (answ == DialogResult.Yes) {
         var location = GPS.CurrentLocation;
-        //Dialog.Debug(location);
         if (location.NotEmpty) {
             Variables["outlet"].Lattitude = location.Latitude;
             Variables["outlet"].Longitude = location.Longitude;

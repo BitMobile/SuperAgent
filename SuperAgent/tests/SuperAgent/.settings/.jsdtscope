@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="demorup/|demoenp/|demorutest/" kind="src" path=""/>
+	<classpathentry kind="src" path="demoenp"/>
+	<classpathentry kind="src" path="demorup"/>
+	<classpathentry kind="src" path="demorutest"/>
+	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path=""/>
+</classpath>

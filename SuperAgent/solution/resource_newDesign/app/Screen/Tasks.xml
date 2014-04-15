@@ -6,23 +6,21 @@
   <s:Push Id="tasks" Value="$Facade.GetTasks($outlet)"></s:Push>
 
   <c:VerticalLayout>
-    
+
     <c:DockLayout CssClass="top_navigator">
-      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <s:If Test="$workflow.visit != null">
-        <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward($outlet,$visit)"/>
-      </s:If>
-      <s:Else>
-        <c:Button Id="btnForward" CssClass="btn_grey_forward"/>
-      </s:Else>
+      <c:HorizontalLayout CssClass="btn_back" OnClickAction="$Workflow.DoBack()">
+        <c:Image/>
+        <c:TextView Text="#client#"/>
+      </c:HorizontalLayout>
+      <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnClickAction="$Facade.CheckNotNullAndCommit($outlet)"/>
       <c:TextView Text="#tasks#" />
     </c:DockLayout>
     <c:HorizontalLine/>
 
-    <c:ScrollView Id="grScrollView" CssClass="grid">
+    <c:ScrollView Id="grScrollView">
       <s:If Test="$tasks==null">
 
-        <c:HorizontalLayout>
+        <c:HorizontalLayout  CssClass="grid">
           <c:VerticalLayout>
             <c:TextView Text="#no_tasks#" CssClass="main_row"></c:TextView>
           </c:VerticalLayout>
@@ -30,13 +28,19 @@
 
       </s:If>
       <s:Else>
+
+        <c:HorizontalLayout CssClass="caption_grid">
+          <c:TextView Text="#main#:"></c:TextView>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+        
         <s:Iterator Id="task" Value="$tasks">
 
-          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$task,$visit,$outlet)">
+          <c:HorizontalLayout CssClass="grid">
             <c:VerticalLayout>
-              <c:TextView Text="$task.TextTask" CssClass="main_row"></c:TextView>
               <s:Push Id="descr" Value="$Facade.GetOutlet($task)"></s:Push>
-              <c:TextView Text="{$descr}, {$task.PlanDate.DateString}" CssClass="description_row"></c:TextView>
+              <c:TextView Text="{$descr} {$task.PlanDate.DateString}" CssClass="description_row"></c:TextView>
+              <c:TextView Text="$task.TextTask" CssClass="main_row"></c:TextView>
             </c:VerticalLayout>
             <c:Image/>
           </c:HorizontalLayout>

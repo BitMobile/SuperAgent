@@ -590,8 +590,12 @@ function GetOutlet(task) {
     var v = task.OutletAsObject().Description;
     if (v == null)
         return "Various outlets";
-    else
-        return v;
+    else {
+        if (Variables["workflow"]["name"] != "ToDo")
+            return "";
+        else
+            return (v+", ");
+    }
 }
 
 function CreateVisitTaskValueIfNotExists(visit, task) {

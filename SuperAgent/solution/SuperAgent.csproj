@@ -209,13 +209,11 @@
     <Content Include="resource_newDesign\app\Screen\SKU_Image.xml" />
     <Content Include="resource_newDesign\app\Screen\Stock_SKUs.xml" />
     <Content Include="resource_newDesign\app\Screen\Targets.xml" />
-    <Content Include="resource_newDesign\app\Screen\Task.xml" />
     <Content Include="resource_newDesign\app\Screen\Tasks.xml" />
     <Content Include="resource_newDesign\app\Screen\Visits.xml" />
     <Content Include="resource_newDesign\app\Screen\Visit_Questions.xml" />
     <Content Include="resource_newDesign\app\Screen\Visit_SKU.xml" />
     <Content Include="resource_newDesign\app\Screen\Visit_SKUs.xml" />
-    <Content Include="resource_newDesign\app\Screen\Visit_Task.xml" />
     <Content Include="resource_newDesign\app\Screen\Visit_Total.xml" />
     <Content Include="resource_newDesign\app\Screen\Main1.xml" />
     <Content Include="resource_newDesign\app\Screen\Main2.xml" />
@@ -227,6 +225,7 @@
     <Content Include="resource_newDesign\app\Style\Default\Main.css" />
     <Content Include="resource_newDesign\app\Style\Default\Main1.css" />
     <Content Include="resource_newDesign\app\Style\Default\Main2.css" />
+    <Content Include="resource_newDesign\app\Style\Default\Tasks.css" />
     <Content Include="resource_newDesign\app\Translation\en.txt" />
     <Content Include="resource_newDesign\app\Translation\ru.txt" />
     <Content Include="resource_newDesign\settings.xml" />

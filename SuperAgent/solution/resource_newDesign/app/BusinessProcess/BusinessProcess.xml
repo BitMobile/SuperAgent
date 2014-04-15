@@ -45,7 +45,6 @@
     </bp:Step>
 
     <bp:Step Name="Visit_Tasks" Screen="Tasks.xml">
-      <bp:Action Name="Select" NextStep="Visit_Task"></bp:Action>
       <bp:Action Name="Forward" NextStep="Questions"></bp:Action>
       <bp:Action Name="Skip2" NextStep="SKUs"></bp:Action>
       <bp:Action Name="Skip3" NextStep="Order"></bp:Action>
@@ -107,9 +106,6 @@
     <bp:Step Name="PriceLists" Screen="ListChoice.xml">
     </bp:Step>
 
-    <bp:Step Name="Visit_Task" Screen="Visit_Task.xml">
-    </bp:Step>
-
     <bp:Step Name="EditOutletParameter" Screen="ListChoice.xml">
     </bp:Step>
 
@@ -133,10 +129,7 @@
 
   <bp:Workflow Name="ToDo">
     <bp:Step Name="ToDo" Screen="Tasks.xml">
-      <bp:Action Name="Select" NextStep="Task"></bp:Action>
       <bp:Action Name="Forward" NextStep=""></bp:Action>
-    </bp:Step>
-    <bp:Step Name="Task" Screen="Task.xml">
     </bp:Step>
   </bp:Workflow>
 
@@ -173,7 +166,6 @@
     </bp:Step>
 
     <bp:Step Name="Visit_Tasks" Screen="Tasks.xml">
-      <bp:Action Name="Select" NextStep="Visit_Task"></bp:Action>
       <bp:Action Name="Forward" NextStep="Questions"></bp:Action>
       <bp:Action Name="Skip2" NextStep="SKUs"></bp:Action>
       <bp:Action Name="Skip3" NextStep="Order"></bp:Action>
@@ -216,9 +208,6 @@
     </bp:Step>
 
     <bp:Step Name="ListChoice" Screen="ListChoice.xml">
-    </bp:Step>
-
-    <bp:Step Name="Visit_Task" Screen="Visit_Task.xml">
     </bp:Step>
 
     <bp:Step Name="AddSKU" Screen="Order_SKUs.xml">

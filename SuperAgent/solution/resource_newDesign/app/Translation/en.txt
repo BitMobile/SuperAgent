@@ -33,7 +33,7 @@ password	Password
 cancel		Cancel
 Ok		Ok
 parameters	Parameters
-select_answer	Select value..
+select_answer	SELECT VALUE..
 save		Save
 no_questions	No questions
 questions	Questions

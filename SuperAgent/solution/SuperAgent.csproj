@@ -239,9 +239,6 @@
   <ItemGroup>
     <Content Include="resource_newDesign\app\Style\Default\Visits.css" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="resource_newDesign\app\Style\Default\Outlet.css" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

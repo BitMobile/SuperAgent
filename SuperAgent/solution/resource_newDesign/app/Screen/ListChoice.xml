@@ -18,49 +18,21 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()" />
+      <c:HorizontalLayout Id="btnBack" OnEvent="Back" CssClass="btn_back" OnClickAction="$Workflow.DoBack()">
+        <c:Image/>
+        <c:TextView Text="#client#"/>
+      </c:HorizontalLayout>
+      <c:Button Id="btnForward" CssClass="btn_forward"/>
       <c:TextView Text="#parameters#" />
     </c:DockLayout>
-
     <c:HorizontalLine/>
 
-    <c:VerticalLayout Id="header" CssClass="header">
-      <c:VerticalLayout CssClass="grid">
-        <c:HorizontalLayout>
-          <c:VerticalLayout CssClass="header_edit_block">
-
-            <s:If Test="$param2=='Distributor'">
-              <c:TextView CssClass="main_row" Text="#distributor#"/>
-            </s:If>
-            <s:If Test="$param2=='Type'">
-              <c:TextView CssClass="main_row" Text="#outletType#"/>
-            </s:If>
-            <s:If Test="$param2=='Class'">
-              <c:TextView CssClass="main_row" Text="#outletClass#"/>
-            </s:If>
-            <s:If Test="$param2=='PriceList'">
-              <c:TextView CssClass="main_row" Text="#priceList#"/>
-            </s:If>
-            <s:If Test="$param2=='Answer'">
-              <c:TextView CssClass="main_row" Text="#valueList#"/>
-            </s:If>
-            <s:If Test="$param2=='Value'">
-              <c:TextView CssClass="main_row" Text="#valueList#"/>
-            </s:If>
-            <s:If Test="$param2=='ReasonForNotOfTakingOrderAsObject'">
-              <c:TextView CssClass="main_row" Text="#reasonForEmptyOrder#"/>
-            </s:If>
-
-            <c:TextView Text="#select_answer#" CssClass="description_row"></c:TextView>
-          </c:VerticalLayout>
-        </c:HorizontalLayout>
-      </c:VerticalLayout>
-    </c:VerticalLayout>
-
+    <c:HorizontalLayout CssClass="caption_grid">
+      <c:TextView Text="#select_answer#"></c:TextView>
+    </c:HorizontalLayout>
     <c:HorizontalLine/>
 
-    <c:ScrollView Id="grScrollView" CssClass="grid">
+    <c:ScrollView Id="grScrollView">
 
       <s:Iterator Id="item" Value="$items">
 
@@ -82,29 +54,26 @@
           <s:Push Id="itemId" Value="$item"></s:Push>
         </s:If>
 
-        <c:HorizontalLayout OnClickAction="$Facade.UpdateValueAndBack($param1,$param2,$itemId)">
-          <c:VerticalLayout>
-            <s:If Test="$param3 == null">
-              <c:TextView Text="$item.Description" CssClass="main_row"></c:TextView>
+        <c:DockLayout CssClass="parameter_grid" OnClickAction="$Facade.UpdateValueAndBack($param1,$param2,$itemId)">
+          <s:If Test="$param3 == null">
+            <c:TextView Text="$item.Description"></c:TextView>
+          </s:If>
+          <s:If Test="$param3=='Order'">
+            <s:If Test="$defaultPriceLists==0">
+              <c:TextView Text="$item.PriceListAsObject.Description"></c:TextView>
             </s:If>
-            <s:If Test="$param3=='Order'">
-              <s:If Test="$defaultPriceLists==0">
-                <c:TextView Text="$item.PriceListAsObject.Description" CssClass="main_row"></c:TextView>
-              </s:If>
-              <s:Else>
-                <c:TextView Text="$item.Description" CssClass="main_row"></c:TextView>
-              </s:Else>
-            </s:If>
-            <s:If Test="$param3=='Visit_Questions'">
-              <c:TextView Text="$item.Value" CssClass="main_row"></c:TextView>
-            </s:If>
-            <s:If Test="$param3=='Outlet_Parameters'">
-              <c:TextView Text="$item.Value" CssClass="main_row"></c:TextView>
-            </s:If>
-          </c:VerticalLayout>
-          <c:Image/>
-        </c:HorizontalLayout>
-
+            <s:Else>
+              <c:TextView Text="$item.Description"></c:TextView>
+            </s:Else>
+          </s:If>
+          <s:If Test="$param3=='Visit_Questions'">
+            <c:TextView Text="$item.Value"></c:TextView>
+          </s:If>
+          <s:If Test="$param3=='Outlet_Parameters'">
+            <c:TextView Text="$item.Value"></c:TextView>
+          </s:If>
+          <c:Image></c:Image>
+        </c:DockLayout>        
         <c:HorizontalLine/>
 
       </s:Iterator>

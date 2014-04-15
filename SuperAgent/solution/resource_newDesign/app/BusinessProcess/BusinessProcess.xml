@@ -3,7 +3,7 @@
 
   <bp:Workflow Name="Main">
 
-    <bp:Step Name="Menu" Screen="Main.xml">
+    <bp:Step Name="Menu" Screen="Main2.xml">
       <bp:Action Name="Visits" NextWorkflow="Visits"></bp:Action>
       <bp:Action Name="Summary" NextStep="Summary"></bp:Action>
       <bp:Action Name="Order" NextWorkflow="Order"></bp:Action>

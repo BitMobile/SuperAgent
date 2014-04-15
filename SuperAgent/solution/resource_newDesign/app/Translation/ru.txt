@@ -33,7 +33,7 @@ password	Пароль
 cancel		Отмена
 Ok		Ок
 parameters	Параметры
-select_answer	Выберите значение..
+select_answer	ВЫБЕРИТЕ ЗНАЧЕНИЕ..
 save		Сохранить
 no_questions	Вопросов нет
 questions	Вопросы

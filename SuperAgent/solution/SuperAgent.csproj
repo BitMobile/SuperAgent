@@ -215,8 +215,6 @@
     <Content Include="resource_newDesign\app\Screen\Visit_SKU.xml" />
     <Content Include="resource_newDesign\app\Screen\Visit_SKUs.xml" />
     <Content Include="resource_newDesign\app\Screen\Visit_Total.xml" />
-    <Content Include="resource_newDesign\app\Screen\Main1.xml" />
-    <Content Include="resource_newDesign\app\Screen\Main2.xml" />
     <Content Include="resource_newDesign\app\Script\DB.js" />
     <Content Include="resource_newDesign\app\Script\Events.js" />
     <Content Include="resource_newDesign\app\Script\Facade.js" />

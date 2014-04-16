@@ -14,10 +14,6 @@
       <bp:Action Name="Settings" NextWorkflow="Settings"></bp:Action>
     </bp:Step>
 
-    <bp:Step Name="Summary" Screen="Main1.xml">      
-      <bp:Action Name="Menu" NextStep="Menu"></bp:Action>
-    </bp:Step>
-
   </bp:Workflow>
 
   <bp:Workflow Name="Visits">

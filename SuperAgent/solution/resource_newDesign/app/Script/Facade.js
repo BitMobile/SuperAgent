@@ -252,6 +252,16 @@ function OpenMenu() {
     }
 }
 
+function CloseMenu() {
+    var sl = Variables["swipe_layout"];
+    if (sl.Index == 1) {
+        sl.Index = 0;
+    }
+    else if (sl.Index == 0) {
+        sl.Index = 1;
+    }
+}
+
 //-----------------Outlets----------------------------
 
 function CreateOutletParameterValueIfNotExists(outlet, parameter, parameterValue) {

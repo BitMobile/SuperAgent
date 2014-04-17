@@ -42,7 +42,8 @@ questions	Questions
 commentary	Commentary
 insert_answer	INSERT VALUE..
 amount		Amount
-sku		SKU
+sku			SKU
+distribution	Distribution
 quantity	Quantity
 price		Price
 edit		Edit
@@ -68,6 +69,7 @@ outOfStock	Out Of Stock
 false		False
 true		True
 done		Done
+ready		Done
 pcs			pcs.
 orders		Orders
 newOrder	Create new order

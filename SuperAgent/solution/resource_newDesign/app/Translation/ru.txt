@@ -42,7 +42,8 @@ questions	Вопросы
 commentary	Комментарий
 insert_answer	ВВЕДИТЕ ЗНАЧЕНИЕ..
 amount		Итого
-sku		Номенклатура
+sku			Номенклатура
+distribution	Дистрибуция
 quantity	Количество
 price		Цена
 edit		Редактирование
@@ -68,6 +69,7 @@ outOfStock	Наличие на складе
 false		Нет
 true		Да
 done		Заполнен
+ready		Готово
 pcs			шт.
 orders		Заказы
 newOrder	Создать новый заказ

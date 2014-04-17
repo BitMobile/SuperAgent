@@ -12,47 +12,34 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckEmtySKUAndForward($outlet,$visit)"/>
-      <c:TextView Text="#sku#" />
+      <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()">
+        <c:Image/>
+        <c:TextView Text="#visits#"/>
+      </c:HorizontalLayout>
+      <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckEmtySKUAndForward($outlet,$visit)"/>
+      <c:TextView Text="#distribution#" />
     </c:DockLayout>
 
     <c:HorizontalLine/>
 
-    <c:ScrollView Id="grScrollView" CssClass="grid">
+    <c:ScrollView Id="grScrollView">
 
-      <s:If Test="$questions==null">
+      <s:Iterator Id="item" Value="$questions">
+        <s:Push Id="sku" Value="$Facade.GetSKU($item)"/>
+        <s:Push Id="skuValue" Value="$Facade.GetVisitSKUValue($visit,$sku)"/>
+        <s:Push Id="sku_qty" Value="$Facade.GetSKUQty($questions, $workflow.questionnaires, $sku)"></s:Push>
+        <s:Push Id="sku_answered" Value="$Facade.GetSKUAnswers($visit, $sku)"></s:Push>
 
-        <c:HorizontalLayout>
+        <c:HorizontalLayout CssClass="grid" OnClickAction="$Workflow.DoAction(Edit,$outlet,$visit,$sku,$skuValue,$workflow.questionnaires)">
           <c:VerticalLayout>
-            <c:TextView Text="#no_questions#" CssClass="main_row"></c:TextView>
+            <c:TextView Text="{$sku_answered} #of# {$sku_qty}" CssClass="description_row"/>
+            <c:TextView Text="$sku.Description" CssClass="main_row"></c:TextView>
           </c:VerticalLayout>
+          <c:Image/>
         </c:HorizontalLayout>
+        <c:HorizontalLine/>
 
-      </s:If>
-      <s:Else>
-
-        <s:Iterator Id="item" Value="$questions">
-          <s:Push Id="sku" Value="$Facade.GetSKU($item)"/>
-          <s:Push Id="skuValue" Value="$Facade.GetVisitSKUValue($visit,$sku)"/>
-          <s:Push Id="sku_qty" Value="$Facade.GetSKUQty($questions, $workflow.questionnaires, $sku)"></s:Push>
-          <s:Push Id="sku_answered" Value="$Facade.GetSKUAnswers($visit, $sku)"></s:Push>
-
-          <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Edit,$outlet,$visit,$sku,$skuValue,$workflow.questionnaires)">
-
-            <c:VerticalLayout>
-              <c:TextView Text="{$sku_answered} #of# {$sku_qty}" CssClass="main_row"/>
-              <c:TextView Text="$sku.Description" CssClass="description_row"></c:TextView>
-            </c:VerticalLayout>
-
-            <c:Image/>
-
-          </c:HorizontalLayout>
-
-          <c:HorizontalLine/>
-        </s:Iterator>
-
-      </s:Else>
+      </s:Iterator>
 
     </c:ScrollView>
 

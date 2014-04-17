@@ -713,6 +713,10 @@ function GoToQuestionAction(answerType, question, visit) {
             var date = DateTime.Parse(question.Answer);
         Dialog.ShowDateTime(Header, date, DateTimeQuestion, question);
     }
+
+    if (answerType == "Integer" || answerType == "String" || answerType == "Decimal") {
+        Variables["memoAnswer"].AutoFocus == true;
+    }
 }
 
 function DateTimeQuestion(question, dateTime) {

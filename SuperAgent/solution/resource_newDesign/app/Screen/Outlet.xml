@@ -16,15 +16,16 @@
   <c:VerticalLayout Id="vOutlet">
 
     <c:DockLayout CssClass="top_navigator">
-      <c:HorizontalLayout CssClass="btn_back" OnClickAction="$Workflow.DoBack()">
+      <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()">
         <c:Image/>
         <c:TextView Text="#visits#"/>
       </c:HorizontalLayout>
-      <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnClickAction="$Facade.CheckNotNullAndCommit($outlet)"/>
+      <c:Button Id="btnForward" Text="#forward#" OnEvent="Forward" CssClass="btn_forward" OnClickAction="$Facade.CheckNotNullAndCommit($outlet)"/>
       <c:TextView Text="#client#" />
     </c:DockLayout>
 
     <c:Image CssClass="1_scroll"></c:Image>
+    <c:HorizontalLine/>
 
     <c:ScrollView Id="grScrollView">
 

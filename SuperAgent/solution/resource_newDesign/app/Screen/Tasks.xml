@@ -8,51 +8,37 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:HorizontalLayout CssClass="btn_back" OnClickAction="$Workflow.DoBack()">
+      <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()">
         <c:Image/>
         <c:TextView Text="#client#"/>
       </c:HorizontalLayout>
-      <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnClickAction="$Facade.CheckNotNullAndCommit($outlet)"/>
+      <c:Button Id="btnForward" Text="#forward#" OnEvent="Forward" CssClass="btn_forward" OnClickAction="$Facade.CheckNotNullAndCommit($outlet)"/>
       <c:TextView Text="#tasks#" />
     </c:DockLayout>
+
+    <c:Image CssClass="2_scroll"></c:Image>
     <c:HorizontalLine/>
 
     <c:ScrollView Id="grScrollView">
-      <s:If Test="$tasks==null">
 
-        <c:HorizontalLayout  CssClass="grid">
-          <c:VerticalLayout>
-            <c:TextView Text="#no_tasks#" CssClass="main_row"></c:TextView>
-          </c:VerticalLayout>
-        </c:HorizontalLayout>
+      <s:Iterator Id="task" Value="$tasks">
 
-      </s:If>
-      <s:Else>
+        <c:SwipeHorizontalLayout Id="swipe_layout">
+          <c:HorizontalLayout CssClass="grid">
+            <c:VerticalLayout>
+              <s:Push Id="descr" Value="$Facade.GetOutlet($task)"></s:Push>
+              <c:TextView Text="{$descr} {$task.PlanDate.DateString}" CssClass="description_row"></c:TextView>
+              <c:TextView Text="$task.TextTask" CssClass="main_row"></c:TextView>
+            </c:VerticalLayout>
+            <c:Image/>
+          </c:HorizontalLayout>
+          <c:HorizontalLayout CssClass="red">
 
-        <c:HorizontalLayout CssClass="caption_grid">
-          <c:TextView Text="#main#:"></c:TextView>
-        </c:HorizontalLayout>
+          </c:HorizontalLayout>
+        </c:SwipeHorizontalLayout>
         <c:HorizontalLine/>
 
-        <s:Iterator Id="task" Value="$tasks">
-
-          <c:SwipeHorizontalLayout Id="swipe_layout">
-            <c:HorizontalLayout CssClass="grid">
-              <c:VerticalLayout>
-                <s:Push Id="descr" Value="$Facade.GetOutlet($task)"></s:Push>
-                <c:TextView Text="{$descr} {$task.PlanDate.DateString}" CssClass="description_row"></c:TextView>
-                <c:TextView Text="$task.TextTask" CssClass="main_row"></c:TextView>
-              </c:VerticalLayout>
-              <c:Image/>
-            </c:HorizontalLayout>
-            <c:HorizontalLayout CssClass="red">
-              
-            </c:HorizontalLayout>
-          </c:SwipeHorizontalLayout>
-          <c:HorizontalLine/>
-
-        </s:Iterator>
-      </s:Else>
+      </s:Iterator>
     </c:ScrollView>
 
   </c:VerticalLayout>

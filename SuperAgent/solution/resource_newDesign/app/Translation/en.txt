@@ -1,5 +1,6 @@
 ﻿outlet_description	Outlet description
 forward		Forward
+back		Back
 summary		Summary
 new			New
 client		Client
@@ -42,6 +43,7 @@ questions	Questions
 commentary	Commentary
 insert_answer	INSERT VALUE..
 amount		Amount
+skuInOrder	Added SKUs
 sku			SKU
 distribution	Distribution
 quantity	Quantity
@@ -49,6 +51,7 @@ price		Price
 edit		Edit
 insert_text	Insert text..
 totalamount	Total amount
+orderSum	Order amount
 price2		Price:
 kpi			KPI
 tasks		Tasks
@@ -73,6 +76,7 @@ ready		Done
 pcs			pcs.
 orders		Orders
 newOrder	Create new order
+add			Add
 discount	Discount
 noNumber	No number
 markUp		MarkUp

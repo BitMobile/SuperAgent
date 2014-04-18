@@ -1,5 +1,6 @@
 ﻿outlet_description	Наименование магазина
 forward		Далее
+back		Назад
 summary		Сводная информация
 new			Новое
 client		Клиент
@@ -42,6 +43,7 @@ questions	Вопросы
 commentary	Комментарий
 insert_answer	ВВЕДИТЕ ЗНАЧЕНИЕ..
 amount		Итого
+skuInOrder	Товары в заказе
 sku			Номенклатура
 distribution	Дистрибуция
 quantity	Количество
@@ -49,6 +51,7 @@ price		Цена
 edit		Редактирование
 insert_text	Введите текст..
 totalamount	Итого
+orderSum	Сумма заказа
 price2		Цена:
 kpi			Отчеты/KPI
 tasks		Задачи
@@ -73,6 +76,7 @@ ready		Готово
 pcs			шт.
 orders		Заказы
 newOrder	Создать новый заказ
+add			Добавить
 discount	Скидка
 noNumber	Нет номера
 markUp		Наценка

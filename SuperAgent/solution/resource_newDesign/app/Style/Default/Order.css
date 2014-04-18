@@ -1,0 +1,28 @@
+.grid vl {
+    width: 90%;
+}
+
+.top_navigator TextView {
+    width: auto;
+    height: auto;
+    margin-left: -10%;
+    text-align: center;
+    color: #000000;
+    font: 42% arial;
+}
+
+.btn_back {
+    width: 32%;
+    height: 100%;
+    margin-left: 2.5%;
+    margin-bottom: 23%;
+}
+
+    .btn_back TextView {
+        width: 100%;
+        height: 100%;
+        margin-left: 4%;
+        text-align: left;
+        color: #2d89cf;
+        font: 34% arial;
+    }

@@ -20,7 +20,7 @@
     <c:DockLayout CssClass="top_navigator">
       <c:HorizontalLayout Id="btnBack" OnEvent="Back" CssClass="btn_back" OnClickAction="$Workflow.DoBack()">
         <c:Image/>
-        <c:TextView Text="#client#"/>
+        <c:TextView Text="#back#"/>
       </c:HorizontalLayout>
       <c:Button Id="btnForward" CssClass="btn_forward"/>
       <c:TextView Text="#parameters#" />

@@ -31,6 +31,7 @@ dl {
         height: 100%;
     }
 
+
 shl {
     width: 100%;
     height: 100%;
@@ -58,6 +59,7 @@ MemoEdit {
 
 .top_navigator {
     height: 7.6sp;
+    dock-align: top;
 }
 
     .top_navigator TextView {
@@ -202,6 +204,7 @@ MemoEdit {
     height: 7.6sp;
     selected-color: #bacdce;
     background-color: #efeff4;
+    dock-align: top;
 }
 
     .caption_grid TextView {
@@ -326,6 +329,19 @@ MemoEdit {
     height: 2px;
 }
 
+.4_scroll {
+    background-image: url(scroll_4.png);
+    width: 100%;
+    height: 2px;
+}
+
+.5_scroll {
+    background-image: url(scroll_5.png);
+    width: 100%;
+    height: 2px;
+    dock-align: top;
+}
+
 .parameter_grid {
     width: 100%;
     height: 7.5sp;
@@ -389,13 +405,13 @@ MemoEdit {
     text-align: right;
 }
 
-.done_btn {
+.bottom_btn {
     width: 100%;
     height: 7.5sp;
     dock-align: top;
 }
 
-    .done_btn TextView {
+    .bottom_btn TextView {
         width: 100%;
         height: 100%;
         text-align: center;

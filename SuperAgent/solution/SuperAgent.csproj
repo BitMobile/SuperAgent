@@ -225,6 +225,7 @@
     <Content Include="resource_newDesign\app\Style\Default\Main2.css" />
     <Content Include="resource_newDesign\app\Style\Default\Tasks.css" />
     <Content Include="resource_newDesign\app\Style\Default\Visit_SKUs.css" />
+    <Content Include="resource_newDesign\app\Style\Default\Order.css" />
     <Content Include="resource_newDesign\app\Translation\en.txt" />
     <Content Include="resource_newDesign\app\Translation\ru.txt" />
     <Content Include="resource_newDesign\settings.xml" />

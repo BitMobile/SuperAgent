@@ -5,59 +5,45 @@
   <s:Push Id="sum" Value="$Facade.GetOrderSUM($workflow.order.Id)"></s:Push>
   <s:Push Id="priceLists" Value="$Facade.GetPriceListQty($order.Outlet)"></s:Push>
 
-  <c:VerticalLayout>
+  <c:DockLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()"/>
+      <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()">
+        <c:Image/>
+        <c:TextView Text="#order#"/>
+      </c:HorizontalLayout>
+      <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()"/>
       <c:TextView Text="#information#" />
     </c:DockLayout>
 
-    <c:ScrollView Id="grScrollView" CssClass="grid">
+    <c:ScrollView Id="grScrollView">
 
-      <c:HorizontalLayout>
-        <c:VerticalLayout>
-          <c:TextView Text="$sum" CssClass="main_row"></c:TextView>
-          <c:TextView Text="#totalamount#" CssClass="description_row"></c:TextView>
-        </c:VerticalLayout>
+      <c:HorizontalLayout  CssClass="parameter_grid">
+        <c:TextView Text="#totalamount#"></c:TextView>
+        <c:TextView Text="$sum"  CssClass="value"></c:TextView>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
-        <c:HorizontalLayout OnClickAction="$Facade.PriceListAction($workflow.order, $priceLists)">
-          <c:VerticalLayout>
-            <s:If Test="$workflow.order.PriceListAsRef != null">
-              <c:TextView Text="$workflow.order.PriceListAsObject.Description" CssClass="main_row"></c:TextView>
-
-            </s:If>
-            <s:Else>
-              <s:If Test="$priceLists == 0">
-                <c:TextView Text="#noPriceLists#" CssClass="main_row"></c:TextView>
-
-              </s:If>
-              <s:Else>
-                <c:TextView Text="#isntSelected#" CssClass="main_row"></c:TextView>
-
-              </s:Else>
-
-            </s:Else>
-            <c:TextView Text="#priceList#" CssClass="description_row"></c:TextView>
-
-          </c:VerticalLayout>
-          <s:If Test="$priceLists != 0">
-            <s:If Test="$priceLists != 1">
-            <s:If Test="$workflow.order.Status == $workflow.new">
-              <c:Image/>
-            </s:If>
-            </s:If>
+      <c:DockLayout CssClass="parameter_grid" OnClickAction="$Facade.PriceListAction($workflow.order, $priceLists)">
+        <c:TextView Text="#priceList#"></c:TextView>
+        <s:If Test="$workflow.order.PriceListAsRef != null">
+          <c:TextView Text="$workflow.order.PriceListAsObject.Description" CssClass="value"></c:TextView>
+        </s:If>
+        <s:Else>
+          <s:If Test="$priceLists == 0">
+            <c:TextView Text="#noPriceLists#" CssClass="value"></c:TextView>
           </s:If>
-
-        </c:HorizontalLayout>
-        <c:HorizontalLine/>
+          <s:Else>
+            <c:TextView Text="#isntSelected#" CssClass="value"></c:TextView>
+          </s:Else>
+        </s:Else>
+      </c:DockLayout>
+      <c:HorizontalLine/>
 
 
     </c:ScrollView>
 
-  </c:VerticalLayout>
+  </c:DockLayout>
 
 </c:Screen>
 

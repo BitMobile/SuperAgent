@@ -20,6 +20,7 @@
       <c:TextView Text="#distribution#" />
     </c:DockLayout>
 
+    <c:Image CssClass="4_scroll"></c:Image>
     <c:HorizontalLine/>
 
     <c:ScrollView Id="grScrollView">

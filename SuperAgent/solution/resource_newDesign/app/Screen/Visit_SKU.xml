@@ -9,7 +9,7 @@
 
   <c:DockLayout>
 
-    <c:HorizontalLayout CssClass="done_btn" OnEvent="Back" OnClickAction="$Workflow.DoBack()">
+    <c:HorizontalLayout CssClass="bottom_btn" OnEvent="Back" OnClickAction="$Workflow.DoBack()">
       <c:TextView Text="#ready#"></c:TextView>
     </c:HorizontalLayout>
 

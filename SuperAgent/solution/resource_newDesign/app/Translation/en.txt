@@ -43,7 +43,7 @@ questions	Questions
 commentary	Commentary
 insert_answer	INSERT VALUE..
 amount		Amount
-skuInOrder	Added SKUs
+skuInOrder	ADDED SKUs
 sku			SKU
 distribution	Distribution
 quantity	Quantity
@@ -154,3 +154,4 @@ reasonForEmptyOrder	Reason for not taking the order
 fillInVisitReason	Reason of visit should be filled
 visitReason	Visit reason
 debt	Debt
+orderInfo	ORDER INFORMATION

@@ -43,7 +43,7 @@ questions	Вопросы
 commentary	Комментарий
 insert_answer	ВВЕДИТЕ ЗНАЧЕНИЕ..
 amount		Итого
-skuInOrder	Товары в заказе
+skuInOrder	ТОВАРЫ В ЗАКАЗЕ
 sku			Номенклатура
 distribution	Дистрибуция
 quantity	Количество
@@ -153,3 +153,4 @@ reasonForEmptyOrder	Причина отсутствия заказа
 fillInVisitReason	Причина визита должна быть заполнена
 visitReason	Причина визита
 debt	Долг
+orderInfo	ИНФОРМАЦИЯ О ЗАКАЗЕ

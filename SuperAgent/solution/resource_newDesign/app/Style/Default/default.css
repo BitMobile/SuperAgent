@@ -6,6 +6,7 @@ line {
     width: 100%;
     height: 1px;
     background-color: #c8c7cc;
+    dock-align: top;
 }
 
 sv {
@@ -151,7 +152,8 @@ MemoEdit {
 }
 
 .search {
-    height: 7.6%;
+    height: 7.6sp;
+    dock-align: top;
 }
 
     .search dl {
@@ -216,6 +218,13 @@ MemoEdit {
         font: 100% arial;
         color: #4d4d4d;
     }
+
+.margin_top {
+    height: 5sp;
+    selected-color: #bacdce;
+    background-color: #efeff4;
+    dock-align: top;
+}
 
 .grid {
     height: 15.3sp;

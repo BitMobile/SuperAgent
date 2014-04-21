@@ -53,6 +53,7 @@ insert_text	Insert text..
 totalamount	Total amount
 orderSum	Order amount
 price2		Price:
+orderHistory	ORDER HISTORY
 kpi			KPI
 tasks		Tasks
 task		Task

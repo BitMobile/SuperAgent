@@ -53,6 +53,7 @@ insert_text	Введите текст..
 totalamount	Итого
 orderSum	Сумма заказа
 price2		Цена:
+orderHistory	ИСТОРИЯ ЗАКАЗОВ
 kpi			Отчеты/KPI
 tasks		Задачи
 task		Задача

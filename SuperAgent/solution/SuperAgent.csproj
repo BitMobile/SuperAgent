@@ -196,9 +196,13 @@
     <Content Include="resource_newDesign\app\Screen\Order.xml" />
     <Content Include="resource_newDesign\app\Screen\OrderList.xml" />
     <Content Include="resource_newDesign\app\Screen\Order_Commentary.xml" />
-    <Content Include="resource_newDesign\app\Screen\Order_EditSKU.xml" />
+    <Content Include="resource_newDesign\app\Screen\Order_EditSKU.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="resource_newDesign\app\Screen\Order_Info.xml" />
-    <Content Include="resource_newDesign\app\Screen\Order_SKUs.xml" />
+    <Content Include="resource_newDesign\app\Screen\Order_SKUs.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="resource_newDesign\app\Screen\Outlet.xml" />
     <Content Include="resource_newDesign\app\Screen\OutletParameter.xml" />
     <Content Include="resource_newDesign\app\Screen\Outlets.xml" />

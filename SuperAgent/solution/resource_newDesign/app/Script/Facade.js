@@ -604,7 +604,7 @@ function GetOutlet(task) {
         if (Variables["workflow"]["name"] != "ToDo")
             return "";
         else
-            return (v+", ");
+            return (v + ", ");
     }
 }
 
@@ -1317,28 +1317,28 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, price, features) {
 
 }
 
-function CountPrice(orderitem, discChBox, price) {
+function CountPrice(orderitem, price) {
 
-    discChBox = Variables["discCheckbox"]["Checked"];
+    //discChBox = Variables["discCheckbox"]["Checked"];
 
     var discount = Variables["discountEdit"].Text;
 
     if (discount == null || discount == "")
         discount = 0;
-    if (discount < 0)
-        discount = -discount;
+    //if (discount < 0)
+    //    discount = -discount;
 
-    if (discChBox) {
-        discChBox = 1;
-        Variables["discTextView"].Text = Translate["#markUp#"];
-    }
-    else {
-        discChBox = -1;
-        Variables["discTextView"].Text = Translate["#discount#"];
-    }
+    //if (discChBox) {
+    //    discChBox = 1;
+    //    Variables["discTextView"].Text = Translate["#markUp#"];
+    //}
+    //else {
+    //    discChBox = -1;
+    //    Variables["discTextView"].Text = Translate["#discount#"];
+    //}
 
-    p = CalculatePrice(orderitem.Price, (discount * discChBox), 1);
-    Variables["orderitem"].Discount = Converter.ToDecimal(discount * discChBox);
+    p = CalculatePrice(orderitem.Price, discount, 1);
+    Variables["orderitem"].Discount = Converter.ToDecimal(discount);
 
     ReNewControls(p, orderitem.Discount);
 
@@ -1404,7 +1404,7 @@ function ItemDialogHandler(answ, firstItem) {
 
 }
 
-function ChangeUnit(sku, orderitem, discChBox, price) {
+function ChangeUnit(sku, orderitem, price) {
 
     var currUnit = DB.Current.Catalog.SKU_Packing.SelectBy("Ref", sku.Id).Where("Pack==@p1", [orderitem.Units]).First();
 
@@ -1426,7 +1426,7 @@ function ChangeUnit(sku, orderitem, discChBox, price) {
     Variables["orderitem"].Units = unit.Pack;
     Variables["itemUnits"].Text = unit.PackAsObject().Description;
 
-    orderitem = CountPrice(orderitem, discChBox, price)
+    orderitem = CountPrice(orderitem, price)
 
     ReNewControls(p, orderitem.Discount);
 
@@ -1443,8 +1443,8 @@ function ChangeFeatureAndRefresh(orderItem, feature, sku, price, discountEdit, s
 
 function RefreshEditSKU(orderItem, sku, price, discountEdit, showimage) {
     var d = Variables["discountEdit"].Text;
-    var ch = Variables["discCheckbox"]["Checked"];
-    var arr = [sku, price, orderItem, d, showimage, ch];//, discountText];
+    //var ch = Variables["discCheckbox"]["Checked"];
+    var arr = [sku, price, orderItem, d, showimage];//, ch];//, discountText];
     Workflow.Refresh(arr);
 }
 
@@ -1490,23 +1490,23 @@ function CalculateSKUAndForward(outlet, orderitem) {
     if (Converter.ToDecimal(orderitem.Qty) == Converter.ToDecimal(0))
         DB.Current.Document.Order_SKUs.Delete(orderitem);
     else {
-        var discChBox = Variables["discCheckbox"]["Checked"];
+        //var discChBox = Variables["discCheckbox"]["Checked"];
 
         var discount = Variables["discountEdit"].Text;
 
         if (discount == null || discount == "")
             discount = 0;
-        if (discount < 0)
-            discount = -discount;
+        //if (discount < 0)
+        //    discount = -discount;
 
-        if (discChBox) {
-            discChBox = 1;
-        }
-        else
-            discChBox = -1
+        //if (discChBox) {
+        //    discChBox = 1;
+        //}
+        //else
+        //    discChBox = -1
 
-        Variables["orderitem"].Discount = Converter.ToDecimal(discount * discChBox);
-        var p = CalculatePrice(orderitem.Price, (discount * discChBox), 1);
+        Variables["orderitem"].Discount = Converter.ToDecimal(discount);
+        var p = CalculatePrice(orderitem.Price, discount, 1);
         Variables["orderitem"].Total = p;
     }
 

@@ -1657,11 +1657,18 @@ function SetFilter() {
         return Variables["filterType"];
 }
 
-function GetFilterStyle(val) {
+function GetLeftFilterStyle(val) {
     if (Variables["filterType"] == val)
-        return "layout_on";
+        return "mode_left_button_on";
     else
-        return "layout_off";
+        return "mode_left_button_off";
+}
+
+function GetRightFilterStyle(val) {
+    if (Variables["filterType"] == val)
+        return "mode_right_button_on";
+    else
+        return "mode_right_button_off";
 }
 
 function ChangeFilterAndRefresh(type) {

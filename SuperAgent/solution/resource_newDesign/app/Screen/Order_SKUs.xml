@@ -25,8 +25,16 @@
     </c:HorizontalLayout>
     <c:HorizontalLine/>
 
+    <c:DockLayout CssClass="parameter_grid" OnClickAction="$Workflow.DoAction(SetFilter)">
+      <c:TextView Text="#filter#"></c:TextView>
+      <c:TextView Text="param, param" CssClass="action_and_value"></c:TextView>
+      <c:Image></c:Image>
+    </c:DockLayout>
 
-    <c:ScrollView Id="grScrollView">
+
+
+    
+    <c:ScrollView Id="grScrollView" CssClass="80_partial_scroll">
 
       <s:Iterator Id="group" Value="$groups">
         <s:Push Id="skusByGroup" Value="$Facade.GetSKUs($search,$group.Id,$order.PriceList)"></s:Push>
@@ -43,7 +51,7 @@
             <c:HorizontalLayout OnClickAction="$Workflow.DoAction(SelectSKU, $skuObj, $sku.Price)" CssClass="grid">
               <c:VerticalLayout>
                 <c:TextView Text="$skuObj.Description" CssClass="main_row"></c:TextView>
-                <c:TextView Text="#price2# {$sku.Price}  #stock#: {$skuObj.CommonStock}  #brand#: {$skuObj.BrandAsObject.Description}" CssClass="description_row"></c:TextView>
+                <c:TextView Text="{$skuObj.CommonStock} {$skuObj.BaseUnitAsObject.Description}; {$sku.Price}; #brand#: {$skuObj.BrandAsObject.Description}" CssClass="description_row"></c:TextView>
               </c:VerticalLayout>
               <c:Image/>
             </c:HorizontalLayout>

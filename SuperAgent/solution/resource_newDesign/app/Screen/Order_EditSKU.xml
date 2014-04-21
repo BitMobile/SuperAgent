@@ -63,7 +63,7 @@
       <c:HorizontalLine/>
 
       <c:DockLayout CssClass="parameter_grid">
-        <c:TextView Text="#quantity#" CssClass="description_row"></c:TextView>
+        <c:TextView Text="#quantity#"></c:TextView>
         <c:EditText Value="$orderitem.Qty" CssClass="value" Keyboard="numeric"></c:EditText>
       </c:DockLayout>
       <c:HorizontalLine/>

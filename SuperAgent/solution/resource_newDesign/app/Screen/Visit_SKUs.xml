@@ -25,6 +25,9 @@
 
     <c:ScrollView Id="grScrollView">
 
+      <c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
+      <c:HorizontalLine/>
+
       <s:Iterator Id="item" Value="$questions">
         <s:Push Id="sku" Value="$Facade.GetSKU($item)"/>
         <s:Push Id="skuValue" Value="$Facade.GetVisitSKUValue($visit,$sku)"/>

@@ -1786,7 +1786,6 @@ function ClearFilterHandler(answ, state) {
         Variables.Remove("group_filter");
         Variables.Remove("brand_filter");
     }
-    Workflow.Back();
 }
 
 function CheckFilterAndForward() {

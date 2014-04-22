@@ -12,6 +12,7 @@ line {
 sv {
     width: 100%;
     height: 100%;
+    background-color: #efeff4;
 }
 
 vl {
@@ -142,7 +143,7 @@ MemoEdit {
     background-image: url(mode_right_button_on.png);
     width: 48%;
     height: 67%;
-    color: #2d89cf;
+    color: #f8f8f8;
     text-align: center;
     font: 50% arial;
     margin-top: 5.7%;
@@ -157,6 +158,7 @@ MemoEdit {
     text-align: center;
     font: 50% arial;
     margin-top: 5.7%;
+    margin-left: 2.3%;
 }
 
 .small_grid {
@@ -515,3 +517,28 @@ MemoEdit {
     height: 72,4sp;
     dock-align: top;
 }
+
+
+
+.memo_block {
+    height: 48sp;
+}
+
+    .memo_block vl {
+        width: 98%;
+        height: 90%;
+        margin-top: 5%;
+        margin-left: 3.5%;
+        padding-left: 0%;
+    }
+
+        .memo_block vl description_row {
+            height: 9%;
+        }
+
+        .memo_block vl MemoEdit {
+            height: 80%;
+            width: 100%;
+            margin-left: 0%;
+            font: 8% Arial;
+        }

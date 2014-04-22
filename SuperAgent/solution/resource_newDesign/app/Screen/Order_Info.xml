@@ -7,21 +7,20 @@
 
   <c:DockLayout>
 
-    <c:DockLayout CssClass="top_navigator">
-      <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()">
-        <c:Image/>
-        <c:TextView Text="#order#"/>
-      </c:HorizontalLayout>
-      <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoBack()"/>
-      <c:TextView Text="#information#" />
-    </c:DockLayout>
+    <c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
+    <c:HorizontalLine/>
+
+    <c:HorizontalLayout CssClass="bottom_btn" OnEvent="Back" OnClickAction="$Workflow.DoBack()">
+      <c:TextView Text="#ready#"></c:TextView>
+    </c:HorizontalLayout>
+    <c:HorizontalLine/>
 
     <c:ScrollView Id="grScrollView">
 
-      <c:HorizontalLayout  CssClass="parameter_grid">
+      <c:DockLayout  CssClass="parameter_grid">
         <c:TextView Text="#totalamount#"></c:TextView>
         <c:TextView Text="$sum"  CssClass="value"></c:TextView>
-      </c:HorizontalLayout>
+      </c:DockLayout>
       <c:HorizontalLine/>
 
       <c:DockLayout CssClass="parameter_grid" OnClickAction="$Facade.PriceListAction($workflow.order, $priceLists)">
@@ -40,6 +39,13 @@
       </c:DockLayout>
       <c:HorizontalLine/>
 
+      <c:HorizontalLayout CssClass="memo_block">
+        <c:VerticalLayout>
+          <c:TextView Text="#commentary#" CssClass="description_row"></c:TextView>
+          <c:MemoEdit Value="$order.Commentary" CssClass="main_row"></c:MemoEdit>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
 
     </c:ScrollView>
 

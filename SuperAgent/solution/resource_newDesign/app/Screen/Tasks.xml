@@ -21,6 +21,9 @@
 
     <c:ScrollView Id="grScrollView">
 
+      <c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
+      <c:HorizontalLine/>
+
       <s:Iterator Id="task" Value="$tasks">
 
         <c:SwipeHorizontalLayout Id="swipe_layout">

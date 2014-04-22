@@ -23,6 +23,9 @@
 
     <c:ScrollView Id="grScrollView">
 
+      <c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
+      <c:HorizontalLine/>
+
       <s:Iterator Id="item" Value="$questions">
 
         <s:Push Id="workflow.questions_qty" Value="$Facade.GetSum($workflow.questions_qty, 1)"></s:Push>

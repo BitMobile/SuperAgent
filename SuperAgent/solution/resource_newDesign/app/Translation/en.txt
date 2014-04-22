@@ -6,6 +6,7 @@ new			New
 client		Client
 clients		Clients
 main		MAIN
+mainInfo	MAIN INFORMATION
 additionally	ADDITIONALLY
  todo		ToDo
 stock		Stock
@@ -94,6 +95,7 @@ documentSum	Document sum
 document	Document
 receivables	Receivables
 receivable	Receivable
+byDocs		DOCUMENTS
 encashment	Encashment
 sum			Sum
 encashmentSum	Encashment sum

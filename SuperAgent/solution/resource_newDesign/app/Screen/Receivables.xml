@@ -5,28 +5,30 @@
   <s:Push Id="receivables" Value="$Facade.GetReceivables($visit.Outlet)"></s:Push>
   <s:Push Id="workflow.encashment" Value="$Facade.CreateEncashmentIfNotExist($workflow.visit, $param2, $workflow.autoSpread)"></s:Push>
   <s:Push Id="workflow.autoSpread" Value="$Facade.GetSpreadMode($workflow.autoSpread)"></s:Push>
-  
+
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:Button Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()"/>
-      <c:Button Id="btnForward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.SetAmountAndForward($workflow.encashment,$encashmentAttribute.Text)"/>
-      <c:TextView Text="#receivables#" />
+      <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()">
+        <c:Image/>
+        <c:TextView Text="#order#"/>
+      </c:HorizontalLayout>
+      <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.SetAmountAndForward($workflow.encashment,$encashmentAttribute.Text)"/>
+      <c:TextView Text="#encashment#" />
     </c:DockLayout>
-
     <c:HorizontalLine/>
 
-    <c:ScrollView Id="grScrollView" CssClass="grid">
 
-      
-      
+    <c:ScrollView Id="grScrollView">
+
+
       <c:HorizontalLayout CssClass="header_edit_block">
         <c:VerticalLayout CssClass="half_width">
           <c:TextView Text="$receivableAmount" CssClass="main_row"></c:TextView>
           <c:TextView Text="#receivableAmount#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
         <c:VerticalLayout CssClass="half_width">
-          <c:EditText Id="encashmentAttribute" Text="$encashmentAmount" CssClass="main_row" Keyboard="numeric" AutoFocus="True"></c:EditText>
+          <c:EditText Id="encashmentAttribute" Text="$encashmentAmount" CssClass="main_row" Keyboard="numeric"></c:EditText>
           <c:TextView Text="#encashmentAmount#" CssClass="description_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
@@ -38,52 +40,58 @@
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
-      
-      
-      
-      <s:Push Id="encasments" Value="$Facade.GetEncashments($receivables, $workflow.autoSpread, $encashmentAmount, $workflow.encashment.Id)"></s:Push>
-      <s:Iterator Id="encashmentDoc" Value="$encasments">
-        <s:Push Id="someId" Value="$Facade.GetDocumentsFromArray($encashmentDoc)"></s:Push>
 
-        <c:HorizontalLayout OnClickAction="$Workflow.DoAction(Select,$documentName,$visit,$receivableSum)">
+
+      <c:HorizontalLayout CssClass="caption_grid">
+        <c:TextView Text="#byDocs#:"></c:TextView>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+      
+      <s:Iterator Id="receivableDoc" Value="$receivables">
+
+        <c:HorizontalLayout CssClass="grid">
           <c:VerticalLayout>
-            <c:TextView Text="$documentName" CssClass="main_row"></c:TextView>
-            <c:TextView Text="$documentBody" CssClass="description_row"></c:TextView>
+            <c:TextView Text="$receivableDoc.DocumentName" CssClass="description_row"></c:TextView>
+            <c:DockLayout CssClass="parameter_grid">
+              <c:TextView Text="#debt#: {$receivableDoc.DocumentSum}" CssClass="value"></c:TextView>
+              <c:EditText Value="$visit.OutletAsObject.Description"></c:EditText>
+            </c:DockLayout>
           </c:VerticalLayout>
-          <c:Image/>
         </c:HorizontalLayout>
         <c:HorizontalLine/>
 
       </s:Iterator>
-      
-      
 
-      <c:HorizontalLayout>
+      <c:HorizontalLayout CssClass="caption_grid">
+        <c:TextView Text="#mainInfo#:"></c:TextView>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout CssClass="grid">
         <c:VerticalLayout>
-          <c:EditText Value="$workflow.encashment.DocNumber" Keyboard="numeric" CssClass="main_row"></c:EditText>
           <c:TextView Text="#docNumber#" CssClass="description_row"></c:TextView>
+          <c:MemoEdit Value="$workflow.encashment.DocNumber" Keyboard="numeric"></c:MemoEdit>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
-      <c:HorizontalLayout>
+      <c:HorizontalLayout CssClass="grid">
         <c:VerticalLayout>
-          <c:EditText Value="$workflow.encashment.NameSurname" CssClass="main_row"></c:EditText>
           <c:TextView Text="#nameSurname#" CssClass="description_row"></c:TextView>
+          <c:MemoEdit Value="$workflow.encashment.NameSurname"></c:MemoEdit>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
-      <c:HorizontalLayout>
+      <c:HorizontalLayout CssClass="grid">
         <c:VerticalLayout>
-          <c:EditText Value="$workflow.encashment.Commentary" CssClass="main_row"></c:EditText>
           <c:TextView Text="#commentary#" CssClass="description_row"></c:TextView>
+          <c:MemoEdit Value="$workflow.encashment.Commentary"></c:MemoEdit>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
-      
-      
+
     </c:ScrollView>
 
   </c:VerticalLayout>

@@ -6,6 +6,7 @@ new			Новое
 client		Клиент
 clients		Клиенты
 main		ОСНОВНОЕ
+mainInfo	ОСНОВНЫЕ СВЕДЕНИЯ
 additionally	ДОПОЛНИТЕЛЬНО
 todo		Задачи
 stock		Остатки
@@ -94,6 +95,7 @@ documentSum	Сумма документа
 document	Документ
 receivables	Задолженность
 receivable	Задолженность
+byDocs		ПО ДОКУМЕНТАМ
 encashment	Инкассация
 sum			Сумма
 encashmentSum	Сумма инкассации

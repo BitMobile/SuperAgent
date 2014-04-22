@@ -1246,21 +1246,6 @@ function GetFeatureDescr(feature) {
 }
 
 
-function CommentOrder(wflowName, items, order) {
-    if (parseInt(items.Count()) == parseInt(0)) {
-        if (wflowName == "Order") {
-            DB.Current.Document.Order.Delete(order);
-            Workflow.Commit();
-        }
-        else
-            Workflow.Action("SkipCommentary", []);
-    }
-    else {
-        Workflow.Action("Forward", []);
-    }
-
-}
-
 function SetDeliveryDate(order, attrName) {
     SetDateTime(order, attrName);
     //Workflow.Refresh([order]);

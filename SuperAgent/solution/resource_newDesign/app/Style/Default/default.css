@@ -392,7 +392,6 @@ MemoEdit {
     .parameter_grid EditText {
         width: 74%;
         height: 100%;
-        margin-left: 3.5%;
         color: #2d89cf;
         dock-align: left;
         font: 37% arial;

@@ -61,8 +61,7 @@
       <bp:Action Name="Add" NextStep="AddSKU"></bp:Action>
       <bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
       <bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
-      <bp:Action Name="Forward" NextStep="Commentary"></bp:Action>
-      <bp:Action Name="SkipCommentary" NextStep="Receivables"></bp:Action>
+      <bp:Action Name="Forward" NextStep="Receivables"></bp:Action>
     </bp:Step>
 
     <bp:Step Name="Commentary" Screen="Order_Commentary.xml">

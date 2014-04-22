@@ -22,7 +22,7 @@
         <c:Image/>
         <c:TextView Text="#sku#"/>
       </c:HorizontalLayout>
-      <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CommentOrder($workflow.name, $items, $workflow.order)"/>
+      <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward()"/>
       <c:TextView Text="#order#" />
     </c:DockLayout>
 

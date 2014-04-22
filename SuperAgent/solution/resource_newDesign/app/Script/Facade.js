@@ -1808,7 +1808,7 @@ function GetReceivables(outletId) {
 
 }
 
-function CreateEncashmentIfNotExist(visit, textValue, autospread) {
+function CreateEncashmentIfNotExist(visit) {//, textValue) {
 
 
     var query = new Query();
@@ -1823,11 +1823,11 @@ function CreateEncashmentIfNotExist(visit, textValue, autospread) {
         var v = parseFloat(0, 10)
         encashment.EncashmentAmount = v;
     }
-    if (textValue == "" || textValue == null)
-        textValue = 0;
-    encashment.EncashmentAmount = textValue;
-    var e = GetEncAmount(textValue, autospread, encashment);
-    Variables.Add("encashmentAmount", e);
+    //if (textValue == "" || textValue == null)
+    //    textValue = 0;
+    //encashment.EncashmentAmount = textValue;
+    //var e = GetEncAmount(textValue, autospread, encashment);
+    //Variables.Add("encashmentAmount", e);
 
     return encashment;
 }
@@ -1864,6 +1864,23 @@ function GetAmount(receivables) {
         amount += i.DocumentSum;
     }
     return amount;
+}
+
+function SpreadEncasmentAndRefresh(encashent, receivables) {
+    var sumToSpread = encashent.EncashmentAmount;
+    for (var i in receivables) {
+        var encRow = DB.Current.Document.Encashment_EncashmentDocuments.SelectBy("Ref", encashent.Id).Where("DocumentName==@p1", [i.DocumentName]).First();
+        //Dialog.Debug(encRow);
+        if (Converter.ToDecimal(sumToSpread) > Converter.ToDecimal(i.DocumentSum)) {
+            encRow.EncashmentSum = i.DocumentSum;
+            sumToSpread = sumToSpread - i.DocumentSum;
+        }
+        else {
+            encRow.EncashmentSum = sumToSpread;
+            sumToSpread = Converter.ToDecimal(0);
+        }
+    }
+    Workflow.Refresh([]);
 }
 
 function SpreadOnItem(encItem, sumToSpread, encashment, receivableDoc) {

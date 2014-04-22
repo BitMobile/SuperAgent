@@ -374,6 +374,20 @@ MemoEdit {
     dock-align: top;
 }
 
+.6_scroll {
+    background-image: url(scroll_6.png);
+    width: 100%;
+    height: 2px;
+    dock-align: top;
+}
+
+.7_scroll {
+    background-image: url(scroll_7.png);
+    width: 100%;
+    height: 2px;
+    dock-align: top;
+}
+
 .parameter_grid {
     width: 100%;
     height: 7.5sp;

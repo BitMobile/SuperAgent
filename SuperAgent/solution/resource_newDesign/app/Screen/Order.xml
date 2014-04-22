@@ -27,6 +27,7 @@
     </c:DockLayout>
 
     <c:Image CssClass="5_scroll"></c:Image>
+    <c:HorizontalLine/>
 
     <s:If Test="$workflow.order.IsNew == True">
 

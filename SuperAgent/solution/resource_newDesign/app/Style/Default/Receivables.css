@@ -23,3 +23,9 @@
     font: 100% arial;
     color: #2d89cf;
 }
+
+.description_row {
+    height: 34%;
+    padding-top: 10%;
+    font: 43% Arial;
+}

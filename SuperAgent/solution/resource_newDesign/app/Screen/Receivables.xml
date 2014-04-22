@@ -3,8 +3,7 @@
 
   <s:Push Id="visit" Value="$workflow.visit"/>
   <s:Push Id="receivables" Value="$Facade.GetReceivables($visit.Outlet)"></s:Push>
-  <s:Push Id="workflow.encashment" Value="$Facade.CreateEncashmentIfNotExist($workflow.visit, $param2, $workflow.autoSpread)"></s:Push>
-  <s:Push Id="workflow.autoSpread" Value="$Facade.GetSpreadMode($workflow.autoSpread)"></s:Push>
+  <s:Push Id="workflow.encashment" Value="$Facade.CreateEncashmentIfNotExist($workflow.visit)"></s:Push>
 
   <c:VerticalLayout>
 
@@ -13,9 +12,11 @@
         <c:Image/>
         <c:TextView Text="#order#"/>
       </c:HorizontalLayout>
-      <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.SetAmountAndForward($workflow.encashment,$encashmentAttribute.Text)"/>
+      <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward()"/>
       <c:TextView Text="#encashment#" />
     </c:DockLayout>
+
+    <c:Image CssClass="6_scroll"></c:Image>
     <c:HorizontalLine/>
 
 
@@ -35,10 +36,10 @@
       <c:HorizontalLayout CssClass="grid">
         <c:VerticalLayout>
           <c:DockLayout>
-            <c:TextView Text="#encashmentAmount#^"></c:TextView>
-            <c:Button Text="#spread#" OnClickAction="$Workflow.DoRefresh($True,$encashmentAttribute.Text)"></c:Button>
+            <c:TextView Text="#encashmentAmount#:"></c:TextView>
+            <c:Button Text="#spread#" OnClickAction="$Facade.SpreadEncasmentAndRefresh($workflow.encashment, $receivables)"></c:Button>
           </c:DockLayout>
-          <c:EditText Id="encashmentAttribute" Text="$encashmentAmount" CssClass="main_row"></c:EditText>
+          <c:EditText Value="$workflow.encashment.EncashmentAmount" CssClass="main_row"></c:EditText>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>

@@ -100,8 +100,9 @@ encashment	Инкассация
 sum			Сумма
 encashmentSum	Сумма инкассации
 spreadOnDocuments	Распределить на документы
+spread		Распределить
 docNumber	Номер документа
-receivableAmount	Сумма задолженности
+receivableAmount	СУММА ЗАДОЛЖЕННОСТИ
 encashmentAmount	Сумма инкассации
 nameSurname	ФИО
 maximumAmount	Лимит

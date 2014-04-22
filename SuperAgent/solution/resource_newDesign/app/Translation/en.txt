@@ -100,8 +100,9 @@ encashment	Encashment
 sum			Sum
 encashmentSum	Encashment sum
 spreadOnDocuments	Spread on documents
+spread		Spread
 docNumber	Document number
-receivableAmount	Receivable amount
+receivableAmount	RECEIVABLE AMOUNT
 encashmentAmount	Encashment amount
 nameSurname	Name, surname
 maximumAmount	Amount limit

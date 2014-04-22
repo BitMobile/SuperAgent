@@ -21,22 +21,31 @@
 
     <c:ScrollView Id="grScrollView">
 
+      <c:HorizontalLayout CssClass="caption_grid">
+        <c:TextView Text="#receivableAmount#:"></c:TextView>
+      </c:HorizontalLayout>
 
-      <c:HorizontalLayout CssClass="header_edit_block">
-        <c:VerticalLayout CssClass="half_width">
-          <c:TextView Text="$receivableAmount" CssClass="main_row"></c:TextView>
-          <c:TextView Text="#receivableAmount#" CssClass="description_row"></c:TextView>
-        </c:VerticalLayout>
-        <c:VerticalLayout CssClass="half_width">
-          <c:EditText Id="encashmentAttribute" Text="$encashmentAmount" CssClass="main_row" Keyboard="numeric"></c:EditText>
-          <c:TextView Text="#encashmentAmount#" CssClass="description_row"></c:TextView>
+      <c:HorizontalLayout CssClass="caption_grid">
+        <c:TextView Text="$receivableAmount" CssClass="caption_row"></c:TextView>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>      
+      
+      
+
+      <c:HorizontalLayout CssClass="grid">
+        <c:VerticalLayout>
+          <c:DockLayout>
+            <c:TextView Text="#encashmentAmount#^"></c:TextView>
+            <c:Button Text="#spread#" OnClickAction="$Workflow.DoRefresh($True,$encashmentAttribute.Text)"></c:Button>
+          </c:DockLayout>
+          <c:EditText Id="encashmentAttribute" Text="$encashmentAmount" CssClass="main_row"></c:EditText>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
-
+      
       <c:HorizontalLayout  OnClickAction="$Workflow.DoRefresh($True,$encashmentAttribute.Text)">
         <c:VerticalLayout>
-          <c:TextView Text="#spreadOnDocuments#" CssClass="caption_row"></c:TextView>
+          <c:TextView Text="#spread#" CssClass="caption_row"></c:TextView>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
@@ -46,15 +55,16 @@
         <c:TextView Text="#byDocs#:"></c:TextView>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
-      
+
       <s:Iterator Id="receivableDoc" Value="$receivables">
+        <s:Push Id="encasmentItem" Value="$Facade.CreateEncashmentItemIfNotExist($workflow.encashment, $receivableDoc.DocumentName)"></s:Push>
 
         <c:HorizontalLayout CssClass="grid">
           <c:VerticalLayout>
             <c:TextView Text="$receivableDoc.DocumentName" CssClass="description_row"></c:TextView>
             <c:DockLayout CssClass="parameter_grid">
               <c:TextView Text="#debt#: {$receivableDoc.DocumentSum}" CssClass="value"></c:TextView>
-              <c:EditText Value="$visit.OutletAsObject.Description"></c:EditText>
+              <c:EditText Value="$encasmentItem.EncashmentSum"></c:EditText>
             </c:DockLayout>
           </c:VerticalLayout>
         </c:HorizontalLayout>

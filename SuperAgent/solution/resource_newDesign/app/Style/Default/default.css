@@ -280,6 +280,13 @@ MemoEdit {
         font: 30% Arial;
     }
 
+    .grid vl EditText {
+        height: 60%;
+        width: 90%;
+        font: 30% Arial;
+        color: #2d89cf;
+    }
+
     .grid vl dl {
         height: 21%;
         width: 100%;

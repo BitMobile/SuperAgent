@@ -162,6 +162,7 @@ MemoEdit {
 .small_grid {
     height: 7.6%;
     selected-color: #bacdce;
+    dock-align: top;
 }
 
 .search {
@@ -394,6 +395,30 @@ MemoEdit {
         dock-align: left;
         font: 37% arial;
     }
+
+.tick {
+    height: 35%;
+    margin-left: 3%;
+    margin-top: 35%;
+    background-image: url(tick.png);
+}
+
+.empty_tick {
+    width: 7.65%;
+    height: 100%;
+}
+
+.child_tick {
+    height: 35%;
+    margin-left: 13%;
+    margin-top: 35%;
+    background-image: url(tick.png);
+}
+
+.child_empty_tick {
+    width: 17.65%;
+    height: 100%;
+}
 
 .yes_TextView {
     width: 25%;

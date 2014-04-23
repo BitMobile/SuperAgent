@@ -43,6 +43,7 @@ save		Сохранить
 no_questions	Вопросов нет
 empty_field	Поле не может быть очищено
 questions	Вопросы
+questAnswers	Ответов в анкете
 commentary	Комментарий
 insert_answer	ВВЕДИТЕ ЗНАЧЕНИЕ..
 amount		Итого
@@ -60,6 +61,7 @@ orderHistory	ИСТОРИЯ ЗАКАЗОВ
 kpi			Отчеты/KPI
 tasks		Задачи
 task		Задача
+todoDone	Задач выполено
 description	Наименование
 result		Результат
 plandate	Плановый срок
@@ -160,3 +162,4 @@ fillInVisitReason	Причина визита должна быть заполн
 visitReason	Причина визита
 debt	Долг
 orderInfo	ИНФОРМАЦИЯ О ЗАКАЗЕ
+visitTotal	Итоги визита

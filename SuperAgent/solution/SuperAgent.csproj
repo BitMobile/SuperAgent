@@ -184,7 +184,6 @@
     <Content Include="resource_newDesign\app\Image\Default\tick.png" />
     <Content Include="resource_newDesign\app\Image\Default\TudaSuda.png" />
     <Content Include="resource_newDesign\app\Image\Default\yellow_mark.png" />
-    <Content Include="resource_newDesign\app\Screen\Encashment.xml" />
     <Content Include="resource_newDesign\app\Screen\Filters.xml" />
     <Content Include="resource_newDesign\app\Screen\ListChoice.xml" />
     <Content Include="resource_newDesign\app\Screen\Main.xml" />

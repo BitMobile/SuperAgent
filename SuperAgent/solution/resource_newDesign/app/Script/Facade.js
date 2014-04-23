@@ -21,7 +21,7 @@ function ToInteger(text) {
 }
 
 function GetSum(val1, val2) {
-    return parseFloat(val1) + parseFloat(val2);
+    return Converter.ToDecimal(val1) + Converter.ToDecimal(val2);
 }
 
 function GetSumInt(val1, val2) {
@@ -589,11 +589,15 @@ function GetTasks(outlet) {
         var result = DB.Current.Document.Task.Select().Where("PlanDate >= @p1", [DateTime.Now.Date]).OrderBy("OutletAsObject.Description");
     else
         var result = DB.Current.Document.Task.SelectBy("Outlet", outlet.Id).Where("PlanDate >= @p1", [DateTime.Now.Date]).OrderBy("OutletAsObject.Description");
-    if (result.Count() > 0)
+    if (result.Count() > 0) 
         return result;
     else
         return null;
 
+}
+
+function CountTasks(outlet) {
+    return DB.Current.Document.Task.SelectBy("Outlet", outlet.Id).Where("PlanDate >= @p1", [DateTime.Now.Date]).Count();
 }
 
 function GetOutlet(task) {
@@ -891,6 +895,11 @@ function IsAnswered(visit, qName, sku) {
 
     return n;
 
+}
+
+function CountAnswers(visitId, skuAnsw) {
+    var q = CountEntities("Document", "Visit_Questions", visitId, "Ref");
+    return (q + skuAnsw);
 }
 
 function CheckEmtySKUAndForward(outlet, visit) {
@@ -2023,8 +2032,8 @@ function ShowDialog(v1) {
 
 function Sync() {
 
-    Variables["dbIndicator"].Start();
-    DB.Sync(StopIndicator);
+    //Variables["dbIndicator"].Start();
+    DB.Sync();//StopIndicator);
 }
 
 function StopIndicator() {

@@ -60,7 +60,7 @@
       </c:DockLayout>
       <c:HorizontalLine/>
 
-      <c:DockLayout>
+      <c:DockLayout  OnClickAction="$Facade.Sync()">
         <c:HorizontalLayout>
           <c:Image CssClass="btn_sync"/>
           <c:TextView Text="#sync#"></c:TextView>

@@ -74,7 +74,6 @@
 
     <bp:Step Name="Receivables" Screen="Receivables.xml">
       <bp:Action Name="Forward" NextStep="Total"></bp:Action>
-      <bp:Action Name="Select" NextStep="ReceivableDoc"></bp:Action>
     </bp:Step>
 
     <bp:Step Name="Total" Screen="Visit_Total.xml">
@@ -111,9 +110,6 @@
     </bp:Step>
 
     <bp:Step Name="Visit_EditSKU" Screen="Visit_SKU.xml">
-    </bp:Step>
-
-    <bp:Step Name="ReceivableDoc" Screen="Encashment.xml">
     </bp:Step>
 
     <bp:Step Name="ShowMap" Screen="ScheduledVisits_Map.xml">
@@ -195,7 +191,6 @@
 
     <bp:Step Name="Receivables" Screen="Receivables.xml">
       <bp:Action Name="Forward" NextStep="Total"></bp:Action>
-      <bp:Action Name="Select" NextStep="ReceivableDoc"></bp:Action>
     </bp:Step>
 
     <bp:Step Name="Total" Screen="Visit_Total.xml">
@@ -232,9 +227,6 @@
     </bp:Step>
 
     <bp:Step Name="Visit_EditSKU" Screen="Visit_SKU.xml">
-    </bp:Step>
-
-    <bp:Step Name="ReceivableDoc" Screen="Encashment.xml">
     </bp:Step>
 
   </bp:Workflow>

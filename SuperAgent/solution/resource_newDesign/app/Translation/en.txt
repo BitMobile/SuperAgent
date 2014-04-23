@@ -43,6 +43,7 @@ save		Save
 no_questions	No questions
 empty_field	Field couldn't be cleaned
 questions	Questions
+questAnswers	Questionnairy
 commentary	Commentary
 insert_answer	INSERT VALUE..
 amount		Amount
@@ -60,6 +61,7 @@ orderHistory	ORDER HISTORY
 kpi			KPI
 tasks		Tasks
 task		Task
+todoDone	Tasks done
 description	Description
 result		Result
 plandate	Plan date
@@ -161,3 +163,4 @@ fillInVisitReason	Reason of visit should be filled
 visitReason	Visit reason
 debt	Debt
 orderInfo	ORDER INFORMATION
+visitTotal	Visit total

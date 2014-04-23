@@ -4,6 +4,9 @@
   <s:Push Id="outlet" Value="$workflow.outlet"></s:Push>
   <s:Push Id="visit" Value="$workflow.visit"></s:Push>
   <s:Push Id="tasks" Value="$Facade.GetTasks($outlet)"></s:Push>
+  <s:Push Id="exTasks" Value="$Facade.GetExecutedTasks($workflow.visit)"></s:Push>
+  <s:Push Id="newTasks" Value="$Facade.GetNotExecutedTasks($workflow.visit)"></s:Push>
+
 
   <c:VerticalLayout>
 
@@ -21,12 +24,20 @@
 
     <c:ScrollView Id="grScrollView">
 
-      <c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
+      <c:HorizontalLayout CssClass="caption_grid">
+        <c:TextView Text="#newTasks#:"></c:TextView>
+      </c:HorizontalLayout>
       <c:HorizontalLine/>
 
-      <s:Iterator Id="task" Value="$tasks">
+      <s:Iterator Id="task" Value="$newTasks">
 
-        <c:SwipeHorizontalLayout Id="swipe_layout" CssClass="swipe_layout">
+        <c:SwipeHorizontalLayout Id="swipe_layout" CssClass="swipe_layout" Index="1">
+          <c:HorizontalLayout CssClass="green_swipe" OnClickAction="$Facade.CompleteTheTask($task, $workflow.visit)">
+            <c:VerticalLayout>
+              <c:Image></c:Image>
+              <c:TextView Text="#execute#"></c:TextView>
+            </c:VerticalLayout>
+          </c:HorizontalLayout>
           <c:HorizontalLayout CssClass="grid">
             <c:VerticalLayout>
               <s:Push Id="descr" Value="$Facade.GetOutlet($task)"></s:Push>
@@ -35,13 +46,38 @@
             </c:VerticalLayout>
             <c:Image/>
           </c:HorizontalLayout>
-          <c:HorizontalLayout CssClass="red">
+        </c:SwipeHorizontalLayout>
+        <c:HorizontalLine/>
 
+      </s:Iterator>
+
+      <c:HorizontalLayout CssClass="caption_grid">
+        <c:TextView Text="#executedtask#:"></c:TextView>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <s:Iterator Id="eTask" Value="$exTasks">
+
+        <c:SwipeHorizontalLayout Id="swipe_layout" CssClass="swipe_layout">
+          <c:HorizontalLayout CssClass="grid">
+            <c:VerticalLayout>
+              <s:Push Id="descr" Value="$Facade.GetOutlet($eTask)"></s:Push>
+              <c:TextView Text="{$descr} {$eTask.TaskRefAsObject.PlanDate.DateString}" CssClass="description_row"></c:TextView>
+              <c:TextView Text="$eTask.TaskRefAsObject.TextTask" CssClass="main_row"></c:TextView>
+            </c:VerticalLayout>
+            <c:Image/>
+          </c:HorizontalLayout>
+          <c:HorizontalLayout CssClass="gray_swipe" OnClickAction="$Facade.RetrieveTask($eTask)">
+            <c:VerticalLayout>
+              <c:Image></c:Image>
+              <c:TextView Text="#retrieve#"></c:TextView>
+            </c:VerticalLayout>
           </c:HorizontalLayout>
         </c:SwipeHorizontalLayout>
         <c:HorizontalLine/>
 
       </s:Iterator>
+
     </c:ScrollView>
 
   </c:VerticalLayout>

@@ -207,12 +207,16 @@
     <Content Include="resource_newDesign\app\Screen\SKU_Image.xml" />
     <Content Include="resource_newDesign\app\Screen\Stock_SKUs.xml" />
     <Content Include="resource_newDesign\app\Screen\Targets.xml" />
-    <Content Include="resource_newDesign\app\Screen\Tasks.xml" />
+    <Content Include="resource_newDesign\app\Screen\Tasks.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="resource_newDesign\app\Screen\Visits.xml" />
     <Content Include="resource_newDesign\app\Screen\Visit_Questions.xml" />
     <Content Include="resource_newDesign\app\Screen\Visit_SKU.xml" />
     <Content Include="resource_newDesign\app\Screen\Visit_SKUs.xml" />
-    <Content Include="resource_newDesign\app\Screen\Visit_Total.xml" />
+    <Content Include="resource_newDesign\app\Screen\Visit_Total.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="resource_newDesign\app\Script\DB.js" />
     <Content Include="resource_newDesign\app\Script\Events.js" />
     <Content Include="resource_newDesign\app\Script\Facade.js" />

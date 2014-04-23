@@ -589,24 +589,64 @@ function GetTasks(outlet) {
         var result = DB.Current.Document.Task.Select().Where("PlanDate >= @p1", [DateTime.Now.Date]).OrderBy("OutletAsObject.Description");
     else
         var result = DB.Current.Document.Task.SelectBy("Outlet", outlet.Id).Where("PlanDate >= @p1", [DateTime.Now.Date]).OrderBy("OutletAsObject.Description");
-    if (result.Count() > 0) 
+    if (result.Count() > 0)
         return result;
     else
         return null;
 
 }
 
+function GetExecutedTasks(visit) {
+    var e = DB.Current.Document.Visit_Task.SelectBy("Ref", visit.Id).Where("Result==@p1", [true]).Count();
+    return DB.Current.Document.Visit_Task.SelectBy("Ref", visit.Id).Where("Result==@p1", [true]);
+}
+
+function GetNotExecutedTasks(visit) {
+    var executedTasks = DB.Current.Document.Visit_Task.SelectBy("Ref", visit.Id).Where("Result==@p1", [true]).Distinct("TaskRef");
+    if (parseInt(executedTasks.Count()) == parseInt(0)) {
+        return DB.Current.Document.Task.SelectBy("Outlet", visit.Outlet).Where("PlanDate >= @p1", [DateTime.Now.Date]).OrderBy("PlanDate");
+    }
+    else {
+        return DB.Current.Document.Task.SelectBy("Outlet", visit.Outlet).Where("PlanDate >= @p1", [DateTime.Now.Date])
+                .Union(
+                DB.Current.Document.Task.SelectBy("Id", executedTasks, "<>"))
+                .OrderBy("PlanDate");
+    }
+}
+
 function CountTasks(outlet) {
     return DB.Current.Document.Task.SelectBy("Outlet", outlet.Id).Where("PlanDate >= @p1", [DateTime.Now.Date]).Count();
 }
 
+function CompleteTheTask(task, visit) {
+    var visit_task = CreateVisitTaskValueIfNotExists(visit, task);
+    visit_task.Result = true;
+    Workflow.Refresh([]);
+}
+
+function RetrieveTask(executedTask) {
+    executedTask.Result = false;
+    Workflow.Refresh([]);
+}
+
 function GetOutlet(task) {
-    var v = task.OutletAsObject().Description;
-    if (v == null)
-        return "Various outlets";
+    //var v = task.OutletAsObject().Description;
+    //if (v == null)
+    //    return "Various outlets";
+    //else {
+    //    if (Variables["workflow"]["name"] != "ToDo")
+    //        return "";
+    //    else
+    //        return (v + ", ");
+    //}
+
+    if (Variables["workflow"]["name"] != "ToDo") {
+        return "";
+    }
     else {
-        if (Variables["workflow"]["name"] != "ToDo")
-            return "";
+        var v = task.OutletAsObject().Description;
+        if (v == null)
+            return "Various outlets";
         else
             return (v + ", ");
     }

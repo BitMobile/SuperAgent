@@ -62,6 +62,10 @@ kpi			Отчеты/KPI
 tasks		Задачи
 task		Задача
 todoDone	Задач выполено
+execute		Выполнить
+retrieve	Вернуть
+newTasks	НЕВЫПОЛНЕННЫЕ
+executedtask	ВЫПОЛНЕННЫЕ
 description	Наименование
 result		Результат
 plandate	Плановый срок

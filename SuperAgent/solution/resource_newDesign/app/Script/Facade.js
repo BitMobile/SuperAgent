@@ -188,7 +188,7 @@ function DeleteAndBack(entity, objectType, objectName, varToDelete) {
 
 
 function SetDateTime(entity, attribute) {
-    var NewDateTime = entity[attribute];
+    var NewDateTime = DateTime.Parse(entity[attribute]);
     var Header = Translate["#enterDateTime#"];
     Dialog.ShowDateTime(Header, NewDateTime, DateTimeDialog, entity);
 }
@@ -410,7 +410,33 @@ function UpdateOtletStatus() {
 }
 
 
-//----------------------Schedules visits----------------
+
+
+//----------------------Visits-----------------------
+
+function SetListType() {
+    if (Variables.Exists("visitsType") == false)
+        Variables.AddGlobal("visitsType", "planned");
+    else
+        return Variables["visitsType"];
+}
+
+function ChangeListAndRefresh(control) {
+    Variables.Remove("visitsType");
+    Variables.AddGlobal("visitsType", control);
+    Workflow.Refresh([]);
+}
+
+
+
+
+
+
+//----------------------Schedules visits------------------------
+
+
+
+
 
 function GetScheduledVisits(searchText) {
 
@@ -765,7 +791,7 @@ function GoToQuestionAction(answerType, question, visit) {
 
 function DateTimeQuestion(question, dateTime) {
     question.Answer = dateTime;
-    Variables["dateTimeText"].Text = dateTime;
+    Workflow.Refresh([]);
 }
 
 
@@ -780,7 +806,8 @@ function GetCameraObject(entity) {
 
 function SaveAtVisit(question) {
     question.Answer = Variables["guid"];
-    Variables["snapshotInfo"].Text = Translate["#snapshotAttached#"];
+    //Variables["snapshotInfo"].Text = Translate["#snapshotAttached#"];
+    Workflow.Refresh([]);
 }
 
 function GetSKUShapshot(question) {

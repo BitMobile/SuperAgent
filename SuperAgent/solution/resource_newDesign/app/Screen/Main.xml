@@ -14,7 +14,6 @@
           <c:Image CssClass="btn_visits"/>
           <c:TextView Text="#visits#"></c:TextView>
         </c:HorizontalLayout>
-        <c:TextView Text="60 | 72"></c:TextView>
       </c:DockLayout>
       <c:HorizontalLine/>
 
@@ -23,7 +22,6 @@
           <c:Image CssClass="btn_orders"/>
           <c:TextView Text="#orders#"></c:TextView>
         </c:HorizontalLayout>
-        <c:TextView Text="13 (580 087,00 руб.)"></c:TextView>
       </c:DockLayout>
       <c:HorizontalLine/>
 
@@ -31,31 +29,6 @@
         <c:HorizontalLayout>
           <c:Image CssClass="btn_clients"/>
           <c:TextView Text="#clients#"></c:TextView>
-        </c:HorizontalLayout>
-        <c:TextView Text="145"></c:TextView>
-      </c:DockLayout>
-      <c:HorizontalLine/>
-
-      <c:DockLayout>
-        <c:HorizontalLayout>
-          <c:Image CssClass="btn_stocks"/>
-          <c:TextView Text="#stock#"></c:TextView>
-        </c:HorizontalLayout>
-      </c:DockLayout>
-      <c:HorizontalLine/>
-
-      <c:DockLayout>
-        <c:HorizontalLayout>
-          <c:Image CssClass="btn_kpi"/>
-          <c:TextView Text="#kpi#"></c:TextView>
-        </c:HorizontalLayout>
-      </c:DockLayout>
-      <c:HorizontalLine/>
-
-      <c:DockLayout>
-        <c:HorizontalLayout>
-          <c:Image CssClass="btn_set"/>
-          <c:TextView Text="#settings#"></c:TextView>
         </c:HorizontalLayout>
       </c:DockLayout>
       <c:HorizontalLine/>
@@ -65,7 +38,6 @@
           <c:Image CssClass="btn_sync"/>
           <c:TextView Text="#sync#"></c:TextView>
         </c:HorizontalLayout>
-        <c:TextView Text="11.04 14:49"></c:TextView>
       </c:DockLayout>
       <c:HorizontalLine/>
 

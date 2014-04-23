@@ -21,6 +21,7 @@
     <bp:Step Name="Visits" Screen="Visits.xml">
       <bp:Action Name="ShowMap" NextStep="ShowMap"></bp:Action>
       <bp:Action Name="Select" NextWorkflow="ScheduledVisit"></bp:Action>
+      <bp:Action Name="SelectUnscheduled" NextWorkflow="UnscheduledVisit"></bp:Action>
     </bp:Step>
 
     <bp:Step Name="ShowMap" Screen="ScheduledVisits_Map.xml">
@@ -142,10 +143,6 @@
 
 
   <bp:Workflow Name="UnscheduledVisit">
-
-    <bp:Step Name="Outlets" Screen="Outlets.xml">
-      <bp:Action Name="Select" NextStep="Outlet"></bp:Action>
-    </bp:Step>
 
     <bp:Step Name="Outlet" Screen="Outlet.xml">
       <bp:Action Name="Forward" NextStep="Visit_Tasks"></bp:Action>

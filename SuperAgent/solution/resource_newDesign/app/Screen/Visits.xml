@@ -2,7 +2,8 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
 
   <s:Push Id="search" Value="$param1"/>
-  <s:Push Id="outlets" Value="$Facade.GetScheduledVisits($search)" />  
+  <s:Push Id="s" Value="$Facade.SetListType()"></s:Push>
+
 
   <c:VerticalLayout>
 
@@ -13,10 +14,17 @@
     </c:DockLayout>
 
     <c:HorizontalLayout CssClass="small_grid">
+      <s:Push Id="outlets" Value="$Facade.GetScheduledVisits($search)" />
       <s:Push Id="sv" Value="$Facade.CountCollection($outlets)"></s:Push>
       <s:Push Id="ucv" Value="$Facade.GetUnplannedCommitedVisitsCount(null, $outlets)"></s:Push>
-      <c:Button CssClass="mode_left_button_on" Text="#planVisit# ({$sv})"></c:Button>
-      <c:Button CssClass="mode_right_button_off" Text="#unplanned# ({$ucv})"></c:Button>
+      <s:If Test="$visitsType=='planned'">
+        <c:Button Id="planned" CssClass="mode_left_button_on" Text="#planVisit# ({$sv})" OnClickAction="$Facade.ChangeListAndRefresh(planned)"></c:Button>
+        <c:Button Id="unPlanned" CssClass="mode_right_button_off" Text="#unplanned# ({$ucv})" OnClickAction="$Facade.ChangeListAndRefresh(unPlanned)"></c:Button>
+      </s:If>
+      <s:Else>
+        <c:Button Id="planned" CssClass="mode_left_button_off" Text="#planVisit# ({$sv})" OnClickAction="$Facade.ChangeListAndRefresh(planned)"></c:Button>
+        <c:Button Id="unPlanned" CssClass="mode_right_button_on" Text="#unplanned# ({$ucv})" OnClickAction="$Facade.ChangeListAndRefresh(unPlanned)"></c:Button>
+      </s:Else>
     </c:HorizontalLayout>
     <c:HorizontalLine/>
 
@@ -30,19 +38,20 @@
     <c:HorizontalLine/>
     <c:HorizontalLine/>
 
-    <c:ScrollView>
+    <s:If Test="$visitsType=='planned'">
+      <c:ScrollView>
 
-      <c:HorizontalLayout CssClass="caption_grid">
-        <s:Push Id="uncommitedVisits" Value="$Facade.GetUncommitedScheduledVisits($search, $outlets)"></s:Push>
-        <s:Push Id="sv" Value="$Facade.CountCollection($uncommitedVisits)"></s:Push>
-        <c:TextView Text="НЕВЫПОЛНЕННЫЕ_ВИЗИТЫ ({$sv}):"></c:TextView>
-      </c:HorizontalLayout>
-      <c:HorizontalLine/>
+        <c:HorizontalLayout CssClass="caption_grid">
+          <s:Push Id="uncommitedVisits" Value="$Facade.GetUncommitedScheduledVisits($search, $outlets)"></s:Push>
+          <s:Push Id="sv" Value="$Facade.CountCollection($uncommitedVisits)"></s:Push>
+          <c:TextView Text="НЕВЫПОЛНЕННЫЕ_ВИЗИТЫ ({$sv}):"></c:TextView>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
 
 
         <s:Iterator Id="pOutlet" Value="$uncommitedVisits">
           <s:Push Id="planOutlet" Value="$pOutlet.OutletAsObject"></s:Push>
-          
+
           <c:HorizontalLayout CssClass="grid" OnClickAction="$Facade.AddGlobalAndAction(outlet, $planOutlet, Select)">
             <s:If Test="$planOutlet.ConfirmationStatusAsObject.Description == 'New'">
               <c:Image CssClass="yellow_mark"/>
@@ -50,7 +59,7 @@
             <s:Else>
               <c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
             </s:Else>
-              <c:VerticalLayout>
+            <c:VerticalLayout>
               <c:TextView Text="$planOutlet.Description" CssClass="main_row"></c:TextView>
               <c:TextView Text="{$planOutlet.Address}" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
@@ -59,15 +68,15 @@
           <c:HorizontalLine/>
 
         </s:Iterator>
-      
 
-      <c:HorizontalLayout CssClass="caption_grid">
 
-        <s:Push Id="commitedVisits" Value="$Facade.GetCommitedScheduledVisits($search, $outlets)"></s:Push>
-        <s:Push Id="cv" Value="$Facade.CountCollection($commitedVisits)"></s:Push>
-        <c:TextView Text="ВЫПОЛНЕННЫЕ_ВИЗИТЫ ({$cv}):"></c:TextView>
-      </c:HorizontalLayout>
-      <c:HorizontalLine/>
+        <c:HorizontalLayout CssClass="caption_grid">
+
+          <s:Push Id="commitedVisits" Value="$Facade.GetCommitedScheduledVisits($search, $outlets)"></s:Push>
+          <s:Push Id="cv" Value="$Facade.CountCollection($commitedVisits)"></s:Push>
+          <c:TextView Text="ВЫПОЛНЕННЫЕ_ВИЗИТЫ ({$cv}):"></c:TextView>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
 
 
         <s:Iterator Id="pOutlet" Value="$commitedVisits">
@@ -88,9 +97,34 @@
           <c:HorizontalLine/>
 
         </s:Iterator>
-      
 
-    </c:ScrollView>
+      </c:ScrollView>
+    </s:If>
+
+
+    <s:Else>
+      <s:Push Id="unscheduledOutlets" Value="$Facade.GetOutlets($search)"></s:Push>
+
+      <c:ScrollView>
+        <s:Iterator Id="uOutlet" Value="$unscheduledOutlets">
+          <c:HorizontalLayout CssClass="grid" OnClickAction="$Facade.AddGlobalAndAction(outlet, $uOutlet, Select)">
+            <s:If Test="$uOutlet.ConfirmationStatusAsObject.Description == 'New'">
+              <c:Image CssClass="yellow_mark"/>
+            </s:If>
+            <s:Else>
+              <c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
+            </s:Else>
+            <c:VerticalLayout>
+              <c:TextView Text="$uOutlet.Description" CssClass="main_row"></c:TextView>
+              <c:TextView Text="{$uOutlet.Address}" CssClass="description_row"></c:TextView>
+            </c:VerticalLayout>
+            <c:Image/>
+          </c:HorizontalLayout>
+          <c:HorizontalLine/>
+        </s:Iterator>
+      </c:ScrollView>
+
+    </s:Else>
 
   </c:VerticalLayout>
 

@@ -186,7 +186,9 @@
     <Content Include="resource_newDesign\app\Image\Default\yellow_mark.png" />
     <Content Include="resource_newDesign\app\Screen\Filters.xml" />
     <Content Include="resource_newDesign\app\Screen\ListChoice.xml" />
-    <Content Include="resource_newDesign\app\Screen\Main.xml" />
+    <Content Include="resource_newDesign\app\Screen\Main.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="resource_newDesign\app\Screen\Order.xml" />
     <Content Include="resource_newDesign\app\Screen\OrderList.xml" />
     <Content Include="resource_newDesign\app\Screen\Order_Commentary.xml" />
@@ -223,8 +225,6 @@
     <Content Include="resource_newDesign\app\Script\Workflow.js" />
     <Content Include="resource_newDesign\app\Style\Default\default.css" />
     <Content Include="resource_newDesign\app\Style\Default\Main.css" />
-    <Content Include="resource_newDesign\app\Style\Default\Main1.css" />
-    <Content Include="resource_newDesign\app\Style\Default\Main2.css" />
     <Content Include="resource_newDesign\app\Style\Default\Tasks.css" />
     <Content Include="resource_newDesign\app\Style\Default\Visit_SKUs.css" />
     <Content Include="resource_newDesign\app\Style\Default\Order.css" />

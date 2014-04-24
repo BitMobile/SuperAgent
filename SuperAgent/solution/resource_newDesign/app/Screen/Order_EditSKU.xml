@@ -31,7 +31,7 @@
     </c:HorizontalLayout>
 
     <c:HorizontalLine CssClass="b_line"/>
-    
+
     <c:HorizontalLayout CssClass="caption_grid">
       <c:TextView Text="{$sku.Description}{$featureDescr}"></c:TextView>
     </c:HorizontalLayout>
@@ -118,6 +118,12 @@
 
       <s:Iterator Id="feature" Value="$features">
         <c:DockLayout CssClass="parameter_grid" OnClickAction="$Facade.ChangeFeatureAndRefresh($orderitem, $feature, $sku, $price, $discountEdit.Text, $showimage)">
+          <s:If Test="$orderitem.Feature==$feature.Feature">
+            <c:Image CssClass="tick"/>
+          </s:If>
+          <s:Else>
+            <c:VerticalLayout CssClass="empty_tick"></c:VerticalLayout>
+          </s:Else>
           <c:TextView Text="$feature.FeatureAsObject.Description"></c:TextView>
         </c:DockLayout>
         <c:HorizontalLine/>

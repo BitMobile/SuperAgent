@@ -35,6 +35,7 @@
         <c:HorizontalLayout CssClass="bottom_btn" OnEvent="Back" OnClickAction="$Workflow.DoAction(Add,$workflow.order)">
           <c:TextView Text="#add#"></c:TextView>
         </c:HorizontalLayout>
+        <c:HorizontalLine CssClass="b_line"/>
       </s:If>
 
       <c:ScrollView Id="grScrollView">

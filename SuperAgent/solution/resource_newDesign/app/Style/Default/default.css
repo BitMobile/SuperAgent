@@ -481,13 +481,19 @@ MemoEdit {
     text-align: right;
 }
 
+.b_line {
+    width: 100%;
+    height: 2px;
+    dock-align: bottom;
+    background-color: #c8c7cc;
+}
 
 .bottom_btn {
     width: 100%;
     height: 7.5sp;
     dock-align: bottom;
     selected-color: #bacdce;
-    background-color: #ffd800;
+    background-color: #fff;
 }
 
     .bottom_btn TextView {
@@ -534,15 +540,6 @@ MemoEdit {
     color: #2d89cf;
     font: 37% arial;
 }
-
-
-.80_partial_scroll {
-    width: 100%;
-    height: 72,4sp;
-    dock-align: top;
-}
-
-
 
 .memo_block {
     height: 48sp;

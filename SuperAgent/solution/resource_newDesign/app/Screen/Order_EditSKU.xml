@@ -20,7 +20,6 @@
   <c:DockLayout>
 
     <c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
-    <c:HorizontalLine/>
 
     <c:HorizontalLayout CssClass="bottom_btn">
       <c:VerticalLayout OnEvent="Back" OnClickAction="$Facade.DeleteifNewItemAndBack()">
@@ -31,7 +30,8 @@
       </c:VerticalLayout>
     </c:HorizontalLayout>
 
-
+    <c:HorizontalLine CssClass="b_line"/>
+    
     <c:HorizontalLayout CssClass="caption_grid">
       <c:TextView Text="{$sku.Description}{$featureDescr}"></c:TextView>
     </c:HorizontalLayout>
@@ -53,10 +53,12 @@
 
       <s:If Test="$sku.DefaultPicture != null">
         <s:If Test="$showimage == 'Show'">
+          <c:HorizontalLine/>
           <c:ScrollView CssClass="60">
             <c:Image Source="$Facade.GetSharedImagePath(Catalog.SKU, $sku.Id, $sku.DefaultPicture, $sku.DefaultPictureExtension)"/>
           </c:ScrollView>
           <c:HorizontalLine/>
+          <c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
         </s:If >
       </s:If >
 

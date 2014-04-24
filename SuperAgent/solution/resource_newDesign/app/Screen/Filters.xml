@@ -19,7 +19,7 @@
         <c:TextView Text="#apply#" CssClass="right_tv" ></c:TextView>
       </c:VerticalLayout>
     </c:HorizontalLayout>
-    <c:HorizontalLine/>
+    <c:HorizontalLine CssClass="b_line"/>
 
     <c:HorizontalLayout CssClass="small_grid">
       <s:Push Id="groupFilter" Value="$Facade.GetLeftFilterStyle(group)"></s:Push>

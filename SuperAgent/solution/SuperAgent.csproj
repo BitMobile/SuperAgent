@@ -229,6 +229,7 @@
     <Content Include="resource_newDesign\app\Style\Default\Visit_SKUs.css" />
     <Content Include="resource_newDesign\app\Style\Default\Order.css" />
     <Content Include="resource_newDesign\app\Style\Default\Receivables.css" />
+    <Content Include="resource_newDesign\app\Style\Default\Order_EditSKU.css" />
     <Content Include="resource_newDesign\app\Translation\en.txt" />
     <Content Include="resource_newDesign\app\Translation\ru.txt" />
     <Content Include="resource_newDesign\settings.xml" />

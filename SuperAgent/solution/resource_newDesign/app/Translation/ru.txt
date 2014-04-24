@@ -89,6 +89,8 @@ newOrder	Создать новый заказ
 add			Добавить
 discount	Скидка
 noNumber	Нет номера
+showImage	Показать фото
+hideImage	Скрыть фото
 markUp		Наценка
 unit		Единица изм.
 baseUnit	Баз. единица изм.

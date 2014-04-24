@@ -26,6 +26,7 @@ hl {
 
 dl {
     width: 100%;
+    height: 100%;
 }
 
     dl hl {
@@ -227,11 +228,11 @@ MemoEdit {
 
     .caption_grid TextView {
         width: 100%;
-        height: 35%;
+        height: 100%;
         text-align: left;
         margin-left: 3.5%;
-        margin-top: 50%;
-        font: 100% arial;
+        white-space: normal;
+        font: 35% arial;
         color: #4d4d4d;
     }
 
@@ -248,66 +249,66 @@ MemoEdit {
     background-color: #ffffff;
 }
 
-.grid line {
-    width: 100%;
-    height: 1px;
-    background-color: #c8c7cc;
-}
-
-.grid img {
-    height: 15.4%;
-    margin-top: 16%;
-    margin-left: 2.5%;
-    background-image: url(arrow.png);
-}
-
-.grid vl {
-    width: 83.3%;
-    height: 100%;
-    padding-top: 16%;
-    padding-left: 5%;
-}
-
-    .grid vl MemoEdit {
-        height: 60%;
-        width: 90%;
-        font: 30% Arial;
-    }
-
-    .grid vl EditText {
-        height: 60%;
-        width: 90%;
-        font: 30% Arial;
-        color: #2d89cf;
-    }
-
-    .grid vl dl {
-        height: 21%;
+    .grid line {
         width: 100%;
+        height: 1px;
+        background-color: #c8c7cc;
     }
 
-        .grid vl dl TextView {
-            width: 100%;
-            height: 100%;
-            white-space: normal;
-            font: 68% Arial;
-            color: #8e8e93;
-            dock-align: left;
+    .grid img {
+        height: 15.4%;
+        margin-top: 16%;
+        margin-left: 2.5%;
+        background-image: url(arrow.png);
+    }
+
+    .grid vl {
+        width: 83.3%;
+        height: 100%;
+        padding-top: 16%;
+        padding-left: 5%;
+    }
+
+        .grid vl MemoEdit {
+            height: 60%;
+            width: 90%;
+            font: 30% Arial;
         }
 
-        .grid vl dl Button {
-            width: 29.4%;
-            height: 110%;
-            dock-align: right;
-            margin-right: -12%;
-            margin-top: -10%;
-            border-width: 1px;
-            border-color: #43acfd;
-            border-radius: 5px;
+        .grid vl EditText {
+            height: 60%;
+            width: 90%;
+            font: 30% Arial;
             color: #2d89cf;
-            text-align: center;
-            font: 63% arial;
         }
+
+        .grid vl dl {
+            height: 21%;
+            width: 100%;
+        }
+
+            .grid vl dl TextView {
+                width: 100%;
+                height: 100%;
+                white-space: normal;
+                font: 68% Arial;
+                color: #8e8e93;
+                dock-align: left;
+            }
+
+            .grid vl dl Button {
+                width: 29.4%;
+                height: 110%;
+                dock-align: right;
+                margin-right: -12%;
+                margin-top: -10%;
+                border-width: 1px;
+                border-color: #43acfd;
+                border-radius: 5px;
+                color: #2d89cf;
+                text-align: center;
+                font: 63% arial;
+            }
 
 
 .main_row {
@@ -484,7 +485,9 @@ MemoEdit {
 .bottom_btn {
     width: 100%;
     height: 7.5sp;
-    dock-align: top;
+    dock-align: bottom;
+    selected-color: #bacdce;
+    background-color: #ffd800;
 }
 
     .bottom_btn TextView {
@@ -493,6 +496,13 @@ MemoEdit {
         text-align: center;
         color: #2d89cf;
         font: 37% arial;
+    }
+
+    .bottom_btn line {
+        width: 100%;
+        height: 1px;
+        dock-align: bottom;
+        background-color: #c8c7cc;
     }
 
     .bottom_btn vl {
@@ -556,5 +566,3 @@ MemoEdit {
             margin-left: 0%;
             font: 8% Arial;
         }
-
-

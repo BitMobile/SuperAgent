@@ -1,0 +1,26 @@
+.btn_showpicture {
+    height: 2.3sp;
+    width: 100%;
+    selected-color: #bacdce;
+    background-color: #efeff4;
+    dock-align: top;
+}
+
+    .btn_showpicture TextView {
+        height: 100%;
+        width: 100%;
+        margin-left: 3.5%;
+        color: #2d89cf;
+        font: 100% arial;
+    }
+
+.60 {
+    height: 60%;
+    width: 100%;
+    margin-top: 0%;
+}
+
+    .60 Image {
+        width: 100%;
+        margin-top: 0%;
+    }

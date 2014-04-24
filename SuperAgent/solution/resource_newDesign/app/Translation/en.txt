@@ -89,6 +89,8 @@ newOrder	Create new order
 add			Add
 discount	Discount
 noNumber	No number
+showImage	Show image
+hideImage	Hide image
 markUp		MarkUp
 unit		Unit
 baseUnit	Base unit

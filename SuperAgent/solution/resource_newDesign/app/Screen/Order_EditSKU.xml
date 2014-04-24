@@ -30,11 +30,24 @@
         <c:TextView Text="#add#" CssClass="right_tv" ></c:TextView>
       </c:VerticalLayout>
     </c:HorizontalLayout>
-    <c:HorizontalLine/>
+
 
     <c:HorizontalLayout CssClass="caption_grid">
       <c:TextView Text="{$sku.Description}{$featureDescr}"></c:TextView>
     </c:HorizontalLayout>
+
+    <s:If Test="$sku.DefaultPicture != null">
+      <s:If Test="$showimage == 'NotShow'">
+        <c:HorizontalLayout CssClass="btn_showpicture" OnClickAction="$Facade.RefreshEditSKU($orderitem, $sku, $price, $discountEdit.Text, Show)">
+          <c:TextView Text="[#showImage#]"></c:TextView>
+        </c:HorizontalLayout>
+      </s:If >
+      <s:If Test="$showimage == 'Show'">
+        <c:HorizontalLayout CssClass="btn_showpicture" OnClickAction="$Facade.RefreshEditSKU($orderitem, $sku, $price, $discountEdit.Text, NotShow)">
+          <c:TextView Text="[#hideImage#]"></c:TextView>
+        </c:HorizontalLayout>
+      </s:If >
+    </s:If >
 
     <c:ScrollView Id="grScrollView" CssClass="80_partial_scroll">
 

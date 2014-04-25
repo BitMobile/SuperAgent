@@ -291,6 +291,10 @@ function GetOutlets(searchText) {
     }
 }
 
+function GetOutletsQty() {
+    return DB.Current.Catalog.Territory_Outlets.Select().Distinct("OutletAsObject").Count();
+}
+
 function GetDebt(outletId) {
     var byOutlets = DB.Current.Document.AccountReceivable.SelectBy("Outlet", outletId).Distinct("Id");
     return DB.Current.Document.AccountReceivable_ReceivableDocuments.SelectBy("Ref", byOutlets).Sum("DocumentSum");
@@ -447,6 +451,10 @@ function GetScheduledVisits(searchText) {
 
 }
 
+function GetScheduledVisitsCount() {
+    return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date).Distinct("Outlet").Count();
+}
+
 function GetUncommitedScheduledVisits(searchText, planOutlets) {
 
     var cv = DB.Current.Document.Visit.SelectBy("Outlet", planOutlets).Where("Date.Date == @p1", [DateTime.Now.Date]).Top(100).Distinct("Outlet");
@@ -482,15 +490,9 @@ function GetUncommitedScheduledVisits(searchText, planOutlets) {
 }
 
 function GetCommitedScheduledVisits(searchText, planOutlets) {
-    //if (String.IsNullOrEmpty(searchText))
-    return DB.Current.Document.Visit.SelectBy("Outlet", planOutlets).Where("Date.Date == @p1", [DateTime.Now.Date]).Top(100).OrderBy("OutletAsObject.Description");
-    //else
-    //    return DB.Current.Document.Visit.SelectBy("Date", DateTime.Now.Date).Where("OutletAsObject.Description.Contains(@p1) && Plan!=@p2", [searchText, null]).Top(100).OrderBy("OutletAsObject.Description");
+    return DB.Current.Document.Visit.SelectBy("Outlet", planOutlets).Where("Date.Date == @p1", [DateTime.Now.Date]).Top(100).OrderBy("OutletAsObject.Description");    
 }
 
-function GetUnplannedCommitedVisitsCount(searchText, planOutlets) {
-    return DB.Current.Document.Visit.SelectBy("Outlet", planOutlets, "<>").Where("Date.Date == @p1", [DateTime.Now.Date]).Top(100).Count();
-}
 
 //checks whether this visit is already done today
 function GetTodayVisit(outlet) {
@@ -1209,6 +1211,16 @@ function GetMaxOrderAmount(outlet) {
 
 function GetOrderedSKUs(orderId) {
 
+    //var items = DB.Current.Document.Order_SKUs.Select().Where("Ref==@p1", [orderId]);
+    //for (var i in items) {
+    //    var copy = DB.Current.Document.Order_SKUs.SelectBy("Ref", orderId)
+    //                .Union(DB.Current.Document.Order_SKUs.SelectBy("SKU", i.SKU))
+    //                .Where("Feature==@p1 && Units==@p2", [i.Feature, i.Units]);
+    //    if (parseInt(copy.Count()) != parseInt(1)) {
+    //        i.Qty = copy.Qty;
+    //        i.
+    //    }
+    //}
     return DB.Current.Document.Order_SKUs.Select().Where("Ref==@p1", [orderId]).Top(100);
 }
 
@@ -1350,7 +1362,7 @@ function CreateOrderItemIfNotExist(orderId, sku, orderitem, price, features) {
 
         var feature = DB.Current.Catalog.SKU_Stocks.SelectBy("Ref", sku.Id).OrderBy("LineNumber").First();
 
-        CheckItemUniqueness(orderId, feature.Feature, sku.BaseUnit, sku.Id);
+        //CheckItemUniqueness(orderId, feature.Feature, sku.BaseUnit, sku.Id);
 
         var query = new Query();
         var r = DB.Current.Document.Order_SKUs.SelectBy("SKU", sku.Id).Where("Ref==@p1 && Feature==@p2", [orderId, feature]);
@@ -1474,7 +1486,7 @@ function ChangeUnit(sku, orderitem, price) {
         unit = DB.Current.Catalog.SKU_Packing.SelectBy("Ref", sku.Id).Where("LineNumber==@p1", [1]).First();
 
     if (orderitem.Units != unit.Pack)
-        CheckItemUniqueness(orderitem.Ref, orderitem.Feature, unit.Pack, sku.Id);
+        //CheckItemUniqueness(orderitem.Ref, orderitem.Feature, unit.Pack, sku.Id);
 
 
     if (price == null) {
@@ -1496,7 +1508,7 @@ function ChangeUnit(sku, orderitem, price) {
 function ChangeFeatureAndRefresh(orderItem, feature, sku, price, discountEdit, showimage) {
 
     if (orderItem.Feature != feature.Feature) {
-        CheckItemUniqueness(orderItem.Ref, feature.Feature, orderItem.Units, orderItem.SKU);
+        //CheckItemUniqueness(orderItem.Ref, feature.Feature, orderItem.Units, orderItem.SKU);
         orderItem.Feature = feature.Feature;
         RefreshEditSKU(orderItem, sku, price, discountEdit, showimage);
     }

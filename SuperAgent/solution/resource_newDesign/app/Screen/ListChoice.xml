@@ -15,7 +15,7 @@
   </s:If>
 
 
-  <c:VerticalLayout>
+  <c:DockLayout>
 
     <c:HorizontalLayout CssClass="bottom_btn" OnEvent="Back" OnClickAction="$Workflow.DoBack()">
       <c:TextView Text="#ready#"></c:TextView>
@@ -75,7 +75,7 @@
 
     </c:ScrollView>
 
-  </c:VerticalLayout>
+  </c:DockLayout>
 
 </c:Screen>
 

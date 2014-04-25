@@ -15,15 +15,15 @@
 
     <c:HorizontalLayout CssClass="small_grid">
       <s:Push Id="outlets" Value="$Facade.GetScheduledVisits($search)" />
-      <s:Push Id="sv" Value="$Facade.CountCollection($outlets)"></s:Push>
-      <s:Push Id="ucv" Value="$Facade.GetUnplannedCommitedVisitsCount(null, $outlets)"></s:Push>
+      <s:Push Id="sv" Value="$Facade.GetScheduledVisitsCount()"></s:Push>
+      <s:Push Id="usv" Value="$Facade.GetOutletsQty()"></s:Push>
       <s:If Test="$visitsType=='planned'">
         <c:Button Id="planned" CssClass="mode_left_button_on" Text="#planVisit# ({$sv})" OnClickAction="$Facade.ChangeListAndRefresh(planned)"></c:Button>
-        <c:Button Id="unPlanned" CssClass="mode_right_button_off" Text="#unplanned# ({$ucv})" OnClickAction="$Facade.ChangeListAndRefresh(unPlanned)"></c:Button>
+        <c:Button Id="unPlanned" CssClass="mode_right_button_off" Text="#unplanned# ({$usv})" OnClickAction="$Facade.ChangeListAndRefresh(unPlanned)"></c:Button>
       </s:If>
       <s:Else>
         <c:Button Id="planned" CssClass="mode_left_button_off" Text="#planVisit# ({$sv})" OnClickAction="$Facade.ChangeListAndRefresh(planned)"></c:Button>
-        <c:Button Id="unPlanned" CssClass="mode_right_button_on" Text="#unplanned# ({$ucv})" OnClickAction="$Facade.ChangeListAndRefresh(unPlanned)"></c:Button>
+        <c:Button Id="unPlanned" CssClass="mode_right_button_on" Text="#unplanned# ({$usv})" OnClickAction="$Facade.ChangeListAndRefresh(unPlanned)"></c:Button>
       </s:Else>
     </c:HorizontalLayout>
     <c:HorizontalLine/>
@@ -44,7 +44,7 @@
         <c:HorizontalLayout CssClass="caption_grid">
           <s:Push Id="uncommitedVisits" Value="$Facade.GetUncommitedScheduledVisits($search, $outlets)"></s:Push>
           <s:Push Id="sv" Value="$Facade.CountCollection($uncommitedVisits)"></s:Push>
-          <c:TextView Text="НЕВЫПОЛНЕННЫЕ_ВИЗИТЫ ({$sv}):"></c:TextView>
+          <c:TextView Text="#incompletedVisits# ({$sv}):"></c:TextView>
         </c:HorizontalLayout>
         <c:HorizontalLine/>
 
@@ -74,7 +74,7 @@
 
           <s:Push Id="commitedVisits" Value="$Facade.GetCommitedScheduledVisits($search, $outlets)"></s:Push>
           <s:Push Id="cv" Value="$Facade.CountCollection($commitedVisits)"></s:Push>
-          <c:TextView Text="ВЫПОЛНЕННЫЕ_ВИЗИТЫ ({$cv}):"></c:TextView>
+          <c:TextView Text="#completedVisits# ({$cv}):"></c:TextView>
         </c:HorizontalLayout>
         <c:HorizontalLine/>
 

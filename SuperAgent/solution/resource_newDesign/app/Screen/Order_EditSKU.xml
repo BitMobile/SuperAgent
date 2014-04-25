@@ -49,7 +49,7 @@
       </s:If >
     </s:If >
 
-    <c:ScrollView Id="grScrollView" CssClass="80_partial_scroll">
+    <c:ScrollView Id="grScrollView">
 
       <s:If Test="$sku.DefaultPicture != null">
         <s:If Test="$showimage == 'Show'">

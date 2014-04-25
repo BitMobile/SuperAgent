@@ -14,6 +14,8 @@ schedule	Расписание
 order		Заказ
 visit		Визит
 visits		Визиты
+incompletedVisits	НЕВЫПОЛНЕННЫЕ ВИЗИТЫ
+completedVisits		ВЫПОЛНЕННЫЕ ВИЗИТЫ
 info		О приложении
 planVisit	Плановые
 unplanned	Внеплановые

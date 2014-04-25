@@ -11,7 +11,7 @@
 
 .green_swipe {
     height: 15.3sp;
-    width: 30%;
+    width: 27%;
     background-color: #4dd865;
 }
 
@@ -24,7 +24,7 @@
             background-image: url(galka.png);
             height: 28%;
             margin-top: 28%;
-            margin-left: 36%;
+            margin-left: 32.4%;
         }
 
         .green_swipe vl TextView {
@@ -38,7 +38,7 @@
 
 .gray_swipe {
     height: 15.3sp;
-    width: 30%;
+    width: 27%;
     background-color: #b7b7b7;
 }
 
@@ -51,7 +51,7 @@
             background-image: url(obratno.png);
             height: 40%;
             margin-top: 24%;
-            margin-left: 30%;
+            margin-left: 27%;
         }
 
         .gray_swipe vl TextView {

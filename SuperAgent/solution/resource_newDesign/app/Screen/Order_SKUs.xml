@@ -27,14 +27,13 @@
 
     <c:DockLayout CssClass="parameter_grid" OnClickAction="$Workflow.DoAction(SetFilter)">
       <c:TextView Text="#filter#"></c:TextView>
-      <c:TextView Text="param, param" CssClass="action_and_value"></c:TextView>
       <c:Image></c:Image>
     </c:DockLayout>
+    <c:HorizontalLine/>
 
 
 
-    
-    <c:ScrollView Id="grScrollView" CssClass="80_partial_scroll">
+    <c:ScrollView Id="grScrollView">
 
       <s:Iterator Id="group" Value="$groups">
         <s:Push Id="skusByGroup" Value="$Facade.GetSKUs($search,$group.Id,$order.PriceList)"></s:Push>

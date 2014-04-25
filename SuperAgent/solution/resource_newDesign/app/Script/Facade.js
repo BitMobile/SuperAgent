@@ -490,7 +490,7 @@ function GetUncommitedScheduledVisits(searchText, planOutlets) {
 }
 
 function GetCommitedScheduledVisits(searchText, planOutlets) {
-    return DB.Current.Document.Visit.SelectBy("Outlet", planOutlets).Where("Date.Date == @p1", [DateTime.Now.Date]).Top(100).OrderBy("OutletAsObject.Description");    
+    return DB.Current.Document.Visit.SelectBy("Outlet", planOutlets).Where("Date.Date == @p1", [DateTime.Now.Date]).Top(100).OrderBy("OutletAsObject.Description");
 }
 
 
@@ -576,30 +576,26 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
         }
         Workflow.Action("EditParameter", [parameterValue, value, "Outlet_Parameters"]);
     }
-    else {
-        if (typeDescription == "DateTime") {
-            parameterValue = CreateOutletParameterValueIfNotExists(outlet, parameter, parameterValue);
-            var header = Translate["#enterDateTime#"];
-            if (IsNullOrEmpty(parameterValue.Value))
-                var date = DateTime.Now;
-            else
-                var date = DateTime.Parse(parameterValue.Value);
-            Dialog.ShowDateTime(header, date, DateTimeParameter, parameterValue);
-        }
+    if (typeDescription == "DateTime") {
+        var header = Translate["#enterDateTime#"];
+        if (IsNullOrEmpty(parameterValue.Value))
+            var date = DateTime.Now;
         else
-            Workflow.Action("EditAddParameter", [outlet, parameter, parameterValue]);
+            var date = DateTime.Parse(parameterValue.Value);
+        Dialog.ShowDateTime(header, date, DateTimeParameter, parameterValue);
     }
-    //="$Workflow.DoAction(EditAddParameter,$outlet,$parameter,$parameterValue)">
+    if (typeDescription == "Boolean") {
+        Workflow.Action("EditAddParameter", [outlet, parameter, parameterValue]);
+    }
+    //else
+    //    Workflow.Action("EditAddParameter", [outlet, parameter, parameterValue]);
+
 }
 
-function DateTimeParameter(paramValue, dateTime) {
+function DateTimeParameter(dateTime, paramValue) {
+    Dialog.Debug(paramValue);
     paramValue.Value = dateTime;
-    if (Variables.Exists("planVisit"))
-        var plan = Variables.Exists("planVisit");
-    else
-        var plan = null;
-    var o = Variables["outlet"];
-    Workflow.Refresh([o, plan]);
+    Workflow.Refresh([]);
 }
 
 function GetParameterValueList(parameterValue) {
@@ -607,7 +603,11 @@ function GetParameterValueList(parameterValue) {
 }
 
 function GetOutletParameterValue(outlet, parameter) {
-    return DB.Current.Catalog.Outlet_Parameters.SelectBy("Parameter", parameter.Id).Union(DB.Current.Catalog.Outlet_Parameters.SelectBy("Ref", outlet.Id)).First();
+    var p = DB.Current.Catalog.Outlet_Parameters.SelectBy("Parameter", parameter.Id).Union(DB.Current.Catalog.Outlet_Parameters.SelectBy("Ref", outlet.Id)).First();
+    if (p == null) {
+        p = CreateOutletParameterValueIfNotExists(outlet, parameter, null);
+    }
+    return p;
 }
 
 
@@ -1489,10 +1489,10 @@ function ChangeUnit(sku, orderitem, price) {
         //CheckItemUniqueness(orderitem.Ref, orderitem.Feature, unit.Pack, sku.Id);
 
 
-    if (price == null) {
-        price = DB.Current.Document.PriceList_Prices.SelectBy("Ref", orderitem.RefAsObject().PriceList).Where("SKU==@p1", [orderitem.SKU]).First();
-        price = Converter.ToDecimal(price.Price);
-    }
+        if (price == null) {
+            price = DB.Current.Document.PriceList_Prices.SelectBy("Ref", orderitem.RefAsObject().PriceList).Where("SKU==@p1", [orderitem.SKU]).First();
+            price = Converter.ToDecimal(price.Price);
+        }
 
     Variables["orderitem"].Price = price * unit.Multiplier;
     Variables["multiplier"] = unit.Multiplier;

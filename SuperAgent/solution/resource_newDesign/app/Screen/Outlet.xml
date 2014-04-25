@@ -130,13 +130,24 @@
         <c:DockLayout CssClass="parameter_grid" OnClickAction="$Facade.GoToParameterAction($parameter.DataTypeAsObject.Description, $parameterValue, Value, $outlet, $parameter)">
 
           <c:TextView Text="$parameter.Description"></c:TextView>
-          <s:If Test="$parameterValue!=null">
+          <s:If Test="$parameter.DataTypeAsObject.Description=='Integer'">
+            <c:EditText Value="$parameterValue.Value" CssClass="value" Keyboard="numeric"></c:EditText>
+          </s:If>
+          <s:If Test="$parameter.DataTypeAsObject.Description=='Decimal'">
+            <c:EditText Value="$parameterValue.Value" CssClass="value" Keyboard="numeric"></c:EditText>
+          </s:If>
+          <s:If Test="$parameter.DataTypeAsObject.Description=='String'">
+            <c:EditText Value="$parameterValue.Value" CssClass="value"></c:EditText>
+          </s:If>
+          <s:If Test="$parameter.DataTypeAsObject.Description=='DateTime'">
             <c:TextView Text="$parameterValue.Value" CssClass="value"></c:TextView>
           </s:If>
-          <s:Else>
-            <c:TextView Id="paramValueTextView" Text="?" CssClass="value"></c:TextView>
-          </s:Else>
-
+          <s:If Test="$parameter.DataTypeAsObject.Description=='Boolean'">
+            <c:TextView Text="$parameterValue.Value" CssClass="value"></c:TextView>
+          </s:If>
+          <s:If Test="$parameter.DataTypeAsObject.Description=='ValueList'">
+            <c:TextView Text="$parameterValue.Value" CssClass="value"></c:TextView>
+          </s:If>
         </c:DockLayout>
 
         <c:HorizontalLine/>

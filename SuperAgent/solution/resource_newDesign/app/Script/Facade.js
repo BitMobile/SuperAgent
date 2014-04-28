@@ -1211,16 +1211,26 @@ function GetMaxOrderAmount(outlet) {
 
 function GetOrderedSKUs(orderId) {
 
-    //var items = DB.Current.Document.Order_SKUs.Select().Where("Ref==@p1", [orderId]);
-    //for (var i in items) {
-    //    var copy = DB.Current.Document.Order_SKUs.SelectBy("Ref", orderId)
-    //                .Union(DB.Current.Document.Order_SKUs.SelectBy("SKU", i.SKU))
-    //                .Where("Feature==@p1 && Units==@p2", [i.Feature, i.Units]);
-    //    if (parseInt(copy.Count()) != parseInt(1)) {
-    //        i.Qty = copy.Qty;
-    //        i.
-    //    }
-    //}
+    var forExecution = [];
+    var items = DB.Current.Document.Order_SKUs.Select().Where("Ref==@p1", [orderId]);
+    for (var i in items) {
+        if (forExecution.Contains(i) == false) {
+            var copy = DB.Current.Document.Order_SKUs.SelectBy("Ref", orderId)
+                        .Union(DB.Current.Document.Order_SKUs.SelectBy("SKU", i.SKU))
+                        .Where("Feature==@p1 && Units==@p2 && Discount==@p3", [i.Feature, i.Units, i.Discount]).First();
+            if (parseInt(copy.Count()) != parseInt(1)) {
+                i.Qty = copy.Qty;
+                i.Amount = i.Total * i.Qty;
+
+                forExecution.push(copy);
+            }
+        }
+    }
+
+    for (var item in forExecution) {
+        DB.Current.Document.Order_SKUs.Delete(item);
+    }
+
     return DB.Current.Document.Order_SKUs.Select().Where("Ref==@p1", [orderId]).Top(100);
 }
 

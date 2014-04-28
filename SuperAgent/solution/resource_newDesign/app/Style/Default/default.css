@@ -45,7 +45,6 @@ svl {
 }
 
 TextView {
-    padding-right: 5%;
     background-color: none;
     color: #000000;
 }
@@ -82,46 +81,47 @@ MemoEdit {
 
 .btn_menu {
     background-image: url(button_menu.png);
-    padding-right: 10%;
-    height: 40%;
+    height: 37%;
     margin-top: 30%;
     margin-left: 2.7%;
     margin-bottom: 20%;
-    margin-right: 14%;
+    margin-right: 20%;
     dock-align: left;
 }
 
 .btn_forward {
     width: 18%;
     height: 100%;
-    margin-top: 25%;
-    margin-bottom: 27%;
     dock-align: right;
+    margin-right: 1%;
+    margin-left: 8%;
+    padding-top: 27%;
     color: #2d89cf;
     text-align: right;
-    font: 90% arial;
+    font: 42% arial;
 }
 
 .btn_back {
-    width: 25%;
+    width: 29%;
     height: 100%;
-    margin-left: 2.5%;
-    margin-bottom: 23%;
+    dock-align: left;
 }
 
     .btn_back TextView {
         width: 100%;
-        height: 100%;
-        margin-left: 9%;
+        height: 41%;
+        margin-left: 6%;
+        vertical-align: central;
         text-align: left;
         color: #2d89cf;
-        font: 43% arial;
+        font: 100% arial;
     }
 
     .btn_back img {
         background-image: url(arrow_left.png);
-        height: 50%;
-        margin-top: 25%;
+        margin-left: 10%;
+        height: 54%;
+        vertical-align: central;
     }
 
 .mode_left_button_on {
@@ -422,14 +422,15 @@ MemoEdit {
         margin-left: 15%;
         margin-top: 35%;
         background-image: url(arrow.png);
+        dock-align: left;
     }
 
     .parameter_grid EditText {
         width: 74%;
         height: 100%;
         color: #2d89cf;
+        padding-top: 30%;
         dock-align: left;
-        text-align: right;
         font: 37% arial;
     }
 
@@ -438,11 +439,13 @@ MemoEdit {
     margin-left: 3%;
     margin-top: 35%;
     background-image: url(tick.png);
+    dock-align: left;
 }
 
 .empty_tick {
-    width: 7.65%;
+    width: 8.05%;
     height: 100%;
+    dock-align: left;
 }
 
 .child_tick {
@@ -450,11 +453,13 @@ MemoEdit {
     margin-left: 13%;
     margin-top: 35%;
     background-image: url(tick.png);
+    dock-align: left;
 }
 
 .child_empty_tick {
-    width: 17.65%;
+    width: 18%;
     height: 100%;
+    dock-align: left;
 }
 
 .yes_TextView {
@@ -472,6 +477,7 @@ MemoEdit {
     margin-top: 25%;
     margin-left: 5%;
     border-width: 1px;
+    border-style: solid;
     border-color: #43acfd;
     border-radius: 5px;
     color: #2d89cf;
@@ -520,6 +526,7 @@ MemoEdit {
         width: 100%;
         height: 100%;
         text-align: center;
+        padding-top: 25%;
         color: #2d89cf;
         font: 37% arial;
     }
@@ -532,7 +539,7 @@ MemoEdit {
     }
 
     .bottom_btn vl {
-        width: 47.5%;
+        width: 50%;
         height: 100%;
     }
 
@@ -548,7 +555,8 @@ MemoEdit {
     width: 100%;
     height: 100%;
     text-align: left;
-    margin-left: 10%;
+    padding-top: 25%;
+    padding-left: 10%;
     color: #2d89cf;
     font: 37% arial;
 }
@@ -557,6 +565,8 @@ MemoEdit {
     width: 100%;
     height: 100%;
     text-align: right;
+    padding-top: 25%;
+    padding-right: 10%;
     color: #2d89cf;
     font: 37% arial;
 }

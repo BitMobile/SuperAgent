@@ -9,7 +9,9 @@
         <c:TextView Text="#encashment#"/>
       </c:HorizontalLayout>
       <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckAndCommit()"/>
-      <c:TextView Text="#visitTotal#" />
+      <c:HorizontalLayout>
+        <c:TextView Text="#visitTotal#" />
+      </c:HorizontalLayout>
     </c:DockLayout>
 
     <c:Image CssClass="7_scroll"></c:Image>
@@ -70,34 +72,34 @@
       </s:If>
 
       <c:HorizontalLayout CssClass="caption_grid">
-        <c:TextView Text="#summary#:"></c:TextView>
+        <c:TextView Text="#caps_summary#:"></c:TextView>
       </c:HorizontalLayout>
 
       <c:DockLayout CssClass="parameter_grid">
         <s:Push Id="answered" Value="$Facade.CountAnswers($workflow.visit.Id, $workflow.sku_answ)"></s:Push>
         <s:Push Id="questions" Value="$Facade.GetSum($workflow.questions_qty, $workflow.sku_qty)"></s:Push>
-        <c:TextView Text="{$answered} #of# {$questions}" CssClass="value"></c:TextView>
         <c:TextView Text="#questAnswers#"></c:TextView>
+        <c:TextView Text="{$answered} #of# {$questions}" CssClass="value"></c:TextView>
       </c:DockLayout>
       <c:HorizontalLine/>
 
       <c:DockLayout CssClass="parameter_grid">
         <s:Push Id="todoDone" Value="$Facade.CountEntities(Document, Visit_Task, $workflow.visit.Id, Ref)"></s:Push>
         <s:Push Id="todo" Value="$Facade.CountTasks($workflow.outlet)"></s:Push>
-        <c:TextView Text="{$todoDone} #of# {$todo}" CssClass="value"></c:TextView>
         <c:TextView Text="#todoDone#"></c:TextView>
+        <c:TextView Text="{$todoDone} #of# {$todo}" CssClass="value"></c:TextView>
       </c:DockLayout>
       <c:HorizontalLine/>
 
       <c:DockLayout CssClass="parameter_grid">
-        <c:TextView Text="{$Facade.GetOrderSUM($workflow.order.Id)}" CssClass="value"></c:TextView>
         <c:TextView Text="#orderSum#"></c:TextView>
+        <c:TextView Text="{$Facade.GetOrderSUM($workflow.order.Id)}" CssClass="value"></c:TextView>
       </c:DockLayout>
       <c:HorizontalLine/>
 
       <c:DockLayout CssClass="parameter_grid">
-        <c:TextView Text="{$workflow.encashment.EncashmentAmount}" CssClass="value"></c:TextView>
         <c:TextView Text="#encashmentSum#"></c:TextView>
+        <c:TextView Text="{$workflow.encashment.EncashmentAmount}" CssClass="value"></c:TextView>
       </c:DockLayout>
       <c:HorizontalLine/>
 

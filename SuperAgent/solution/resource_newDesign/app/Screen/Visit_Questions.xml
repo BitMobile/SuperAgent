@@ -12,10 +12,12 @@
     <c:DockLayout CssClass="top_navigator">
       <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()">
         <c:Image/>
-        <c:TextView Text="#visits#"/>
+        <c:TextView Text="#tasks#"/>
       </c:HorizontalLayout>
       <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckEmptyQuestionsAndForward($workflow.questionnaires, $visit)"/>
-      <c:TextView Text="#questions#" />
+      <c:HorizontalLayout>
+        <c:TextView Text="#questions#" />
+      </c:HorizontalLayout>
     </c:DockLayout>
 
     <c:Image CssClass="3_scroll"></c:Image>

@@ -2,6 +2,7 @@
 forward		Forward
 back		Back
 summary		Summary
+caps_summary	SUMMARY
 new			New
 client		Client
 clients		Clients

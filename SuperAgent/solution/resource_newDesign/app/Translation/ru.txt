@@ -2,6 +2,7 @@
 forward		Далее
 back		Назад
 summary		Сводная информация
+caps_summary	СВОДНАЯ ИНФОРМАЦИЯ
 new			Новое
 client		Клиент
 clients		Клиенты

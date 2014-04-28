@@ -16,7 +16,9 @@
         <c:TextView Text="#client#"/>
       </c:HorizontalLayout>
       <c:Button Id="btnForward" Text="#forward#" OnEvent="Forward" CssClass="btn_forward" OnClickAction="$Facade.CheckNotNullAndCommit($outlet)"/>
-      <c:TextView Text="#tasks#" />
+      <c:HorizontalLayout>
+        <c:TextView Text="#tasks#" />
+      </c:HorizontalLayout>
     </c:DockLayout>
 
     <c:Image CssClass="2_scroll"></c:Image>

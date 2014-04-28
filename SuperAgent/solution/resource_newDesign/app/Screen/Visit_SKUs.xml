@@ -17,7 +17,9 @@
         <c:TextView Text="#visits#"/>
       </c:HorizontalLayout>
       <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckEmtySKUAndForward($outlet,$visit)"/>
-      <c:TextView Text="#distribution#" />
+      <c:HorizontalLayout>
+        <c:TextView Text="#distribution#" />
+      </c:HorizontalLayout>
     </c:DockLayout>
 
     <c:Image CssClass="4_scroll"></c:Image>

@@ -9,13 +9,13 @@
   <c:DockLayout>
 
     <c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
-    <c:HorizontalLine/>
 
     <c:HorizontalLayout CssClass="bottom_btn" OnEvent="Forward" OnClickAction="$Workflow.DoForward($workflow.outlet)">
       <c:TextView Text="#ready#"></c:TextView>
     </c:HorizontalLayout>
     <c:HorizontalLine CssClass="b_line"/>
 
+    <c:HorizontalLine/>
     <c:HorizontalLayout CssClass="search">
       <c:DockLayout >
         <c:Image />

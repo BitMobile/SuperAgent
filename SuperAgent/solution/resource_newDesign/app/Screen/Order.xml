@@ -23,7 +23,9 @@
         <c:TextView Text="#sku#"/>
       </c:HorizontalLayout>
       <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward()"/>
-      <c:TextView Text="#order#" />
+      <c:HorizontalLayout>
+        <c:TextView Text="#order#" />
+      </c:HorizontalLayout>
     </c:DockLayout>
 
     <c:Image CssClass="5_scroll"></c:Image>

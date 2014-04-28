@@ -13,7 +13,9 @@
         <c:TextView Text="#order#"/>
       </c:HorizontalLayout>
       <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward()"/>
-      <c:TextView Text="#encashment#" />
+      <c:HorizontalLayout>
+        <c:TextView Text="#encashment#" />
+      </c:HorizontalLayout>
     </c:DockLayout>
 
     <c:Image CssClass="6_scroll"></c:Image>
@@ -29,9 +31,9 @@
       <c:HorizontalLayout CssClass="caption_grid">
         <c:TextView Text="$receivableAmount" CssClass="caption_row"></c:TextView>
       </c:HorizontalLayout>
-      <c:HorizontalLine/>      
-      
-      
+      <c:HorizontalLine/>
+
+
 
       <c:HorizontalLayout CssClass="grid">
         <c:VerticalLayout>
@@ -39,11 +41,11 @@
             <c:TextView Text="#encashmentAmount#:"></c:TextView>
             <c:Button Text="#spread#" OnClickAction="$Facade.SpreadEncasmentAndRefresh($workflow.encashment, $receivables)"></c:Button>
           </c:DockLayout>
-          <c:EditText Value="$workflow.encashment.EncashmentAmount" CssClass="main_row"></c:EditText>
+          <c:EditText Value="$workflow.encashment.EncashmentAmount" CssClass="main_row" Keyboard="numeric"></c:EditText>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
-      
+
       <c:HorizontalLayout  OnClickAction="$Workflow.DoRefresh($True,$encashmentAttribute.Text)">
         <c:VerticalLayout>
           <c:TextView Text="#spread#" CssClass="caption_row"></c:TextView>
@@ -64,8 +66,8 @@
           <c:VerticalLayout>
             <c:TextView Text="$receivableDoc.DocumentName" CssClass="description_row"></c:TextView>
             <c:DockLayout CssClass="parameter_grid">
+              <c:EditText Value="$encasmentItem.EncashmentSum" Keyboard="numeric"></c:EditText>
               <c:TextView Text="#debt#: {$receivableDoc.DocumentSum}" CssClass="value"></c:TextView>
-              <c:EditText Value="$encasmentItem.EncashmentSum"></c:EditText>
             </c:DockLayout>
           </c:VerticalLayout>
         </c:HorizontalLayout>

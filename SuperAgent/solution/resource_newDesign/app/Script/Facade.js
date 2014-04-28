@@ -2150,4 +2150,19 @@ function SyncSharedCallback(args) {
 }
 
 
+function ShowBarrel() {
 
+    var items = [];
+    for (var i = 0; i < 3; i++) {
+        var row = [];
+        row.push(i);
+        row.push(i);
+        items.push(row);
+    }
+
+    Dialog.Select("Hohohoh", items, Haha);
+
+}
+
+function Haha(item, state) {
+}

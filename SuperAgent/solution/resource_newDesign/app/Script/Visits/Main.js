@@ -14,18 +14,41 @@ function ChangeListAndRefresh(control) {
 }
 
 
-function GetUncommitedScheduledVisits(searchText) {
-    var q = new Query("SELECT DISTINCT Outlet FROM Document_VisitPlan_Outlets VP LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outelt WHERE V.Id IS NULL AND V.Date=@date ORDER BY O.Description LIMIT 100");
+function GetUncommitedScheduledVisits(searchText, getCount) {
+    //var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_VisitPlan_Outlets VP LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet WHERE  V.Date=@date ORDER BY O.Description LIMIT 100"); //V.Id IS NULL AND
+    var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_VisitPlan_Outlets VP JOIN Catalog_Outlet O ON O.Id = VP.Outlet LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet AND V.Date=VP.Date WHERE VP.Date=@date AND V.Id IS NULL ORDER BY O.Description LIMIT 100"); //V.Id IS NULL AND
     q.AddParameter("date", DateTime.Now.Date);
-    return q.Execute();
-    
+    if (getCount == "1")
+        return q.ExecuteCount();
+    else {
+        var c = q.Execute();
+        return c;
+
+    }
+
 }
 
-function GetCommitedScheduledVisits(searchText) {
-    //return DB.Current.Document.Visit.SelectBy("Outlet", planOutlets).Where("Date.Date == @p1", [DateTime.Now.Date]).Top(100).OrderBy("OutletAsObject.Description");
-    var q = new Query("SELECT DISTINCT Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outelt WHERE V.Date=@date ORDER BY O.Description LIMIT 100");
+function GetScheduledVisitsCount() {
+    //   return DB.Current.Document.VisitPlan_Outlets.SelectBy("Date", DateTime.Now.Date).Distinct("Outlet").Count();
+    var q = new Query("SELECT COUNT(*) FROM Document_VisitPlan_Outlets WHERE Date=@date");
     q.AddParameter("date", DateTime.Now.Date);
-    return q.Execute();
+    var cnt = q.ExecuteScalar();
+    if (cnt == null)
+        return 0;
+    else
+        return cnt;
+}
+
+function GetCommitedScheduledVisits(searchText, getCount) {
+    //return DB.Current.Document.Visit.SelectBy("Outlet", planOutlets).Where("Date.Date == @p1", [DateTime.Now.Date]).Top(100).OrderBy("OutletAsObject.Description");
+    var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet WHERE V.Date=@date ORDER BY O.Description LIMIT 100");
+    q.AddParameter("date", DateTime.Now.Date);
+    if (getCount == "1")
+        return q.ExecuteCount();
+    else {
+        var c = q.Execute();
+        return c;
+    }
 
 }
 
@@ -38,3 +61,21 @@ function GetOutletsQty() {
     else
         return cnt;
 }
+
+function ChangeListAndRefresh(control) {
+    $.Remove("visitsType");
+    $.AddGlobal("visitsType", control);
+    Workflow.Refresh([]);
+}
+
+function AddGlobalAndAction(name, value, actionName) {
+    $.AddGlobal(name, value);
+    Workflow.Action(actionName, []);
+}
+
+function GetOutlets() {
+    //return DB.Current.Catalog.Territory_Outlets.Select().Top(500).OrderBy("OutletAsObject.Description").Distinct("OutletAsObject");
+    var q = new Query("SELECT T.Outlet, O.Description, O.Address FROM Catalog_Territory_Outlets T JOIN Catalog_Outlet O ON O.Id=T.Outlet ORDER BY O.Description LIMIT 500");
+    return q.Execute();
+}
+

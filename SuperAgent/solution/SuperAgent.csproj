@@ -156,6 +156,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="resource_newDesign\app\BusinessProcess\BusinessProcess.xml" />
+    <Content Include="resource_newDesign\app\Configuration\Configuration.xml" />
     <Content Include="resource_newDesign\app\Image\Default\AllRight.png" />
     <Content Include="resource_newDesign\app\Image\Default\arrow.png" />
     <Content Include="resource_newDesign\app\Image\Default\arrow_left.png" />
@@ -219,10 +220,13 @@
     <Content Include="resource_newDesign\app\Screen\Visit_Total.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="resource_newDesign\app\Script\DB.js" />
-    <Content Include="resource_newDesign\app\Script\Events.js" />
-    <Content Include="resource_newDesign\app\Script\Facade.js" />
-    <Content Include="resource_newDesign\app\Script\Workflow.js" />
+    <Content Include="resource_newDesign\app\Script\Global\Events.js" />
+    <Content Include="resource_newDesign\app\Script\Global\Facade.js" />
+    <Content Include="resource_newDesign\app\Script\Main\Main.js" />
+    <Content Include="resource_newDesign\app\Script\Mixins\Common.js" />
+    <Content Include="resource_newDesign\app\Script\Mixins\DB.js" />
+    <Content Include="resource_newDesign\app\Script\Mixins\Workflow.js" />
+    <Content Include="resource_newDesign\app\Script\Visits\Main.js" />
     <Content Include="resource_newDesign\app\Style\Default\default.css" />
     <Content Include="resource_newDesign\app\Style\Default\Main.css" />
     <Content Include="resource_newDesign\app\Style\Default\Tasks.css" />

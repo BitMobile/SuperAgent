@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <bp:BusinessProcess xmlns:bp="BitMobile.BusinessProcess">
 
-  <bp:Workflow Name="Main">
+  <bp:Workflow Name="Main" Controller="Main\Main.js">
 
     <bp:Step Name="Menu" Screen="Main.xml">
       <bp:Action Name="Visits" NextWorkflow="Visits"></bp:Action>
@@ -18,7 +18,7 @@
 
   <bp:Workflow Name="Visits">
 
-    <bp:Step Name="Visits" Screen="Visits.xml">
+    <bp:Step Name="Visits" Screen="Visits.xml" Controller="Visits\Main.js">
       <bp:Action Name="ShowMap" NextStep="ShowMap"></bp:Action>
       <bp:Action Name="Select" NextWorkflow="ScheduledVisit"></bp:Action>
       <bp:Action Name="SelectUnscheduled" NextWorkflow="UnscheduledVisit"></bp:Action>

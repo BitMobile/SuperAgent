@@ -155,7 +155,9 @@
     <Content Include="resource\settings.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="resource_newDesign\app\BusinessProcess\BusinessProcess.xml" />
+    <Content Include="resource_newDesign\app\BusinessProcess\BusinessProcess.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="resource_newDesign\app\Configuration\Configuration.xml" />
     <Content Include="resource_newDesign\app\Image\Default\AllRight.png" />
     <Content Include="resource_newDesign\app\Image\Default\arrow.png" />

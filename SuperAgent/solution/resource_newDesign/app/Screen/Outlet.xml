@@ -94,7 +94,7 @@
         <c:VerticalLayout>
           <c:DockLayout>
             <c:TextView Text="#coordinates#"></c:TextView>
-            <c:Button Text="#set#" OnClickAction="$SetLocation()"></c:Button>
+            <c:Button Text="#set#" OnClickAction="$SetLocation($outlet)"></c:Button>
           </c:DockLayout>
           <c:TextView Id="outletDescr" Text="{$outlet.Lattitude}; {$outlet.Longitude}" CssClass="main_row"></c:TextView>
         </c:VerticalLayout>

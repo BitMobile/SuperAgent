@@ -74,7 +74,7 @@ function GetLookupList(entity, attribute) {
 function UpdateValueAndBack(entity, attribute, value) {
     if (attribute != "Answer" && attribute != "Value") {  //for Visit_Questions
         entity[attribute] = value;
-        entity = UpdateEntity(entity, value); //set status 'New' for Outelt
+        entity = UpdateEntity(entity); //set status 'New' for Outelt
         if (attribute == "PriceList") {
             var n = CountEntities("Document", "Order_SKUs", Variables["workflow"]["order"].Id, "Ref");
             if (parseInt(n) != parseInt(0))
@@ -88,11 +88,11 @@ function UpdateValueAndBack(entity, attribute, value) {
     Workflow.Back();
 }
 
-function UpdateEntity(entity, value) {
-    if (getType(entity) == "DefaultScope.Catalog.Outlet") {
+function UpdateEntity(entity) {
+    if (entity.TableName == "Catalog_Outlet") {
         entity.ConfirmationStatus = DB.Current.Constant.OutletConfirmationStatus.New;
     }
-    entity.Save();
+    entity.GetObject().Save();
     return entity;
 }
 
@@ -227,21 +227,20 @@ function CreateVisitIfNotExists(outlet, userRef, visit, planVisit) {
 
 //-----------------------------------Coodinates--------------------------------
 
-function SetLocation() {
-    Dialog.Question("#setCoordinates#", LocationDialogHandler);
+function SetLocation(outlet) {
+    Dialog.Question("#setCoordinates#", LocationDialogHandler, outlet);
 }
 
-function LocationDialogHandler(answ) {
+function LocationDialogHandler(answ, outlet) {
     if (answ == DialogResult.Yes) {
         var location = GPS.CurrentLocation;
         if (location.NotEmpty) {
-            $.outlet.Lattitude = location.Latitude;
-            $.outlet.Longitude = location.Longitude;
+            outlet.Lattitude = location.Latitude;
+            outlet.Longitude = location.Longitude;
             Dialog.Message("#coordinatesAreSet#");
-            var outlet = $.outlet;
+            //var outlet = $.outlet;
             UpdateEntity(outlet);
-            var arg = [outlet];
-            Workflow.Refresh(arg);
+            Workflow.Refresh([]);
         }
         else
             NoLocationHandler(LocationDialogHandler);

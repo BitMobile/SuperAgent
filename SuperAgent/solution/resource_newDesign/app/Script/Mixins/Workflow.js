@@ -28,3 +28,8 @@ function DoRefresh()
 { 
     Workflow.Refresh(arguments.array);
 }
+
+function DoSelect(entity, attribute, control) {
+    Global.DoSelect(entity, attribute, control);
+    return;
+}

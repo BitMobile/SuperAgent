@@ -4,13 +4,13 @@
 
   <s:If Test="$workflow.name!='Outlets'">
     <s:Push Id="workflow.outlet" Value="$outlet"></s:Push>
-    <s:Push Id="workflow.questions_qty" Value="$Facade.ToInteger(0)"></s:Push>
-    <s:Push Id="workflow.sku_qty" Value="$Facade.ToInteger(0)"></s:Push>
-    <s:Push Id="workflow.sku_answ" Value="$Facade.ToInteger(0)"></s:Push>
-    <s:Push Id="workflow.questionnaires" Value="$Facade.GetQuesttionaires($outlet)"></s:Push>
+    <s:Push Id="workflow.questions_qty" Value="$ToInteger(0)"></s:Push>
+    <s:Push Id="workflow.sku_qty" Value="$ToInteger(0)"></s:Push>
+    <s:Push Id="workflow.sku_answ" Value="$ToInteger(0)"></s:Push>
+    <s:Push Id="workflow.questionnaires" Value="$GetQuesttionaires($outlet)"></s:Push>
 
 
-    <s:Push Id="workflow.visit" Value="$Facade.CreateVisitIfNotExists($outlet,$common.UserId, $workflow.visit, $planVisit)"/>
+    <s:Push Id="workflow.visit" Value="$CreateVisitIfNotExists($outlet,$common.UserRef, $workflow.visit, $planVisit)"/>
   </s:If>
 
   <c:VerticalLayout Id="vOutlet">
@@ -20,7 +20,7 @@
         <c:Image/>
         <c:TextView Text="#visits#"/>
       </c:HorizontalLayout>
-      <c:Button Id="btnForward" Text="#forward#" OnEvent="Forward" CssClass="btn_forward" OnClickAction="$Facade.CheckNotNullAndCommit($outlet)"/>
+      <c:Button Id="btnForward" Text="#forward#" OnEvent="Forward" CssClass="btn_forward" OnClickAction="$CheckNotNullAndCommit($outlet, $workflow.name)"/>
       <c:HorizontalLayout>
         <c:TextView Text="#client#" />
       </c:HorizontalLayout>
@@ -90,11 +90,11 @@
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
-      <c:HorizontalLayout CssClass="grid" OnClickAction="$Facade.ShowMapIfNotNew($outlet)">
+      <c:HorizontalLayout CssClass="grid">
         <c:VerticalLayout>
           <c:DockLayout>
             <c:TextView Text="#coordinates#"></c:TextView>
-            <c:Button Text="#set#" OnClickAction="$Facade.SetLocation()"></c:Button>
+            <c:Button Text="#set#" OnClickAction="$SetLocation()"></c:Button>
           </c:DockLayout>
           <c:TextView Id="outletDescr" Text="{$outlet.Lattitude}; {$outlet.Longitude}" CssClass="main_row"></c:TextView>
         </c:VerticalLayout>
@@ -106,49 +106,47 @@
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
-      <c:DockLayout CssClass="parameter_grid" OnClickAction="$Workflow.DoAction(EditParameter,$outlet,Class,null)">
+      <c:DockLayout CssClass="parameter_grid" OnClickAction="$DoSelect($outlet,Class,$outletClass)">
         <c:TextView Text="#outlet_class#"></c:TextView>
-        <c:TextView Text="$outlet.ClassAsObject.Description" CssClass="value"></c:TextView>
+        <c:TextView Id="outletClass" Text="$outlet.Class.Description" CssClass="value"></c:TextView>
       </c:DockLayout>
       <c:HorizontalLine/>
 
-      <c:DockLayout CssClass="parameter_grid" OnClickAction="$Workflow.DoAction(EditParameter,$outlet,Type,null)">
+      <c:DockLayout CssClass="parameter_grid" OnClickAction="$DoSelect($outlet,Type,$outletType)">
         <c:TextView Text="#outlet_type#"></c:TextView>
-        <c:TextView Id="outletType" Text="$outlet.TypeAsObject.Description" CssClass="value"></c:TextView>
+        <c:TextView Id="outletType" Text="$outlet.Type.Description" CssClass="value"></c:TextView>
       </c:DockLayout>
       <c:HorizontalLine/>
 
-      <c:DockLayout CssClass="parameter_grid" OnClickAction="$Workflow.DoAction(EditParameter,$outlet,Distributor,null)">
+      <c:DockLayout CssClass="parameter_grid" OnClickAction="$DoSelect($outlet,Distributor,$outletDistr)">
         <c:TextView Text="#distributor#"></c:TextView>
-        <c:TextView Id="outletDistr" Text="$outlet.DistributorAsObject.Description" CssClass="value"></c:TextView>
+        <c:TextView Id="outletDistr" Text="$outlet.Distributor.Description" CssClass="value"></c:TextView>
       </c:DockLayout>
       <c:HorizontalLine/>
 
-      <s:Iterator Id="parameter" Value="$Facade.GetOutletParameters()">
+      <s:Iterator Id="parameter" Value="$GetOutletParameters()" Status="statusCount">
 
-        <s:Push Id="parameterValue" Value="$Facade.GetOutletParameterValue($outlet,$parameter)"/>
-
-        <s:Push Id="true" Value="$Facade.ConvertToBoolean(true)"></s:Push>
-        <c:DockLayout CssClass="parameter_grid" OnClickAction="$Facade.GoToParameterAction($parameter.DataTypeAsObject.Description, $parameterValue, Value, $outlet, $parameter)">
-
-          <c:TextView Text="$parameter.Description"></c:TextView>
-          <s:If Test="$parameter.DataTypeAsObject.Description=='Integer'">
-            <c:EditText Value="$parameterValue.Value" CssClass="value" Keyboard="numeric"></c:EditText>
+        <s:Push Id="parameterValue" Value="$GetOutletParameterValue($outlet,$parameter.Id)"/>
+        <s:Push Id="index" Value="$statusCount.Index"></s:Push>
+        <c:DockLayout CssClass="parameter_grid" OnClickAction="$GoToParameterAction($parameter.DataType.Description, $parameterValue, Value, $outlet, $parameter.Id, control{$index})">
+          <c:TextView Text="{$index} {$parameter.Description}"></c:TextView>
+          <s:If Test="$parameter.TypeDescription=='Integer'">
+            <c:EditText Id="control{$index}" Value="$parameterValue.Value" CssClass="value" Keyboard="numeric"></c:EditText>
           </s:If>
-          <s:If Test="$parameter.DataTypeAsObject.Description=='Decimal'">
-            <c:EditText Value="$parameterValue.Value" CssClass="value" Keyboard="numeric"></c:EditText>
+          <s:If Test="$parameter.TypeDescription=='Decimal'">
+            <c:EditText Id="control{$index}" Value="$parameterValue.Value" CssClass="value" Keyboard="numeric"></c:EditText>
           </s:If>
-          <s:If Test="$parameter.DataTypeAsObject.Description=='String'">
-            <c:EditText Value="$parameterValue.Value" CssClass="value"></c:EditText>
+          <s:If Test="$parameter.TypeDescription=='String'">
+            <c:EditText Id="control{$index}" Value="$parameterValue.Value" CssClass="value"></c:EditText>
           </s:If>
-          <s:If Test="$parameter.DataTypeAsObject.Description=='DateTime'">
-            <c:TextView Text="$parameterValue.Value" CssClass="value"></c:TextView>
+          <s:If Test="$parameter.TypeDescription=='DateTime'">
+            <c:TextView Id="control{$index}" Text="$parameterValue.Value" CssClass="value"></c:TextView>
           </s:If>
-          <s:If Test="$parameter.DataTypeAsObject.Description=='Boolean'">
-            <c:TextView Text="$parameterValue.Value" CssClass="value"></c:TextView>
+          <s:If Test="$parameter.TypeDescription=='Boolean'">
+            <c:TextView Id="control{$index}" Text="$parameterValue.Value" CssClass="value"></c:TextView>
           </s:If>
-          <s:If Test="$parameter.DataTypeAsObject.Description=='ValueList'">
-            <c:TextView Text="$parameterValue.Value" CssClass="value"></c:TextView>
+          <s:If Test="$parameter.TypeDescription=='ValueList'">
+            <c:TextView Id="control{$index}" Text="$parameterValue.Value" CssClass="value"></c:TextView>
           </s:If>
         </c:DockLayout>
 

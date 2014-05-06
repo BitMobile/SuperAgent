@@ -71,3 +71,9 @@ function ConvertToBoolean1(val1) {
 function IsNullOrEmpty(val1) {
     return String.IsNullOrEmpty(val1);
 }
+
+function GetControlId(count) {
+    return ("control" + count);
+}
+//-----------------Dialog handlers-----------------
+

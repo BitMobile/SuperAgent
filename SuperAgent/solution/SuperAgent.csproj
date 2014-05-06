@@ -200,7 +200,9 @@
     <Content Include="resource_newDesign\app\Screen\Order_SKUs.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="resource_newDesign\app\Screen\Outlet.xml" />
+    <Content Include="resource_newDesign\app\Screen\Outlet.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="resource_newDesign\app\Screen\OutletParameter.xml" />
     <Content Include="resource_newDesign\app\Screen\Outlets.xml" />
     <Content Include="resource_newDesign\app\Screen\Outlet_Map.xml" />
@@ -222,10 +224,12 @@
     </Content>
     <Content Include="resource_newDesign\app\Script\Global\Events.js" />
     <Content Include="resource_newDesign\app\Script\Global\Facade.js" />
+    <Content Include="resource_newDesign\app\Script\Global\Global.js" />
     <Content Include="resource_newDesign\app\Script\Main\Main.js" />
     <Content Include="resource_newDesign\app\Script\Mixins\Common.js" />
     <Content Include="resource_newDesign\app\Script\Mixins\DB.js" />
     <Content Include="resource_newDesign\app\Script\Mixins\Workflow.js" />
+    <Content Include="resource_newDesign\app\Script\Outlets\Main.js" />
     <Content Include="resource_newDesign\app\Script\Visits\Main.js" />
     <Content Include="resource_newDesign\app\Style\Default\default.css" />
     <Content Include="resource_newDesign\app\Style\Default\Main.css" />

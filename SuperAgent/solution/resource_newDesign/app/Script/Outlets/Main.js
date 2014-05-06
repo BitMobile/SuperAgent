@@ -19,25 +19,17 @@ function GetOutletParameters(outlet) {
 }
 
 function GetOutletParameterValue(outlet, parameter) {
-    //var p = DB.Current.Catalog.Outlet_Parameters.SelectBy("Parameter", parameter.Id).Union(DB.Current.Catalog.Outlet_Parameters.SelectBy("Ref", outlet.Id)).First();
-    //if (p == null) {
-    //    p = CreateOutletParameterValueIfNotExists(outlet, parameter, null);
-    //}
-    //return p;
+
     var p = new Query();
     p.Text = "SELECT Id FROM Catalog_Outlet_Parameters WHERE Parameter=@parameter AND Ref=@ref LIMIT 1";
     p.AddParameter("parameter", parameter);
     p.AddParameter("ref", outlet);
 
     if (parseInt(p.ExecuteCount()) == parseInt(0)) {
-        //Dialog.Debug("1");
         var pv = CreateOutletParameterValue(outlet, parameter);
-        //Dialog.Debug(pv);
     }
     else {
-        //Dialog.Debug("2");
         var pv = p.ExecuteScalar();
-        //Dialog.Debug(pv);
     }
     return pv;
 }
@@ -68,8 +60,6 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
     if (typeDescription == "Boolean") {
         Global.BooleanDialogSelect(parameterValue, "Value", Variables[control]);
     }
-    //else
-    //    Workflow.Action("EditAddParameter", [outlet, parameter, parameterValue]);
 
 }
 

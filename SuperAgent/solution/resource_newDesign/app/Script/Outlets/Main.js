@@ -92,7 +92,6 @@ function UpdateEntity(entity) {
     if (entity.TableName == "Catalog_Outlet") {
         entity.ConfirmationStatus = DB.Current.Constant.OutletConfirmationStatus.New;
     }
-    entity.GetObject().Save();
     return entity;
 }
 
@@ -235,12 +234,14 @@ function LocationDialogHandler(answ, outlet) {
     if (answ == DialogResult.Yes) {
         var location = GPS.CurrentLocation;
         if (location.NotEmpty) {
+            outlet = outlet.GetObject();
             outlet.Lattitude = location.Latitude;
             outlet.Longitude = location.Longitude;
             Dialog.Message("#coordinatesAreSet#");
             //var outlet = $.outlet;
             UpdateEntity(outlet);
-            Workflow.Refresh([]);
+            outlet.Save();
+            Variables["outletCoord"].Text = (outlet.Lattitude + ", " + outlet.Longitude);
         }
         else
             NoLocationHandler(LocationDialogHandler);

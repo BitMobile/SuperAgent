@@ -19,7 +19,6 @@ function OnWorkflowStart(name) {
 }
 
 function OnWorkflowForward(name, lastStep, nextStep, parameters) {
-    //Dialog.Debug(String.Format("last: {0}, next: {1}", lastStep, nextStep));
     if (lastStep == "Order" && nextStep == "EditSKU" && Variables.Exists("AlreadyAdded") == false) {
         Variables.AddGlobal("AlreadyAdded", true);
     }
@@ -32,13 +31,16 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
             var outlet = Variables["workflow"]["outlet"];
 
             var tasks = GetTasks(outlet);
-            var questionaries = GetQuesttionaires(outlet);
+            var questionaries = GetQuesttionaires();
             var questions = GetQuestionsByOutlet(questionaries);
             var SKUQuest = GetSKUsByOutlet(questionaries);
 
-            if (tasks.Count() == 0) {
-                if (questions == null) {
-                    if (SKUQuest == null) {
+            if (parseInt(tasks) == parseInt(0)) {
+                Dialog.Debug("02");
+                if (parseInt(questions) == parseInt(0)) {
+                    Dialog.Debug("03");
+                    if (parseInt(SKUQuest) == parseInt(0)) {
+                        Dialog.Debug("04");
                         Workflow.Action("Skip3", [outlet]);
                         return false;
                     }
@@ -49,7 +51,8 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
                 return false;
             }
             else {
-                parameters.Add("tasks", tasks);
+                //Dialog.Debug("01");
+                //parameters.Add("tasks", tasks);
             }
         }
     }
@@ -59,12 +62,12 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
         if (workflowName == "ScheduledVisit" || workflowName == "UnscheduledVisit") {
             var outlet = Variables["workflow"]["outlet"];
 
-            var questionaries = GetQuesttionaires(outlet);
+            var questionaries = GetQuesttionaires();
             var questions = GetQuestionsByOutlet(questionaries);
             var SKUQuest = GetSKUsByOutlet(questionaries);
 
-            if (questions == null) {
-                if (SKUQuest == null) {
+            if (parseInt(questions) == parseInt(0)) {
+                if (parseInt(SKUQuest) == parseInt(0)) {
                     Workflow.Action("Skip3", [outlet]);
                     return false;
                 }
@@ -81,10 +84,10 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
         if (workflowName == "ScheduledVisit" || workflowName == "UnscheduledVisit") {
             var outlet = Variables["workflow"]["outlet"];
 
-            var questionaries = GetQuesttionaires(outlet);
+            var questionaries = GetQuesttionaires();
             var SKUQuest = GetSKUsByOutlet(questionaries);
 
-            if (SKUQuest == null) {
+            if (parseInt(SKUQuest) == parseInt(0)) {
                 Workflow.Action("Skip3", [outlet]);
                 return false;
             }
@@ -172,54 +175,39 @@ function ReviseSKUs() {
 function GetTasks(outlet) {
 
     if (outlet == null)
-        var result = DB.Current.Document.Task.Select().Where("PlanDate >= @p1", [DateTime.Now.Date]).OrderBy("OutletAsObject.Description");
-    else
-        var result = DB.Current.Document.Task.SelectBy("Outlet", outlet.Id).Where("PlanDate >= @p1", [DateTime.Now.Date]).OrderBy("OutletAsObject.Description");
-    return result;
+        var q = new Query("SELECT Id FROM Document_Task WHERE PlanDate >= @planDate");
+    else {
+        var q = new Query("SELECT Id FROM Document_Task WHERE PlanDate >= @planDate AND Outlet = @outlet");
+        q.AddParameter("outlet", outlet);
+    }
+    q.AddParameter("planDate", DateTime.Now.Date);
+    return q.ExecuteCount();
 
 }
 
-function GetQuesttionaires(outlet) {
+function GetQuesttionaires() {
 
-    var t2 = DB.Current.Catalog.Territory.Select().Distinct("Id");
-
-    var questByTerr = DB.Current.Document.Questionnaire_Territories.SelectBy("Territory", t2).Distinct("Ref");
-
-    var q2 = DB.Current.Document.Questionnaire.SelectBy("Id", questByTerr)
-        .Where("OutletType==@p1 && OutletClass==@p2 && Scale==@p3", [outlet.Type, outlet.Class, DB.Current.Constant.QuestionnaireScale.Region])
-        .OrderBy("Date", true)
-        .Top(1)
-        .UnionAll(DB.Current.Document.Questionnaire.SelectBy("Id", questByTerr)
-        .Where("OutletType==@p1 && OutletClass==@p2 && Scale==@p3", [outlet.Type, outlet.Class, DB.Current.Constant.QuestionnaireScale.Territory])
-        .OrderBy("Date", true)
-        .Top(1))
-        .Distinct("Id");
-
-    return q2;
+    return Variables["workflow"]["questionnaires"];
 }
 
 function GetQuestionsByOutlet(questionnaires) {
 
-    if (questionnaires == null)
-        return null;
-    else {
-        var result = DB.Current.Document.Questionnaire_Questions.SelectBy("Ref", questionnaires).OrderBy("QuestionAsObject.Description").Distinct("Question");
-        if (result.Count() > 0)
-            return result;
-        else
-            return null;
+    var questCount = parseInt(0);
+    for (var i in questionnaires) {
+        var q = new Query("SELECT Id FROM Document_Questionnaire_Questions WHERE Ref=@ref");
+        q.AddParameter("ref", i);
+        questCount = questCount + parseInt(q.ExecuteCount());
     }
+    return questCount;
 }
 
 function GetSKUsByOutlet(questionnaires) {
-    if (questionnaires == null)
-        return null;
-    else {
-        var s = DB.Current.Catalog.SKU.Select().Distinct("Id");
-        var result = DB.Current.Document.Questionnaire_SKUs.SelectBy("Ref", questionnaires).Union(DB.Current.Document.Questionnaire_SKUs.SelectBy("SKU", s)).OrderBy("SKUAsObject.Description");
-        if (result.Count() > 0)
-            return result;
-        else
-            return null;
+
+    var questCount = parseInt(0);
+    for (var i in questionnaires) {
+        var q = new Query("SELECT QS.Id FROM Document_Questionnaire_SKUs QS JOIN Catalog_SKU CS ON QS.SKU=CS.Id WHERE QS.Ref=@ref");
+        q.AddParameter("ref", i);
+        questCount = questCount + parseInt(q.ExecuteCount());
     }
+    return questCount;
 }

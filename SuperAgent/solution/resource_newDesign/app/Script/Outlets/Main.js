@@ -34,7 +34,7 @@ function GetOutletParameterValue(outlet, parameter) {
     return pv;
 }
 
-function CreateOutletParameterValue(outlet, parameter) {    
+function CreateOutletParameterValue(outlet, parameter) {
     var d = DB.Create("Catalog.Outlet_Parameters");
     d.Ref = outlet;
     d.Parameter = parameter;
@@ -116,8 +116,7 @@ function CheckEmptyOutletFields(outlet) {
     var correctDescr = CheckIfEmpty(outlet, "Description", "", "", false);
     var correctAddr = CheckIfEmpty(outlet, "Address", "", "", false);
     if (correctDescr && correctAddr) {
-        var parameters = [];
-        Workflow.Forward(parameters);
+        Workflow.Forward([]);
     }
     else
         Dialog.Message("#couldnt_be_cleaned#");
@@ -190,8 +189,10 @@ function GetQuesttionaires(outlet) {
     q2.AddParameter("scale", DB.Current.Constant.QuestionnaireScale.Territory);
 
     var quest_collection = [];
-    quest_collection.push(q1.ExecuteScalar());
-    quest_collection.push(q2.ExecuteScalar());
+    if (q1.ExecuteScalar() != null)
+        quest_collection.push(q1.ExecuteScalar());
+    if (q2.ExecuteScalar() != null)
+        quest_collection.push(q2.ExecuteScalar());
 
     return quest_collection;
 

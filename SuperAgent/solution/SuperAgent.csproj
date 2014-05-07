@@ -234,6 +234,7 @@
     <Content Include="resource_newDesign\app\Script\Outlets\Main.js" />
     <Content Include="resource_newDesign\app\Script\Visits\Main.js" />
     <Content Include="resource_newDesign\app\Script\Tasks\Main.js" />
+    <Content Include="resource_newDesign\app\Script\Visits\Questions.js" />
     <Content Include="resource_newDesign\app\Style\Default\default.css" />
     <Content Include="resource_newDesign\app\Style\Default\Main.css" />
     <Content Include="resource_newDesign\app\Style\Default\Tasks.css" />

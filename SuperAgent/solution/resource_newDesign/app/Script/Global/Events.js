@@ -36,7 +36,7 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
             var SKUQuest = GetSKUsByOutlet(questionaries);
 
             if (parseInt(tasks) == parseInt(0)) {
-                Dialog.Debug("02");
+                //Dialog.Debug("02");
                 if (parseInt(questions) == parseInt(0)) {
                     Dialog.Debug("03");
                     if (parseInt(SKUQuest) == parseInt(0)) {
@@ -49,10 +49,6 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
                 }
                 Workflow.Action("Skip1", []);
                 return false;
-            }
-            else {
-                //Dialog.Debug("01");
-                //parameters.Add("tasks", tasks);
             }
         }
     }

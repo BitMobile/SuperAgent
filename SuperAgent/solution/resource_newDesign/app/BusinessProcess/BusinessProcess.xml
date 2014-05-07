@@ -47,7 +47,7 @@
       <bp:Action Name="Skip3" NextStep="Order"></bp:Action>
     </bp:Step>
 
-    <bp:Step Name="Questions" Screen="Visit_Questions.xml">
+    <bp:Step Name="Questions" Screen="Visit_Questions.xml" Controller="Visits\Questions.js">
       <bp:Action Name="Forward" NextStep="SKUs"></bp:Action>
       <bp:Action Name="Skip3" NextStep="Order"></bp:Action>
       <bp:Action Name="Edit" NextStep="EditQuestion"></bp:Action>

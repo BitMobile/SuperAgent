@@ -1,12 +1,8 @@
 ﻿
 function GetExecutedTasks(visit) {
-    //var e = DB.Current.Document.Visit_Task.SelectBy("Ref", visit.Id).Where("Result==@p1", [true]).Count();
-    //return DB.Current.Document.Visit_Task.SelectBy("Ref", visit.Id).Where("Result==@p1", [true]);
     var query = new Query("SELECT VT.Id, DT.PlanDate, DT.TextTask FROM Document_Visit_Task VT JOIN Document_Task DT ON VT.TaskRef=DT.Id WHERE VT.Ref=@ref AND VT.Result=@result");
-    //Dialog.Debug(visit);
     query.AddParameter("ref", visit);
     query.AddParameter("result", true);
-    Dialog.Debug(query.ExecuteCount());
     
     return query.Execute();
 }

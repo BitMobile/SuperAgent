@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Tasks.css">
 
   <s:Push Id="outlet" Value="$workflow.outlet"></s:Push>
   <s:Push Id="visit" Value="$workflow.visit"></s:Push>

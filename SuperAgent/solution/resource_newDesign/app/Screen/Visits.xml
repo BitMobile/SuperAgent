@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Visits.css">
 
   <s:Push Id="search" Value="$param1"/>
   <s:Push Id="s" Value="$Facade.SetListType()"></s:Push>
@@ -7,12 +7,14 @@
 
   <c:VerticalLayout>
 
-    <c:DockLayout CssClass="top_navigator">      
-      <c:Button Id="btnBack" CssClass="btn_menu" OnEvent="Back" OnClickAction="$Workflow.DoRollback()"/>
-      <c:Button Id="btnForward" Text="#map#" CssClass="btn_forward" OnClickAction="$Workflow.DoAction(ShowMap, $outlets)"/>
-      <c:HorizontalLayout>
-        <c:TextView Text="#visits#" />
-      </c:HorizontalLayout>
+    <c:DockLayout CssClass="top_navigator"> 
+		<c:HorizontalLayout CssClass="btn_menu" OnClickAction="$Workflow.DoRollback()">
+			<c:Image CssClass="menuIcon"/>
+        </c:HorizontalLayout>
+		<c:Button Id="btnForward" Text="#map#" CssClass="btn_forward" OnClickAction="$Workflow.DoAction(ShowMap, $outlets)"/>
+		<c:HorizontalLayout>
+			<c:TextView Text="#visits#" />
+		</c:HorizontalLayout>
     </c:DockLayout>
 
     <c:HorizontalLayout CssClass="small_grid">
@@ -20,12 +22,28 @@
       <s:Push Id="sv" Value="$Facade.GetScheduledVisitsCount()"></s:Push>
       <s:Push Id="usv" Value="$Facade.GetOutletsQty()"></s:Push>
       <s:If Test="$visitsType=='planned'">
-        <c:Button Id="planned" CssClass="mode_left_button_on" Text="#planVisit# ({$sv})" OnClickAction="$Facade.ChangeListAndRefresh(planned)"></c:Button>
-        <c:Button Id="unPlanned" CssClass="mode_right_button_off" Text="#unplanned# ({$usv})" OnClickAction="$Facade.ChangeListAndRefresh(unPlanned)"></c:Button>
+        <c:HorizontalLayout CssClass="mode_left_button_on">
+			<c:HorizontalLayout Id="planned" CssClass="select_zone" OnClickAction="$Facade.ChangeListAndRefresh(planned)">
+				<c:TextView Text="#planVisit# ({$sv})"></c:TextView>
+			</c:HorizontalLayout>	
+		</c:HorizontalLayout>
+        <c:HorizontalLayout CssClass="mode_right_button_off">
+			<c:HorizontalLayout Id="unPlanned" CssClass="select_zone" OnClickAction="$Facade.ChangeListAndRefresh(unPlanned)">	
+				<c:TextView Text="#unplanned# ({$usv})"></c:TextView>
+			</c:HorizontalLayout>		
+		</c:HorizontalLayout>
       </s:If>
       <s:Else>
-        <c:Button Id="planned" CssClass="mode_left_button_off" Text="#planVisit# ({$sv})" OnClickAction="$Facade.ChangeListAndRefresh(planned)"></c:Button>
-        <c:Button Id="unPlanned" CssClass="mode_right_button_on" Text="#unplanned# ({$usv})" OnClickAction="$Facade.ChangeListAndRefresh(unPlanned)"></c:Button>
+        <c:HorizontalLayout CssClass="mode_left_button_off">
+			<c:HorizontalLayout Id="planned" CssClass="select_zone" OnClickAction="$Facade.ChangeListAndRefresh(planned)">
+				<c:TextView  Text="#planVisit# ({$sv})" ></c:TextView>
+			</c:HorizontalLayout>
+		</c:HorizontalLayout>
+        <c:HorizontalLayout CssClass="mode_right_button_on">
+			<c:HorizontalLayout Id="unPlanned" CssClass="select_zone" OnClickAction="$Facade.ChangeListAndRefresh(unPlanned)">
+				<c:TextView Text="#unplanned# ({$usv})"></c:TextView>
+			</c:HorizontalLayout>	
+		</c:HorizontalLayout>
       </s:Else>
     </c:HorizontalLayout>
     <c:HorizontalLine/>

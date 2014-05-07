@@ -90,7 +90,7 @@
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
-      <c:HorizontalLayout CssClass="grid" OnClickAction="$Facade.ShowMapIfNotNew($outlet)">
+      <c:HorizontalLayout CssClass="grid">
         <c:VerticalLayout>
           <c:DockLayout>
             <c:TextView Text="#coordinates#"></c:TextView>

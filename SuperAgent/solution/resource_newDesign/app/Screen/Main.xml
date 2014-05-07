@@ -4,12 +4,12 @@
   <c:SwipeHorizontalLayout Id="swipe_layout" Index="1">
     <c:VerticalLayout CssClass="menu">
 
-      <c:HorizontalLayout CssClass="header" OnEvent="Forward" OnClickAction="$Facade.CloseMenu()">
+      <c:HorizontalLayout CssClass="header" OnEvent="Forward" OnClickAction="$CloseMenu()">
         <c:Image CssClass="btn_summary"/>
         <c:TextView CssClass="menu_text" Text="#summary#"></c:TextView>
       </c:HorizontalLayout>
 
-      <c:DockLayout OnClickAction="$Workflow.DoAction(Visits)">
+      <c:DockLayout OnClickAction="$DoAction(Visits)">
         <c:HorizontalLayout>
           <c:Image CssClass="btn_visits"/>
           <c:TextView CssClass="menu_text" Text="#visits#"></c:TextView>
@@ -33,7 +33,7 @@
       </c:DockLayout>
       <c:HorizontalLine/>
 
-      <c:DockLayout  OnClickAction="$Facade.Sync()">
+      <c:DockLayout  OnClickAction="$Sync()">
         <c:HorizontalLayout>
           <c:Image CssClass="btn_sync"/>
           <c:TextView CssClass="menu_text" Text="#sync#"></c:TextView>

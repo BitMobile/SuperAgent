@@ -5,8 +5,6 @@
   <s:Push Id="visit" Value="$workflow.visit"></s:Push>
   <s:Push Id="workflow.questions_qty" Value="$ToInteger(0)"></s:Push>
 
-
-
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">

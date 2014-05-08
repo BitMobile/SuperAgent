@@ -4,44 +4,43 @@
   <s:Push Id="outlet" Value="$param1"></s:Push>
   <s:Push Id="visit" Value="$param2"></s:Push>
   <s:Push Id="sku" Value="$param3"></s:Push>
-  <s:Push Id="questionnaires" Value="$param5"></s:Push>
-  <s:Push Id="skuValue" Value="$Facade.CreateVisitSKUValueIfNotExists($visit,$sku,$param4,$questionnaires)"></s:Push>
+  <s:Push Id="questionnaire" Value="$param5"></s:Push>
+  <s:Push Id="skuValue" Value="$CreateVisitSKUValueIfNotExists($visit,$sku,$param4)"></s:Push>
 
   <c:DockLayout>
 
-    <c:HorizontalLayout CssClass="bottom_btn" OnEvent="Back" OnClickAction="$Workflow.DoBack()">
+    <c:HorizontalLayout CssClass="bottom_btn" OnEvent="Back" OnClickAction="$SaveAndBack($skuValue)">
       <c:TextView Text="#ready#"></c:TextView>
     </c:HorizontalLayout>
     <c:HorizontalLine CssClass="b_line"></c:HorizontalLine>
 
+    <c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
+    <c:HorizontalLine/>
+    
     <c:ScrollView Id="grScrollView">
-      <s:Push Id="useInQuestionnaire" Value="$Facade.CheckQuestionExistence($questionnaires, Available, $sku)"></s:Push>
+      <s:Push Id="useInQuestionnaire" Value="$CheckQuestionExistence($questionnaire, Available, $sku)"></s:Push>
       <s:If Test="$useInQuestionnaire">
         <c:HorizontalLayout  CssClass="grid">
-          <c:VerticalLayout>
+          <c:VerticalLayout OnClickAction="$GoToQuestionAction(Boolean, $skuValue, $visit, cAvailable, Available)">
             <c:TextView Text="#available#" CssClass="description_row"></c:TextView>
-            <c:HorizontalLayout CssClass="parameter_grid">
-              <c:TextView Text="$skuValue.Available" CssClass="yes_TextView"></c:TextView>
-              <c:Button Text="#YES#" CssClass="yes_button" OnClickAction="$Facade.AssignAvailableValue($skuValue, Available, true)"></c:Button>
-              <c:Button Text="#NO#" CssClass="yes_button" OnClickAction="$Facade.AssignAvailableValue($skuValue, Available, false)"></c:Button>
-            </c:HorizontalLayout>
+            <c:TextView Id="cAvailable" Text="$skuValue.Available" CssClass="yes_TextView"></c:TextView>
           </c:VerticalLayout>
         </c:HorizontalLayout>
         <c:HorizontalLine/>
       </s:If>
 
-      <s:Push Id="useInQuestionnaire" Value="$Facade.CheckQuestionExistence($questionnaires, Facing, $sku)"></s:Push>
+      <s:Push Id="useInQuestionnaire" Value="$CheckQuestionExistence($questionnaire, Facing, $sku)"></s:Push>
       <s:If Test="$useInQuestionnaire">
         <c:HorizontalLayout CssClass="grid">
           <c:VerticalLayout>
             <c:TextView Text="#facing#" CssClass="description_row"></c:TextView>
-            <c:MemoEdit Id="memoAnswer" Value="$skuValue.Facing" Keyboard="numeric"></c:MemoEdit>
+            <c:MemoEdit Value="$skuValue.Facing" Keyboard="numeric"></c:MemoEdit>
           </c:VerticalLayout>
         </c:HorizontalLayout>
         <c:HorizontalLine/>
       </s:If>
 
-      <s:Push Id="useInQuestionnaire" Value="$Facade.CheckQuestionExistence($questionnaires, Stock, $sku)"></s:Push>
+      <s:Push Id="useInQuestionnaire" Value="$CheckQuestionExistence($questionnaire, Stock, $sku)"></s:Push>
       <s:If Test="$useInQuestionnaire">
         <c:HorizontalLayout CssClass="grid">
           <c:VerticalLayout>
@@ -52,7 +51,7 @@
         <c:HorizontalLine/>
       </s:If>
 
-      <s:Push Id="useInQuestionnaire" Value="$Facade.CheckQuestionExistence($questionnaires, Price, $sku)"></s:Push>
+      <s:Push Id="useInQuestionnaire" Value="$CheckQuestionExistence($questionnaire, Price, $sku)"></s:Push>
       <s:If Test="$useInQuestionnaire">
         <c:HorizontalLayout CssClass="grid">
           <c:VerticalLayout>
@@ -63,7 +62,7 @@
         <c:HorizontalLine/>
       </s:If>
 
-      <s:Push Id="useInQuestionnaire" Value="$Facade.CheckQuestionExistence($questionnaires, MarkUp, $sku)"></s:Push>
+      <s:Push Id="useInQuestionnaire" Value="$CheckQuestionExistence($questionnaire, MarkUp, $sku)"></s:Push>
       <s:If Test="$useInQuestionnaire">
         <c:HorizontalLayout CssClass="grid">
           <c:VerticalLayout>
@@ -74,25 +73,21 @@
         <c:HorizontalLine/>
       </s:If>
 
-      <s:Push Id="useInQuestionnaire" Value="$Facade.CheckQuestionExistence($questionnaires, OutOfStock, $sku)"></s:Push>
+      <s:Push Id="useInQuestionnaire" Value="$CheckQuestionExistence($questionnaire, OutOfStock, $sku)"></s:Push>
       <s:If Test="$useInQuestionnaire">
         <c:HorizontalLayout  CssClass="grid">
-          <c:VerticalLayout>
+          <c:VerticalLayout OnClickAction="$GoToQuestionAction(Boolean, $skuValue, $visit, cOutOfStock, OutOfStock)">
             <c:TextView Text="#available#" CssClass="description_row"></c:TextView>
-            <c:HorizontalLayout CssClass="parameter_grid">
-              <c:TextView Text="$skuValue.OutOfStock" CssClass="yes_TextView"></c:TextView>
-              <c:Button Text="#YES#" CssClass="yes_button" OnClickAction="$Facade.AssignAvailableValue($skuValue, OutOfStock, true)"></c:Button>
-              <c:Button Text="#NO#" CssClass="yes_button" OnClickAction="$Facade.AssignAvailableValue($skuValue, OutOfStock, false)"></c:Button>
-            </c:HorizontalLayout>
+            <c:TextView Id="cOutOfStock" Text="$skuValue.OutOfStock" CssClass="yes_TextView"></c:TextView>
           </c:VerticalLayout>
         </c:HorizontalLayout>
       </s:If>
 
-      <s:Push Id="useInQuestionnaire" Value="$Facade.CheckQuestionExistence($questionnaires, Snapshot, $sku)"></s:Push>
+      <s:Push Id="useInQuestionnaire" Value="$CheckQuestionExistence($questionnaire, Snapshot, $sku)"></s:Push>
       <s:If Test="$useInQuestionnaire">
-        <c:HorizontalLayout CssClass="grid" OnClickAction="$Facade.GetSKUShapshot($skuValue)">
+        <c:HorizontalLayout CssClass="grid" OnClickAction="$GetSKUShapshot($skuValue)">
           <c:VerticalLayout>
-            <s:Push Id="snapshotText" Value="$Facade.GetSnapshotText($skuValue.Snapshot)"></s:Push>
+            <s:Push Id="snapshotText" Value="$GetSnapshotText($skuValue.Snapshot)"></s:Push>
             <c:TextView Id="snapshotInfo" Text="$snapshotText" CssClass="main_row"></c:TextView>
           </c:VerticalLayout>
         </c:HorizontalLayout>

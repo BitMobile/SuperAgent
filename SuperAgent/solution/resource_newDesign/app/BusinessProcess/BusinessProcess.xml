@@ -53,7 +53,7 @@
       <bp:Action Name="Edit" NextStep="EditQuestion"></bp:Action>
     </bp:Step>
 
-    <bp:Step Name="SKUs" Screen="Visit_SKUs.xml">
+    <bp:Step Name="SKUs" Screen="Visit_SKUs.xml" Controller="Visits\SKU_Questions.js">
       <bp:Action Name="Forward" NextStep="Order"></bp:Action>
       <bp:Action Name="Edit" NextStep="Visit_EditSKU"></bp:Action>
     </bp:Step>
@@ -110,7 +110,7 @@
     <bp:Step Name="EditQuestion" Screen="ListChoice.xml">
     </bp:Step>
 
-    <bp:Step Name="Visit_EditSKU" Screen="Visit_SKU.xml">
+    <bp:Step Name="Visit_EditSKU" Screen="Visit_SKU.xml" Controller="Visits\SKU_Questions.js">
     </bp:Step>
 
     <bp:Step Name="ShowMap" Screen="ScheduledVisits_Map.xml">

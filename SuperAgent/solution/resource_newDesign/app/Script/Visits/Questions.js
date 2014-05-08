@@ -39,7 +39,7 @@ function GoToQuestionAction(answerType, question, visit, control, questionItem) 
     }
 
     if (answerType == "Snapshot") {
-        GetCameraObject(visit.Id);
+        GetCameraObject(visit);
         Camera.MakeSnapshot(SaveAtVisit, question);
     }
 
@@ -58,4 +58,30 @@ function GoToQuestionAction(answerType, question, visit, control, questionItem) 
     if (answerType == "Integer" || answerType == "String" || answerType == "Decimal") {
         Variables["memoAnswer"].AutoFocus == true;
     }
+}
+
+function SaveAtVisit(question) {
+    question.Answer = Variables["guid"];
+    //Variables["snapshotInfo"].Text = Translate["#snapshotAttached#"];
+    Workflow.Refresh([]);
+}
+
+function GetCameraObject(entity) {
+    FileSystem.CreateDirectory("/private/Document.Visit");
+    var guid = Global.GenerateGuid();
+    Variables.Add("guid", guid);
+    var path = String.Format("/private/Document.Visit/{0}/{1}.jpg", entity, guid);
+    Camera.Size = 300;
+    Camera.Path = path;
+}
+
+function CheckEmptyQuestionsAndForward(questionnaires, visit) {
+
+    //var emptyQuestion = DB.Current.Document.Visit_Questions.SelectBy("Ref", visit.Id).Where("Answer==@p1", [""]).First();
+    //while (emptyQuestion != null) {
+    //    DB.Current.Document.Visit_Questions.Delete(emptyQuestion);
+    //    emptyQuestion = DB.Current.Document.Visit_Questions.SelectBy("Ref", visit.Id).Where("Answer==@p1", [""]).First();
+    //}
+
+    Workflow.Forward([]);
 }

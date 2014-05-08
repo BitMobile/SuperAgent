@@ -75,5 +75,26 @@ function IsNullOrEmpty(val1) {
 function GetControlId(count) {
     return ("control" + count);
 }
+
+function IsInCollection(item, collection) {
+    //Dialog.Debug(item);
+    //Dialog.Debug(collection);
+    var res = false;
+    for (var i in collection) {
+        if (item.ToString() == i.ToString())
+            res = true;
+    }
+    return res
+}
+
+function GenerateGuid() {
+
+    return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+}
+
+function S4() {
+    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+}
+
 //-----------------Dialog handlers-----------------
 

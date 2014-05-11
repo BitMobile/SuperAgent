@@ -213,6 +213,7 @@
     <Content Include="resource_newDesign\app\Screen\Settings.xml" />
     <Content Include="resource_newDesign\app\Screen\SKU_Image.xml" />
     <Content Include="resource_newDesign\app\Screen\Stock_SKUs.xml" />
+    <Content Include="resource_newDesign\app\Screen\Sync\Sync.xml" />
     <Content Include="resource_newDesign\app\Screen\Targets.xml" />
     <Content Include="resource_newDesign\app\Screen\Tasks.xml">
       <SubType>Designer</SubType>
@@ -232,12 +233,14 @@
     <Content Include="resource_newDesign\app\Script\Mixins\DB.js" />
     <Content Include="resource_newDesign\app\Script\Mixins\Workflow.js" />
     <Content Include="resource_newDesign\app\Script\Outlets\Main.js" />
+    <Content Include="resource_newDesign\app\Script\Sync\Main.js" />
     <Content Include="resource_newDesign\app\Script\Visits\Main.js" />
     <Content Include="resource_newDesign\app\Script\Tasks\Main.js" />
     <Content Include="resource_newDesign\app\Script\Visits\Questions.js" />
     <Content Include="resource_newDesign\app\Script\Visits\SKU_Questions.js" />
     <Content Include="resource_newDesign\app\Style\Default\default.css" />
     <Content Include="resource_newDesign\app\Style\Default\Main.css" />
+    <Content Include="resource_newDesign\app\Style\Default\Sync.css" />
     <Content Include="resource_newDesign\app\Style\Default\Tasks.css" />
     <Content Include="resource_newDesign\app\Style\Default\Visit_SKUs.css" />
     <Content Include="resource_newDesign\app\Style\Default\Order.css" />

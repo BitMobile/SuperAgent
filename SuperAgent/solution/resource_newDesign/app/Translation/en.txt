@@ -173,3 +173,7 @@ visitReason	Visit reason
 debt	Debt
 orderInfo	ORDER INFORMATION
 visitTotal	Visit total
+synchronizationData	SYNCHRONIZATION OF DATA
+synchronizationPhoto	SYNCHRONIZATION OF PHOTOS
+lastSync	Last synchronization
+synchronize	Synchronize

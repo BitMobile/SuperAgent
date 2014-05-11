@@ -19,3 +19,7 @@ function OpenMenu() {
         sl.Index = 1;
     }
 }
+
+function Fake() {
+
+}

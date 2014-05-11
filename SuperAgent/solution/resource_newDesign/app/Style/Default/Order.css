@@ -3,21 +3,16 @@
 }
 
 .btn_back {
-    width: 45%;
-    height: 100%;
+    width: 39%;
+	height: 100%;
     dock-align: left;
 }
 
     .btn_back TextView {
-        height: 33.5%;
-        margin-left: 3.8%;
+        padding-top: 30%;
+        font: 33% arial;
     }
-
-    .btn_back img {
-        margin-left: 6.4%;
-    }
-
-        .top_navigator hl TextView {
-            text-align: left;
-            margin-left: -7%;
-        }
+	
+.btn_forward {
+    margin-left: 20%;
+}	

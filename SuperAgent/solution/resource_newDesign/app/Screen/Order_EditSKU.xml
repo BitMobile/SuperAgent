@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope" StyleSheet="Order_EditSKU.css">
 
   <s:Push Id="order" Value="$workflow.order"></s:Push>
   <s:Push Id="sku" Value="$param1"></s:Push>
@@ -19,7 +19,7 @@
 
   <c:DockLayout>
 
-    <c:HorizontalLayout CssClass="s_margin_top"></c:HorizontalLayout>
+    <c:HorizontalLayout CssClass="end_of_block"></c:HorizontalLayout>
 
     <c:HorizontalLayout CssClass="bottom_btn">
       <c:VerticalLayout OnEvent="Back" OnClickAction="$Facade.DeleteifNewItemAndBack()">
@@ -113,7 +113,7 @@
         </s:Iterator>
       </s:If>
 
-      <c:HorizontalLayout CssClass="s_margin_top"></c:HorizontalLayout>
+      <c:HorizontalLayout CssClass="end_of_block"></c:HorizontalLayout>
       <c:HorizontalLayout CssClass="caption_grid">
         <c:TextView Text = "#features#:"></c:TextView>
       </c:HorizontalLayout>

@@ -10,3 +10,8 @@
     height: 2px;
     background-image: url(shadow_line.png);
 }
+
+.btn_menu {
+    margin-right: 11%;
+    margin-left: 2%;
+}

@@ -55,88 +55,83 @@
 
       <c:DockLayout CssClass="top_navigator">
         <c:HorizontalLayout CssClass="btn_menu" OnClickAction="$Facade.OpenMenu()">
-			<c:Image CssClass="menuIcon"/>
+          <c:Image CssClass="menuIcon"/>
         </c:HorizontalLayout>
-		<c:HorizontalLayout CssClass="btn_forward"/>
-		<c:HorizontalLayout>
-			<c:TextView Text="#summary#" />
-		</c:HorizontalLayout>	
+        <c:HorizontalLayout CssClass="btn_forward"/>
+        <c:HorizontalLayout>
+          <c:TextView Text="#summary#" />
+        </c:HorizontalLayout>
       </c:DockLayout>
-
-      <c:HorizontalLayout CssClass="small_grid">
-        <c:HorizontalLayout CssClass="mode_left_button_on">
-			<c:HorizontalLayout CssClass="select_zone">
-				<c:TextView Text="#new#"></c:TextView>
-			</c:HorizontalLayout>
-		</c:HorizontalLayout>
-        <c:HorizontalLayout CssClass="mode_right_button_off">
-			<c:HorizontalLayout CssClass="select_zone">
-				<c:TextView Text="#done#"></c:TextView>
-			</c:HorizontalLayout>
-		</c:HorizontalLayout>
-      </c:HorizontalLayout>
       <c:HorizontalLine CssClass="navy"/>
 
       <c:VerticalLayout CssClass="blue">
 
         <c:DockLayout>
-          <c:VerticalLayout CssClass="summ">
-            <c:TextView Text="3"></c:TextView>
-            <c:TextView Text="визита" CssClass="descr"></c:TextView>
+          <c:VerticalLayout CssClass="left">
+            <c:DockLayout CssClass="caption_big" OnClick="$Fake()">
+              <c:TextView Text="8"/>
+              <c:TextView Text="визитов" CssClass="descr"/>
+              <c:TextView Text="выполнено" CssClass="descr"/>
+            </c:DockLayout>
+
+            <c:VerticalLayout CssClass="simple">
+              <c:HorizontalLayout OnClick="$Fake()">
+                <c:TextView Text="еще" CssClass="descr"/>
+                <c:TextView Text="5" CssClass="mark"/>
+                <c:TextView Text="визитов"/>
+              </c:HorizontalLayout>
+              <c:TextView Text="запланировано" CssClass="descr"/>
+            </c:VerticalLayout>
           </c:VerticalLayout>
 
-          <c:VerticalLayout  CssClass="docs">
-            <c:HorizontalLayout CssClass="grid">
-              <c:Image CssClass="yellow_mark"/>
+          <c:VerticalLayout CssClass="right">
+            <c:DockLayout CssClass="grid">
+              <c:Image/>
               <c:VerticalLayout>
-                <c:TextView Text="222222222255 222222222255 222222222255 222 2222 222 55 222222222255 222222222255 " CssClass="main_row"></c:TextView>
-                <c:TextView Text="Count city, 3333333 str., 33" CssClass="description_row"></c:TextView>
+                <c:TextView Text="5" CssClass="main_row"></c:TextView>
+                <c:TextView Text="плановых" CssClass="description_row"/>
+                <c:TextView Text="визитов" CssClass="description_row"/>
               </c:VerticalLayout>
-			  <c:Image/>
-            </c:HorizontalLayout>
-            <c:HorizontalLine CssClass="short_line"/>
-
-            <c:HorizontalLayout CssClass="grid">
-              <c:Image CssClass="yellow_mark"/>
+            </c:DockLayout>
+            <c:HorizontalLine/>
+            <c:DockLayout CssClass="grid">
+              <c:Image/>
               <c:VerticalLayout>
-                <c:TextView Text="333333333333 222222222255 222222222255 222 2222 222 55 222222222255 222222222255 " CssClass="main_row"></c:TextView>
-                <c:TextView Text="Count city, 3333333 str., 33" CssClass="description_row"></c:TextView>
+                <c:TextView Text="3" CssClass="main_row"></c:TextView>
+                <c:TextView Text="внеплановых" CssClass="description_row"/>
+                <c:TextView Text="визита" CssClass="description_row"/>
               </c:VerticalLayout>
-			  <c:Image/>
-            </c:HorizontalLayout>
-			<c:HorizontalLine CssClass="short_line"/>
+            </c:DockLayout>
           </c:VerticalLayout>
 
         </c:DockLayout>
 
+        <c:DockLayout CssClass="short_panel">
+          <c:DockLayout CssClass="grid"  >
+            <c:Image/>
+            <c:VerticalLayout OnClick="$Fake()">
+              <c:TextView Text="1 098 097,00 р" CssClass="main_row"></c:TextView>
+              <c:TextView Text="сумма заказов на сегодня" CssClass="description_row"/>
+            </c:VerticalLayout>
+          </c:DockLayout>
+        </c:DockLayout>
+
         <c:DockLayout>
-
-          <c:VerticalLayout CssClass="summ">
-            <c:TextView Text="2"></c:TextView>
-            <c:TextView Text="заказа" CssClass="descr"></c:TextView>
-          </c:VerticalLayout>
-
-          <c:VerticalLayout CssClass="docs">
-            <c:HorizontalLayout CssClass="grid">
-              <c:Image CssClass="yellow_mark"/>
-              <c:VerticalLayout>
-                <c:TextView Text="222222222255 222222222255 222222222255 222 2222 222 55 222222222255 222222222255 " CssClass="main_row"></c:TextView>
-                <c:TextView Text="Count city, 3333333 str., 33" CssClass="description_row"></c:TextView>
-              </c:VerticalLayout>
-			  <c:Image/>
-            </c:HorizontalLayout>
-            <c:HorizontalLine CssClass="short_line"/>
-
-            <c:HorizontalLayout CssClass="grid">
-              <c:Image CssClass="yellow_mark"/>
-              <c:VerticalLayout>
-                <c:TextView Text="333333333333 222222222255 222222222255 222 2222 222 55 222222222255 222222222255 " CssClass="main_row"></c:TextView>
-                <c:TextView Text="Count city, 3333333 str., 33" CssClass="description_row"></c:TextView>
-              </c:VerticalLayout>
-			  <c:Image/>
-            </c:HorizontalLayout>
-            <c:HorizontalLine CssClass="short_line"/>
-		  </c:VerticalLayout>
+          <c:DockLayout CssClass="grid">
+            <c:Image/>
+            <c:VerticalLayout>
+              <c:TextView Text="578 134,50 р" CssClass="main_row"></c:TextView>
+              <c:TextView Text="сумма инкассации за сегодня" CssClass="description_row"/>              
+            </c:VerticalLayout>
+          </c:DockLayout>
+          <c:HorizontalLine/>
+          <c:DockLayout CssClass="grid">
+            <c:Image/>
+            <c:VerticalLayout>
+              <c:TextView Text="587 134,50 р" CssClass="main_row"></c:TextView>
+              <c:TextView Text="дебиторская задолженность" CssClass="description_row"/>              
+            </c:VerticalLayout>
+          </c:DockLayout>
         </c:DockLayout>
 
       </c:VerticalLayout>

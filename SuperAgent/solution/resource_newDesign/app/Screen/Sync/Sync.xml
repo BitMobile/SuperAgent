@@ -59,7 +59,7 @@
     </c:HorizontalLayout>
     <c:HorizontalLine/>
 
-    <c:HorizontalLayout CssClass="end_of_block"/>
+    <c:HorizontalLayout CssClass="free_space"/>
 
   </c:VerticalLayout>
 </c:Screen>

@@ -12,6 +12,7 @@
       <bp:Action Name="ToDo" NextWorkflow="ToDo"></bp:Action>
       <bp:Action Name="Targets" NextWorkflow="Targets"></bp:Action>
       <bp:Action Name="Settings" NextWorkflow="Settings"></bp:Action>
+      <bp:Action Name="Sync" NextWorkflow="Sync"/>
     </bp:Step>
 
   </bp:Workflow>
@@ -316,4 +317,8 @@
 
   </bp:Workflow>
 
+  <bp:Workflow Name="Sync">
+    <bp:Step Name="Sync" Screen="Sync\Sync.xml" Controller="Sync\Main.js"/>
+  </bp:Workflow>
+  
 </bp:BusinessProcess>

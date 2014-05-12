@@ -33,7 +33,7 @@
       </c:DockLayout>
       <c:HorizontalLine/>
 
-      <c:DockLayout  OnClickAction="$Sync()">
+      <c:DockLayout  OnClickAction="$DoAction(Sync)">
         <c:HorizontalLayout>
           <c:Image CssClass="btn_sync"/>
           <c:TextView CssClass="menu_text" Text="#sync#"></c:TextView>
@@ -68,14 +68,14 @@
 
         <c:DockLayout>
           <c:VerticalLayout CssClass="left">
-            <c:DockLayout CssClass="caption_big" OnClick="$Fake()">
+            <c:DockLayout CssClass="caption_big">
               <c:TextView Text="8"/>
               <c:TextView Text="визитов" CssClass="descr"/>
               <c:TextView Text="выполнено" CssClass="descr"/>
             </c:DockLayout>
 
             <c:VerticalLayout CssClass="simple">
-              <c:HorizontalLayout OnClick="$Fake()">
+              <c:HorizontalLayout>
                 <c:TextView Text="еще" CssClass="descr"/>
                 <c:TextView Text="5" CssClass="mark"/>
                 <c:TextView Text="визитов"/>
@@ -86,7 +86,6 @@
 
           <c:VerticalLayout CssClass="right">
             <c:DockLayout CssClass="grid">
-              <c:Image/>
               <c:VerticalLayout>
                 <c:TextView Text="5" CssClass="main_row"></c:TextView>
                 <c:TextView Text="плановых" CssClass="description_row"/>
@@ -95,7 +94,6 @@
             </c:DockLayout>
             <c:HorizontalLine/>
             <c:DockLayout CssClass="grid">
-              <c:Image/>
               <c:VerticalLayout>
                 <c:TextView Text="3" CssClass="main_row"></c:TextView>
                 <c:TextView Text="внеплановых" CssClass="description_row"/>
@@ -107,9 +105,8 @@
         </c:DockLayout>
 
         <c:DockLayout CssClass="short_panel">
-          <c:DockLayout CssClass="grid"  >
-            <c:Image/>
-            <c:VerticalLayout OnClick="$Fake()">
+          <c:DockLayout CssClass="grid">
+            <c:VerticalLayout>
               <c:TextView Text="1 098 097,00 р" CssClass="main_row"></c:TextView>
               <c:TextView Text="сумма заказов на сегодня" CssClass="description_row"/>
             </c:VerticalLayout>
@@ -118,18 +115,16 @@
 
         <c:DockLayout>
           <c:DockLayout CssClass="grid">
-            <c:Image/>
             <c:VerticalLayout>
               <c:TextView Text="578 134,50 р" CssClass="main_row"></c:TextView>
-              <c:TextView Text="сумма инкассации за сегодня" CssClass="description_row"/>              
+              <c:TextView Text="сумма инкассации за сегодня" CssClass="description_row"/>
             </c:VerticalLayout>
           </c:DockLayout>
           <c:HorizontalLine/>
           <c:DockLayout CssClass="grid">
-            <c:Image/>
             <c:VerticalLayout>
               <c:TextView Text="587 134,50 р" CssClass="main_row"></c:TextView>
-              <c:TextView Text="дебиторская задолженность" CssClass="description_row"/>              
+              <c:TextView Text="дебиторская задолженность" CssClass="description_row"/>
             </c:VerticalLayout>
           </c:DockLayout>
         </c:DockLayout>

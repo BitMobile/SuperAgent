@@ -1,4 +1,11 @@
-﻿// ------------------------ Events ------------------------
+﻿// ------------------------ Application -------------------
+
+function OnApplicationInit() {
+    Variables.AddGlobal("lastDataSync", "-");
+    Variables.AddGlobal("lastFtpSync", "-");
+}
+
+// ------------------------ Events ------------------------
 
 function OnLoad(screenName) {
     if (screenName == "Outlet_Map.xml") {

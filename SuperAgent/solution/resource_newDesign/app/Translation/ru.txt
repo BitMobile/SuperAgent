@@ -172,3 +172,7 @@ visitReason	Причина визита
 debt	Долг
 orderInfo	ИНФОРМАЦИЯ О ЗАКАЗЕ
 visitTotal	Итоги визита
+synchronizationData	СИНХРОНИЗАЦИЯ ДАННЫХ
+synchronizationPhoto	СИНХРОНИЗАЦИЯ ФОТОГРАФИЙ
+lastSync	Последняя синхронизация
+synchronize	Синхронизировать

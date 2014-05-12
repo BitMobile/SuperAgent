@@ -6,12 +6,11 @@
   <s:Push Id="price" Value="$param2"></s:Push>
   <s:Push Id="orderitem" Value="$param3"></s:Push>
   <s:Push Id="showimage" Value="$param5"></s:Push>
-  <s:Push Id="multiplier" Value="$Facade.GetMultiplier($sku.Id, $orderitem)"></s:Push>
-  <s:Push Id="features" Value="$Facade.GetFeatures($sku.Id)"></s:Push>
-  <s:Push Id="orderitem" Value="$Facade.CreateOrderItemIfNotExist($order.Id,$sku,$orderitem,$price,$features)"></s:Push>
-  <s:Push Id="baseQty" Value="$Facade.GetMultiple($orderitem.Qty, $multiplier)"></s:Push>
-  <s:Push Id="ismarkup" Value="$Facade.GetCheckBoxValue($orderitem.Discount)" />
-  <s:Push Id="featureDescr" Value="$Facade.GetFeatureDescr($orderitem.FeatureAsObject)"></s:Push>
+  <s:Push Id="multiplier" Value="$GetMultiplier($sku.Id, $orderitem)"></s:Push>
+  <s:Push Id="features" Value="$GetFeatures($sku.Id)"></s:Push>
+  <s:Push Id="orderitem" Value="$CreateOrderItemIfNotExist($order.Id,$sku,$orderitem,$price,$features)"></s:Push>
+  <s:Push Id="baseQty" Value="$GetMultiple($orderitem.Qty, $multiplier)"></s:Push>
+  <s:Push Id="featureDescr" Value="$GetFeatureDescr($orderitem.Feature)"></s:Push>
 
   <s:If Test="$showimage == null">
     <s:Push Id="showimage" Value="NotShow"></s:Push>
@@ -22,10 +21,10 @@
     <c:HorizontalLayout CssClass="s_margin_top"></c:HorizontalLayout>
 
     <c:HorizontalLayout CssClass="bottom_btn">
-      <c:VerticalLayout OnEvent="Back" OnClickAction="$Facade.DeleteifNewItemAndBack()">
+      <c:VerticalLayout OnEvent="Back" OnClickAction="$DoBack()">
         <c:TextView Text="#cancel#" CssClass="left_tv"></c:TextView>
       </c:VerticalLayout>
-      <c:VerticalLayout OnEvent="Forward" OnClickAction="$Facade.CalculateSKUAndForward($order.OutletAsObject, $orderitem)">
+      <c:VerticalLayout OnEvent="Forward" OnClickAction="$CalculateSKUAndForward($order.Outlet, $orderitem)">
         <c:TextView Text="#add#" CssClass="right_tv" ></c:TextView>
       </c:VerticalLayout>
     </c:HorizontalLayout>
@@ -38,12 +37,12 @@
 
     <s:If Test="$sku.DefaultPicture != null">
       <s:If Test="$showimage == 'NotShow'">
-        <c:HorizontalLayout CssClass="btn_showpicture" OnClickAction="$Facade.RefreshEditSKU($orderitem, $sku, $price, $discountEdit.Text, Show)">
+        <c:HorizontalLayout CssClass="btn_showpicture" OnClickAction="$RefreshEditSKU($orderitem, $sku, $price, $discountEdit.Text, Show)">
           <c:TextView Text="[#showImage#]"></c:TextView>
         </c:HorizontalLayout>
       </s:If >
       <s:If Test="$showimage == 'Show'">
-        <c:HorizontalLayout CssClass="btn_showpicture" OnClickAction="$Facade.RefreshEditSKU($orderitem, $sku, $price, $discountEdit.Text, NotShow)">
+        <c:HorizontalLayout CssClass="btn_showpicture" OnClickAction="$RefreshEditSKU($orderitem, $sku, $price, $discountEdit.Text, NotShow)">
           <c:TextView Text="[#hideImage#]"></c:TextView>
         </c:HorizontalLayout>
       </s:If >
@@ -55,7 +54,7 @@
         <s:If Test="$showimage == 'Show'">
           <c:HorizontalLine/>
           <c:ScrollView CssClass="60">
-            <c:Image Source="$Facade.GetSharedImagePath(Catalog.SKU, $sku.Id, $sku.DefaultPicture, $sku.DefaultPictureExtension)"/>
+            <c:Image Source="$GetSharedImagePath(Catalog.SKU, $sku.Id, $sku.DefaultPicture, $sku.DefaultPictureExtension)"/>
           </c:ScrollView>
           <c:HorizontalLine/>
           <c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
@@ -67,7 +66,7 @@
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
-      <c:HorizontalLayout CssClass="caption_grid" OnClickAction="$Facade.CountPrice($orderitem)">
+      <c:HorizontalLayout CssClass="caption_grid" OnClickAction="$CountPrice($orderitem)">
         <c:TextView Text="#countPrice#"></c:TextView>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
@@ -84,9 +83,9 @@
       </c:DockLayout>
       <c:HorizontalLine/>
 
-      <c:DockLayout CssClass="parameter_grid" OnClickAction="$Facade.ChangeUnit($sku, $orderitem, $price)">
+      <c:DockLayout CssClass="parameter_grid" OnClickAction="$ChangeUnit($sku, $orderitem, $price)">
         <c:TextView Text="#packUnit#" ></c:TextView>
-        <c:TextView Id="itemUnits" Text="$orderitem.UnitsAsObject.Description" CssClass="value"></c:TextView>
+        <c:TextView Id="itemUnits" Text="$orderitem.Units.Description" CssClass="value"></c:TextView>
       </c:DockLayout>
       <c:HorizontalLine/>
 
@@ -96,8 +95,8 @@
       </c:DockLayout>
       <c:HorizontalLine/>
 
-      <s:Push Id="historyItems" Value="$Facade.GetItemHistory($sku, $order)"></s:Push>
-      <s:Push Id="historyCount" Value="$Facade.CountCollection($historyItems)"></s:Push>
+      <s:Push Id="historyItems" Value="$GetItemHistory($sku, $order)"></s:Push>
+      <s:Push Id="historyCount" Value="$CountCollection($historyItems)"></s:Push>
       <s:If Test="$historyCount != 0">
         <c:HorizontalLayout CssClass="caption_grid">
           <c:TextView Text = "#orderHistory#:"></c:TextView>
@@ -105,8 +104,8 @@
         <c:HorizontalLine/>
         <s:Iterator Id="historyItem" Value="$historyItems">
           <c:DockLayout CssClass="parameter_grid">
-            <c:TextView Text="$historyItem.RefAsObject.Date"></c:TextView>
-            <s:Push Id="baseQty" Value="$Facade.GetBaseQty($sku, $historyItem)"></s:Push>
+            <c:TextView Text="$historyItem.RefDate"></c:TextView>
+            <s:Push Id="baseQty" Value="$GetBaseQty($sku, $historyItem)"></s:Push>
             <c:TextView Text="$baseQty" CssClass="value"></c:TextView>
           </c:DockLayout>
           <c:HorizontalLine/>
@@ -120,14 +119,14 @@
       <c:HorizontalLine/>
 
       <s:Iterator Id="feature" Value="$features">
-        <c:DockLayout CssClass="parameter_grid" OnClickAction="$Facade.ChangeFeatureAndRefresh($orderitem, $feature, $sku, $price, $discountEdit.Text, $showimage)">
+        <c:DockLayout CssClass="parameter_grid" OnClickAction="$ChangeFeatureAndRefresh($orderitem, $feature, $sku, $price, $discountEdit.Text, $showimage)">
           <s:If Test="$orderitem.Feature==$feature.Feature">
             <c:Image CssClass="tick"/>
           </s:If>
           <s:Else>
             <c:VerticalLayout CssClass="empty_tick"></c:VerticalLayout>
           </s:Else>
-          <c:TextView Text="$feature.FeatureAsObject.Description"></c:TextView>
+          <c:TextView Text="$feature.Feature.Description"></c:TextView>
         </c:DockLayout>
         <c:HorizontalLine/>
 

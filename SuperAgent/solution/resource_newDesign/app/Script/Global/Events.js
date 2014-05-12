@@ -18,11 +18,7 @@ function OnWorkflowStart(name) {
     Variables["workflow"].Add("name", name);
 }
 
-function OnWorkflowForward(name, lastStep, nextStep, parameters) {
-    if (lastStep == "Order" && nextStep == "EditSKU" && Variables.Exists("AlreadyAdded") == false) {
-        Variables.AddGlobal("AlreadyAdded", true);
-    }
-}
+//function OnWorkflowForward(name, lastStep, nextStep, parameters) {}
 
 function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
     if (nextStep == "Visit_Tasks") {
@@ -38,9 +34,9 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
             if (parseInt(tasks) == parseInt(0)) {
                 //Dialog.Debug("02");
                 if (parseInt(questions) == parseInt(0)) {
-                    Dialog.Debug("03");
+                    //Dialog.Debug("03");
                     if (parseInt(SKUQuest) == parseInt(0)) {
-                        Dialog.Debug("04");
+                        //Dialog.Debug("04");
                         Workflow.Action("Skip3", [outlet]);
                         return false;
                     }

@@ -187,19 +187,21 @@
     <Content Include="resource_newDesign\app\Image\Default\tick.png" />
     <Content Include="resource_newDesign\app\Image\Default\TudaSuda.png" />
     <Content Include="resource_newDesign\app\Image\Default\yellow_mark.png" />
-    <Content Include="resource_newDesign\app\Screen\Filters.xml" />
+    <Content Include="resource_newDesign\app\Screen\Order\Filters.xml" />
     <Content Include="resource_newDesign\app\Screen\ListChoice.xml" />
     <Content Include="resource_newDesign\app\Screen\Main.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="resource_newDesign\app\Screen\Order.xml" />
-    <Content Include="resource_newDesign\app\Screen\OrderList.xml" />
-    <Content Include="resource_newDesign\app\Screen\Order_Commentary.xml" />
-    <Content Include="resource_newDesign\app\Screen\Order_EditSKU.xml">
+    <Content Include="resource_newDesign\app\Screen\Order\Order.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="resource_newDesign\app\Screen\Order_Info.xml" />
-    <Content Include="resource_newDesign\app\Screen\Order_SKUs.xml">
+    <Content Include="resource_newDesign\app\Screen\Order\OrderList.xml" />
+    <Content Include="resource_newDesign\app\Screen\Order\Order_Commentary.xml" />
+    <Content Include="resource_newDesign\app\Screen\Order\Order_EditSKU.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="resource_newDesign\app\Screen\Order\Order_Info.xml" />
+    <Content Include="resource_newDesign\app\Screen\Order\Order_SKUs.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="resource_newDesign\app\Screen\Outlet.xml">
@@ -214,14 +216,14 @@
     <Content Include="resource_newDesign\app\Screen\SKU_Image.xml" />
     <Content Include="resource_newDesign\app\Screen\Stock_SKUs.xml" />
     <Content Include="resource_newDesign\app\Screen\Targets.xml" />
-    <Content Include="resource_newDesign\app\Screen\Tasks.xml">
+    <Content Include="resource_newDesign\app\Screen\Visit\Tasks.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="resource_newDesign\app\Screen\Visits.xml" />
-    <Content Include="resource_newDesign\app\Screen\Visit_Questions.xml" />
-    <Content Include="resource_newDesign\app\Screen\Visit_SKU.xml" />
-    <Content Include="resource_newDesign\app\Screen\Visit_SKUs.xml" />
-    <Content Include="resource_newDesign\app\Screen\Visit_Total.xml">
+    <Content Include="resource_newDesign\app\Screen\Visit\Questions.xml" />
+    <Content Include="resource_newDesign\app\Screen\Visit\SKU.xml" />
+    <Content Include="resource_newDesign\app\Screen\Visit\SKUs.xml" />
+    <Content Include="resource_newDesign\app\Screen\Visit\Total.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="resource_newDesign\app\Script\Global\Events.js" />
@@ -231,11 +233,14 @@
     <Content Include="resource_newDesign\app\Script\Mixins\Common.js" />
     <Content Include="resource_newDesign\app\Script\Mixins\DB.js" />
     <Content Include="resource_newDesign\app\Script\Mixins\Workflow.js" />
+    <Content Include="resource_newDesign\app\Script\Order\Order_SKUs.js" />
+    <Content Include="resource_newDesign\app\Script\Order\Order_EditSKU.js" />
     <Content Include="resource_newDesign\app\Script\Outlets\Main.js" />
     <Content Include="resource_newDesign\app\Script\Visits\Main.js" />
     <Content Include="resource_newDesign\app\Script\Tasks\Main.js" />
     <Content Include="resource_newDesign\app\Script\Visits\Questions.js" />
     <Content Include="resource_newDesign\app\Script\Visits\SKU_Questions.js" />
+    <Content Include="resource_newDesign\app\Script\Order\Main.js" />
     <Content Include="resource_newDesign\app\Style\Default\default.css" />
     <Content Include="resource_newDesign\app\Style\Default\Main.css" />
     <Content Include="resource_newDesign\app\Style\Default\Tasks.css" />
@@ -256,6 +261,7 @@
   <ItemGroup>
     <Content Include="resource_newDesign\app\Style\Default\Visits.css" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

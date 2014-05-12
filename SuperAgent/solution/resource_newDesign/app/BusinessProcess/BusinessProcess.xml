@@ -41,24 +41,24 @@
       <bp:Action Name="ShowMap" NextStep="ShowMap"></bp:Action>
     </bp:Step>
 
-    <bp:Step Name="Visit_Tasks" Screen="Tasks.xml" Controller="Tasks\Main.js">
+    <bp:Step Name="Visit_Tasks" Screen="Visit\Tasks.xml" Controller="Tasks\Main.js">
       <bp:Action Name="Forward" NextStep="Questions"></bp:Action>
       <bp:Action Name="Skip2" NextStep="SKUs"></bp:Action>
       <bp:Action Name="Skip3" NextStep="Order"></bp:Action>
     </bp:Step>
 
-    <bp:Step Name="Questions" Screen="Visit_Questions.xml" Controller="Visits\Questions.js">
+    <bp:Step Name="Questions" Screen="Visit\Questions.xml" Controller="Visits\Questions.js">
       <bp:Action Name="Forward" NextStep="SKUs"></bp:Action>
       <bp:Action Name="Skip3" NextStep="Order"></bp:Action>
       <bp:Action Name="Edit" NextStep="EditQuestion"></bp:Action>
     </bp:Step>
 
-    <bp:Step Name="SKUs" Screen="Visit_SKUs.xml" Controller="Visits\SKU_Questions.js">
+    <bp:Step Name="SKUs" Screen="Visit\SKUs.xml" Controller="Visits\SKU_Questions.js">
       <bp:Action Name="Forward" NextStep="Order"></bp:Action>
       <bp:Action Name="Edit" NextStep="Visit_EditSKU"></bp:Action>
     </bp:Step>
 
-    <bp:Step Name="Order" Screen="Order.xml">
+    <bp:Step Name="Order" Screen="Order\Order.xml" Controller="Order\Main.js">
       <bp:Action Name="Add" NextStep="AddSKU"></bp:Action>
       <bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
       <bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
@@ -77,24 +77,24 @@
       <bp:Action Name="Forward" NextStep="Total"></bp:Action>
     </bp:Step>
 
-    <bp:Step Name="Total" Screen="Visit_Total.xml">
+    <bp:Step Name="Total" Screen="Visit\Total.xml">
       <bp:Action Name="attributesFill" NextStep="ListChoice"></bp:Action>
     </bp:Step>
 
     <bp:Step Name="ListChoice" Screen="ListChoice.xml">
     </bp:Step>
 
-    <bp:Step Name="AddSKU" Screen="Order_SKUs.xml">
+    <bp:Step Name="AddSKU" Screen="Order\Order_SKUs.xml" Controller="Order\Order_SKUs.js">
       <bp:Action Name="SetFilter" NextStep="Filters"></bp:Action>
       <bp:Action Name="SelectSKU" NextStep="EditSKU"></bp:Action>
       <bp:Action Name="Forward" NextStep="Order"></bp:Action>      
     </bp:Step>
 
-    <bp:Step Name="Filters" Screen="Filters.xml">
+    <bp:Step Name="Filters" Screen="Filters.xml" Controller="Order\Order_SKUs.js">
       <bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>
     </bp:Step>
 
-    <bp:Step Name="EditSKU" Screen="Order_EditSKU.xml">
+    <bp:Step Name="EditSKU" Screen="Order_EditSKU.xml" Controller="Order\Order_EditSKU.js">
       <bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>
     </bp:Step>
 
@@ -110,7 +110,7 @@
     <bp:Step Name="EditQuestion" Screen="ListChoice.xml">
     </bp:Step>
 
-    <bp:Step Name="Visit_EditSKU" Screen="Visit_SKU.xml" Controller="Visits\SKU_Questions.js">
+    <bp:Step Name="Visit_EditSKU" Screen="Visit\SKU.xml" Controller="Visits\SKU_Questions.js">
     </bp:Step>
 
     <bp:Step Name="ShowMap" Screen="ScheduledVisits_Map.xml">

@@ -148,3 +148,14 @@ function SaveAndBack(entity) {
     entity.GetObject().Save();
     Workflow.Back();
 }
+
+function CheckEmtySKUAndForward(outlet, visit) {
+    //var emptyQuestion = DB.Current.Document.Visit_SKUs.SelectBy("Ref", visit.Id).Where("Available==@p1 && Facing==@p1 && Stock==@p1 && Price==@p1 && MarkUp==@p1 && OutOfStock==@p1 && Snapshot==@p1", [null]).First();
+    //while (emptyQuestion != null) {
+    //    DB.Current.Document.Visit_SKUs.Delete(emptyQuestion);
+    //    emptyQuestion = DB.Current.Document.Visit_SKUs.SelectBy("Ref", visit.Id).Where("Available==@p1 && Facing==@p1 && Stock==@p1 && Price==@p1 && MarkUp==@p1 && OutOfStock==@p1 && Snapshot==@p1", [null]).First();
+    //}
+
+    var p = [outlet, visit];
+    Workflow.Forward(p);
+}

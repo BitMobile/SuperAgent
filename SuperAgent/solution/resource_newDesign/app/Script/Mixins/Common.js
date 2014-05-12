@@ -77,14 +77,32 @@ function GetControlId(count) {
 }
 
 function IsInCollection(item, collection) {
-    //Dialog.Debug(item);
-    //Dialog.Debug(collection);
     var res = false;
     for (var i in collection) {
         if (item.ToString() == i.ToString())
             res = true;
     }
     return res
+}
+
+function DeleteFromCollection(item, collection) {
+    var arr = [];
+    for (var i in collection) {
+        if (item.ToString() != collection[i].ToString())
+            arr.push(collection[i]);
+    }
+    return arr;
+}
+
+function EmptyRef(ref) {
+    return ref.EmptyRef();
+}
+
+function NotEmptyRef(ref) {
+    if (ref.EmptyRef()) 
+        return false;
+    else 
+        return true;
 }
 
 function GenerateGuid() {

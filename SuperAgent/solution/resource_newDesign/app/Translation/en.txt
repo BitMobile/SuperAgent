@@ -177,3 +177,12 @@ synchronizationData	SYNCHRONIZATION OF DATA
 synchronizationPhoto	SYNCHRONIZATION OF PHOTOS
 lastSync	Last synchronization
 synchronize	Synchronize
+vpVisits	visits
+vpPerformed	performed
+further	further
+scheduled	scheduled
+planned	planned
+vpUnplanned	unplanned
+amountOfOrdersForToday	amount of orders for today
+programmingCollectionForToday	programming collection for today
+accountsReceivables	accounts receivables

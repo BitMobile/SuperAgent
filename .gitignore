@@ -30,3 +30,4 @@ _ReSharper*/
 *.dll
 .orig
 SuperAgent/solution/resource.rar
+*.orig

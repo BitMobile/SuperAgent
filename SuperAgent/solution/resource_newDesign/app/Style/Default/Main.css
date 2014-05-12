@@ -1,10 +1,22 @@
-﻿TextView {
+﻿.menu_text {
     width: 100%;
-    height: 34.1%;
+    height: 40%;
     margin-left: 4%;
     vertical-align: central;
     color: #ffffff;
-    font: 100% arial;
+    font: 90% arial;
+}
+
+vl {
+    selected-color: #f00;
+}
+
+hl {
+    selected-color: #f00;
+}
+
+dl {
+    selected-color: #f00;
 }
 
 dl {
@@ -81,17 +93,15 @@ svl vl {
 
             .menu dl hl TextView {
                 width: 60%;
-                height: 35%;
+                height: 40%;
                 margin-left: 4%;
                 vertical-align: central;
                 color: #ffffff;
-                font: 100% arial;
+                font: 90% arial;
             }
 
-.grid {
-    height: 50%;
-    width: 71%;
-    background-color: #ffffff;
+.short_line {
+    margin-left: 12%;
 }
 
 .description {
@@ -167,55 +177,175 @@ svl vl {
     background-image: url(interesno.png);
 }
 
-.top_navigator TextView {
+
+.grid {
+    height: 45%;
     width: auto;
-    height: auto;
-    text-align: left;
-    margin-left: 2%;
-    color: #000000;
-    font: 42% arial;
+    background-color: #f8f8f8;
 }
+
+    .grid img {
+        dock-align: right;
+    }
+
+    .grid vl main_row {
+        font: 95% Arial-BoldMT;
+        color: #43acfd;
+        white-space: nowrap;
+    }
+
+    .grid vl description_row {
+        height: 23%;
+        font: 80% arial;
+        color: #000;
+        margin-top: 10%;
+        margin-bottom: 0%;
+    }
 
 .blue {
     width: 100%;
     height: 100%;
-    background-color: #7fc8fd;
+    padding-top: 2%;
+    background-image: url(summary.png);
 }
 
     .blue dl {
-        height: 32.5sp;
+        height: 35%;
         width: 96%;
-        margin-top: 3.7%;
+        margin-top: 2%;
         margin-left: 2%;
         background-color: #f8f8f8;
+        border-style: solid;
         border-width: 1px;
         border-color: #3384b8;
-        border-radius: 7px;
+        border-radius: 10px;
     }
 
-.summ {
-    width: 26.6%;
-    height: 100%;
+        .blue dl left {
+            width: 60%;
+            height: 100%;
+            margin-left: 2%;
+            dock-align: left;
+        }
+
+        .blue dl right {
+            width: 36%;
+            height: 100%;
+            margin-right: 2%;
+            dock-align: right;
+        }
+
+            .blue dl right grid vl description_row {
+                margin-top: 0%;
+            }
+
+        .blue dl grid {
+            margin-left: 11%;
+            margin-top: 2%;
+            margin-right: 2%;
+            margin-bottom: 2%;
+        }
+
+        .blue dl line {
+            margin-left: 11%;
+            margin-right: 2%;
+        }
+
+.short_panel {
+    height: 17%;
 }
 
-    .summ TextView {
-        height: 37%;
-        width: 100%;
-        text-align: center;
-        font: 70% arial;
-        color: #43acfd;
+    .short_panel grid {
+        height: 92%;
+        margin-top: 4%;
+        margin-bottom: 4%;
     }
 
+.right line {
+    margin-top: 5%;
+}
+
 .descr {
-    height: 9%;
+    text-align: left;
+    font: 80% arial;
+}
+
+.caption_big {
+    margin-top: 5%;
     width: 100%;
-    text-align: center;
-    font: 100% arial;
-    color: #43acfd;
+    height: 30%;
+}
+
+    .caption_big TextView {
+        height: 100%;
+        width: 18%;
+        margin-left: 2%;
+        text-align: center;
+        font: 95% Arial-BoldMT;
+        color: #43acfd;
+        dock-align: left;
+    }
+
+    .caption_big descr {
+        height: 35%;
+        width: 80%;
+        margin-top: 15%;
+        margin-bottom: -15%;
+        text-align: left;
+        font: 80% arial;
+        dock-align: top;
+    }
+
+.simple {
+    width: 80%;
+    height: 70%;
+    margin-left: 22%;
+}
+
+    .simple TextView {
+        height: 15%;
+        width: 100%;
+    }
+
+    .simple hl {
+        height: 15%;
+        width: 100%;
+    }
+
+        .simple hl TextView {
+            width: 100%;
+            height: 100%;
+            font: 80% Arial-BoldMT;
+            color: #000;
+        }
+
+        .simple hl descr {
+            width: 22%;
+            font: 80% Arial;
+        }
+
+        .simple hl mark {
+            width: 10%;
+            margin-left: 0%;
+            margin-right: 3%;
+            text-align: center;
+            color: #d12d2d;
+            background-color: #fab9b9;
+            border-style: solid;
+            border-width: 0px;
+            border-radius: 5px;
+        }
+
+.docs {
+    dock-align: right;
 }
 
 .navy {
     width: 100%;
     height: 1px;
     background-color: #3384b8;
+}
+
+.btn_forward {
+    margin-left: 0%;
 }

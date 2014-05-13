@@ -68,11 +68,6 @@ function ChangeListAndRefresh(control) {
     Workflow.Refresh([]);
 }
 
-function AddGlobalAndAction(name, value, actionName) {
-    $.AddGlobal(name, value);
-    Workflow.Action(actionName, []);
-}
-
 function GetOutlets() {
     //return DB.Current.Catalog.Territory_Outlets.Select().Top(500).OrderBy("OutletAsObject.Description").Distinct("OutletAsObject");
     var q = new Query("SELECT T.Outlet, O.Description, O.Address FROM Catalog_Territory_Outlets T JOIN Catalog_Outlet O ON O.Id=T.Outlet ORDER BY O.Description LIMIT 500");

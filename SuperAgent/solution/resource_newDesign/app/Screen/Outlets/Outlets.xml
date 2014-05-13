@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Outlets.css">
+
+  <s:Push Id="search" Value="$param1"/>
+  <s:Push Id="outlets" Value="$GetOutlets($search)"></s:Push>
+
+  <c:DockLayout>
+
+    <c:DockLayout CssClass="top_navigator">
+      <c:HorizontalLayout CssClass="btn_menu" OnEvent="Back" OnClickAction="$DoRollback()">
+        <c:Image CssClass="menuIcon"/>
+      </c:HorizontalLayout>
+      <c:HorizontalLayout CssClass="btn_forward"/>
+      <c:HorizontalLayout>
+        <c:TextView Text="#clients#" />
+      </c:HorizontalLayout>
+    </c:DockLayout>
+    <c:HorizontalLine/>
+
+    <c:HorizontalLayout CssClass="search">
+      <c:DockLayout >
+        <c:Image />
+        <c:EditText Id="edtSearch" Text="$search"></c:EditText>
+      </c:DockLayout>
+      <c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoRefresh($edtSearch.Text)"></c:Button>
+    </c:HorizontalLayout>
+
+    <c:HorizontalLine/>
+
+    <c:ScrollView Id="grScrollView">
+
+      <c:HorizontalLayout CssClass="empty_caption_grid"/>
+      <c:HorizontalLine/>
+
+      <s:Iterator Id="outlet" Value="$outlets">
+ 
+        <c:HorizontalLayout CssClass="grid" OnClickAction="$AddGlobalAndAction(outlet, $outlet.Id, Select)">
+          <c:VerticalLayout CssClass="no_mark"/>
+          <c:VerticalLayout>
+            <c:TextView Text="$outlet.Description" CssClass="main_row"></c:TextView>
+            <c:TextView Text="$outlet.Address" CssClass="description_row"></c:TextView>
+          </c:VerticalLayout>
+          <c:Image/>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+
+      </s:Iterator>
+
+      <c:HorizontalLayout CssClass="end_of_block"/>
+
+    </c:ScrollView>
+
+    <c:HorizontalLine CssClass="double_line"/>
+    <c:Button CssClass="bottom_btn" Text="#add#" OnClickAction="$DoAction(Create)"/>
+
+  </c:DockLayout>
+
+
+</c:Screen>

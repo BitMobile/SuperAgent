@@ -1,5 +1,15 @@
 function GetOutlets(searchText) {
-    return Facade.GetOutlets(searchText);
+    if (String.IsNullOrEmpty(searchText)) {
+        var query = new Query();
+        query.Text = "SELECT Id, Address, Description, ConfirmationStatus FROM Catalog_Outlet ORDER BY Description LIMIT 100";
+        return query.Execute();
+    }
+    else {
+        var query = new Query();
+        searchText = "'%" + searchText + "%'";
+        query.Text = "SELECT Id, Address, Description, ConfirmationStatus FROM Catalog_Outlet WHERE Description LIKE " + searchText + " ORDER BY Description LIMIT 100";
+        return query.Execute();
+    }
 }
 
 function CreateOutletAndForward() {
@@ -95,20 +105,10 @@ function UpdateEntity(entity) {
     return entity;
 }
 
-function CheckNotNullAndCommit(outlet, workflowName) {
-    if (workflowName == "Outlets") {
-        var attributes = ["outletDescr", "outletAddress", "outletClass", "outletType", "outletDistr"];//"Description", "Address", "Type", "Class", "Distributor"];
-        var areNulls = false;
-        for (var i in attributes) {
-            var attribute = attributes[i];
-            if (Variables[attribute].Text == null || (Variables[attribute].Text).Trim() == "" || Variables[attribute].Text == "\n\n\n\n\n\n\n") {//Variables[attribute].Text == "" || Variables[attribute].Text == null) {
-                areNulls = true;
-            }
-        }
-        Dialog.Question("#saveChanges#", ChangeHandler);
-    }
-    else {
-        CheckEmptyOutletFields(outlet);
+function CheckNotNullAndCommit(outlet) {
+    if (CheckEmptyOutletFields(outlet)) {
+        outlet.GetObject().Save();
+        Workflow.Forward([]);
     }
 }
 
@@ -116,10 +116,11 @@ function CheckEmptyOutletFields(outlet) {
     var correctDescr = CheckIfEmpty(outlet, "Description", "", "", false);
     var correctAddr = CheckIfEmpty(outlet, "Address", "", "", false);
     if (correctDescr && correctAddr) {
-        Workflow.Forward([]);
+        return true;
     }
-    else
-        Dialog.Message("#couldnt_be_cleaned#");
+
+    Dialog.Message("#couldnt_be_cleaned#");
+    return false;
 }
 
 function CheckIfEmpty(entity, attribute, objectType, objectName, deleteIfEmpty) {
@@ -136,40 +137,14 @@ function CheckIfEmpty(entity, attribute, objectType, objectName, deleteIfEmpty) 
         return true;
 }
 
-function ChangeHandler(answ) {
-    if (answ == DialogResult.Yes) {
-        var outlet = Variables["outlet"];
-        UpdateOtletStatus();
-
-        var territory = null;
-        var rs = new Query("SELECT Id FROM Catalog_Territory LIMIT 1").Execute();
-        if (rs.Next())
-            territory = rs["Id"];
-
-        var to = DB.Create("Catalog.Territory_Outlets");
-        to.Ref = territory.Id;
-        to.Outlet = outlet.Id;
-        Workflow.Commit();
-    }
-    else
-        Workflow.Rollback();
-
-}
-
 function UpdateOtletStatus() {
     Variables["outlet"].ConfirmationStatus = DB.Current.Constant.OutletConfirmationStatus.New;
 }
 
-
-
-
-
-
-function Sync() {
-    DB.Sync();
-    //FileSystem.UploadPrivate();
-    //FileSystem.SyncShared();
-
+function CreateOutlet() {
+    var outlet = DB.Create("Catalog.Outlet");
+    outlet.Save();
+    return outlet.Id;
 }
 
 
@@ -229,6 +204,10 @@ function CreateVisitIfNotExists(outlet, userRef, visit, planVisit) {
 
 function SetLocation(outlet) {
     Dialog.Question("#setCoordinates#", LocationDialogHandler, outlet);
+    function DiscardOutlet(outlet) {
+        DB.Delete(outlet);
+        DoBack();
+    }
 }
 
 function LocationDialogHandler(answ, outlet) {
@@ -253,7 +232,46 @@ function NoLocationHandler(descriptor) {
     Dialog.Question("#locationSetFailed#", descriptor);
 }
 
-function ShowDialog(v1) {
-    //var v = String((v1));
-    Dialog.Debug(v1);
+
+//--------------------------- Outlets ---------------------------
+
+function DiscardNewOutlet(outlet) {
+    DB.Delete(outlet);
+    DoBack();
+}
+
+function SaveNewOutlet(outlet) {
+
+    if ($.outletName.Text.Trim() != ""
+        && $.outletAddress.Text.Trim() != ""
+        && $.outletClass.Text.Trim() != ""
+        && $.outletType.Text.Trim() != ""
+        && $.outletDistr.Text.Trim() != "") {
+        var q = new Query("SELECT Id FROM Catalog_Territory WHERE SR = @userRef LIMIT 1");
+        q.AddParameter("userRef", $.common.UserRef);
+        var territory = q.ExecuteScalar();
+
+        var to = DB.Create("Catalog.Territory_Outlets");
+        to.Ref = territory;
+        to.Outlet = outlet;
+        to.Save();
+
+        outlet.GetObject().Save();
+        Variables.AddGlobal("outlet", outlet);
+
+        DoAction("Open");
+    }
+    else {
+        Dialog.Message("#messageNulls#");
+    }
+}
+
+
+function Back(outlet) {
+    if (CheckEmptyOutletFields(outlet)) {
+        outlet.GetObject().Save();
+
+        Variables.Remove("outlet");
+        DoAction("List");
+    }
 }

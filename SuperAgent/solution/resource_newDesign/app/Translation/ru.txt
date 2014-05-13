@@ -185,3 +185,5 @@ vpUnplanned	внеплановых
 amountOfOrdersForToday	сумма заказов на сегодня
 programmingCollectionForToday	сумма инкассации за сегодня
 accountsReceivables	дебиторская задолженность
+unknown	Нет данных
+list	Список

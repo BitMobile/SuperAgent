@@ -25,7 +25,7 @@
       </c:DockLayout>
       <c:HorizontalLine/>
 
-      <c:DockLayout>
+      <c:DockLayout OnClickAction="$DoAction(Outlets)">
         <c:HorizontalLayout>
           <c:Image CssClass="btn_clients"/>
           <c:TextView CssClass="menu_text" Text="#clients#"></c:TextView>
@@ -33,7 +33,7 @@
       </c:DockLayout>
       <c:HorizontalLine/>
 
-      <c:DockLayout  OnClickAction="$DoAction(Sync)">
+      <c:DockLayout OnClickAction="$DoAction(Sync)">
         <c:HorizontalLayout>
           <c:Image CssClass="btn_sync"/>
           <c:TextView CssClass="menu_text" Text="#sync#"></c:TextView>

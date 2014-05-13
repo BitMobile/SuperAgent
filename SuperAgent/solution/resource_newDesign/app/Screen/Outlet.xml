@@ -15,19 +15,33 @@
 
   <c:VerticalLayout Id="vOutlet">
 
-    <c:DockLayout CssClass="top_navigator">
-      <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()">
-        <c:Image/>
-        <c:TextView Text="#visits#"/>
-      </c:HorizontalLayout>
-      <c:Button Id="btnForward" Text="#forward#" OnEvent="Forward" CssClass="btn_forward" OnClickAction="$CheckNotNullAndCommit($outlet, $workflow.name)"/>
-      <c:HorizontalLayout>
-        <c:TextView Text="#client#" />
-      </c:HorizontalLayout>
-    </c:DockLayout>
+    <s:If Test="$workflow.name=='Outlets'">
+      <c:DockLayout CssClass="top_navigator">
+        <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$Back($outlet)">
+          <c:Image/>
+          <c:TextView Text="#list#"/>
+        </c:HorizontalLayout>
+        <c:HorizontalLayout  CssClass="btn_forward"/>
+        <c:HorizontalLayout>
+          <c:TextView Text="#client#" />
+        </c:HorizontalLayout>
+      </c:DockLayout>
+    </s:If>
+    <s:Else>
+      <c:DockLayout CssClass="top_navigator">
+        <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()">
+          <c:Image/>
+          <c:TextView Text="#visits#"/>
+        </c:HorizontalLayout>
+        <c:Button Id="btnForward" Text="#forward#" OnEvent="Forward" CssClass="btn_forward" OnClickAction="$CheckNotNullAndCommit($outlet)"/>
+        <c:HorizontalLayout>
+          <c:TextView Text="#client#" />
+        </c:HorizontalLayout>
+      </c:DockLayout>
 
-    <c:Image CssClass="1_scroll"></c:Image>
-    <c:HorizontalLine/>
+      <c:Image CssClass="1_scroll"></c:Image>
+      <c:HorizontalLine/>
+    </s:Else>
 
     <c:ScrollView Id="grScrollView">
 
@@ -36,51 +50,13 @@
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
-      <s:If Test="$workflow.name=='Outlets'">
-        <s:If Test="$outlet.IsNew">
-          <c:VerticalLayout Id="headerDescr" CssClass="memo_header">
-            <c:VerticalLayout  CssClass ="grid">
-
-              <c:HorizontalLayout CssClass ="two_row_memo">
-                <c:VerticalLayout>
-                  <c:MemoEdit Id="outletDescr" Value="$outlet.Description" CssClass="main_row"></c:MemoEdit>
-                  <c:TextView Text="#outlet_description#" CssClass="description_row"></c:TextView>
-                </c:VerticalLayout>
-              </c:HorizontalLayout>
-
-              <c:HorizontalLine/>
-            </c:VerticalLayout>
-          </c:VerticalLayout>
-          <c:HorizontalLine/>
-        </s:If>
-        <s:Else>
-          <c:VerticalLayout Id="headerDescr" CssClass="header">
-            <c:VerticalLayout  CssClass ="grid">
-
-              <c:HorizontalLayout>
-                <c:VerticalLayout>
-                  <c:TextView Id="outletDescr" Text="$outlet.Description" CssClass="main_row"></c:TextView>
-                  <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
-                </c:VerticalLayout>
-              </c:HorizontalLayout>
-
-              <c:HorizontalLine/>
-            </c:VerticalLayout>
-          </c:VerticalLayout>
-          <c:HorizontalLine/>
-        </s:Else>
-      </s:If>
-      <s:Else>
-
-        <c:HorizontalLayout CssClass="grid">
-          <c:VerticalLayout>
-            <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
-            <c:TextView Id="outletDescr" Text="$outlet.Description" CssClass="main_row"></c:TextView>
-          </c:VerticalLayout>
-        </c:HorizontalLayout>
-        <c:HorizontalLine/>
-
-      </s:Else>
+      <c:HorizontalLayout CssClass="grid">
+        <c:VerticalLayout>
+          <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
+          <c:TextView Id="outletDescr" Text="$outlet.Description" CssClass="main_row"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
 
       <c:HorizontalLayout CssClass="grid">
         <c:VerticalLayout>
@@ -90,13 +66,19 @@
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
+
       <c:HorizontalLayout CssClass="grid">
         <c:VerticalLayout>
           <c:DockLayout>
             <c:TextView Text="#coordinates#"></c:TextView>
             <c:Button Text="#set#" OnClickAction="$SetLocation($outlet)"></c:Button>
           </c:DockLayout>
-          <c:TextView Id="outletCoord" Text="{$outlet.Lattitude}; {$outlet.Longitude}" CssClass="main_row"></c:TextView>
+          <s:If Test="$outlet.Lattitude != null || $outlet.Longitude != null">
+            <c:TextView Id="outletCoord" Text="{$outlet.Lattitude}; {$outlet.Longitude}" CssClass="main_row"></c:TextView>
+          </s:If>
+          <s:Else>
+            <c:TextView Id="outletCoord" Text="#unknown#" CssClass="main_row"></c:TextView>
+          </s:Else>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>

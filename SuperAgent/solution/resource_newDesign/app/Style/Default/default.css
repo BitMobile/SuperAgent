@@ -59,7 +59,7 @@ MemoEdit {
 }
 
 .top_navigator {
-    height: 8sp;
+    height: 7.6sp;
     dock-align: top;
 }
 
@@ -279,6 +279,13 @@ MemoEdit {
         color: #4d4d4d;
     }
 
+.empty_caption_grid {
+    height: 3.8sp;
+    selected-color: #bacdce;
+    background-color: #efeff4;
+    dock-align: top;
+}
+
 .margin_top {
     height: 5sp;
     selected-color: #bacdce;
@@ -381,9 +388,10 @@ MemoEdit {
 
 .yellow_mark {
     background-image: url(yellow_mark.png);
-    height: 14%;
-    margin-top: 17.1%;
-    margin-left: 2.7%;
+    height: 0%;
+    width: 4.1%;
+    margin-left: 2%;
+    margin-right: 0%;    
 }
 
 .no_mark {

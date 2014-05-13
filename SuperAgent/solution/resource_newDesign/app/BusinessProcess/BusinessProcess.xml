@@ -88,7 +88,7 @@
     <bp:Step Name="AddSKU" Screen="Order\Order_SKUs.xml" Controller="Order\Order_SKUs.js">
       <bp:Action Name="SetFilter" NextStep="Filters"></bp:Action>
       <bp:Action Name="SelectSKU" NextStep="EditSKU"></bp:Action>
-      <bp:Action Name="Forward" NextStep="Order"></bp:Action>      
+      <bp:Action Name="Forward" NextStep="Order"></bp:Action>
     </bp:Step>
 
     <bp:Step Name="Filters" Screen="Filters.xml" Controller="Order\Order_SKUs.js">
@@ -119,13 +119,11 @@
 
   </bp:Workflow>
 
-
   <bp:Workflow Name="ToDo">
     <bp:Step Name="ToDo" Screen="Tasks.xml">
       <bp:Action Name="Forward" NextStep=""></bp:Action>
     </bp:Step>
   </bp:Workflow>
-
 
   <bp:Workflow Name="Stocks">
     <bp:Step Name="Stocks" Screen="Stock_SKUs.xml">
@@ -141,7 +139,6 @@
     </bp:Step>
 
   </bp:Workflow>
-
 
   <bp:Workflow Name="UnscheduledVisit">
 
@@ -229,37 +226,6 @@
 
   </bp:Workflow>
 
-
-  <bp:Workflow Name="Outlets">
-
-    <bp:Step Name="Outlets" Screen="Outlets.xml">
-      <bp:Action Name="Select" NextStep="Outlet"></bp:Action>
-      <bp:Action Name="Create" NextStep="CreateOutlet"></bp:Action>
-    </bp:Step>
-
-    <bp:Step Name="Outlet" Screen="Outlet.xml">
-      <bp:Action Name="EditParameter" NextStep="EditOutletParameter"></bp:Action>
-      <bp:Action Name="EditAddParameter" NextStep="EditOutletAddParameter"></bp:Action>
-      <bp:Action Name="ShowMap" NextStep="ShowMap"></bp:Action>
-    </bp:Step>
-
-    <bp:Step Name="CreateOutlet" Screen="Outlet.xml">
-      <bp:Action Name="EditParameter" NextStep="EditOutletParameter"></bp:Action>
-      <bp:Action Name="EditAddParameter" NextStep="EditOutletAddParameter"></bp:Action>
-    </bp:Step>
-
-    <bp:Step Name="EditOutletParameter" Screen="ListChoice.xml">
-    </bp:Step>
-
-    <bp:Step Name="EditOutletAddParameter" Screen="OutletParameter.xml">
-    </bp:Step>
-
-    <bp:Step Name="ShowMap" Screen="Outlet_Map.xml">
-    </bp:Step>
-
-  </bp:Workflow>
-
-
   <bp:Workflow Name="Order">
 
     <bp:Step Name="OrderList" Screen="OrderList.xml">
@@ -309,7 +275,6 @@
     </bp:Step>
   </bp:Workflow>
 
-
   <bp:Workflow Name="Settings">
 
     <bp:Step Name="Settings" Screen="Settings.xml">
@@ -317,8 +282,26 @@
 
   </bp:Workflow>
 
+
+  <bp:Workflow Name="Outlets"  Controller="Outlets\Main.js">
+
+    <bp:Step Name="Outlets" Screen="Outlets\Outlets.xml">
+      <bp:Action Name="Select" NextStep="OpenOutlet"/>
+      <bp:Action Name="Create" NextStep="CreateOutlet"/>
+    </bp:Step>
+
+    <bp:Step Name="OpenOutlet" Screen="Outlet.xml">
+      <bp:Action Name="List" NextStep="Outlets"/>
+    </bp:Step>
+
+    <bp:Step Name="CreateOutlet" Screen="Outlets\CreateOutlet.xml">
+      <bp:Action Name="Open" NextStep="OpenOutlet"/>
+    </bp:Step>
+
+  </bp:Workflow>
+
   <bp:Workflow Name="Sync">
     <bp:Step Name="Sync" Screen="Sync\Sync.xml" Controller="Sync\Main.js"/>
   </bp:Workflow>
-  
+
 </bp:BusinessProcess>

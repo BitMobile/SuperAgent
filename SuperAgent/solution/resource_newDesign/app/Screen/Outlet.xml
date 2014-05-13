@@ -36,51 +36,14 @@
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
-      <s:If Test="$workflow.name=='Outlets'">
-        <s:If Test="$outlet.IsNew">
-          <c:VerticalLayout Id="headerDescr" CssClass="memo_header">
-            <c:VerticalLayout  CssClass ="grid">
+      <c:HorizontalLayout CssClass="grid">
+        <c:VerticalLayout>
+          <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
+          <c:TextView Id="outletDescr" Text="$outlet.Description" CssClass="main_row"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
 
-              <c:HorizontalLayout CssClass ="two_row_memo">
-                <c:VerticalLayout>
-                  <c:MemoEdit Id="outletDescr" Value="$outlet.Description" CssClass="main_row"></c:MemoEdit>
-                  <c:TextView Text="#outlet_description#" CssClass="description_row"></c:TextView>
-                </c:VerticalLayout>
-              </c:HorizontalLayout>
-
-              <c:HorizontalLine/>
-            </c:VerticalLayout>
-          </c:VerticalLayout>
-          <c:HorizontalLine/>
-        </s:If>
-        <s:Else>
-          <c:VerticalLayout Id="headerDescr" CssClass="header">
-            <c:VerticalLayout  CssClass ="grid">
-
-              <c:HorizontalLayout>
-                <c:VerticalLayout>
-                  <c:TextView Id="outletDescr" Text="$outlet.Description" CssClass="main_row"></c:TextView>
-                  <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
-                </c:VerticalLayout>
-              </c:HorizontalLayout>
-
-              <c:HorizontalLine/>
-            </c:VerticalLayout>
-          </c:VerticalLayout>
-          <c:HorizontalLine/>
-        </s:Else>
-      </s:If>
-      <s:Else>
-
-        <c:HorizontalLayout CssClass="grid">
-          <c:VerticalLayout>
-            <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
-            <c:TextView Id="outletDescr" Text="$outlet.Description" CssClass="main_row"></c:TextView>
-          </c:VerticalLayout>
-        </c:HorizontalLayout>
-        <c:HorizontalLine/>
-
-      </s:Else>
 
       <c:HorizontalLayout CssClass="grid">
         <c:VerticalLayout>

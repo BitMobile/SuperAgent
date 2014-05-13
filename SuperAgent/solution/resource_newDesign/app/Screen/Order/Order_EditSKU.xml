@@ -21,7 +21,7 @@
     <c:HorizontalLayout CssClass="end_of_block"></c:HorizontalLayout>
 
     <c:HorizontalLayout CssClass="bottom_btn">
-      <c:VerticalLayout OnEvent="Back" OnClickAction="$DoBack()">
+      <c:VerticalLayout OnEvent="Back" OnClickAction="$DeleteAndBack($orderitem)">
         <c:TextView Text="#cancel#" CssClass="left_tv"></c:TextView>
       </c:VerticalLayout>
       <c:VerticalLayout OnEvent="Forward" OnClickAction="$CalculateSKUAndForward($order.Outlet, $orderitem)">
@@ -32,7 +32,7 @@
     <c:HorizontalLine CssClass="b_line"/>
 
     <c:HorizontalLayout CssClass="caption_grid">
-      <c:TextView Text="{$sku.Description}{$featureDescr}"></c:TextView>
+      <c:TextView Id="itemDescription" Text="{$sku.Description}{$featureDescr}"></c:TextView>
     </c:HorizontalLayout>
 
     <s:If Test="$sku.DefaultPicture != null">
@@ -119,8 +119,8 @@
       <c:HorizontalLine/>
 
       <s:Iterator Id="feature" Value="$features">
-        <c:DockLayout CssClass="parameter_grid" OnClickAction="$ChangeFeatureAndRefresh($orderitem, $feature, $sku, $price, $discountEdit.Text, $showimage)">
-          <s:If Test="$orderitem.Feature==$feature.Feature">
+        <c:DockLayout CssClass="parameter_grid" OnClickAction="$ChangeFeatureAndRefresh($orderitem, $feature.Feature, $sku, $price, $discountEdit.Text, $showimage)">
+          <s:If Test="$AreEqual($orderitem.Feature, $feature.Feature);">
             <c:Image CssClass="tick"/>
           </s:If>
           <s:Else>

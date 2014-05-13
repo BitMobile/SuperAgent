@@ -25,7 +25,11 @@ function OnWorkflowStart(name) {
     Variables["workflow"].Add("name", name);
 }
 
-//function OnWorkflowForward(name, lastStep, nextStep, parameters) {}
+function OnWorkflowForward(name, lastStep, nextStep, parameters) {
+    if (lastStep == "Order" && nextStep == "EditSKU" && Variables.Exists("AlreadyAdded") == false) {
+        Variables.AddGlobal("AlreadyAdded", true);
+    }
+}
 
 function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
     if (nextStep == "Visit_Tasks") {

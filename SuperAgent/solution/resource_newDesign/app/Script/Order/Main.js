@@ -62,28 +62,6 @@ function GetPriceListRef(outlet) {
 
 function GetOrderedSKUs(order) {
 
-    //var forExecution = [];
-    //var items = DB.Current.Document.Order_SKUs.Select().Where("Ref==@p1", [orderId]);
-    //for (var i in items) {
-    //    if (forExecution.Contains(i) == false) {
-    //        var copy = DB.Current.Document.Order_SKUs.SelectBy("Ref", orderId)
-    //                    .Union(DB.Current.Document.Order_SKUs.SelectBy("SKU", i.SKU))
-    //                    .Where("Feature==@p1 && Units==@p2 && Discount==@p3", [i.Feature, i.Units, i.Discount]).First();
-    //        if (parseInt(copy.Count()) != parseInt(1)) {
-    //            i.Qty = copy.Qty;
-    //            i.Amount = i.Total * i.Qty;
-
-    //            forExecution.push(copy);
-    //        }
-    //    }
-    //}
-
-    //for (var item in forExecution) {
-    //    DB.Current.Document.Order_SKUs.Delete(item);
-    //}
-
-    //return DB.Current.Document.Order_SKUs.Select().Where("Ref==@p1", [orderId]).Top(100);
-
     var query = new Query();
     query.Text = "SELECT Id, SKU, Feature, Qty, Discount, Total, Units, Qty*Total AS Amount FROM Document_Order_SKUs WHERE Ref = @Ref";
     query.AddParameter("Ref", order);
@@ -111,15 +89,6 @@ function CreateOrderStatusVariables() {
     Variables.Add("workflow.cls", cls);
 }
 
-function DeleteZeroItem(orderitem) {
-    //    if (orderitem.Qty == 0) {
-    //        DB.Current.Document.Order_SKUs.Delete(orderitem);
-    //        return null;
-    //    }
-    //    else
-    return orderitem;
-}
-
 function GetDescription(priceList) {
     //Dialog.Debug(priceList.EmptyRef());
     if (priceList.EmptyRef())
@@ -138,4 +107,19 @@ function GetFeatureDescr(feature) {
         return "";
     else
         return (", " + feature.Description);
+}
+
+function SelectPriceList(order, priceLists) {
+    if (parseInt(priceLists) != parseInt(1) && order.Status.Description == "New" && parseInt(priceLists) != parseInt(0)) {
+        var query = new Query("SELECT DISTINCT D.Id, D.Description FROM Catalog_Outlet_Prices O JOIN Document_PriceList D WHERE O.Ref = @Ref ORDER BY O.LineNumber");
+        query.AddParameter("Ref", order.Outlet);        
+        var pl = query.ExecuteCount();
+        if (parseInt(pl) == parseInt(0)) {
+            var query = new Query("SELECT Id FROM Document_PriceList WHERE DefaultPriceList = @true");
+            query.AddParameter("true", true);
+        }
+        var table = query.Execute();
+        Global.ValueListSelect2(order, "PriceList", table, Variables["priceListTextView"]);
+    }
+
 }

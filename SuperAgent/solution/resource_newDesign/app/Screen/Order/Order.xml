@@ -60,7 +60,6 @@
         <c:HorizontalLine/>
 
         <s:Iterator Id="orderitem" Value="$items">
-          <s:Push Id="orderitem" Value="$DeleteZeroItem($orderitem)"></s:Push>
 
           <s:If Test="$orderitem != null">
             <c:HorizontalLayout CssClass ="grid" OnClickAction="$Workflow.DoAction(Edit,$orderitem.SKU,null,$orderitem.Id)">

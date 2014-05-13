@@ -1,13 +1,12 @@
-function DoSelect(entity, attribute, control)
-{
+function DoSelect(entity, attribute, control) {
     var tableName = entity[attribute].Metadata().TableName;
     var query = new Query();
     query.Text = "SELECT Id, Description FROM " + tableName;
-    Dialog.Select("Test", query.Execute(), DoSelectCallback1, [entity,attribute,control]);
+    Dialog.Select("Test", query.Execute(), DoSelectCallback1, [entity, attribute, control]);
     return;
 }
 
-function DateTimeDialog(entity, attribute, date, control) {    
+function DateTimeDialog(entity, attribute, date, control) {
     var header = Translate["#enterDateTime#"];
     Dialog.ShowDateTime(header, date, DoSelectCallback2, [entity, attribute, control]);
 }
@@ -22,6 +21,11 @@ function BooleanDialogSelect(entity, attribute, control) {
 
 function ValueListSelect(entity, attribute, table, control) {
     Dialog.Select("Parameters", table, DoSelectCallback2, [entity, attribute, control]);
+    return;
+}
+
+function ValueListSelect2(entity, attribute, table, control) {
+    Dialog.Select("Parameters", table, DoSelectCallback1, [entity, attribute, control]);
     return;
 }
 

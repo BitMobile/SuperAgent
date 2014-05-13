@@ -26,21 +26,6 @@
 
     <c:HorizontalLine/>
 
-    <s:If Test="$workflow.name=='Outlets'">
-      <c:VerticalLayout Id="NewOutlet" CssClass="header">
-        <c:VerticalLayout  CssClass ="grid">
-          <c:HorizontalLayout OnEvent="Forward" OnClickAction="$Facade.CreateAndForward()">
-            <c:VerticalLayout>
-              <c:TextView Text="#newOutlet#" CssClass="caption_row"></c:TextView>
-            </c:VerticalLayout>
-            <c:Image CssClass="add_img"/>
-          </c:HorizontalLayout>
-        </c:VerticalLayout>
-      </c:VerticalLayout>
-
-      <c:HorizontalLine/>
-    </s:If>
-
     <c:ScrollView Id="grScrollView" CssClass="grid">
 
       <s:Iterator Id="outlet" Value="$outlets">

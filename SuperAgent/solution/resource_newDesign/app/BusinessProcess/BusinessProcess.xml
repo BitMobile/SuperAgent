@@ -70,8 +70,7 @@
       <bp:Action Name="Forward" NextStep="Receivables"></bp:Action>
     </bp:Step>
 
-    <bp:Step Name="OrderInfo" Screen="Order_Info.xml">
-      <bp:Action Name="EditPriceList" NextStep="PriceLists"></bp:Action>
+    <bp:Step Name="OrderInfo" Screen="Order_Info.xml" Controller="Order\Main.js">
     </bp:Step>
 
     <bp:Step Name="Receivables" Screen="Receivables.xml">
@@ -183,7 +182,7 @@
       <bp:Action Name="Forward" NextStep="Receivables"></bp:Action>
     </bp:Step>
 
-    <bp:Step Name="OrderInfo" Screen="Order_Info.xml">
+    <bp:Step Name="OrderInfo" Screen="Order_Info.xml" Controller="Order\Main.js">
       <bp:Action Name="EditPriceList" NextStep="PriceLists"></bp:Action>
     </bp:Step>
 

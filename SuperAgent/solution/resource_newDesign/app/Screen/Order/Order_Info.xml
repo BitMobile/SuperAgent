@@ -2,8 +2,8 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
 
   <s:Push Id="order" Value="$workflow.order"></s:Push>
-  <s:Push Id="sum" Value="$Facade.GetOrderSUM($workflow.order.Id)"></s:Push>
-  <s:Push Id="priceLists" Value="$Facade.GetPriceListQty($order.Outlet)"></s:Push>
+  <s:Push Id="sum" Value="$GetOrderSUM($workflow.order.Id)"></s:Push>
+  <s:Push Id="priceLists" Value="$GetPriceListQty($order.Outlet)"></s:Push>
 
   <c:DockLayout>
 
@@ -23,10 +23,10 @@
       </c:DockLayout>
       <c:HorizontalLine/>
 
-      <c:DockLayout CssClass="parameter_grid" OnClickAction="$Facade.PriceListAction($workflow.order, $priceLists)">
+      <c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectPriceList($workflow.order, $priceLists)">
         <c:TextView Text="#priceList#"></c:TextView>
-        <s:If Test="$workflow.order.PriceListAsRef != null">
-          <c:TextView Text="$workflow.order.PriceListAsObject.Description" CssClass="value"></c:TextView>
+        <s:If Test="$NotEmptyRef($workflow.order.PriceList)">
+          <c:TextView Id="priceListTextView" Text="$workflow.order.PriceList.Description" CssClass="value"></c:TextView>
         </s:If>
         <s:Else>
           <s:If Test="$priceLists == 0">

@@ -20,7 +20,7 @@
     <c:HorizontalLayout CssClass="search">
       <c:DockLayout >
         <c:Image />
-        <c:EditText Id="edtSearch" Text="$search"></c:EditText>
+        <c:EditText Id="edtSearch" Text="$search" Placeholder="#search#"></c:EditText>
       </c:DockLayout>
       <c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoRefresh($edtSearch.Text)"></c:Button>
     </c:HorizontalLayout>

@@ -176,3 +176,14 @@ synchronizationData	СИНХРОНИЗАЦИЯ ДАННЫХ
 synchronizationPhoto	СИНХРОНИЗАЦИЯ ФОТОГРАФИЙ
 lastSync	Последняя синхронизация
 synchronize	Синхронизировать
+vpVisits	визитов
+vpPerformed	выполнено
+further	еще
+scheduled	запланировано
+planned	плановых
+vpUnplanned	внеплановых
+amountOfOrdersForToday	сумма заказов на сегодня
+programmingCollectionForToday	сумма инкассации за сегодня
+accountsReceivables	дебиторская задолженность
+unknown	Нет данных
+list	Список

@@ -25,7 +25,7 @@
       </c:DockLayout>
       <c:HorizontalLine/>
 
-      <c:DockLayout>
+      <c:DockLayout OnClickAction="$DoAction(Outlets)">
         <c:HorizontalLayout>
           <c:Image CssClass="btn_clients"/>
           <c:TextView CssClass="menu_text" Text="#clients#"></c:TextView>
@@ -33,7 +33,7 @@
       </c:DockLayout>
       <c:HorizontalLine/>
 
-      <c:DockLayout  OnClickAction="$DoAction(Sync)">
+      <c:DockLayout OnClickAction="$DoAction(Sync)">
         <c:HorizontalLayout>
           <c:Image CssClass="btn_sync"/>
           <c:TextView CssClass="menu_text" Text="#sync#"></c:TextView>
@@ -70,17 +70,17 @@
           <c:VerticalLayout CssClass="left">
             <c:DockLayout CssClass="caption_big">
               <c:TextView Text="8"/>
-              <c:TextView Text="визитов" CssClass="descr"/>
-              <c:TextView Text="выполнено" CssClass="descr"/>
+              <c:TextView Text="#vpVisits#" CssClass="descr"/>
+              <c:TextView Text="#vpPerformed#" CssClass="descr"/>
             </c:DockLayout>
 
             <c:VerticalLayout CssClass="simple">
               <c:HorizontalLayout>
-                <c:TextView Text="еще" CssClass="descr"/>
+                <c:TextView Text="#further#" CssClass="descr"/>
                 <c:TextView Text="5" CssClass="mark"/>
-                <c:TextView Text="визитов"/>
+                <c:TextView Text="#vpVisits#"/>
               </c:HorizontalLayout>
-              <c:TextView Text="запланировано" CssClass="descr"/>
+              <c:TextView Text="#scheduled#" CssClass="descr"/>
             </c:VerticalLayout>
           </c:VerticalLayout>
 
@@ -88,16 +88,16 @@
             <c:DockLayout CssClass="grid">
               <c:VerticalLayout>
                 <c:TextView Text="5" CssClass="main_row"></c:TextView>
-                <c:TextView Text="плановых" CssClass="description_row"/>
-                <c:TextView Text="визитов" CssClass="description_row"/>
+                <c:TextView Text="#planned#" CssClass="description_row"/>
+                <c:TextView Text="#vpVisits#" CssClass="description_row"/>
               </c:VerticalLayout>
             </c:DockLayout>
             <c:HorizontalLine/>
             <c:DockLayout CssClass="grid">
               <c:VerticalLayout>
                 <c:TextView Text="3" CssClass="main_row"></c:TextView>
-                <c:TextView Text="внеплановых" CssClass="description_row"/>
-                <c:TextView Text="визита" CssClass="description_row"/>
+                <c:TextView Text="#vpUnplanned#" CssClass="description_row"/>
+                <c:TextView Text="#vpVisits#" CssClass="description_row"/>
               </c:VerticalLayout>
             </c:DockLayout>
           </c:VerticalLayout>
@@ -108,7 +108,7 @@
           <c:DockLayout CssClass="grid">
             <c:VerticalLayout>
               <c:TextView Text="1 098 097,00 р" CssClass="main_row"></c:TextView>
-              <c:TextView Text="сумма заказов на сегодня" CssClass="description_row"/>
+              <c:TextView Text="#amountOfOrdersForToday#" CssClass="description_row"/>
             </c:VerticalLayout>
           </c:DockLayout>
         </c:DockLayout>
@@ -117,14 +117,14 @@
           <c:DockLayout CssClass="grid">
             <c:VerticalLayout>
               <c:TextView Text="578 134,50 р" CssClass="main_row"></c:TextView>
-              <c:TextView Text="сумма инкассации за сегодня" CssClass="description_row"/>
+              <c:TextView Text="#programmingCollectionForToday#" CssClass="description_row"/>
             </c:VerticalLayout>
           </c:DockLayout>
           <c:HorizontalLine/>
           <c:DockLayout CssClass="grid">
             <c:VerticalLayout>
               <c:TextView Text="587 134,50 р" CssClass="main_row"></c:TextView>
-              <c:TextView Text="дебиторская задолженность" CssClass="description_row"/>
+              <c:TextView Text="#accountsReceivables#" CssClass="description_row"/>
             </c:VerticalLayout>
           </c:DockLayout>
         </c:DockLayout>

@@ -187,6 +187,7 @@
     <Content Include="resource_newDesign\app\Image\Default\tick.png" />
     <Content Include="resource_newDesign\app\Image\Default\TudaSuda.png" />
     <Content Include="resource_newDesign\app\Image\Default\yellow_mark.png" />
+    <Content Include="resource_newDesign\app\Screen\Outlets\CreateOutlet.xml" />
     <Content Include="resource_newDesign\app\Screen\Order\Filters.xml" />
     <Content Include="resource_newDesign\app\Screen\ListChoice.xml" />
     <Content Include="resource_newDesign\app\Screen\Main.xml">
@@ -207,7 +208,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="resource_newDesign\app\Screen\OutletParameter.xml" />
-    <Content Include="resource_newDesign\app\Screen\Outlets.xml" />
+    <Content Include="resource_newDesign\app\Screen\Outlets\Outlets.xml" />
     <Content Include="resource_newDesign\app\Screen\Outlet_Map.xml" />
     <Content Include="resource_newDesign\app\Screen\Receivables.xml" />
     <Content Include="resource_newDesign\app\Screen\ScheduledVisits_Map.xml" />
@@ -242,10 +243,14 @@
     <Content Include="resource_newDesign\app\Script\Visits\Questions.js" />
     <Content Include="resource_newDesign\app\Script\Visits\SKU_Questions.js" />
     <Content Include="resource_newDesign\app\Script\Order\Main.js" />
+    <Content Include="resource_newDesign\app\Style\Default\tablet.css" />
+    <Content Include="resource_newDesign\app\Style\Default\phone.css" />
     <Content Include="resource_newDesign\app\Script\Receivables\Main.js" />
     <Content Include="resource_newDesign\app\Script\Visits\Total.js" />
+    <Content Include="resource_newDesign\app\Style\Default\CreateOutlet.css" />
     <Content Include="resource_newDesign\app\Style\Default\default.css" />
     <Content Include="resource_newDesign\app\Style\Default\Main.css" />
+    <Content Include="resource_newDesign\app\Style\Default\Outlets.css" />
     <Content Include="resource_newDesign\app\Style\Default\Sync.css" />
     <Content Include="resource_newDesign\app\Style\Default\Tasks.css" />
     <Content Include="resource_newDesign\app\Style\Default\Visit_SKUs.css" />

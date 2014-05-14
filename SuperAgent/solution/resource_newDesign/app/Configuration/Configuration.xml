@@ -7,8 +7,14 @@
 
     <c:DefaultStyles>
 
-      <c:DefaultStyle File="default.css" />      
-
+      <c:DefaultStyle File="default.css" />
+      <s:If Test="$isTablet">
+        <c:DefaultStyle File="tablet.css" />
+      </s:If>
+      <s:Else>
+        <c:DefaultStyle File="phone.css" />
+      </s:Else>
+      
     </c:DefaultStyles>
 
   </c:Style>

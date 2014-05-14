@@ -4,7 +4,7 @@
 
     .grid vl dl Button {
         margin-left: -33%;
-        margin-right: -0.5%;
+        dock-align: right;
     }
 
     .grid vl EditText {

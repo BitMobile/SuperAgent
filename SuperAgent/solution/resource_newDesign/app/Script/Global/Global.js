@@ -2,7 +2,7 @@ function DoSelect(entity, attribute, control) {
     var tableName = entity[attribute].Metadata().TableName;
     var query = new Query();
     query.Text = "SELECT Id, Description FROM " + tableName;
-    Dialog.Select("Test", query.Execute(), DoSelectCallback1, [entity, attribute, control]);
+    Dialog.Select("#select_answer#", query.Execute(), DoSelectCallback1, [entity, attribute, control]);
     return;
 }
 

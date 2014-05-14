@@ -187,14 +187,12 @@ function FindTwinAndUnite(orderitem) {
     q.AddParameter("feature", orderitem.Feature);
     q.AddParameter("id", orderitem);
     var rst = q.ExecuteCount();
-    Dialog.Debug(rst);
     if (parseInt(rst) != parseInt(0)) {
         var twin = q.ExecuteScalar();
         twin = twin.GetObject();
         twin.Qty += orderitem.Qty;
         twin.Total += orderitem.Total;
         twin.Save();
-        Dialog.Debug(twin);
         DB.Delete(orderitem);
     }
     else

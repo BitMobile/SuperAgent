@@ -4,11 +4,11 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()">
+      <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$DoBack()">
         <c:Image/>
         <c:TextView Text="#back#"/>
       </c:HorizontalLayout>
-      <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Facade.CheckAndCommit()"/>
+      <c:Button Id="btnForward" Text="#ready#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckAndCommit($workflow.order, $workflow.visit, $workflow.name)"/>
       <c:HorizontalLayout>
         <c:TextView Text="#visitTotal#" />
       </c:HorizontalLayout>
@@ -23,7 +23,7 @@
         <c:TextView Text="#additionally#:"></c:TextView>
       </c:HorizontalLayout>
 
-      <c:HorizontalLayout CssClass="grid" OnClickAction="$Facade.SetDeliveryDate($workflow.order, DeliveryDate)">
+      <c:HorizontalLayout CssClass="grid" OnClickAction="$SetDeliveryDate($workflow.order, DeliveryDate)">
         <c:VerticalLayout>
           <c:TextView Text="#deliveryDate#" CssClass="description_row"></c:TextView>
           <c:TextView Id="deliveryDate" Text="$workflow.order.DeliveryDate" CssClass="main_row"></c:TextView>
@@ -31,61 +31,52 @@
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
-      <s:If Test="$Facade.AreEqual(ScheduledVisit, $workflow.name)">
-        <s:If Test="$Facade.GetOrderControlValue()">
-          <s:If Test="$Facade.OrderExists($workflow.visit)">
-            <c:HorizontalLayout CssClass="grid" OnClickAction="$Workflow.DoAction(attributesFill, $workflow.visit, ReasonForNotOfTakingOrder, null)">
-              <c:VerticalLayout>
-                <c:TextView Text="#reasonForEmptyOrder#" CssClass="description_row"></c:TextView>
-                <s:If Test="$workflow.visit.ReasonForNotOfTakingOrder==null">
-                  <c:TextView Text="?" CssClass="main_row"></c:TextView>
-                </s:If>
-                <s:Else>
-                  <c:TextView Text="$workflow.visit.ReasonForNotOfTakingOrderAsObject.Description" CssClass="main_row"></c:TextView>
-                </s:Else>
-              </c:VerticalLayout>
-              <c:Image></c:Image>
-            </c:HorizontalLayout>
-            <c:HorizontalLine/>
-          </s:If>
-        </s:If>
+      <s:If Test="$OrderCheckRequired($workflow.visit, $workflow.name)">
+        <c:HorizontalLayout CssClass="grid" OnClickAction="$DoSelect($workflow.visit,ReasonForNotOfTakingOrder,$noOrderReason)">
+          <c:VerticalLayout>
+            <c:TextView Text="#reasonForEmptyOrder#" CssClass="description_row"></c:TextView>
+            <c:TextView Id="noOrderReason" Text="$workflow.visit.ReasonForNotOfTakingOrder.Description" CssClass="main_row"></c:TextView>
+          </c:VerticalLayout>
+          <c:Image></c:Image>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
       </s:If>
 
-      <s:Push Id="unscheduledVisit" Value="$Facade.AreEqual(UnscheduledVisit, $workflow.name)"></s:Push>
-      <s:If Test="$unscheduledVisit">
-        <s:Push Id="UVRcontrol" Value="$Facade.GetUVRvalue()"></s:Push>
-        <s:If Test="$UVRcontrol">
-          <c:HorizontalLayout CssClass="grid" OnClickAction="$Workflow.DoAction(attributesFill, $workflow.visit, ReasonForVisit, null)">
-            <c:VerticalLayout>
-              <c:TextView Text="#visitReason#" CssClass="description_row"></c:TextView>
-              <s:If Test="$workflow.visit.ReasonForVisit==null">
-                <c:TextView Text="?" CssClass="main_row"></c:TextView>
-              </s:If>
-              <s:Else>
-                <c:TextView Text="$workflow.visit.ReasonForVisitAsObject.Description" CssClass="main_row"></c:TextView>
-              </s:Else>
-            </c:VerticalLayout>
-            <c:Image></c:Image>
-          </c:HorizontalLayout>
-          <c:HorizontalLine/>
-        </s:If>
+
+      <s:If Test="$VisitReasonCheckrequired($workflow.name, $workflow.visit)">
+        <c:HorizontalLayout CssClass="grid" OnClickAction="$DoSelect($workflow.visit,ReasonForVisit,$visitReason)">
+          <c:VerticalLayout>
+            <c:TextView Text="#visitReason#" CssClass="description_row"></c:TextView>
+            <c:TextView Id="visitReason" Text="$workflow.visit.ReasonForVisit.Description" CssClass="main_row"></c:TextView>
+          </c:VerticalLayout>
+          <c:Image></c:Image>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
       </s:If>
+
+      <c:HorizontalLayout CssClass="memo_block">
+        <c:VerticalLayout>
+          <c:TextView Text="#commentary#" CssClass="description_row"></c:TextView>
+          <c:MemoEdit Value="$workflow.visit.Commentary" CssClass="main_row"></c:MemoEdit>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
 
       <c:HorizontalLayout CssClass="caption_grid">
         <c:TextView Text="#caps_summary#:"></c:TextView>
       </c:HorizontalLayout>
 
       <c:DockLayout CssClass="parameter_grid">
-        <s:Push Id="answered" Value="$Facade.CountAnswers($workflow.visit.Id, $workflow.sku_answ)"></s:Push>
-        <s:Push Id="questions" Value="$Facade.GetSum($workflow.questions_qty, $workflow.sku_qty)"></s:Push>
+        <s:Push Id="answered" Value="$CountAnswers($workflow.visit, $workflow.sku_answ)"></s:Push>
+        <s:Push Id="questions" Value="$GetSum($workflow.questions_qty, $workflow.sku_qty)"></s:Push>
         <c:TextView Text="#questAnswers#"></c:TextView>
         <c:TextView Text="{$answered} #of# {$questions}" CssClass="value"></c:TextView>
       </c:DockLayout>
       <c:HorizontalLine/>
 
       <c:DockLayout CssClass="parameter_grid">
-        <s:Push Id="todoDone" Value="$Facade.CountEntities(Document, Visit_Task, $workflow.visit.Id, Ref)"></s:Push>
-        <s:Push Id="todo" Value="$Facade.CountTasks($workflow.outlet)"></s:Push>
+        <s:Push Id="todoDone" Value="$CountDoneTasks($workflow.visit)"></s:Push>
+        <s:Push Id="todo" Value="$CountTasks($workflow.outlet)"></s:Push>
         <c:TextView Text="#todoDone#"></c:TextView>
         <c:TextView Text="{$todoDone} #of# {$todo}" CssClass="value"></c:TextView>
       </c:DockLayout>
@@ -93,7 +84,7 @@
 
       <c:DockLayout CssClass="parameter_grid">
         <c:TextView Text="#orderSum#"></c:TextView>
-        <c:TextView Text="{$Facade.GetOrderSUM($workflow.order.Id)}" CssClass="value"></c:TextView>
+        <c:TextView Text="{$GetOrderSUM($workflow.order)}" CssClass="value"></c:TextView>
       </c:DockLayout>
       <c:HorizontalLine/>
 

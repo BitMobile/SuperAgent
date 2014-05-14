@@ -1346,7 +1346,6 @@ function GetFeatureDescr(feature) {
 
 function SetDeliveryDate(order, attrName) {
     SetDateTime(order, attrName);
-    //Workflow.Refresh([order]);
 }
 
 //-----------------------OrderItem-------------------

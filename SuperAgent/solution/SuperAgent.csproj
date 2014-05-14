@@ -196,7 +196,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="resource_newDesign\app\Screen\Order\OrderList.xml" />
-    <Content Include="resource_newDesign\app\Screen\Order\Order_Commentary.xml" />
     <Content Include="resource_newDesign\app\Screen\Order\Order_EditSKU.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -243,6 +242,8 @@
     <Content Include="resource_newDesign\app\Script\Visits\Questions.js" />
     <Content Include="resource_newDesign\app\Script\Visits\SKU_Questions.js" />
     <Content Include="resource_newDesign\app\Script\Order\Main.js" />
+    <Content Include="resource_newDesign\app\Script\Receivables\Main.js" />
+    <Content Include="resource_newDesign\app\Script\Visits\Total.js" />
     <Content Include="resource_newDesign\app\Style\Default\default.css" />
     <Content Include="resource_newDesign\app\Style\Default\Main.css" />
     <Content Include="resource_newDesign\app\Style\Default\Sync.css" />

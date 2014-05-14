@@ -66,19 +66,18 @@
       <bp:Action Name="Forward" NextStep="Receivables"></bp:Action>
     </bp:Step>
 
-    <bp:Step Name="Commentary" Screen="Order_Commentary.xml">
+    <bp:Step Name="Commentary" Screen="Order_Commentary.xml" Controller="Order\Main.js">
       <bp:Action Name="Forward" NextStep="Receivables"></bp:Action>
     </bp:Step>
 
     <bp:Step Name="OrderInfo" Screen="Order_Info.xml" Controller="Order\Main.js">
     </bp:Step>
 
-    <bp:Step Name="Receivables" Screen="Receivables.xml">
+    <bp:Step Name="Receivables" Screen="Receivables.xml" Controller="Receivables\Main.js">
       <bp:Action Name="Forward" NextStep="Total"></bp:Action>
     </bp:Step>
 
-    <bp:Step Name="Total" Screen="Visit\Total.xml">
-      <bp:Action Name="attributesFill" NextStep="ListChoice"></bp:Action>
+    <bp:Step Name="Total" Screen="Visit\Total.xml" Controller="Visits\Total.js">
     </bp:Step>
 
     <bp:Step Name="ListChoice" Screen="ListChoice.xml">

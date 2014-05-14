@@ -36,7 +36,7 @@
 
           <c:HorizontalLayout CssClass="grid">
             <c:VerticalLayout OnClickAction="$GoToQuestionAction($question.AnswerType, $questionValue, $visit, control{$index}, $question.Question)">
-              <c:TextView Text="{$index} {$question.Description}" CssClass="description_row"></c:TextView>
+              <c:TextView Text="$question.Description" CssClass="description_row"></c:TextView>
 
               <s:If Test="$question.AnswerType=='Integer'">
                 <c:MemoEdit Id="control{$index}" Value="$questionValue.Answer" Keyboard="numeric"></c:MemoEdit>

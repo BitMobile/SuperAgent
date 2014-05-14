@@ -112,7 +112,7 @@ function GetFeatureDescr(feature) {
 function SelectPriceList(order, priceLists) {
     if (parseInt(priceLists) != parseInt(1) && order.Status.Description == "New" && parseInt(priceLists) != parseInt(0)) {
         var query = new Query("SELECT DISTINCT D.Id, D.Description FROM Catalog_Outlet_Prices O JOIN Document_PriceList D WHERE O.Ref = @Ref ORDER BY O.LineNumber");
-        query.AddParameter("Ref", order.Outlet);        
+        query.AddParameter("Ref", order.Outlet);
         var pl = query.ExecuteCount();
         if (parseInt(pl) == parseInt(0)) {
             var query = new Query("SELECT Id FROM Document_PriceList WHERE DefaultPriceList = @true");
@@ -122,4 +122,34 @@ function SelectPriceList(order, priceLists) {
         Global.ValueListSelect2(order, "PriceList", table, Variables["priceListTextView"]);
     }
 
+}
+
+function CheckIfEmptyAndForward(order) {
+    var query = new Query("SELECT Id FROM Document_Order_SKUs WHERE Ref=@ref");
+    query.AddParameter("ref", order);
+    if (parseInt(query.ExecuteCount()) == parseInt(0)) {
+        DB.Delete(order);
+    }
+    Workflow.Action("Forward", []);
+
+}
+
+function SaveOrder(order) {
+    order.GetObject().Save();
+    Workflow.Forward([]);
+}
+
+function SetDeliveryDate(order, attrName) {
+    SetDateTime(order, attrName);
+}
+
+function SetDateTime(entity, attribute) {
+    var NewDateTime = DateTime.Parse(entity[attribute]);
+    var Header = Translate["#enterDateTime#"];
+    Dialog.ShowDateTime(Header, NewDateTime, DateTimeDialog, entity);
+}
+
+function DateTimeDialog(entity, dateTime) {
+    entity.DeliveryDate = dateTime;
+    Variables["deliveryDate"].Text = dateTime; //refactoring is needed
 }

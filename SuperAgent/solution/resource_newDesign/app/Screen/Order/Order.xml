@@ -18,7 +18,7 @@
         <c:Image/>
         <c:TextView Text="#sku#"/>
       </c:HorizontalLayout>
-      <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$DoForward()"/>
+      <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckIfEmptyAndForward($workflow.order)"/>
       <c:HorizontalLayout>
         <c:TextView Text="#order#" />
       </c:HorizontalLayout>

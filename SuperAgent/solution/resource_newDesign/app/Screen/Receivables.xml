@@ -2,17 +2,17 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Receivables.css">
 
   <s:Push Id="visit" Value="$workflow.visit"/>
-  <s:Push Id="receivables" Value="$Facade.GetReceivables($visit.Outlet)"></s:Push>
-  <s:Push Id="workflow.encashment" Value="$Facade.CreateEncashmentIfNotExist($workflow.visit)"></s:Push>
+  <s:Push Id="receivables" Value="$GetReceivables($visit.Outlet)"></s:Push>
+  <s:Push Id="workflow.encashment" Value="$CreateEncashmentIfNotExist($workflow.visit)"></s:Push>
 
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()">
+      <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$DoBack()">
         <c:Image/>
         <c:TextView Text="#order#"/>
       </c:HorizontalLayout>
-      <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$Workflow.DoForward()"/>
+      <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$SaveAndForward($workflow.encashment)"/>
       <c:HorizontalLayout>
         <c:TextView Text="#encashment#" />
       </c:HorizontalLayout>
@@ -39,7 +39,7 @@
         <c:VerticalLayout>
           <c:DockLayout>
             <c:TextView Text="#encashmentAmount#:"></c:TextView>
-            <c:Button Text="#spread#" OnClickAction="$Facade.SpreadEncasmentAndRefresh($workflow.encashment, $receivables)"></c:Button>
+            <c:Button Text="#spread#" OnClickAction="$SpreadEncasmentAndRefresh($workflow.encashment, $visit.Outlet)"></c:Button>
           </c:DockLayout>
           <c:EditText Value="$workflow.encashment.EncashmentAmount" CssClass="main_row" Keyboard="numeric"></c:EditText>
         </c:VerticalLayout>
@@ -60,7 +60,7 @@
       <c:HorizontalLine/>
 
       <s:Iterator Id="receivableDoc" Value="$receivables">
-        <s:Push Id="encasmentItem" Value="$Facade.CreateEncashmentItemIfNotExist($workflow.encashment, $receivableDoc.DocumentName)"></s:Push>
+        <s:Push Id="encasmentItem" Value="$CreateEncashmentItemIfNotExist($workflow.encashment, $receivableDoc.DocumentName)"></s:Push>
 
         <c:HorizontalLayout CssClass="grid">
           <c:VerticalLayout>

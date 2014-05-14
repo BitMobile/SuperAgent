@@ -4,51 +4,6 @@
   <s:Push Id="outlet" Value="$CreateOutlet()"></s:Push>
 
   <c:DockLayout>
-    <c:HorizontalLayout CssClass="empty_caption_grid"/>
-    <c:HorizontalLine/>
-
-    <c:HorizontalLayout CssClass="grid">
-      <c:VerticalLayout>
-        <c:TextView Text="#outlet_description#" CssClass="description_row"></c:TextView>
-        <c:MemoEdit Id="outletName" AutoFocus="True" Value="$outlet.Description" CssClass="main_row"/>
-      </c:VerticalLayout>
-    </c:HorizontalLayout>
-    <c:HorizontalLine/>
-
-    <c:HorizontalLayout CssClass="grid">
-      <c:VerticalLayout>
-        <c:TextView Text="#address#" CssClass="description_row"></c:TextView>
-        <c:MemoEdit Id="outletAddress" Value="$outlet.Address" CssClass="main_row"/>
-      </c:VerticalLayout>
-    </c:HorizontalLayout>
-    <c:HorizontalLine/>
-
-    <c:HorizontalLayout CssClass="grid" OnClickAction="$DoSelect($outlet,Class,$outletClass)">
-      <c:VerticalLayout>
-        <c:TextView Text="#outlet_class#" CssClass="description_row"></c:TextView>
-        <c:TextView Id="outletClass" Text="$outlet.Class.Description" CssClass="main_row"/>
-      </c:VerticalLayout>
-    </c:HorizontalLayout>
-    <c:HorizontalLine/>
-
-    <c:HorizontalLayout CssClass="grid" OnClickAction="$DoSelect($outlet,Type,$outletType)">
-      <c:VerticalLayout>
-        <c:TextView Text="#outlet_type#" CssClass="description_row"></c:TextView>
-        <c:TextView Id="outletType" Text="$outlet.Type.Description" CssClass="main_row"/>
-      </c:VerticalLayout>
-    </c:HorizontalLayout>
-    <c:HorizontalLine/>
-
-    <c:HorizontalLayout CssClass="grid" OnClickAction="$DoSelect($outlet,Distributor,$outletDistr)">
-      <c:VerticalLayout>
-        <c:TextView Text="#distributor#" CssClass="description_row"></c:TextView>
-        <c:TextView Id="outletDistr" Text="$outlet.Distributor.Description" CssClass="main_row"/>
-      </c:VerticalLayout>
-    </c:HorizontalLayout>
-    <c:HorizontalLine/>
-
-
-    <c:HorizontalLayout CssClass="end_of_block"/>
 
     <c:HorizontalLayout CssClass="bottom_btn">
       <c:VerticalLayout OnEvent="Back" OnClickAction="$DiscardNewOutlet($outlet)">
@@ -58,6 +13,56 @@
         <c:TextView CssClass="right" Text="#save#"/>
       </c:VerticalLayout>
     </c:HorizontalLayout>
+
+    <c:ScrollView>
+      <c:HorizontalLayout CssClass="empty_caption_grid"/>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout CssClass="grid">
+        <c:VerticalLayout>
+          <c:TextView Text="#outlet_description#" CssClass="description_row"></c:TextView>
+          <c:MemoEdit Id="outletName" AutoFocus="True" Value="$outlet.Description" CssClass="main_row"/>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout CssClass="grid">
+        <c:VerticalLayout>
+          <c:TextView Text="#address#" CssClass="description_row"></c:TextView>
+          <c:MemoEdit Id="outletAddress" Value="$outlet.Address" CssClass="main_row"/>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout CssClass="grid" OnClickAction="$DoSelect($outlet,Class,$outletClass)">
+        <c:VerticalLayout>
+          <c:TextView Text="#outlet_class#" CssClass="description_row"></c:TextView>
+          <c:TextView Id="outletClass" Text="$outlet.Class.Description" CssClass="main_row"/>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout CssClass="grid" OnClickAction="$DoSelect($outlet,Type,$outletType)">
+        <c:VerticalLayout>
+          <c:TextView Text="#outlet_type#" CssClass="description_row"></c:TextView>
+          <c:TextView Id="outletType" Text="$outlet.Type.Description" CssClass="main_row"/>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout CssClass="grid" OnClickAction="$DoSelect($outlet,Distributor,$outletDistr)">
+        <c:VerticalLayout>
+          <c:TextView Text="#distributor#" CssClass="description_row"></c:TextView>
+          <c:TextView Id="outletDistr" Text="$outlet.Distributor.Description" CssClass="main_row"/>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+
+      <c:HorizontalLayout CssClass="end_of_block"/>
+    </c:ScrollView>
+    
+
 
   </c:DockLayout>
 

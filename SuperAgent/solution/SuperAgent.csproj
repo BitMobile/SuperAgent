@@ -244,6 +244,7 @@
     <Content Include="resource_newDesign\app\Script\Visits\Questions.js" />
     <Content Include="resource_newDesign\app\Script\Visits\SKU_Questions.js" />
     <Content Include="resource_newDesign\app\Script\Order\Main.js" />
+    <Content Include="resource_newDesign\app\Style\Default\Questions.css" />
     <Content Include="resource_newDesign\app\Style\Default\tablet.css" />
     <Content Include="resource_newDesign\app\Style\Default\phone.css" />
     <Content Include="resource_newDesign\app\Script\Receivables\Main.js" />

@@ -24,8 +24,12 @@
       </c:DockLayout>
       <c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoRefresh($edtSearch.Text)"></c:Button>
     </c:HorizontalLayout>
-
     <c:HorizontalLine/>
+
+    <c:HorizontalLayout CssClass="bottom_btn" OnEvent="Back" OnClickAction="$DoAction(Create)">
+      <c:TextView Text="#add#"></c:TextView>
+    </c:HorizontalLayout>
+    <c:HorizontalLine CssClass="b_line"/>
 
     <c:ScrollView Id="grScrollView">
 
@@ -49,9 +53,6 @@
       <c:HorizontalLayout CssClass="end_of_block"/>
 
     </c:ScrollView>
-
-    <c:HorizontalLine CssClass="double_line"/>
-    <c:Button CssClass="bottom_btn" Text="#add#" OnClickAction="$DoAction(Create)"/>
 
   </c:DockLayout>
 

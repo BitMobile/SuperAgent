@@ -1,16 +1,6 @@
-﻿.bottom_panel {
-    width: 100%;
-    height: 10sp;
-    background-color: #ffffff;
-    dock-align: bottom;
-}
-
-.double_line {
-    height: 2px;
-}
-
-sv {
-    height: 77sp;
+﻿
+.btn_forward {
+    margin-left: 0%;
 }
 
 .grid vl {

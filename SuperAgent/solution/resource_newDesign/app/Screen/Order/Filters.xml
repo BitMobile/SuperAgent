@@ -77,7 +77,7 @@
         <s:Push Id="brands" Value="$GetBrands()"></s:Push>
         <s:Iterator Id="brand" Value="$brands">
 
-          <c:HorizontalLayout CssClass="parameter_grid" OnClickAction="$AddFilterAndRefresh($brand, brand_filter)">
+          <c:HorizontalLayout CssClass="parameter_grid" OnClickAction="$AddFilterAndRefresh($brand.Id, brand_filter)">
             <s:Push Id="isSet" Value="$FilterIsSet($brand.Id, brand_filter)"></s:Push>
             <s:If Test="$isSet">
               <c:Image CssClass="tick"/>

@@ -17,14 +17,6 @@
       </c:DockLayout>
       <c:HorizontalLine/>
 
-      <c:DockLayout>
-        <c:HorizontalLayout>
-          <c:Image CssClass="btn_orders"/>
-          <c:TextView CssClass="menu_text" Text="#orders#"></c:TextView>
-        </c:HorizontalLayout>
-      </c:DockLayout>
-      <c:HorizontalLine/>
-
       <c:DockLayout OnClickAction="$DoAction(Outlets)">
         <c:HorizontalLayout>
           <c:Image CssClass="btn_clients"/>

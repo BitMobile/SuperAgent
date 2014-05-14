@@ -275,3 +275,8 @@ function Back(outlet) {
         DoAction("List");
     }
 }
+
+function DeleteAndBack(visit) {
+    DB.Delete(visit);
+    Workflow.Back();
+}

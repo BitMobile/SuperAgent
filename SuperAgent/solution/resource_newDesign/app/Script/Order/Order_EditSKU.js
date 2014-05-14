@@ -171,7 +171,7 @@ function CalculateSKUAndForward(outlet, orderitem) {
 
 function DeleteAndBack(orderitem) {
     if (Variables.Exists("AlreadyAdded") == false) {
-        DB.Current.Document.Order_SKUs.Delete(orderitem);
+        DB.Delete(orderitem);
     }
     else
         Variables.Remove("AlreadyAdded");

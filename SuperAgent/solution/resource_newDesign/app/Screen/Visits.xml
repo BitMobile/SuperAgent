@@ -129,7 +129,7 @@
 
       <c:ScrollView>
         <s:Iterator Id="uOutlet" Value="$unscheduledOutlets">
-          <c:HorizontalLayout CssClass="grid" OnClickAction="$AddGlobalAndAction(outlet, $uOutlet, Select)">
+          <c:HorizontalLayout CssClass="grid" OnClickAction="$AddGlobalAndAction(outlet, $uOutlet.Outlet, Select)">
             <c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
             <c:VerticalLayout>
               <c:TextView Text="$uOutlet.Description" CssClass="main_row"></c:TextView>

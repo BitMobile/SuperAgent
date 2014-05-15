@@ -1,21 +1,41 @@
 
 
 function GetSKUAndGroups(searchText, priceList) {
+    var filterString = "";
+    filterString += AddFilter(filterString, "group_filter", "G.Id");
+    filterString += AddFilter(filterString, "brand_filter", "CB.Id");
+
+    Dialog.Debug(filterString);
+
     if (String.IsNullOrEmpty(searchText)) {
         var query = new Query();
-        query.Text = "SELECT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, CB.Description AS Brand FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id JOIN Catalog_Brands CB ON CB.Id=S.Brand WHERE S.CommonStock>0 AND PL.Ref = @Ref ORDER BY G.Description, S.Description LIMIT 100";
+        query.Text = "SELECT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, CB.Description AS Brand FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id JOIN Catalog_Brands CB ON CB.Id=S.Brand WHERE S.CommonStock>0 AND PL.Ref = @Ref " + filterString + " ORDER BY G.Description, S.Description LIMIT 100"; //" + filterString + "
         query.AddParameter("Ref", priceList);
         return query.Execute();
     }
     else {
         searchText = "'%" + searchText + "%'";
         var query = new Query();
-        query.Text = "SELECT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id WHERE S.CommonStock>0 AND PL.Ref = @Ref AND S.Description LIKE " + searchText + " ORDER BY G.Description, S.Description LIMIT 100";
+        query.Text = "SELECT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id WHERE S.CommonStock>0 AND PL.Ref = @Ref AND S.Description LIKE " + searchText + filterString + " ORDER BY G.Description, S.Description LIMIT 100";
         query.AddParameter("Ref", priceList);
         return query.Execute();
     }
 }
 
+function AddFilter(filterString, filterName, condition) {
+    if (Variables.Exists(filterName)) {
+        var gr = Variables[filterName];
+        filterString = " AND " + condition + " IN (";
+        for (var i = 0; i < gr.Count() ; i++) {
+            filterString += "'" + (gr[i]).ToString() + "'";
+            if (i != (gr.Count() - 1))
+                filterString += ", ";
+            else
+                filterString += ")";
+        }
+    }
+    return filterString;
+}
 
 //--------------------------Filters------------------
 
@@ -34,6 +54,7 @@ function ClearFilterHandler(answ, state) {
     if (answ == DialogResult.Yes) {
         Variables.Remove("group_filter");
         Variables.Remove("brand_filter");
+        Workflow.Back();
     }
 }
 
@@ -75,16 +96,12 @@ function ChangeFilterAndRefresh(type) {
 
 function GetParentGroups() {
     //return DB.Current.Catalog.SKUGroup.SelectBy("Parent", groups, "<>").OrderBy("Description");
-    var q = new Query("SELECT Id, Description, Parent FROM Catalog_SKUGroup WHERE Parent IS NULL ORDER BY Description");   
+    var q = new Query("SELECT Id, Description, Parent FROM Catalog_SKUGroup WHERE Parent=@emptyRef ORDER BY Description");
+    q.AddParameter("emptyRef", DB.EmptyRef("Catalog_SKUGroup"));
     return q.Execute();
 }
 
 function GetChildren(parent) {
-    //var c = DB.Current.Catalog.SKUGroup.SelectBy("Parent", parent.Id);
-    //if (parseInt(c.Count()) == parseInt(0))
-    //    return [];
-    //else
-    //    return c;
     var q = new Query("SELECT Id, Description FROM Catalog_SKUGroup WHERE Parent=@p1 ORDER BY Description");
     q.AddParameter("p1", parent);
     return q.Execute();
@@ -120,8 +137,8 @@ function AddFilterAndRefresh(item, filterName) { //refactoring is needed after p
         nCollection.push(item);
         if (item.IsFolder) {
             var chld = GetChildren(item);
-            for (var i in chld)
-                nCollection.push(i);
+            while (chld.Next())
+                nCollection.push(chld.Id);
         }
     }
 

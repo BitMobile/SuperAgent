@@ -28,20 +28,15 @@ function GetOutletParameters(outlet) {
     return query.Execute();
 }
 
-function GetOutletParameterValue(outlet, parameter) {
+function GetOutletParameterValue(outlet, parameter, parameterValue) {
 
-    var p = new Query();
-    p.Text = "SELECT Id FROM Catalog_Outlet_Parameters WHERE Parameter=@parameter AND Ref=@ref LIMIT 1";
-    p.AddParameter("parameter", parameter);
-    p.AddParameter("ref", outlet);
+    Dialog.Debug(parameterValue);
 
-    if (parseInt(p.ExecuteCount()) == parseInt(0)) {
-        var pv = CreateOutletParameterValue(outlet, parameter);
+    if (parameterValue == null) {
+        return CreateOutletParameterValue(outlet, parameter);
     }
-    else {
-        var pv = p.ExecuteScalar();
-    }
-    return pv;
+
+    else return parameterValue;
 }
 
 function CreateOutletParameterValue(outlet, parameter) {

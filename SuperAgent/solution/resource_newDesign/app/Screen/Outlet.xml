@@ -111,7 +111,7 @@
         <s:Push Id="parameterValue" Value="$GetOutletParameterValue($outlet,$parameter.Id,$parameter.ParameterValue)"/>
         <s:Push Id="index" Value="$statusCount.Index"></s:Push>
         <c:DockLayout CssClass="parameter_grid" OnClickAction="$GoToParameterAction($parameter.DataType.Description, $parameterValue, Value, $outlet, $parameter.Id, control{$index})">
-          <c:TextView Text="{$index} {$parameter.Description}"></c:TextView>
+          <c:TextView Text="$parameter.Description"></c:TextView>
           <s:If Test="$parameter.TypeDescription=='Integer'">
             <c:EditText Id="control{$index}" Value="$parameterValue.Value" CssClass="value" Keyboard="numeric"></c:EditText>
           </s:If>

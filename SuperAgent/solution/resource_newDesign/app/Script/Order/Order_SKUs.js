@@ -5,8 +5,6 @@ function GetSKUAndGroups(searchText, priceList) {
     filterString += AddFilter(filterString, "group_filter", "G.Id");
     filterString += AddFilter(filterString, "brand_filter", "CB.Id");
 
-    Dialog.Debug(filterString);
-
     if (String.IsNullOrEmpty(searchText)) {
         var query = new Query();
         query.Text = "SELECT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, CB.Description AS Brand FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id JOIN Catalog_Brands CB ON CB.Id=S.Brand WHERE S.CommonStock>0 AND PL.Ref = @Ref " + filterString + " ORDER BY G.Description, S.Description LIMIT 100"; //" + filterString + "

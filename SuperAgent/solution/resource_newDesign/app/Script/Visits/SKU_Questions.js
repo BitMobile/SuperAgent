@@ -159,3 +159,28 @@ function CheckEmtySKUAndForward(outlet, visit) {
     var p = [outlet, visit];
     Workflow.Forward(p);
 }
+
+function GetSKUShapshot(visit, question, control) {
+    GetCameraObject(visit.Id);
+    Camera.MakeSnapshot(SaveAtVisit, [question, control]);
+}
+
+function GetCameraObject(entity) {
+    FileSystem.CreateDirectory("/private/Document.Visit");
+    var guid = Global.GenerateGuid();
+    Variables.Add("guid", guid);
+    var path = String.Format("/private/Document.Visit/{0}/{1}.jpg", entity, guid);
+    Camera.Size = 300;
+    Camera.Path = path;
+}
+
+function SaveAtVisit(arr) {    
+    var question = arr[0];
+    var control = arr[1];
+    question = question.GetObject();
+    question.Snapshot = Variables["guid"];
+    question.Save();
+    //Dialog.Debug(Variables[control]);
+    control.Text = Translate["#snapshotAttached#"];
+    //Dialog.Debug(Variables[control]);
+}

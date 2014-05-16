@@ -30,8 +30,6 @@ function GetOutletParameters(outlet) {
 
 function GetOutletParameterValue(outlet, parameter, parameterValue) {
 
-    Dialog.Debug(parameterValue);
-
     if (parameterValue == null) {
         return CreateOutletParameterValue(outlet, parameter);
     }

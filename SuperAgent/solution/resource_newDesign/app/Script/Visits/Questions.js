@@ -40,7 +40,7 @@ function GoToQuestionAction(answerType, question, visit, control, questionItem) 
 
     if (answerType == "Snapshot") {
         GetCameraObject(visit);
-        Camera.MakeSnapshot(SaveAtVisit, question);
+        Camera.MakeSnapshot(SaveAtVisit, [question, control]);
     }
 
     if (answerType == "DateTime") {
@@ -60,10 +60,14 @@ function GoToQuestionAction(answerType, question, visit, control, questionItem) 
     }
 }
 
-function SaveAtVisit(question) {
+function SaveAtVisit(arr) {
+    var question = arr[0];
+    var control = arr[1];
+    question = question.GetObject();
     question.Answer = Variables["guid"];
-    //Variables["snapshotInfo"].Text = Translate["#snapshotAttached#"];
-    Workflow.Refresh([]);
+    question.Save();
+    Variables[control].Text = Translate["#snapshotAttached#"];
+    
 }
 
 function GetCameraObject(entity) {

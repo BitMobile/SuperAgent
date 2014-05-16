@@ -6,13 +6,13 @@
 
       <c:HorizontalLayout CssClass="header" OnEvent="Forward" OnClickAction="$CloseMenu()">
         <c:Image CssClass="btn_summary"/>
-        <c:TextView CssClass="menu_text" Text="#summary#"></c:TextView>
+        <c:TextView CssClass="menu_text" Text="#summary#"/>
       </c:HorizontalLayout>
 
       <c:DockLayout OnClickAction="$DoAction(Visits)">
         <c:HorizontalLayout>
           <c:Image CssClass="btn_visits"/>
-          <c:TextView CssClass="menu_text" Text="#visits#"></c:TextView>
+          <c:TextView CssClass="menu_text" Text="#visits#"/>
         </c:HorizontalLayout>
       </c:DockLayout>
       <c:HorizontalLine/>
@@ -20,25 +20,26 @@
       <c:DockLayout OnClickAction="$DoAction(Outlets)">
         <c:HorizontalLayout>
           <c:Image CssClass="btn_clients"/>
-          <c:TextView CssClass="menu_text" Text="#clients#"></c:TextView>
+          <c:TextView CssClass="menu_text" Text="#clients#"/>
         </c:HorizontalLayout>
       </c:DockLayout>
       <c:HorizontalLine/>
 
       <c:DockLayout OnClickAction="$DoAction(Sync)">
+        <c:TextView CssClass="menu_text" Text="$lastDataSync"/>
         <c:HorizontalLayout>
           <c:Image CssClass="btn_sync"/>
-          <c:TextView CssClass="menu_text" Text="#sync#"></c:TextView>
+          <c:TextView CssClass="menu_text" Text="#sync#"/>
         </c:HorizontalLayout>
       </c:DockLayout>
       <c:HorizontalLine/>
 
       <c:DockLayout>
+        <c:TextView CssClass="menu_text" Text="ver. 2.1"/>
         <c:HorizontalLayout>
           <c:Image CssClass="btn_info"/>
-          <c:TextView CssClass="menu_text" Text="#info#"></c:TextView>
+          <c:TextView CssClass="menu_text" Text="#info#"/>
         </c:HorizontalLayout>
-        <c:TextView CssClass="menu_text" Text="ver. 1.6.10.50"></c:TextView>
       </c:DockLayout>
       <c:HorizontalLine/>
 
@@ -61,7 +62,7 @@
         <c:DockLayout>
           <c:VerticalLayout CssClass="left">
             <c:DockLayout CssClass="caption_big">
-              <c:TextView Text="8"/>
+              <c:TextView Text="88"/>
               <c:TextView Text="#vpVisits#" CssClass="descr"/>
               <c:TextView Text="#vpPerformed#" CssClass="descr"/>
             </c:DockLayout>
@@ -69,7 +70,7 @@
             <c:VerticalLayout CssClass="simple">
               <c:HorizontalLayout>
                 <c:TextView Text="#further#" CssClass="descr"/>
-                <c:TextView Text="5" CssClass="mark"/>
+                <c:TextView Text="55" CssClass="mark"/>
                 <c:TextView Text="#vpVisits#"/>
               </c:HorizontalLayout>
               <c:TextView Text="#scheduled#" CssClass="descr"/>
@@ -79,7 +80,7 @@
           <c:VerticalLayout CssClass="right">
             <c:DockLayout CssClass="grid">
               <c:VerticalLayout>
-                <c:TextView Text="5" CssClass="main_row"></c:TextView>
+                <c:TextView Text="55" CssClass="main_row"></c:TextView>
                 <c:TextView Text="#planned#" CssClass="description_row"/>
                 <c:TextView Text="#vpVisits#" CssClass="description_row"/>
               </c:VerticalLayout>
@@ -87,7 +88,7 @@
             <c:HorizontalLine/>
             <c:DockLayout CssClass="grid">
               <c:VerticalLayout>
-                <c:TextView Text="3" CssClass="main_row"></c:TextView>
+                <c:TextView Text="33" CssClass="main_row"></c:TextView>
                 <c:TextView Text="#vpUnplanned#" CssClass="description_row"/>
                 <c:TextView Text="#vpVisits#" CssClass="description_row"/>
               </c:VerticalLayout>

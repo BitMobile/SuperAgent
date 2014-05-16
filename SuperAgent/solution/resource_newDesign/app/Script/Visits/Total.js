@@ -92,11 +92,9 @@ function CheckAndCommit(order, visit, wfName) {
             DB.Delete(order);
         }
         else {
-            Dialog.Debug(order);
             order.GetObject().Save();
         }
 
-        Dialog.Debug(visit.GetObject());
         visit.GetObject().Save();
         Workflow.Commit();
     }

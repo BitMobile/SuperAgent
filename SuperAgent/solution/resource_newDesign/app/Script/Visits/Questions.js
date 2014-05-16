@@ -40,7 +40,7 @@ function GoToQuestionAction(answerType, question, visit, control, questionItem) 
 
     if (answerType == "Snapshot") {
         GetCameraObject(visit);
-        Camera.MakeSnapshot(SaveAtVisit, question);
+        Camera.MakeSnapshot(SaveAtVisit, [question, control]);
     }
 
     if (answerType == "DateTime") {
@@ -60,17 +60,21 @@ function GoToQuestionAction(answerType, question, visit, control, questionItem) 
     }
 }
 
-function SaveAtVisit(question) {
+function SaveAtVisit(arr) {
+    var question = arr[0];
+    var control = arr[1];
+    question = question.GetObject();
     question.Answer = Variables["guid"];
-    //Variables["snapshotInfo"].Text = Translate["#snapshotAttached#"];
-    Workflow.Refresh([]);
+    question.Save();
+    Variables[control].Text = Translate["#snapshotAttached#"];
+    
 }
 
 function GetCameraObject(entity) {
     FileSystem.CreateDirectory("/private/Document.Visit");
     var guid = Global.GenerateGuid();
     Variables.Add("guid", guid);
-    var path = String.Format("/private/Document.Visit/{0}/{1}.jpg", entity, guid);
+    var path = String.Format("/private/Document.Visit/{0}/{1}.jpg", entity.Id, guid);
     Camera.Size = 300;
     Camera.Path = path;
 }

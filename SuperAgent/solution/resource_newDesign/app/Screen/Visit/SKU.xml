@@ -85,7 +85,7 @@
 
       <s:Push Id="useInQuestionnaire" Value="$CheckQuestionExistence($questionnaire, Snapshot, $sku)"></s:Push>
       <s:If Test="$useInQuestionnaire">
-        <c:HorizontalLayout CssClass="grid" OnClickAction="$GetSKUShapshot($skuValue)">
+        <c:HorizontalLayout CssClass="grid" OnClickAction="$GetSKUShapshot($workflow.visit,$skuValue,$snapshotInfo)">
           <c:VerticalLayout>
             <s:Push Id="snapshotText" Value="$GetSnapshotText($skuValue.Snapshot)"></s:Push>
             <c:TextView Id="snapshotInfo" Text="$snapshotText" CssClass="main_row"></c:TextView>

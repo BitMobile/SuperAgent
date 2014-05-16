@@ -11,7 +11,7 @@
       <c:HorizontalLayout CssClass="btn_menu" OnEvent="Back" OnClickAction="$Workflow.DoRollback()">
         <c:Image CssClass="menuIcon"/>
       </c:HorizontalLayout>
-      <c:Button Id="btnForward" Text="#map#" CssClass="btn_forward" OnClickAction="$Workflow.DoAction(ShowMap, $outlets)"/>
+      <c:Button Id="btnForward" Text="" CssClass="btn_forward"/>
       <c:HorizontalLayout>
         <c:TextView Text="#visits#" />
       </c:HorizontalLayout>

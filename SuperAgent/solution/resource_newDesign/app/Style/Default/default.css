@@ -490,7 +490,8 @@ MemoEdit {
     }
 
 .tick {
-    height: 35%;
+
+    width: 5%;
     margin-left: 3%;
     margin-top: 35%;
     background-image: url(tick.png);
@@ -504,7 +505,7 @@ MemoEdit {
 }
 
 .child_tick {
-    height: 35%;
+    width: 5%;
     margin-left: 13%;
     margin-top: 35%;
     background-image: url(tick.png);

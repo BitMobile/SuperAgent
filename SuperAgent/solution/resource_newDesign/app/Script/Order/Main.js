@@ -97,10 +97,6 @@ function GetDescription(priceList) {
         return (Translate["#priceList#"] + ": " + priceList.Description);
 }
 
-function ShowDialog(v1) {
-    //var v = String((v1));
-    Dialog.Debug(v1);
-}
 
 function GetFeatureDescr(feature) {
     if (feature.Code == "000000001")

@@ -144,10 +144,6 @@ function GetItemHistory(sku, order) {
     return [];
 }
 
-function ShowDialog(var1) {
-    Dialog.Debug(var1);
-}
-
 
 function CalculateSKUAndForward(outlet, orderitem) {
 

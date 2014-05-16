@@ -81,12 +81,10 @@ function SpreadEncasmentAndRefresh(encashent, outlet) {
             sumToSpread = sumToSpread - d.DocumentSum;
         }
         else {
-            Dialog.Debug(sumToSpread);
             encRowObj.EncashmentSum = sumToSpread;
             sumToSpread = Converter.ToDecimal(0);
         }
         encRowObj.Save();
-        Dialog.Debug(encRowObj);
     }
     Workflow.Refresh([]);
 }

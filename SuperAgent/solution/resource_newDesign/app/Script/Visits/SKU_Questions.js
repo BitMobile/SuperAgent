@@ -180,7 +180,5 @@ function SaveAtVisit(arr) {
     question = question.GetObject();
     question.Snapshot = Variables["guid"];
     question.Save();
-    //Dialog.Debug(Variables[control]);
     control.Text = Translate["#snapshotAttached#"];
-    //Dialog.Debug(Variables[control]);
 }

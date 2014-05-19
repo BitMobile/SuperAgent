@@ -13,7 +13,7 @@ function SyncDataFinish() {
     $.dataSyncReport.Visible = true;
 
     Variables.Remove("lastDataSync");
-    Variables.AddGlobal("lastDataSync", DateTime.Now.ToString("dd MMM yyyy hh:mm"));
+    Variables.AddGlobal("lastDataSync", DateTime.Now.ToString("dd MMM HH:mm"));
     $.dataSyncReport.Text = $.lastDataSync;
 }
 
@@ -51,7 +51,7 @@ function SyncFtpFinish() {
     $.ftpSyncReport.Visible = true;
 
     Variables.Remove("lastFtpSync");
-    Variables.AddGlobal("lastFtpSync", DateTime.Now.ToString("dd MMM yyyy hh:mm"));
+    Variables.AddGlobal("lastFtpSync", DateTime.Now.ToString("dd MMM HH:mm"));
     $.ftpSyncReport.Text = $.lastFtpSync;
 }
 

@@ -6,39 +6,47 @@
 
       <c:HorizontalLayout CssClass="header" OnEvent="Forward" OnClickAction="$CloseMenu()">
         <c:Image CssClass="btn_summary"/>
-        <c:TextView CssClass="menu_text" Text="#summary#"></c:TextView>
+        <c:TextView CssClass="menu_text" Text="#summary#"/>
       </c:HorizontalLayout>
 
+      <s:Push Id="scheduledVisits" Value="$GetScheduledVisitsCount()"/>
+      <s:Push Id="unplannedScheduledVisits" Value="$GetOutletsQty()"/>
+
       <c:DockLayout OnClickAction="$DoAction(Visits)">
+        <c:TextView CssClass="menu_text" Text="{$scheduledVisits} | {$unplannedScheduledVisits}"/>
         <c:HorizontalLayout>
           <c:Image CssClass="btn_visits"/>
-          <c:TextView CssClass="menu_text" Text="#visits#"></c:TextView>
+          <c:TextView CssClass="menu_text" Text="#visits#"/>
         </c:HorizontalLayout>
       </c:DockLayout>
       <c:HorizontalLine/>
 
+      <s:Push Id="outletsCount" Value="$GetOutletsCount()"/>
+      
       <c:DockLayout OnClickAction="$DoAction(Outlets)">
+        <c:TextView CssClass="menu_text" Text="$outletsCount"/>
         <c:HorizontalLayout>
           <c:Image CssClass="btn_clients"/>
-          <c:TextView CssClass="menu_text" Text="#clients#"></c:TextView>
+          <c:TextView CssClass="menu_text" Text="#clients#"/>
         </c:HorizontalLayout>
       </c:DockLayout>
       <c:HorizontalLine/>
 
       <c:DockLayout OnClickAction="$DoAction(Sync)">
+        <c:TextView CssClass="menu_text" Text="$lastDataSync"/>
         <c:HorizontalLayout>
           <c:Image CssClass="btn_sync"/>
-          <c:TextView CssClass="menu_text" Text="#sync#"></c:TextView>
+          <c:TextView CssClass="menu_text" Text="#sync#"/>
         </c:HorizontalLayout>
       </c:DockLayout>
       <c:HorizontalLine/>
 
       <c:DockLayout>
+        <c:TextView CssClass="menu_text" Text="ver. 2.1"/>
         <c:HorizontalLayout>
           <c:Image CssClass="btn_info"/>
-          <c:TextView CssClass="menu_text" Text="#info#"></c:TextView>
+          <c:TextView CssClass="menu_text" Text="#info#"/>
         </c:HorizontalLayout>
-        <c:TextView CssClass="menu_text" Text="ver. 1.6.10.50"></c:TextView>
       </c:DockLayout>
       <c:HorizontalLine/>
 
@@ -58,10 +66,12 @@
 
       <c:VerticalLayout CssClass="blue">
 
+        <s:Push Id="commitedVisits" Value="$GetCommitedScheduledVisits()"/>
+        
         <c:DockLayout>
           <c:VerticalLayout CssClass="left">
             <c:DockLayout CssClass="caption_big">
-              <c:TextView Text="8"/>
+              <c:TextView Text="$commitedVisits"/>
               <c:TextView Text="#vpVisits#" CssClass="descr"/>
               <c:TextView Text="#vpPerformed#" CssClass="descr"/>
             </c:DockLayout>
@@ -69,7 +79,7 @@
             <c:VerticalLayout CssClass="simple">
               <c:HorizontalLayout>
                 <c:TextView Text="#further#" CssClass="descr"/>
-                <c:TextView Text="5" CssClass="mark"/>
+                <c:TextView Text="$scheduledVisits" CssClass="mark"/>
                 <c:TextView Text="#vpVisits#"/>
               </c:HorizontalLayout>
               <c:TextView Text="#scheduled#" CssClass="descr"/>
@@ -79,7 +89,7 @@
           <c:VerticalLayout CssClass="right">
             <c:DockLayout CssClass="grid">
               <c:VerticalLayout>
-                <c:TextView Text="5" CssClass="main_row"></c:TextView>
+                <c:TextView Text="$scheduledVisits" CssClass="main_row"></c:TextView>
                 <c:TextView Text="#planned#" CssClass="description_row"/>
                 <c:TextView Text="#vpVisits#" CssClass="description_row"/>
               </c:VerticalLayout>
@@ -87,7 +97,7 @@
             <c:HorizontalLine/>
             <c:DockLayout CssClass="grid">
               <c:VerticalLayout>
-                <c:TextView Text="3" CssClass="main_row"></c:TextView>
+                <c:TextView Text="$unplannedScheduledVisits" CssClass="main_row"></c:TextView>
                 <c:TextView Text="#vpUnplanned#" CssClass="description_row"/>
                 <c:TextView Text="#vpVisits#" CssClass="description_row"/>
               </c:VerticalLayout>
@@ -96,26 +106,31 @@
 
         </c:DockLayout>
 
+        <s:Push Id="orderSum" Value="$GetOrderSumm()"/>
+
         <c:DockLayout CssClass="short_panel">
           <c:DockLayout CssClass="grid">
             <c:VerticalLayout>
-              <c:TextView Text="1 098 097,00 р" CssClass="main_row"></c:TextView>
+              <c:TextView Text="$orderSum" CssClass="main_row"></c:TextView>
               <c:TextView Text="#amountOfOrdersForToday#" CssClass="description_row"/>
             </c:VerticalLayout>
           </c:DockLayout>
         </c:DockLayout>
 
+        <s:Push Id="encashmentSumm" Value="$GetEncashmentSumm()"/>
+        <s:Push Id="receivablesSumm" Value="$GetReceivablesSumm()"/>
+
         <c:DockLayout>
           <c:DockLayout CssClass="grid">
             <c:VerticalLayout>
-              <c:TextView Text="578 134,50 р" CssClass="main_row"></c:TextView>
+              <c:TextView Text="$encashmentSumm" CssClass="main_row"></c:TextView>
               <c:TextView Text="#programmingCollectionForToday#" CssClass="description_row"/>
             </c:VerticalLayout>
           </c:DockLayout>
           <c:HorizontalLine/>
           <c:DockLayout CssClass="grid">
             <c:VerticalLayout>
-              <c:TextView Text="587 134,50 р" CssClass="main_row"></c:TextView>
+              <c:TextView Text="$receivablesSumm" CssClass="main_row"></c:TextView>
               <c:TextView Text="#accountsReceivables#" CssClass="description_row"/>
             </c:VerticalLayout>
           </c:DockLayout>

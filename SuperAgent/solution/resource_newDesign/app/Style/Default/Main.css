@@ -58,16 +58,16 @@ svl vl {
 
     .menu dl {
         width: 100%;
+        selected-color: #5ea6dc;
     }
 
         .menu dl TextView {
-            width: 40%;
-            height: 100%;
+            width: 30%;       
+            margin-top: 30%;     
             dock-align: right;
-            text-align: right;
-            margin-right: 6%;
+            text-align: right;            
+            margin-right: 2.7%;
             color: #c5e3f7;
-            font: 30% arial;
         }
 
         .menu dl hl {
@@ -80,7 +80,7 @@ svl vl {
             .menu dl hl TextView {
                 width: 60%;
                 height: 40%;
-                margin-left: 4%;                
+                margin-left: 4%;
                 vertical-align: central;
                 color: #ffffff;
                 font: 90% arial;
@@ -264,9 +264,9 @@ svl vl {
 
     .caption_big TextView {
         height: 100%;
-        width: 18%;
+        width: 33%;
         margin-left: 2%;
-        text-align: center;
+        text-align: left;
         font: 95% Arial-BoldMT;
         color: #43acfd;
         dock-align: left;
@@ -285,7 +285,7 @@ svl vl {
 .simple {
     width: 80%;
     height: 70%;
-    margin-left: 22%;
+    margin-left: 5%;
 }
 
     .simple TextView {
@@ -311,7 +311,7 @@ svl vl {
         }
 
         .simple hl mark {
-            width: 10%;
+            width: 20%;
             margin-left: 0%;
             margin-right: 3%;
             text-align: center;

@@ -125,6 +125,7 @@ function CheckIfEmptyAndForward(order) {
     query.AddParameter("ref", order);
     if (parseInt(query.ExecuteCount()) == parseInt(0)) {
         DB.Delete(order);
+        Dialog.Debug(order);
     }
     Workflow.Action("Forward", []);
 

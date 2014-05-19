@@ -1,19 +1,23 @@
-﻿function OrderCheckRequired(order, wfName) {
-    if (wfName == 'ScheduledVisit' && GetOrderControlValue() && NoOrder())
+﻿function OrderCheckRequired(visit, wfName) {
+    if (wfName == 'ScheduledVisit' && GetOrderControlValue() && OrderExists(visit)==false)
         return true;
     else
         return false;
 }
 
-function NoOrder(visit) {
+function OrderExists(visit) {
     //var p = DB.Current.Document.Order.SelectBy("Visit", visit.Id).First();
     var q = new Query("SELECT Id FROM Document_Order WHERE Visit=@visit");
     q.AddParameter("visit", visit);
     var p = q.ExecuteScalar();
     if (p == null)
-        return true;
-    else
         return false;
+    else
+        return true;
+}
+
+function SetDeliveryDate(order, control) {
+    Global.DateTimeDialog(order, "DeliveryDate", DateTime.Now.Date, control);
 }
 
 function GetOrderControlValue() {
@@ -88,10 +92,7 @@ function CheckAndCommit(order, visit, wfName) {
     if (VisitIsChecked(visit, order, wfName)) {
         visit.EndTime = DateTime.Now;
 
-        if (NoOrder(visit) == false) {
-            DB.Delete(order);
-        }
-        else {
+        if (OrderExists(visit)) {
             order.GetObject().Save();
         }
 

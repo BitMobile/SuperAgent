@@ -125,7 +125,6 @@ function CheckIfEmptyAndForward(order) {
     query.AddParameter("ref", order);
     if (parseInt(query.ExecuteCount()) == parseInt(0)) {
         DB.Delete(order);
-        Dialog.Debug(order);
     }
     Workflow.Action("Forward", []);
 
@@ -149,4 +148,10 @@ function SetDateTime(entity, attribute) {
 function DateTimeDialog(entity, dateTime) {
     entity.DeliveryDate = dateTime;
     Variables["deliveryDate"].Text = dateTime; //refactoring is needed
+}
+
+function DeleteAndBack(order, wfName) {
+    if (wfName != 'Order')
+        DB.Delete(order);
+    Workflow.Back();
 }

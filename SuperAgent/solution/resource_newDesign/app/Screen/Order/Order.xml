@@ -14,7 +14,7 @@
   <c:DockLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$DoRollback()">
+      <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$DeleteAndBack($workflow.order, $workflow.name)">
         <c:Image/>
         <c:TextView Text="#sku#"/>
       </c:HorizontalLayout>

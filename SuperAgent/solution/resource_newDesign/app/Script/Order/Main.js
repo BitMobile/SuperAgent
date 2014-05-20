@@ -11,17 +11,34 @@ function GetOrderList() {
     return q.Execute();
 }
 
-function AssignNumberIfNotExist(order) {
+function AssignNumberIfNotExist(number) {
 
-    if (order.Number == null) {
-        var number = "noNumber";
-    }
-    else {
-        var number = order.Number;
-    }
+    if (number == null)
+        var number =  Translate["#noNumber#"];
 
     return number;
 
+}
+
+function GetOutlets(searchText) {
+    if (String.IsNullOrEmpty(searchText)) {
+        //var query = new Query();
+        //query.Text = "SELECT Id, Address, Description, ConfirmationStatus FROM Catalog_Outlet ORDER BY Description LIMIT 100";
+        var query = new Query("SELECT O.Id, T.Outlet, O.Description, O.Address FROM Catalog_Territory_Outlets T JOIN Catalog_Outlet O ON O.Id=T.Outlet ORDER BY O.Description LIMIT 500");
+        return query.Execute();
+    }
+    else {
+        //var query = new Query();
+        searchText = "'%" + searchText + "%'";
+        //query.Text = "SELECT Id, Address, Description, ConfirmationStatus FROM Catalog_Outlet WHERE Description LIKE " + searchText + " ORDER BY Description LIMIT 100";
+        var query = new Query("SELECT O.Id, T.Outlet, O.Description, O.Address FROM Catalog_Territory_Outlets T JOIN Catalog_Outlet O ON O.Id=T.Outlet WHERE O.Description LIKE " + searchText + " ORDER BY O.Description LIMIT 500");
+        return query.Execute();
+    }
+}
+
+function AddGlobalAndAction(name, value, actionName) {
+    $.AddGlobal(name, value);
+    Workflow.Action(actionName, [value]);
 }
 
 function GetPriceListQty(outlet) {
@@ -50,6 +67,8 @@ function CreateOrderIfNotExists(order, outlet, userRef, visitId, executedOrder) 
         if (order == null) {
             var order = DB.Create("Document.Order");
             order.Date = DateTime.Now;
+            if (outlet == null)
+                outlet = $.outlet;
             order.Outlet = outlet;
             order.SR = userRef;
             order.DeliveryDate = DateTime.Now;
@@ -70,6 +89,7 @@ function CreateOrderIfNotExists(order, outlet, userRef, visitId, executedOrder) 
             return order.Id;
             //}
         }
+
         return order;
     }
 }
@@ -145,14 +165,21 @@ function SelectPriceList(order, priceLists) {
 
 }
 
-function CheckIfEmptyAndForward(order) {
+function CheckIfEmptyAndForward(order, wfName) {
     var query = new Query("SELECT Id FROM Document_Order_SKUs WHERE Ref=@ref");
     query.AddParameter("ref", order);
+    var save = true;
     if (parseInt(query.ExecuteCount()) == parseInt(0)) {
         DB.Delete(order);
+        save = false;
     }
-    Workflow.Action("Forward", []);
-
+    if (wfName != "CreateOrder")
+        Workflow.Action("Forward", []);
+    else {
+        if (save)
+            order.GetObject().Save();
+        Workflow.Commit();
+    }
 }
 
 function SaveOrder(order) {

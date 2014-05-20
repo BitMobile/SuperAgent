@@ -77,3 +77,7 @@ function GetOutlets() {
     return q.Execute();
 }
 
+function AddGlobalAndAction(name, value, actionName) {
+    $.AddGlobal(name, value);
+    Workflow.Action(actionName, []);
+}

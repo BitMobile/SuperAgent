@@ -32,6 +32,17 @@
       </c:DockLayout>
       <c:HorizontalLine/>
 
+      <s:Push Id="orderSum" Value="$GetOrderSumm()"/>
+      
+      <c:DockLayout OnClickAction="$DoAction(Order)">
+        <c:TextView CssClass="menu_text" Text="$orderSum"></c:TextView>
+        <c:HorizontalLayout>
+          <c:Image CssClass="btn_orders"/>
+          <c:TextView Text="#orders#"></c:TextView>
+        </c:HorizontalLayout>
+      </c:DockLayout>
+      <c:HorizontalLine/>
+
       <c:DockLayout OnClickAction="$DoAction(Sync)">
         <c:TextView CssClass="menu_text" Text="$lastDataSync"/>
         <c:HorizontalLayout>
@@ -106,7 +117,6 @@
 
         </c:DockLayout>
 
-        <s:Push Id="orderSum" Value="$GetOrderSumm()"/>
 
         <c:DockLayout CssClass="short_panel">
           <c:DockLayout CssClass="grid">

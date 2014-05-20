@@ -1,4 +1,29 @@
 
+function GetOrderList() {
+
+    //if (String.IsNullOrEmpty(searchText)) {
+    //    return DB.Current.Document.Order.Select().OrderBy("Date", true).Top(100);
+    //}
+    //else {
+    //    return DB.Current.Document.Order.Select().Where("OutletAsObject.Description.Contains(@p1)", [searchText]).OrderBy("Date", true).Top(100);
+    //}
+    var q = new Query("SELECT DO.Id, DO.Outlet, DO.Date, DO.Number, CO.Description AS OutletDescription FROM Document_Order DO JOIN Catalog_Outlet CO ON DO.Outlet=CO.Id ORDER BY DO.Date LIMIT 100");
+    return q.Execute();
+}
+
+function AssignNumberIfNotExist(order) {
+
+    if (order.Number == null) {
+        var number = "noNumber";
+    }
+    else {
+        var number = order.Number;
+    }
+
+    return number;
+
+}
+
 function GetPriceListQty(outlet) {
     var query = new Query("SELECT COUNT(*) FROM Catalog_Outlet_Prices WHERE Ref = @Ref");
     query.AddParameter("Ref", outlet);

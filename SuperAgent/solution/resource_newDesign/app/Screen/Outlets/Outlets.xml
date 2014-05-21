@@ -26,10 +26,13 @@
     </c:HorizontalLayout>
     <c:HorizontalLine/>
 
-    <c:HorizontalLayout CssClass="bottom_btn" OnEvent="Back" OnClickAction="$DoAction(Create)">
-      <c:TextView Text="#add#"></c:TextView>
-    </c:HorizontalLayout>
-    <c:HorizontalLine CssClass="b_line"/>
+    <s:If Test="$workflow.name=='Outlets'">
+      <c:HorizontalLayout CssClass="bottom_btn" OnEvent="Back" OnClickAction="$DoAction(Create)">
+        <c:TextView Text="#add#"></c:TextView>
+      </c:HorizontalLayout>
+      <c:HorizontalLine CssClass="b_line"/>
+    </s:If>
+
 
     <c:ScrollView Id="grScrollView">
 
@@ -37,7 +40,7 @@
       <c:HorizontalLine/>
 
       <s:Iterator Id="outlet" Value="$outlets">
- 
+
         <c:HorizontalLayout CssClass="grid" OnClickAction="$AddGlobalAndAction(outlet, $outlet.Id, Select)">
           <c:VerticalLayout CssClass="no_mark"/>
           <c:VerticalLayout>

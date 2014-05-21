@@ -15,6 +15,8 @@ function GetOutlets(searchText) {
 }
 
 function AddGlobalAndAction(name, value, actionName) {
+    if (Variables.Exists(name))
+        $.Remove(name);
     $.AddGlobal(name, value);
     Workflow.Action(actionName, []);
 }

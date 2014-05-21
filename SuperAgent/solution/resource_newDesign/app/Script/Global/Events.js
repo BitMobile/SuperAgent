@@ -33,7 +33,7 @@ function OnWorkflowForward(name, lastStep, nextStep, parameters) {
 
 function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
     if (nextStep == "Visit_Tasks") {
-        if (workflowName == "ScheduledVisit" || workflowName == "UnscheduledVisit") {
+        if (workflowName == "Visit") {
 
             var outlet = Variables["workflow"]["outlet"];
 
@@ -62,7 +62,7 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 
 
     if (nextStep == "Questions") {
-        if (workflowName == "ScheduledVisit" || workflowName == "UnscheduledVisit") {
+        if (workflowName == "Visit") {
             var outlet = Variables["workflow"]["outlet"];
 
             var questionaries = GetQuesttionaires();
@@ -84,7 +84,7 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 
 
     if (nextStep == "SKUs") {
-        if (workflowName == "ScheduledVisit" || workflowName == "UnscheduledVisit") {
+        if (workflowName == "Visit") {
             var outlet = Variables["workflow"]["outlet"];
 
             var questionaries = GetQuesttionaires();
@@ -112,7 +112,7 @@ function OnWorkflowBack(name, lastStep, nextStep) {
 }
 
 function OnWorkflowFinish(name, reason) {
-    if (name == "UnscheduledVisit" || name == "ScheduledVisit") {
+    if (name == "Visit") {
         Variables.Remove("outlet");
         GPS.StopTracking();
     }

@@ -1,5 +1,5 @@
 ﻿function OrderCheckRequired(visit, wfName) {
-    if (wfName == 'ScheduledVisit' && GetOrderControlValue() && OrderExists(visit)==false)
+    if (wfName == 'Visit' && GetOrderControlValue() && OrderExists(visit) == false)
         return true;
     else
         return false;
@@ -36,7 +36,7 @@ function GetOrderControlValue() {
 }
 
 function VisitReasonCheckrequired(wfName, visit) {
-    if (wfName == 'UnscheduledVisit' && GetUVRvalue())
+    if (wfName == 'Visit' && GetUVRvalue())
         return true
     else
         return false;

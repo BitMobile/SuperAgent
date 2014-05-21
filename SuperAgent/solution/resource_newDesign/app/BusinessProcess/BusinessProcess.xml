@@ -21,8 +21,8 @@
 
     <bp:Step Name="Visits" Screen="Visits.xml" Controller="Visits\Main.js">
       <bp:Action Name="ShowMap" NextStep="ShowMap"></bp:Action>
-      <bp:Action Name="Select" NextWorkflow="ScheduledVisit"></bp:Action>
-      <bp:Action Name="SelectUnscheduled" NextWorkflow="UnscheduledVisit"></bp:Action>
+      <bp:Action Name="Select" NextWorkflow="Visit"></bp:Action>
+      <bp:Action Name="SelectUnscheduled" NextWorkflow="Visit"></bp:Action>
     </bp:Step>
 
     <bp:Step Name="ShowMap" Screen="ScheduledVisits_Map.xml">
@@ -30,7 +30,7 @@
 
   </bp:Workflow>
 
-  <bp:Workflow Name="ScheduledVisit">
+  <bp:Workflow Name="Visit">
 
     <bp:Step Name="Outlet" Screen="Outlet.xml" Controller="Outlets\Main.js">
       <bp:Action Name="Forward" NextStep="Visit_Tasks"></bp:Action>
@@ -138,105 +138,25 @@
 
   </bp:Workflow>
 
-  <bp:Workflow Name="UnscheduledVisit">
-
-    <bp:Step Name="Outlet" Screen="Outlet.xml">
-      <bp:Action Name="Forward" NextStep="Visit_Tasks"></bp:Action>
-      <bp:Action Name="Skip1" NextStep="Questions"></bp:Action>
-      <bp:Action Name="Skip2" NextStep="SKUs"></bp:Action>
-      <bp:Action Name="Skip3" NextStep="Order"></bp:Action>
-      <bp:Action Name="EditParameter" NextStep="EditOutletParameter"></bp:Action>
-      <bp:Action Name="EditAddParameter" NextStep="EditOutletAddParameter"></bp:Action>
-    </bp:Step>
-
-    <bp:Step Name="Visit_Tasks" Screen="Tasks.xml">
-      <bp:Action Name="Forward" NextStep="Questions"></bp:Action>
-      <bp:Action Name="Skip2" NextStep="SKUs"></bp:Action>
-      <bp:Action Name="Skip3" NextStep="Order"></bp:Action>
-    </bp:Step>
-
-    <bp:Step Name="Questions" Screen="Visit_Questions.xml">
-      <bp:Action Name="Forward" NextStep="SKUs"></bp:Action>
-      <bp:Action Name="Edit" NextStep="EditQuestion"></bp:Action>
-      <bp:Action Name="Skip3" NextStep="Order"></bp:Action>
-    </bp:Step>
-
-    <bp:Step Name="SKUs" Screen="Visit_SKUs.xml">
-      <bp:Action Name="Forward" NextStep="Order"></bp:Action>
-      <bp:Action Name="Edit" NextStep="Visit_EditSKU"></bp:Action>
-    </bp:Step>
-
-    <bp:Step Name="Order" Screen="Order.xml">
-      <bp:Action Name="Add" NextStep="AddSKU"></bp:Action>
-      <bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
-      <bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
-      <bp:Action Name="Forward" NextStep="Commentary"></bp:Action>
-      <bp:Action Name="SkipCommentary" NextStep="Receivables"></bp:Action>
-    </bp:Step>
-
-    <bp:Step Name="Commentary" Screen="Order_Commentary.xml">
-      <bp:Action Name="Forward" NextStep="Receivables"></bp:Action>
-    </bp:Step>
-
-    <bp:Step Name="OrderInfo" Screen="Order_Info.xml" Controller="Order\Main.js">
-      <bp:Action Name="EditPriceList" NextStep="PriceLists"></bp:Action>
-    </bp:Step>
-
-    <bp:Step Name="Receivables" Screen="Receivables.xml">
-      <bp:Action Name="Forward" NextStep="Total"></bp:Action>
-    </bp:Step>
-
-    <bp:Step Name="Total" Screen="Visit_Total.xml">
-      <bp:Action Name="attributesFill" NextStep="ListChoice"></bp:Action>
-    </bp:Step>
-
-    <bp:Step Name="ListChoice" Screen="ListChoice.xml">
-    </bp:Step>
-
-    <bp:Step Name="AddSKU" Screen="Order_SKUs.xml">
-      <bp:Action Name="SetFilter" NextStep="Filters"></bp:Action>
-      <bp:Action Name="SelectSKU" NextStep="EditSKU"></bp:Action>
-      <bp:Action Name="Forward" NextStep="Order"></bp:Action>
-    </bp:Step>
-
-    <bp:Step Name="Filters" Screen="Filters.xml">
-      <bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>
-    </bp:Step>
-
-    <bp:Step Name="EditSKU" Screen="Order_EditSKU.xml">
-      <bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>
-    </bp:Step>
-
-    <bp:Step Name="PriceLists" Screen="ListChoice.xml">
-    </bp:Step>
-
-    <bp:Step Name="EditOutletParameter" Screen="ListChoice.xml">
-    </bp:Step>
-
-    <bp:Step Name="EditOutletAddParameter" Screen="OutletParameter.xml">
-    </bp:Step>
-
-    <bp:Step Name="EditQuestion" Screen="ListChoice.xml">
-    </bp:Step>
-
-    <bp:Step Name="Visit_EditSKU" Screen="Visit_SKU.xml">
-    </bp:Step>
-
-  </bp:Workflow>
-
   <bp:Workflow Name="Order">
 
     <bp:Step Name="OrderList" Screen="Order\OrderList.xml" Controller="Order\Main.js">
       <bp:Action Name="Create" NextWorkflow="CreateOrder"></bp:Action>
       <bp:Action Name="Select" NextStep="Order"></bp:Action>
     </bp:Step>
-   
-  </bp:Workflow>
 
+    <bp:Step Name="Order" Screen="Order\Order.xml" Controller="Order\Main.js">
+      <bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
+    </bp:Step>
+
+    <bp:Step Name="OrderInfo" Screen="Order_Info.xml" Controller="Order\Main.js">
+    </bp:Step>
+    
+  </bp:Workflow>
   
   <bp:Workflow Name="CreateOrder">
 
-    <bp:Step Name="Outlets" Screen="Outlets\Outlets.xml" Controller="Order\Main.js">
+    <bp:Step Name="Outlets" Screen="Outlets\Outlets.xml" Controller="Outlets\Main.js">
       <bp:Action Name="Select" NextStep="Order"></bp:Action>
     </bp:Step>
 

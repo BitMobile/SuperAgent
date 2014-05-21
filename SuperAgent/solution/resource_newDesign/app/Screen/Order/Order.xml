@@ -8,7 +8,6 @@
 
   <s:Push Id="items" Value="$GetOrderedSKUs($workflow.order)"></s:Push>
   <s:Push Id="sum" Value="$GetOrderSUM($workflow.order)"></s:Push>
-  <s:Push Id="null" Value="$CreateOrderStatusVariables()"></s:Push>
 
   <c:DockLayout>
 
@@ -26,64 +25,26 @@
     <c:Image CssClass="5_scroll"></c:Image>
     <c:HorizontalLine/>
 
-    <s:If Test="$workflow.order.IsNew == True">
-
+    <s:If Test="$executedOrder == null">
       <s:If Test="$NotEmptyRef($workflow.order.PriceList)">
         <c:HorizontalLayout CssClass="bottom_btn" OnEvent="Back" OnClickAction="$DoAction(Add,$workflow.order)">
           <c:TextView Text="#add#"></c:TextView>
         </c:HorizontalLayout>
         <c:HorizontalLine CssClass="b_line"/>
       </s:If>
-
-      <c:ScrollView Id="grScrollView">
-
-        <c:HorizontalLayout Id="Orderadd" CssClass="caption_grid">
-          <c:TextView Text="#orderInfo#:"></c:TextView>
-        </c:HorizontalLayout>
-        <c:HorizontalLine/>
-
-        <c:HorizontalLayout CssClass ="grid" OnClickAction="$DoAction(ShowInfo,$sum)">
-          <c:VerticalLayout>
-            <s:Push Id="plDescription" Value="$GetDescription($workflow.order.PriceList)"></s:Push>
-            <c:TextView Text="{$plDescription}" CssClass="description_row"></c:TextView>
-            <c:TextView Text="#orderSum#:" CssClass="description_row"></c:TextView>
-            <c:TextView Text="$sum" CssClass="main_row"></c:TextView>
-          </c:VerticalLayout>
-          <c:Image/>
-        </c:HorizontalLayout>
-        <c:HorizontalLine/>
-
-        <c:HorizontalLayout CssClass="caption_grid">
-          <c:TextView Text="#skuInOrder#:"></c:TextView>
-        </c:HorizontalLayout>
-        <c:HorizontalLine/>
-
-        <s:Iterator Id="orderitem" Value="$items">
-
-          <s:If Test="$orderitem != null">
-            <c:HorizontalLayout CssClass ="grid" OnClickAction="$Workflow.DoAction(Edit,$orderitem.SKU,null,$orderitem.Id)">
-              <c:VerticalLayout>
-                <s:Push Id="featureDescr" Value="$GetFeatureDescr($orderitem.Feature)"></s:Push>
-                <c:TextView Text="{$orderitem.SKU.Description}{$featureDescr}" CssClass="main_row"></c:TextView>
-                <c:TextView Text="#quantity#: {$orderitem.Qty}   #amount#: {$orderitem.Amount}" CssClass="description_row"></c:TextView>
-              </c:VerticalLayout>
-              <c:Image/>
-            </c:HorizontalLayout>
-            <c:HorizontalLine/>
-          </s:If>
-
-        </s:Iterator>
-
-      </c:ScrollView>
     </s:If>
 
+    <c:ScrollView Id="grScrollView">
 
+      <c:HorizontalLayout Id="Orderadd" CssClass="caption_grid">
+        <c:TextView Text="#orderInfo#:"></c:TextView>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
 
-
-    <s:Else>
-      <c:HorizontalLayout CssClass ="grid" OnClickAction="$Workflow.DoAction(ShowInfo,$sum)">
+      <c:HorizontalLayout CssClass ="grid" OnClickAction="$DoAction(ShowInfo,$sum,null)">
         <c:VerticalLayout>
-          <c:TextView Text="#priceList#: {$workflow.order.PriceList.Description}" CssClass="description_row"></c:TextView>
+          <s:Push Id="plDescription" Value="$GetDescription($workflow.order.PriceList)"></s:Push>
+          <c:TextView Text="{$plDescription}" CssClass="description_row"></c:TextView>
           <c:TextView Text="#orderSum#:" CssClass="description_row"></c:TextView>
           <c:TextView Text="$sum" CssClass="main_row"></c:TextView>
         </c:VerticalLayout>
@@ -91,24 +52,30 @@
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
+      <c:HorizontalLayout CssClass="caption_grid">
+        <c:TextView Text="#skuInOrder#:"></c:TextView>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
 
-      <c:ScrollView Id="grScrollView" CssClass="grid">
+      <s:Iterator Id="orderitem" Value="$items">
 
-        <s:Iterator Id="orderitem" Value="$items">
-
-          <c:HorizontalLayout>
+        <s:If Test="$orderitem != null">
+          <c:HorizontalLayout CssClass ="grid" OnClickAction="$Workflow.DoAction(Edit,$orderitem.SKU,null,$orderitem.Id)">
             <c:VerticalLayout>
-              <c:TextView Text="$orderitem.SKU.Description" CssClass="main_row"></c:TextView>
+              <s:Push Id="featureDescr" Value="$GetFeatureDescr($orderitem.Feature)"></s:Push>
+              <c:TextView Text="{$orderitem.SKU.Description}{$featureDescr}" CssClass="main_row"></c:TextView>
               <c:TextView Text="#quantity#: {$orderitem.Qty}   #amount#: {$orderitem.Amount}" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
+            <s:If Test="$executedOrder==null">
+              <c:Image/>
+            </s:If>
           </c:HorizontalLayout>
           <c:HorizontalLine/>
+        </s:If>
 
-        </s:Iterator>
+      </s:Iterator>
 
-      </c:ScrollView>
-
-    </s:Else>
+    </c:ScrollView>
 
   </c:DockLayout>
 

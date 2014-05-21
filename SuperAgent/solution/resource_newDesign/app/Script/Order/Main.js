@@ -7,7 +7,7 @@ function GetOrderList() {
     //else {
     //    return DB.Current.Document.Order.Select().Where("OutletAsObject.Description.Contains(@p1)", [searchText]).OrderBy("Date", true).Top(100);
     //}
-    var q = new Query("SELECT DO.Id, DO.Outlet, DO.Date, DO.Number, CO.Description AS OutletDescription FROM Document_Order DO JOIN Catalog_Outlet CO ON DO.Outlet=CO.Id ORDER BY DO.Date LIMIT 100");
+    var q = new Query("SELECT DO.Id, DO.Outlet, DO.Date, DO.Number, CO.Description AS OutletDescription FROM Document_Order DO JOIN Catalog_Outlet CO ON DO.Outlet=CO.Id ORDER BY DO.Date DESC LIMIT 100");
     return q.Execute();
 }
 
@@ -150,8 +150,8 @@ function GetFeatureDescr(feature) {
         return (", " + feature.Description);
 }
 
-function SelectPriceList(order, priceLists) {
-    if (parseInt(priceLists) != parseInt(1) && order.Status.Description == "New" && parseInt(priceLists) != parseInt(0)) {
+function SelectPriceList(order, priceLists, executedOrder) {
+    if (parseInt(priceLists) != parseInt(1) && executedOrder==null && parseInt(priceLists) != parseInt(0)) {
         var query = new Query("SELECT DISTINCT D.Id, D.Description FROM Catalog_Outlet_Prices O JOIN Document_PriceList D WHERE O.Ref = @Ref ORDER BY O.LineNumber");
         query.AddParameter("Ref", order.Outlet);
         var pl = query.ExecuteCount();
@@ -176,8 +176,10 @@ function CheckIfEmptyAndForward(order, wfName) {
     if (wfName != "CreateOrder")
         Workflow.Action("Forward", []);
     else {
-        if (save)
+        if (save) {
+            Dialog.Debug(order.GetObject());
             order.GetObject().Save();
+        }
         Workflow.Commit();
     }
 }

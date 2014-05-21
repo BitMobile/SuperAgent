@@ -16,7 +16,7 @@ function ChangeListAndRefresh(control) {
 
 function GetUncommitedScheduledVisits(searchText, getCount) {
     //var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_VisitPlan_Outlets VP LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet WHERE  V.Date=@date ORDER BY O.Description LIMIT 100"); //V.Id IS NULL AND
-    var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_VisitPlan_Outlets VP JOIN Catalog_Outlet O ON O.Id = VP.Outlet LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet AND V.Date >= @today AND V.Date < @tomorrow WHERE VP.Date=@date AND V.Id IS NULL ORDER BY O.Description LIMIT 100"); //V.Id IS NULL AND
+    var q = new Query("SELECT DISTINCT VP.Outlet, VP.Ref FROM Document_VisitPlan_Outlets VP JOIN Catalog_Outlet O ON O.Id = VP.Outlet LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet AND V.Date >= @today AND V.Date < @tomorrow WHERE VP.Date=@date AND V.Id IS NULL ORDER BY O.Description LIMIT 100"); //V.Id IS NULL AND
     q.AddParameter("date", DateTime.Now.Date);
     q.AddParameter("today", DateTime.Now.Date);
     q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
@@ -77,7 +77,8 @@ function GetOutlets() {
     return q.Execute();
 }
 
-function AddGlobalAndAction(name, value, actionName) {
-    $.AddGlobal(name, value);
+function AddGlobalAndAction(planVisit, outlet, actionName) {
+    $.AddGlobal("planVisit", planVisit);
+    $.AddGlobal("outlet", outlet);
     Workflow.Action(actionName, []);
 }

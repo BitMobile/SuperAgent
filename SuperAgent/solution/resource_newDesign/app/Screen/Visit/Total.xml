@@ -22,6 +22,7 @@
       <c:HorizontalLayout CssClass="caption_grid">
         <c:TextView Text="#additionally#:"></c:TextView>
       </c:HorizontalLayout>
+      <c:HorizontalLine/>
 
       <s:If Test="$OrderExists($workflow.visit)">
         <c:HorizontalLayout CssClass="grid" OnClickAction="$SetDeliveryDate($workflow.order, $deliveryDate)">

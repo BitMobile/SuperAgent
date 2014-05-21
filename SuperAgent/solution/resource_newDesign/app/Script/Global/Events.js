@@ -114,6 +114,8 @@ function OnWorkflowBack(name, lastStep, nextStep) {
 function OnWorkflowFinish(name, reason) {
     if (name == "Visit") {
         Variables.Remove("outlet");
+        if (Variables.Exists("planVisit"))
+            Variables.Remove("planVisit");
         GPS.StopTracking();
     }
     Variables.Remove("workflow");

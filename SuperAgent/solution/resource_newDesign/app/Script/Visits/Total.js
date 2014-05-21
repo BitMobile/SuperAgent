@@ -1,5 +1,5 @@
 ﻿function OrderCheckRequired(visit, wfName) {
-    if (wfName == 'Visit' && GetOrderControlValue() && OrderExists(visit) == false)
+    if (visit.Plan.EmptyRef()==false && GetOrderControlValue() && OrderExists(visit) == false)
         return true;
     else
         return false;
@@ -36,7 +36,7 @@ function GetOrderControlValue() {
 }
 
 function VisitReasonCheckrequired(wfName, visit) {
-    if (wfName == 'Visit' && GetUVRvalue())
+    if (visit.Plan.EmptyRef() && GetUVRvalue())
         return true
     else
         return false;
@@ -105,7 +105,10 @@ function CheckAndCommit(order, visit, wfName) {
 }
 
 function VisitIsChecked(visit, order, wfName) {
-    if (OrderCheckRequired(order, wfName) && visit.ReasonForNotOfTakingOrder.EmptyRef())
+    Dialog.Debug(visit.GetObject());
+    Dialog.Debug(OrderCheckRequired(visit, wfName));
+    Dialog.Debug(VisitReasonCheckrequired(wfName, visit));
+    if (OrderCheckRequired(visit, wfName) && visit.ReasonForNotOfTakingOrder.EmptyRef())
         return false;
     else {
         if (VisitReasonCheckrequired(wfName, visit) && visit.ReasonForVisit.EmptyRef())

@@ -145,6 +145,7 @@ function UpdateOtletStatus() {
 
 function CreateOutlet() {
     var outlet = DB.Create("Catalog.Outlet");
+    outlet.ConfirmationStatus = DB.Current.Constant.OutletConfirmationStatus.New;
     outlet.Save();
     return outlet.Id;
 }

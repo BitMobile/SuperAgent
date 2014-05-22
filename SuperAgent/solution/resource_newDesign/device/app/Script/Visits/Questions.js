@@ -1,7 +1,12 @@
-﻿function GetQuestionsByOutlet(questionnaire) {
-    //    var result = DB.Current.Document.Questionnaire_Questions.SelectBy("Ref", questionnaires).OrderBy("LineNumber").Distinct("Question");
+﻿function GetQuestionsByQuestionnaire(questionnaire) {
     var query = new Query("SELECT Q.Id, C.Description, D.Description As AnswerType, C.Id AS Question FROM Document_Questionnaire_Questions Q JOIN Catalog_Question C ON Q.Question=C.Id JOIN Enum_DataType D ON D.Id=C.AnswerType WHERE Ref=@ref ORDER BY LineNumber");
     query.AddParameter("ref", questionnaire);
+    var res = query.Execute();
+    
+    //var arr = [];
+    //while (res.Next())
+    //    arr.push(res.Question);
+
     return query.Execute();
 }
 
@@ -80,12 +85,6 @@ function GetCameraObject(entity) {
 }
 
 function CheckEmptyQuestionsAndForward(questionnaires, visit) {
-
-    //var emptyQuestion = DB.Current.Document.Visit_Questions.SelectBy("Ref", visit.Id).Where("Answer==@p1", [""]).First();
-    //while (emptyQuestion != null) {
-    //    DB.Current.Document.Visit_Questions.Delete(emptyQuestion);
-    //    emptyQuestion = DB.Current.Document.Visit_Questions.SelectBy("Ref", visit.Id).Where("Answer==@p1", [""]).First();
-    //}
 
     Workflow.Forward([]);
 }

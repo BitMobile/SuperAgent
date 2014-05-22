@@ -27,11 +27,11 @@
       <c:HorizontalLine/>
 
       <s:Iterator Id="questionnaire" Value ="$workflow.questionnaires" Status="statusCount1">
-        <s:Push Id="questions" Value="$GetQuestionsByOutlet($questionnaire)"></s:Push>
+        <s:Push Id="questions" Value="$GetQuestionsByQuestionnaire($questionnaire)"></s:Push>
 
         <s:Iterator Id="question" Value="$questions" Status="statusCount2">
           <s:Push Id="workflow.questions_qty" Value="$GetSum($workflow.questions_qty, 1)"></s:Push>
-          <s:Push Id="questionValue" Value="$CreateVisitQuestionValueIfNotExists($visit,$question.Id,$questionValue)"></s:Push>
+          <s:Push Id="questionValue" Value="$CreateVisitQuestionValueIfNotExists($visit,$question.Question,$questionValue)"></s:Push>
           <s:Push Id="index" Value="{$statusCount1.Index}{$statusCount2.Index}"></s:Push>
 
           <c:HorizontalLayout CssClass="grid">

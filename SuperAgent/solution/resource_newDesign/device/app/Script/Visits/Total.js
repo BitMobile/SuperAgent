@@ -105,9 +105,6 @@ function CheckAndCommit(order, visit, wfName) {
 }
 
 function VisitIsChecked(visit, order, wfName) {
-    Dialog.Debug(visit.GetObject());
-    Dialog.Debug(OrderCheckRequired(visit, wfName));
-    Dialog.Debug(VisitReasonCheckrequired(wfName, visit));
     if (OrderCheckRequired(visit, wfName) && visit.ReasonForNotOfTakingOrder.EmptyRef())
         return false;
     else {

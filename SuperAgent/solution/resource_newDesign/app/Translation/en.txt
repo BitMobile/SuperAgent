@@ -188,3 +188,6 @@ programmingCollectionForToday	programming collection for today
 accountsReceivables	accounts receivables
 unknown	unknown
 list	List
+turnaroundTime	Turnaround time
+noteAsExecuted	Note as executed
+noteAsNew	Note as new

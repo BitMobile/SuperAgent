@@ -3,7 +3,7 @@ function GetExecutedTasks(visit) {
     var query = new Query("SELECT VT.Id, DT.PlanDate, DT.TextTask FROM Document_Visit_Task VT JOIN Document_Task DT ON VT.TaskRef=DT.Id WHERE VT.Ref=@ref AND VT.Result=@result");
     query.AddParameter("ref", visit);
     query.AddParameter("result", true);
-    
+
     return query.Execute();
 }
 
@@ -21,7 +21,11 @@ function CompleteTheTask(task, visit) {
     var visit_task_obj = visit_task.GetObject();
     visit_task_obj.Result = true;
     visit_task_obj.Save();
-    Workflow.Refresh([]);
+
+    if (Variables.Exists("task"))
+        Workflow.Refresh([$.task, visit_task_obj.Id]);
+    else
+        Workflow.Refresh([]);
 }
 
 function CreateVisitTaskValueIfNotExists(visit, task) {
@@ -45,5 +49,9 @@ function RetrieveTask(executedTask) {
     var task_obj = executedTask.GetObject();
     task_obj.Result = false;
     task_obj.Save();
-    Workflow.Refresh([]);
+
+    if (Variables.Exists("task"))
+        Workflow.Refresh([$.task]);
+    else
+        Workflow.Refresh([]);
 }

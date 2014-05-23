@@ -274,7 +274,7 @@ function Back(outlet) {
         outlet.GetObject().Save();
 
         Variables.Remove("outlet");
-        DoAction("List");
+        DoActionBack("List");
     }
 }
 

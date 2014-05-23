@@ -25,7 +25,7 @@
     <c:Image CssClass="5_scroll"></c:Image>
     <c:HorizontalLine/>
 
-    <s:If Test="$executedOrder == null">
+    <s:If Test="$order.IsNew">
       <s:If Test="$NotEmptyRef($workflow.order.PriceList)">
         <c:HorizontalLayout CssClass="bottom_btn" OnEvent="Back" OnClickAction="$DoAction(Add,$workflow.order)">
           <c:TextView Text="#add#"></c:TextView>

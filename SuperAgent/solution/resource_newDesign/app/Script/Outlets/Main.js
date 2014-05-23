@@ -282,3 +282,8 @@ function DeleteAndBack(visit) {
     DB.Delete(visit);
     Workflow.Back();
 }
+
+function DeleteAndRollback(visit) {
+    DB.Delete(visit);
+    DoRollback();
+}

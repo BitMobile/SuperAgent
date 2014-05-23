@@ -175,7 +175,7 @@
     <bp:Step Name="AddSKU" Screen="Order_SKUs.xml"  Controller="Order\Order_SKUs.js">
       <bp:Action Name="SetFilter" NextStep="Filters"></bp:Action>
       <bp:Action Name="SelectSKU" NextStep="EditSKU"></bp:Action>
-      <bp:Action Name="Forward" NextStep="Order"></bp:Action>
+      <bp:Action Name="Order" NextStep="Order"></bp:Action>
     </bp:Step>
 
     <bp:Step Name="Filters" Screen="Filters.xml" Controller="Order\Order_SKUs.js">

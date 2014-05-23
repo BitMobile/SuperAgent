@@ -146,6 +146,7 @@ features	Характеристики
 noPriceLists	Для этой торговой точки нет прайс-листов
 emptyList	Список пуст
 impossibleToDelete	Невозможно удалить, заказ уже передан в базу
+impossibleToEdit	Невозможно редактировать, заказ уже передан в базу
 valueList	Список значений
 deliveryDate	Дата доставки
 enterDateTime	Введите дату и время

@@ -1,58 +1,68 @@
 ﻿
-function GetSKUsByOutlet(questionnaire) {
-    //if (questionnaires == null)
-    //    return null;
-    //else {
-    //    var s = DB.Current.Catalog.SKU.Select().Distinct("Id");
-    //    var result = DB.Current.Document.Questionnaire_SKUs.SelectBy("Ref", questionnaires).Union(DB.Current.Document.Questionnaire_SKUs.SelectBy("SKU", s)).OrderBy("LineNumber").Distinct("SKU");
-    //    if (result.Count() > 0)
-    //        return result;
-    //    else
-    //        return null;
-    //}
-    var q = new Query("SELECT DISTINCT DQ.Id, CS.Description, DQ.SKU FROM Document_Questionnaire_SKUs DQ JOIN Catalog_SKU CS ON DQ.SKU=CS.Id WHERE Ref=@ref ORDER BY DQ.LineNumber");
-    q.AddParameter("ref", questionnaire);
-    var rcs = q.Execute();
-    while (rcs.Next()) {
-        //Dialog.Debug(rcs.SKU);
-    }
-    //rcs.Next();
+function GetSKUsFromQuesionnaires(outlet) {
+
+    var regionQuest = GetQuesttionaire(outlet, DB.Current.Constant.QuestionnaireScale.Region);
+    var territoryQuest = GetQuesttionaire(outlet, DB.Current.Constant.QuestionnaireScale.Territory);
+
+    var q = new Query();
+    var fileds = "SELECT q1.LineNumber AS LineNumber, q1.SKU, CS.Description, q1.Ref AS Ref1, DQQ2.Ref AS Ref2, ";
+    var innerQuery1 = "(SELECT COUNT(Id) FROM Document_Questionnaire_SKUQuestions WHERE UseInQuestionaire=1 AND Ref=@regionRef) ";
+    var caseThen = " CASE WHEN DQQ2.Ref IS NULL THEN NULL ELSE ";
+    var caseEnd = " END AS questionsCount2 ";
+    var innerQuery2 = " (SELECT COUNT(Id) FROM Document_Questionnaire_SKUQuestions WHERE UseInQuestionaire=1 AND Ref=@terrRef) ";
+    var from = " FROM Document_Questionnaire_SKUs q1 JOIN Catalog_SKU CS ON q1.SKU=CS.Id ";
+    var leftJoin1 = " LEFT JOIN Document_Questionnaire_SKUs DQQ2 ON q1.SKU=DQQ2.SKU AND DQQ2.Ref=@terrRef ";
+    var where1 = " WHERE q1.Ref=@regionRef ";
+    var leftJoin2 = " LEFT JOIN Document_Questionnaire_SKUs q2 ON q2.SKU=q1.SKU and q2.ref=@regionRef LEFT JOIN Document_Questionnaire_SKUs DQQ2 ON q1.SKU=DQQ2.SKU AND DQQ2.Ref=@regionRef WHERE q1.Ref = @terrRef and q2.Id is null ";
+    var order = " ORDER BY T1, LineNumber ";
+    q.Text = fileds + " 1 AS T1, " + innerQuery1 + " AS questionsCount1, " + caseThen + innerQuery2 + caseEnd + from + leftJoin1 + where1 + " UNION ALL " + fileds + " 2 AS T1, " + innerQuery2 + " AS questionsCount1, " + caseThen + innerQuery1 + caseEnd + from + leftJoin2 + order;    
+
+    q.AddParameter("regionRef", regionQuest); //38426ABE-7EA7-11E3-BD7D-50E549CAB397
+    q.AddParameter("terrRef", territoryQuest); //CD5051D4-7E9C-11E3-BD7D-50E549CAB397
+    Variables.Add("workflow.sku_qty", q.ExecuteCount());
+
     return q.Execute();
+}
+
+function GetQuesttionaire(outlet, scale) {
+
+    var q1 = new Query("SELECT Id FROM Document_Questionnaire WHERE OutletType=@type AND OutletClass=@class AND Scale=@scale ORDER BY Date desc");
+    q1.AddParameter("type", outlet.Type);
+    q1.AddParameter("class", outlet.Class);
+    q1.AddParameter("scale", scale);
+
+    return q1.ExecuteScalar();
+
 }
 
 function GetVisitSKUValue(visit, sku) {
     var query = new Query("SELECT Id FROM Document_Visit_SKUs WHERE Ref == @Visit AND SKU == @SKU");
     query.AddParameter("Visit", visit);
     query.AddParameter("SKU", sku);
-    return query.Execute();
+    return query.ExecuteScalar();
 }
 
-function GetSKUQty(questionnaire, sku) {
+function GetSKUQty(outlet, ref1, ref2, count1, count2) {
 
-    var cv = parseInt(0);
-    var parameters = ["Available", "Facing", "Stock", "Price", "MarkUp", "OutOfStock", "Snapshot"];
-    for (var i in parameters) {
-        var lm = CheckQuestionExistence(questionnaire, parameters[i], sku);
-        if (lm)
-            cv += parseInt(1);
-    }
-    Variables["workflow"]["sku_qty"] = parseInt(Variables["workflow"]["sku_qty"]);
-    Variables["workflow"]["sku_qty"] += cv;
-    return cv;
+    if (ref2 == null)
+        return count1;
+    else {
+        var regionQuest = GetQuesttionaire(outlet, DB.Current.Constant.QuestionnaireScale.Region);
+        var territoryQuest = GetQuesttionaire(outlet, DB.Current.Constant.QuestionnaireScale.Territory);
+
+        var query = new Query("SELECT DISTINCT q1.SKUQuestion FROM Document_Questionnaire_SKUQuestions q1 WHERE (q1.Ref=@ref1 OR q1.Ref=@ref2) AND q1.UseInQuestionaire=1");
+        query.AddParameter("ref1", regionQuest);
+        query.AddParameter("ref2", territoryQuest);
+        var res = query.ExecuteCount();
+
+        return res;
+    }   
 
 }
+
 
 function CheckQuestionExistence(questionnaire, description, sku) {
 
-    //var skuSelect = DB.Current.Document.Questionnaire_SKUs.SelectBy("SKU", sku.Id).Distinct("Ref");
-    //var result = DB.Current.Document.Questionnaire_SKUQuestions.SelectBy("Ref", questionnaires)
-    //    .Where("SKUQuestionAsObject.Description==@p1 && UseInQuestionaire==@p2", [description, true])
-    //    .Union(DB.Current.Document.Questionnaire_SKUQuestions.SelectBy("Ref", skuSelect))
-    //    .Count();
-    //if (result == 0)
-    //    return false;
-    //else
-    //    return true;
     var q = new Query("SELECT DQ.Id,  E.Description, CS.Description AS SKU, DQ.UseInQuestionaire FROM Document_Questionnaire_SKUQuestions DQ JOIN Enum_SKUQuestions E ON DQ.SKUQuestion=E.Id JOIN Document_Questionnaire_SKUs DS ON DS.Ref=DQ.Ref JOIN Catalog_SKU CS ON DS.SKU=CS.Id WHERE DQ.Ref=@ref AND E.Description=@questionDescr AND DS.SKU=@sku AND DQ.UseInQuestionaire=@use");
     q.AddParameter("ref", questionnaire);
     q.AddParameter("questionDescr", description);
@@ -64,16 +74,24 @@ function CheckQuestionExistence(questionnaire, description, sku) {
         return true;
 }
 
-function GetSKUAnswers(visit, sku) {//, sku_answ) {
+function GetSKUAnswers(skuvalue) {//, sku_answ) {
 
-    var sa = parseInt(0);
-    var parameters = ["Available", "Facing", "Stock", "Price", "MarkUp", "OutOfStock", "Snapshot"];
-    for (var i in parameters) {
-        if (IsAnswered(visit, parameters[i], sku))
-            sa += parseInt(1);
-    }
-    Variables["workflow"]["sku_answ"] += sa;
-    return sa;
+    if (skuvalue == null)
+        return parseInt(0);
+
+    else {
+        var sa = parseInt(0);
+        var parameters = ["Available", "Facing", "Stock", "Price", "MarkUp", "OutOfStock", "Snapshot"];
+        for (var i in parameters) {
+            var name = parameters[i];
+            if (skuvalue[name] != null)
+                sa += parseInt(1);
+        }
+
+        Variables["workflow"]["sku_answ"] += sa;
+        Dialog.Debug(Variables["workflow"]["sku_answ"]);
+        return sa;
+    }    
 }
 
 function IsAnswered(visit, qName, sku) {
@@ -108,6 +126,24 @@ function SKUIsInList(sku) {
 
 //------------------------SKU----------------------
 
+function GetSKUQuestions(regionQuest, territoryQuest) {
+
+    var q = new Query("SELECT DISTINCT ES.Description, DQ.LineNumber, DQ.SKUQuestion FROM Document_Questionnaire_SKUQuestions DQ JOIN Enum_SKUQuestions ES ON DQ.SKUQuestion=ES.Id WHERE (DQ.Ref=@ref1 OR DQ.Ref=@ref2) AND DQ.UseInQuestionaire=1 ORDER BY LineNumber");
+    q.AddParameter("ref1", regionQuest);
+    q.AddParameter("ref2", territoryQuest);
+
+    Variables.Add("workflow.sku_qty", q.ExecuteCount());
+
+    var res = q.Execute();
+
+    var arr = new List;
+    while (res.Next()) 
+        arr.Add(res.SKUQuestion.Description);
+    return arr;
+}
+
+ 
+
 function CreateVisitSKUValueIfNotExists(visit, sku, skuValue) {
     if (skuValue != null)
         return skuValue;
@@ -126,6 +162,15 @@ function GetSnapshotText(text) {
         return Translate["#noSnapshot#"];
     else
         return Translate["#snapshotAttached#"];
+}
+
+function GetQuestionSet(quest1, quest2, skuValue) {
+    var q = new Query();
+    q.AddParameter("ref1", quest1);
+    q.AddParameter("ref2", quest2);
+    var res = q.Execute();
+
+    
 }
 
 function GoToQuestionAction(answerType, question, visit, control, attribute) {

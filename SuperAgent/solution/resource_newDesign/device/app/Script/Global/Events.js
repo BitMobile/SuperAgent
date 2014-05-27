@@ -38,7 +38,7 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
             var outlet = Variables["workflow"]["outlet"];
 
             var tasks = GetTasks(outlet);
-            var questionaries = GetQuesttionaires();
+            var questionaries = GetQuesttionaires(outlet);
             var questions = GetQuestionsByOutlet(questionaries);
             var SKUQuest = GetSKUsByOutlet(questionaries);
 
@@ -65,7 +65,7 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
         if (workflowName == "Visit") {
             var outlet = Variables["workflow"]["outlet"];
 
-            var questionaries = GetQuesttionaires();
+            var questionaries = GetQuesttionaires(outlet);
             var questions = GetQuestionsByOutlet(questionaries);
             var SKUQuest = GetSKUsByOutlet(questionaries);
 
@@ -87,7 +87,7 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
         if (workflowName == "Visit") {
             var outlet = Variables["workflow"]["outlet"];
 
-            var questionaries = GetQuesttionaires();
+            var questionaries = GetQuesttionaires(outlet);
             var SKUQuest = GetSKUsByOutlet(questionaries);
 
             if (parseInt(SKUQuest) == parseInt(0)) {
@@ -112,7 +112,7 @@ function OnWorkflowBack(name, lastStep, nextStep) {
 }
 
 function OnWorkflowFinish(name, reason) {
-    if (name == "Visit") {
+    if (name == "Visit" || name == "CreateOrder") {
         Variables.Remove("outlet");
         if (Variables.Exists("planVisit"))
             Variables.Remove("planVisit");
@@ -190,10 +190,28 @@ function GetTasks(outlet) {
 
 }
 
-function GetQuesttionaires() {
-
-    return Variables["workflow"]["questionnaires"];
+function GetQuesttionaires(outlet) {
+    var regionQuest = GetQuesttionaire(outlet, DB.Current.Constant.QuestionnaireScale.Region);
+    var territoryQuest = GetQuesttionaire(outlet, DB.Current.Constant.QuestionnaireScale.Territory);
+    var questArr = new List;
+    if (regionQuest != null)
+        questArr.Add(regionQuest);
+    if (territoryQuest != null)
+        questArr.Add(territoryQuest);
+    return questArr;
 }
+
+function GetQuesttionaire(outlet, scale) {
+
+    var q1 = new Query("SELECT Id FROM Document_Questionnaire WHERE OutletType=@type AND OutletClass=@class AND Scale=@scale ORDER BY Date desc");
+    q1.AddParameter("type", outlet.Type);
+    q1.AddParameter("class", outlet.Class);
+    q1.AddParameter("scale", scale);
+
+    return q1.ExecuteScalar();
+
+}
+
 
 function GetQuestionsByOutlet(questionnaires) {
 

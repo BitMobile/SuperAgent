@@ -177,7 +177,6 @@ function CheckIfEmptyAndForward(order, wfName) {
         Workflow.Action("Forward", []);
     else {
         if (save) {
-            Dialog.Debug(order.GetObject());
             order.GetObject().Save();
         }
         Workflow.Commit();

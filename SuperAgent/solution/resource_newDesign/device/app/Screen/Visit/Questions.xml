@@ -3,7 +3,7 @@
 
   <s:Push Id="outlet" Value="$workflow.outlet"></s:Push>
   <s:Push Id="visit" Value="$workflow.visit"></s:Push>
-  <s:Push Id="workflow.questions_qty" Value="$ToInteger(0)"></s:Push>
+  <s:Push Id="questions" Value="$GetQuestionsByQuestionnaires($outlet)"></s:Push>
 
   <c:VerticalLayout>
 
@@ -12,7 +12,7 @@
         <c:Image/>
         <c:TextView Text="#tasks#"/>
       </c:HorizontalLayout>
-      <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckEmptyQuestionsAndForward($workflow.questionnaires, $visit)"/>
+      <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckEmptyQuestionsAndForward($visit)"/>
       <c:HorizontalLayout>
         <c:TextView Text="#questions#" />
       </c:HorizontalLayout>
@@ -26,13 +26,10 @@
       <c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
       <c:HorizontalLine/>
 
-      <s:Iterator Id="questionnaire" Value ="$workflow.questionnaires" Status="statusCount1">
-        <s:Push Id="questions" Value="$GetQuestionsByQuestionnaire($questionnaire)"></s:Push>
-
-        <s:Iterator Id="question" Value="$questions" Status="statusCount2">
+        <s:Iterator Id="question" Value="$questions" Status="statusCount">
           <s:Push Id="workflow.questions_qty" Value="$GetSum($workflow.questions_qty, 1)"></s:Push>
           <s:Push Id="questionValue" Value="$CreateVisitQuestionValueIfNotExists($visit,$question.Question,$questionValue)"></s:Push>
-          <s:Push Id="index" Value="{$statusCount1.Index}{$statusCount2.Index}"></s:Push>
+          <s:Push Id="index" Value="{$statusCount.Index}"></s:Push>
 
           <c:HorizontalLayout CssClass="grid">
             <c:VerticalLayout OnClickAction="$GoToQuestionAction($question.AnswerType, $questionValue, $visit, control{$index}, $question.Question)">
@@ -83,7 +80,6 @@
           <c:HorizontalLine/>
 
         </s:Iterator>
-      </s:Iterator>
 
     </c:ScrollView>
 

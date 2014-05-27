@@ -1,3 +1,4 @@
+
 function GetOutlets(searchText) {
     if (String.IsNullOrEmpty(searchText)) {
         var query = new Query();
@@ -154,27 +155,6 @@ function CreateOutlet() {
 //--------------------------case Visits----------------------
 
 
-function GetQuesttionaires(outlet) {
-
-    var q1 = new Query("SELECT Id FROM Document_Questionnaire WHERE OutletType=@type AND OutletClass=@class AND Scale=@scale ORDER BY Date desc");
-    q1.AddParameter("type", outlet.Type);
-    q1.AddParameter("class", outlet.Class);
-    q1.AddParameter("scale", DB.Current.Constant.QuestionnaireScale.Region);
-
-    var q2 = new Query("SELECT Id FROM Document_Questionnaire WHERE OutletType=@type AND OutletClass=@class AND Scale=@scale ORDER BY Date desc");
-    q2.AddParameter("type", outlet.Type);
-    q2.AddParameter("class", outlet.Class);
-    q2.AddParameter("scale", DB.Current.Constant.QuestionnaireScale.Territory);
-
-    var quest_collection = [];
-    if (q1.ExecuteScalar() != null)
-        quest_collection.push(q1.ExecuteScalar());
-    if (q2.ExecuteScalar() != null)
-        quest_collection.push(q2.ExecuteScalar());
-
-    return quest_collection;
-
-}
 
 function CreateVisitIfNotExists(outlet, userRef, visit, planVisit) {
 

@@ -4,12 +4,6 @@
 
   <s:If Test="$workflow.name=='Visit'">
     <s:Push Id="workflow.outlet" Value="$outlet"></s:Push>
-    <s:Push Id="workflow.questions_qty" Value="$ToInteger(0)"></s:Push>
-    <s:Push Id="workflow.sku_qty" Value="$ToInteger(0)"></s:Push>
-    <s:Push Id="workflow.sku_answ" Value="$ToInteger(0)"></s:Push>
-    <s:Push Id="workflow.questionnaires" Value="$GetQuesttionaires($outlet)"></s:Push>
-
-
     <s:Push Id="workflow.visit" Value="$CreateVisitIfNotExists($outlet,$common.UserRef, $workflow.visit, $planVisit)"/>
   </s:If>
 

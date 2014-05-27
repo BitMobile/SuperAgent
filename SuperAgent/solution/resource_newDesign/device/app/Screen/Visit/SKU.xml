@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
 
-  <s:Push Id="outlet" Value="$param1"></s:Push>
-  <s:Push Id="visit" Value="$param2"></s:Push>
-  <s:Push Id="sku" Value="$param3"></s:Push>
-  <s:Push Id="questionnaire" Value="$param5"></s:Push>
-  <s:Push Id="skuValue" Value="$CreateVisitSKUValueIfNotExists($visit,$sku,$param4)"></s:Push>
+  <s:Push Id="visit" Value="$param1"></s:Push>
+  <s:Push Id="sku" Value="$param2"></s:Push>
+  <s:Push Id="quest1" Value="$param3"></s:Push>
+  <s:Push Id="quest2" Value="$param4"></s:Push>
+  <s:Push Id="questions" Value="$GetSKUQuestions($quest1, $quest2)"></s:Push>
+  <s:Push Id="skuValue" Value="$CreateVisitSKUValueIfNotExists($visit,$sku,$param5)"></s:Push>
 
   <c:DockLayout>
 
@@ -18,8 +19,8 @@
     <c:HorizontalLine/>
     
     <c:ScrollView Id="grScrollView">
-      <s:Push Id="useInQuestionnaire" Value="$CheckQuestionExistence($questionnaire, Available, $sku)"></s:Push>
-      <s:If Test="$useInQuestionnaire">
+      
+      <s:If Test="$IsInCollection(Available, $questions)">
         <c:HorizontalLayout  CssClass="grid">
           <c:VerticalLayout OnClickAction="$GoToQuestionAction(Boolean, $skuValue, $visit, cAvailable, Available)">
             <c:TextView Text="#available#" CssClass="description_row"></c:TextView>
@@ -29,8 +30,7 @@
         <c:HorizontalLine/>
       </s:If>
 
-      <s:Push Id="useInQuestionnaire" Value="$CheckQuestionExistence($questionnaire, Facing, $sku)"></s:Push>
-      <s:If Test="$useInQuestionnaire">
+      <s:If Test="$IsInCollection(Facing, $questions)">
         <c:HorizontalLayout CssClass="grid">
           <c:VerticalLayout>
             <c:TextView Text="#facing#" CssClass="description_row"></c:TextView>
@@ -40,8 +40,7 @@
         <c:HorizontalLine/>
       </s:If>
 
-      <s:Push Id="useInQuestionnaire" Value="$CheckQuestionExistence($questionnaire, Stock, $sku)"></s:Push>
-      <s:If Test="$useInQuestionnaire">
+      <s:If Test="$IsInCollection(Stock, $questions)">
         <c:HorizontalLayout CssClass="grid">
           <c:VerticalLayout>
             <c:TextView Text="#stock#" CssClass="description_row"></c:TextView>
@@ -51,8 +50,7 @@
         <c:HorizontalLine/>
       </s:If>
 
-      <s:Push Id="useInQuestionnaire" Value="$CheckQuestionExistence($questionnaire, Price, $sku)"></s:Push>
-      <s:If Test="$useInQuestionnaire">
+      <s:If Test="$IsInCollection(Price, $questions)">
         <c:HorizontalLayout CssClass="grid">
           <c:VerticalLayout>
             <c:TextView Text="#price#" CssClass="description_row"></c:TextView>
@@ -62,8 +60,7 @@
         <c:HorizontalLine/>
       </s:If>
 
-      <s:Push Id="useInQuestionnaire" Value="$CheckQuestionExistence($questionnaire, MarkUp, $sku)"></s:Push>
-      <s:If Test="$useInQuestionnaire">
+      <s:If Test="$IsInCollection(MarkUp, $questions)">
         <c:HorizontalLayout CssClass="grid">
           <c:VerticalLayout>
             <c:TextView Text="#markUp#" CssClass="description_row"></c:TextView>
@@ -73,8 +70,7 @@
         <c:HorizontalLine/>
       </s:If>
 
-      <s:Push Id="useInQuestionnaire" Value="$CheckQuestionExistence($questionnaire, OutOfStock, $sku)"></s:Push>
-      <s:If Test="$useInQuestionnaire">
+      <s:If Test="$IsInCollection(OutOfStock, $questions)">
         <c:HorizontalLayout  CssClass="grid">
           <c:VerticalLayout OnClickAction="$GoToQuestionAction(Boolean, $skuValue, $visit, cOutOfStock, OutOfStock)">
             <c:TextView Text="#available#" CssClass="description_row"></c:TextView>
@@ -83,8 +79,7 @@
         </c:HorizontalLayout>
       </s:If>
 
-      <s:Push Id="useInQuestionnaire" Value="$CheckQuestionExistence($questionnaire, Snapshot, $sku)"></s:Push>
-      <s:If Test="$useInQuestionnaire">
+      <s:If Test="$IsInCollection(Snapshot, $questions)">
         <c:HorizontalLayout CssClass="grid" OnClickAction="$GetSKUShapshot($workflow.visit,$skuValue,$snapshotInfo)">
           <c:VerticalLayout>
             <s:Push Id="snapshotText" Value="$GetSnapshotText($skuValue.Snapshot)"></s:Push>

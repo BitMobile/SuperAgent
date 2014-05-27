@@ -89,7 +89,6 @@ function GetSKUAnswers(skuvalue) {//, sku_answ) {
         }
 
         Variables["workflow"]["sku_answ"] += sa;
-        Dialog.Debug(Variables["workflow"]["sku_answ"]);
         return sa;
     }    
 }

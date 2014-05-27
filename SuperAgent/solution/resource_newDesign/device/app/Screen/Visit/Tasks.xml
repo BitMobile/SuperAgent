@@ -10,7 +10,7 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()">
+      <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$DoActionBack(Outlet)">
         <c:Image/>
         <c:TextView Text="#client#"/>
       </c:HorizontalLayout>
@@ -39,7 +39,7 @@
               <c:TextView Text="#execute#"></c:TextView>
             </c:VerticalLayout>
           </c:HorizontalLayout>
-          <c:HorizontalLayout CssClass="grid">
+          <c:HorizontalLayout CssClass="grid" OnClickAction="$DoAction(Select, $task.Id)">
             <c:VerticalLayout>
               <c:TextView Text="{$task.PlanDate.DateString}" CssClass="description_row"></c:TextView>
               <c:TextView Text="$task.TextTask" CssClass="main_row"></c:TextView>
@@ -59,7 +59,7 @@
       <s:Iterator Id="eTask" Value="$exTasks">
 
         <c:SwipeHorizontalLayout Id="swipe_layout" CssClass="swipe_layout">
-          <c:HorizontalLayout CssClass="grid">
+          <c:HorizontalLayout CssClass="grid" OnClickAction="$DoAction(Select, $eTask.Id.TaskRef ,$eTask.Id)">
             <c:VerticalLayout>
               <c:TextView Text="{$eTask.PlanDate.DateString}" CssClass="description_row"></c:TextView>
               <c:TextView Text="$eTask.TextTask" CssClass="main_row"></c:TextView>

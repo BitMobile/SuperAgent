@@ -208,3 +208,11 @@ function DeleteAndBack(order, wfName) {
         DB.Delete(order);
     Workflow.Back();
 }
+
+function ShowInfoIfIsNew() {
+    if ($.workflow.order.IsNew) {
+        DoAction(ShowInfo, $sum);
+    }
+    else
+        Dialog.Message("#impossibleToEdit#");
+}

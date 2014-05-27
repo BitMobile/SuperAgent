@@ -218,6 +218,7 @@
     <Content Include="resource_newDesign\device\app\Screen\Visit\Tasks.xml" />
     <Content Include="resource_newDesign\device\app\Screen\Visit\Total.xml" />
     <Content Include="resource_newDesign\device\app\Script\Global\Events.js" />
+    <Content Include="resource_newDesign\app\Screen\Visit\Task.xml" />
     <Content Include="resource_newDesign\device\app\Script\Global\Facade.js" />
     <Content Include="resource_newDesign\device\app\Script\Global\Global.js" />
     <Content Include="resource_newDesign\device\app\Script\Main\Main.js" />

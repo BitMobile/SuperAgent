@@ -382,7 +382,6 @@ MemoEdit {
                 font: 65% arial;
             }
 
-
 .main_row {
     width: 100%;
     height: 40%;
@@ -398,12 +397,49 @@ MemoEdit {
     color: #8e8e93;
 }
 
+.half_grid {
+    height: 8sp;
+    width: 100%;
+    background-color: #ffffff;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+    .half_grid Button {
+        height: 100%;
+        width: 100%;
+        vertical-align: central;        
+    }
+
+    .half_grid TextView {
+        height: 40%;
+        width: 45%;
+        vertical-align: central;
+        white-space: nowrap;
+        font: 80% Arial;
+        color: #2d89cf;
+    }
+
+    .half_grid hlf_value {
+        text-align: right;
+        color: #8e8e93;
+    }
+
+.positive_decision {
+    color: #32CD32;
+}
+
+.negative_decision {
+     color: #f00;
+}
+        
+
 .yellow_mark {
     background-image: url(yellow_mark.png);
     height: 0%;
     width: 4.1%;
     margin-left: 2%;
-    margin-right: 0%;    
+    margin-right: 0%;
 }
 
 .no_mark {
@@ -490,7 +526,6 @@ MemoEdit {
     }
 
 .tick {
-
     width: 5%;
     margin-left: 3%;
     margin-top: 35%;

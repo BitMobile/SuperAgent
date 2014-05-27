@@ -255,11 +255,16 @@ function Back(outlet) {
         outlet.GetObject().Save();
 
         Variables.Remove("outlet");
-        DoAction("List");
+        DoActionBack("List");
     }
 }
 
 function DeleteAndBack(visit) {
     DB.Delete(visit);
     Workflow.Back();
+}
+
+function DeleteAndRollback(visit) {
+    DB.Delete(visit);
+    DoRollback();
 }

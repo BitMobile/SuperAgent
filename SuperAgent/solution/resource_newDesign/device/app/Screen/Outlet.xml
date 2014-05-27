@@ -23,7 +23,7 @@
     </s:If>
     <s:Else>
       <c:DockLayout CssClass="top_navigator">
-        <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$DeleteAndBack($workflow.visit)">
+        <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$DeleteAndRollback($workflow.visit)">
           <c:Image/>
           <c:TextView Text="#visits#"/>
         </c:HorizontalLayout>

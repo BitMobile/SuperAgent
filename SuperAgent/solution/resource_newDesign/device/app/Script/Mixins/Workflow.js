@@ -24,6 +24,11 @@ function DoAction()
     Workflow.Action(arr.shift(), arr);
 }
 
+function DoActionBack() {
+    var arr = arguments.array;
+    Workflow.ActionBack(arr.shift(), arr);
+}
+
 function DoRefresh()
 { 
     Workflow.Refresh(arguments.array);

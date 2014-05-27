@@ -147,6 +147,7 @@ features	Features
 noPriceLists	No Price Lists for this outlet
 emptyList	List is empty
 impossibleToDelete	Impossible to delete, order is already in base
+impossibleToEdit	Impossible to edit, order is already in base
 valueList	Value list
 deliveryDate	Delivery date
 enterDateTime	Enter date, time
@@ -188,3 +189,6 @@ programmingCollectionForToday	programming collection for today
 accountsReceivables	accounts receivables
 unknown	unknown
 list	List
+turnaroundTime	Turnaround time
+noteAsExecuted	Note as executed
+noteAsNew	Note as new

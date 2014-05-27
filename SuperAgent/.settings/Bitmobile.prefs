@@ -1,0 +1,7 @@
+Bitmobile.device_address=
+Bitmobile.device_port=
+Bitmobile.server_password=Test1234
+Bitmobile.server_url=http\://localhost/SyncOnPremises
+Bitmobile.solution_name=test
+Bitmobile.util_path=C\:\\BitMobileServer\\utils\\Utils.exe
+eclipse.preferences.version=1

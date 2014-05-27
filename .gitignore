@@ -31,3 +31,10 @@ _ReSharper*/
 .orig
 SuperAgent/solution/resource.rar
 *.orig
+.metadata/*
+*.dll
+*.settings/*
+*.DS_Store
+*.dll
+*.dll
+*.dll

@@ -3,7 +3,7 @@
 
   <s:Push Id="order" Value="$workflow.order"></s:Push>
   <s:Push Id="sum" Value="$param1"></s:Push>
-  <s:Push Id="executedOrder" Value="param2"></s:Push>
+  <s:Push Id="executedOrder" Value="$param2"></s:Push>
   <s:Push Id="priceLists" Value="$GetPriceListQty($order.Outlet)"></s:Push>
 
   <c:DockLayout>

@@ -24,22 +24,25 @@ function OnWorkflowStart(name) {
 	}
 
 	if (name == "Visit") {
-		var steps = GetSteps($.outlet);		
+		var steps = GetSteps($.outlet);
 
 		Variables.Add("workflow.skipSKUs", true);
 		while (steps.Next()) {
-			
-			if (parseInt(steps.Tasks) != parseInt(0)) 
-				Variables.Add("workflow.skipTasks", false);	// нельзя просто взять и присвоить значение переменной!	
+
+			if (parseInt(steps.Tasks) != parseInt(0))
+				Variables.Add("workflow.skipTasks", false); // нельзя просто
+															// взять и присвоить
+															// значение
+															// переменной!
 			else
-				Variables.Add("workflow.skipTasks", true);				
-			
-			if (parseInt(steps.Questions) != parseInt(0)) 
+				Variables.Add("workflow.skipTasks", true);
+
+			if (parseInt(steps.Questions) != parseInt(0))
 				Variables.Add("workflow.skipQuestions", false);
 			else
 				Variables.Add("workflow.skipQuestions", true);
-			
-			if (parseInt(steps.SKUQuestions) != parseInt(0)) 
+
+			if (parseInt(steps.SKUQuestions) != parseInt(0))
 				Variables.Add("workflow.skipSKUs", false);
 			else
 				Variables.Add("workflow.skipSKUs", true);
@@ -48,6 +51,7 @@ function OnWorkflowStart(name) {
 	}
 
 	Variables["workflow"].Add("name", name);
+	
 }
 
 function OnWorkflowForward(name, lastStep, nextStep, parameters) {
@@ -60,7 +64,7 @@ function OnWorkflowForward(name, lastStep, nextStep, parameters) {
 function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 
 	if (workflowName == "Visit") {
-		
+
 		if (nextStep == "Visit_Tasks") {
 			if ($.workflow.skipTasks) {
 				if ($.workflow.skipQuestions) {
@@ -101,10 +105,7 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 
 }
 
-function OnWorkflowBack(name, lastStep, nextStep) {
-	if (lastStep == "PriceLists" && nextStep == "OrderInfo")
-		ReviseSKUs();
-}
+//function OnWorkflowBack(name, lastStep, nextStep) {}
 
 function OnWorkflowFinish(name, reason) {
 	if (name == "Visit" || name == "CreateOrder") {
@@ -154,28 +155,7 @@ function PrepareScheduledVisits_Map() {
 	}
 }
 
-function ReviseSKUs() {
-	var query = new Query();
-	query.AddParameter("orderId", Variables["workflow"]["order"].Id);
-	query.Text = "select * from Document.Order_SKUs where Ref==@orderId limit 100";
-	var SKUs = query.Execute();
-	var s = SKUs.Count();
 
-	for ( var k in SKUs) {
-		var query2 = new Query();
-		query2.AddParameter("PLid", Variables["workflow"]["order"].PriceList);
-		query2.AddParameter("sku", k.SKU);
-		query2.Text = "select single(*) from Document.PriceList_Prices where Ref==@PLid && SKU==@sku";
-		var pricelistItem = query2.Execute();
-		if (pricelistItem == null)
-			DB.Current.Document.Order_SKUs.Delete(k);
-		else {
-			k.Price = pricelistItem.Price;
-			k.Total = (k.Discount / 100 + 1) * k.Price;
-			k.Amount = k.Qty * k.Total;
-		}
-	}
-}
 
 function GetSteps(outlet) {
 
@@ -206,4 +186,3 @@ function GetQuesttionaire(outlet, scale) {
 	return q1.ExecuteScalar();
 
 }
-

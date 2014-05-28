@@ -207,6 +207,18 @@ function DeleteAndBack(order, wfName) {
     if (wfName != 'Order')
         DB.Delete(order);
     Workflow.Back();
+//	    var actionName = "";
+//	if ($.workflow.skipSKUs) {
+//		if ($.workflow.skipQuestions) {
+//			if ($.workflow.skipTasks)
+//				actionName = "Skip3";
+//			else
+//				actionName = "Skip2";
+//		} else
+//			actionName = "Skip1";
+//	} else
+//		actionName = "SKUs";
+//	Workflow.ActionBack(actionName, []);
 }
 
 function ShowInfoIfIsNew() {

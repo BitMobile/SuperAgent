@@ -64,7 +64,7 @@ orderHistory	ИСТОРИЯ ЗАКАЗОВ
 kpi			Отчеты/KPI
 tasks		Задачи
 task		Задача
-todoDone	Задач выполено
+todoDone	Задач выполнено
 execute		Выполнить
 retrieve	Вернуть
 newTasks	НЕВЫПОЛНЕННЫЕ

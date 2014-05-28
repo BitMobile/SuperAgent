@@ -15,7 +15,7 @@
     <c:DockLayout CssClass="top_navigator">
       <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$DeleteAndBack($workflow.order, $workflow.name)">
         <c:Image/>
-        <c:TextView Text="#sku#"/>
+        <c:TextView Text="#back#"/>
       </c:HorizontalLayout>
       <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckIfEmptyAndForward($workflow.order, $workflow.name)"/>
       <c:HorizontalLayout>

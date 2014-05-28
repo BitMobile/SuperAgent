@@ -11,7 +11,7 @@
     <c:DockLayout CssClass="top_navigator">
       <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()">
         <c:Image/>
-        <c:TextView Text="#visits#"/>
+        <c:TextView Text="#back#"/>
       </c:HorizontalLayout>
       <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckEmtySKUAndForward($outlet,$visit)"/>
       <c:HorizontalLayout>

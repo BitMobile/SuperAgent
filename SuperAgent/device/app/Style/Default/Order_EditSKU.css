@@ -1,5 +1,5 @@
 .btn_showpicture {
-    height: 2.3sp;
+    height: 2.9sp;
     width: 100%;
     selected-color: #bacdce;
     background-color: #efeff4;
@@ -7,7 +7,7 @@
 }
 
     .btn_showpicture TextView {
-        height: 100%;
+        height: 80%;
         width: 100%;
         margin-left: 3.5%;
         color: #2d89cf;
@@ -15,7 +15,6 @@
     }
 
 .60 {
-    height: 60%;
     width: 100%;
     margin-top: 0%;
     background-color: #fff;
@@ -23,6 +22,7 @@
 
     .60 Image {
         width: 100%;
+        height: 0%;
         margin-top: 0%;
     }
 

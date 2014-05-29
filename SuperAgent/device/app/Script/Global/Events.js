@@ -19,7 +19,7 @@ function OnLoad(screenName) {
 
 function OnWorkflowStart(name) {
 	Variables.AddGlobal("workflow", new Dictionary());
-	if (name == "Visits" || name == "Outlets" || name="CreateOrder") {
+	if (name == "Visits" || name == "Outlets" || name=="CreateOrder") {
 		GPS.StartTracking();
 	}
 
@@ -108,7 +108,7 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 //function OnWorkflowBack(name, lastStep, nextStep) {}
 
 function OnWorkflowFinish(name, reason) {
-	if (name == "Visit" || name == "CreateOrder" || name="Outlets") {
+	if (name == "Visit" || name == "CreateOrder" || name=="Outlets") {
 		Variables.Remove("outlet");
 
 		if (Variables.Exists("planVisit"))

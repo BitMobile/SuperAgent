@@ -294,7 +294,7 @@ function DeleteAndBack(order, wfName) {
 }
 
 function ShowInfoIfIsNew() {
-	if ($.workflow.order.IsNew) {
+	if ($.workflow.order.IsNew()) {
 		DoAction(ShowInfo, $sum);
 	} else
 		Dialog.Message("#impossibleToEdit#");

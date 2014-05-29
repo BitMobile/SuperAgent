@@ -114,6 +114,10 @@ function S4() {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 }
 
+function IsNew(val1) {
+	return val1.IsNew();
+}
+
 
 //-----------------Dialog handlers-----------------
 

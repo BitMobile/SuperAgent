@@ -129,7 +129,7 @@ function CheckEmptyOutletFields(outlet) {
 function CheckIfEmpty(entity, attribute, objectType, objectName, deleteIfEmpty) {
 
     if (entity[attribute].Trim() == "" || String(entity[attribute]) == "0") {
-        if (entity.IsNew && ConvertToBoolean(deleteIfEmpty)) {
+        if (entity.IsNew() && ConvertToBoolean(deleteIfEmpty)) {
             DB.Current[objectType][objectName].Delete(entity);
             return true;
         }

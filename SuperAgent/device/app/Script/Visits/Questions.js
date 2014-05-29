@@ -82,10 +82,7 @@ function GoToQuestionAction(answerType, question, visit, control, questionItem) 
     if (answerType == "Boolean") {
         Global.BooleanDialogSelect(question, "Answer", Variables[control]);
     }
-
-    if (answerType == "Integer" || answerType == "String" || answerType == "Decimal") {
-        Variables["memoAnswer"].AutoFocus == true;
-    }
+   
 }
 
 function SaveAtVisit(arr) {

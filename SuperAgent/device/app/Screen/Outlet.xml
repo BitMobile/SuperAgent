@@ -11,7 +11,7 @@
 
     <s:If Test="$workflow.name=='Outlets'">
       <c:DockLayout CssClass="top_navigator">
-        <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$Back($outlet)">
+        <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$DoRollback()">
           <c:Image/>
           <c:TextView Text="#list#"/>
         </c:HorizontalLayout>

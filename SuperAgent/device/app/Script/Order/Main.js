@@ -245,6 +245,7 @@ function CheckIfEmptyAndForward(order, wfName) {
 	var save = true;
 	if (parseInt(query.ExecuteCount()) == parseInt(0)) {
 		DB.Delete(order);
+		$.workflow.Remove("order");
 		save = false;
 	}
 	if (wfName != "CreateOrder")

@@ -57,8 +57,11 @@ function GetPriceListQty(outlet) {
 		var query = new Query(
 				"SELECT Id FROM Document_PriceList WHERE DefaultPriceList = @true");
 		query.AddParameter("true", true);
+		return query.ExecuteCount();
 	}
-	return query.ExecuteCount();
+	else
+		return pl;
+	
 
 }
 
@@ -276,8 +279,12 @@ function DateTimeDialog(entity, dateTime) {
 }
 
 function DeleteAndBack(order, wfName) {
-	if (wfName != 'Order')
-		DB.Delete(order);
+	DB.Delete(order);
+	if (wfName == "CreateOrder"){
+		$.Remove("outlet");
+		$.workflow.Remove("order");
+	}
+	Dialog.Debug($.workflow.order);
 	Workflow.Back();
 	// var actionName = "";
 	// if ($.workflow.skipSKUs) {

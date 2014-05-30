@@ -145,7 +145,6 @@ function CreateOrderStatusVariables() {
 }
 
 function GetDescription(priceList) {
-	// Dialog.Debug(priceList.EmptyRef());
 	if (priceList.EmptyRef())
 		return Translate["#noPriceLists#"];
 	else
@@ -284,7 +283,6 @@ function DeleteAndBack(order, wfName) {
 		$.Remove("outlet");
 		$.workflow.Remove("order");
 	}
-	Dialog.Debug($.workflow.order);
 	Workflow.Back();
 	// var actionName = "";
 	// if ($.workflow.skipSKUs) {

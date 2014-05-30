@@ -24,8 +24,7 @@
 
 	q.AddParameter("regionRef", regionQuest); // 38426ABE-7EA7-11E3-BD7D-50E549CAB397
 	q.AddParameter("terrRef", territoryQuest); // CD5051D4-7E9C-11E3-BD7D-50E549CAB397
-	Variables.Add("workflow.sku_qty", q.ExecuteCount());
-
+	
 	return q.Execute();
 }
 
@@ -51,8 +50,10 @@ function GetVisitSKUValue(visit, sku) {
 
 function GetSKUQty(outlet, ref1, ref2, count1, count2) {
 
+	var c = 0;
+	
 	if (ref2 == null)
-		return count1;
+		c = count1;
 	else {
 		var regionQuest = GetQuesttionaire(outlet,
 				DB.Current.Constant.QuestionnaireScale.Region);
@@ -65,8 +66,14 @@ function GetSKUQty(outlet, ref1, ref2, count1, count2) {
 		query.AddParameter("ref2", territoryQuest);
 		var res = query.ExecuteCount();
 
-		return res;
+		c = res;
 	}
+	
+	var n = $.workflow.sku_qty;
+	$.workflow.Remove("sku_qty");
+	$.workflow.Add("sku_qty", (n+c));	
+	
+	return c;
 
 }
 
@@ -142,8 +149,6 @@ function GetSKUQuestions(regionQuest, territoryQuest) {
 			"SELECT DISTINCT ES.Description, DQ.LineNumber, DQ.SKUQuestion FROM Document_Questionnaire_SKUQuestions DQ JOIN Enum_SKUQuestions ES ON DQ.SKUQuestion=ES.Id WHERE (DQ.Ref=@ref1 OR DQ.Ref=@ref2) AND DQ.UseInQuestionaire=1 ORDER BY LineNumber");
 	q.AddParameter("ref1", regionQuest);
 	q.AddParameter("ref2", territoryQuest);
-
-	Variables.Add("workflow.sku_qty", q.ExecuteCount());
 
 	var res = q.Execute();
 

@@ -5,6 +5,7 @@
   <s:Push Id="visit" Value="$workflow.visit"></s:Push>
   <s:Push Id="SKUs" Value="$GetSKUsFromQuesionnaires($outlet)"></s:Push>
   <s:Push Id="workflow.sku_answ" Value="$ToInteger(0)"></s:Push>
+  <s:Push Id="workflow.sku_qty" Value="$ToInteger(0)"></s:Push>
 
   <c:VerticalLayout>
 

@@ -1,6 +1,6 @@
 ﻿
 function GetExecutedTasks(visit) {
-    var query = new Query("SELECT VT.Id, DT.PlanDate, DT.TextTask FROM Document_Visit_Task VT JOIN Document_Task DT ON VT.TaskRef=DT.Id WHERE VT.Ref=@ref AND VT.Result=@result");
+    var query = new Query("SELECT VT.Id, DT.PlanDate, DT.TextTask FROM Document_Visit_Task VT JOIN Document_Task DT ON VT.TaskRef=DT.Id WHERE VT.Ref=@ref AND VT.Result=@result ORDER BY DT.PlanDate");
     query.AddParameter("ref", visit);
     query.AddParameter("result", true);
 
@@ -8,7 +8,7 @@ function GetExecutedTasks(visit) {
 }
 
 function GetNotExecutedTasks(visit) {
-    var q = new Query("SELECT DT.Id, DT.PlanDate, DT.TextTask FROM Document_Task DT LEFT JOIN Document_Visit_Task VT ON DT.Id = VT.TaskRef AND VT.Ref = @ref AND VT.Result=@result WHERE DT.PlanDate >= @planDate AND DT.Outlet = @outlet AND VT.Id IS NULL");//DT.PlanDate >= @planDate AND DT.Outlet = @outlet");// AND VT.Ref = @ref");
+    var q = new Query("SELECT DT.Id, DT.PlanDate, DT.TextTask FROM Document_Task DT LEFT JOIN Document_Visit_Task VT ON DT.Id = VT.TaskRef AND VT.Ref = @ref AND VT.Result=@result WHERE DT.PlanDate >= @planDate AND DT.Outlet = @outlet AND VT.Id IS NULL ORDER BY DT.PlanDate");//DT.PlanDate >= @planDate AND DT.Outlet = @outlet");// AND VT.Ref = @ref");
     q.AddParameter("planDate", DateTime.Now.Date);
     q.AddParameter("outlet", visit.Outlet);
     q.AddParameter("ref", visit);

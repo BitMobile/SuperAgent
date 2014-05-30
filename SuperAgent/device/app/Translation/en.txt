@@ -192,3 +192,4 @@ list	List
 turnaroundTime	Turnaround time
 noteAsExecuted	Note as executed
 noteAsNew	Note as new
+error	Error

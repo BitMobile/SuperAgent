@@ -1,4 +1,18 @@
-﻿// -------------------- Sync Data ------------
+﻿function OnLoad()
+{
+    var dataText = $.lastDataSync;
+    if(!$.dataSyncSuccess)
+    	dataText = Translate["#error#"] + ": " + dataText;    
+    $.dataSyncReport.Text = dataText;
+    
+    var ftpText = $.lastFtpSync;
+    if(!$.ftpSyncSuccess)
+    	ftpText = Translate["#error#"] + ": " + ftpText;        
+    $.ftpSyncReport.Text = ftpText;	 	
+}
+
+
+// -------------------- Sync Data ------------
 function SyncData() {
     $.dataSyncReport.Visible = false;
     $.dataSyncLayout.Visible = true;
@@ -12,9 +26,16 @@ function SyncDataFinish() {
     $.dataSyncLayout.Visible = false;
     $.dataSyncReport.Visible = true;
 
-    Variables.Remove("lastDataSync");
-    Variables.AddGlobal("lastDataSync", DateTime.Now.ToString("dd MMM HH:mm"));
-    $.dataSyncReport.Text = $.lastDataSync;
+    $.Remove("lastDataSync");
+    $.AddGlobal("lastDataSync", DateTime.Now.ToString("dd MMM HH:mm"));
+    $.Remove("dataSyncSuccess");
+    $.AddGlobal("dataSyncSuccess", DB.LastError == null);  
+    
+    var text = $.lastDataSync;
+    if(!$.dataSyncSuccess)
+    	text = Translate["#error#"] + ": " + text;    
+    $.dataSyncReport.Text = text;
+    
 }
 
 // -------------------- Sync Ftp ------------
@@ -50,9 +71,15 @@ function SyncFtpFinish() {
     $.ftpSyncLayout.Visible = false;
     $.ftpSyncReport.Visible = true;
 
-    Variables.Remove("lastFtpSync");
-    Variables.AddGlobal("lastFtpSync", DateTime.Now.ToString("dd MMM HH:mm"));
-    $.ftpSyncReport.Text = $.lastFtpSync;
+    $.Remove("lastFtpSync");
+    $.AddGlobal("lastFtpSync", DateTime.Now.ToString("dd MMM HH:mm"));   
+    $.Remove("ftpSyncSuccess");
+    $.AddGlobal("ftpSyncSuccess", FileSystem.LastError == null);   
+    
+    var text = $.lastFtpSync;
+    if(!$.ftpSyncSuccess)
+    	text = Translate["#error#"] + ": " + text;        
+    $.ftpSyncReport.Text = text;
 }
 
 

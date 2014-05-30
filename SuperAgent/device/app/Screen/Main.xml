@@ -44,7 +44,7 @@
       <c:HorizontalLine/>
 
       <c:DockLayout OnClickAction="$DoAction(Sync)">
-        <c:TextView CssClass="menu_text" Text="$lastDataSync"/>
+        <c:TextView Id="syncTitle" CssClass="menu_text"/>
         <c:HorizontalLayout>
           <c:Image CssClass="btn_sync"/>
           <c:TextView CssClass="menu_text" Text="#sync#"/>

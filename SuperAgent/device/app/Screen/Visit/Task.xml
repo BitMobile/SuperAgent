@@ -9,6 +9,7 @@
     <c:HorizontalLayout CssClass="bottom_btn" OnEvent="Back" OnClickAction="$DoBack()">
       <c:TextView Text="#ready#"/>
     </c:HorizontalLayout>
+    <c:HorizontalLine CssClass="b_line"/>
 
     <c:ScrollView>
       <c:HorizontalLayout CssClass="empty_caption_grid"/>
@@ -16,14 +17,16 @@
 
       <c:HorizontalLayout CssClass="half_grid">
         <c:TextView Text="#turnaroundTime#"/>
-        <c:TextView Text="$task.PlanDate" CssClass="hlf_value"/>
+        <s:Push Id="date" Value="$GetDate($task.PlanDate)"></s:Push>
+        <c:TextView Text="$date" CssClass="hlf_value"/>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
       <c:HorizontalLayout CssClass="grid">
         <c:VerticalLayout>
           <c:TextView Text="$task.TextTask" CssClass="description_row"></c:TextView>
-          <c:TextView Text="$task.TextTask" CssClass="main_row"/>
+          <s:Push Id="text" Value="$GetTargetText($task.Target)"></s:Push>          
+          <c:TextView Text="$text" CssClass="main_row"/>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>

@@ -55,3 +55,12 @@ function RetrieveTask(executedTask) {
     else
         Workflow.Refresh([]);
 }
+
+function GetDate(datetime){
+	return (datetime.Date).ToString("dd/MM/yyyy");
+}
+
+function GetTargetText(text){
+	if (String.IsNullOrEmpty(text))
+		return Translate["#noDescriGiven#"];
+}

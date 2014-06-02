@@ -25,7 +25,9 @@
           <c:Button Text="#synchronize#" OnClick="$SyncData()"/>
         </c:DockLayout>
 
-        <c:TextView Id="dataSyncReport" Text="$lastDataSync" CssClass="main_row"/>
+        <c:TextView Id="dataSyncReport" CssClass="main_row"/>
+		
+		<c:TextView Id="dataSyncError" CssClass="red_row"/>
 
         <c:HorizontalLayout Id="dataSyncLayout" Visible="false">
           <c:Indicator Id="dataSyncIndicator"/>
@@ -49,7 +51,9 @@
           <c:Button Text="#synchronize#" OnClick="$SyncFtp()"/>
         </c:DockLayout>
 
-        <c:TextView Id="ftpSyncReport" Text="$lastFtpSync" CssClass="main_row"/>
+        <c:TextView Id="ftpSyncReport" CssClass="main_row"/>
+
+		<c:TextView Id="ftpSyncError" CssClass="red_row"/>
 
         <c:HorizontalLayout Id="ftpSyncLayout" Visible="false">
           <c:Indicator Id="ftpSyncIndicator"/>

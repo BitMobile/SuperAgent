@@ -1,5 +1,13 @@
 ﻿// ------------------------ Main screen module ------------------------
 
+function OnLoad()
+{
+	if($.dataSyncSuccess)
+		$.syncTitle.Text = $.lastDataSync;
+	else
+		$.syncTitle.Text = Translate["#error#"];
+}
+
 function CloseMenu() {
     var sl = Variables["swipe_layout"];
     if (sl.Index == 1) {

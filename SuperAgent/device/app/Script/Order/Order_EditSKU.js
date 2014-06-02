@@ -77,7 +77,7 @@ function RefreshEditSKU(orderItem, sku, price, discountEdit, showimage) {
 
 function GetSharedImagePath(objectType, objectID, pictID, pictExt) {
 
-	return "/shared/" + objectType + "/" + objectID.ToString() + "/"
+	return "/shared/" + objectType + "/" + objectID.Id.ToString() + "/"
 			+ pictID.ToString() + pictExt;
 
 }

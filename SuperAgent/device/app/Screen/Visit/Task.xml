@@ -3,6 +3,8 @@
 
   <s:Push Id="task" Value="$param1"/>  
   <s:Push Id="visitTask" Value="$param2"/>
+  <s:Push Id="target" Value="$param3"></s:Push>
+  <s:Push Id="test" Value="$ShowDialog($task)"></s:Push>
 
   <c:DockLayout>
 
@@ -17,7 +19,7 @@
 
       <c:HorizontalLayout CssClass="half_grid">
         <c:TextView Text="#turnaroundTime#"/>
-        <s:Push Id="date" Value="$GetDate($task.PlanDate)"></s:Push>
+        <s:Push Id="date" Value="$GetDate($task.PlanDate, $task)"></s:Push>
         <c:TextView Text="$date" CssClass="hlf_value"/>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
@@ -25,7 +27,7 @@
       <c:HorizontalLayout CssClass="grid">
         <c:VerticalLayout>
           <c:TextView Text="$task.TextTask" CssClass="description_row"></c:TextView>
-          <s:Push Id="targetText" Value="$GetTargetText($task.Target)"></s:Push>          
+          <s:Push Id="targetText" Value="$GetTargetText($target)"></s:Push>          
           <c:TextView Text="$targetText" CssClass="main_row"/>
         </c:VerticalLayout>
       </c:HorizontalLayout>

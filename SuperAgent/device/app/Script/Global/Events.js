@@ -1,10 +1,6 @@
 ﻿// ------------------------ Application -------------------
 
 function OnApplicationInit() {
-	Variables.AddGlobal("lastDataSync", "-");
-	Variables.AddGlobal("lastFtpSync", "-");
-	Variables.AddGlobal("dataSyncSuccess", true);
-	Variables.AddGlobal("ftpSyncSuccess", true);
 }
 
 // ------------------------ Events ------------------------

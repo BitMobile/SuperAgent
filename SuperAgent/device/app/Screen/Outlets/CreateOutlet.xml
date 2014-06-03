@@ -6,7 +6,7 @@
   <c:DockLayout>
 
     <c:HorizontalLayout CssClass="bottom_btn">
-      <c:VerticalLayout OnEvent="Back" OnClickAction="$DiscardNewOutlet($outlet)">
+      <c:VerticalLayout OnEvent="Back" OnClickAction="$DoRollback()">
         <c:TextView Text="#cancel#"/>
       </c:VerticalLayout>
       <c:VerticalLayout OnClickAction="$SaveNewOutlet($outlet)">

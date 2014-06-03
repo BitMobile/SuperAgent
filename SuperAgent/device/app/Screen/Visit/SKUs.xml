@@ -10,7 +10,7 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()">
+      <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$GetActionAndBack()">
         <c:Image/>
         <c:TextView Text="#back#"/>
       </c:HorizontalLayout>

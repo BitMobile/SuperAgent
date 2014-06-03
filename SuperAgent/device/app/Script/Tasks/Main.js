@@ -63,4 +63,6 @@ function GetDate(datetime){
 function GetTargetText(text){
 	if (String.IsNullOrEmpty(text))
 		return Translate["#noDescriGiven#"];
+	else
+		return text;
 }

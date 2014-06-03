@@ -249,3 +249,15 @@ function SaveAtVisit(arr) {
 	question.Save();
 	control.Text = Translate["#snapshotAttached#"];
 }
+
+function GetActionAndBack(){
+	if ($.workflow.skipQuestions){
+		if ($.workflow.skipTasks){
+			Workflow.BackTo("Outlet");
+		}
+		else
+			Workflow.BackTo("Visit_Tasks");
+	}
+	else
+		Workflow.Back();
+}

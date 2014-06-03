@@ -73,7 +73,7 @@
       <s:If Test="$IsInCollection(OutOfStock, $questions)">
         <c:HorizontalLayout  CssClass="grid">
           <c:VerticalLayout OnClickAction="$GoToQuestionAction(Boolean, $skuValue, $visit, cOutOfStock, OutOfStock)">
-            <c:TextView Text="#available#" CssClass="description_row"></c:TextView>
+            <c:TextView Text="#outOfStock#" CssClass="description_row"></c:TextView>
             <c:TextView Id="cOutOfStock" Text="$skuValue.OutOfStock" CssClass="yes_TextView"></c:TextView>
           </c:VerticalLayout>
         </c:HorizontalLayout>

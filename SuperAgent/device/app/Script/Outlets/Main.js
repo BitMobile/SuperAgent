@@ -255,7 +255,7 @@ function Back(outlet) {
         outlet.GetObject().Save();
 
         Variables.Remove("outlet");
-        DoActionBack("List");
+        DoBackTo("List");
     }
 }
 

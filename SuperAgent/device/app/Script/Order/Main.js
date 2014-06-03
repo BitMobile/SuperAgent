@@ -58,10 +58,8 @@ function GetPriceListQty(outlet) {
 				"SELECT Id FROM Document_PriceList WHERE DefaultPriceList = @true");
 		query.AddParameter("true", true);
 		return query.ExecuteCount();
-	}
-	else
+	} else
 		return pl;
-	
 
 }
 
@@ -278,25 +276,22 @@ function DateTimeDialog(entity, dateTime) {
 	Variables["deliveryDate"].Text = dateTime; // refactoring is needed
 }
 
-function DeleteAndBack(order, wfName) {
-	DB.Delete(order);
-	if (wfName == "CreateOrder"){
-		$.Remove("outlet");
-		$.workflow.Remove("order");
+function OrderBack() {
+	if ($.workflow.name == "CreateOrder")
+		DoRollback();
+	else {
+		if ($.workflow.skipSKUs) {
+			if ($.workflow.skipQuestions) {
+				if ($.workflow.skipTasks) {
+					Workflow.BackTo("Outlet");
+				} else
+					Workflow.BackTo("Visit_Tasks");
+			} else
+				Workflow.BackTo("Questions");
+		} else
+			Workflow.Back();
 	}
-	Workflow.Back();
-	// var actionName = "";
-	// if ($.workflow.skipSKUs) {
-	// if ($.workflow.skipQuestions) {
-	// if ($.workflow.skipTasks)
-	// actionName = "Skip3";
-	// else
-	// actionName = "Skip2";
-	// } else
-	// actionName = "Skip1";
-	// } else
-	// actionName = "SKUs";
-	// Workflow.ActionBack(actionName, []);
+
 }
 
 function ShowInfoIfIsNew() {

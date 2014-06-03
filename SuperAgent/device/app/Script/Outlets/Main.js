@@ -15,8 +15,8 @@ function GetOutlets(searchText) {
     }
 }
 
-function AddGlobalAndAction(name, value, actionName) {
-    if (Variables.Exists(name))
+function AddGlobalAndAction(name, value, actionName) {    
+	if (Variables.Exists(name))
         $.Remove(name);
     $.AddGlobal(name, value);
     Workflow.Action(actionName, []);
@@ -255,7 +255,7 @@ function Back(outlet) {
         outlet.GetObject().Save();
 
         Variables.Remove("outlet");
-        DoActionBack("List");
+        DoBackTo("List");
     }
 }
 

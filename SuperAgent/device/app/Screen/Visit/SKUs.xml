@@ -5,11 +5,12 @@
   <s:Push Id="visit" Value="$workflow.visit"></s:Push>
   <s:Push Id="SKUs" Value="$GetSKUsFromQuesionnaires($outlet)"></s:Push>
   <s:Push Id="workflow.sku_answ" Value="$ToInteger(0)"></s:Push>
+  <s:Push Id="workflow.sku_qty" Value="$ToInteger(0)"></s:Push>
 
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoBack()">
+      <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$GetActionAndBack()">
         <c:Image/>
         <c:TextView Text="#back#"/>
       </c:HorizontalLayout>

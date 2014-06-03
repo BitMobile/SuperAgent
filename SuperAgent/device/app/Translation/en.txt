@@ -192,5 +192,6 @@ list	List
 turnaroundTime	Turnaround time
 noteAsExecuted	Note as executed
 noteAsNew	Note as new
+noDescriGiven	(no description given)
 error	Error
 at	at

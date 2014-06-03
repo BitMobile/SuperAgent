@@ -10,7 +10,7 @@
 
     <c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
 
-    <c:HorizontalLayout CssClass="bottom_btn" OnEvent="Back" OnClickAction="$DoActionBack(Order, $workflow.outlet)">
+    <c:HorizontalLayout CssClass="bottom_btn" OnEvent="Back" OnClickAction="$DoBackTo(Order)">
       <c:TextView Text="#ready#"></c:TextView>
     </c:HorizontalLayout>
     <c:HorizontalLine CssClass="b_line"/>

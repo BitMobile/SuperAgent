@@ -50,15 +50,17 @@ function AddGlobalAndAction(name, value, actionName) {
 
 function GetPriceListQty(outlet) {
 	var query = new Query(
-			"SELECT DISTINCT D.Id, D.Description FROM Catalog_Outlet_Prices O JOIN Document_PriceList D WHERE O.Ref = @Ref ORDER BY O.LineNumber");
+			"SELECT DISTINCT D.Id, D.Description FROM Catalog_Outlet_Prices O JOIN Document_PriceList D ON O.PriceList=D.Id WHERE O.Ref = @Ref ORDER BY O.LineNumber");
 	query.AddParameter("Ref", outlet);
 	var pl = query.ExecuteCount();
+	Dialog.Debug(pl);
 	if (parseInt(pl) == parseInt(0)) {
 		var query = new Query(
 				"SELECT Id FROM Document_PriceList WHERE DefaultPriceList = @true");
 		query.AddParameter("true", true);
-	}
-	return query.ExecuteCount();
+		return query.ExecuteCount();
+	} else
+		return pl;
 
 }
 
@@ -142,7 +144,6 @@ function CreateOrderStatusVariables() {
 }
 
 function GetDescription(priceList) {
-	// Dialog.Debug(priceList.EmptyRef());
 	if (priceList.EmptyRef())
 		return Translate["#noPriceLists#"];
 	else
@@ -160,7 +161,7 @@ function SelectPriceList(order, priceLists, executedOrder) {
 	if (parseInt(priceLists) != parseInt(1)
 			&& parseInt(priceLists) != parseInt(0) && executedOrder == null) {
 		var query = new Query(
-				"SELECT DISTINCT D.Id, D.Description FROM Catalog_Outlet_Prices O JOIN Document_PriceList D WHERE O.Ref = @Ref ORDER BY O.LineNumber");
+				"SELECT DISTINCT D.Id, D.Description FROM Catalog_Outlet_Prices O JOIN Document_PriceList D ON O.PriceList=D.Id WHERE O.Ref = @Ref ORDER BY O.LineNumber");
 		query.AddParameter("Ref", order.Outlet);
 		var pl = query.ExecuteCount();
 		if (parseInt(pl) == parseInt(0)) {
@@ -243,6 +244,7 @@ function CheckIfEmptyAndForward(order, wfName) {
 	var save = true;
 	if (parseInt(query.ExecuteCount()) == parseInt(0)) {
 		DB.Delete(order);
+		$.workflow.Remove("order");
 		save = false;
 	}
 	if (wfName != "CreateOrder")
@@ -275,22 +277,22 @@ function DateTimeDialog(entity, dateTime) {
 	Variables["deliveryDate"].Text = dateTime; // refactoring is needed
 }
 
-function DeleteAndBack(order, wfName) {
-	if (wfName != 'Order')
-		DB.Delete(order);
-	Workflow.Back();
-	// var actionName = "";
-	// if ($.workflow.skipSKUs) {
-	// if ($.workflow.skipQuestions) {
-	// if ($.workflow.skipTasks)
-	// actionName = "Skip3";
-	// else
-	// actionName = "Skip2";
-	// } else
-	// actionName = "Skip1";
-	// } else
-	// actionName = "SKUs";
-	// Workflow.ActionBack(actionName, []);
+function OrderBack() {
+	if ($.workflow.name == "CreateOrder")
+		DoRollback();
+	else {
+		if ($.workflow.skipSKUs) {
+			if ($.workflow.skipQuestions) {
+				if ($.workflow.skipTasks) {
+					Workflow.BackTo("Outlet");
+				} else
+					Workflow.BackTo("Visit_Tasks");
+			} else
+				Workflow.BackTo("Questions");
+		} else
+			Workflow.Back();
+	}
+
 }
 
 function ShowInfoIfIsNew() {

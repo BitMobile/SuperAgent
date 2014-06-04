@@ -679,7 +679,7 @@ MemoEdit {
             height: 9%;
         }
 
-        .memo_block vl MemoEdit {
+        .memo_block vl main_row {
             height: 80%;
             width: 100%;
             margin-left: 0%;

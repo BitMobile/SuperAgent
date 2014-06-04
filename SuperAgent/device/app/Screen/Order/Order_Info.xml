@@ -1,61 +1,65 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack"
+	xmlns:d="DefaultScope">
 
-  <s:Push Id="order" Value="$workflow.order"></s:Push>
-  <s:Push Id="sum" Value="$param1"></s:Push>
-  <s:Push Id="executedOrder" Value="$param2"></s:Push>
-  <s:Push Id="priceLists" Value="$GetPriceListQty($order.Outlet)"></s:Push>
+	<s:Push Id="order" Value="$workflow.order" />
+	<s:Push Id="sum" Value="$param1" />
+	<s:Push Id="executedOrder" Value="$param2" />
+	<s:Push Id="priceLists" Value="$GetPriceListQty($order.Outlet)" />
 
-  <c:DockLayout>
+	<c:DockLayout>
 
-    <c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
-    <c:HorizontalLine/>
+		<c:HorizontalLayout CssClass="margin_top" />
+		<c:HorizontalLine />
 
-    <c:HorizontalLayout CssClass="bottom_btn" OnEvent="Back" OnClickAction="$Workflow.DoBack()">
-      <c:TextView Text="#ready#"></c:TextView>
-    </c:HorizontalLayout>
-    <c:HorizontalLine CssClass="b_line"/>
+		<c:HorizontalLayout CssClass="bottom_btn" OnEvent="Back"
+			OnClickAction="$Workflow.DoBack()">
+			<c:TextView Text="#ready#" />
+		</c:HorizontalLayout>
+		<c:HorizontalLine CssClass="b_line" />
 
-    <c:ScrollView Id="grScrollView">
+		<c:ScrollView Id="grScrollView">
 
-      <c:DockLayout  CssClass="parameter_grid">
-        <c:TextView Text="#totalamount#"></c:TextView>
-        <c:TextView Text="$sum"  CssClass="value"></c:TextView>
-      </c:DockLayout>
-      <c:HorizontalLine/>
+			<c:DockLayout CssClass="parameter_grid">
+				<c:TextView Text="#totalamount#" />
+				<c:TextView Text="$sum" CssClass="value" />
+			</c:DockLayout>
+			<c:HorizontalLine />
 
-      <c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectPriceList($workflow.order, $priceLists, $executedOrder)">
-        <c:TextView Text="#priceList#"></c:TextView>
-        <s:If Test="$NotEmptyRef($workflow.order.PriceList)">
-          <c:TextView Id="priceListTextView" Text="$workflow.order.PriceList.Description" CssClass="value"></c:TextView>
-        </s:If>
-        <s:Else>
-          <s:If Test="$priceLists == 0">
-            <c:TextView Text="#noPriceLists#" CssClass="value"></c:TextView>
-          </s:If>
-          <s:Else>
-            <c:TextView Text="#isntSelected#" CssClass="value"></c:TextView>
-          </s:Else>
-        </s:Else>
-      </c:DockLayout>
-      <c:HorizontalLine/>
+			<c:DockLayout CssClass="parameter_grid"
+				OnClickAction="$SelectPriceListIfNotNew($workflow.order, $priceLists, $executedOrder)">
+				<c:TextView Text="#priceList#" />
+				<s:If Test="$NotEmptyRef($workflow.order.PriceList)">
+					<c:TextView Id="priceListTextView" Text="$workflow.order.PriceList.Description"
+						CssClass="value" />
+				</s:If>
+				<s:Else>
+					<s:If Test="$priceLists == 0">
+						<c:TextView Text="#noPriceLists#" CssClass="value" />
+					</s:If>
+					<s:Else>
+						<c:TextView Text="#isntSelected#" CssClass="value" />
+					</s:Else>
+				</s:Else>
+			</c:DockLayout>
+			<c:HorizontalLine />
 
-      <c:HorizontalLayout CssClass="memo_block">
-        <c:VerticalLayout>
-          <c:TextView Text="#commentary#" CssClass="description_row"></c:TextView>
-          <s:If Test="$executedOrder==null">
-            <c:MemoEdit Value="$order.Commentary" CssClass="main_row"></c:MemoEdit>
-          </s:If>
-          <s:Else>
-            <c:TextView Text="$order.Commentary" CssClass="main_row"></c:TextView>
-          </s:Else>
-        </c:VerticalLayout>
-      </c:HorizontalLayout>
-      <c:HorizontalLine/>
+			<c:HorizontalLayout CssClass="memo_block">
+				<c:VerticalLayout>
+					<c:TextView Text="#commentary#" CssClass="description_row" />
+					<s:If Test="$IsEditable($executedOrder, $workflow.order)">
+						<c:MemoEdit Value="$order.Commentary" CssClass="main_row" />
+					</s:If>
+					<s:Else>
+						<c:TextView Text="$order.Commentary" CssClass="main_row" />
+					</s:Else>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
 
-    </c:ScrollView>
+		</c:ScrollView>
 
-  </c:DockLayout>
+	</c:DockLayout>
 
 </c:Screen>
 

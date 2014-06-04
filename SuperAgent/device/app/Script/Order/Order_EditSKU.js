@@ -37,18 +37,17 @@ function CreateOrderItemIfNotExist(order, sku, orderitem, price, features) {
 			return r;
 		else {
 			// getting a unit
-			// var q = new Query("SELECT Pack, Multiplier FROM
-			// Catalog_SKU_Packing WHERE Ref=@ref AND LineNumber=1");
-			// q.AddParameter("ref", sku);
-			// var res =
+			var q = new Query("SELECT Pack, Multiplier FROM Catalog_SKU_Packing WHERE Ref=@ref AND LineNumber=1");
+			q.AddParameter("ref", sku);
+			var defaultUnit = q.Execute();
 
 			var p = DB.Create("Document.Order_SKUs");
 			p.Ref = order;
 			p.SKU = sku;
 			p.Feature = feature;
-			p.Price = price;
-			p.Total = price;
-			p.Units = sku.BaseUnit;
+			p.Price = price * defaultUnit.Multiplier;
+			p.Total = price * defaultUnit.Multiplier;
+			p.Units = defaultUnit.Pack;
 			p.Discount = 0;
 			p.Save();
 			return p.Id;
@@ -210,14 +209,14 @@ function CalculateSKUAndForward(outlet, orderitem) {
 	if (Converter.ToDecimal(orderitem.Qty) == Converter.ToDecimal(0)) {
 		DB.Delete(orderitem);
 	} else {
-/*		var discount = $.discountEdit.Text;
-		if (String.IsNullOrEmpty(discount))
-			discount = parseInt(0);
-
-		orderitem = orderitem.GetObject();
-		orderitem.Discount = Converter.ToDecimal(discount);
-		var p = CalculatePrice(orderitem.Price, discount, 1);
-		orderitem.Total = p;*/
+/*
+ * var discount = $.discountEdit.Text; if (String.IsNullOrEmpty(discount))
+ * discount = parseInt(0);
+ * 
+ * orderitem = orderitem.GetObject(); orderitem.Discount =
+ * Converter.ToDecimal(discount); var p = CalculatePrice(orderitem.Price,
+ * discount, 1); orderitem.Total = p;
+ */
 		FindTwinAndUnite(orderitem.GetObject());
 	}
 
@@ -234,7 +233,8 @@ function DeleteAndBack(orderitem) {
 
 function FindTwinAndUnite(orderitem) {
 	var q = new Query(
-			"SELECT Id FROM Document_Order_SKUs WHERE Ref=@ref AND SKU=@sku AND Discount=@discount AND Units=@units AND Feature=@feature AND Id<>@id LIMIT 1"); //AND Id<>@id
+			"SELECT Id FROM Document_Order_SKUs WHERE Ref=@ref AND SKU=@sku AND Discount=@discount AND Units=@units AND Feature=@feature AND Id<>@id LIMIT 1"); // AND
+																																								// Id<>@id
 	q.AddParameter("ref", orderitem.Ref);
 	q.AddParameter("sku", orderitem.SKU);
 	q.AddParameter("discount", orderitem.Discount);
@@ -246,7 +246,7 @@ function FindTwinAndUnite(orderitem) {
 		var twin = q.ExecuteScalar();
 		twin = twin.GetObject();
 		twin.Qty += orderitem.Qty;
-		//twin.Total = twin.Qty * (twin.Discount/100 + 1) * twin.Price;
+		// twin.Total = twin.Qty * (twin.Discount/100 + 1) * twin.Price;
 		twin.Save();
 		DB.Delete(orderitem.Id);
 		Dialog.Debug("done");

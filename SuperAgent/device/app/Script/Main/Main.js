@@ -5,7 +5,7 @@ function OnLoad()
 	if(!$.Exists("lastDataSync"))
 		$.syncTitle.Text = "-";
 	else if($.dataSyncSuccess)
-		$.syncTitle.Text = $.lastDataSync.ToString("HH:mm");
+		$.syncTitle.Text = $.lastDataSync.ToString("dd.MM HH:mm");
 	else
 		$.syncTitle.Text = Translate["#error#"];
 }

@@ -207,7 +207,6 @@
 
   </bp:Workflow>
 
-
   <bp:Workflow Name="Outlets"  Controller="Outlets\Main.js">
 
     <bp:Step Name="Outlets" Screen="Outlets\Outlets.xml">

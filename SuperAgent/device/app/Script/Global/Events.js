@@ -51,7 +51,7 @@ function OnWorkflowStart(name) {
 
 		}
 	}
-
+	
 	Variables["workflow"].Add("name", name);
 	
 }
@@ -169,8 +169,9 @@ function GetSteps(outlet) {
 	var outlet = $.outlet;
 
 	var q = new Query(
-			"SELECT COUNT(Id) AS Questions, (SELECT COUNT(Id) FROM Document_Task WHERE Outlet=@outlet) AS Tasks, (SELECT COUNT(Id) FROM Document_Questionnaire_SKUs WHERE Ref=@ref1 OR Ref=@ref2) AS SKUQuestions FROM Document_Questionnaire_Questions	WHERE Ref=@ref1 OR Ref=@ref2");
+			"SELECT COUNT(Id) AS Questions, (SELECT COUNT(Id) FROM Document_Task WHERE PlanDate >= @planDate AND Outlet=@outlet) AS Tasks, (SELECT COUNT(Id) FROM Document_Questionnaire_SKUs WHERE Ref=@ref1 OR Ref=@ref2) AS SKUQuestions FROM Document_Questionnaire_Questions	WHERE Ref=@ref1 OR Ref=@ref2");
 	q.AddParameter("outlet", outlet);
+	q.AddParameter("planDate",  DateTime.Now.Date);
 	q.AddParameter("ref1", regionQuest);
 	q.AddParameter("ref2", territoryQuest);
 

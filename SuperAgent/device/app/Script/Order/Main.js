@@ -53,7 +53,6 @@ function GetPriceListQty(outlet) {
 			"SELECT DISTINCT D.Id, D.Description FROM Catalog_Outlet_Prices O JOIN Document_PriceList D ON O.PriceList=D.Id WHERE O.Ref = @Ref ORDER BY O.LineNumber");
 	query.AddParameter("Ref", outlet);
 	var pl = query.ExecuteCount();
-	Dialog.Debug(pl);
 	if (parseInt(pl) == parseInt(0)) {
 		var query = new Query(
 				"SELECT Id FROM Document_PriceList WHERE DefaultPriceList = @true");

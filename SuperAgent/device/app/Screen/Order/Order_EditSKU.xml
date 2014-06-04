@@ -71,12 +71,6 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="caption_grid"
-				OnClickAction="$CountPrice($orderitem)">
-				<c:TextView Text="#countPrice#"></c:TextView>
-			</c:HorizontalLayout>
-			<c:HorizontalLine />
-
 			<c:DockLayout CssClass="parameter_grid">
 				<c:TextView Text="#price#" CssClass="description_row"></c:TextView>
 				<c:TextView Id="orderItemTotalId" Text="$orderitem.Total"
@@ -99,10 +93,11 @@
 			</c:DockLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="parameter_grid">
-				<c:TextView Text="#discount#/#markUp#"></c:TextView>
+			<c:DockLayout CssClass="parameter_grid" OnClickAction="$ChandeDiscount($orderitem)">
+			<s:Push Id="discountDescrText" Value="$GetDiscountDescription($orderitem)"></s:Push>
+				<c:TextView Id="discountDescr" Text="$discountDescrText"></c:TextView>
 				<c:EditText Id="discountEdit" Text="$param4" CssClass="value"
-					Keyboard="numeric"></c:EditText>
+					Keyboard="numeric" OnChange="$ApplyDiscount($orderitem)"></c:EditText>
 			</c:DockLayout>
 			<c:HorizontalLine />
 

@@ -4,7 +4,6 @@
   <s:Push Id="task" Value="$param1"/>  
   <s:Push Id="visitTask" Value="$param2"/>
   <s:Push Id="target" Value="$param3"></s:Push>
-  <s:Push Id="test" Value="$ShowDialog($task)"></s:Push>
 
   <c:DockLayout>
 

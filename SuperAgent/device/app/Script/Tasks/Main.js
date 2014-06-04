@@ -69,6 +69,3 @@ function GetTargetText(text) {
 		return text;
 }
 
-function ShowDialog(task) {
-	Dialog.Debug(task.GetObject());
-}

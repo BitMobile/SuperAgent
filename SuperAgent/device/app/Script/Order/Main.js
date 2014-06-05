@@ -292,6 +292,10 @@ function DateTimeDialog(entity, dateTime) {
 	Variables["deliveryDate"].Text = dateTime; // refactoring is needed
 }
 
+function SetDeliveryDateDialog(order, control) {
+    Global.DateTimeDialog(order, "DeliveryDate", DateTime.Now.Date, control);
+}
+
 function OrderBack() {
 	if ($.workflow.name == "CreateOrder")
 		DoRollback();

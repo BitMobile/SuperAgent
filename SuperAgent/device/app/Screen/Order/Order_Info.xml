@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack"
-	xmlns:d="DefaultScope">
+	xmlns:d="DefaultScope" StyleSheet="Order_Info.css">
 
 	<s:Push Id="order" Value="$workflow.order" />
 	<s:Push Id="sum" Value="$param1" />

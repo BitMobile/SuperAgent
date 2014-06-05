@@ -9,7 +9,7 @@ function GetOrderList() {
 	// [searchText]).OrderBy("Date", true).Top(100);
 	// }
 	var q = new Query(
-			"SELECT DO.Id, DO.Outlet, DO.Date, DO.Number, CO.Description AS OutletDescription FROM Document_Order DO JOIN Catalog_Outlet CO ON DO.Outlet=CO.Id ORDER BY DO.Date DESC LIMIT 100");
+			"SELECT DO.Id, DO.Outlet, strftime('%d/%m/%Y', DO.Date) AS Date, DO.Number, CO.Description AS OutletDescription FROM Document_Order DO JOIN Catalog_Outlet CO ON DO.Outlet=CO.Id ORDER BY DO.Date DESC LIMIT 100");
 	return q.Execute();
 }
 

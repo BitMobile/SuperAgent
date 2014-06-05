@@ -196,3 +196,4 @@ noDescriGiven	(no description given)
 error	Error
 at	at
 currency	CAD
+Synchronization_has_not_been_performed	Synchronization has not been performed

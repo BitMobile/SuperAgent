@@ -18,34 +18,22 @@ function SyncDataFinish() {
 	$.dataSyncIndicator.Stop();
 	$.dataSyncLayout.Visible = false;
 
-	$.Remove("lastDataSync");
-	$.AddGlobal("lastDataSync", DateTime.Now);
-	$.Remove("dataSyncSuccess");
-	$.AddGlobal("dataSyncSuccess", DB.LastError == null);
-
 	DrawDataReport();
 }
 
 function DrawDataReport() {
-	if (!$.Exists("lastDataSync")) {
-		$.dataSyncReport.Text = "-";
+	var at = Translate["#at#"];
+	var date = DB.LastSyncTime.ToString("dd.MM.yy ");
+	var time = DB.LastSyncTime.ToString(" HH:mm");
+
+	if (DB.SuccessSync) {
+		$.dataSyncReport.Text = date + at + time;
 		$.dataSyncReport.Visible = true;
 		$.dataSyncError.Visible = false;
 	} else {
-		var at = Translate["#at#"];
-		var date = $.lastDataSync.ToString("dd.MM.yy ");
-		var time = $.lastDataSync.ToString(" HH:mm");
-
-		if ($.dataSyncSuccess) {
-			$.dataSyncReport.Text = date + at + time;
-			$.dataSyncReport.Visible = true;
-			$.dataSyncError.Visible = false;
-		} else {
-			$.dataSyncError.Text = Translate["#error#"] + ": " + date + at
-					+ time;
-			$.dataSyncError.Visible = true;
-			$.dataSyncReport.Visible = false;
-		}
+		$.dataSyncError.Text = Translate["#error#"] + ": " + date + at + time;
+		$.dataSyncError.Visible = true;
+		$.dataSyncReport.Visible = false;
 	}
 }
 
@@ -80,33 +68,25 @@ function SyncSharedCallback(args) {
 function SyncFtpFinish() {
 	$.ftpSyncIndicator.Stop();
 	$.ftpSyncLayout.Visible = false;
-	$.Remove("lastFtpSync");
-	$.AddGlobal("lastFtpSync", DateTime.Now);
-	$.Remove("ftpSyncSuccess");
-	$.AddGlobal("ftpSyncSuccess", FileSystem.LastError == null);
 
 	DrawFtpReport();
 }
 
 function DrawFtpReport() {
-	if (!$.Exists("lastFtpSync")) {
-		$.ftpSyncReport.Text = "-";
+	var at = Translate["#at#"];
+	var date = FileSystem.LastSyncTime.ToString("dd.MM.yy ");
+	var time = FileSystem.LastSyncTime.ToString(" HH:mm");
+
+	if (FileSystem.SuccessSync) {
+		$.ftpSyncReport.Text = date + at + time;
 		$.ftpSyncReport.Visible = true;
 		$.ftpSyncError.Visible = false;
 	} else {
-		var at = Translate["#at#"];
-		var date = $.lastFtpSync.ToString("dd.MM.yy ");
-		var time = $.lastFtpSync.ToString(" HH:mm");
-
-		if ($.ftpSyncSuccess) {
-			$.ftpSyncReport.Text = date + at + time;
-			$.ftpSyncReport.Visible = true;
-			$.ftpSyncError.Visible = false;
-		} else {
-			$.ftpSyncError.Text = Translate["#error#"] + ": " + date + at
-					+ time;
-			$.ftpSyncError.Visible = true;
-			$.ftpSyncReport.Visible = false;
-		}
+		if (isDefault(FileSystem.LastSyncTime))
+			$.ftpSyncError.Text = Translate["#Synchronization_has_not_been_performed#"];
+		else
+			$.ftpSyncError.Text = Translate["#error#"] + ": " + date + at + time;
+		$.ftpSyncError.Visible = true;
+		$.ftpSyncReport.Visible = false;
 	}
 }

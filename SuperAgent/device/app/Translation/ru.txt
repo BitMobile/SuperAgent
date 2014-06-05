@@ -195,3 +195,4 @@ noDescriGiven	(описание отсутствует)
 error	Ошибка
 at	в
 currency	руб.
+Synchronization_has_not_been_performed	Синхронизация не была выполнена

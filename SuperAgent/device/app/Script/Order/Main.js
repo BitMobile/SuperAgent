@@ -156,6 +156,11 @@ function GetFeatureDescr(feature) {
 		return (", " + feature.Description);
 }
 
+function SelectPriceListIfNotNew(order, priceLists, executedOrder) {
+	if (IsNew(order))
+		SelectPriceList(order, priceLists, executedOrder);
+}
+
 function SelectPriceList(order, priceLists, executedOrder) {
 	if (parseInt(priceLists) != parseInt(1)
 			&& parseInt(priceLists) != parseInt(0) && executedOrder == null) {
@@ -173,6 +178,10 @@ function SelectPriceList(order, priceLists, executedOrder) {
 				Variables["priceListTextView"]);
 	}
 
+}
+
+function IsEditable(executedOrder, order) {
+	return executedOrder == null && IsNew(order);
 }
 
 function ReviseSKUs(order, priceList) {
@@ -246,14 +255,21 @@ function CheckIfEmptyAndForward(order, wfName) {
 		$.workflow.Remove("order");
 		save = false;
 	}
-	if (wfName != "CreateOrder")
-		Workflow.Action("Forward", []);
-	else {
-		if (save) {
+	
+	if (wfName == "CreateOrder"){
+		if (save)
 			order.GetObject().Save();
-		}
 		Workflow.Commit();
 	}
+	else if (wfName == "Order"){
+		if (IsNew(order)){
+			order.GetObject().Save();
+			DB.Commit();
+		}
+		DoBackTo("OrderList");
+	}
+	else
+		Workflow.Action("Forward", []);
 }
 
 function SaveOrder(order) {

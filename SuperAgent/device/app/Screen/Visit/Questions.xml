@@ -35,15 +35,15 @@
               <c:TextView Text="$question.Description" CssClass="description_row"></c:TextView>
 
               <s:If Test="$question.AnswerType=='Integer'">
-                <c:MemoEdit Id="control{$index}" Value="$questionValue.Answer" Keyboard="numeric"></c:MemoEdit>
+                <c:MemoEdit Id="control{$index}" Value="$questionValue.Answer" Keyboard="numeric" CssClass="main_row"></c:MemoEdit>
               </s:If>
 
               <s:If Test="$question.AnswerType=='Decimal'">
-                <c:MemoEdit Id="control{$index}" Value="$questionValue.Answer" Keyboard="numeric"></c:MemoEdit>
+                <c:MemoEdit Id="control{$index}" Value="$questionValue.Answer" Keyboard="numeric" CssClass="main_row"></c:MemoEdit>
               </s:If>
 
               <s:If Test="$question.AnswerType=='String'">
-                <c:MemoEdit Id="control{$index}" Value="$questionValue.Answer"></c:MemoEdit>
+                <c:MemoEdit Id="control{$index}" Value="$questionValue.Answer" CssClass="main_row"></c:MemoEdit>
               </s:If>
 
               <s:If Test="$question.AnswerType=='ValueList'">

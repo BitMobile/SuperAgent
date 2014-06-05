@@ -1,10 +1,6 @@
 ﻿// ------------------------ Application -------------------
 
 function OnApplicationInit() {
-	Variables.AddGlobal("lastDataSync", "-");
-	Variables.AddGlobal("lastFtpSync", "-");
-	Variables.AddGlobal("dataSyncSuccess", true);
-	Variables.AddGlobal("ftpSyncSuccess", true);
 }
 
 // ------------------------ Events ------------------------
@@ -110,6 +106,9 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 //function OnWorkflowBack(name, lastStep, nextStep) {}
 
 function OnWorkflowFinish(name, reason) {
+	$.Remove("finishedWorkflow");
+	$.AddGlobal("finishedWorkflow", name);
+	
 	if (name == "Visit" || name == "CreateOrder" || name=="Outlets") {
 		Variables.Remove("outlet");
 

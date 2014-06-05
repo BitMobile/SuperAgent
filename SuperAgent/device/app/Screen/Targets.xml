@@ -15,7 +15,7 @@
 
       <c:DockLayout >
         <c:Image />
-        <c:EditText></c:EditText>
+        <c:EditText  Placeholder="#search#"></c:EditText>
       </c:DockLayout>
       <c:Button Text="#search#"></c:Button>
 

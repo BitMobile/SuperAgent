@@ -19,7 +19,7 @@
       <c:Button Id="btnFilter" CssClass="$filterClass" OnClickAction="$Workflow.DoAction(SetFilter)"></c:Button>
       <c:DockLayout >
         <c:Image />
-        <c:EditText Id="edtSearch" Text="$search"></c:EditText>
+        <c:EditText Id="edtSearch" Text="$search" Placeholder="#search#"></c:EditText>
       </c:DockLayout>
       <c:Button Id="btnSearch" Text="#search#" OnClickAction="$Workflow.DoRefresh($edtSearch.Text)"></c:Button>
 

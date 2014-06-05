@@ -26,5 +26,7 @@
         margin-top: 0%;
     }
 
-
+    .parameter_grid TextView {
+        width: 60%;
+    }
     

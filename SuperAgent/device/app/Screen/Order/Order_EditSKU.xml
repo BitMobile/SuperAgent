@@ -7,11 +7,9 @@
 	<s:Push Id="price" Value="$param2"></s:Push>
 	<s:Push Id="orderitem" Value="$param3"></s:Push>
 	<s:Push Id="showimage" Value="$param5"></s:Push>
-	<s:Push Id="multiplier" Value="$GetMultiplier($sku.Id, $orderitem)"></s:Push>
 	<s:Push Id="features" Value="$GetFeatures($sku.Id)"></s:Push>
 	<s:Push Id="orderitem"
 		Value="$CreateOrderItemIfNotExist($order.Id,$sku,$orderitem,$price,$features)"></s:Push>
-	<s:Push Id="baseQty" Value="$GetMultiple($orderitem.Qty, $multiplier)"></s:Push>
 	<s:Push Id="featureDescr" Value="$GetFeatureDescr($orderitem.Feature)"></s:Push>
 
 	<s:If Test="$showimage == null">
@@ -102,7 +100,6 @@
 			<c:HorizontalLine />
 
 			<s:Push Id="historyItems" Value="$GetItemHistory($sku, $order)"></s:Push>
-			<s:Push Id="historyCount" Value="$CountCollection($historyItems)"></s:Push>
 			<s:If Test="$historyCount != 0">
 				<c:HorizontalLayout CssClass="caption_grid">
 					<c:TextView Text="#orderHistory#:"></c:TextView>
@@ -110,9 +107,8 @@
 				<c:HorizontalLine />
 				<s:Iterator Id="historyItem" Value="$historyItems">
 					<c:DockLayout CssClass="parameter_grid">
-						<c:TextView Text="$historyItem.RefDate"></c:TextView>
-						<s:Push Id="baseQty" Value="$GetBaseQty($sku, $historyItem)"></s:Push>
-						<c:TextView Text="$baseQty" CssClass="value"></c:TextView>
+						<c:TextView Text="$historyItem.Date"></c:TextView>
+						<c:TextView Text="{$historyItem.Qty} {$sku.BaseUnit.Description}, x {$historyItem.Total} {#currency#}" CssClass="value"></c:TextView>
 					</c:DockLayout>
 					<c:HorizontalLine />
 				</s:Iterator>

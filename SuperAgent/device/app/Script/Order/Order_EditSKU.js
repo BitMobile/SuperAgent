@@ -134,7 +134,6 @@ function CountPrice(orderitem) {
 		discount = parseInt(0);
 	p = CalculatePrice(orderitem.Price, discount, 1);
 	// orderitem.Discount = Converter.ToDecimal(discount);
-	Dialog.Debug(orderitem);
 	orderitem.Total = p;
 	orderitem.Save();
 	
@@ -194,14 +193,14 @@ function ChangeUnit(sku, orderitem, price) {
 }
 
 function GetItemHistory(sku, order) {
-	// var byOutlets = DB.Current.Document.Order.SelectBy("Outlet",
-	// order.Outlet).Distinct("Id");
-	// var hist = DB.Current.Document.Order_SKUs.SelectBy("Ref",
-	// byOutlets).Where("Ref != @p1 && SKU == @p2", [order.Id,
-	// sku.Id]).OrderBy("RefAsObject.Date", true).Top(4);
-
-	// return hist;
-	return [];
+	var q = new Query("SELECT D.Date, S.Qty*P.Multiplier AS Qty, S.Total/P.Multiplier AS Total FROM Document_Order_SKUs S JOIN Document_Order D ON S.Ref=D.Id JOIN Catalog_SKU_Packing P ON S.SKU=P.Ref AND P.Pack=S.Units WHERE D.Outlet=@outlet AND S.SKU=@sku AND S.Ref<>@ref ORDER BY D.Date LIMIT 4");
+	q.AddParameter("outlet", order.Outlet);
+	q.AddParameter("sku", sku);
+	q.AddParameter("ref", order);	
+	
+	$.Add("historyCount", q.ExecuteCount());
+	
+	return q.Execute();
 }
 
 function CalculateSKUAndForward(outlet, orderitem) {
@@ -209,14 +208,6 @@ function CalculateSKUAndForward(outlet, orderitem) {
 	if (Converter.ToDecimal(orderitem.Qty) == Converter.ToDecimal(0)) {
 		DB.Delete(orderitem);
 	} else {
-/*
- * var discount = $.discountEdit.Text; if (String.IsNullOrEmpty(discount))
- * discount = parseInt(0);
- * 
- * orderitem = orderitem.GetObject(); orderitem.Discount =
- * Converter.ToDecimal(discount); var p = CalculatePrice(orderitem.Price,
- * discount, 1); orderitem.Total = p;
- */
 		FindTwinAndUnite(orderitem.GetObject());
 	}
 
@@ -246,10 +237,8 @@ function FindTwinAndUnite(orderitem) {
 		var twin = q.ExecuteScalar();
 		twin = twin.GetObject();
 		twin.Qty += orderitem.Qty;
-		// twin.Total = twin.Qty * (twin.Discount/100 + 1) * twin.Price;
 		twin.Save();
 		DB.Delete(orderitem.Id);
-		Dialog.Debug("done");
 	} else
 		orderitem.Save();
 }

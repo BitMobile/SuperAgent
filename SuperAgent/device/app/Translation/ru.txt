@@ -193,3 +193,4 @@ noteAsExecuted	Отметить как выполненную
 noteAsNew	Отметить как невыполненную
 noDescriGiven	(описание отсутствует)
 error	Ошибка
+currency	руб.

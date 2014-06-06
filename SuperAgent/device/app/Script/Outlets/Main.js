@@ -268,3 +268,8 @@ function DeleteAndRollback(visit) {
     DB.Delete(visit);
     DoRollback();
 }
+
+function SaveAndBack(outlet){
+	outlet.GetObject().Save();
+	Workflow.Commit();
+}

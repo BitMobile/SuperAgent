@@ -73,7 +73,7 @@ function GetOutletsCount() {
 
 function GetCommitedScheduledVisits() {
 	var q = new Query(
-			"SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet WHERE V.Date >= @today AND V.Date < @tomorrow ORDER BY O.Description LIMIT 100");
+			"SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet WHERE V.Date >= @today AND V.Date < @tomorrow AND VP.Date >= @today AND VP.Date < @tomorrow ORDER BY O.Description LIMIT 100");
 	q.AddParameter("today", DateTime.Now.Date);
 	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
 	return q.ExecuteCount();

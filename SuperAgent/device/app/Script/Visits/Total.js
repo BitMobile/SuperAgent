@@ -90,13 +90,14 @@ function GetOrderSUM(order) {
 function CheckAndCommit(order, visit, wfName) {
 
     if (VisitIsChecked(visit, order, wfName)) {
-        visit.EndTime = DateTime.Now;
+        visit = visit.GetObject();
+    	visit.EndTime = DateTime.Now;
 
-        if (OrderExists(visit)) {
+        if (OrderExists(visit.Id)) {
             order.GetObject().Save();
         }
 
-        visit.GetObject().Save();
+        visit.Save();
         Workflow.Commit();
     }
     else

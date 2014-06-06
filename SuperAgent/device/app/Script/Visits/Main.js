@@ -43,8 +43,9 @@ function GetScheduledVisitsCount() {
 
 function GetCommitedScheduledVisits(searchText, getCount) {
     //return DB.Current.Document.Visit.SelectBy("Outlet", planOutlets).Where("Date.Date == @p1", [DateTime.Now.Date]).Top(100).OrderBy("OutletAsObject.Description");
-    var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet WHERE V.Date >= @today AND V.Date < @tomorrow ORDER BY O.Description LIMIT 100");
+    var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet WHERE V.Date >= @today AND V.Date < @tomorrow AND VP.Date >= @today AND VP.Date < @tomorrow ORDER BY O.Description LIMIT 100");
     q.AddParameter("today", DateTime.Now.Date);
+    
     q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
     if (getCount == "1")
         return q.ExecuteCount();

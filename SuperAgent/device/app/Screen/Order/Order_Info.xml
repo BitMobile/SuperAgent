@@ -26,6 +26,14 @@
 			</c:DockLayout>
 			<c:HorizontalLine />
 
+			<s:If Test="$workflow.name!='Visit'">
+				<c:DockLayout CssClass="parameter_grid" OnClickAction="$SetDeliveryDateDialog($workflow.order, $deliveryDate)">
+					<c:TextView Text="#deliveryDate#" />
+					<c:TextView Id="deliveryDate" Text="$workflow.order.DeliveryDate" CssClass="value" />
+				</c:DockLayout>
+				<c:HorizontalLine />
+			</s:If>
+
 			<c:DockLayout CssClass="parameter_grid"
 				OnClickAction="$SelectPriceListIfNotNew($workflow.order, $priceLists, $executedOrder)">
 				<c:TextView Text="#priceList#" />

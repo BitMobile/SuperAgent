@@ -19,7 +19,7 @@
 
   <bp:Workflow Name="Visits">
 
-    <bp:Step Name="Visits" Screen="Visits.xml" Controller="Visits\Main.js">
+    <bp:Step Name="Visits" Screen="Visit\Visits.xml" Controller="Visits\Main.js">
       <bp:Action Name="ShowMap" NextStep="ShowMap"></bp:Action>
       <bp:Action Name="Select" NextWorkflow="Visit"></bp:Action>
       <bp:Action Name="SelectUnscheduled" NextWorkflow="Visit"></bp:Action>
@@ -90,9 +90,6 @@
     <bp:Step Name="Total" Screen="Visit\Total.xml" Controller="Visits\Total.js">
     </bp:Step>
 
-    <bp:Step Name="ListChoice" Screen="ListChoice.xml">
-    </bp:Step>
-
     <bp:Step Name="AddSKU" Screen="Order\Order_SKUs.xml" Controller="Order\Order_SKUs.js">
       <bp:Action Name="SetFilter" NextStep="Filters"></bp:Action>
       <bp:Action Name="SelectSKU" NextStep="EditSKU"></bp:Action>
@@ -107,16 +104,7 @@
       <bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>
     </bp:Step>
 
-    <bp:Step Name="PriceLists" Screen="ListChoice.xml">
-    </bp:Step>
-
-    <bp:Step Name="EditOutletParameter" Screen="ListChoice.xml">
-    </bp:Step>
-
     <bp:Step Name="EditOutletAddParameter" Screen="OutletParameter.xml">
-    </bp:Step>
-
-    <bp:Step Name="EditQuestion" Screen="ListChoice.xml">
     </bp:Step>
 
     <bp:Step Name="Visit_EditSKU" Screen="Visit\SKU.xml" Controller="Visits\SKU_Questions.js">

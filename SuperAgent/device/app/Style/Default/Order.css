@@ -2,17 +2,4 @@
     width: 90%;
 }
 
-.btn_back {
-    width: 39%;
-	height: 100%;
-    dock-align: left;
-}
-
-    .btn_back TextView {
-        padding-top: 30%;
-        font: 33% arial;
-    }
 	
-.btn_forward {
-    margin-left: 20%;
-}	

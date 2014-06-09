@@ -442,6 +442,14 @@ MemoEdit {
     margin-right: 0%;
 }
 
+.red_mark {
+    background-image: url(red_mark.png);
+    height: 0%;
+    width: 4.1%;
+    margin-left: 2%;
+    margin-right: 0%;
+}
+
 .no_mark {
     height: 100%;
     width: 6.1%;

@@ -91,9 +91,11 @@
 			</c:DockLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="parameter_grid" OnClickAction="$ChandeDiscount($orderitem)">
-			<s:Push Id="discountDescrText" Value="$GetDiscountDescription($orderitem)"></s:Push>
-				<c:TextView Id="discountDescr" Text="$discountDescrText"></c:TextView>
+			<c:DockLayout CssClass="parameter_grid">
+				<s:Push Id="discountDescrText" Value="$GetDiscountDescription($orderitem)"></s:Push>
+				<c:HorizontalLayout CssClass="clickable" OnClickAction="$ChandeDiscount($orderitem)">
+					<c:TextView Id="discountDescr" Text="$discountDescrText" />
+				</c:HorizontalLayout>
 				<c:EditText Id="discountEdit" Text="$param4" CssClass="value"
 					Keyboard="numeric" OnChange="$ApplyDiscount($orderitem)"></c:EditText>
 			</c:DockLayout>
@@ -108,7 +110,9 @@
 				<s:Iterator Id="historyItem" Value="$historyItems">
 					<c:DockLayout CssClass="parameter_grid">
 						<c:TextView Text="$historyItem.Date"></c:TextView>
-						<c:TextView Text="{$historyItem.Qty} {$sku.BaseUnit.Description}, x {$historyItem.Total} {#currency#}" CssClass="value"></c:TextView>
+						<c:TextView
+							Text="{$historyItem.Qty} {$sku.BaseUnit.Description}, x {$historyItem.Total} {#currency#}"
+							CssClass="value"></c:TextView>
 					</c:DockLayout>
 					<c:HorizontalLine />
 				</s:Iterator>

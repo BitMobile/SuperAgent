@@ -70,15 +70,15 @@ function GetDiscountDescription(orderitem) {
 
 function ApplyDiscount(sender, orderitem) {
 	if (IsNullOrEmpty(sender.Text))
-		sender.Text = parseInt(0);
+		sender.Text = parseFloat(0);
 	else {
 		if ($.discountDescr.Text == Translate["#discount#"]
-				&& parseInt(sender.Text) > parseInt(0))
+				&& parseFloat(sender.Text) > parseFloat(0))
 			$.discountEdit.Text = -1 * $.discountEdit.Text;
 	}
 
 	orderitem = orderitem.GetObject();
-	orderitem.Discount = $.discountEdit.Text;
+	orderitem.Discount = parseFloat($.discountEdit.Text);
 	orderitem.Save();
 
 	CountPrice(orderitem.Id);

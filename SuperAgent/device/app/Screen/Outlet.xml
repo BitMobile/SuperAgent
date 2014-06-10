@@ -27,7 +27,7 @@
           <c:Image/>
           <c:TextView Text="#visits#"/>
         </c:HorizontalLayout>
-        <c:Button Id="btnForward" Text="#forward#" OnEvent="Forward" CssClass="btn_forward" OnClickAction="$CheckNotNullAndCommit($outlet)"/>
+        <c:Button Id="btnForward" Text="#forward#" OnEvent="Forward" CssClass="btn_forward" OnClickAction="$CheckNotNullAndForward($outlet)"/>
         <c:HorizontalLayout>
           <c:TextView Text="#client#" />
         </c:HorizontalLayout>
@@ -107,7 +107,7 @@
         <c:DockLayout CssClass="parameter_grid" OnClickAction="$GoToParameterAction($parameter.DataType.Description, $parameterValue, Value, $outlet, $parameter.Id, control{$index})">
           <c:TextView Text="$parameter.Description"></c:TextView>
           <s:If Test="$parameter.TypeDescription=='Integer'">
-            <c:EditText Id="control{$index}" Value="$parameterValue.Value" CssClass="value" Keyboard="numeric"></c:EditText>
+            <c:EditText Id="control{$index}" Value="$parameterValue.Value" OnChange="$SaveValue($parameterValue)" CssClass="value" Keyboard="numeric"></c:EditText>
           </s:If>
           <s:If Test="$parameter.TypeDescription=='Decimal'">
             <c:EditText Id="control{$index}" Value="$parameterValue.Value" CssClass="value" Keyboard="numeric"></c:EditText>

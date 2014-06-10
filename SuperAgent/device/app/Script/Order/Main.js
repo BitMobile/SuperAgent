@@ -30,18 +30,11 @@ function AssignNumberIfNotExist(number) {
 
 function GetOutlets(searchText) {
 	if (String.IsNullOrEmpty(searchText)) {
-		// var query = new Query();
-		// query.Text = "SELECT Id, Address, Description, ConfirmationStatus
-		// FROM Catalog_Outlet ORDER BY Description LIMIT 100";
 		var query = new Query(
 				"SELECT O.Id, T.Outlet, O.Description, O.Address FROM Catalog_Territory_Outlets T JOIN Catalog_Outlet O ON O.Id=T.Outlet ORDER BY O.Description LIMIT 500");
 		return query.Execute();
 	} else {
-		// var query = new Query();
 		searchText = "'%" + searchText + "%'";
-		// query.Text = "SELECT Id, Address, Description, ConfirmationStatus
-		// FROM Catalog_Outlet WHERE Description LIKE " + searchText + " ORDER
-		// BY Description LIMIT 100";
 		var query = new Query(
 				"SELECT O.Id, T.Outlet, O.Description, O.Address FROM Catalog_Territory_Outlets T JOIN Catalog_Outlet O ON O.Id=T.Outlet WHERE O.Description LIKE "
 						+ searchText + " ORDER BY O.Description LIMIT 500");

@@ -110,10 +110,10 @@
             <c:EditText Id="control{$index}" Value="$parameterValue.Value" OnChange="$SaveValue($parameterValue)" CssClass="value" Keyboard="numeric"></c:EditText>
           </s:If>
           <s:If Test="$parameter.TypeDescription=='Decimal'">
-            <c:EditText Id="control{$index}" Value="$parameterValue.Value" CssClass="value" Keyboard="numeric"></c:EditText>
+            <c:EditText Id="control{$index}" Value="$parameterValue.Value" OnChange="$SaveValue($parameterValue)" CssClass="value" Keyboard="numeric"></c:EditText>
           </s:If>
           <s:If Test="$parameter.TypeDescription=='String'">
-            <c:EditText Id="control{$index}" Value="$parameterValue.Value" CssClass="value"></c:EditText>
+            <c:EditText Id="control{$index}" Value="$parameterValue.Value" OnChange="$SaveValue($parameterValue)" CssClass="value"></c:EditText>
           </s:If>
           <s:If Test="$parameter.TypeDescription=='DateTime'">
             <c:TextView Id="control{$index}" Text="$parameterValue.Value" CssClass="value"></c:TextView>

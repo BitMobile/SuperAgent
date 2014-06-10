@@ -20,21 +20,6 @@ function GetQuestionsByQuestionnaires(outlet) {
 			DB.Current.Constant.QuestionnaireScale.Region);
 	var territoryQuest = GetQuesttionaire(outlet,
 			DB.Current.Constant.QuestionnaireScale.Territory);
-
-	// var query = new Query("SELECT Q.Id, C.Description, D.Description As
-	// AnswerType, C.Id AS Question FROM Document_Questionnaire_Questions Q JOIN
-	// Catalog_Question C ON Q.Question=C.Id JOIN Enum_DataType D ON
-	// D.Id=C.AnswerType WHERE
-	// Q.Ref='@ref[Document_Questionnaire]:cd5051d4-7e9c-11e3-bd7d-50e549cab397'
-	// AND Question NOT IN
-	// ('@ref[Catalog_Question]:d49c89c3-92f4-11e3-9852-50e549cab397',
-	// '@ref[Catalog_Question]:fd14b774-951c-11e2-bcec-005056990f8a',
-	// '@ref[Catalog_Question]:4563e7b1-c0ab-11e3-8e82-50e549cab397',
-	// '@ref[Catalog_Question]:fd14b76d-951c-11e2-bcec-005056990f8a',
-	// '@ref[Catalog_Question]:7e29cca5-9219-11e2-9e09-50e549cab397',
-	// '@ref[Catalog_Question]:b62d0602-881b-11e3-b6e8-50e549cab397',
-	// '@ref[Catalog_Question]:4563e7b0-c0ab-11e3-8e82-50e549cab397') ORDER BY
-	// LineNumber");
 	var query = new Query(GetQuestionsQueryText());
 	query.AddParameter("ref1", regionQuest);
 	query.AddParameter("ref2", territoryQuest);
@@ -108,6 +93,11 @@ function SaveAtVisit(arr) {
 	question.Save();
 	Variables[control].Text = Translate["#snapshotAttached#"];
 
+}
+
+function SaveValue(control, questionValue){
+	questionValue = questionValue.GetObject();
+	questionValue.Save();
 }
 
 function GetCameraObject(entity) {

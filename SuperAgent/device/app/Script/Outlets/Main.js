@@ -55,7 +55,6 @@ function CreateOutletParameterValue(outlet, parameter) {
 function SaveValue(control, parameterValue) {
 	parameterValue = parameterValue.GetObject();
 	parameterValue.Save();
-	parameterValue.Save();
 }
 
 function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control) {

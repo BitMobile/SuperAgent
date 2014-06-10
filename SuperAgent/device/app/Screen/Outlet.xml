@@ -82,13 +82,13 @@
       </c:HorizontalLayout>
       <c:HorizontalLine/>
 
-      <c:DockLayout CssClass="parameter_grid" OnClickAction="$DoSelect($outlet,Class,$outletClass)">
+      <c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectIfNotAVisit($outlet,Class,$outletClass)">
         <c:TextView Text="#outlet_class#"></c:TextView>
         <c:TextView Id="outletClass" Text="$outlet.Class.Description" CssClass="value"></c:TextView>
       </c:DockLayout>
       <c:HorizontalLine/>
 
-      <c:DockLayout CssClass="parameter_grid" OnClickAction="$DoSelect($outlet,Type,$outletType)">
+      <c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectIfNotAVisit($outlet,Type,$outletType)">
         <c:TextView Text="#outlet_type#"></c:TextView>
         <c:TextView Id="outletType" Text="$outlet.Type.Description" CssClass="value"></c:TextView>
       </c:DockLayout>

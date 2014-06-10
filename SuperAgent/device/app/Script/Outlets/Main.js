@@ -57,6 +57,11 @@ function SaveValue(control, parameterValue) {
 	parameterValue.Save();
 }
 
+function SelectIfNotAVisit(outlet, attribute, entity) {
+	if ($.workflow.name != "Visit")
+		DoSelect(outlet, attribute, entity);
+}
+
 function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control) {
 	if (typeDescription == "ValueList") {
 		var q = new Query();

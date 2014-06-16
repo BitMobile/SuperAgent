@@ -32,10 +32,6 @@ function OpenMenu() {
 	}
 }
 
-function Fake() {
-
-}
-
 function MakeSnapshot() {
 	GetCameraObject();
 	Camera.MakeSnapshot();
@@ -80,9 +76,10 @@ function GetCommitedScheduledVisits() {
 
 function GetUnscheduledVisits() {
 	var q = new Query(
-			"SELECT COUNT (Id) FROM Document_Visit WHERE Plan IS NULL AND Date >= @today AND Date < @tomorrow");
+			"SELECT COUNT (Id) FROM Document_Visit WHERE Plan=@emptyRef AND Date >= @today AND Date < @tomorrow");
 	q.AddParameter("today", DateTime.Now.Date);
 	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
+	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));
 	return q.ExecuteScalar();
 }
 

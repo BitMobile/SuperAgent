@@ -95,13 +95,12 @@
 
 
         <s:Iterator Id="pOutlet" Value="$commitedVisits">
-          <s:Push Id="planOutlet" Value="$pOutlet.Outlet"></s:Push>
           
           <c:HorizontalLayout CssClass="grid">
             <c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
             <c:VerticalLayout>
-              <c:TextView Text="$planOutlet.Description" CssClass="main_row"></c:TextView>
-              <c:TextView Text="{$planOutlet.Address}" CssClass="description_row"></c:TextView>
+              <c:TextView Text="$pOutlet.Description" CssClass="main_row"></c:TextView>
+              <c:TextView Text="{$pOutlet.Address}" CssClass="description_row"></c:TextView>
             </c:VerticalLayout>
           </c:HorizontalLayout>
           <c:HorizontalLine/>

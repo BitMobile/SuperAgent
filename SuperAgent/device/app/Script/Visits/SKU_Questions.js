@@ -1,9 +1,7 @@
 ﻿function GetSKUsFromQuesionnaires(outlet) {
 
-	var regionQuest = GetQuesttionaire(outlet,
-			DB.Current.Constant.QuestionnaireScale.Region);
-	var territoryQuest = GetQuesttionaire(outlet,
-			DB.Current.Constant.QuestionnaireScale.Territory);
+	var regionQuest = GetQuesttionaire(outlet, DB.Current.Constant.QuestionnaireScale.Region);
+	var territoryQuest = GetQuesttionaire(outlet, DB.Current.Constant.QuestionnaireScale.Territory);
 
 	var q = new Query();
 	var fileds = "SELECT q1.LineNumber AS LineNumber, q1.SKU, CS.Description, q1.Ref AS Ref1, DQQ2.Ref AS Ref2, ";
@@ -16,22 +14,17 @@
 	var where1 = " WHERE q1.Ref=@regionRef ";
 	var leftJoin2 = " LEFT JOIN Document_Questionnaire_SKUs q2 ON q2.SKU=q1.SKU and q2.ref=@regionRef LEFT JOIN Document_Questionnaire_SKUs DQQ2 ON q1.SKU=DQQ2.SKU AND DQQ2.Ref=@regionRef WHERE q1.Ref = @terrRef and q2.Id is null ";
 	var order = " ORDER BY T1, LineNumber ";
-	q.Text = fileds + " 1 AS T1, " + innerQuery1 + " AS questionsCount1, "
-			+ caseThen + innerQuery2 + caseEnd + from + leftJoin1 + where1
-			+ " UNION ALL " + fileds + " 2 AS T1, " + innerQuery2
-			+ " AS questionsCount1, " + caseThen + innerQuery1 + caseEnd + from
-			+ leftJoin2 + order;
+	q.Text = fileds + " 1 AS T1, " + innerQuery1 + " AS questionsCount1, " + caseThen + innerQuery2 + caseEnd + from + leftJoin1 + where1 + " UNION ALL " + fileds + " 2 AS T1, " + innerQuery2 + " AS questionsCount1, " + caseThen + innerQuery1 + caseEnd + from + leftJoin2 + order;
 
 	q.AddParameter("regionRef", regionQuest); // 38426ABE-7EA7-11E3-BD7D-50E549CAB397
 	q.AddParameter("terrRef", territoryQuest); // CD5051D4-7E9C-11E3-BD7D-50E549CAB397
-	
+
 	return q.Execute();
 }
 
 function GetQuesttionaire(outlet, scale) {
 
-	var q1 = new Query(
-			"SELECT Id FROM Document_Questionnaire WHERE OutletType=@type AND OutletClass=@class AND Scale=@scale ORDER BY Date desc");
+	var q1 = new Query("SELECT Id FROM Document_Questionnaire WHERE OutletType=@type AND OutletClass=@class AND Scale=@scale ORDER BY Date desc");
 	q1.AddParameter("type", outlet.Type);
 	q1.AddParameter("class", outlet.Class);
 	q1.AddParameter("scale", scale);
@@ -41,8 +34,7 @@ function GetQuesttionaire(outlet, scale) {
 }
 
 function GetVisitSKUValue(visit, sku) {
-	var query = new Query(
-			"SELECT Id FROM Document_Visit_SKUs WHERE Ref == @Visit AND SKU == @SKU");
+	var query = new Query("SELECT Id FROM Document_Visit_SKUs WHERE Ref == @Visit AND SKU == @SKU");
 	query.AddParameter("Visit", visit);
 	query.AddParameter("SKU", sku);
 	return query.ExecuteScalar();
@@ -51,36 +43,32 @@ function GetVisitSKUValue(visit, sku) {
 function GetSKUQty(outlet, ref1, ref2, count1, count2) {
 
 	var c = 0;
-	
+
 	if (ref2 == null)
 		c = count1;
 	else {
-		var regionQuest = GetQuesttionaire(outlet,
-				DB.Current.Constant.QuestionnaireScale.Region);
-		var territoryQuest = GetQuesttionaire(outlet,
-				DB.Current.Constant.QuestionnaireScale.Territory);
+		var regionQuest = GetQuesttionaire(outlet, DB.Current.Constant.QuestionnaireScale.Region);
+		var territoryQuest = GetQuesttionaire(outlet, DB.Current.Constant.QuestionnaireScale.Territory);
 
-		var query = new Query(
-				"SELECT DISTINCT q1.SKUQuestion FROM Document_Questionnaire_SKUQuestions q1 WHERE (q1.Ref=@ref1 OR q1.Ref=@ref2) AND q1.UseInQuestionaire=1");
+		var query = new Query("SELECT DISTINCT q1.SKUQuestion FROM Document_Questionnaire_SKUQuestions q1 WHERE (q1.Ref=@ref1 OR q1.Ref=@ref2) AND q1.UseInQuestionaire=1");
 		query.AddParameter("ref1", regionQuest);
 		query.AddParameter("ref2", territoryQuest);
 		var res = query.ExecuteCount();
 
 		c = res;
 	}
-	
+
 	var n = $.workflow.sku_qty;
 	$.workflow.Remove("sku_qty");
-	$.workflow.Add("sku_qty", (n+c));	
-	
+	$.workflow.Add("sku_qty", (n + c));
+
 	return c;
 
 }
 
 function CheckQuestionExistence(questionnaire, description, sku) {
 
-	var q = new Query(
-			"SELECT DQ.Id,  E.Description, CS.Description AS SKU, DQ.UseInQuestionaire FROM Document_Questionnaire_SKUQuestions DQ JOIN Enum_SKUQuestions E ON DQ.SKUQuestion=E.Id JOIN Document_Questionnaire_SKUs DS ON DS.Ref=DQ.Ref JOIN Catalog_SKU CS ON DS.SKU=CS.Id WHERE DQ.Ref=@ref AND E.Description=@questionDescr AND DS.SKU=@sku AND DQ.UseInQuestionaire=@use");
+	var q = new Query("SELECT DQ.Id,  E.Description, CS.Description AS SKU, DQ.UseInQuestionaire FROM Document_Questionnaire_SKUQuestions DQ JOIN Enum_SKUQuestions E ON DQ.SKUQuestion=E.Id JOIN Document_Questionnaire_SKUs DS ON DS.Ref=DQ.Ref JOIN Catalog_SKU CS ON DS.SKU=CS.Id WHERE DQ.Ref=@ref AND E.Description=@questionDescr AND DS.SKU=@sku AND DQ.UseInQuestionaire=@use");
 	q.AddParameter("ref", questionnaire);
 	q.AddParameter("questionDescr", description);
 	q.AddParameter("sku", sku);
@@ -98,8 +86,7 @@ function GetSKUAnswers(skuvalue) {// , sku_answ) {
 
 	else {
 		var sa = parseInt(0);
-		var parameters = [ "Available", "Facing", "Stock", "Price", "MarkUp",
-				"OutOfStock", "Snapshot" ];
+		var parameters = [ "Available", "Facing", "Stock", "Price", "MarkUp", "OutOfStock", "Snapshot" ];
 		for ( var i in parameters) {
 			var name = parameters[i];
 			if (skuvalue[name] != null)
@@ -117,8 +104,7 @@ function IsAnswered(visit, qName, sku) {
 	// .Where(String.Format("{0}!=@p1 && SKU==@p2", qName), [null, sku.Id])
 	// .Count();
 
-	var n = new Query("SELECT Id FROM Document_Visit_SKUs WHERE Ref=@ref AND "
-			+ qName + " IS NOT NULL AND SKU=@sku");
+	var n = new Query("SELECT Id FROM Document_Visit_SKUs WHERE Ref=@ref AND " + qName + " IS NOT NULL AND SKU=@sku");
 	n.AddParameter("ref", visit);
 	n.AddParameter("sku", sku);
 	if (parseInt(n.ExecuteCount()) == parseInt(0))
@@ -145,8 +131,7 @@ function SKUIsInList(sku) {
 
 function GetSKUQuestions(regionQuest, territoryQuest) {
 
-	var q = new Query(
-			"SELECT DISTINCT ES.Description, DQ.LineNumber, DQ.SKUQuestion FROM Document_Questionnaire_SKUQuestions DQ JOIN Enum_SKUQuestions ES ON DQ.SKUQuestion=ES.Id WHERE (DQ.Ref=@ref1 OR DQ.Ref=@ref2) AND DQ.UseInQuestionaire=1 ORDER BY LineNumber");
+	var q = new Query("SELECT DISTINCT ES.Description, DQ.LineNumber, DQ.SKUQuestion FROM Document_Questionnaire_SKUQuestions DQ JOIN Enum_SKUQuestions ES ON DQ.SKUQuestion=ES.Id WHERE (DQ.Ref=@ref1 OR DQ.Ref=@ref2) AND DQ.UseInQuestionaire=1 ORDER BY LineNumber");
 	q.AddParameter("ref1", regionQuest);
 	q.AddParameter("ref2", territoryQuest);
 
@@ -197,25 +182,22 @@ function GoToQuestionAction(answerType, question, visit, control, attribute) {
 		Global.BooleanDialogSelect(question, attribute, Variables[control]);
 	}
 
-	if (answerType == "Integer" || answerType == "String"
-			|| answerType == "Decimal") {
+	if (answerType == "Integer" || answerType == "String" || answerType == "Decimal") {
 		Variables["memoAnswer"].AutoFocus == true;
 	}
 }
 
 function SaveAndBack(skuValue) {
-	if (NotEmptyObject(skuValue))
-		skuValue.GetObject().Save();
-	else
+	if (NotEmptyObject(skuValue) == false)
 		DB.Delete(skuValue);
 	Workflow.Back();
 }
 
 function NotEmptyObject(skuValue) {
-	var arr = ["Available", "Facing", "Stock", "Price", "MarkUp", "OutOfStock", "Snapshot"];
+	var arr = [ "Available", "Facing", "Stock", "Price", "MarkUp", "OutOfStock", "Snapshot" ];
 	for ( var i in arr) {
-		var a = arr[i];	
-		if (String.IsNullOrEmpty(skuValue[a])==false)
+		var a = arr[i];
+		if (String.IsNullOrEmpty(skuValue[a]) == false)
 			return true;
 	}
 	return false;
@@ -235,8 +217,7 @@ function GetCameraObject(entity) {
 	FileSystem.CreateDirectory("/private/Document.Visit");
 	var guid = Global.GenerateGuid();
 	Variables.Add("guid", guid);
-	var path = String.Format("/private/Document.Visit/{0}/{1}.jpg", entity,
-			guid);
+	var path = String.Format("/private/Document.Visit/{0}/{1}.jpg", entity, guid);
 	Camera.Size = 300;
 	Camera.Path = path;
 }
@@ -250,14 +231,12 @@ function SaveAtVisit(arr) {
 	control.Text = Translate["#snapshotAttached#"];
 }
 
-function GetActionAndBack(){
-	if ($.workflow.skipQuestions){
-		if ($.workflow.skipTasks){
+function GetActionAndBack() {
+	if ($.workflow.skipQuestions) {
+		if ($.workflow.skipTasks) {
 			Workflow.BackTo("Outlet");
-		}
-		else
+		} else
 			Workflow.BackTo("Visit_Tasks");
-	}
-	else
+	} else
 		Workflow.Back();
 }

@@ -95,10 +95,10 @@ function SaveAtVisit(arr) {
 
 }
 
-function SaveValue(control, questionValue){
+/*function SaveValue(control, questionValue){
 	questionValue = questionValue.GetObject();
 	questionValue.Save();
-}
+}*/
 
 function GetCameraObject(entity) {
 	FileSystem.CreateDirectory("/private/Document.Visit");

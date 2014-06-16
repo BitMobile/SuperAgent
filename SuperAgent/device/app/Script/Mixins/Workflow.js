@@ -32,3 +32,9 @@ function DoSelect(entity, attribute, control) {
 	Global.DoSelect(entity, attribute, control);
 	return;
 }
+
+function SaveValue(control, ref){
+	ref = ref.GetObject();
+	Dialog.Debug(ref);
+	ref.Save();
+}

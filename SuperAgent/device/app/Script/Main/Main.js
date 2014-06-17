@@ -102,6 +102,17 @@ function GetOrderSumm() {
 		return cnt;
 }
 
+function GetOrderQty(){
+	var q = new Query("SELECT COUNT(Id) FROM Document_Order WHERE Date >= @today AND Date < @tomorrow");
+	q.AddParameter("today", DateTime.Now.Date);
+	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
+	var cnt = q.ExecuteScalar();
+	if (cnt == null)
+		return 0;
+	else
+		return cnt;
+}
+
 function GetEncashmentSumm() {
 	var q = new Query(
 			"SELECT SUM(EncashmentAmount) FROM Document_Encashment WHERE Date >= @today AND Date < @tomorrow");

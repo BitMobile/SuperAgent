@@ -9,6 +9,7 @@
 	<s:Push Id="planVisitsLeft" Value="$GetDifference($plannedVisits, $scheduledVisits)"></s:Push>
 	<s:Push Id="outletsCount" Value="$GetOutletsCount()" />
 	<s:Push Id="orderSum" Value="$GetOrderSumm()" />
+	<s:Push Id="orderQty" Value="$GetOrderQty()"></s:Push>
 	<s:Push Id="encashmentSumm" Value="$GetEncashmentSumm()" />
 	<s:Push Id="receivablesSumm" Value="$GetReceivablesSumm()" />
 
@@ -41,7 +42,7 @@
 			<c:HorizontalLine />
 
 			<c:DockLayout OnClickAction="$DoAction(Order)">
-				<c:TextView CssClass="menu_text" Text="$orderSum"></c:TextView>
+				<c:TextView CssClass="menu_text" Text="{$orderQty} | {$orderSum}"></c:TextView>
 				<c:HorizontalLayout>
 					<c:Image CssClass="btn_orders" />
 					<c:TextView Text="#orders#"></c:TextView>

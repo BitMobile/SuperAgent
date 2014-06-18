@@ -1,6 +1,5 @@
 ﻿function GetExecutedTasks(visit) {
-	var query = new Query(
-			"SELECT VT.Id, STRFTIME('%d/%m/%Y', DT.PlanDate) AS PlanDate, DT.TextTask, DT.Target FROM Document_Visit_Task VT JOIN Document_Task DT ON VT.TaskRef=DT.Id WHERE VT.Ref=@ref AND VT.Result=@result ORDER BY DT.PlanDate");
+	var query = new Query("SELECT VT.Id, STRFTIME('%d/%m/%Y', DT.PlanDate) AS PlanDate, DT.TextTask, DT.Target FROM Document_Visit_Task VT JOIN Document_Task DT ON VT.TaskRef=DT.Id WHERE VT.Ref=@ref AND VT.Result=@result ORDER BY DT.PlanDate");
 	query.AddParameter("ref", visit);
 	query.AddParameter("result", true);
 
@@ -8,8 +7,7 @@
 }
 
 function GetNotExecutedTasks(visit) {
-	var q = new Query(
-			"SELECT DT.Id, STRFTIME('%d/%m/%Y', DT.PlanDate) AS PlanDate, DT.TextTask, DT.Target FROM Document_Task DT LEFT JOIN Document_Visit_Task VT ON DT.Id = VT.TaskRef AND VT.Ref = @ref AND VT.Result=@result WHERE DT.PlanDate >= @planDate AND DT.Outlet = @outlet AND VT.Id IS NULL ORDER BY DT.PlanDate");
+	var q = new Query("SELECT DT.Id, STRFTIME('%d/%m/%Y', DT.PlanDate) AS PlanDate, DT.TextTask, DT.Target FROM Document_Task DT LEFT JOIN Document_Visit_Task VT ON DT.Id = VT.TaskRef AND VT.Ref = @ref AND VT.Result=@result WHERE DT.PlanDate >= @planDate AND DT.Outlet = @outlet AND VT.Id IS NULL ORDER BY DT.PlanDate");
 	q.AddParameter("planDate", DateTime.Now.Date);
 	q.AddParameter("outlet", visit.Outlet);
 	q.AddParameter("ref", visit);
@@ -30,8 +28,7 @@ function CompleteTheTask(task, visit) {
 }
 
 function CreateVisitTaskValueIfNotExists(visit, task) {
-	var query = new Query(
-			"SELECT Id from Document_Visit_Task WHERE Ref == @Visit AND TextTask == @Text");
+	var query = new Query("SELECT Id from Document_Visit_Task WHERE Ref == @Visit AND TextTask == @Text");
 	query.AddParameter("Visit", visit);
 	query.AddParameter("Text", task.TextTask);
 	var taskValue = query.ExecuteScalar();
@@ -68,4 +65,3 @@ function GetTargetText(text) {
 	else
 		return text;
 }
-

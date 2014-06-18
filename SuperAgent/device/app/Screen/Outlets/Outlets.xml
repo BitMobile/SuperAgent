@@ -6,16 +6,30 @@
 
   <c:DockLayout>
 
-    <c:DockLayout CssClass="top_navigator">
-      <c:HorizontalLayout CssClass="btn_menu" OnEvent="Back" OnClickAction="$DoRollback()">
-        <c:Image CssClass="menuIcon"/>
-      </c:HorizontalLayout>
-      <c:HorizontalLayout CssClass="btn_forward"/>
-      <c:HorizontalLayout>
-        <c:TextView Text="#clients#" />
-      </c:HorizontalLayout>
-    </c:DockLayout>
-    <c:HorizontalLine/>
+	<s:If Test="$workflow.name=='Order'">
+		<c:DockLayout CssClass="top_navigator">
+			<c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$DoBack()">
+				<c:Image />
+				<c:TextView Text="#back#" />
+			</c:HorizontalLayout>
+			<c:HorizontalLayout CssClass="btn_forward" />
+			<c:HorizontalLayout>
+				<c:TextView Text="#clients#" />
+			</c:HorizontalLayout>
+		</c:DockLayout>
+	</s:If>
+	<s:Else>
+		<c:DockLayout CssClass="top_navigator">
+			<c:HorizontalLayout CssClass="btn_menu" OnEvent="Back" OnClickAction="$DoRollback()">
+				<c:Image CssClass="menuIcon" />
+			</c:HorizontalLayout>
+			<c:HorizontalLayout CssClass="empty_forward" />
+			<c:HorizontalLayout>
+				<c:TextView Text="#clients#" />
+			</c:HorizontalLayout>
+		</c:DockLayout>
+	</s:Else>
+	<c:HorizontalLine />
 
     <c:HorizontalLayout CssClass="search">
       <c:DockLayout >
@@ -27,7 +41,7 @@
     <c:HorizontalLine/>
 
     <s:If Test="$workflow.name=='Outlets'">
-      <c:HorizontalLayout CssClass="bottom_btn" OnEvent="Back" OnClickAction="$DoAction(Create)">
+      <c:HorizontalLayout CssClass="bottom_btn" OnClickAction="$DoAction(Create)">
         <c:TextView Text="#add#"></c:TextView>
       </c:HorizontalLayout>
       <c:HorizontalLine CssClass="b_line"/>

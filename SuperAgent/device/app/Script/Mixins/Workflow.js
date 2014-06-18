@@ -35,6 +35,5 @@ function DoSelect(entity, attribute, control) {
 
 function SaveValue(control, ref){
 	ref = ref.GetObject();
-	Dialog.Debug(ref);
 	ref.Save();
 }

@@ -65,16 +65,6 @@ function GetCommitedScheduledVisits(searchText, getCount) {
 
 }
 
-function GetOutletsQty() {
-	// return
-	// DB.Current.Catalog.Territory_Outlets.Select().Distinct("OutletAsObject").Count();
-	var q = new Query("SELECT COUNT(*) FROM Catalog_Territory_Outlets");
-	var cnt = q.ExecuteScalar();
-	if (cnt == null)
-		return 0;
-	else
-		return cnt;
-}
 
 function ChangeListAndRefresh(control) {
 	$.Remove("visitsType");
@@ -82,13 +72,23 @@ function ChangeListAndRefresh(control) {
 	Workflow.Refresh([]);
 }
 
-function GetOutlets(searchText) {
+
+function GetOutlets(searchText, returnQty) {
 
 	var search = "";
 	if (String.IsNullOrEmpty(searchText)==false)
 		search = "AND O.Description LIKE '%" + searchText + "%'";
-	var q = new Query("SELECT T.Outlet, O.Description, O.Address FROM Catalog_Territory_Outlets T JOIN Catalog_Outlet O ON O.Id=T.Outlet " + search + " ORDER BY O.Description LIMIT 500");
-	return q.Execute();
+	var q = new Query("SELECT O.Id AS Outlet, O.Description, O.Address FROM Catalog_Outlet O " + search + " ORDER BY O.Description LIMIT 500");
+	if (parseInt(returnQty)==parseInt(0))
+		return q.Execute();
+	else{
+		var c = q.ExecuteCount();
+		if (c==null)
+			return parseInt(0);
+		else
+			return c;
+	}
+		
 }
 
 function AddGlobalAndAction(planVisit, outlet, actionName) {

@@ -139,8 +139,12 @@
   <bp:Workflow Name="Order">
 
     <bp:Step Name="OrderList" Screen="Order\OrderList.xml" Controller="Order\Main.js">
-      <bp:Action Name="Create" NextWorkflow="CreateOrder"></bp:Action>
+      <bp:Action Name="Create" NextStep="Outlets"></bp:Action>
       <bp:Action Name="Select" NextStep="Order"></bp:Action>
+    </bp:Step>
+
+    <bp:Step Name="Outlets" Screen="Outlets\Outlets.xml" Controller="Outlets\Main.js">
+      <bp:Action Name="Select" NextWorkflow="CreateOrder"></bp:Action>
     </bp:Step>
 
     <bp:Step Name="Order" Screen="Order\Order.xml" Controller="Order\Main.js">
@@ -153,10 +157,6 @@
   </bp:Workflow>
   
   <bp:Workflow Name="CreateOrder">
-
-    <bp:Step Name="Outlets" Screen="Outlets\Outlets.xml" Controller="Outlets\Main.js">
-      <bp:Action Name="Select" NextStep="Order"></bp:Action>
-    </bp:Step>
 
     <bp:Step Name="Order" Screen="Order.xml" Controller="Order\Main.js">
       <bp:Action Name="Add" NextStep="AddSKU"></bp:Action>

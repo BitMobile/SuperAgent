@@ -19,7 +19,7 @@
 
     <c:HorizontalLayout CssClass="small_grid">
       <s:Push Id="sv" Value="$GetScheduledVisitsCount()"></s:Push>
-      <s:Push Id="usv" Value="$GetOutletsQty()"></s:Push>
+      <s:Push Id="usv" Value="$GetOutlets(null, 1)"></s:Push>
       <s:If Test="$visitsType=='planned'">
         <c:HorizontalLayout CssClass="mode_left_button_on">
           <c:HorizontalLayout Id="planned" CssClass="select_zone" OnClickAction="$Facade.ChangeListAndRefresh(planned)">
@@ -113,7 +113,7 @@
 
 
     <s:Else>
-      <s:Push Id="unscheduledOutlets" Value="$GetOutlets($search)"></s:Push>
+      <s:Push Id="unscheduledOutlets" Value="$GetOutlets($search, 0)"></s:Push>
 
       <c:ScrollView>
         <s:Iterator Id="uOutlet" Value="$unscheduledOutlets">

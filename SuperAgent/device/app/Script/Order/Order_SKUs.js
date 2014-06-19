@@ -2,8 +2,8 @@
 
 function GetSKUAndGroups(searchText, priceList) {
     var filterString = "";
-    filterString += AddFilter(filterString, "group_filter", "G.Id");
-    filterString += AddFilter(filterString, "brand_filter", "CB.Id");
+    filterString += AddFilter(filterString, "group_filter", "G.Id", " AND ");
+    filterString += AddFilter(filterString, "brand_filter", "CB.Id", " AND ");
 
     if (String.IsNullOrEmpty(searchText)) {
         var query = new Query();
@@ -20,10 +20,10 @@ function GetSKUAndGroups(searchText, priceList) {
     }
 }
 
-function AddFilter(filterString, filterName, condition) {
+function AddFilter(filterString, filterName, condition, connector) {
     if (Variables.Exists(filterName)) {
         var gr = Variables[filterName];
-        filterString = " AND " + condition + " IN (";
+        filterString = connector + condition + " IN (";
         for (var i = 0; i < gr.Count() ; i++) {
             filterString += "'" + (gr[i]).ToString() + "'";
             if (i != (gr.Count() - 1))
@@ -92,21 +92,25 @@ function ChangeFilterAndRefresh(type) {
 
 }
 
-function GetParentGroups() {
-    //return DB.Current.Catalog.SKUGroup.SelectBy("Parent", groups, "<>").OrderBy("Description");
-    var q = new Query("SELECT Id, Description, Parent FROM Catalog_SKUGroup WHERE Parent=@emptyRef ORDER BY Description");
-    q.AddParameter("emptyRef", DB.EmptyRef("Catalog_SKUGroup"));
+function GetGroups() {
+	var filterString = " ";
+    filterString += AddFilter(filterString, "brand_filter", "S.Brand", " WHERE ");
+    var q = new Query("SELECT DISTINCT G.Id AS ChildId, G.Description AS Child, GP.Id AS ParentId, GP.Description AS Parent FROM Catalog_SKU S LEFT JOIN Catalog_SKUGroup G ON S.Owner=G.Id LEFT JOIN Catalog_SKUGroup GP ON G.Parent=GP.Id " + filterString + " ORDER BY Parent, Child");
     return q.Execute();
 }
 
-function GetChildren(parent) {
-    var q = new Query("SELECT Id, Description FROM Catalog_SKUGroup WHERE Parent=@p1 ORDER BY Description");
-    q.AddParameter("p1", parent);
-    return q.Execute();
-}
-
-function GetChildDescription(d) {
-    return ("      " + d.ToString());
+function AssignHierarchy(rcs) {
+	if (rcs.ParentId == null){
+		$.Add("parentId", rcs.ChildId);
+		$.Add("parent", rcs.Child);
+		$.Add("childExists", false);
+	}
+	else{
+		$.Add("parentId", rcs.ParentId);
+		$.Add("parent", rcs.Parent);
+		$.Add("childExists", true);
+	}
+	return "dummy"
 }
 
 function AddFilterAndRefresh(item, filterName) { //refactoring is needed after platform update

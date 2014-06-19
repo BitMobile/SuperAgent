@@ -159,8 +159,8 @@ function FilterIsSet(itemId, filterName) {
 }
 
 function GetBrands() {
-    //var sku = DB.Current.Catalog.SKU.Select().Distinct("Brand");
-    //return DB.Current.Catalog.Brands.SelectBy("Id", sku);
-    var q = new Query("SELECT DISTINCT B.Id, B.Description FROM Catalog_Brands B JOIN Catalog_SKU S ON B.Id=S.Brand ORDER BY B.Description");
+	var filterString = " ";
+    filterString += AddFilter(filterString, "group_filter", "S.Owner", " WHERE ");
+    var q = new Query("SELECT DISTINCT B.Id, B.Description FROM Catalog_SKU S JOIN Catalog_Brands B ON S.Brand=B.Id JOIN Catalog_SKUGroup G ON S.Owner=G.Id " + filterString + " ORDER BY B.Description");
     return q.Execute();
 }

@@ -22,15 +22,17 @@ function GetSKUAndGroups(searchText, priceList) {
 
 function AddFilter(filterString, filterName, condition, connector) {
     if (Variables.Exists(filterName)) {
-        var gr = Variables[filterName];
-        filterString = connector + condition + " IN (";
-        for (var i = 0; i < gr.Count() ; i++) {
-            filterString += "'" + (gr[i]).ToString() + "'";
-            if (i != (gr.Count() - 1))
-                filterString += ", ";
-            else
-                filterString += ")";
-        }
+    	if (parseInt(Variables[filterName].Count()) != parseInt(0)){
+    		var gr = Variables[filterName];
+            filterString = connector + condition + " IN (";
+            for (var i = 0; i < gr.Count() ; i++) {
+                filterString += "'" + (gr[i]).ToString() + "'";
+                if (i != (gr.Count() - 1))
+                    filterString += ", ";
+                else
+                    filterString += ")";
+            }
+    	}         
     }
     return filterString;
 }
@@ -121,7 +123,8 @@ function AddFilterAndRefresh(item, filterName) { //refactoring is needed after p
     }
     else
         var f = [];
-
+    
+    //one more bad design
     var nCollection = [];
     for (var i in f) {
         nCollection.push(i);
@@ -130,9 +133,15 @@ function AddFilterAndRefresh(item, filterName) { //refactoring is needed after p
     if (IsInCollection(item, f)) {
         nCollection = DeleteFromCollection(item, nCollection);
         if (item.IsFolder) {
-            var chld = GetChildren(item);
-            for (var i in chld)
-                nCollection = DeleteFromCollection(i, nCollection);
+            var chld = GetChildren(item);                       
+            
+            while (chld.Next()){
+            	nCollection = DeleteFromCollection(chld.Id, nCollection);
+            }
+            
+/*            for (var i in chld){
+            	nCollection = DeleteFromCollection(i.Id, nCollection);
+            }                */
         }
     }
     else {
@@ -147,6 +156,12 @@ function AddFilterAndRefresh(item, filterName) { //refactoring is needed after p
     Variables.AddGlobal(filterName, nCollection);
 
     Workflow.Refresh([]);
+}
+
+function GetChildren(parent) {
+    var q = new Query("SELECT Id, Description FROM Catalog_SKUGroup WHERE Parent=@p1 ORDER BY Description");
+    q.AddParameter("p1", parent);
+    return q.Execute();
 }
 
 function FilterIsSet(itemId, filterName) {

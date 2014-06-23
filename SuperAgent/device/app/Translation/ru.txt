@@ -142,7 +142,7 @@ couldnt_be_cleaned	Поле не может быть очищено
 priceList	Прайс-лист
 isntSelected	Не выбран
 SKUWillRevised	Заказ пересчитан
-features	Характеристики
+features	ХАРАКТЕРИСТИКИ
 noPriceLists	Для этой торговой точки нет прайс-листов
 emptyList	Список пуст
 impossibleToDelete	Невозможно удалить, заказ уже передан в базу
@@ -196,3 +196,4 @@ error	Ошибка
 at	в
 currency	руб.
 Synchronization_has_not_been_performed	Синхронизация не была выполнена
+delete	Удалить

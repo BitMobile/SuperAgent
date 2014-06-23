@@ -295,3 +295,8 @@ function ShowInfoIfIsNew() {
 	} else
 		Dialog.Message("#impossibleToEdit#");
 }
+
+function DeleteItem(item, executedOrder){
+	DB.Delete(item);
+	Workflow.Refresh([null, executedOrder]);
+}

@@ -27,7 +27,7 @@
           <c:Image/>
           <c:TextView Text="#visits#"/>
         </c:HorizontalLayout>
-        <c:Button Id="btnForward" Text="#forward#" OnEvent="Forward" CssClass="btn_forward" OnClickAction="$CheckNotNullAndForward($outlet)"/>
+        <c:Button Id="btnForward" Text="#forward#" OnEvent="Forward" CssClass="btn_forward" OnClickAction="$CheckNotNullAndForward($outlet, $workflow.visit)"/>
         <c:HorizontalLayout>
           <c:TextView Text="#client#" />
         </c:HorizontalLayout>

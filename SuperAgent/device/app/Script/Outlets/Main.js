@@ -113,13 +113,15 @@ function UpdateEntity(entity) {
 	return entity;
 }
 
-function CheckNotNullAndForward(outlet) {
-	if (CheckEmptyOutletFields(outlet)) {
+function CheckNotNullAndForward(outlet, visit) {
+	var c = CoordsChecked(visit);
+	if (CheckEmptyOutletFields(outlet) && c) {
 		outlet.GetObject().Save();
 		ReviseParameters(outlet);
 		Workflow.Forward([]);
 	}
 }
+
 
 function ReviseParameters(outlet) {
 	var q = new Query("SELECT Id, Value FROM Catalog_Outlet_Parameters WHERE Ref=@ref");
@@ -218,6 +220,42 @@ function LocationDialogHandler(answ, outlet) {
 		} else
 			NoLocationHandler(LocationDialogHandler);
 	}
+}
+
+function CoordsChecked(visit) {
+	if (Variables["workflow"]["name"] == "Visit") {
+		var query = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='CoordCtrl'");
+		var coordControl = query.ExecuteScalar();
+		if (coordControl == null)
+			var s = false;
+		else {
+			if (parseInt(coordControl) == parseInt(1))
+				var s = true;
+			else
+				var s = false;
+		}
+		if (s && visit.Lattitude == null && visit.Longitude == null) {
+			Dialog.Question(Translate["#impossibleToCreateVisit#"], VisitCoordsHandler, visit);
+			return false;
+		}
+	}
+	return true;
+}
+
+function VisitCoordsHandler(answ, visit) {
+	visit = $.workflow.visit;
+	if (answ == DialogResult.Yes) {
+        var location = GPS.CurrentLocation;
+        if (location.NotEmpty) {
+        	visit = visit.GetObject();
+            visit.Lattitude = location.Latitude;
+            visit.Longitude = location.Longitude;
+            visit.Save();
+            Dialog.Message("#coordinatesAreSet#");
+        }
+        else
+            NoLocationHandler(VisitCoordsHandler);
+    }
 }
 
 function NoLocationHandler(descriptor) {

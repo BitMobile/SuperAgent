@@ -2,10 +2,9 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope" StyleSheet="Order.css">
 
 	<s:Push Id="workflow.outlet" Value="$outlet"></s:Push>
-	<s:Push Id="executedOrder" Value="$param2"></s:Push>
+	<s:Push Id="executedOrder" Value="$param3"></s:Push>
 
 	<s:Push Id="workflow.order" Value="$CreateOrderIfNotExists($workflow.order, $outlet, $common.UserRef, $workflow.visit, $executedOrder)"></s:Push>
-
 
 	<s:Push Id="items" Value="$GetOrderedSKUs($workflow.order)"></s:Push>
 	<s:Push Id="sum" Value="$GetOrderSUM($workflow.order)"></s:Push>

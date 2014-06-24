@@ -7,17 +7,25 @@ function GetSKUAndGroups(searchText, priceList) {
 
     if (String.IsNullOrEmpty(searchText)) {
         var query = new Query();
-        query.Text = "SELECT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, CB.Description AS Brand FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id JOIN Catalog_Brands CB ON CB.Id=S.Brand WHERE S.CommonStock>0 AND PL.Ref = @Ref " + filterString + " ORDER BY G.Description, S.Description LIMIT 100"; //" + filterString + "
+        query.Text = "SELECT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, G.Id AS GroupId, G.Parent AS GroupParent, CB.Description AS Brand FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id JOIN Catalog_Brands CB ON CB.Id=S.Brand WHERE S.CommonStock>0 AND PL.Ref = @Ref " + filterString + " ORDER BY G.Description, S.Description LIMIT 100"; //" + filterString + "
         query.AddParameter("Ref", priceList);
         return query.Execute();
     }
     else {
         searchText = "'%" + searchText + "%'";
         var query = new Query();
-        query.Text = "SELECT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, CB.Description AS Brand FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id JOIN Catalog_Brands CB ON CB.Id=S.Brand WHERE S.CommonStock>0 AND PL.Ref = @Ref AND S.Description LIKE " + searchText + filterString + " ORDER BY G.Description, S.Description LIMIT 100";
+        query.Text = "SELECT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, G.Id AS GroupId, CB.Description AS Brand FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id JOIN Catalog_Brands CB ON CB.Id=S.Brand WHERE S.CommonStock>0 AND PL.Ref = @Ref AND S.Description LIKE " + searchText + filterString + " ORDER BY G.Description, S.Description LIMIT 100";
         query.AddParameter("Ref", priceList);
         return query.Execute();
     }
+}
+
+function GetGroupPath(group, parent) {
+	var string = "";
+    if (parent.EmptyRef()==false) {
+        string = string + "/ " + group.Parent.Description;
+    }
+    return string;
 }
 
 function AddFilter(filterString, filterName, condition, connector) {

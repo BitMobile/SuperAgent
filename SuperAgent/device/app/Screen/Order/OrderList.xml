@@ -37,7 +37,7 @@
 				<s:Push Id="checkedNumber" Value="$AssignNumberIfNotExist($order.Number)"></s:Push>
 
 				<c:HorizontalLayout CssClass="grid"
-					OnClickAction="$DoAction(Select,$order.Outlet,$order.Id)">
+					OnClickAction="$DoAction(Select,$order.Outlet,null,$order.Id)">
 					<s:If Test="$OrderCanceled($order.Status)">
 						<c:Image CssClass="red_mark"></c:Image>
 					</s:If>

@@ -77,7 +77,7 @@ function GetOutlets(searchText, returnQty) {
 
 	var search = "";
 	if (String.IsNullOrEmpty(searchText)==false)
-		search = "AND O.Description LIKE '%" + searchText + "%'";
+		search = "WHERE O.Description LIKE '%" + searchText + "%'";
 	var q = new Query("SELECT O.Id AS Outlet, O.Description, O.Address FROM Catalog_Outlet O " + search + " ORDER BY O.Description LIMIT 500");
 	if (parseInt(returnQty)==parseInt(0))
 		return q.Execute();

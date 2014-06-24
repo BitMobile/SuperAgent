@@ -14,7 +14,7 @@ function GetSKUAndGroups(searchText, priceList) {
     else {
         searchText = "'%" + searchText + "%'";
         var query = new Query();
-        query.Text = "SELECT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, G.Id AS GroupId, CB.Description AS Brand FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id JOIN Catalog_Brands CB ON CB.Id=S.Brand WHERE S.CommonStock>0 AND PL.Ref = @Ref AND S.Description LIKE " + searchText + filterString + " ORDER BY G.Description, S.Description LIMIT 100";
+        query.Text = "SELECT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, G.Id AS GroupId, G.Parent AS GroupParent, CB.Description AS Brand FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id JOIN Catalog_Brands CB ON CB.Id=S.Brand WHERE S.CommonStock>0 AND PL.Ref = @Ref AND S.Description LIKE " + searchText + filterString + " ORDER BY G.Description, S.Description LIMIT 100";
         query.AddParameter("Ref", priceList);
         return query.Execute();
     }
@@ -102,11 +102,19 @@ function ChangeFilterAndRefresh(type) {
 
 }
 
-function GetGroups() {
+function GetGroups(priceList) {	
 	var filterString = " ";
-    filterString += AddFilter(filterString, "brand_filter", "S.Brand", " WHERE ");
-    var q = new Query("SELECT DISTINCT G.Id AS ChildId, G.Description AS Child, GP.Id AS ParentId, GP.Description AS Parent FROM Catalog_SKU S LEFT JOIN Catalog_SKUGroup G ON S.Owner=G.Id LEFT JOIN Catalog_SKUGroup GP ON G.Parent=GP.Id " + filterString + " ORDER BY Parent, Child");
+    filterString += AddFilter(filterString, "brand_filter", "S.Brand", " AND ");
+    var q = new Query("SELECT DISTINCT G.Id AS ChildId, G.Description AS Child, GP.Id AS ParentId, GP.Description AS Parent FROM Catalog_SKU S LEFT JOIN Catalog_SKUGroup G ON S.Owner=G.Id LEFT JOIN Catalog_SKUGroup GP ON G.Parent=GP.Id WHERE S.ID IN (SELECT DISTINCT SKU FROM Document_PriceList_Prices WHERE Ref=@priceList) " + filterString + " ORDER BY Parent, Child");
+    q.AddParameter("priceList", priceList);
     return q.Execute();
+}
+
+function ShowGroup(currentGroup, parentGroup){
+	if (currentGroup!=parentGroup || parentGroup==null)
+		return true;
+	else 
+		return false;
 }
 
 function AssignHierarchy(rcs) {
@@ -181,9 +189,10 @@ function FilterIsSet(itemId, filterName) {
         return false;
 }
 
-function GetBrands() {
+function GetBrands(priceList) {
 	var filterString = " ";
-    filterString += AddFilter(filterString, "group_filter", "S.Owner", " WHERE ");
-    var q = new Query("SELECT DISTINCT B.Id, B.Description FROM Catalog_SKU S JOIN Catalog_Brands B ON S.Brand=B.Id JOIN Catalog_SKUGroup G ON S.Owner=G.Id " + filterString + " ORDER BY B.Description");
+    filterString += AddFilter(filterString, "group_filter", "S.Owner", " AND ");
+    var q = new Query("SELECT DISTINCT B.Id, B.Description FROM Catalog_SKU S JOIN Catalog_Brands B ON S.Brand=B.Id JOIN Catalog_SKUGroup G ON S.Owner=G.Id WHERE S.ID IN (SELECT DISTINCT SKU FROM Document_PriceList_Prices WHERE Ref=@priceList) " + filterString + " ORDER BY B.Description");
+    q.AddParameter("priceList", priceList);
     return q.Execute();
 }

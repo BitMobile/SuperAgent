@@ -46,11 +46,11 @@
 
 			<s:If Test="$filterType=='group'">
 
-				<s:Push Id="groupsHierarchy" Value="$GetGroups()"></s:Push>
+				<s:Push Id="groupsHierarchy" Value="$GetGroups($workflow.order.PriceList)"></s:Push>
 				<s:Push Id="currentGroup" Value=""></s:Push>
 				<s:Iterator Id="group" Value="$groupsHierarchy">
 
-					<s:If Test="$currentGroup != $group.ParentId">
+					<s:If Test="$ShowGroup($currentGroup,$group.ParentId)">
 
 						<s:Push Id="currentGroup" Value="$group.ParentId"></s:Push>
 						<s:Push Id="dummy" Value="$AssignHierarchy($group)" />
@@ -87,7 +87,7 @@
 
 
 			<s:Else>
-				<s:Push Id="brands" Value="$GetBrands()"></s:Push>
+				<s:Push Id="brands" Value="$GetBrands($workflow.order.PriceList)"></s:Push>
 				<s:Iterator Id="brand" Value="$brands">
 
 					<c:HorizontalLayout CssClass="parameter_grid" OnClickAction="$AddFilterAndRefresh($brand.Id, brand_filter)">

@@ -76,11 +76,11 @@ function SpreadEncasmentAndRefresh(encashent, outlet) {
 
         encRowObj = encRow.GetObject();
         if (Converter.ToDecimal(sumToSpread) > Converter.ToDecimal(d.DocumentSum)) {
-            encRowObj.EncashmentSum = d.DocumentSum;
+            encRowObj.EncashmentSum = FormatValue(d.DocumentSum);
             sumToSpread = sumToSpread - d.DocumentSum;
         }
         else {
-            encRowObj.EncashmentSum = sumToSpread;
+            encRowObj.EncashmentSum = FormatValue(sumToSpread);
             sumToSpread = Converter.ToDecimal(0);
         }
         encRowObj.Save();

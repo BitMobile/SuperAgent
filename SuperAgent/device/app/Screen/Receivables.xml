@@ -41,7 +41,7 @@
             <c:TextView Text="#encashmentAmount#:"></c:TextView>
             <c:Button Text="#spread#" OnClickAction="$SpreadEncasmentAndRefresh($workflow.encashment, $visit.Outlet)"></c:Button>
           </c:DockLayout>
-          <c:EditText Value="$workflow.encashment.EncashmentAmount" CssClass="main_row" Keyboard="numeric"></c:EditText>
+          <c:EditText Id="encAmount" Value="$workflow.encashment.EncashmentAmount" CssClass="main_row" Keyboard="numeric"></c:EditText>
         </c:VerticalLayout>
       </c:HorizontalLayout>
       <c:HorizontalLine/>
@@ -66,7 +66,7 @@
           <c:VerticalLayout>
             <c:TextView Text="$receivableDoc.DocumentName" CssClass="description_row"></c:TextView>
             <c:DockLayout CssClass="parameter_grid">
-              <c:EditText Value="$encasmentItem.EncashmentSum" Keyboard="numeric"></c:EditText>
+              <c:EditText Value="$encasmentItem.EncashmentSum" Keyboard="numeric" OnChange="$RefreshAmount($workflow.encashment, $encasmentItem)"></c:EditText>
               <c:TextView Text="#debt#: {$receivableDoc.DocumentSum}" CssClass="value"></c:TextView>
             </c:DockLayout>
           </c:VerticalLayout>

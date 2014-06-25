@@ -12,10 +12,6 @@ function GetReceivables(outlet) {
 }
 
 function GetAmount(receivables) {
-    //var receivables = new Query("SELECT SUM(RD.DocumentName) FROM Document_AccountReceivable_ReceivableDocuments RD JOIN Document_AccountReceivable AR ON AR.Id=RD.Ref WHERE AR.Outlet = @outlet");
-    //receivables.AddParameter("outlet", outlet);
-    //var amount = receivables.ExecuteScalar();
-    //return amount;
     var receivables = new Query("SELECT RD.DocumentName, RD.DocumentSum FROM Document_AccountReceivable_ReceivableDocuments RD JOIN Document_AccountReceivable AR ON AR.Id=RD.Ref WHERE AR.Outlet = @outlet ORDER BY RD.LineNumber");
     receivables.AddParameter("outlet", outlet);
     var d = receivables.Execute();
@@ -25,6 +21,21 @@ function GetAmount(receivables) {
     }
     return amount;
 
+}
+
+function RefreshAmount(control, encashment, encasmentItem){
+	encasmentItem = encasmentItem.GetObject();
+	encasmentItem.EncashmentSum = control.Text;
+	encasmentItem.Save();
+	
+	var q = new Query("SELECT SUM(EncashmentSum) FROM Document_Encashment_EncashmentDocuments WHERE Ref=@ref");
+	q.AddParameter("ref", encashment);
+	var s = q.ExecuteScalar();
+	
+	encashment = encashment.GetObject();
+	encashment.EncashmentAmount = s;
+	encashment.Save();
+	$.encAmount.Text = s;
 }
 
 function CreateEncashmentIfNotExist(visit) {//, textValue) {
@@ -90,7 +101,7 @@ function SpreadEncasmentAndRefresh(encashent, outlet) {
 
 function SaveAndForward(encashment) {
 	ClearEmptyRecDocs(encashment);
-	if (parseInt(encashment.EncashmentAmount)!=parseInt(0))
+	if (parseFloat(encashment.EncashmentAmount)!=parseFloat(0))
 		encashment.GetObject().Save();
 	else
 		DB.Delete(encashment);

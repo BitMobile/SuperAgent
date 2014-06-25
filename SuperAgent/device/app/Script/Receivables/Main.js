@@ -89,6 +89,19 @@ function SpreadEncasmentAndRefresh(encashent, outlet) {
 }
 
 function SaveAndForward(encashment) {
-    encashment.GetObject().Save();
-    Workflow.Forward([]);
+	ClearEmptyRecDocs(encashment);
+	if (parseInt(encashment.EncashmentAmount)!=parseInt(0))
+		encashment.GetObject().Save();
+	else
+		DB.Delete(encashment);
+	Workflow.Forward([]);
+}
+
+function ClearEmptyRecDocs(encashment){
+	var q = new Query("SELECT Id, EncashmentSum FROM Document_Encashment_EncashmentDocuments WHERE Ref=@ref AND EncashmentSum = 0");
+	q.AddParameter("ref", encashment);
+	var rows = q.Execute();
+	while (rows.Next()){
+		DB.Delete(rows.Id);
+	}
 }

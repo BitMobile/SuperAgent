@@ -273,7 +273,7 @@ function SetDeliveryDateDialog(order, control, executedOrder) {
 
 function OrderBack() {
 	if ($.workflow.name == "CreateOrder")
-		DoRollback();
+		Workflow.Rollback();
 	else {
 		if ($.workflow.skipSKUs) {
 			if ($.workflow.skipQuestions) {

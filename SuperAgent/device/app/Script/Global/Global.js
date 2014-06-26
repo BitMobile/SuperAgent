@@ -16,16 +16,16 @@ function BooleanDialogSelect(entity, attribute, control) {
     arr.push(["", "-"]);
     arr.push([Translate["#YES#"], Translate["#YES#"]]);
     arr.push([Translate["#NO#"], Translate["#NO#"]]);
-    Dialog.Select("Parameters", arr, DoSelectCallback2, [entity, attribute, control]);
+    Dialog.Select(Translate["#valueList#"], arr, DoSelectCallback2, [entity, attribute, control]);
 }
 
 function ValueListSelect(entity, attribute, table, control) {
-    Dialog.Select("Parameters", table, DoSelectCallback2, [entity, attribute, control]);
+    Dialog.Select(Translate["#valueList#"], table, DoSelectCallback2, [entity, attribute, control]);
     return;
 }
 
 function ValueListSelect2(entity, attribute, table, control) {
-    Dialog.Select("Parameters", table, DoSelectCallback1, [entity, attribute, control]);
+    Dialog.Select(Translate["#valueList#"], table, DoSelectCallback1, [entity, attribute, control]);
     return;
 }
 

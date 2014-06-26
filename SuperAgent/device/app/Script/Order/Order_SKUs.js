@@ -1,13 +1,19 @@
 
 
 function GetSKUAndGroups(searchText, priceList) {
-    var filterString = "";
+    
+	var filterString = "";
     filterString += AddFilter(filterString, "group_filter", "G.Id", " AND ");
     filterString += AddFilter(filterString, "brand_filter", "CB.Id", " AND ");
+    
+    if (EmptyStockAllowed())
+    	var stockCondition = "";
+    else
+    	var stockCondition = " S.CommonStock>0 AND ";
 
     if (String.IsNullOrEmpty(searchText)) {
         var query = new Query();
-        query.Text = "SELECT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, G.Id AS GroupId, G.Parent AS GroupParent, CB.Description AS Brand FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id JOIN Catalog_Brands CB ON CB.Id=S.Brand WHERE S.CommonStock>0 AND PL.Ref = @Ref " + filterString + " ORDER BY G.Description, S.Description LIMIT 100"; //" + filterString + "
+        query.Text = "SELECT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, G.Id AS GroupId, G.Parent AS GroupParent, CB.Description AS Brand FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id JOIN Catalog_Brands CB ON CB.Id=S.Brand WHERE " + stockCondition + " PL.Ref = @Ref " + filterString + " ORDER BY G.Description, S.Description LIMIT 100"; //" + filterString + "
         query.AddParameter("Ref", priceList);
         return query.Execute();
     }
@@ -17,6 +23,20 @@ function GetSKUAndGroups(searchText, priceList) {
         query.Text = "SELECT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, G.Id AS GroupId, G.Parent AS GroupParent, CB.Description AS Brand FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id JOIN Catalog_Brands CB ON CB.Id=S.Brand WHERE S.CommonStock>0 AND PL.Ref = @Ref AND S.Description LIKE " + searchText + filterString + " ORDER BY G.Description, S.Description LIMIT 100";
         query.AddParameter("Ref", priceList);
         return query.Execute();
+    }
+}
+
+function EmptyStockAllowed(){
+    var q = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='NoStkEnbl'");    
+    var res = q.ExecuteScalar();
+    
+    if (res == null)
+        return false;
+    else {
+        if (parseInt(res) == parseInt(0))
+            return false
+        else
+            return true;
     }
 }
 

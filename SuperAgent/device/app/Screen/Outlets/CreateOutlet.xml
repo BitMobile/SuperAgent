@@ -5,16 +5,16 @@
 
   <c:DockLayout>
 
-    <c:HorizontalLayout CssClass="bottom_btn">
+    <c:HorizontalLayout Id="btnCancel" CssClass="bottom_btn">
       <c:VerticalLayout OnEvent="Back" OnClickAction="$DoRollback()">
         <c:TextView Text="#cancel#"/>
       </c:VerticalLayout>
-      <c:VerticalLayout OnClickAction="$SaveNewOutlet($outlet)">
+      <c:VerticalLayout Id="btnSave" OnClickAction="$SaveNewOutlet($outlet)">
         <c:TextView CssClass="right" Text="#save#"/>
       </c:VerticalLayout>
     </c:HorizontalLayout>
 
-    <c:ScrollView>
+    <c:ScrollView Id="grScrollView">
       <c:HorizontalLayout CssClass="empty_caption_grid"/>
       <c:HorizontalLine/>
 

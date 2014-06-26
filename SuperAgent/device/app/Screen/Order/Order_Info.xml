@@ -12,7 +12,7 @@
 		<c:HorizontalLayout CssClass="margin_top" />
 		<c:HorizontalLine />
 
-		<c:HorizontalLayout CssClass="bottom_btn" OnEvent="Back"
+		<c:HorizontalLayout Id="btnDone" CssClass="bottom_btn" OnEvent="Back"
 			OnClickAction="$Workflow.DoBack()">
 			<c:TextView Text="#ready#" />
 		</c:HorizontalLayout>

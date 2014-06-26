@@ -20,12 +20,12 @@
 
 		<c:HorizontalLayout CssClass="end_of_block"></c:HorizontalLayout>
 
-		<c:HorizontalLayout CssClass="bottom_btn">
+		<c:HorizontalLayout Id= "btnCancel" CssClass="bottom_btn">
 			<c:VerticalLayout OnEvent="Back"
 				OnClickAction="$DeleteAndBack($orderitem)">
 				<c:TextView Text="#cancel#" CssClass="left_tv"></c:TextView>
 			</c:VerticalLayout>
-			<c:VerticalLayout OnEvent="Forward"
+			<c:VerticalLayout Id="btnAdd" OnEvent="Forward"
 				OnClickAction="$CalculateSKUAndForward($order.Outlet, $orderitem)">
 				<c:TextView Text="#add#" CssClass="right_tv"></c:TextView>
 			</c:VerticalLayout>
@@ -39,13 +39,13 @@
 
 		<s:If Test="$sku.DefaultPicture != null">
 			<s:If Test="$showimage == 'NotShow'">
-				<c:HorizontalLayout CssClass="btn_showpicture"
+				<c:HorizontalLayout Id="ShowImage" CssClass="btn_showpicture"
 					OnClickAction="$RefreshEditSKU($orderitem, $sku, $price, $discountEdit.Text, Show)">
 					<c:TextView Text="[#showImage#]"></c:TextView>
 				</c:HorizontalLayout>
 			</s:If>
 			<s:If Test="$showimage == 'Show'">
-				<c:HorizontalLayout CssClass="btn_showpicture"
+				<c:HorizontalLayout Id="HideImage" CssClass="btn_showpicture"
 					OnClickAction="$RefreshEditSKU($orderitem, $sku, $price, $discountEdit.Text, NotShow)">
 					<c:TextView Text="[#hideImage#]"></c:TextView>
 				</c:HorizontalLayout>

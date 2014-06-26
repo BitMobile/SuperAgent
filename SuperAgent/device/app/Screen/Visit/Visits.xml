@@ -8,7 +8,7 @@
   <c:VerticalLayout>
 
     <c:DockLayout CssClass="top_navigator">
-      <c:HorizontalLayout CssClass="btn_menu" OnEvent="Back" OnClickAction="$Workflow.DoRollback()">
+      <c:HorizontalLayout Id="btnMenu" CssClass="btn_menu" OnEvent="Back" OnClickAction="$Workflow.DoRollback()">
         <c:Image CssClass="menuIcon"/>
       </c:HorizontalLayout>
       <c:Button Id="btnForward" Text="" CssClass="btn_forward"/>
@@ -57,7 +57,7 @@
     <c:HorizontalLayout CssClass="shadowLine"></c:HorizontalLayout>
 
     <s:If Test="$visitsType=='planned'">
-      <c:ScrollView>
+      <c:ScrollView Id="grScrollView">
         <s:Push Id="hasRow" Value="false"/>
 
         <c:HorizontalLayout CssClass="caption_grid">
@@ -115,7 +115,7 @@
     <s:Else>
       <s:Push Id="unscheduledOutlets" Value="$GetOutlets($search, 0)"></s:Push>
 
-      <c:ScrollView>
+      <c:ScrollView Id="grScrollView" >
         <s:Iterator Id="uOutlet" Value="$unscheduledOutlets">
           <c:HorizontalLayout CssClass="grid" OnClickAction="$AddGlobalAndAction(null, $uOutlet.Outlet, Select)">
             <c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>

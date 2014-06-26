@@ -11,7 +11,7 @@
 
     <s:If Test="$workflow.name=='Outlets'">
       <c:DockLayout CssClass="top_navigator">
-        <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$SaveAndBack($outlet)">
+        <c:HorizontalLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$SaveAndBack($outlet)">
           <c:Image/>
           <c:TextView Text="#list#"/>
         </c:HorizontalLayout>
@@ -23,7 +23,7 @@
     </s:If>
     <s:Else>
       <c:DockLayout CssClass="top_navigator">
-        <c:HorizontalLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$DoRollback()">
+        <c:HorizontalLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoRollback()">
           <c:Image/>
           <c:TextView Text="#visits#"/>
         </c:HorizontalLayout>

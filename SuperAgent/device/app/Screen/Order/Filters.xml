@@ -3,7 +3,7 @@
 
 	<s:Push Id="screenFilter" Value="$SetFilter()"></s:Push>
 
-	<c:DockLayout>
+	<c:DockLayout Id="DLayout">
 
 		<c:DockLayout CssClass="top_navigator">
 			<c:Button Id="btnBack" CssClass="btn_back" />

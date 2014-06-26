@@ -74,7 +74,7 @@
 		<c:VerticalLayout>
 
 			<c:DockLayout CssClass="top_navigator">
-				<c:HorizontalLayout CssClass="btn_menu"
+				<c:HorizontalLayout Id= "btnMenu" CssClass="btn_menu"
 					OnClickAction="$Facade.OpenMenu()">
 					<c:Image CssClass="menuIcon" />
 				</c:HorizontalLayout>
@@ -85,7 +85,7 @@
 			</c:DockLayout>
 			<c:HorizontalLine CssClass="navy" />
 
-			<c:VerticalLayout CssClass="blue">
+			<c:VerticalLayout Id="VLayout" CssClass="blue">
 
 
 				<c:DockLayout>

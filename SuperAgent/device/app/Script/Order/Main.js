@@ -61,7 +61,7 @@ function CreateOrderIfNotExists(order, outlet, userRef, visitId, executedOrder) 
 				outlet = $.outlet;
 			order.Outlet = outlet;
 			order.SR = userRef;
-			order.DeliveryDate = DateTime.Now;
+			order.DeliveryDate = DateTime.Now.AddDays(1);
 			var location = GPS.CurrentLocation;
 			if (location.NotEmpty) {
 				order.Lattitude = location.Latitude;

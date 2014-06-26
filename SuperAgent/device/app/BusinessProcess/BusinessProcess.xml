@@ -10,7 +10,6 @@
       <bp:Action Name="Outlets" NextWorkflow="Outlets"></bp:Action>
       <bp:Action Name="Stocks" NextWorkflow="Stocks"></bp:Action>
       <bp:Action Name="ToDo" NextWorkflow="ToDo"></bp:Action>
-      <bp:Action Name="Targets" NextWorkflow="Targets"></bp:Action>
       <bp:Action Name="Settings" NextWorkflow="Settings"></bp:Action>
       <bp:Action Name="Sync" NextWorkflow="Sync"/>
     </bp:Step>
@@ -181,12 +180,7 @@
     <bp:Step Name="OrderInfo" Screen="Order_Info.xml" Controller="Order\Main.js">
     </bp:Step>
     
-  </bp:Workflow>
-  
-  <bp:Workflow Name="Targets">
-    <bp:Step Name="Targets" Screen="Targets.xml">
-    </bp:Step>
-  </bp:Workflow>
+  </bp:Workflow>  
 
   <bp:Workflow Name="Settings">
 

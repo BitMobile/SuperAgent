@@ -310,8 +310,10 @@ function DeleteAndRollback(visit) {
 }
 
 function SaveAndBack(outlet) {
-	outlet.GetObject().Save();
-	ReviseParameters(outlet);
-	DB.Commit();
-	Workflow.Commit();
+	if (CheckEmptyOutletFields(outlet)){
+		outlet.GetObject().Save();
+		ReviseParameters(outlet);
+		DB.Commit();
+		Workflow.Commit();
+	}	
 }

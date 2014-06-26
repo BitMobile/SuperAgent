@@ -25,7 +25,10 @@ function GetAmount(receivables) {
 
 function RefreshAmount(control, encashment, encasmentItem){
 	encasmentItem = encasmentItem.GetObject();
-	encasmentItem.EncashmentSum = control.Text;
+	if (IsNullOrEmpty(control.Text))
+		encasmentItem.EncashmentSum = 0;
+	else
+		encasmentItem.EncashmentSum = control.Text;
 	encasmentItem.Save();
 	
 	var q = new Query("SELECT SUM(EncashmentSum) FROM Document_Encashment_EncashmentDocuments WHERE Ref=@ref");

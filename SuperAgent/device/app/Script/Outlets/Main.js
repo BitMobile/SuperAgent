@@ -117,13 +117,13 @@ function CheckNotNullAndForward(outlet, visit) {
 	var c = CoordsChecked(visit);
 	if (CheckEmptyOutletFields(outlet) && c) {
 		outlet.GetObject().Save();
-		ReviseParameters(outlet);
+		ReviseParameters(outlet, false);
 		Workflow.Forward([]);
 	}
 }
 
 
-function ReviseParameters(outlet) {
+function ReviseParameters(outlet, save) {
 	var q = new Query("SELECT Id, Value FROM Catalog_Outlet_Parameters WHERE Ref=@ref");
 	q.AddParameter("ref", outlet);
 	var param = q.Execute();
@@ -131,6 +131,10 @@ function ReviseParameters(outlet) {
 	while (param.Next()) {
 		if (String.IsNullOrEmpty(param.Value))
 			DB.Delete(param.Id);
+		else{
+			if (save)
+				param.Id.GetObject().Save(false);
+		}			
 	}
 }
 
@@ -311,9 +315,9 @@ function DeleteAndRollback(visit) {
 
 function SaveAndBack(outlet) {
 	if (CheckEmptyOutletFields(outlet)){
-		outlet.GetObject().Save();
-		ReviseParameters(outlet);
+		outlet.GetObject().Save(false);
+		ReviseParameters(outlet, true);
 		DB.Commit();
-		Workflow.Commit();
+		Workflow.BackTo("Outlets");
 	}	
 }

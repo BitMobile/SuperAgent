@@ -130,7 +130,7 @@
 				<c:DockLayout CssClass="short_panel">
 					<c:DockLayout CssClass="grid">
 						<c:VerticalLayout>
-							<c:TextView Text="$orderSum" CssClass="main_row"></c:TextView>
+							<c:TextView Text="{$orderSum} #currency#" CssClass="main_row"></c:TextView>
 							<c:TextView Text="#amountOfOrdersForToday#" CssClass="description_row" />
 						</c:VerticalLayout>
 					</c:DockLayout>
@@ -139,7 +139,7 @@
 				<c:DockLayout>
 					<c:DockLayout CssClass="grid">
 						<c:VerticalLayout>
-							<c:TextView Text="$encashmentSumm" CssClass="main_row"></c:TextView>
+							<c:TextView Text="{$encashmentSumm} #currency#" CssClass="main_row"></c:TextView>
 							<c:TextView Text="#programmingCollectionForToday#"
 								CssClass="description_row" />
 						</c:VerticalLayout>
@@ -147,7 +147,7 @@
 					<c:HorizontalLine />
 					<c:DockLayout CssClass="grid">
 						<c:VerticalLayout>
-							<c:TextView Text="$receivablesSumm" CssClass="main_row"></c:TextView>
+							<c:TextView Text="{$receivablesSumm} #currency#" CssClass="main_row"></c:TextView>
 							<c:TextView Text="#accountsReceivables#" CssClass="description_row" />
 						</c:VerticalLayout>
 					</c:DockLayout>

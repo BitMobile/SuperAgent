@@ -223,7 +223,7 @@ function LocationDialogHandler(answ, outlet) {
 }
 
 function CoordsChecked(visit) {
-	if (Variables["workflow"]["name"] == "Visit") {
+	if (Variables["workflow"]["name"] == "Visit" && NotEmptyRef(visit.Plan)) {
 		var query = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='CoordCtrl'");
 		var coordControl = query.ExecuteScalar();
 		if (coordControl == null)

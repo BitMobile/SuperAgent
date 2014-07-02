@@ -39,6 +39,8 @@
       <bp:Action Name="EditParameter" NextStep="EditOutletParameter"></bp:Action>
       <bp:Action Name="EditAddParameter" NextStep="EditOutletAddParameter"></bp:Action>
       <bp:Action Name="ShowMap" NextStep="ShowMap"></bp:Action>
+      <bp:Action Name="ShowDetails" NextStep="Details"/>
+      <bp:Action Name="ShowContacts" NextStep="Contacts"/>
     </bp:Step>
 
     <bp:Step Name="Visit_Tasks" Screen="Visit\Tasks.xml" Controller="Tasks\Main.js">
@@ -111,6 +113,16 @@
 
     <bp:Step Name="ShowMap" Screen="ScheduledVisits_Map.xml">
     </bp:Step>
+    
+    <bp:Step Name="Details" Screen="Details.xml" Controller="Outlets\DetailsAndContacts.js"></bp:Step>
+
+	<bp:Step Name="Contacts" Screen="ContactsList.xml" Controller="Outlets\DetailsAndContacts.js">
+		<bp:Action Name="Select" NextStep="Contact"/>
+	</bp:Step>
+	
+	<bp:Step Name="Contact" Screen="Contact.xml" Controller="Outlets\DetailsAndContacts.js">
+
+	</bp:Step>
 
   </bp:Workflow>
 
@@ -196,13 +208,23 @@
       <bp:Action Name="Create" NextStep="CreateOutlet"/>
     </bp:Step>
 
-    <bp:Step Name="OpenOutlet" Screen="Outlet.xml">
-      <bp:Action Name="List" NextStep="Outlets"/>
-    </bp:Step>
+	<bp:Step Name="OpenOutlet" Screen="Outlet.xml">
+		<bp:Action Name="List" NextStep="Outlets" />
+		<bp:Action Name="ShowDetails" NextStep="Details" />
+		<bp:Action Name="ShowContacts" NextStep="Contacts" />
+	</bp:Step>
 
     <bp:Step Name="CreateOutlet" Screen="Outlets\CreateOutlet.xml">
       <bp:Action Name="Open" NextStep="OpenOutlet"/>
     </bp:Step>
+    
+    <bp:Step Name="Details" Screen="Details.xml" Controller="Outlets\DetailsAndContacts.js"></bp:Step>
+
+	<bp:Step Name="Contacts" Screen="ContactsList.xml" Controller="Outlets\DetailsAndContacts.js">
+		<bp:Action Name="Select" NextStep="Contact"/>		
+	</bp:Step>
+	
+	<bp:Step Name="Contact" Screen="Contact.xml" Controller="Outlets\DetailsAndContacts.js"></bp:Step>
 
   </bp:Workflow>
 

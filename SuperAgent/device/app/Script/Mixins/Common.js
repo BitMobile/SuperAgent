@@ -118,6 +118,8 @@ function IsNew(val1) {
 	return val1.IsNew();
 }
 
+function GetObject(val){
+	return val.GetObject();
+}
 
-//-----------------Dialog handlers-----------------
 

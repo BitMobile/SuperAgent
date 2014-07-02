@@ -321,3 +321,11 @@ function SaveAndBack(outlet) {
 		Workflow.BackTo("Outlets");
 	}	
 }
+
+function SaveEntity(entity){
+	
+}
+
+function ShowDialog(val){
+	Dialog.Debug(val);
+}

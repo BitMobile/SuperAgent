@@ -197,3 +197,13 @@ at	в
 currency	руб.
 Synchronization_has_not_been_performed	Синхронизация не была выполнена
 delete	Удалить
+details		Детали
+contacts	Контакты
+legal_name	Юридическое лицо
+legal_address	Юридический адрес
+ownership		Тип собственности
+inn			ИНН
+kpp			КПП
+phone		Телефон
+email		Электронная почта
+web_site	Веб-сайт

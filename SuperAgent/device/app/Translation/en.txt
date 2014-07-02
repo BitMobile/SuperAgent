@@ -198,3 +198,13 @@ at	at
 currency	CAD
 Synchronization_has_not_been_performed	Synchronization has not been performed
 delete	Delete
+details		Details
+contacts	Contacts
+legal_name	Legal name
+legal_address	Legal address
+ownership		Ownership type
+inn			INN
+kpp			KPP
+phone		Phone number
+email		E-mail
+web_site	Web-site

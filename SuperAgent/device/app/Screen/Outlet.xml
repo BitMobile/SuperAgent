@@ -7,7 +7,17 @@
     <s:Push Id="workflow.visit" Value="$CreateVisitIfNotExists($outlet,$common.UserRef, $workflow.visit, $planVisit)"/>
   </s:If>
 
-  <c:VerticalLayout Id="vOutlet">
+  <c:DockLayout Id="vOutlet">
+
+	<c:HorizontalLayout Id="btnCancel" CssClass="bottom_btn">
+		<c:VerticalLayout OnEvent="Back" OnClickAction="$DoAction(ShowDetails, $outlet)">
+			<c:TextView Text="#details#" CssClass="left_tv"></c:TextView>
+		</c:VerticalLayout>
+		<c:VerticalLayout Id="btnAdd" OnEvent="Forward" OnClickAction="$DoAction(ShowContacts, $outlet)">
+			<c:TextView Text="#contacts#" CssClass="right_tv"></c:TextView>
+		</c:VerticalLayout>
+	</c:HorizontalLayout>
+	<c:HorizontalLine CssClass="b_line" />
 
     <s:If Test="$workflow.name=='Outlets'">
       <c:DockLayout CssClass="top_navigator">
@@ -132,6 +142,6 @@
 
     </c:ScrollView>
 
-  </c:VerticalLayout>
+  </c:DockLayout>
 
 </c:Screen>

@@ -9,7 +9,7 @@
 			<c:VerticalLayout OnEvent="Back" OnClickAction="$DoBack()">
 				<c:TextView Text="#back#" CssClass="left_tv"></c:TextView>
 			</c:VerticalLayout>
-			<c:VerticalLayout Id="btnAdd" OnEvent="Forward">
+			<c:VerticalLayout Id="btnAdd" OnEvent="Forward" OnClickAction="$DoAction(Select, null, $outlet)">
 				<c:TextView Text="#add#" CssClass="right_tv"></c:TextView>
 			</c:VerticalLayout>
 		</c:HorizontalLayout>
@@ -22,14 +22,13 @@
 
 			<s:Iterator Id="contact" Value="$GetContacts($outlet)" Status="statusCount">
 
-				<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoAction(Select, $contact.Id)">
+				<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoAction(Select, $contact.Id, $outlet)">
 					<c:TextView Text="$contact.ContactName"></c:TextView>
 					<c:Image />
 				</c:DockLayout>
 				<c:HorizontalLine />
 
 			</s:Iterator>
-			<c:HorizontalLayout CssClass="end_of_block" />
 
 		</c:ScrollView>
 

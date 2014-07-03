@@ -144,7 +144,7 @@ priceList	Price list
 isntSelected	Isn't selected
 SKUWillRevised	SKU list has been revised
 features	Features
-noPriceLists	No Price Lists for this outlet
+noPriceLists	No Price Lists
 emptyList	List is empty
 impossibleToDelete	Impossible to delete, order is already in base
 impossibleToEdit	Impossible to edit, order is already in base

@@ -1,3 +1,7 @@
+
+//---------------------------UI calls----------------
+
+
 function GetOrderList() {
 
 	var q = new Query("SELECT DO.Id, DO.Outlet, strftime('%d/%m/%Y', DO.Date) AS Date, DO.Number, CO.Description AS OutletDescription, DO.Status FROM Document_Order DO JOIN Catalog_Outlet CO ON DO.Outlet=CO.Id ORDER BY DO.Date DESC LIMIT 100");
@@ -49,7 +53,7 @@ function GetPriceListQty(outlet) {
 }
 
 function CreateOrderIfNotExists(order, outlet, userRef, visitId, executedOrder) {
-	var priceLists = GetPriceListQty(outlet);
+	var priceLists = GetPriceListQty(outlet);	
 
 	if (executedOrder != null) {
 		return executedOrder;
@@ -62,6 +66,7 @@ function CreateOrderIfNotExists(order, outlet, userRef, visitId, executedOrder) 
 			order.Outlet = outlet;
 			order.SR = userRef;
 			order.DeliveryDate = DateTime.Now.AddDays(1);
+			order.Stock = GetStock(userRef);
 			var location = GPS.CurrentLocation;
 			if (location.NotEmpty) {
 				order.Lattitude = location.Latitude;
@@ -168,17 +173,6 @@ function ReviseSKUs(order, priceList) {
 	query.AddParameter("order", order);
 	query.AddParameter("priceList", priceList)
 	var SKUs = query.Execute();
-
-	/*
-	 * for ( var k in SKUs) { var query2 = new Query();
-	 * query2.AddParameter("PLid", Variables["workflow"]["order"].PriceList);
-	 * query2.AddParameter("sku", k.SKU); query2.Text = "SELECT Id FROM
-	 * Document_PriceList_Prices where Ref==@PLid && SKU==@sku"; var
-	 * pricelistItem = query2.ExecuteScalar(); if (pricelistItem == null)
-	 * DB.Current.Document.Order_SKUs.Delete(k); else { k.Price =
-	 * pricelistItem.Price; k.Total = (k.Discount / 100 + 1) * k.Price; k.Amount =
-	 * k.Qty * k.Total; } }
-	 */
 
 	while (SKUs.Next()) {
 		if (SKUs.NewPrice == null)
@@ -300,3 +294,16 @@ function DeleteItem(item, executedOrder){
 	DB.Delete(item);
 	Workflow.Refresh([null, executedOrder]);
 }
+
+
+//----------------------------------Functions---------------------------
+
+function GetStock(userRef){
+	var q = new Query("SELECT S.Stock FROM Catalog_Territory_Stocks S WHERE S.LineNumber = 1 LIMIT 1");
+	var s = q.ExecuteScalar();
+	if (s==null)
+		return DB.EmptyRef("Catalog_Stock");
+	else
+		return s;
+}
+

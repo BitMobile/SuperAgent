@@ -207,3 +207,4 @@ kpp			КПП
 phone		Телефон
 email		Электронная почта
 web_site	Веб-сайт
+stockPlace	Склад

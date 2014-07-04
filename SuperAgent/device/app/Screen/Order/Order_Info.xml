@@ -48,6 +48,12 @@
 			</c:DockLayout>
 			<c:HorizontalLine />
 
+			<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoSelect($workflow.order, Stock, $stockDescription)">
+				<c:TextView Text="#stockPlace#" />
+				<c:TextView Id="stockDescription" Text="$workflow.order.Stock.Description" CssClass="value" />
+			</c:DockLayout>
+			<c:HorizontalLine />
+
 			<c:HorizontalLayout CssClass="memo_block">
 				<c:VerticalLayout>
 					<c:TextView Text="#commentary#" CssClass="description_row" />

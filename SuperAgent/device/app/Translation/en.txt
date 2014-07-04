@@ -208,3 +208,4 @@ kpp			KPP
 phone		Phone number
 email		E-mail
 web_site	Web-site
+stockPlace	Stock

@@ -1,151 +1,145 @@
+function GetSKUAndGroups(searchText, priceList, stock) {
 
-
-function GetSKUAndGroups(searchText, priceList) {
-    
 	var filterString = "";
-    filterString += AddFilter(filterString, "group_filter", "G.Id", " AND ");
-    filterString += AddFilter(filterString, "brand_filter", "CB.Id", " AND ");
-    
-    if (EmptyStockAllowed())
-    	var stockCondition = "";
-    else
-    	var stockCondition = " S.CommonStock>0 AND ";
+	filterString += AddFilter(filterString, "group_filter", "G.Id", " AND ");
+	filterString += AddFilter(filterString, "brand_filter", "CB.Id", " AND ");
 
-    if (String.IsNullOrEmpty(searchText)) {
-        var query = new Query();
-        query.Text = "SELECT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, G.Id AS GroupId, GP.Id AS GroupParent, CB.Description AS Brand FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id JOIN Catalog_Brands CB ON CB.Id=S.Brand LEFT JOIN Catalog_SKUGroup GP ON G.Parent=GP.Id WHERE " + stockCondition + " PL.Ref = @Ref " + filterString + " ORDER BY G.Description, S.Description LIMIT 100"; //" + filterString + "
-        query.AddParameter("Ref", priceList);
-        return query.Execute();
-    }
-    else {
-        searchText = "'%" + searchText + "%'";
-        var query = new Query();
-        query.Text = "SELECT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, G.Id AS GroupId, G.Parent AS GroupParent, CB.Description AS Brand FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id JOIN Catalog_Brands CB ON CB.Id=S.Brand WHERE S.CommonStock>0 AND PL.Ref = @Ref AND S.Description LIKE " + searchText + filterString + " ORDER BY G.Description, S.Description LIMIT 100";
-        query.AddParameter("Ref", priceList);
-        return query.Execute();
-    }
+	if (EmptyStockAllowed())
+		var stockCondition = "";
+	else
+		var stockCondition = " S.CommonStock>0 AND ";
+
+	var searchString = "";
+	if (String.IsNullOrEmpty(searchText) == false)
+		searchString = " AND S.Description LIKE '%" + searchText + "%' ";
+
+	var query = new Query();
+	query.Text = "SELECT DISTINCT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, G.Id AS GroupId, G.Parent AS GroupParent, CB.Description AS Brand FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id JOIN Catalog_Brands CB ON CB.Id=S.Brand JOIN Catalog_SKU_Stocks SS ON SS.Ref=S.Id JOIN Catalog_Stock CS ON CS.Id=SS.Stock WHERE S.CommonStock>0 AND PL.Ref = @Ref AND CS.Id=@stock" + searchString + filterString + " ORDER BY G.Description, S.Description LIMIT 100";
+	query.AddParameter("Ref", priceList);
+	query.AddParameter("stock", stock);
+	return query.Execute();
+
 }
 
-function EmptyStockAllowed(){
-    var q = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='NoStkEnbl'");    
-    var res = q.ExecuteScalar();
-    
-    if (res == null)
-        return false;
-    else {
-        if (parseInt(res) == parseInt(0))
-            return false
-        else
-            return true;
-    }
+function EmptyStockAllowed() {
+	var q = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='NoStkEnbl'");
+	var res = q.ExecuteScalar();
+
+	if (res == null)
+		return false;
+	else {
+		if (parseInt(res) == parseInt(0))
+			return false
+		else
+			return true;
+	}
 }
 
 function GetGroupPath(group, parent) {
 	var string = "";
-	
-    if (parent!=null) {
-    	
-        string = string + "/ " + group.Parent.Description;
-    }
-    return string;
+
+	if (parent != null) {
+		if (parent.EmptyRef() == false)
+			string = string + "/ " + group.Parent.Description;
+	}
+	return string;
 }
 
 function AddFilter(filterString, filterName, condition, connector) {
-    if (Variables.Exists(filterName)) {
-    	if (parseInt(Variables[filterName].Count()) != parseInt(0)){
-    		var gr = Variables[filterName];
-            filterString = connector + condition + " IN (";
-            for (var i = 0; i < gr.Count() ; i++) {
-                filterString += "'" + (gr[i]).ToString() + "'";
-                if (i != (gr.Count() - 1))
-                    filterString += ", ";
-                else
-                    filterString += ")";
-            }
-    	}         
-    }
-    return filterString;
+	if (Variables.Exists(filterName)) {
+		if (parseInt(Variables[filterName].Count()) != parseInt(0)) {
+			var gr = Variables[filterName];
+			filterString = connector + condition + " IN (";
+			for (var i = 0; i < gr.Count(); i++) {
+				filterString += "'" + (gr[i]).ToString() + "'";
+				if (i != (gr.Count() - 1))
+					filterString += ", ";
+				else
+					filterString += ")";
+			}
+		}
+	}
+	return filterString;
 }
 
-//--------------------------Filters------------------
+// --------------------------Filters------------------
 
 function SetFilter() {
-    if (Variables.Exists("filterType") == false)
-        Variables.AddGlobal("filterType", "group");
-    else
-        return Variables["filterType"];
+	if (Variables.Exists("filterType") == false)
+		Variables.AddGlobal("filterType", "group");
+	else
+		return Variables["filterType"];
 }
 
 function AskAndBack() {
-    Dialog.Question(Translate["#clearFilter#"], ClearFilterHandler);
+	Dialog.Question(Translate["#clearFilter#"], ClearFilterHandler);
 }
 
 function ClearFilterHandler(answ, state) {
-    if (answ == DialogResult.Yes) {
-        Variables.Remove("group_filter");
-        Variables.Remove("brand_filter");
-        Workflow.Back();
-    }
+	if (answ == DialogResult.Yes) {
+		Variables.Remove("group_filter");
+		Variables.Remove("brand_filter");
+		Workflow.Back();
+	}
 }
 
 function CheckFilterAndForward() {
-    CheckFilter("group_filter");
-    CheckFilter("brand_filter");
+	CheckFilter("group_filter");
+	CheckFilter("brand_filter");
 
-    Workflow.Forward([]);
+	Workflow.Forward([]);
 }
 
 function CheckFilter(filterName) {
-    if (Variables.Exists(filterName)) {
-        var t = Variables[filterName];
-        if (parseInt(t.Count()) == parseInt(0))
-            Variables.Remove(filterName);
-    }
+	if (Variables.Exists(filterName)) {
+		var t = Variables[filterName];
+		if (parseInt(t.Count()) == parseInt(0))
+			Variables.Remove(filterName);
+	}
 }
 
 function GetLeftFilterStyle(val) {
-    if (Variables["filterType"] == val)
-        return "mode_left_button_on";
-    else
-        return "mode_left_button_off";
+	if (Variables["filterType"] == val)
+		return "mode_left_button_on";
+	else
+		return "mode_left_button_off";
 }
 
 function GetRightFilterStyle(val) {
-    if (Variables["filterType"] == val)
-        return "mode_right_button_on";
-    else
-        return "mode_right_button_off";
+	if (Variables["filterType"] == val)
+		return "mode_right_button_on";
+	else
+		return "mode_right_button_off";
 }
 
 function ChangeFilterAndRefresh(type) {
-    Variables.Remove("filterType");
-    Variables.AddGlobal("filterType", type);
-    Workflow.Refresh([]);
+	Variables.Remove("filterType");
+	Variables.AddGlobal("filterType", type);
+	Workflow.Refresh([]);
 
 }
 
-function GetGroups(priceList) {	
+function GetGroups(priceList) {
 	var filterString = " ";
-    filterString += AddFilter(filterString, "brand_filter", "S.Brand", " AND ");
-    var q = new Query("SELECT DISTINCT G.Id AS ChildId, G.Description AS Child, GP.Id AS ParentId, GP.Description AS Parent FROM Catalog_SKU S LEFT JOIN Catalog_SKUGroup G ON S.Owner=G.Id LEFT JOIN Catalog_SKUGroup GP ON G.Parent=GP.Id WHERE S.ID IN (SELECT DISTINCT SKU FROM Document_PriceList_Prices WHERE Ref=@priceList) " + filterString + " ORDER BY Parent, Child");
-    q.AddParameter("priceList", priceList);
-    return q.Execute();
+	filterString += AddFilter(filterString, "brand_filter", "S.Brand", " AND ");
+	var q = new Query("SELECT DISTINCT G.Id AS ChildId, G.Description AS Child, GP.Id AS ParentId, GP.Description AS Parent FROM Catalog_SKU S LEFT JOIN Catalog_SKUGroup G ON S.Owner=G.Id LEFT JOIN Catalog_SKUGroup GP ON G.Parent=GP.Id WHERE S.ID IN (SELECT DISTINCT SKU FROM Document_PriceList_Prices WHERE Ref=@priceList) " + filterString + " ORDER BY Parent, Child");
+	q.AddParameter("priceList", priceList);
+	return q.Execute();
 }
 
-function ShowGroup(currentGroup, parentGroup){
-	if (currentGroup!=parentGroup || parentGroup==null)
+function ShowGroup(currentGroup, parentGroup) {
+	if (currentGroup != parentGroup || parentGroup == null)
 		return true;
-	else 
+	else
 		return false;
 }
 
 function AssignHierarchy(rcs) {
-	if (rcs.ParentId == null){
+	if (rcs.ParentId == null) {
 		$.Add("parentId", rcs.ChildId);
 		$.Add("parent", rcs.Child);
 		$.Add("childExists", false);
-	}
-	else{
+	} else {
 		$.Add("parentId", rcs.ParentId);
 		$.Add("parent", rcs.Parent);
 		$.Add("childExists", true);
@@ -153,68 +147,67 @@ function AssignHierarchy(rcs) {
 	return "dummy"
 }
 
-function AddFilterAndRefresh(item, filterName) { //refactoring is needed after platform update
+function AddFilterAndRefresh(item, filterName) { // refactoring is needed
+	// after platform update
 
-    if (Variables.Exists(filterName)) {
-        var f = Variables[filterName];
-        Variables.Remove(filterName);
-    }
-    else
-        var f = [];
-    
-    //one more bad design
-    var nCollection = [];
-    for (var i in f) {
-        nCollection.push(i);
-    }
+	if (Variables.Exists(filterName)) {
+		var f = Variables[filterName];
+		Variables.Remove(filterName);
+	} else
+		var f = [];
 
-    if (IsInCollection(item, f)) {
-        nCollection = DeleteFromCollection(item, nCollection);
-        if (item.IsFolder) {
-            var chld = GetChildren(item);                       
-            
-            while (chld.Next()){
-            	nCollection = DeleteFromCollection(chld.Id, nCollection);
-            }
-            
-/*            for (var i in chld){
-            	nCollection = DeleteFromCollection(i.Id, nCollection);
-            }                */
-        }
-    }
-    else {
-        nCollection.push(item);
-        if (item.IsFolder) {
-            var chld = GetChildren(item);
-            while (chld.Next())
-                nCollection.push(chld.Id);
-        }
-    }
+	// one more bad design
+	var nCollection = [];
+	for ( var i in f) {
+		nCollection.push(i);
+	}
 
-    Variables.AddGlobal(filterName, nCollection);
+	if (IsInCollection(item, f)) {
+		nCollection = DeleteFromCollection(item, nCollection);
+		if (item.IsFolder) {
+			var chld = GetChildren(item);
 
-    Workflow.Refresh([]);
+			while (chld.Next()) {
+				nCollection = DeleteFromCollection(chld.Id, nCollection);
+			}
+
+			/*
+			 * for (var i in chld){ nCollection = DeleteFromCollection(i.Id,
+			 * nCollection); }
+			 */
+		}
+	} else {
+		nCollection.push(item);
+		if (item.IsFolder) {
+			var chld = GetChildren(item);
+			while (chld.Next())
+				nCollection.push(chld.Id);
+		}
+	}
+
+	Variables.AddGlobal(filterName, nCollection);
+
+	Workflow.Refresh([]);
 }
 
 function GetChildren(parent) {
-    var q = new Query("SELECT Id, Description FROM Catalog_SKUGroup WHERE Parent=@p1 ORDER BY Description");
-    q.AddParameter("p1", parent);
-    return q.Execute();
+	var q = new Query("SELECT Id, Description FROM Catalog_SKUGroup WHERE Parent=@p1 ORDER BY Description");
+	q.AddParameter("p1", parent);
+	return q.Execute();
 }
 
 function FilterIsSet(itemId, filterName) {
-    if (Variables.Exists(filterName)) {
-        var result = IsInCollection(itemId, Variables[filterName]);
-        return result;
-    }
-    else
-        return false;
+	if (Variables.Exists(filterName)) {
+		var result = IsInCollection(itemId, Variables[filterName]);
+		return result;
+	} else
+		return false;
 }
 
 function GetBrands(priceList) {
 	var filterString = " ";
-    filterString += AddFilter(filterString, "group_filter", "S.Owner", " AND ");
-    var q = new Query("SELECT DISTINCT B.Id, B.Description FROM Catalog_SKU S JOIN Catalog_Brands B ON S.Brand=B.Id JOIN Catalog_SKUGroup G ON S.Owner=G.Id WHERE S.ID IN (SELECT DISTINCT SKU FROM Document_PriceList_Prices WHERE Ref=@priceList) " + filterString + " ORDER BY B.Description");
-    q.AddParameter("priceList", priceList);
-    return q.Execute();
+	filterString += AddFilter(filterString, "group_filter", "S.Owner", " AND ");
+	var q = new Query("SELECT DISTINCT B.Id, B.Description FROM Catalog_SKU S JOIN Catalog_Brands B ON S.Brand=B.Id JOIN Catalog_SKUGroup G ON S.Owner=G.Id WHERE S.ID IN (SELECT DISTINCT SKU FROM Document_PriceList_Prices WHERE Ref=@priceList) " + filterString + " ORDER BY B.Description");
+	q.AddParameter("priceList", priceList);
+	return q.Execute();
 }

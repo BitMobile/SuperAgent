@@ -4,7 +4,7 @@
 	<s:Push Id="order" Value="$workflow.order"></s:Push>
 	<s:Push Id="search" Value="$param2"></s:Push>
 
-	<s:Push Id="skusByGroup" Value="$GetSKUAndGroups($search, $order.PriceList)"></s:Push>
+	<s:Push Id="skusByGroup" Value="$GetSKUAndGroups($search, $order.PriceList, $order.Stock)"></s:Push>
 
 	<c:DockLayout>
 

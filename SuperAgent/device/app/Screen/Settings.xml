@@ -7,10 +7,8 @@
 	<c:VerticalLayout>
 
 		<c:DockLayout CssClass="top_navigator">
-			<c:Button CssClass="btn_back" OnEvent="Back"
-				OnClickAction="$Workflow.DoRollback()" />
-			<c:Button CssClass="btn_grey_forward" OnClickAction="$Facade.ShowDialog()"
-				OnEvent="Forward" />
+			<c:Button CssClass="btn_back" OnEvent="Back" OnClickAction="$Workflow.DoRollback()" />
+			<c:Button CssClass="btn_grey_forward" OnClickAction="$Facade.ShowDialog()" OnEvent="Forward" />
 			<c:TextView Text="#settings#" />
 		</c:DockLayout>
 

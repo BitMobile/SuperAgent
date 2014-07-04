@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack"
-	xmlns:d="DefaultScope" StyleSheet="Visits.css">
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope" StyleSheet="Visits.css">
 
 	<s:Push Id="search" Value="$param1" />
 	<s:Push Id="orders" Value="$GetOrderList()"></s:Push>
@@ -9,8 +8,7 @@
 
 
 		<c:DockLayout CssClass="top_navigator">
-			<c:HorizontalLayout Id="btnMenu" CssClass="btn_menu"
-				OnEvent="Back" OnClickAction="$Workflow.DoRollback()">
+			<c:HorizontalLayout Id="btnMenu" CssClass="btn_menu" OnEvent="Back" OnClickAction="$Workflow.DoRollback()">
 				<c:Image CssClass="menuIcon" />
 			</c:HorizontalLayout>
 			<c:Button Id="btnForward" Text="" CssClass="btn_forward" />
@@ -21,8 +19,7 @@
 		<c:HorizontalLine />
 
 
-		<c:HorizontalLayout Id="btnAdd" CssClass="bottom_btn"
-			OnEvent="Back" OnClickAction="$DoAction(Create)">
+		<c:HorizontalLayout Id="btnAdd" CssClass="bottom_btn" OnEvent="Back" OnClickAction="$DoAction(Create)">
 			<c:TextView Text="#add#"></c:TextView>
 		</c:HorizontalLayout>
 		<c:HorizontalLine CssClass="b_line" />
@@ -36,8 +33,7 @@
 
 				<s:Push Id="checkedNumber" Value="$AssignNumberIfNotExist($order.Number)"></s:Push>
 
-				<c:HorizontalLayout CssClass="grid"
-					OnClickAction="$DoAction(Select,$order.Outlet,null,$order.Id)">
+				<c:HorizontalLayout CssClass="grid" OnClickAction="$DoAction(Select,$order.Outlet,null,$order.Id)">
 					<s:If Test="$OrderCanceled($order.Status)">
 						<c:Image CssClass="red_mark"></c:Image>
 					</s:If>
@@ -46,8 +42,7 @@
 					</s:Else>
 					<c:VerticalLayout>
 						<c:TextView Text="$order.OutletDescription" CssClass="main_row"></c:TextView>
-						<c:TextView Text="{$checkedNumber}, {$order.Date}"
-							CssClass="description_row"></c:TextView>
+						<c:TextView Text="{$checkedNumber}, {$order.Date}" CssClass="description_row"></c:TextView>
 					</c:VerticalLayout>
 					<c:Image />
 				</c:HorizontalLayout>

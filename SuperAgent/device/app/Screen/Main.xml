@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack"
-	StyleSheet="Main.css">
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Main.css">
 
 	<s:Push Id="fake" Value="$DoWarmUp()"></s:Push>
 
@@ -18,15 +17,13 @@
 	<c:SwipeHorizontalLayout Id="swipe_layout">
 		<c:VerticalLayout CssClass="menu">
 
-			<c:HorizontalLayout CssClass="header" OnEvent="Forward"
-				OnClickAction="$CloseMenu()">
+			<c:HorizontalLayout CssClass="header" OnEvent="Forward" OnClickAction="$CloseMenu()">
 				<c:Image CssClass="btn_summary" />
 				<c:TextView CssClass="menu_text" Text="#summary#" />
 			</c:HorizontalLayout>
 
 			<c:DockLayout OnClickAction="$DoAction(Visits)">
-				<c:TextView CssClass="menu_text"
-					Text="{$scheduledVisits} | {$plannedVisits}" />
+				<c:TextView CssClass="menu_text" Text="{$scheduledVisits} | {$plannedVisits}" />
 				<c:HorizontalLayout>
 					<c:Image CssClass="btn_visits" />
 					<c:TextView CssClass="menu_text" Text="#visits#" />
@@ -74,8 +71,7 @@
 		<c:VerticalLayout>
 
 			<c:DockLayout CssClass="top_navigator">
-				<c:HorizontalLayout Id="btnMenu" CssClass="btn_menu"
-					OnClickAction="$Facade.OpenMenu()">
+				<c:HorizontalLayout Id="btnMenu" CssClass="btn_menu" OnClickAction="$Facade.OpenMenu()">
 					<c:Image CssClass="menuIcon" />
 				</c:HorizontalLayout>
 				<c:HorizontalLayout CssClass="btn_forward" />
@@ -139,17 +135,14 @@
 				<c:DockLayout>
 					<c:DockLayout CssClass="grid">
 						<c:VerticalLayout>
-							<c:TextView Text="{$encashmentSumm} #currency#"
-								CssClass="main_row"></c:TextView>
-							<c:TextView Text="#programmingCollectionForToday#"
-								CssClass="description_row" />
+							<c:TextView Text="{$encashmentSumm} #currency#" CssClass="main_row"></c:TextView>
+							<c:TextView Text="#programmingCollectionForToday#" CssClass="description_row" />
 						</c:VerticalLayout>
 					</c:DockLayout>
 					<c:HorizontalLine />
 					<c:DockLayout CssClass="grid">
 						<c:VerticalLayout>
-							<c:TextView Text="{$receivablesSumm} #currency#"
-								CssClass="main_row"></c:TextView>
+							<c:TextView Text="{$receivablesSumm} #currency#" CssClass="main_row"></c:TextView>
 							<c:TextView Text="#accountsReceivables#" CssClass="description_row" />
 						</c:VerticalLayout>
 					</c:DockLayout>

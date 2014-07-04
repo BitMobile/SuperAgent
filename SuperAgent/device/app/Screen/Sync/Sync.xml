@@ -1,11 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack"
-	StyleSheet="Sync.css">
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Sync.css">
 	<c:VerticalLayout Id="VLayout">
 
 		<c:DockLayout CssClass="top_navigator">
-			<c:HorizontalLayout Id="btnMenu" CssClass="btn_menu"
-				OnEvent="Back" OnClick="$DoRollback()">
+			<c:HorizontalLayout Id="btnMenu" CssClass="btn_menu" OnEvent="Back" OnClick="$DoRollback()">
 				<c:Image CssClass="menuIcon" />
 			</c:HorizontalLayout>
 			<c:HorizontalLayout CssClass="btn_forward" />

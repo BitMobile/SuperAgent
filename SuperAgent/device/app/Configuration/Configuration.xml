@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<c:Configuration xmlns:c="BitMobile.Configuration"
-	xmlns:s="BitMobile.ValueStack">
+<c:Configuration xmlns:c="BitMobile.Configuration" xmlns:s="BitMobile.ValueStack">
 
 	<c:BusinessProcess File="BusinessProcess.xml" />
 

@@ -27,14 +27,12 @@
 			<s:Push Id="groupFilter" Value="$GetLeftFilterStyle(group)"></s:Push>
 			<s:Push Id="brandFilter" Value="$GetRightFilterStyle(brand)"></s:Push>
 			<c:HorizontalLayout CssClass="$groupFilter">
-				<c:HorizontalLayout CssClass="select_zone"
-					OnClickAction="$ChangeFilterAndRefresh(group)">
+				<c:HorizontalLayout CssClass="select_zone" OnClickAction="$ChangeFilterAndRefresh(group)">
 					<c:TextView Text="#groups#"></c:TextView>
 				</c:HorizontalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLayout CssClass="$brandFilter">
-				<c:HorizontalLayout CssClass="select_zone"
-					OnClickAction="$ChangeFilterAndRefresh(brand)">
+				<c:HorizontalLayout CssClass="select_zone" OnClickAction="$ChangeFilterAndRefresh(brand)">
 					<c:TextView Text="#brands#"></c:TextView>
 				</c:HorizontalLayout>
 			</c:HorizontalLayout>
@@ -57,8 +55,7 @@
 						<s:Push Id="currentGroup" Value="$group.ParentId"></s:Push>
 						<s:Push Id="dummy" Value="$AssignHierarchy($group)" />
 
-						<c:HorizontalLayout CssClass="parameter_grid"
-							OnClickAction="$AddFilterAndRefresh($parentId, group_filter)">
+						<c:HorizontalLayout CssClass="parameter_grid" OnClickAction="$AddFilterAndRefresh($parentId, group_filter)">
 							<s:Push Id="isSet" Value="$FilterIsSet($parentId, group_filter)"></s:Push>
 							<s:If Test="$isSet">
 								<c:Image CssClass="tick" />
@@ -72,8 +69,7 @@
 					</s:If>
 
 					<s:If Test="$childExists">
-						<c:HorizontalLayout CssClass="parameter_grid"
-							OnClickAction="$AddFilterAndRefresh($group.ChildId, group_filter)">
+						<c:HorizontalLayout CssClass="parameter_grid" OnClickAction="$AddFilterAndRefresh($group.ChildId, group_filter)">
 							<s:Push Id="isSet" Value="$FilterIsSet($group.ChildId, group_filter)"></s:Push>
 							<s:If Test="$isSet">
 								<c:Image CssClass="child_tick" />
@@ -94,8 +90,7 @@
 				<s:Push Id="brands" Value="$GetBrands($workflow.order.PriceList)"></s:Push>
 				<s:Iterator Id="brand" Value="$brands">
 
-					<c:HorizontalLayout CssClass="parameter_grid"
-						OnClickAction="$AddFilterAndRefresh($brand.Id, brand_filter)">
+					<c:HorizontalLayout CssClass="parameter_grid" OnClickAction="$AddFilterAndRefresh($brand.Id, brand_filter)">
 						<s:Push Id="isSet" Value="$FilterIsSet($brand.Id, brand_filter)"></s:Push>
 						<s:If Test="$isSet">
 							<c:Image CssClass="tick" />

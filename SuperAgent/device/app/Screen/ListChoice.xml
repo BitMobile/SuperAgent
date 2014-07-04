@@ -17,8 +17,7 @@
 
 	<c:DockLayout>
 
-		<c:HorizontalLayout CssClass="bottom_btn" OnEvent="Back"
-			OnClickAction="$Workflow.DoBack()">
+		<c:HorizontalLayout CssClass="bottom_btn" OnEvent="Back" OnClickAction="$Workflow.DoBack()">
 			<c:TextView Text="#ready#"></c:TextView>
 		</c:HorizontalLayout>
 		<c:HorizontalLine CssClass="b_line" />
@@ -50,8 +49,7 @@
 					<s:Push Id="itemId" Value="$item"></s:Push>
 				</s:If>
 
-				<c:DockLayout CssClass="parameter_grid"
-					OnClickAction="$Facade.UpdateValueAndBack($param1,$param2,$itemId)">
+				<c:DockLayout CssClass="parameter_grid" OnClickAction="$Facade.UpdateValueAndBack($param1,$param2,$itemId)">
 					<s:If Test="$param3 == null">
 						<c:TextView Text="$item.Description"></c:TextView>
 					</s:If>

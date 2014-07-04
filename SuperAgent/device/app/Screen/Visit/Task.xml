@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack"
-	StyleSheet="CreateOutlet.css">
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="CreateOutlet.css">
 
 	<s:Push Id="task" Value="$param1" />
 	<s:Push Id="visitTask" Value="$param2" />
@@ -8,8 +7,7 @@
 
 	<c:DockLayout>
 
-		<c:HorizontalLayout Id="btnDone" CssClass="bottom_btn"
-			OnEvent="Back" OnClickAction="$DoBack()">
+		<c:HorizontalLayout Id="btnDone" CssClass="bottom_btn" OnEvent="Back" OnClickAction="$DoBack()">
 			<c:TextView Text="#ready#" />
 		</c:HorizontalLayout>
 		<c:HorizontalLine CssClass="b_line" />
@@ -41,12 +39,10 @@
 
 			<c:VerticalLayout CssClass="half_grid">
 				<s:If Test="$visitTask != null">
-					<c:Button Text="#noteAsNew#" CssClass="negative_decision"
-						OnClickAction="$RetrieveTask($visitTask.Id)" />
+					<c:Button Text="#noteAsNew#" CssClass="negative_decision" OnClickAction="$RetrieveTask($visitTask.Id)" />
 				</s:If>
 				<s:Else>
-					<c:Button Text="#noteAsExecuted#" CssClass="positive_decision"
-						OnClickAction="$CompleteTheTask($task.Id, $workflow.visit)" />
+					<c:Button Text="#noteAsExecuted#" CssClass="positive_decision" OnClickAction="$CompleteTheTask($task.Id, $workflow.visit)" />
 				</s:Else>
 			</c:VerticalLayout>
 			<c:HorizontalLine />

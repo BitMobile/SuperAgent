@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
+
+  <s:Push Id="visit" Value="$param1"></s:Push>
+  <s:Push Id="sku" Value="$param2"></s:Push>
+  <s:Push Id="quest1" Value="$param3"></s:Push>
+  <s:Push Id="quest2" Value="$param4"></s:Push>
+  <s:Push Id="questions" Value="$GetSKUQuestions($quest1, $quest2)"></s:Push>
+  <s:Push Id="skuValue" Value="$CreateVisitSKUValueIfNotExists($visit,$sku,$param5)"></s:Push>
+
+  <c:DockLayout>
+
+    <c:HorizontalLayout Id="btnDone" CssClass="bottom_btn" OnEvent="Back" OnClickAction="$SaveAndBack($skuValue)">
+      <c:TextView Text="#ready#"></c:TextView>
+    </c:HorizontalLayout>
+    <c:HorizontalLine CssClass="b_line"></c:HorizontalLine>
+
+    <c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
+    <c:HorizontalLine/>
+    
+    <c:ScrollView Id="grScrollView">
+      
+      <s:If Test="$IsInCollection(Available, $questions)">
+        <c:HorizontalLayout  CssClass="grid">
+          <c:VerticalLayout OnClickAction="$GoToQuestionAction(Boolean, $skuValue, $visit, cAvailable, Available)">
+            <c:TextView Text="#available#" CssClass="description_row"></c:TextView>
+            <c:TextView Id="cAvailable" Text="$skuValue.Available" CssClass="yes_TextView"></c:TextView>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+      </s:If>
+
+      <s:If Test="$IsInCollection(Facing, $questions)">
+        <c:HorizontalLayout CssClass="grid">
+          <c:VerticalLayout>
+            <c:TextView Text="#facing#" CssClass="description_row"></c:TextView>
+            <c:MemoEdit Value="$skuValue.Facing" OnChange="$SaveValue($skuValue)" Keyboard="numeric"></c:MemoEdit>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+      </s:If>
+
+      <s:If Test="$IsInCollection(Stock, $questions)">
+        <c:HorizontalLayout CssClass="grid">
+          <c:VerticalLayout>
+            <c:TextView Text="#stock#" CssClass="description_row"></c:TextView>
+            <c:MemoEdit Value="$skuValue.Stock" OnChange="$SaveValue($skuValue)" Keyboard="numeric"></c:MemoEdit>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+      </s:If>
+
+      <s:If Test="$IsInCollection(Price, $questions)">
+        <c:HorizontalLayout CssClass="grid">
+          <c:VerticalLayout>
+            <c:TextView Text="#price#" CssClass="description_row"></c:TextView>
+            <c:MemoEdit Value="$skuValue.Price" OnChange="$SaveValue($skuValue)" Keyboard="numeric"></c:MemoEdit>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+      </s:If>
+
+      <s:If Test="$IsInCollection(MarkUp, $questions)">
+        <c:HorizontalLayout CssClass="grid">
+          <c:VerticalLayout>
+            <c:TextView Text="#markUp#" CssClass="description_row"></c:TextView>
+            <c:MemoEdit Value="$skuValue.MarkUp" OnChange="$SaveValue($skuValue)" Keyboard="numeric"></c:MemoEdit>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+      </s:If>
+
+      <s:If Test="$IsInCollection(OutOfStock, $questions)">
+        <c:HorizontalLayout  CssClass="grid">
+          <c:VerticalLayout OnClickAction="$GoToQuestionAction(Boolean, $skuValue, $visit, cOutOfStock, OutOfStock)">
+            <c:TextView Text="#outOfStock#" CssClass="description_row"></c:TextView>
+            <c:TextView Id="cOutOfStock" Text="$skuValue.OutOfStock" CssClass="yes_TextView"></c:TextView>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+      </s:If>
+
+      <s:If Test="$IsInCollection(Snapshot, $questions)">
+        <c:HorizontalLayout CssClass="grid" OnClickAction="$GetSKUShapshot($workflow.visit,$skuValue,$snapshotInfo)">
+          <c:VerticalLayout>
+            <s:Push Id="snapshotText" Value="$GetSnapshotText($skuValue.Snapshot)"></s:Push>
+            <c:TextView Id="snapshotInfo" Text="$snapshotText" CssClass="main_row"></c:TextView>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+      </s:If>
+
+    </c:ScrollView>
+
+  </c:DockLayout>
+
+</c:Screen>
+
+
+
+

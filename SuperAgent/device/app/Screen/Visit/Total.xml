@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Visit_Total.css">
+
+  <c:VerticalLayout>
+
+    <c:DockLayout CssClass="top_navigator">
+      <c:HorizontalLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoBack()">
+        <c:Image/>
+        <c:TextView Text="#back#"/>
+      </c:HorizontalLayout>
+      <c:Button Id="btnForward" Text="#ready#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckAndCommit($workflow.order, $workflow.visit, $workflow.name)"/>
+      <c:HorizontalLayout>
+        <c:TextView Text="#visitTotal#" />
+      </c:HorizontalLayout>
+    </c:DockLayout>
+
+    <c:Image CssClass="7_scroll"></c:Image>
+    <c:HorizontalLine/>
+
+    <c:ScrollView Id="grScrollView">
+
+      <c:HorizontalLayout CssClass="caption_grid">
+        <c:TextView Text="#additionally#:"></c:TextView>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <s:If Test="$OrderExists($workflow.visit)">
+        <c:HorizontalLayout CssClass="grid" OnClickAction="$SetDeliveryDate($workflow.order, $deliveryDate)">
+          <c:VerticalLayout>
+            <c:TextView Text="#deliveryDate#" CssClass="description_row"></c:TextView>
+            <c:TextView Id="deliveryDate" Text="$workflow.order.DeliveryDate" CssClass="main_row"></c:TextView>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+      </s:If>
+
+      <s:If Test="$OrderCheckRequired($workflow.visit, $workflow.name)">
+        <c:HorizontalLayout CssClass="grid" OnClickAction="$DoSelect($workflow.visit,ReasonForNotOfTakingOrder,$noOrderReason)">
+          <c:VerticalLayout>
+            <c:TextView Text="#reasonForEmptyOrder#" CssClass="description_row"></c:TextView>
+            <c:TextView Id="noOrderReason" Text="$workflow.visit.ReasonForNotOfTakingOrder.Description" CssClass="main_row"></c:TextView>
+          </c:VerticalLayout>
+          <c:Image></c:Image>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+      </s:If>
+
+
+      <s:If Test="$VisitReasonCheckrequired($workflow.name, $workflow.visit)">
+        <c:HorizontalLayout CssClass="grid" OnClickAction="$DoSelect($workflow.visit,ReasonForVisit,$visitReason)">
+          <c:VerticalLayout>
+            <c:TextView Text="#visitReason#" CssClass="description_row"></c:TextView>
+            <c:TextView Id="visitReason" Text="$workflow.visit.ReasonForVisit.Description" CssClass="main_row"></c:TextView>
+          </c:VerticalLayout>
+          <c:Image></c:Image>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+      </s:If>
+
+      <c:HorizontalLayout CssClass="memo_block">
+        <c:VerticalLayout>
+          <c:TextView Text="#commentary#" CssClass="description_row"></c:TextView>
+          <c:MemoEdit Value="$workflow.visit.Commentary" CssClass="main_row"></c:MemoEdit>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout CssClass="caption_grid">
+        <c:TextView Text="#caps_summary#:"></c:TextView>
+      </c:HorizontalLayout>
+
+      <c:DockLayout CssClass="parameter_grid">
+        <s:Push Id="answered" Value="$CountAnswers($workflow.visit, $workflow.sku_answ)"></s:Push>
+        <s:Push Id="questions" Value="$GetSum($workflow.questions_qty, $workflow.sku_qty)"></s:Push>
+        <c:TextView Text="#questAnswers#"></c:TextView>
+        <c:TextView Text="{$answered} #of# {$questions}" CssClass="value"></c:TextView>
+      </c:DockLayout>
+      <c:HorizontalLine/>
+
+      <c:DockLayout CssClass="parameter_grid">
+        <s:Push Id="todoDone" Value="$CountDoneTasks($workflow.visit)"></s:Push>
+        <s:Push Id="todo" Value="$CountTasks($workflow.outlet)"></s:Push>
+        <c:TextView Text="#todoDone#"></c:TextView>
+        <c:TextView Text="{$todoDone} #of# {$todo}" CssClass="value"></c:TextView>
+      </c:DockLayout>
+      <c:HorizontalLine/>
+
+      <c:DockLayout CssClass="parameter_grid">
+        <c:TextView Text="#orderSum#"></c:TextView>
+        <c:TextView Text="{$GetOrderSUM($workflow.order)}" CssClass="value"></c:TextView>
+      </c:DockLayout>
+      <c:HorizontalLine/>
+
+      <c:DockLayout CssClass="parameter_grid">
+        <c:TextView Text="#encashmentSum#"></c:TextView>
+        <c:TextView Text="{$workflow.encashment.EncashmentAmount}" CssClass="value"></c:TextView>
+      </c:DockLayout>
+      <c:HorizontalLine/>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>
+
+
+

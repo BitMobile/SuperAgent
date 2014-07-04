@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope">
+
+
+  <s:If Test="$workflow.name=='Visit'">
+    <s:Push Id="workflow.outlet" Value="$outlet"></s:Push>
+    <s:Push Id="workflow.visit" Value="$CreateVisitIfNotExists($outlet,$common.UserRef, $workflow.visit, $planVisit)"/>
+  </s:If>
+
+  <c:DockLayout Id="vOutlet">
+
+	<c:HorizontalLayout Id="btnCancel" CssClass="bottom_btn">
+		<c:VerticalLayout OnEvent="Back" OnClickAction="$DoAction(ShowDetails, $outlet)">
+			<c:TextView Text="#details#" CssClass="left_tv"></c:TextView>
+		</c:VerticalLayout>
+		<c:VerticalLayout Id="btnAdd" OnEvent="Forward" OnClickAction="$DoAction(ShowContacts, $outlet)">
+			<c:TextView Text="#contacts#" CssClass="right_tv"></c:TextView>
+		</c:VerticalLayout>
+	</c:HorizontalLayout>
+	<c:HorizontalLine CssClass="b_line" />
+
+    <s:If Test="$workflow.name=='Outlets'">
+      <c:DockLayout CssClass="top_navigator">
+        <c:HorizontalLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$SaveAndBack($outlet)">
+          <c:Image/>
+          <c:TextView Text="#list#"/>
+        </c:HorizontalLayout>
+        <c:HorizontalLayout  CssClass="btn_forward"/>
+        <c:HorizontalLayout>
+          <c:TextView Text="#client#" />
+        </c:HorizontalLayout>
+      </c:DockLayout>
+    </s:If>
+    <s:Else>
+      <c:DockLayout CssClass="top_navigator">
+        <c:HorizontalLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoRollback()">
+          <c:Image/>
+          <c:TextView Text="#visits#"/>
+        </c:HorizontalLayout>
+        <c:Button Id="btnForward" Text="#forward#" OnEvent="Forward" CssClass="btn_forward" OnClickAction="$CheckNotNullAndForward($outlet, $workflow.visit)"/>
+        <c:HorizontalLayout>
+          <c:TextView Text="#client#" />
+        </c:HorizontalLayout>
+      </c:DockLayout>
+
+      <c:Image CssClass="1_scroll"></c:Image>
+      <c:HorizontalLine/>
+    </s:Else>
+
+    <c:ScrollView Id="grScrollView">
+
+      <c:HorizontalLayout CssClass="caption_grid">
+        <c:TextView Text="#main#:"></c:TextView>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout CssClass="grid">
+        <c:VerticalLayout>
+          <c:TextView Text="#description#" CssClass="description_row"></c:TextView>
+          <c:TextView Id="outletDescr" Text="$outlet.Description" CssClass="main_row"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout CssClass="grid">
+        <c:VerticalLayout>
+          <c:TextView Text="#address#" CssClass="description_row"></c:TextView>
+          <c:MemoEdit Id="outletAddress" Value="$outlet.Address"></c:MemoEdit>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+
+      <c:HorizontalLayout CssClass="grid">
+        <c:VerticalLayout>
+          <c:DockLayout>
+            <c:TextView Text="#coordinates#"></c:TextView>
+            <c:Button Text="#set#" OnClickAction="$SetLocation($outlet)"></c:Button>
+          </c:DockLayout>
+          <s:If Test="$outlet.Lattitude != null || $outlet.Longitude != null">
+            <c:TextView Id="outletCoord" Text="{$outlet.Lattitude}; {$outlet.Longitude}" CssClass="main_row"></c:TextView>
+          </s:If>
+          <s:Else>
+            <c:TextView Id="outletCoord" Text="#unknown#" CssClass="main_row"></c:TextView>
+          </s:Else>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout CssClass="caption_grid">
+        <c:TextView Text="#additionally#:"></c:TextView>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectIfNotAVisit($outlet,Class,$outletClass)">
+        <c:TextView Text="#outlet_class#"></c:TextView>
+        <c:TextView Id="outletClass" Text="$outlet.Class.Description" CssClass="value"></c:TextView>
+      </c:DockLayout>
+      <c:HorizontalLine/>
+
+      <c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectIfNotAVisit($outlet,Type,$outletType)">
+        <c:TextView Text="#outlet_type#"></c:TextView>
+        <c:TextView Id="outletType" Text="$outlet.Type.Description" CssClass="value"></c:TextView>
+      </c:DockLayout>
+      <c:HorizontalLine/>
+
+      <c:DockLayout CssClass="parameter_grid" OnClickAction="$DoSelect($outlet,Distributor,$outletDistr)">
+        <c:TextView Text="#distributor#"></c:TextView>
+        <c:TextView Id="outletDistr" Text="$outlet.Distributor.Description" CssClass="value"></c:TextView>
+      </c:DockLayout>
+      <c:HorizontalLine/>
+
+      <s:Iterator Id="parameter" Value="$GetOutletParameters($outlet)" Status="statusCount">
+
+        <s:Push Id="parameterValue" Value="$GetOutletParameterValue($outlet,$parameter.Id,$parameter.ParameterValue)"/>
+        <s:Push Id="index" Value="$statusCount.Index"></s:Push>
+        <c:DockLayout CssClass="parameter_grid" OnClickAction="$GoToParameterAction($parameter.DataType.Description, $parameterValue, Value, $outlet, $parameter.Id, control{$index})">
+          <c:TextView Text="$parameter.Description"></c:TextView>
+          <s:If Test="$parameter.TypeDescription=='Integer'">
+            <c:EditText Id="control{$index}" Value="$parameterValue.Value" OnChange="$SaveValue($parameterValue)" CssClass="value" Keyboard="numeric"></c:EditText>
+          </s:If>
+          <s:If Test="$parameter.TypeDescription=='Decimal'">
+            <c:EditText Id="control{$index}" Value="$parameterValue.Value" OnChange="$SaveValue($parameterValue)" CssClass="value" Keyboard="numeric"></c:EditText>
+          </s:If>
+          <s:If Test="$parameter.TypeDescription=='String'">
+            <c:EditText Id="control{$index}" Value="$parameterValue.Value" OnChange="$SaveValue($parameterValue)" CssClass="value"></c:EditText>
+          </s:If>
+          <s:If Test="$parameter.TypeDescription=='DateTime'">
+            <c:TextView Id="control{$index}" Text="$parameterValue.Value" CssClass="value"></c:TextView>
+          </s:If>
+          <s:If Test="$parameter.TypeDescription=='Boolean'">
+            <c:TextView Id="control{$index}" Text="$parameterValue.Value" CssClass="value"></c:TextView>
+          </s:If>
+          <s:If Test="$parameter.TypeDescription=='ValueList'">
+            <c:TextView Id="control{$index}" Text="$parameterValue.Value" CssClass="value"></c:TextView>
+          </s:If>
+        </c:DockLayout>
+
+        <c:HorizontalLine/>
+
+      </s:Iterator>
+
+    </c:ScrollView>
+
+  </c:DockLayout>
+
+</c:Screen>

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Visit_SKUs.css">
+
+  <s:Push Id="outlet" Value="$workflow.outlet"></s:Push>
+  <s:Push Id="visit" Value="$workflow.visit"></s:Push>
+  <s:Push Id="SKUs" Value="$GetSKUsFromQuesionnaires($outlet)"></s:Push>
+  <s:Push Id="workflow.sku_answ" Value="$ToInteger(0)"></s:Push>
+  <s:Push Id="workflow.sku_qty" Value="$ToInteger(0)"></s:Push>
+
+  <c:VerticalLayout>
+
+    <c:DockLayout CssClass="top_navigator">
+      <c:HorizontalLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$GetActionAndBack()">
+        <c:Image/>
+        <c:TextView Text="#back#"/>
+      </c:HorizontalLayout>
+      <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckEmtySKUAndForward($outlet,$visit)"/>
+      <c:HorizontalLayout>
+        <c:TextView Text="#distribution#" />
+      </c:HorizontalLayout>
+    </c:DockLayout>
+
+    <c:Image CssClass="4_scroll"></c:Image>
+    <c:HorizontalLine/>
+
+    <c:ScrollView Id="grScrollView">
+
+      <c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <s:Iterator Id="sku" Value="$SKUs">
+        <s:Push Id="skuValue" Value="$GetVisitSKUValue($visit,$sku.SKU)"/>
+        <s:Push Id="sku_qty" Value="$GetSKUQty($outlet, $sku.Ref1, $sku.Ref2, $sku.questionsCount1, $sku.questionsCount2)"></s:Push>
+        <s:Push Id="sku_answered" Value="$GetSKUAnswers($skuValue)"></s:Push>
+
+        <c:HorizontalLayout CssClass="grid" OnClickAction="$Workflow.DoAction(Edit, $visit, $sku.SKU, $sku.Ref1, $sku.Ref2, $skuValue)">
+          <c:VerticalLayout>
+            <c:TextView Text="{$sku_answered} #of# {$sku_qty}" CssClass="description_row"/>
+            <c:TextView Text="$sku.Description" CssClass="main_row"></c:TextView>
+          </c:VerticalLayout>
+          <c:Image/>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+
+      </s:Iterator>
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>

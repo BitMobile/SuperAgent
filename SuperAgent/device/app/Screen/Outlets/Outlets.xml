@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Outlets.css">
+
+  <s:Push Id="search" Value="$param1"/>
+  <s:Push Id="outlets" Value="$GetOutlets($search)"></s:Push>
+
+  <c:DockLayout>
+
+	<s:If Test="$workflow.name=='Order'">
+		<c:DockLayout CssClass="top_navigator">
+			<c:HorizontalLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoBack()">
+				<c:Image />
+				<c:TextView Text="#back#" />
+			</c:HorizontalLayout>
+			<c:HorizontalLayout Id="btnForward" CssClass="btn_forward" />
+			<c:HorizontalLayout>
+				<c:TextView Text="#clients#" />
+			</c:HorizontalLayout>
+		</c:DockLayout>
+	</s:If>
+	<s:Else>
+		<c:DockLayout CssClass="top_navigator">
+			<c:HorizontalLayout Id="btnMenu" CssClass="btn_menu" OnEvent="Back" OnClickAction="$DoRollback()">
+				<c:Image CssClass="menuIcon" />
+			</c:HorizontalLayout>
+			<c:HorizontalLayout CssClass="empty_forward" />
+			<c:HorizontalLayout>
+				<c:TextView Text="#clients#" />
+			</c:HorizontalLayout>
+		</c:DockLayout>
+	</s:Else>
+	<c:HorizontalLine />
+
+    <c:HorizontalLayout CssClass="search">
+      <c:DockLayout >
+        <c:Image />
+        <c:EditText Id="edtSearch" Text="$search" Placeholder="#search#"></c:EditText>
+      </c:DockLayout>
+      <c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoRefresh($edtSearch.Text)"></c:Button>
+    </c:HorizontalLayout>
+    <c:HorizontalLine/>
+
+    <s:If Test="$workflow.name=='Outlets'">
+      <c:HorizontalLayout CssClass="bottom_btn" OnClickAction="$DoAction(Create)">
+        <c:TextView Text="#add#"></c:TextView>
+      </c:HorizontalLayout>
+      <c:HorizontalLine CssClass="b_line"/>
+    </s:If>
+
+
+    <c:ScrollView Id="grScrollView">
+
+      <c:HorizontalLayout CssClass="empty_caption_grid"/>
+      <c:HorizontalLine/>
+
+      <s:Iterator Id="outlet" Value="$outlets">
+
+        <c:HorizontalLayout CssClass="grid" OnClickAction="$AddGlobalAndAction(outlet, $outlet.Id, Select)">
+          <c:VerticalLayout CssClass="no_mark"/>
+          <c:VerticalLayout>
+            <c:TextView Text="$outlet.Description" CssClass="main_row"></c:TextView>
+            <c:TextView Text="$outlet.Address" CssClass="description_row"></c:TextView>
+          </c:VerticalLayout>
+          <c:Image/>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+
+      </s:Iterator>
+
+      <c:HorizontalLayout CssClass="end_of_block"/>
+
+    </c:ScrollView>
+
+  </c:DockLayout>
+
+
+</c:Screen>

@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Receivables.css">
+
+  <s:Push Id="visit" Value="$workflow.visit"/>
+  <s:Push Id="receivables" Value="$GetReceivables($visit.Outlet)"></s:Push>
+  <s:Push Id="workflow.encashment" Value="$CreateEncashmentIfNotExist($workflow.visit)"></s:Push>
+
+  <c:VerticalLayout>
+
+    <c:DockLayout CssClass="top_navigator">
+      <c:HorizontalLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoBack()">
+        <c:Image/>
+        <c:TextView Text="#order#"/>
+      </c:HorizontalLayout>
+      <c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$SaveAndForward($workflow.encashment)"/>
+      <c:HorizontalLayout>
+        <c:TextView Text="#encashment#" />
+      </c:HorizontalLayout>
+    </c:DockLayout>
+
+    <c:Image CssClass="6_scroll"></c:Image>
+    <c:HorizontalLine/>
+
+
+    <c:ScrollView Id="grScrollView">
+
+      <c:HorizontalLayout CssClass="caption_grid">
+        <c:TextView Text="#receivableAmount#:"></c:TextView>
+      </c:HorizontalLayout>
+
+      <c:HorizontalLayout CssClass="caption_grid">
+        <c:TextView Text="$receivableAmount" CssClass="caption_row"></c:TextView>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+
+
+      <c:HorizontalLayout CssClass="grid">
+        <c:VerticalLayout>
+          <c:DockLayout>
+            <c:TextView Text="#encashmentAmount#:"></c:TextView>
+            <c:Button Text="#spread#" OnClickAction="$SpreadEncasmentAndRefresh($workflow.encashment, $visit.Outlet)"></c:Button>
+          </c:DockLayout>
+          <c:EditText Id="encAmount" Value="$workflow.encashment.EncashmentAmount" CssClass="main_row" Keyboard="numeric"></c:EditText>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout  OnClickAction="$Workflow.DoRefresh($True,$encashmentAttribute.Text)">
+        <c:VerticalLayout>
+          <c:TextView Text="#spread#" CssClass="caption_row"></c:TextView>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+
+      <c:HorizontalLayout CssClass="caption_grid">
+        <c:TextView Text="#byDocs#:"></c:TextView>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <s:Iterator Id="receivableDoc" Value="$receivables">
+        <s:Push Id="encasmentItem" Value="$CreateEncashmentItemIfNotExist($workflow.encashment, $receivableDoc.DocumentName)"></s:Push>
+
+        <c:HorizontalLayout CssClass="grid">
+          <c:VerticalLayout>
+            <c:TextView Text="$receivableDoc.DocumentName" CssClass="description_row"></c:TextView>
+            <c:DockLayout CssClass="parameter_grid">
+              <c:EditText Value="$encasmentItem.EncashmentSum" Keyboard="numeric" OnChange="$RefreshAmount($workflow.encashment, $encasmentItem)"></c:EditText>
+              <c:TextView Text="#debt#: {$receivableDoc.DocumentSum}" CssClass="value"></c:TextView>
+            </c:DockLayout>
+          </c:VerticalLayout>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+
+      </s:Iterator>
+
+      <c:HorizontalLayout CssClass="caption_grid">
+        <c:TextView Text="#mainInfo#:"></c:TextView>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout CssClass="grid">
+        <c:VerticalLayout>
+          <c:TextView Text="#docNumber#" CssClass="description_row"></c:TextView>
+          <c:MemoEdit Value="$workflow.encashment.DocNumber" Keyboard="numeric"></c:MemoEdit>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout CssClass="grid">
+        <c:VerticalLayout>
+          <c:TextView Text="#nameSurname#" CssClass="description_row"></c:TextView>
+          <c:MemoEdit Value="$workflow.encashment.NameSurname"></c:MemoEdit>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+      <c:HorizontalLayout CssClass="grid">
+        <c:VerticalLayout>
+          <c:TextView Text="#commentary#" CssClass="description_row"></c:TextView>
+          <c:MemoEdit Value="$workflow.encashment.Commentary"></c:MemoEdit>
+        </c:VerticalLayout>
+      </c:HorizontalLayout>
+      <c:HorizontalLine/>
+
+
+    </c:ScrollView>
+
+  </c:VerticalLayout>
+
+</c:Screen>

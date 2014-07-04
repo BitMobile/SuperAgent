@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Visits.css">
+
+  <s:Push Id="search" Value="$param1"/>
+  <s:Push Id="s" Value="$SetListType()"></s:Push>
+
+
+  <c:VerticalLayout>
+
+    <c:DockLayout CssClass="top_navigator">
+      <c:HorizontalLayout Id="btnMenu" CssClass="btn_menu" OnEvent="Back" OnClickAction="$Workflow.DoRollback()">
+        <c:Image CssClass="menuIcon"/>
+      </c:HorizontalLayout>
+      <c:Button Id="btnForward" Text="" CssClass="btn_forward"/>
+      <c:HorizontalLayout>
+        <c:TextView Text="#visits#" />
+      </c:HorizontalLayout>
+    </c:DockLayout>
+
+    <c:HorizontalLayout CssClass="small_grid">
+      <s:Push Id="sv" Value="$GetScheduledVisitsCount()"></s:Push>
+      <s:Push Id="usv" Value="$GetOutlets(null, 1)"></s:Push>
+      <s:If Test="$visitsType=='planned'">
+        <c:HorizontalLayout CssClass="mode_left_button_on">
+          <c:HorizontalLayout Id="planned" CssClass="select_zone" OnClickAction="$Facade.ChangeListAndRefresh(planned)">
+            <c:TextView Text="#planVisit# ({$sv})"></c:TextView>
+          </c:HorizontalLayout>
+        </c:HorizontalLayout>
+        <c:HorizontalLayout CssClass="mode_right_button_off">
+          <c:HorizontalLayout Id="unPlanned" CssClass="select_zone" OnClickAction="$Facade.ChangeListAndRefresh(unPlanned)">
+            <c:TextView Text="#unplanned# ({$usv})"></c:TextView>
+          </c:HorizontalLayout>
+        </c:HorizontalLayout>
+      </s:If>
+      <s:Else>
+        <c:HorizontalLayout CssClass="mode_left_button_off">
+          <c:HorizontalLayout Id="planned" CssClass="select_zone" OnClickAction="$Facade.ChangeListAndRefresh(planned)">
+            <c:TextView  Text="#planVisit# ({$sv})" ></c:TextView>
+          </c:HorizontalLayout>
+        </c:HorizontalLayout>
+        <c:HorizontalLayout CssClass="mode_right_button_on">
+          <c:HorizontalLayout Id="unPlanned" CssClass="select_zone" OnClickAction="$Facade.ChangeListAndRefresh(unPlanned)">
+            <c:TextView Text="#unplanned# ({$usv})"></c:TextView>
+          </c:HorizontalLayout>
+        </c:HorizontalLayout>
+      </s:Else>
+    </c:HorizontalLayout>
+    <c:HorizontalLine/>
+
+    <c:HorizontalLayout CssClass="search">
+      <c:DockLayout >
+        <c:Image />
+        <c:EditText Id="edtSearch" Text="$search" Placeholder="#search#"></c:EditText>
+      </c:DockLayout>
+      <c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoRefresh($edtSearch.Text)"></c:Button>
+    </c:HorizontalLayout>
+    <c:HorizontalLayout CssClass="shadowLine"></c:HorizontalLayout>
+
+    <s:If Test="$visitsType=='planned'">
+      <c:ScrollView Id="grScrollView">
+        <s:Push Id="hasRow" Value="false"/>
+
+        <c:HorizontalLayout CssClass="caption_grid">
+          <s:Push Id="uncommitedVisits" Value="$GetUncommitedScheduledVisits($search, 0)"></s:Push>
+          <s:Push Id="sv" Value="$GetUncommitedScheduledVisits($search, 1)"></s:Push>
+          <c:TextView Text="#incompletedVisits# ({$sv}):"></c:TextView>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+
+        <s:Iterator Id="pOutlet" Value="$uncommitedVisits">
+          <s:Push Id="planOutlet" Value="$pOutlet.Outlet"></s:Push>
+
+          <c:HorizontalLayout CssClass="grid" OnClickAction="$AddGlobalAndAction($pOutlet.Ref, $planOutlet, Select)">
+            <c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
+            <c:VerticalLayout>
+              <c:TextView Text="$planOutlet.Description" CssClass="main_row"></c:TextView>
+              <c:TextView Text="{$planOutlet.Address}" CssClass="description_row"></c:TextView>
+            </c:VerticalLayout>
+            <c:Image/>
+          </c:HorizontalLayout>
+          <c:HorizontalLine/>
+
+        </s:Iterator>
+        
+
+        <c:HorizontalLayout CssClass="end_of_block"/>
+
+        <c:HorizontalLayout CssClass="caption_grid">
+
+          <s:Push Id="commitedVisits" Value="$GetCommitedScheduledVisits($search, 0)"></s:Push>
+          <s:Push Id="cv" Value="$GetCommitedScheduledVisits($search, 1)"></s:Push>
+          <c:TextView Text="#completedVisits# ({$cv}):"></c:TextView>
+        </c:HorizontalLayout>
+        <c:HorizontalLine/>
+
+
+        <s:Iterator Id="pOutlet" Value="$commitedVisits">
+          
+          <c:HorizontalLayout CssClass="grid">
+            <c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
+            <c:VerticalLayout>
+              <c:TextView Text="$pOutlet.Description" CssClass="main_row"></c:TextView>
+              <c:TextView Text="{$pOutlet.Address}" CssClass="description_row"></c:TextView>
+            </c:VerticalLayout>
+          </c:HorizontalLayout>
+          <c:HorizontalLine/>
+
+          
+        </s:Iterator>        
+
+      </c:ScrollView>
+    </s:If>
+
+
+    <s:Else>
+      <s:Push Id="unscheduledOutlets" Value="$GetOutlets($search, 0)"></s:Push>
+
+      <c:ScrollView Id="grScrollView" >
+        <s:Iterator Id="uOutlet" Value="$unscheduledOutlets">
+          <c:HorizontalLayout CssClass="grid" OnClickAction="$AddGlobalAndAction(null, $uOutlet.Outlet, Select)">
+            <c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
+            <c:VerticalLayout>
+              <c:TextView Text="$uOutlet.Description" CssClass="main_row"></c:TextView>
+              <c:TextView Text="{$uOutlet.Address}" CssClass="description_row"></c:TextView>
+            </c:VerticalLayout>
+            <c:Image/>
+          </c:HorizontalLayout>
+          <c:HorizontalLine/>
+        </s:Iterator>
+      </c:ScrollView>
+
+    </s:Else>
+
+  </c:VerticalLayout>
+
+</c:Screen>

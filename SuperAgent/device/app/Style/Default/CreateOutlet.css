@@ -1,0 +1,31 @@
+﻿body dl {
+    background-color: #efeff4;
+}
+
+.bottom_btn vl {
+    width: 50%;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+    .bottom_btn vl TextView {
+        text-align: left;
+        padding-top: 25%;
+    }
+
+.right {
+    text-align: right;
+}
+
+.main_row {
+    color: #2d89cf;
+}
+
+.grid vl {    
+    width: 100%;
+    padding-right: 11%;
+}
+
+    .grid vl MemoEdit {
+        margin-top: 10%;
+    }

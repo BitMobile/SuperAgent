@@ -28,19 +28,16 @@ sv hl {
 
 vl {
 	width: 100%;
-	height: 100%;
-	selected-color: #bacdce;
+	height: 100%;	
 }
 
 hl {
-	width: 100%;
-	selected-color: #bacdce;
+	width: 100%;	
 }
 
 dl {
 	width: 100%;
-	height: 100%;
-	selected-color: #b2b2b7;
+	height: 100%;	
 }
 
 dl hl {
@@ -60,12 +57,12 @@ svl {
 
 TextView {
 	background-color: none;
-	color: #000000;
+	color: #000000;	
 }
 
 Button {
-	color: #2d89cf;
 	selected-color: #b2b2b7;
+	color: #2d89cf;	
 }
 
 MemoEdit {
@@ -76,6 +73,10 @@ MemoEdit {
 .top_navigator {
 	height: 7.6sp;
 	dock-align: top;
+}
+
+.top_navigator Button{
+	selected-color: #D3D3D3;
 }
 
 .top_navigator hl {
@@ -92,6 +93,11 @@ MemoEdit {
 	text-align: center;
 	color: #000000;
 	font: 38% Arial;
+	selected-color: #D3D3D3;
+}
+
+.top_navigator hl Image{
+	selected-color: #D3D3D3;
 }
 
 .btn_menu {
@@ -318,6 +324,7 @@ MemoEdit {
 	height: 15.9sp;
 	width: 100%;
 	background-color: #ffffff;
+	selected-color: #bacdce;
 }
 
 .grid line {
@@ -508,13 +515,13 @@ MemoEdit {
 }
 
 .parameter_grid TextView {
-	width: 70%;
+	width: 50%;
 	height: 100%;
 	margin-left: 3.5%;
 	padding-top: 30%;
 	color: #2d89cf;
 	dock-align: left;
-	font: 36% arial;
+	font: 36% arial;	
 }
 
 .parameter_grid img {
@@ -526,7 +533,7 @@ MemoEdit {
 }
 
 .parameter_grid EditText {
-	width: 74%;
+	width: 50%;
 	height: 100%;
 	color: #2d89cf;
 	padding-top: 30%;
@@ -535,7 +542,7 @@ MemoEdit {
 }
 
 .parameter_grid hl {
-	width: 70%;
+	width: 50%;
 	margin-left: 3.5%;
 	dock-align: left;
 }
@@ -545,7 +552,7 @@ MemoEdit {
 	height: 100%;
 	padding-top: 30%;
 	color: #2d89cf;	
-	font: 36% arial;
+	font: 36% arial;	
 }
 
 .tick {
@@ -602,7 +609,7 @@ MemoEdit {
 .value {
 	width: 100%;
 	height: 100%;
-	white-space: normal;
+	white-space: nowrap;
 	margin-right: 4%;
 	font: 28% Arial;
 	color: #8e8e93;

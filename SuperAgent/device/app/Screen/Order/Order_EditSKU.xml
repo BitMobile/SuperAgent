@@ -20,7 +20,7 @@
 
 		<c:HorizontalLayout CssClass="end_of_block"></c:HorizontalLayout>
 
-		<c:HorizontalLayout Id= "btnCancel" CssClass="bottom_btn">
+		<c:HorizontalLayout Id="btnCancel" CssClass="bottom_btn">
 			<c:VerticalLayout OnEvent="Back"
 				OnClickAction="$DeleteAndBack($orderitem)">
 				<c:TextView Text="#cancel#" CssClass="left_tv"></c:TextView>
@@ -93,7 +93,8 @@
 
 			<c:DockLayout CssClass="parameter_grid">
 				<s:Push Id="discountDescrText" Value="$GetDiscountDescription($orderitem)"></s:Push>
-				<c:HorizontalLayout CssClass="clickable" OnClickAction="$ChandeDiscount($orderitem)">
+				<c:HorizontalLayout CssClass="clickable"
+					OnClickAction="$ChandeDiscount($orderitem)">
 					<c:TextView Id="discountDescr" Text="$discountDescrText" />
 				</c:HorizontalLayout>
 				<c:EditText Id="discountEdit" Text="$param4" CssClass="value"

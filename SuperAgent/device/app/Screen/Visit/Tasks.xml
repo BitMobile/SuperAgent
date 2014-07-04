@@ -11,11 +11,13 @@
 	<c:VerticalLayout>
 
 		<c:DockLayout CssClass="top_navigator">
-			<c:HorizontalLayout  Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoBackTo(Outlet)">
+			<c:HorizontalLayout Id="btnBack" CssClass="btn_back"
+				OnEvent="Back" OnClickAction="$DoBackTo(Outlet)">
 				<c:Image />
 				<c:TextView Text="#back#" />
 			</c:HorizontalLayout>
-			<c:Button Id="btnForward" Text="#forward#" OnEvent="Forward" CssClass="btn_forward" OnClickAction="$Workflow.DoForward()" />
+			<c:Button Id="btnForward" Text="#forward#" OnEvent="Forward"
+				CssClass="btn_forward" OnClickAction="$Workflow.DoForward()" />
 			<c:HorizontalLayout>
 				<c:TextView Text="#tasks#" />
 			</c:HorizontalLayout>
@@ -33,14 +35,17 @@
 
 			<s:Iterator Id="task" Value="$newTasks">
 
-				<c:SwipeHorizontalLayout Id="swipe_layout1" CssClass="swipe_layout" Index="1">
-					<c:HorizontalLayout CssClass="green_swipe" OnClickAction="$CompleteTheTask($task.Id, $workflow.visit)">
+				<c:SwipeHorizontalLayout Id="swipe_layout1"
+					CssClass="swipe_layout" Index="1">
+					<c:HorizontalLayout CssClass="green_swipe"
+						OnClickAction="$CompleteTheTask($task.Id, $workflow.visit)">
 						<c:VerticalLayout>
 							<c:Image></c:Image>
 							<c:TextView Text="#execute#"></c:TextView>
 						</c:VerticalLayout>
 					</c:HorizontalLayout>
-					<c:HorizontalLayout CssClass="grid" OnClickAction="$DoAction(Select, $task.Id, null, $task.Target)">
+					<c:HorizontalLayout CssClass="grid"
+						OnClickAction="$DoAction(Select, $task.Id, null, $task.Target)">
 						<c:VerticalLayout>
 							<c:TextView Text="$task.PlanDate" CssClass="description_row"></c:TextView>
 							<c:TextView Text="$task.TextTask" CssClass="main_row"></c:TextView>
@@ -59,15 +64,18 @@
 
 			<s:Iterator Id="eTask" Value="$exTasks">
 
-				<c:SwipeHorizontalLayout Id="swipe_layout2" CssClass="swipe_layout">
-					<c:HorizontalLayout CssClass="grid" OnClickAction="$DoAction(Select, $eTask.Id.TaskRef ,$eTask.Id, $eTask.Target)">
+				<c:SwipeHorizontalLayout Id="swipe_layout2"
+					CssClass="swipe_layout">
+					<c:HorizontalLayout CssClass="grid"
+						OnClickAction="$DoAction(Select, $eTask.Id.TaskRef ,$eTask.Id, $eTask.Target)">
 						<c:VerticalLayout>
 							<c:TextView Text="$eTask.PlanDate" CssClass="description_row"></c:TextView>
 							<c:TextView Text="$eTask.TextTask" CssClass="main_row"></c:TextView>
 						</c:VerticalLayout>
 						<c:Image />
 					</c:HorizontalLayout>
-					<c:HorizontalLayout CssClass="gray_swipe" OnClickAction="$RetrieveTask($eTask.Id)">
+					<c:HorizontalLayout CssClass="gray_swipe"
+						OnClickAction="$RetrieveTask($eTask.Id)">
 						<c:VerticalLayout>
 							<c:Image></c:Image>
 							<c:TextView Text="#retrieve#"></c:TextView>

@@ -1,11 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="CreateOutlet.css">
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack"
+	StyleSheet="CreateOutlet.css">
 
 	<s:Push Id="outlet" Value="$param1"></s:Push>
 
 	<c:DockLayout>
 
-		<c:HorizontalLayout Id="btnDone" CssClass="bottom_btn" OnEvent="Back" OnClickAction="$SaveAndBack($outlet)">
+		<c:HorizontalLayout Id="btnDone" CssClass="bottom_btn"
+			OnEvent="Back" OnClickAction="$SaveAndBack($outlet)">
 			<c:TextView Text="#back#"></c:TextView>
 		</c:HorizontalLayout>
 		<c:HorizontalLine CssClass="b_line" />
@@ -17,7 +19,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#legal_name#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$outlet.LegalName" CssClass="main_row"  />
+					<c:EditText Value="$outlet.LegalName" CssClass="main_row" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -31,11 +33,12 @@
 			<c:HorizontalLine />
 
 			<c:HorizontalLayout CssClass="grid">
-			<s:Push Id="outletObj" Value="$GetObject($outlet)"/>
+				<s:Push Id="outletObj" Value="$GetObject($outlet)" />
 				<c:VerticalLayout OnClickAction="$DoSelect($outlet, OwnershipType, $ownType)">
-					<s:Push Id="ownershipString" Value="$GetString($outlet.OwnershipType)"/>
-					<c:TextView Text="#ownership#" CssClass="description_row"></c:TextView>					
-					<c:TextView Id="ownType" Text="$ownershipString" CssClass="main_row" />
+					<s:Push Id="ownershipString" Value="$GetString($outlet.OwnershipType)" />
+					<c:TextView Text="#ownership#" CssClass="description_row"></c:TextView>
+					<c:TextView Id="ownType" Text="$ownershipString"
+						CssClass="main_row" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -71,7 +74,7 @@
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
-			
+
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#web_site#" CssClass="description_row"></c:TextView>

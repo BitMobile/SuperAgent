@@ -74,7 +74,7 @@
 		<c:VerticalLayout>
 
 			<c:DockLayout CssClass="top_navigator">
-				<c:HorizontalLayout Id= "btnMenu" CssClass="btn_menu"
+				<c:HorizontalLayout Id="btnMenu" CssClass="btn_menu"
 					OnClickAction="$Facade.OpenMenu()">
 					<c:Image CssClass="menuIcon" />
 				</c:HorizontalLayout>
@@ -139,7 +139,8 @@
 				<c:DockLayout>
 					<c:DockLayout CssClass="grid">
 						<c:VerticalLayout>
-							<c:TextView Text="{$encashmentSumm} #currency#" CssClass="main_row"></c:TextView>
+							<c:TextView Text="{$encashmentSumm} #currency#"
+								CssClass="main_row"></c:TextView>
 							<c:TextView Text="#programmingCollectionForToday#"
 								CssClass="description_row" />
 						</c:VerticalLayout>
@@ -147,7 +148,8 @@
 					<c:HorizontalLine />
 					<c:DockLayout CssClass="grid">
 						<c:VerticalLayout>
-							<c:TextView Text="{$receivablesSumm} #currency#" CssClass="main_row"></c:TextView>
+							<c:TextView Text="{$receivablesSumm} #currency#"
+								CssClass="main_row"></c:TextView>
 							<c:TextView Text="#accountsReceivables#" CssClass="description_row" />
 						</c:VerticalLayout>
 					</c:DockLayout>

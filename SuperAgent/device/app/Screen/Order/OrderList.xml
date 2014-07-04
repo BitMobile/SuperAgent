@@ -9,8 +9,8 @@
 
 
 		<c:DockLayout CssClass="top_navigator">
-			<c:HorizontalLayout Id="btnMenu" CssClass="btn_menu" OnEvent="Back"
-				OnClickAction="$Workflow.DoRollback()">
+			<c:HorizontalLayout Id="btnMenu" CssClass="btn_menu"
+				OnEvent="Back" OnClickAction="$Workflow.DoRollback()">
 				<c:Image CssClass="menuIcon" />
 			</c:HorizontalLayout>
 			<c:Button Id="btnForward" Text="" CssClass="btn_forward" />
@@ -21,8 +21,8 @@
 		<c:HorizontalLine />
 
 
-		<c:HorizontalLayout Id="btnAdd" CssClass="bottom_btn" OnEvent="Back"
-			OnClickAction="$DoAction(Create)">
+		<c:HorizontalLayout Id="btnAdd" CssClass="bottom_btn"
+			OnEvent="Back" OnClickAction="$DoAction(Create)">
 			<c:TextView Text="#add#"></c:TextView>
 		</c:HorizontalLayout>
 		<c:HorizontalLine CssClass="b_line" />

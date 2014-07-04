@@ -28,16 +28,16 @@ sv hl {
 
 vl {
 	width: 100%;
-	height: 100%;	
+	height: 100%;
 }
 
 hl {
-	width: 100%;	
+	width: 100%;
 }
 
 dl {
 	width: 100%;
-	height: 100%;	
+	height: 100%;
 }
 
 dl hl {
@@ -57,12 +57,12 @@ svl {
 
 TextView {
 	background-color: none;
-	color: #000000;	
+	color: #000000;
 }
 
 Button {
 	selected-color: #b2b2b7;
-	color: #2d89cf;	
+	color: #2d89cf;
 }
 
 MemoEdit {
@@ -75,7 +75,7 @@ MemoEdit {
 	dock-align: top;
 }
 
-.top_navigator Button{
+.top_navigator Button {
 	selected-color: #D3D3D3;
 }
 
@@ -96,7 +96,7 @@ MemoEdit {
 	selected-color: #D3D3D3;
 }
 
-.top_navigator hl Image{
+.top_navigator hl Image {
 	selected-color: #D3D3D3;
 }
 
@@ -451,11 +451,11 @@ MemoEdit {
 }
 
 .red_mark {
-    background-image: url(red_mark.png);
-    height: 0%;
-    width: 4.1%;
-    margin-left: 2%;
-    margin-right: 0%;
+	background-image: url(red_mark.png);
+	height: 0%;
+	width: 4.1%;
+	margin-left: 2%;
+	margin-right: 0%;
 }
 
 .no_mark {
@@ -521,7 +521,7 @@ MemoEdit {
 	padding-top: 30%;
 	color: #2d89cf;
 	dock-align: left;
-	font: 36% arial;	
+	font: 36% arial;
 }
 
 .parameter_grid img {
@@ -551,8 +551,8 @@ MemoEdit {
 	width: 100%;
 	height: 100%;
 	padding-top: 30%;
-	color: #2d89cf;	
-	font: 36% arial;	
+	color: #2d89cf;
+	font: 36% arial;
 }
 
 .tick {

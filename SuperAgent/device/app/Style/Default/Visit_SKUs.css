@@ -1,13 +1,12 @@
 .grid vl {
-    width: 90%;
-
+	width: 90%;
 }
 
-.parameter_grid TextView{
-    width: 74%;
+.parameter_grid TextView {
+	width: 74%;
 }
 
-.description_row {    
-    height: 40%;
-    font: 42% Arial;
+.description_row {
+	height: 40%;
+	font: 42% Arial;
 }

@@ -1,337 +1,336 @@
 .menu_text {
-    width: 100%;
-    height: 40%;
-    margin-left: 4%;
-    vertical-align: central;
-    color: #ffffff;
-    font: 90% arial;
+	width: 100%;
+	height: 40%;
+	margin-left: 4%;
+	vertical-align: central;
+	color: #ffffff;
+	font: 90% arial;
 }
 
 dl {
-    width: 100%;
+	width: 100%;
 }
 
-    dl hl {
-        width: 100%;
-        height: 100%;
-    }
+dl hl {
+	width: 100%;
+	height: 100%;
+}
 
 sv {
-    width: 100%;
-    height: 100%;
-    background-color: #7fc8fd;
+	width: 100%;
+	height: 100%;
+	background-color: #7fc8fd;
 }
 
 svl vl {
-    height: 100%;
+	height: 100%;
 }
 
 .menu {
-    background-color: #2d89cf;
-    width: 90%;
+	background-color: #2d89cf;
+	width: 90%;
 }
 
-    .menu line {
-        width: 100%;
-        height: 1px;
-        margin-left: 2.8%;
-        background-color: #43acfd;
-    }
+.menu line {
+	width: 100%;
+	height: 1px;
+	margin-left: 2.8%;
+	background-color: #43acfd;
+}
 
-    .menu img {
-        height: 15.4%;
-        margin-top: 16%;
-        margin-left: 2.5%;
-        background-image: url(arrow.png);
-    }
+.menu img {
+	height: 15.4%;
+	margin-top: 16%;
+	margin-left: 2.5%;
+	background-image: url(arrow.png);
+}
 
-    .menu vl {
-        width: 83.3%;
-        height: 100%;
-        margin-top: 16%;
-        padding-left: 2.7%;
-    }
+.menu vl {
+	width: 83.3%;
+	height: 100%;
+	margin-top: 16%;
+	padding-left: 2.7%;
+}
 
-    .menu hl {
-        width: 100%;
-    }
+.menu hl {
+	width: 100%;
+}
 
-    .menu dl {
-        width: 100%;
-        selected-color: #5ea6dc;
-    }
+.menu dl {
+	width: 100%;
+	selected-color: #5ea6dc;
+}
 
-        .menu dl TextView {
-            width: 30%;       
-            margin-top: 30%;     
-            dock-align: right;
-            text-align: right;            
-            margin-right: 2.7%;
-            color: #c5e3f7;
-        }
+.menu dl TextView {
+	width: 30%;
+	margin-top: 30%;
+	dock-align: right;
+	text-align: right;
+	margin-right: 2.7%;
+	color: #c5e3f7;
+}
 
-        .menu dl hl {
-            width: 100%;
-            height: 100%;
-            margin-left: 5%;
-            dock-align: left;
-        }
+.menu dl hl {
+	width: 100%;
+	height: 100%;
+	margin-left: 5%;
+	dock-align: left;
+}
 
-            .menu dl hl TextView {
-                width: 60%;
-                height: 40%;
-                margin-left: 4%;
-                vertical-align: central;
-                color: #ffffff;
-                font: 90% arial;
-            }
+.menu dl hl TextView {
+	width: 60%;
+	height: 40%;
+	margin-left: 4%;
+	vertical-align: central;
+	color: #ffffff;
+	font: 90% arial;
+}
 
 .short_line {
-    margin-left: 12%;
+	margin-left: 12%;
 }
 
 .description {
-    width: 100%;
-    height: 100%;
-    dock-align: right;
-    margin-right: 4%;
-    color: #c5e3f7;
-    font: 30% arial;
+	width: 100%;
+	height: 100%;
+	dock-align: right;
+	margin-right: 4%;
+	color: #c5e3f7;
+	font: 30% arial;
 }
 
 .header {
-    height: 8sp;
-    width: 100%;
-    margin-top: 2%;
-    background-color: #43acfd;
+	height: 8sp;
+	width: 100%;
+	margin-top: 2%;
+	background-color: #43acfd;
 }
 
 .btn_summary {
-    height: 65%;
-    margin-left: 5%;
-    vertical-align: central;
-    background-image: url(SuperShield.png);
+	height: 65%;
+	margin-left: 5%;
+	vertical-align: central;
+	background-image: url(SuperShield.png);
 }
 
 .btn_visits {
-    height: 44%;
-    vertical-align: central;
-    background-image: url(BiBiCar.png);
+	height: 44%;
+	vertical-align: central;
+	background-image: url(BiBiCar.png);
 }
 
 .btn_orders {
-    height: 58%;
-    vertical-align: central;
-    background-image: url(BITiPhone.png);
+	height: 58%;
+	vertical-align: central;
+	background-image: url(BITiPhone.png);
 }
 
 .btn_clients {
-    height: 48.9%;
-    vertical-align: central;
-    background-image: url(Cheloveki.png);
+	height: 48.9%;
+	vertical-align: central;
+	background-image: url(Cheloveki.png);
 }
 
 .btn_stocks {
-    height: 48.9%;
-    vertical-align: central;
-    background-image: url(Posilka.png);
+	height: 48.9%;
+	vertical-align: central;
+	background-image: url(Posilka.png);
 }
 
 .btn_kpi {
-    height: 54.5%;
-    vertical-align: central;
-    background-image: url(AllRight.png);
+	height: 54.5%;
+	vertical-align: central;
+	background-image: url(AllRight.png);
 }
 
 .btn_set {
-    height: 58%;
-    vertical-align: central;
-    background-image: url(Detalka.png);
+	height: 58%;
+	vertical-align: central;
+	background-image: url(Detalka.png);
 }
 
 .btn_sync {
-    height: 48%;
-    padding-right: 3%;
-    vertical-align: central;
-    margin-left: 1%;
-    background-image: url(TudaSuda.png);
+	height: 48%;
+	padding-right: 3%;
+	vertical-align: central;
+	margin-left: 1%;
+	background-image: url(TudaSuda.png);
 }
 
 .btn_info {
-    height: 56.8%;
-    vertical-align: central;
-    background-image: url(interesno.png);
+	height: 56.8%;
+	vertical-align: central;
+	background-image: url(interesno.png);
 }
-
 
 .grid {
-    height: 45%;
-    width: auto;
-    background-color: #f8f8f8;
+	height: 45%;
+	width: auto;
+	background-color: #f8f8f8;
 }
 
-    .grid img {
-        dock-align: right;
-    }
+.grid img {
+	dock-align: right;
+}
 
-    .grid vl main_row {
-        font: 95% Arial-BoldMT;
-        color: #43acfd;
-        white-space: nowrap;
-    }
+.grid vl main_row {
+	font: 95% Arial-BoldMT;
+	color: #43acfd;
+	white-space: nowrap;
+}
 
-    .grid vl description_row {
-        height: 23%;
-        font: 80% arial;
-        color: #000;
-        margin-top: 10%;
-        margin-bottom: 0%;
-    }
+.grid vl description_row {
+	height: 23%;
+	font: 80% arial;
+	color: #000;
+	margin-top: 10%;
+	margin-bottom: 0%;
+}
 
 .blue {
-    width: 100%;
-    height: 100%;
-    padding-top: 2%;
-    background-image: url(summary.png);
+	width: 100%;
+	height: 100%;
+	padding-top: 2%;
+	background-image: url(summary.png);
 }
 
-    .blue dl {
-        height: 35%;
-        width: 96%;
-        margin-top: 2%;
-        margin-left: 2%;
-        background-color: #f8f8f8;
-        border-style: solid;
-        border-width: 1px;
-        border-color: #3384b8;
-        border-radius: 10px;
-    }
+.blue dl {
+	height: 35%;
+	width: 96%;
+	margin-top: 2%;
+	margin-left: 2%;
+	background-color: #f8f8f8;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #3384b8;
+	border-radius: 10px;
+}
 
-        .blue dl left {
-            width: 60%;
-            height: 100%;
-            margin-left: 2%;
-            dock-align: left;
-        }
+.blue dl left {
+	width: 60%;
+	height: 100%;
+	margin-left: 2%;
+	dock-align: left;
+}
 
-        .blue dl right {
-            width: 36%;
-            height: 100%;
-            margin-right: 2%;
-            dock-align: right;
-        }
+.blue dl right {
+	width: 36%;
+	height: 100%;
+	margin-right: 2%;
+	dock-align: right;
+}
 
-            .blue dl right grid vl description_row {
-                margin-top: 0%;
-            }
+.blue dl right grid vl description_row {
+	margin-top: 0%;
+}
 
-        .blue dl grid {
-            margin-left: 11%;
-            margin-top: 2%;
-            margin-right: 2%;
-            margin-bottom: 2%;
-        }
+.blue dl grid {
+	margin-left: 11%;
+	margin-top: 2%;
+	margin-right: 2%;
+	margin-bottom: 2%;
+}
 
-        .blue dl line {
-            margin-left: 11%;
-            margin-right: 2%;
-        }
+.blue dl line {
+	margin-left: 11%;
+	margin-right: 2%;
+}
 
 .short_panel {
-    height: 17%;
+	height: 17%;
 }
 
-    .short_panel grid {
-        height: 92%;
-        margin-top: 4%;
-        margin-bottom: 4%;
-    }
+.short_panel grid {
+	height: 92%;
+	margin-top: 4%;
+	margin-bottom: 4%;
+}
 
 .right line {
-    margin-top: 5%;
+	margin-top: 5%;
 }
 
 .descr {
-    text-align: left;
-    font: 80% arial;
+	text-align: left;
+	font: 80% arial;
 }
 
 .caption_big {
-    margin-top: 5%;
-    width: 100%;
-    height: 30%;
+	margin-top: 5%;
+	width: 100%;
+	height: 30%;
 }
 
-    .caption_big TextView {
-        height: 100%;
-        width: 33%;
-        margin-left: 2%;
-        text-align: left;
-        font: 95% Arial-BoldMT;
-        color: #43acfd;
-        dock-align: left;
-    }
+.caption_big TextView {
+	height: 100%;
+	width: 33%;
+	margin-left: 2%;
+	text-align: left;
+	font: 95% Arial-BoldMT;
+	color: #43acfd;
+	dock-align: left;
+}
 
-    .caption_big descr {
-        height: 35%;
-        width: 80%;
-        margin-top: 15%;
-        margin-bottom: -15%;
-        text-align: left;
-        font: 80% arial;
-        dock-align: top;
-    }
+.caption_big descr {
+	height: 35%;
+	width: 80%;
+	margin-top: 15%;
+	margin-bottom: -15%;
+	text-align: left;
+	font: 80% arial;
+	dock-align: top;
+}
 
 .simple {
-    width: 80%;
-    height: 70%;
-    margin-left: 5%;
+	width: 80%;
+	height: 70%;
+	margin-left: 5%;
 }
 
-    .simple TextView {
-        height: 15%;
-        width: 100%;
-    }
+.simple TextView {
+	height: 15%;
+	width: 100%;
+}
 
-    .simple hl {
-        height: 15%;
-        width: 100%;
-    }
+.simple hl {
+	height: 15%;
+	width: 100%;
+}
 
-        .simple hl TextView {
-            width: 100%;
-            height: 100%;
-            font: 80% Arial-BoldMT;
-            color: #000;
-        }
+.simple hl TextView {
+	width: 100%;
+	height: 100%;
+	font: 80% Arial-BoldMT;
+	color: #000;
+}
 
-        .simple hl descr {
-            width: 33%;
-            font: 80% Arial;
-        }
+.simple hl descr {
+	width: 33%;
+	font: 80% Arial;
+}
 
-        .simple hl mark {
-            width: 20%;
-            margin-left: 0%;
-            margin-right: 3%;
-            text-align: center;
-            color: #d12d2d;
-            background-color: #fab9b9;
-            border-style: solid;
-            border-width: 0px;
-            border-radius: 5px;
-        }
+.simple hl mark {
+	width: 20%;
+	margin-left: 0%;
+	margin-right: 3%;
+	text-align: center;
+	color: #d12d2d;
+	background-color: #fab9b9;
+	border-style: solid;
+	border-width: 0px;
+	border-radius: 5px;
+}
 
 .docs {
-    dock-align: right;
+	dock-align: right;
 }
 
 .navy {
-    width: 100%;
-    height: 1px;
-    background-color: #3384b8;
+	width: 100%;
+	height: 1px;
+	background-color: #3384b8;
 }
 
 .btn_forward {
-    margin-left: 0%;
+	margin-left: 0%;
 }

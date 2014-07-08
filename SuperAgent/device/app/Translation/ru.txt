@@ -197,7 +197,7 @@ at	в
 currency	руб.
 Synchronization_has_not_been_performed	Синхронизация не была выполнена
 delete	Удалить
-details		Детали
+details		Реквизиты
 contacts	Контакты
 legal_name	Юридическое лицо
 legal_address	Юридический адрес

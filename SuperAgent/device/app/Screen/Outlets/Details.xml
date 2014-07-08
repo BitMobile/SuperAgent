@@ -6,7 +6,7 @@
 	<c:DockLayout>
 
 		<c:HorizontalLayout Id="btnDone" CssClass="bottom_btn" OnEvent="Back" OnClickAction="$SaveAndBack($outlet)">
-			<c:TextView Text="#back#"></c:TextView>
+			<c:TextView Text="#client#"></c:TextView>
 		</c:HorizontalLayout>
 		<c:HorizontalLine CssClass="b_line" />
 
@@ -17,7 +17,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#legal_name#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$outlet.LegalName" CssClass="main_row" />
+					<c:EditText Value="$outlet.LegalName" Placeholder="-" CssClass="main_row" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -25,7 +25,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#legal_address#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$outlet.LegalAddress" CssClass="main_row" />
+					<c:EditText Value="$outlet.LegalAddress" Placeholder="-" CssClass="main_row" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -43,7 +43,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#inn#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$outlet.INN" CssClass="main_row" />
+					<c:EditText Value="$outlet.INN" Placeholder="-" Keyboard="numeric" CssClass="main_row" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -51,7 +51,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#kpp#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$outlet.KPP" CssClass="main_row" />
+					<c:EditText Value="$outlet.KPP" Placeholder="-" Keyboard="numeric" CssClass="main_row" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -59,7 +59,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#phone#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$outlet.PhoneNumber" CssClass="main_row" />
+					<c:EditText Value="$outlet.PhoneNumber" Placeholder="-" Keyboard="numeric" CssClass="main_row" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -67,7 +67,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#email#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$outlet.Email" CssClass="main_row" />
+					<c:EditText Value="$outlet.Email" Placeholder="-" CssClass="main_row" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -75,7 +75,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#web_site#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$outlet.WebSite" CssClass="main_row" />
+					<c:EditText Value="$outlet.WebSite" Placeholder="-" CssClass="main_row" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

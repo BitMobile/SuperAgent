@@ -47,7 +47,7 @@ function GetCameraObject() {
 
 function GetScheduledVisits() {
 	var q = new Query(
-			"SELECT COUNT(*) FROM Document_VisitPlan_Outlets WHERE Date=@date");
+			"SELECT COUNT(*) FROM Document_VisitPlan_Outlets WHERE DATE(Date)=DATE(@date)");
 	q.AddParameter("date", DateTime.Now.Date);
 	var cnt = q.ExecuteScalar();
 	if (cnt == null)
@@ -67,7 +67,7 @@ function GetOutletsCount() {
 
 function GetCommitedScheduledVisits() {
 	var q = new Query(
-			"SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet WHERE V.Date >= @today AND V.Date < @tomorrow AND VP.Date >= @today AND VP.Date < @tomorrow AND V.Plan <> @emptyRef ORDER BY O.Description LIMIT 100");
+			"SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet WHERE V.Date >= @today AND V.Date < @tomorrow AND DATE(VP.Date) >= DATE(@today) AND DATE(VP.Date) < DATE(@tomorrow) AND V.Plan <> @emptyRef ORDER BY O.Description LIMIT 100");
 	q.AddParameter("today", DateTime.Now.Date);
 	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
 	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));
@@ -84,7 +84,8 @@ function GetUnscheduledVisits() {
 }
 
 function GetPlannedVisits(){
-    var q = new Query("SELECT COUNT(*) FROM Document_VisitPlan_Outlets WHERE Date=@date");
+    Dialog.Debug(DateTime.Now.Date);
+	var q = new Query("SELECT COUNT(*) FROM Document_VisitPlan_Outlets WHERE DATE(Date)=DATE(@date)");
     q.AddParameter("date", DateTime.Now.Date);
     return q.ExecuteScalar();
     //return (cnt-done);

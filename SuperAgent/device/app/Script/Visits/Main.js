@@ -19,7 +19,7 @@ function GetUncommitedScheduledVisits(searchText, getCount) {
 	var q = new Query();
 	if (String.IsNullOrEmpty(searchText)==false)
 		search = "AND O.Description LIKE '%" + searchText + "%'";
-	q.Text = ("SELECT DISTINCT VP.Outlet, VP.Ref FROM Document_VisitPlan_Outlets VP JOIN Catalog_Outlet O ON O.Id = VP.Outlet LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet AND V.Date >= @today AND V.Date < @tomorrow AND V.Plan<>@emptyRef WHERE VP.Date=@date AND V.Id IS NULL " + search + " ORDER BY O.Description LIMIT 100");
+	q.Text = ("SELECT DISTINCT VP.Outlet, VP.Ref FROM Document_VisitPlan_Outlets VP JOIN Catalog_Outlet O ON O.Id = VP.Outlet LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet AND V.Date >= @today AND V.Date < @tomorrow AND V.Plan<>@emptyRef WHERE DATE(VP.Date)=DATE(@date) AND V.Id IS NULL " + search + " ORDER BY O.Description LIMIT 100");
 	q.AddParameter("date", DateTime.Now.Date);
 	q.AddParameter("today", DateTime.Now.Date);
 	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
@@ -35,7 +35,7 @@ function GetUncommitedScheduledVisits(searchText, getCount) {
 }
 
 function GetScheduledVisitsCount() {
-	var q = new Query("SELECT COUNT(*) FROM Document_VisitPlan_Outlets WHERE Date=@date");
+	var q = new Query("SELECT COUNT(*) FROM Document_VisitPlan_Outlets WHERE DATE(Date)=DATE(@date)");
 	q.AddParameter("date", DateTime.Now.Date);
 	var cnt = q.ExecuteScalar();
 	if (cnt == null)

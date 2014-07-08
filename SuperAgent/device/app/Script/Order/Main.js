@@ -28,8 +28,8 @@ function GetOutlets(searchText) {
 		var query = new Query("SELECT O.Id, T.Outlet, O.Description, O.Address FROM Catalog_Territory_Outlets T JOIN Catalog_Outlet O ON O.Id=T.Outlet ORDER BY O.Description LIMIT 500");
 		return query.Execute();
 	} else {
-		searchText = "'%" + searchText + "%'";
-		var query = new Query("SELECT O.Id, T.Outlet, O.Description, O.Address FROM Catalog_Territory_Outlets T JOIN Catalog_Outlet O ON O.Id=T.Outlet WHERE O.Description LIKE " + searchText + " ORDER BY O.Description LIMIT 500");
+		searchText = "'" + searchText + "'";
+		var query = new Query("SELECT O.Id, T.Outlet, O.Description, O.Address FROM Catalog_Territory_Outlets T JOIN Catalog_Outlet O ON O.Id=T.Outlet WHERE Contains(O.Description, " + searchText + ") ORDER BY O.Description LIMIT 500");
 		return query.Execute();
 	}
 }

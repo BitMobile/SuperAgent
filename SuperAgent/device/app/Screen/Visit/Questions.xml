@@ -48,7 +48,7 @@
 
 						<s:If Test="$question.AnswerType=='ValueList'">
 							<s:If Test="$questionValue.Answer==''">
-								<c:TextView Id="control{$index}" Text="#select_answer#" CssClass="main_row"></c:TextView>
+								<c:TextView Id="control{$index}" Text="#select_answer_low#" CssClass="main_row"></c:TextView>
 							</s:If>
 							<s:Else>
 								<c:TextView Id="control{$index}" Text="$questionValue.Answer" CssClass="main_row"></c:TextView>

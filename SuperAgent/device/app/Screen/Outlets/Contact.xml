@@ -17,7 +17,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#contactName#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$contact.ContactName" CssClass="main_row" />
+					<c:EditText Value="$contact.ContactName" Placeholder="-" CssClass="main_row" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -34,7 +34,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#phone#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$contact.PhoneNumber" CssClass="main_row" />
+					<c:EditText Value="$contact.PhoneNumber" Placeholder="-" Keyboard="numeric" CssClass="main_row" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -42,7 +42,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#email#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$contact.Email" CssClass="main_row" />
+					<c:EditText Value="$contact.Email" Placeholder="-" CssClass="main_row" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

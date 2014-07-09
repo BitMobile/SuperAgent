@@ -1,4 +1,13 @@
-﻿function OrderCheckRequired(visit, wfName) {
+﻿
+function GetNextVisitDate(outlet){
+	var q = new Query("SELECT PlanDate FROM Catalog_MAVisitPlan_PlanVisits WHERE Outlet=@outlet AND DATE(PlanDate)>=DATE(@date)");
+	q.AddParameter("outlet", outlet);
+	q.AddParameter("date", DateTime.Now.Date);
+	return q.ExecuteScalar();
+	
+}
+
+function OrderCheckRequired(visit, wfName) {
     if (visit.Plan.EmptyRef()==false && GetOrderControlValue() && OrderExists(visit) == false)
         return true;
     else
@@ -18,6 +27,12 @@ function OrderExists(visit) {
 
 function SetDeliveryDate(order, control) {
     Global.DateTimeDialog(order, "DeliveryDate", DateTime.Now.Date, control);
+}
+
+function SetnextVisitDate(nextDate, control){
+	if (nextDate == null)
+		nextDate = DateTime.Now;
+	Dialog.ShowDateTime("select", nextDate, NextDateHandler, control);
 }
 
 function GetOrderControlValue() {
@@ -104,6 +119,26 @@ function CheckAndCommit(order, visit, wfName) {
         Dialog.Message(Translate["#messageNulls#"]);
 
 }
+
+
+//--------------------------internal functions--------------
+
+
+function NextDateHandler(date, control){
+	var q1 = new Query("SELECT Id FROM Catalog_MAVisitPlan");
+	var ref = q1.ExecuteScalar();
+	
+	var newVistPlan = DB.Create("Catalog.MAVisitPlan_PlanVisits");
+	newVistPlan.Ref = ref;
+	newVistPlan.SR = $.common.UserRef;
+	newVistPlan.PlanDate = date;
+	newVistPlan.Outlet = $.workflow.outlet;
+	newVistPlan.Save();
+	Dialog.Debug(newVistPlan);
+	
+	control.Text = date;
+}
+
 
 function VisitIsChecked(visit, order, wfName) {
     if (OrderCheckRequired(visit, wfName) && visit.ReasonForNotOfTakingOrder.EmptyRef())

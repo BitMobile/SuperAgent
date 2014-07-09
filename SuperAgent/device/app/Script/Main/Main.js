@@ -84,7 +84,6 @@ function GetUnscheduledVisits() {
 }
 
 function GetPlannedVisits(){
-    Dialog.Debug(DateTime.Now.Date);
 	var q = new Query("SELECT COUNT(*) FROM Document_VisitPlan_Outlets WHERE DATE(Date)=DATE(@date)");
     q.AddParameter("date", DateTime.Now.Date);
     return q.ExecuteScalar();

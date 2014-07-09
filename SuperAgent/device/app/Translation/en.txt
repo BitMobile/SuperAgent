@@ -42,6 +42,7 @@ apply		Apply
 parameters	Parameters
 parameter	Parameter
 select_answer	SELECT VALUE..
+select_answer_low	Select value..
 save		Save
 no_questions	No questions
 empty_field	Field couldn't be cleaned

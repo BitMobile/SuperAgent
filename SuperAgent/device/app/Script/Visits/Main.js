@@ -18,7 +18,7 @@ function GetUncommitedScheduledVisits(searchText, getCount) {
 	var search = "";
 	var q = new Query();
 	if (String.IsNullOrEmpty(searchText)==false)
-		search = "AND O.Description LIKE '%" + searchText + "%'";
+		search = "AND Contains(O.Description, '" + searchText + "') ";
 	q.Text = ("SELECT DISTINCT VP.Outlet, VP.Ref FROM Document_VisitPlan_Outlets VP JOIN Catalog_Outlet O ON O.Id = VP.Outlet LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet AND V.Date >= @today AND V.Date < @tomorrow AND V.Plan<>@emptyRef WHERE DATE(VP.Date)=DATE(@date) AND V.Id IS NULL " + search + " ORDER BY O.Description LIMIT 100");
 	q.AddParameter("date", DateTime.Now.Date);
 	q.AddParameter("today", DateTime.Now.Date);
@@ -50,7 +50,7 @@ function GetCommitedScheduledVisits(searchText, getCount) {
 	
 	var search = "";
 	if (String.IsNullOrEmpty(searchText)==false)
-		search = "AND O.Description LIKE '%" + searchText + "%'";
+		search = "AND Contains(O.Description, '" + searchText + "') ";
 	
 //	var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet WHERE V.Date >= @today AND V.Date < @tomorrow AND VP.Date >= @today AND VP.Date < @tomorrow " + search + " ORDER BY O.Description LIMIT 100");
 	var q = new Query("SELECT V.Outlet, O.Description, O.Address FROM Document_Visit V JOIN Catalog_Outlet O ON V.Outlet=O.Id WHERE V.Date >= @today AND V.Date < @tomorrow");
@@ -77,7 +77,7 @@ function GetOutlets(searchText, returnQty) {
 
 	var search = "";
 	if (String.IsNullOrEmpty(searchText)==false)
-		search = "WHERE O.Description LIKE '%" + searchText + "%'";
+		search = "WHERE Contains(O.Description, '" + searchText + "') ";
 	var q = new Query("SELECT O.Id AS Outlet, O.Description, O.Address FROM Catalog_Outlet O " + search + " ORDER BY O.Description LIMIT 500");
 	if (parseInt(returnQty)==parseInt(0))
 		return q.Execute();

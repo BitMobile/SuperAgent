@@ -42,6 +42,7 @@ apply		Применить
 parameters	Параметры
 parameter	Параметр
 select_answer	ВЫБЕРИТЕ ЗНАЧЕНИЕ..
+select_answer_low	Выберите значение..
 save		Сохранить
 no_questions	Вопросов нет
 empty_field	Поле не может быть очищено
@@ -197,7 +198,7 @@ at	в
 currency	руб.
 Synchronization_has_not_been_performed	Синхронизация не была выполнена
 delete	Удалить
-details		Детали
+details		Реквизиты
 contacts	Контакты
 legal_name	Юридическое лицо
 legal_address	Юридический адрес
@@ -208,3 +209,6 @@ phone		Телефон
 email		Электронная почта
 web_site	Веб-сайт
 stockPlace	Склад
+developer	РАЗРАБОТЧИК ПРИЛОЖЕНИЯ
+bitMobile	БИТ.МОБАЙЛ
+bitmobileDesc	БИТ.Мобайл является подразделением компании Первый БИТ. Мы занимаемся разработкой мобильных решений для бизнеса.

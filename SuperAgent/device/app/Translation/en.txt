@@ -42,6 +42,7 @@ apply		Apply
 parameters	Parameters
 parameter	Parameter
 select_answer	SELECT VALUE..
+select_answer_low	Select value..
 save		Save
 no_questions	No questions
 empty_field	Field couldn't be cleaned
@@ -209,3 +210,6 @@ phone		Phone number
 email		E-mail
 web_site	Web-site
 stockPlace	Stock
+developer	DEVELOPER
+bitMobile	BIT.MOBILE
+bitmobileDesc	BIT.MOBILE is a division of the First Bit. We are developing mobile solutions for business.

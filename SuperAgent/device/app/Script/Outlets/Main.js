@@ -26,6 +26,14 @@ function CreateOutletAndForward() {
 	Workflow.Action("Create", parameters);
 }
 
+function CreateVisitEnable(){
+	if ($.sessionConst.PlanEnbl && $.workflow.name=="Outlets")
+		return true;
+	else
+		return false;
+	
+}
+
 function GetOutletParameters(outlet) {
 	var query = new Query();
 	query.Text = "SELECT P.Id, P.Description, P.DataType, DT.Description AS TypeDescription, OP.Id AS ParameterValue, OP.Value FROM Catalog_OutletParameter P JOIN Enum_DataType DT ON DT.Id=P.DataType LEFT JOIN Catalog_Outlet_Parameters OP ON OP.Parameter = P.Id AND OP.Ref = @outlet";

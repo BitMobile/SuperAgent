@@ -136,7 +136,7 @@ function OnWorkflowPause(name) {
 
 // ------------------------ Functions ------------------------
 
-function SetSessionConstants(){
+function SetSessionConstants(){  //this func doubles code in Global.SetSessionConstants()
 	var q = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='PlanEnbl'");
 	var res = q.ExecuteScalar();
 	if (res == null)
@@ -151,7 +151,6 @@ function SetSessionConstants(){
 	$.AddGlobal("sessionConst", new Dictionary());
 	$.sessionConst.Add("PlanEnbl", planEnabled);
 }
-
 
 function PrepareScheduledVisits_Map() {
 	var visitPlans = Variables["visitPlans"];

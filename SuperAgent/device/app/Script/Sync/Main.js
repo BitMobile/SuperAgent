@@ -19,6 +19,8 @@ function SyncDataFinish() {
 	$.dataSyncLayout.Visible = false;
 
 	DrawDataReport();
+	
+	Global.SetSessionConstants();
 }
 
 function DrawDataReport() {

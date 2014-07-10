@@ -25,7 +25,6 @@
 
 		<c:GlobalModules>
 			<c:Module Name="Global" File="Global\Global.js" />
-			<c:Module Name="Facade" File="Global\Facade.js" />
 		</c:GlobalModules>
 
 		<c:Mixins>

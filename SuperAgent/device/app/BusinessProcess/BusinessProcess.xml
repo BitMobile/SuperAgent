@@ -31,7 +31,7 @@
 
 	<bp:Workflow Name="Visit">
 
-		<bp:Step Name="Outlet" Screen="Outlet.xml" Controller="Outlets\Main.js">
+		<bp:Step Name="Outlet" Screen="Outlets\Outlet.xml" Controller="Outlets\Main.js">
 			<bp:Action Name="Forward" NextStep="Visit_Tasks"></bp:Action>
 			<bp:Action Name="Skip1" NextStep="Questions"></bp:Action>
 			<bp:Action Name="Skip2" NextStep="SKUs"></bp:Action>
@@ -208,10 +208,11 @@
 			<bp:Action Name="Create" NextStep="CreateOutlet" />
 		</bp:Step>
 
-		<bp:Step Name="OpenOutlet" Screen="Outlet.xml">
+		<bp:Step Name="OpenOutlet" Screen="Outlets\Outlet.xml">
 			<bp:Action Name="List" NextStep="Outlets" />
 			<bp:Action Name="ShowDetails" NextStep="Details" />
 			<bp:Action Name="ShowContacts" NextStep="Contacts" />
+			<bp:Action Name="Plans" NextStep="Plans"/>
 		</bp:Step>
 
 		<bp:Step Name="CreateOutlet" Screen="Outlets\CreateOutlet.xml">
@@ -223,6 +224,8 @@
 		<bp:Step Name="Contacts" Screen="ContactsList.xml" Controller="Outlets\DetailsAndContacts.js">
 			<bp:Action Name="Select" NextStep="Contact" />
 		</bp:Step>
+		
+		<bp:Step Name="Plans" Screen="PlanList.xml" Controller="Outlets\DetailsAndContacts.js"></bp:Step>
 
 		<bp:Step Name="Contact" Screen="Contact.xml" Controller="Outlets\DetailsAndContacts.js"></bp:Step>
 

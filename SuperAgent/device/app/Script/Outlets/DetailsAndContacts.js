@@ -1,12 +1,12 @@
 function CreateContactIfNotExist(contact, outlet) {
-	
+
 	if (contact == null) {
 		contact = DB.Create("Catalog.Outlet_Contacts");
 		contact.Ref = outlet;
 		contact.Save();
 		return contact.Id;
 	} else
-		return contact;	
+		return contact;
 }
 
 function SaveAndBack(entity) {
@@ -30,11 +30,36 @@ function GetContacts(outlet) {
 	return q.Execute();
 }
 
-// --------------------enternal--------------
+function GetPlans(outlet, sr) {
+	var q = new Query("SELECT Id, PlanDate FROM Catalog_MAVisitPlan_PlanVisits WHERE Outlet=@outlet AND SR=@sr");
+	q.AddParameter("outlet", outlet);
+	q.AddParameter("sr", $.common.UserRef);
+	return q.Execute();
+}
+
+function CreatePlan(outlet) {
+	Dialog.ShowDateTime("select", DateTime.Now, PlanHandler, outlet);
+}
+
+// --------------------internal--------------
 
 function EmptyContact(contact) {
 	if (String.IsNullOrEmpty(contact.ContactName) && String.IsNullOrEmpty(contact.PhoneNumber) && String.IsNullOrEmpty(contact.Email) && contact.Position.EmptyRef())
 		return true;
 	else
 		return false;
+}
+
+function PlanHandler(date, outlet) {
+	var q1 = new Query("SELECT Id FROM Catalog_MAVisitPlan");
+	var ref = q1.ExecuteScalar();
+
+	var newVistPlan = DB.Create("Catalog.MAVisitPlan_PlanVisits");
+	newVistPlan.Ref = ref;
+	newVistPlan.SR = $.common.UserRef;
+	newVistPlan.PlanDate = date;
+	newVistPlan.Outlet = outlet;
+	newVistPlan.Save();
+	
+	Workflow.Refresh([outlet]);
 }

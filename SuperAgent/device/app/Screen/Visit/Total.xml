@@ -36,13 +36,15 @@
 				<c:HorizontalLine />
 			</s:If>
 
-			<c:HorizontalLayout CssClass="grid" OnClickAction="$SetnextVisitDate($nextVisit, $nextVisitControl)">
-				<c:VerticalLayout>
-					<c:TextView Text="#nextVisitDate#" CssClass="description_row"></c:TextView>
-					<c:TextView Id="nextVisitControl" Text="$nextVisit" CssClass="main_row"></c:TextView>
-				</c:VerticalLayout>
-			</c:HorizontalLayout>
-			<c:HorizontalLine />
+			<s:If Test="$sessionConst.PlanEnbl">
+				<c:HorizontalLayout CssClass="grid" OnClickAction="$SetnextVisitDate($nextVisit, $nextVisitControl)">
+					<c:VerticalLayout>
+						<c:TextView Text="#nextVisitDate#" CssClass="description_row"></c:TextView>
+						<c:TextView Id="nextVisitControl" Text="$nextVisit" CssClass="main_row"></c:TextView>
+					</c:VerticalLayout>
+				</c:HorizontalLayout>
+				<c:HorizontalLine />
+			</s:If>
 
 			<s:If Test="$OrderCheckRequired($workflow.visit, $workflow.name)">
 				<c:HorizontalLayout CssClass="grid" OnClickAction="$DoSelect($workflow.visit,ReasonForNotOfTakingOrder,$noOrderReason)">

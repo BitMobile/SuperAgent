@@ -1,4 +1,4 @@
-function GetOutlets(searchText) {
+function GetOutlets(searchText) {			
 	if (String.IsNullOrEmpty(searchText)) {
 		var query = new Query();
 		query.Text = "SELECT Id, Address, Description, ConfirmationStatus FROM Catalog_Outlet ORDER BY Description LIMIT 100";
@@ -324,8 +324,4 @@ function SaveAndBack(outlet) {
 
 function SaveEntity(entity){
 	
-}
-
-function ShowDialog(val){
-	Dialog.Debug(val);
 }

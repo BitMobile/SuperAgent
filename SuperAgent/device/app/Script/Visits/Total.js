@@ -134,7 +134,6 @@ function NextDateHandler(date, control){
 	newVistPlan.PlanDate = date;
 	newVistPlan.Outlet = $.workflow.outlet;
 	newVistPlan.Save();
-	Dialog.Debug(newVistPlan);
 	
 	control.Text = date;
 }

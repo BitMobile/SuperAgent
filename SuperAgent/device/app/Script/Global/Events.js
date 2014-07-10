@@ -1,6 +1,7 @@
 ﻿// ------------------------ Application -------------------
 
 function OnApplicationInit() {
+	SetSessionConstants();
 }
 
 // ------------------------ Events ------------------------
@@ -134,6 +135,23 @@ function OnWorkflowPause(name) {
 }
 
 // ------------------------ Functions ------------------------
+
+function SetSessionConstants(){
+	var q = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='PlanEnbl'");
+	var res = q.ExecuteScalar();
+	if (res == null)
+		var planEnabled = false;
+	else {
+		if (parseInt(res) == parseInt(0))
+			var planEnabled = false
+		else
+			var planEnabled = true;
+	}
+	
+	$.AddGlobal("sessionConst", new Dictionary());
+	$.sessionConst.Add("PlanEnbl", planEnabled);
+}
+
 
 function PrepareScheduledVisits_Map() {
 	var visitPlans = Variables["visitPlans"];

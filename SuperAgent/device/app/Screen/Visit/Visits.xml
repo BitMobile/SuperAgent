@@ -71,7 +71,18 @@
 					<s:Push Id="planOutlet" Value="$pOutlet.Outlet"></s:Push>
 
 					<c:HorizontalLayout CssClass="grid" OnClickAction="$AddGlobalAndAction($pOutlet.Ref, $planOutlet, Select)">
-						<c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
+						<s:If Test="$pOutlet.OutletStatus == 0">
+							<c:Image CssClass="blue_mark" />
+						</s:If>
+						<s:If Test="$pOutlet.OutletStatus == 1">
+							<c:Image CssClass="yellow_mark" />
+						</s:If>
+						<s:If Test="$pOutlet.OutletStatus == 2">
+							<c:Image CssClass="y_blue_mark" />
+						</s:If>
+						<s:If Test="$pOutlet.OutletStatus == 3">
+							<c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
+						</s:If>
 						<c:VerticalLayout>
 							<c:TextView Text="$planOutlet.Description" CssClass="main_row"></c:TextView>
 							<c:TextView Text="{$planOutlet.Address}" CssClass="description_row"></c:TextView>
@@ -97,7 +108,18 @@
 				<s:Iterator Id="pOutlet" Value="$commitedVisits">
 
 					<c:HorizontalLayout CssClass="grid">
-						<c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
+						<s:If Test="$pOutlet.OutletStatus == 0">
+							<c:Image CssClass="blue_mark" />
+						</s:If>
+						<s:If Test="$pOutlet.OutletStatus == 1">
+							<c:Image CssClass="yellow_mark" />
+						</s:If>
+						<s:If Test="$pOutlet.OutletStatus == 2">
+							<c:Image CssClass="y_blue_mark" />
+						</s:If>
+						<s:If Test="$pOutlet.OutletStatus == 3">
+							<c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
+						</s:If>
 						<c:VerticalLayout>
 							<c:TextView Text="$pOutlet.Description" CssClass="main_row"></c:TextView>
 							<c:TextView Text="{$pOutlet.Address}" CssClass="description_row"></c:TextView>
@@ -118,7 +140,18 @@
 			<c:ScrollView Id="grScrollView">
 				<s:Iterator Id="uOutlet" Value="$unscheduledOutlets">
 					<c:HorizontalLayout CssClass="grid" OnClickAction="$AddGlobalAndAction(null, $uOutlet.Outlet, Select)">
-						<c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
+						<s:If Test="$uOutlet.OutletStatus == 0">
+							<c:Image CssClass="blue_mark" />
+						</s:If>
+						<s:If Test="$uOutlet.OutletStatus == 1">
+							<c:Image CssClass="yellow_mark" />
+						</s:If>
+						<s:If Test="$uOutlet.OutletStatus == 2">
+							<c:Image CssClass="y_blue_mark" />
+						</s:If>
+						<s:If Test="$uOutlet.OutletStatus == 3">
+							<c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
+						</s:If>
 						<c:VerticalLayout>
 							<c:TextView Text="$uOutlet.Description" CssClass="main_row"></c:TextView>
 							<c:TextView Text="{$uOutlet.Address}" CssClass="description_row"></c:TextView>

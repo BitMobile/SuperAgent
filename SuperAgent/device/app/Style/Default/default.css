@@ -443,10 +443,26 @@ MemoEdit {
 	color: #f00;
 }
 
+.blue_mark {
+	background-image: url(blue_mark.png);
+	height: 0%;
+	width: 4.5%;
+	margin-left: 2%;
+	margin-right: 0%;
+}
+
+.y_blue_mark {
+	background-image: url(y_blue_mark.png);
+	height: 0%;
+	width: 4.5%;
+	margin-left: 2%;
+	margin-right: 0%;
+}
+
 .yellow_mark {
 	background-image: url(yellow_mark.png);
 	height: 0%;
-	width: 4.1%;
+	width: 4.5%;
 	margin-left: 2%;
 	margin-right: 0%;
 }

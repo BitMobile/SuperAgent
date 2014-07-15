@@ -30,3 +30,47 @@
 	padding-top: 10%;
 	font: 43% Arial;
 }
+
+.total_grid {
+	height: 10.5sp;
+	width: 100%;
+	background-color: #efeff4;
+	selected-color: #bacdce;
+}
+
+.total_grid vl {
+	width: 48%;
+	height: 70%;
+	padding-left: 8%;
+	background-color: #efeff4;
+}
+
+.total_grid vl TextView {
+	width: 100%;
+	height: 45%;
+	white-space: normal;
+	font: 70% Arial;
+}
+
+.overdue_text {
+	color: #f74747;
+}
+
+.t_row {
+	width: 100%;
+	height: 45%;
+	white-space: normal;
+	font: 70% Arial;
+	color: #8e8e93;
+}
+
+.r_row {
+	width: 100%;
+	height: 100%;
+	white-space: nowrap;
+	margin-right: 4%;
+	font: 28% Arial;
+	color: #f74747;
+	dock-align: right;
+	text-align: right;
+}

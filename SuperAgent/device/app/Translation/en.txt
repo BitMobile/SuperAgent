@@ -213,3 +213,5 @@ stockPlace	Stock
 developer	DEVELOPER
 bitMobile	BIT.MOBILE
 bitmobileDesc	BIT.MOBILE is a division of the First Bit. We are developing mobile solutions for business.
+total_receivable	Total sum:
+overdue		Overdue:

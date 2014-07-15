@@ -1,7 +1,7 @@
 function GetOutlets(searchText) {			
 	if (String.IsNullOrEmpty(searchText)) {
 		var query = new Query();
-		query.Text = "SELECT Id, Address, Description, ConfirmationStatus FROM Catalog_Outlet ORDER BY Description LIMIT 100";
+		query.Text = "SELECT Id, Address, Description FROM Catalog_Outlet ORDER BY Description LIMIT 100";
 		return query.Execute();
 	} else {
 		searchText = "'" + searchText + "'";
@@ -101,7 +101,6 @@ function UpdateValueAndBack(entity, attribute, value) {
 	if (attribute != "Answer" && attribute != "Value") { // for
 		// Visit_Questions
 		entity[attribute] = value;
-		entity = UpdateEntity(entity); // set status 'New' for Outelt
 		if (attribute == "PriceList") {
 			var n = CountEntities("Document", "Order_SKUs", Variables["workflow"]["order"].Id, "Ref");
 			if (parseInt(n) != parseInt(0))
@@ -114,12 +113,6 @@ function UpdateValueAndBack(entity, attribute, value) {
 	Workflow.Back();
 }
 
-function UpdateEntity(entity) {
-	if (entity.TableName == "Catalog_Outlet") {
-		entity.ConfirmationStatus = DB.Current.Constant.OutletConfirmationStatus.New;
-	}
-	return entity;
-}
 
 function CheckNotNullAndForward(outlet, visit) {
 	var c = CoordsChecked(visit);
@@ -169,13 +162,8 @@ function CheckIfEmpty(entity, attribute, objectType, objectName, deleteIfEmpty) 
 		return true;
 }
 
-function UpdateOtletStatus() {
-	Variables["outlet"].ConfirmationStatus = DB.Current.Constant.OutletConfirmationStatus.New;
-}
-
 function CreateOutlet() {
 	var outlet = DB.Create("Catalog.Outlet");
-	outlet.ConfirmationStatus = DB.Current.Constant.OutletConfirmationStatus.New;
 	outlet.Save();
 	return outlet.Id;
 }
@@ -226,7 +214,6 @@ function LocationDialogHandler(answ, outlet) {
 			outlet.Longitude = location.Longitude;
 			Dialog.Message("#coordinatesAreSet#");
 			// var outlet = $.outlet;
-			UpdateEntity(outlet);
 			outlet.Save();
 			Variables["outletCoord"].Text = (outlet.Lattitude + ", " + outlet.Longitude);
 		} else

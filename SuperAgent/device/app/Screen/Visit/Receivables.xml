@@ -70,7 +70,12 @@
 
 				<c:HorizontalLayout CssClass="grid">
 					<c:VerticalLayout>
-						<c:TextView Text="$receivableDoc.DocumentName" CssClass="description_row"></c:TextView>
+					<s:If Test="$receivableDoc.Overdue">
+						<c:TextView Text="{$receivableDoc.DocumentName}  #overdueSum#" CssClass="description_row"></c:TextView>
+					</s:If>
+					<s:Else>
+						<c:TextView Text="{$receivableDoc.DocumentName}" CssClass="description_row"></c:TextView>
+					</s:Else>	
 						<c:DockLayout CssClass="parameter_grid">
 							<c:EditText Value="$encasmentItem.EncashmentSum" Keyboard="numeric" OnChange="$RefreshAmount($workflow.encashment, $encasmentItem)"></c:EditText>
 							<s:If Test="$receivableDoc.Overdue">

@@ -1,6 +1,4 @@
-
 //---------------------------UI calls----------------
-
 
 function GetOrderList() {
 
@@ -53,7 +51,7 @@ function GetPriceListQty(outlet) {
 }
 
 function CreateOrderIfNotExists(order, outlet, userRef, visitId, executedOrder) {
-	var priceLists = GetPriceListQty(outlet);	
+	var priceLists = GetPriceListQty(outlet);
 
 	if (executedOrder != null) {
 		return executedOrder;
@@ -134,6 +132,37 @@ function GetDescription(priceList) {
 		return Translate["#noPriceLists#"];
 	else
 		return (Translate["#priceList#"] + ": " + priceList.Description);
+}
+
+function SelectStock(order, attr, control) {
+	var q = new Query("SELECT Id, Description FROM Catalog_Stock");
+	var res = q.Execute().Unload();
+	var table = [];
+	table.push([DB.EmptyRef("Catalog_Stock"), Translate["#allStocks#"]]);
+	while (res.Next()) {
+		table.push([res.Id, res.Description]);
+	}
+	Dialog.Select(Translate["#valueList#"], table, StockSelectHandler, [order, attr, control]);
+}
+
+function StockSelectHandler(key, args) {
+	var entity = args[0];
+	var attribute = args[1];
+	var control = args[2];
+	entity[attribute] = key;
+	entity.GetObject().Save();
+	if (key.EmptyRef())
+		control.Text = Translate["#allStocks#"];
+	else
+		control.Text = key.Description;
+	return;
+}
+
+function GetStockDescription(stock){
+	if (stock.EmptyRef())
+		return Translate["#allStocks#"];
+	else
+		return stock.Description;
 }
 
 function GetFeatureDescr(feature) {
@@ -290,20 +319,21 @@ function ShowInfoIfIsNew() {
 		Dialog.Message("#impossibleToEdit#");
 }
 
-function DeleteItem(item, executedOrder){
+function DeleteItem(item, executedOrder) {
 	DB.Delete(item);
-	Workflow.Refresh([null, executedOrder]);
+	Workflow.Refresh([ null, executedOrder ]);
 }
 
+// ----------------------------------Functions---------------------------
 
-//----------------------------------Functions---------------------------
+function GetStock(userRef) {
+	if ($.sessionConst.MultStck == false)
+		return DB.EmptyRef("Catalog_Stock");
 
-function GetStock(userRef){
 	var q = new Query("SELECT S.Stock FROM Catalog_Territory_Stocks S WHERE S.LineNumber = 1 LIMIT 1");
 	var s = q.ExecuteScalar();
-	if (s==null)
+	if (s == null)
 		return DB.EmptyRef("Catalog_Stock");
 	else
 		return s;
 }
-

@@ -14,7 +14,7 @@ function GetMultiplier(sku, orderitem) {
 
 function GetFeatures(sku) {
 	var query = new Query(
-			"SELECT Feature FROM Catalog_SKU_Stocks WHERE Ref=@Ref ORDER BY LineNumber");
+			"SELECT DISTINCT Feature FROM Catalog_SKU_Stocks WHERE Ref=@Ref ORDER BY LineNumber");
 	query.AddParameter("Ref", sku);
 	return query.Execute();
 }

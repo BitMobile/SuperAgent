@@ -215,3 +215,4 @@ bitmobileDesc	БИТ.Мобайл является подразделением 
 total_receivable	Общая сумма (руб.):
 overdue		Просрочено (руб.):
 overdueSum	[просрочено]
+allStocks	Все склады

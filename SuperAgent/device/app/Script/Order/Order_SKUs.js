@@ -16,7 +16,7 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 		searchString = " AND Contains(S.Description, '" + searchText + "') ";
 
 	var stockString = "";
-	if ($.sessionConst.MultStck){
+	if ($.workflow.order.Stock.EmptyRef()==false){
 		stockString = "JOIN Catalog_SKU_Stocks SS ON SS.Ref=S.Id AND SS.Stock=@stock ";
 		query.AddParameter("stock", stock);
 	}

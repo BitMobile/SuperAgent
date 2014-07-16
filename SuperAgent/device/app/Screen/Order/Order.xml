@@ -43,8 +43,7 @@
 
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$DoAction(ShowInfo,$sum,null)">
 				<c:VerticalLayout>
-					<s:Push Id="plDescription" Value="$GetDescription($workflow.order.PriceList)"></s:Push>
-					<c:TextView Text="{$plDescription}" CssClass="description_row"></c:TextView>
+					<c:TextView Text="$GetDescription($workflow.order.PriceList)" CssClass="description_row"></c:TextView>
 					<c:TextView Text="#orderSum#:" CssClass="description_row"></c:TextView>
 					<c:TextView Text="$sum" CssClass="main_row"></c:TextView>
 				</c:VerticalLayout>
@@ -64,7 +63,7 @@
 						<c:HorizontalLayout CssClass="grid" OnClickAction="$Workflow.DoAction(Edit,$orderitem.SKU,null,$orderitem.Id)">
 							<c:VerticalLayout>
 								<s:Push Id="featureDescr" Value="$GetFeatureDescr($orderitem.Feature)"></s:Push>
-								<c:TextView Text="{$orderitem.SKU.Description}{$featureDescr}" CssClass="main_row"></c:TextView>
+								<c:TextView Text="{$orderitem.SKU.Description}{$GetFeatureDescr($orderitem.Feature)}" CssClass="main_row"></c:TextView>
 								<c:TextView Text="#quantity#: {$orderitem.Qty}   #amount#: {$orderitem.Amount}" CssClass="description_row"></c:TextView>
 							</c:VerticalLayout>
 							<s:If Test="$executedOrder==null">

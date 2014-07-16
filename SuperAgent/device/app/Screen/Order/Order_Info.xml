@@ -48,11 +48,13 @@
 			</c:DockLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoSelect($workflow.order, Stock, $stockDescription)">
-				<c:TextView Text="#stockPlace#" />
-				<c:TextView Id="stockDescription" Text="$workflow.order.Stock.Description" CssClass="value" />
-			</c:DockLayout>
-			<c:HorizontalLine />
+			<s:If Test="$sessionConst.MultStck">
+				<c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectStock($workflow.order, Stock, $stockDescription)">
+					<c:TextView Text="#stockPlace#" />
+					<c:TextView Id="stockDescription" Text="$GetStockDescription($workflow.order.Stock)" CssClass="value" />
+				</c:DockLayout>
+				<c:HorizontalLine />
+			</s:If>
 
 			<c:HorizontalLayout CssClass="memo_block">
 				<c:VerticalLayout>

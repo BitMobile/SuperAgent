@@ -20,6 +20,7 @@ function SyncDataFinish() {
 
 	DrawDataReport();
 	
+	$.Remove("sessionConst");
 	Global.SetSessionConstants();
 }
 

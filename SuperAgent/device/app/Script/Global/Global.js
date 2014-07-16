@@ -58,20 +58,22 @@ function S4() {
 	return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 }
 
-function SetSessionConstants() { // //this func doubles code in
-	// Events.SetSessionConstants()
-	var q = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='PlanEnbl'");
-	var res = q.ExecuteScalar();
+function SetSessionConstants() { 
+	var planEnbl = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='PlanEnbl'");
+	var multStck = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='MultStck'");
+	
+	$.AddGlobal("sessionConst", new Dictionary());
+	$.sessionConst.Add("PlanEnbl", EvaluateBoolean(planEnbl.ExecuteScalar()));
+	$.sessionConst.Add("MultStck", EvaluateBoolean(multStck.ExecuteScalar()));
+}
+
+function EvaluateBoolean(res){
 	if (res == null)
-		var planEnabled = false;
+		return false;
 	else {
 		if (parseInt(res) == parseInt(0))
-			var planEnabled = false
+			return false
 		else
-			var planEnabled = true;
+			return true;
 	}
-
-	$.Remove("sessionConst");
-	$.AddGlobal("sessionConst", new Dictionary());
-	$.sessionConst.Add("PlanEnbl", planEnabled);
 }

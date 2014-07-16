@@ -4,6 +4,8 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 	filterString += AddFilter(filterString, "group_filter", "G.Id", " AND ");
 	filterString += AddFilter(filterString, "brand_filter", "CB.Id", " AND ");
 
+	var query = new Query();
+	
 	if (EmptyStockAllowed())
 		var stockCondition = "";
 	else
@@ -13,10 +15,20 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 	if (String.IsNullOrEmpty(searchText) == false)
 		searchString = " AND Contains(S.Description, '" + searchText + "') ";
 
-	var query = new Query();
-	query.Text = "SELECT DISTINCT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, G.Id AS GroupId, G.Parent AS GroupParent, CB.Description AS Brand FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id JOIN Catalog_Brands CB ON CB.Id=S.Brand JOIN Catalog_SKU_Stocks SS ON SS.Ref=S.Id AND SS.Stock=@stock JOIN Catalog_Stock CS ON CS.Id=SS.Stock WHERE S.CommonStock>0 AND PL.Ref = @Ref " + searchString + filterString + " ORDER BY G.Description, S.Description LIMIT 100";
-	query.AddParameter("Ref", priceList);
-	query.AddParameter("stock", stock);
+	var stockString = "";
+	if ($.sessionConst.MultStck){
+		stockString = "JOIN Catalog_SKU_Stocks SS ON SS.Ref=S.Id AND SS.Stock=@stock ";
+		query.AddParameter("stock", stock);
+	}
+	
+	query.Text = "SELECT DISTINCT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, " +
+			"G.Id AS GroupId, G.Parent AS GroupParent, CB.Description AS Brand " +
+			"FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner " +
+			"JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id JOIN Catalog_Brands CB ON CB.Id=S.Brand " +
+			stockString +
+			" WHERE S.CommonStock>0 AND PL.Ref = @Ref " + searchString + filterString + 
+			" ORDER BY G.Description, S.Description LIMIT 100";
+	query.AddParameter("Ref", priceList);	
 	return query.Execute();
 
 }

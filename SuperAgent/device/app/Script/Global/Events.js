@@ -136,20 +136,24 @@ function OnWorkflowPause(name) {
 
 // ------------------------ Functions ------------------------
 
-function SetSessionConstants(){  //this func doubles code in Global.SetSessionConstants()
-	var q = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='PlanEnbl'");
-	var res = q.ExecuteScalar();
-	if (res == null)
-		var planEnabled = false;
-	else {
-		if (parseInt(res) == parseInt(0))
-			var planEnabled = false
-		else
-			var planEnabled = true;
-	}
+function SetSessionConstants() { 
+	var planEnbl = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='PlanEnbl'");
+	var multStck = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='MultStck'");
 	
 	$.AddGlobal("sessionConst", new Dictionary());
-	$.sessionConst.Add("PlanEnbl", planEnabled);
+	$.sessionConst.Add("PlanEnbl", EvaluateBoolean(planEnbl.ExecuteScalar()));
+	$.sessionConst.Add("MultStck", EvaluateBoolean(multStck.ExecuteScalar()));
+}
+
+function EvaluateBoolean(res){
+	if (res == null)
+		return false;
+	else {
+		if (parseInt(res) == parseInt(0))
+			return false
+		else
+			return true;
+	}
 }
 
 function PrepareScheduledVisits_Map() {

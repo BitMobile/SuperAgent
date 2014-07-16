@@ -41,6 +41,12 @@ function CreatePlan(outlet) {
 	Dialog.ShowDateTime("select", DateTime.Now, PlanHandler, outlet);
 }
 
+function DeleteContact(ref){
+	DB.Delete(ref);
+	DB.Commit();
+	Workflow.Refresh([$.outlet]);
+}
+
 // --------------------internal--------------
 
 function EmptyContact(contact) {

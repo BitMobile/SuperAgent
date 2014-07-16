@@ -10,3 +10,23 @@
 	height: 40%;
 	font: 42% Arial;
 }
+
+.swipe_layout {
+	height: 7.8sp;
+	background-color: #ffffff;
+}
+
+.red_swipe {
+	height: 7.8sp;
+	width: 28%;
+	background-color: #f74747;
+}
+
+.red_swipe TextView {
+	height: 30%;
+	width: 100%;
+	text-align: center;
+	vertical-align: central;
+	color: #fff;
+	font: 100% Arial;
+}

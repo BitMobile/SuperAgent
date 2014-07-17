@@ -147,29 +147,6 @@ function ReviseParameters(outlet, save) {
 	}
 }
 
-function CheckEmptyOutletFields(outlet) {
-	var correctDescr = CheckIfEmpty(outlet, "Description", "", "", false);
-	var correctAddr = CheckIfEmpty(outlet, "Address", "", "", false);
-	if (correctDescr && correctAddr) {
-		return true;
-	}
-
-	Dialog.Message("#couldnt_be_cleaned#");
-	return false;
-}
-
-function CheckIfEmpty(entity, attribute, objectType, objectName, deleteIfEmpty) {
-
-	if (entity[attribute].Trim() == "" || String(entity[attribute]) == "0") {
-		if (entity.IsNew() && ConvertToBoolean(deleteIfEmpty)) {
-			DB.Current[objectType][objectName].Delete(entity);
-			return true;
-		} else
-			return false;
-	} else
-		return true;
-}
-
 function CreateOutlet() {
 	var outlet = DB.Create("Catalog.Outlet");
 	outlet.Save();
@@ -341,7 +318,6 @@ function SaveAtOutelt(arr) {
 
 }
 
-
 function GetCameraObject(entity) {
 	FileSystem.CreateDirectory("/private/Catalog.Outlet");
 	var guid = Global.GenerateGuid();
@@ -351,4 +327,26 @@ function GetCameraObject(entity) {
 	Camera.Size = 300;
 	Camera.Path = path;
 	return guid;
+}
+
+function CheckEmptyOutletFields(outlet) {
+	var correctAddr = CheckIfEmpty(outlet, "Address", "", "", false);
+	if (correctAddr) {
+		return true;
+	}
+	Dialog.Message("#couldnt_be_cleaned#");
+	return false;
+}
+
+
+function CheckIfEmpty(entity, attribute, objectType, objectName, deleteIfEmpty) {
+
+	if (entity[attribute].Trim() == "" || String(entity[attribute]) == "0") {
+		if (entity.IsNew() && ConvertToBoolean(deleteIfEmpty)) {
+			DB.Current[objectType][objectName].Delete(entity);
+			return true;
+		} else
+			return false;
+	} else
+		return true;
 }

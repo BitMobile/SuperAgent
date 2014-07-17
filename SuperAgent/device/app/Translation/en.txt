@@ -217,3 +217,4 @@ total_receivable	Total sum:
 overdue		Overdue:
 overdueSum	[overdue]
 allStocks	All stocks
+nextVisitDate	Next visit date

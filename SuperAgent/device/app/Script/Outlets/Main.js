@@ -65,12 +65,20 @@ function SaveValue(control, parameterValue) {
 	parameterValue.Save();
 }
 
+function GetSnapshotText(text){
+	if (String.IsNullOrEmpty(text))
+		return Translate["#noSnapshot#"];
+	else
+		return Translate["#snapshotAttached#"];
+}
+
 function SelectIfNotAVisit(outlet, attribute, entity) {
 	if ($.workflow.name != "Visit")
 		DoSelect(outlet, attribute, entity);
 }
 
 function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control) {
+	
 	if (typeDescription == "ValueList") {
 		var q = new Query();
 		q.Text = "SELECT Value, Value FROM Catalog_OutletParameter_ValueList WHERE Ref=@ref";
@@ -78,14 +86,14 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 		Global.ValueListSelect(parameterValue, "Value", q.Execute(), Variables[control]);
 	}
 	if (typeDescription == "DateTime") {
-//		if (IsNullOrEmpty(parameterValue.Value))
-//			var date = DateTime.Now;
-//		else
-//			var date = DateTime.Parse(parameterValue.Value);
 		Global.DateTimeDialog(parameterValue, "Value", parameterValue.Value, Variables[control]);
 	}
 	if (typeDescription == "Boolean") {
 		Global.BooleanDialogSelect(parameterValue, "Value", Variables[control]);
+	}
+	if (typeDescription == "Snapshot") {
+		var guid = GetCameraObject(outlet);
+		Camera.MakeSnapshot(SaveAtOutelt, [parameterValue, control, guid]);
 	}
 
 }
@@ -317,6 +325,30 @@ function SaveAndBack(outlet) {
 	}	
 }
 
-function SaveEntity(entity){
-	
+
+//---------------------------------internal------------------------
+
+function SaveAtOutelt(arr) {
+	var paramValue = arr[0];
+	var control = arr[1];
+	var path = arr[2];
+	question = paramValue.GetObject();
+	question.Value = path;
+	question.Save();
+	Dialog.Debug(path);
+	Dialog.Debug(question);
+	Variables[control].Text = Translate["#snapshotAttached#"];
+
+}
+
+
+function GetCameraObject(entity) {
+	FileSystem.CreateDirectory("/private/Catalog.Outlet");
+	var guid = Global.GenerateGuid();
+	//Variables.Add("guid", guid);
+	var path = String.Format("/private/Catalog.Outlet/{0}/{1}.jpg", entity.Id,
+			guid);
+	Camera.Size = 300;
+	Camera.Path = path;
+	return guid;
 }

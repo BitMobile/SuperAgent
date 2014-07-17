@@ -72,10 +72,6 @@ function GoToQuestionAction(answerType, question, visit, control, questionItem) 
 	}
 
 	if (answerType == "DateTime") {
-//		if (IsNullOrEmpty(question.Answer))
-//			var date = DateTime.Now;
-//		else
-//			var date = DateTime.Parse(question.Answer);
 		Global.DateTimeDialog(question, "Answer", question.Answer, Variables[control]);
 	}
 

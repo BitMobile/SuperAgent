@@ -30,7 +30,7 @@ function SetDeliveryDate(order, control) {
 }
 
 function SetnextVisitDate(nextDate, control){
-	if (String.IsNullOrEmpty((nextDate))
+	if (String.IsNullOrEmpty(nextDate))
 		nextDate = DateTime.Now;
 	Dialog.ShowDateTime("select", nextDate, NextDateHandler, control);
 }

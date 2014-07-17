@@ -8,6 +8,9 @@ function DoSelect(entity, attribute, control) {
 
 function DateTimeDialog(entity, attribute, date, control) {
 	var header = Translate["#enterDateTime#"];
+	if (String.IsNullOrEmpty(date))
+		date = DateTime.Now.Date;
+	Dialog.Debug(date);
 	Dialog.ShowDateTime(header, date, DoSelectCallback2, [ entity, attribute, control ]);
 }
 

@@ -78,11 +78,11 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 		Global.ValueListSelect(parameterValue, "Value", q.Execute(), Variables[control]);
 	}
 	if (typeDescription == "DateTime") {
-		if (IsNullOrEmpty(parameterValue.Value))
-			var date = DateTime.Now;
-		else
-			var date = DateTime.Parse(parameterValue.Value);
-		Global.DateTimeDialog(parameterValue, "Value", date, Variables[control]);
+//		if (IsNullOrEmpty(parameterValue.Value))
+//			var date = DateTime.Now;
+//		else
+//			var date = DateTime.Parse(parameterValue.Value);
+		Global.DateTimeDialog(parameterValue, "Value", parameterValue.Value, Variables[control]);
 	}
 	if (typeDescription == "Boolean") {
 		Global.BooleanDialogSelect(parameterValue, "Value", Variables[control]);
@@ -298,8 +298,8 @@ function Back(outlet) {
 	}
 }
 
-function DeleteAndBack(visit) {
-	DB.Delete(visit);
+function DeleteAndBack(entity) {
+	DB.Delete(entity);
 	Workflow.Back();
 }
 

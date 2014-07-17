@@ -26,11 +26,11 @@ function OrderExists(visit) {
 }
 
 function SetDeliveryDate(order, control) {
-    Global.DateTimeDialog(order, "DeliveryDate", DateTime.Now.Date, control);
+    Global.DateTimeDialog(order, "DeliveryDate", order.DeliveryDate, control);
 }
 
 function SetnextVisitDate(nextDate, control){
-	if (nextDate == null)
+	if (String.IsNullOrEmpty((nextDate))
 		nextDate = DateTime.Now;
 	Dialog.ShowDateTime("select", nextDate, NextDateHandler, control);
 }

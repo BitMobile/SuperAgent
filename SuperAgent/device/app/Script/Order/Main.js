@@ -290,8 +290,8 @@ function DateTimeDialog(entity, dateTime) {
 }
 
 function SetDeliveryDateDialog(order, control, executedOrder) {
-	if (IsEditable(executedOrder, order))
-		Global.DateTimeDialog(order, "DeliveryDate", DateTime.Now.Date, control);
+	if (IsEditable(executedOrder, order))		
+		Global.DateTimeDialog(order, "DeliveryDate", order.DeliveryDate, control);
 }
 
 function OrderBack() {

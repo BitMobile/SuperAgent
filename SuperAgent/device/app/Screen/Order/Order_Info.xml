@@ -32,20 +32,22 @@
 				<c:HorizontalLine />
 			</s:If>
 
-			<c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectPriceListIfNotNew($workflow.order, $priceLists, $executedOrder)">
-				<c:TextView Text="#priceList#" />
-				<s:If Test="$NotEmptyRef($workflow.order.PriceList)">
-					<c:TextView Id="priceListTextView" Text="$workflow.order.PriceList.Description" CssClass="value" />
-				</s:If>
-				<s:Else>
-					<s:If Test="$priceLists == 0">
-						<c:TextView Text="#noPriceLists#" CssClass="value" />
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$SelectPriceListIfIsNew($workflow.order, $priceLists, $executedOrder)">
+				<c:VerticalLayout>
+					<c:TextView Text="#priceList#" CssClass="description_row"/>
+					<s:If Test="$NotEmptyRef($workflow.order.PriceList)">
+						<c:TextView Id="priceListTextView" Text="$workflow.order.PriceList.Description" CssClass="main_row"/>
 					</s:If>
 					<s:Else>
-						<c:TextView Text="#isntSelected#" CssClass="value" />
+						<s:If Test="$priceLists == 0">
+							<c:TextView Text="#noPriceLists#" CssClass="main_row"/>
+						</s:If>
+						<s:Else>
+							<c:TextView Text="#isntSelected#" CssClass="main_row"/>
+						</s:Else>
 					</s:Else>
-				</s:Else>
-			</c:DockLayout>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
 			<s:If Test="$sessionConst.MultStck">

@@ -172,24 +172,9 @@ function GetFeatureDescr(feature) {
 		return (", " + feature.Description);
 }
 
-function SelectPriceListIfNotNew(order, priceLists, executedOrder) {
+function SelectPriceListIfIsNew(order, priceLists, executedOrder) {
 	if (IsNew(order))
 		SelectPriceList(order, priceLists, executedOrder);
-}
-
-function SelectPriceList(order, priceLists, executedOrder) {
-	if (parseInt(priceLists) != parseInt(1) && parseInt(priceLists) != parseInt(0) && executedOrder == null) {
-		var query = new Query("SELECT DISTINCT D.Id, D.Description FROM Catalog_Outlet_Prices O JOIN Document_PriceList D ON O.PriceList=D.Id WHERE O.Ref = @Ref ORDER BY O.LineNumber");
-		query.AddParameter("Ref", order.Outlet);
-		var pl = query.ExecuteCount();
-		if (parseInt(pl) == parseInt(0)) {
-			var query = new Query("SELECT Id FROM Document_PriceList WHERE DefaultPriceList = @true");
-			query.AddParameter("true", true);
-		}
-		var table = query.Execute();
-		ValueListSelect2(order, "PriceList", table, Variables["priceListTextView"]);
-	}
-
 }
 
 function IsEditable(executedOrder, order) {
@@ -336,4 +321,19 @@ function GetStock(userRef) {
 		return DB.EmptyRef("Catalog_Stock");
 	else
 		return s;
+}
+
+function SelectPriceList(order, priceLists, executedOrder) {
+	if (parseInt(priceLists) != parseInt(1) && parseInt(priceLists) != parseInt(0) && executedOrder == null) {
+		var query = new Query("SELECT DISTINCT D.Id, D.Description FROM Catalog_Outlet_Prices O JOIN Document_PriceList D ON O.PriceList=D.Id WHERE O.Ref = @Ref ORDER BY O.LineNumber");
+		query.AddParameter("Ref", order.Outlet);
+		var pl = query.ExecuteCount();
+		if (parseInt(pl) == parseInt(0)) {
+			var query = new Query("SELECT Id FROM Document_PriceList WHERE DefaultPriceList = @true");
+			query.AddParameter("true", true);
+		}
+		var table = query.Execute();
+		ValueListSelect2(order, "PriceList", table, Variables["priceListTextView"]);
+	}
+
 }

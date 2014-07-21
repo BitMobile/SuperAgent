@@ -6,6 +6,8 @@
 		<s:Push Id="workflow.outlet" Value="$outlet"></s:Push>
 		<s:Push Id="workflow.visit" Value="$CreateVisitIfNotExists($outlet,$common.UserRef, $workflow.visit, $planVisit)" />
 	</s:If>
+	
+	<s:Push Id="outletObj" Value="$GetObject($outlet)"/>
 
 	<c:DockLayout Id="vOutlet">
 
@@ -73,7 +75,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#description#" CssClass="description_row"></c:TextView>
-					<c:TextView Id="outletDescr" Text="$outlet.Description" CssClass="main_row"></c:TextView>
+					<c:TextView Id="outletDescr" Text="$outletObj.Description" CssClass="main_row"></c:TextView>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -81,7 +83,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#address#" CssClass="description_row"></c:TextView>
-					<c:MemoEdit Id="outletAddress" Value="$outlet.Address"></c:MemoEdit>
+					<c:MemoEdit Id="outletAddress" Text="$outletObj.Address"></c:MemoEdit>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

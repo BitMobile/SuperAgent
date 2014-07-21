@@ -1,16 +1,19 @@
 
-
 function GetReceivables(outlet) {
 
 	var receivables = new Query("SELECT RD.DocumentName, RD.DocumentSum, RD.Overdue FROM Document_AccountReceivable_ReceivableDocuments RD JOIN Document_AccountReceivable AR ON AR.Id=RD.Ref WHERE AR.Outlet = @outlet ORDER BY AR.Date, RD.LineNumber");
 	receivables.AddParameter("outlet", outlet);
-	var d = receivables.Execute();	
-	
+	var d = receivables.Execute();
+
 	Variables.Add("receivableAmount", GetAmount(d));
 	Variables.Add("overdueAmount", GetOverdueAmount(outlet));
-	
+
 	return d;
 
+}
+
+function ValidateAmount(control) {
+	return Global.ValidateField(control.Text, "[0-9.,]*", Translate["#encashmentAmount#"]);
 }
 
 function GetAmount(receivables) {
@@ -107,12 +110,14 @@ function SpreadEncasmentAndRefresh(encashent, outlet) {
 }
 
 function SaveAndForward(encashment) {
-	ClearEmptyRecDocs(encashment);
-	if (parseFloat(encashment.EncashmentAmount) != parseFloat(0))
-		encashment.GetObject().Save();
-	else
-		DB.Delete(encashment);
-	Workflow.Forward([]);
+	if (ValidateAmount($.encAmount)) {
+		ClearEmptyRecDocs(encashment);
+		if (parseFloat(encashment.EncashmentAmount) != parseFloat(0))
+			encashment.GetObject().Save();
+		else
+			DB.Delete(encashment);
+		Workflow.Forward([]);
+	}
 }
 
 function ClearEmptyRecDocs(encashment) {
@@ -124,10 +129,10 @@ function ClearEmptyRecDocs(encashment) {
 	}
 }
 
-function GetOverdueAmount(outlet){
-	//var outlet = Variables["workflow"].outlet;
+function GetOverdueAmount(outlet) {
+	// var outlet = Variables["workflow"].outlet;
 	var q = new Query("SELECT SUM(R.DocumentSum) FROM Document_AccountReceivable A JOIN Document_AccountReceivable_ReceivableDocuments R ON A.Id=R.Ref WHERE A.Outlet = @outlet AND Overdue=1");
 	q.AddParameter("outlet", outlet);
-	
+
 	return q.ExecuteScalar();
 }

@@ -47,7 +47,7 @@
 						<c:TextView Text="#encashmentAmount#:"></c:TextView>
 						<c:Button Text="#spread#" OnClickAction="$SpreadEncasmentAndRefresh($workflow.encashment, $visit.Outlet)"></c:Button>
 					</c:DockLayout>
-					<c:EditText Id="encAmount" Value="$workflow.encashment.EncashmentAmount" CssClass="main_row" Keyboard="numeric"></c:EditText>
+					<c:EditText Id="encAmount" Value="$workflow.encashment.EncashmentAmount" CssClass="main_row" Keyboard="numeric" OnChange="$ValidateAmount()"></c:EditText>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

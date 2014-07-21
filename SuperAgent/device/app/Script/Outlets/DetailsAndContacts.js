@@ -10,9 +10,7 @@ function CreateContactIfNotExist(contact, outlet) {
 }
 
 function SaveAndBack(entity) {
-	
-	Dialog.Debug(entity.GetObject());
-	
+		
 	var emailValid = Global.ValidateEmail(entity.Email);
 	var phoneNumValid = Global.ValidatePhoneNr(entity.PhoneNumber);
 	var innValid = Global.ValidateField(entity.INN, "([0-9]{10}|[0-9]{12})?", Translate["#inn#"]);

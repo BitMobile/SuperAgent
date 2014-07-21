@@ -22,8 +22,8 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 	}
 	
 	query.Text = "SELECT DISTINCT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, " +
-			"G.Id AS GroupId, G.Parent AS GroupParent, CB.Description AS Brand " +
-			"FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner " +
+			"G.Id AS GroupId, G.Parent AS GroupParent, P.Description AS ParentDescription, CB.Description AS Brand " +
+			"FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner LEFT JOIN Catalog_SKUGroup P ON G.Parent=P.Id " +
 			"JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id JOIN Catalog_Brands CB ON CB.Id=S.Brand " +
 			stockString +
 			" WHERE S.CommonStock>0 AND PL.Ref = @Ref " + searchString + filterString + 
@@ -47,13 +47,12 @@ function EmptyStockAllowed() {
 	}
 }
 
-function GetGroupPath(group, parent) {
+function GetGroupPath(group, parent, parentDescription) {
 	var string = "";
-
-	if (parent != null) {
-		if (parent.EmptyRef() == false)
-			string = string + "/ " + group.Parent.Description;
-	}
+	
+	Dialog.Debug(parentDescription);
+	if (String.IsNullOrEmpty(parentDescription)==false)
+		string = string + "/ " + parent.Description;
 	return string;
 }
 

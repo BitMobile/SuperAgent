@@ -217,3 +217,4 @@ overdue		Просрочено (руб.):
 overdueSum	[просрочено]
 allStocks	Все склады
 nextVisitDate	Дата следующего визита
+incorrect		Некорректное значение

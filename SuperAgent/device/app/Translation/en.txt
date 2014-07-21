@@ -218,3 +218,4 @@ overdue		Overdue:
 overdueSum	[overdue]
 allStocks	All stocks
 nextVisitDate	Next visit date
+incorrect		Incorrect

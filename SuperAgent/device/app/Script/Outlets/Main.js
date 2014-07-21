@@ -184,10 +184,6 @@ function CreateVisitIfNotExists(outlet, userRef, visit, planVisit) {
 
 function SetLocation(outlet) {
 	Dialog.Question("#setCoordinates#", LocationDialogHandler, outlet);
-	function DiscardOutlet(outlet) {
-		DB.Delete(outlet);
-		DoBack();
-	}
 }
 
 function LocationDialogHandler(answ, outlet) {
@@ -312,8 +308,6 @@ function SaveAtOutelt(arr) {
 	question = paramValue.GetObject();
 	question.Value = path;
 	question.Save();
-	Dialog.Debug(path);
-	Dialog.Debug(question);
 	Variables[control].Text = Translate["#snapshotAttached#"];
 
 }

@@ -10,11 +10,24 @@ function CreateContactIfNotExist(contact, outlet) {
 }
 
 function SaveAndBack(entity) {
-	if (getType(entity.GetObject()) == "DefaultScope.Catalog.Outlet_Contacts" && EmptyContact(entity) && entity.IsNew())
-		DB.Delete(entity);
-	else
-		entity.GetObject().Save();
-	Workflow.Back();
+	
+	Dialog.Debug(entity.GetObject());
+	
+	var emailValid = Global.ValidateEmail(entity.Email);
+	var phoneNumValid = Global.ValidatePhoneNr(entity.PhoneNumber);
+	var innValid = Global.ValidateField(entity.INN, "([0-9]{10}|[0-9]{12})?", Translate["#inn#"]);
+	var kppValid =  Global.ValidateField(entity.KPP, "([0-9]{9})?", Translate["#kpp#"]);	
+	
+	if (emailValid && phoneNumValid && innValid && kppValid) {
+		if (getType(entity.GetObject()) == "DefaultScope.Catalog.Outlet_Contacts" && EmptyContact(entity) && entity.IsNew()){
+			DB.Delete(entity);
+			DB.Commit();
+		}
+		else
+			entity.GetObject().Save();
+		Workflow.Back();
+	}
+
 }
 
 function GetString(ref) {
@@ -41,10 +54,10 @@ function CreatePlan(outlet) {
 	Dialog.ShowDateTime("select", DateTime.Now, PlanHandler, outlet);
 }
 
-function DeleteContact(ref){
+function DeleteContact(ref) {
 	DB.Delete(ref);
 	DB.Commit();
-	Workflow.Refresh([$.outlet]);
+	Workflow.Refresh([ $.outlet ]);
 }
 
 // --------------------internal--------------
@@ -66,6 +79,7 @@ function PlanHandler(date, outlet) {
 	newVistPlan.PlanDate = date;
 	newVistPlan.Outlet = outlet;
 	newVistPlan.Save();
-	
-	Workflow.Refresh([outlet]);
+
+	Workflow.Refresh([ outlet ]);
 }
+

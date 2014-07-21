@@ -10,7 +10,6 @@ function DateTimeDialog(entity, attribute, date, control) {
 	var header = Translate["#enterDateTime#"];
 	if (String.IsNullOrEmpty(date))
 		date = DateTime.Now.Date;
-	Dialog.Debug(date);
 	Dialog.ShowDateTime(header, date, DoSelectCallback2, [ entity, attribute, control ]);
 }
 
@@ -80,3 +79,20 @@ function EvaluateBoolean(res){
 			return true;
 	}
 }
+
+function ValidateEmail(string){
+	return ValidateField(string, "(([A-za-z0-9-_.]+@[a-z0-9_]+(.[a-z]{2,6})+)*)?", Translate["#email#"])
+}
+
+function ValidatePhoneNr(string){
+	return ValidateField(string, "([0-9+-]{1,2}\s*[0-9()]{1,5}\s*([0-9-]{1,4})+\s*[0-9()]{1,7})?", Translate["#phone#"])
+}
+
+function ValidateField(string, regExp, fieldName){
+	Dialog.Debug(string);
+	var validField = validate(string, regExp);
+	if (validField==false)
+		Dialog.Message(String.Format("{0} {1}", Translate["#incorrect#"], fieldName));
+	return validField;
+}
+

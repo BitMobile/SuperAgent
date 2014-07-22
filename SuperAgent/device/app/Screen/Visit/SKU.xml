@@ -7,6 +7,7 @@
 	<s:Push Id="quest2" Value="$param4"></s:Push>
 	<s:Push Id="questions" Value="$GetSKUQuestions($quest1, $quest2)"></s:Push>
 	<s:Push Id="skuValue" Value="$CreateVisitSKUValueIfNotExists($visit,$sku,$param5)"></s:Push>
+	<s:Push Id="skuValueObj" Value="$GetObject($skuValue)"/>
 
 	<c:DockLayout>
 
@@ -34,7 +35,7 @@
 				<c:HorizontalLayout CssClass="grid">
 					<c:VerticalLayout>
 						<c:TextView Text="#facing#" CssClass="description_row"></c:TextView>
-						<c:MemoEdit Value="$skuValue.Facing" OnChange="$SaveValue($skuValue)" Keyboard="numeric"></c:MemoEdit>
+						<c:MemoEdit Value="$skuValueObj.Facing" Keyboard="numeric"></c:MemoEdit>
 					</c:VerticalLayout>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
@@ -44,7 +45,7 @@
 				<c:HorizontalLayout CssClass="grid">
 					<c:VerticalLayout>
 						<c:TextView Text="#stock#" CssClass="description_row"></c:TextView>
-						<c:MemoEdit Value="$skuValue.Stock" OnChange="$SaveValue($skuValue)" Keyboard="numeric"></c:MemoEdit>
+						<c:MemoEdit Value="$skuValueObj.Stock" Keyboard="numeric"></c:MemoEdit>
 					</c:VerticalLayout>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
@@ -54,7 +55,7 @@
 				<c:HorizontalLayout CssClass="grid">
 					<c:VerticalLayout>
 						<c:TextView Text="#price#" CssClass="description_row"></c:TextView>
-						<c:MemoEdit Value="$skuValue.Price" OnChange="$SaveValue($skuValue)" Keyboard="numeric"></c:MemoEdit>
+						<c:MemoEdit Value="$skuValueObj.Price" Keyboard="numeric"></c:MemoEdit>
 					</c:VerticalLayout>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
@@ -64,7 +65,7 @@
 				<c:HorizontalLayout CssClass="grid">
 					<c:VerticalLayout>
 						<c:TextView Text="#markUp#" CssClass="description_row"></c:TextView>
-						<c:MemoEdit Value="$skuValue.MarkUp" OnChange="$SaveValue($skuValue)" Keyboard="numeric"></c:MemoEdit>
+						<c:MemoEdit Value="$skuValueObj.MarkUp"></c:MemoEdit>
 					</c:VerticalLayout>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />

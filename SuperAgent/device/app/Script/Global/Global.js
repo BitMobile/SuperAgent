@@ -15,7 +15,7 @@ function DateTimeDialog(entity, attribute, date, control) {
 
 function BooleanDialogSelect(entity, attribute, control) {
 	var arr = [];
-	arr.push([ "", "-" ]);
+	arr.push([ null, "-" ]);
 	arr.push([ Translate["#YES#"], Translate["#YES#"] ]);
 	arr.push([ Translate["#NO#"], Translate["#NO#"] ]);
 	Dialog.Select(Translate["#valueList#"], arr, DoSelectCallback2, [ entity, attribute, control ]);

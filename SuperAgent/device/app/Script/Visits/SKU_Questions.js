@@ -89,7 +89,7 @@ function GetSKUAnswers(skuvalue) {// , sku_answ) {
 		var parameters = [ "Available", "Facing", "Stock", "Price", "MarkUp", "OutOfStock", "Snapshot" ];
 		for ( var i in parameters) {
 			var name = parameters[i];
-			if (skuvalue[name] != null)
+			if (String.IsNullOrEmpty(skuvalue[name])==false)
 				sa += parseInt(1);
 		}
 
@@ -194,13 +194,17 @@ function SaveAndBack(skuValue) {
 }
 
 function NotEmptyObject(skuValue) {
+	var stat = false;
 	var arr = [ "Available", "Facing", "Stock", "Price", "MarkUp", "OutOfStock", "Snapshot" ];
 	for ( var i in arr) {
 		var a = arr[i];
-		if (String.IsNullOrEmpty(skuValue[a]) == false)
-			return true;
+		Dialog.Debug(skuValue[a]);
+		if (String.IsNullOrEmpty(skuValue[a]) == false){
+			stat = true;
+		}
+			
 	}
-	return false;
+	return stat;
 }
 
 function CheckEmtySKUAndForward(outlet, visit) {

@@ -198,7 +198,6 @@ function NotEmptyObject(skuValue) {
 	var arr = [ "Available", "Facing", "Stock", "Price", "MarkUp", "OutOfStock", "Snapshot" ];
 	for ( var i in arr) {
 		var a = arr[i];
-		Dialog.Debug(skuValue[a]);
 		if (String.IsNullOrEmpty(skuValue[a]) == false){
 			stat = true;
 		}

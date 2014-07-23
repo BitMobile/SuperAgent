@@ -50,7 +50,6 @@ function EmptyStockAllowed() {
 function GetGroupPath(group, parent, parentDescription) {
 	var string = "";
 	
-	Dialog.Debug(parentDescription);
 	if (String.IsNullOrEmpty(parentDescription)==false)
 		string = string + "/ " + parent.Description;
 	return string;

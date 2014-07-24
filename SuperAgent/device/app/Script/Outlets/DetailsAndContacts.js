@@ -10,18 +10,17 @@ function CreateContactIfNotExist(contact, outlet) {
 }
 
 function SaveAndBack(entity) {
-		
+
 	var emailValid = Global.ValidateEmail(entity.Email);
 	var phoneNumValid = Global.ValidatePhoneNr(entity.PhoneNumber);
 	var innValid = Global.ValidateField(entity.INN, "([0-9]{10}|[0-9]{12})?", Translate["#inn#"]);
-	var kppValid =  Global.ValidateField(entity.KPP, "([0-9]{9})?", Translate["#kpp#"]);	
-	
+	var kppValid = Global.ValidateField(entity.KPP, "([0-9]{9})?", Translate["#kpp#"]);
+
 	if (emailValid && phoneNumValid && innValid && kppValid) {
-		if (getType(entity.GetObject()) == "DefaultScope.Catalog.Outlet_Contacts" && EmptyContact(entity) && entity.IsNew()){
+		if (getType(entity.GetObject()) == "DefaultScope.Catalog.Outlet_Contacts" && EmptyContact(entity) && entity.IsNew()) {
 			DB.Delete(entity);
 			DB.Commit();
-		}
-		else
+		} else
 			entity.GetObject().Save();
 		Workflow.Back();
 	}
@@ -48,8 +47,11 @@ function GetPlans(outlet, sr) {
 	return q.Execute();
 }
 
-function CreatePlan(outlet) {
-	Dialog.ShowDateTime("select", DateTime.Now, PlanHandler, outlet);
+function CreatePlan(outlet, plan, planDate) {
+	if (String.IsNullOrEmpty(planDate))
+		planDate = DateTime.Now;
+	var header = Translate["#enterDateTime#"];
+	Dialog.ShowDateTime(header, planDate, PlanHandler, [ outlet, plan ]);
 }
 
 function DeleteContact(ref) {
@@ -67,17 +69,22 @@ function EmptyContact(contact) {
 		return false;
 }
 
-function PlanHandler(date, outlet) {
-	var q1 = new Query("SELECT Id FROM Catalog_MAVisitPlan");
-	var ref = q1.ExecuteScalar();
+function PlanHandler(date, arr) {
+	var outlet = arr[0];
+	var plan = arr[1];
+	if (plan == null) {
+		var q1 = new Query("SELECT Id FROM Catalog_MAVisitPlan");
+		var ref = q1.ExecuteScalar();
 
-	var newVistPlan = DB.Create("Catalog.MAVisitPlan_PlanVisits");
-	newVistPlan.Ref = ref;
-	newVistPlan.SR = $.common.UserRef;
-	newVistPlan.PlanDate = date;
-	newVistPlan.Outlet = outlet;
-	newVistPlan.Save();
-
+		plan = DB.Create("Catalog.MAVisitPlan_PlanVisits");
+		plan.Ref = ref;
+		plan.SR = $.common.UserRef;
+		plan.Outlet = outlet;
+	}
+	else
+		plan = plan.GetObject();
+	plan.PlanDate = date;
+	Dialog.Debug(plan);
+	plan.Save();
 	Workflow.Refresh([ outlet ]);
 }
-

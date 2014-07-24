@@ -9,7 +9,7 @@
 			<c:VerticalLayout OnEvent="Back" OnClickAction="$DoBack()">
 				<c:TextView Text="#back#" CssClass="left_tv"></c:TextView>
 			</c:VerticalLayout>
-			<c:VerticalLayout Id="btnAdd" OnEvent="Forward" OnClickAction="$CreatePlan($outlet)">
+			<c:VerticalLayout Id="btnAdd" OnEvent="Forward" OnClickAction="$CreatePlan($outlet, null, null)">
 				<c:TextView Text="#add#" CssClass="right_tv"></c:TextView>
 			</c:VerticalLayout>
 		</c:HorizontalLayout>
@@ -22,7 +22,7 @@
 
 			<s:Iterator Id="plan" Value="$GetPlans($outlet)" Status="statusCount">
 
-				<c:DockLayout CssClass="parameter_grid" OnClickAction="$SetNewDate($plan.Id, $outlet)">
+				<c:DockLayout CssClass="parameter_grid" OnClickAction="$CreatePlan($outlet, $plan.Id, $plan.PlanDate)">
 					<c:TextView Text="$plan.PlanDate"></c:TextView>
 					<c:Image />
 				</c:DockLayout>

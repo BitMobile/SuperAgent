@@ -41,7 +41,7 @@ function GetContacts(outlet) {
 }
 
 function GetPlans(outlet, sr) {
-	var q = new Query("SELECT Id, PlanDate FROM Catalog_MAVisitPlan_PlanVisits WHERE Outlet=@outlet AND SR=@sr");
+	var q = new Query("SELECT Id, PlanDate FROM Document_MobileAppPlanVisit WHERE Outlet=@outlet AND SR=@sr");
 	q.AddParameter("outlet", outlet);
 	q.AddParameter("sr", $.common.UserRef);
 	return q.Execute();
@@ -73,18 +73,15 @@ function PlanHandler(date, arr) {
 	var outlet = arr[0];
 	var plan = arr[1];
 	if (plan == null) {
-		var q1 = new Query("SELECT Id FROM Catalog_MAVisitPlan");
-		var ref = q1.ExecuteScalar();
-
-		plan = DB.Create("Catalog.MAVisitPlan_PlanVisits");
-		plan.Ref = ref;
+		plan = DB.Create("Document.MobileAppPlanVisit");
 		plan.SR = $.common.UserRef;
 		plan.Outlet = outlet;
+		plan.Transformed = false;
+		plan.Date = DateTime.Now;
 	}
 	else
 		plan = plan.GetObject();
 	plan.PlanDate = date;
-	Dialog.Debug(plan);
 	plan.Save();
 	Workflow.Refresh([ outlet ]);
 }

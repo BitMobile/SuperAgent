@@ -89,6 +89,8 @@ function ValidatePhoneNr(string){
 }
 
 function ValidateField(string, regExp, fieldName){
+	if (string==null)
+		string = "";
 	var validField = validate(string, regExp);
 	if (validField==false)
 		Dialog.Message(String.Format("{0} {1}", Translate["#incorrect#"], fieldName));

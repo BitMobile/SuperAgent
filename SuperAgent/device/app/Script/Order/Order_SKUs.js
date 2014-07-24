@@ -16,17 +16,22 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 		searchString = " AND Contains(S.Description, '" + searchText + "') ";
 
 	var stockString = "";
+	var stockWhere = "";
 	if ($.workflow.order.Stock.EmptyRef()==false){
-		stockString = "JOIN Catalog_SKU_Stocks SS ON SS.Ref=S.Id AND SS.Stock=@stock ";
+		stockString = "JOIN Catalog_SKU_Stocks SS ON SS.Ref=S.Id ";
+		stockWhere = " AND SS.Stock=@stock ";
 		query.AddParameter("stock", stock);
 	}
 	
 	query.Text = "SELECT DISTINCT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, " +
 			"G.Id AS GroupId, G.Parent AS GroupParent, P.Description AS ParentDescription, CB.Description AS Brand " +
-			"FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner LEFT JOIN Catalog_SKUGroup P ON G.Parent=P.Id " +
-			"JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id JOIN Catalog_Brands CB ON CB.Id=S.Brand " +
-			stockString +
-			" WHERE S.CommonStock>0 AND PL.Ref = @Ref " + searchString + filterString + 
+			"FROM Catalog_SKU S " +
+			stockString + 
+			"JOIN Catalog_SKUGroup G ON G.Id = S.Owner " +			
+			"JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id " +
+			"JOIN Catalog_Brands CB ON CB.Id=S.Brand " +			
+			"LEFT JOIN Catalog_SKUGroup P ON G.Parent=P.Id " +
+			" WHERE S.CommonStock>0 AND PL.Ref = @Ref " + stockWhere + searchString + filterString + 
 			" ORDER BY G.Description, S.Description LIMIT 100";
 	query.AddParameter("Ref", priceList);	
 	return query.Execute();

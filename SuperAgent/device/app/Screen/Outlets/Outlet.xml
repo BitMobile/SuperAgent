@@ -75,7 +75,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#description#" CssClass="description_row"></c:TextView>
-					<c:TextView Id="outletDescr" Text="$outletObj.Description" CssClass="main_row"></c:TextView>
+					<c:TextView Id="outletDescr" Text="$outlet.Description" CssClass="main_row"></c:TextView>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -83,7 +83,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#address#" CssClass="description_row"></c:TextView>
-					<c:MemoEdit Id="outletAddress" Text="$outletObj.Address"></c:MemoEdit>
+					<c:MemoEdit Id="outletAddress" Value="$outlet.Address" OnChange="$SaveValue($outlet)"></c:MemoEdit>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

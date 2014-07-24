@@ -291,9 +291,9 @@ function DeleteAndRollback(visit) {
 
 function SaveAndBack(outlet) {
 	if (CheckEmptyOutletFields(outlet)){
-		outlet.GetObject().Save(false);
+		outlet.GetObject().Save();
 		ReviseParameters(outlet, true);
-		DB.Commit();
+		//DB.Commit();
 		Workflow.BackTo("Outlets");
 	}	
 }

@@ -29,3 +29,18 @@ body dl {
 .grid vl MemoEdit {
 	margin-top: 10%;
 }
+
+.partialW {
+	width: 80%;
+	height: 100%;
+	padding-right: 11%;
+	padding-top: 11%;
+	padding-left: 5%;
+}
+
+.phone {
+	width: 7.5%;
+	height: 0%;
+	margin-top: 37%;
+	background-image: url(phone.png);
+}

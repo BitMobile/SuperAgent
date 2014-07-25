@@ -37,3 +37,7 @@ function SaveValue(control, ref){
 	ref = ref.GetObject();
 	ref.Save();
 }
+
+function DoCall(numberStr){
+	Phone.Call(numberStr);
+}

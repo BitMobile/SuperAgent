@@ -1,6 +1,6 @@
 ﻿
 function GetNextVisitDate(outlet){
-	var q = new Query("SELECT PlanDate FROM Catalog_MAVisitPlan_PlanVisits WHERE Outlet=@outlet AND DATE(PlanDate)>=DATE(@date)");
+	var q = new Query("SELECT PlanDate FROM Document_MobileAppPlanVisit WHERE Outlet=@outlet AND DATE(PlanDate)>=DATE(@date)");
 	q.AddParameter("outlet", outlet);
 	q.AddParameter("date", DateTime.Now.Date);
 	return q.ExecuteScalar();
@@ -125,14 +125,13 @@ function CheckAndCommit(order, visit, wfName) {
 
 
 function NextDateHandler(date, control){
-	var q1 = new Query("SELECT Id FROM Catalog_MAVisitPlan");
-	var ref = q1.ExecuteScalar();
 	
-	var newVistPlan = DB.Create("Catalog.MAVisitPlan_PlanVisits");
-	newVistPlan.Ref = ref;
+	var newVistPlan = DB.Create("Document.MobileAppPlanVisit");
 	newVistPlan.SR = $.common.UserRef;
 	newVistPlan.PlanDate = date;
 	newVistPlan.Outlet = $.workflow.outlet;
+	newVistPlan.Transformed = false;
+	newVistPlan.Date = DateTime.Now;
 	newVistPlan.Save();
 	
 	control.Text = date;

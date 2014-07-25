@@ -9,14 +9,9 @@ function CreateContactIfNotExist(contact, outlet) {
 		return contact;
 }
 
-function SaveAndBack(entity) {
+function SaveAndBack(entity, validateOutlet) {
 
-	var emailValid = Global.ValidateEmail(entity.Email);
-	var phoneNumValid = Global.ValidatePhoneNr(entity.PhoneNumber);
-	var innValid = Global.ValidateField(entity.INN, "([0-9]{10}|[0-9]{12})?", Translate["#inn#"]);
-	var kppValid = Global.ValidateField(entity.KPP, "([0-9]{9})?", Translate["#kpp#"]);
-
-	if (emailValid && phoneNumValid && innValid && kppValid) {
+	if (ValidateOutlet(entity, validateOutlet)) {
 		if (getType(entity.GetObject()) == "DefaultScope.Catalog.Outlet_Contacts" && EmptyContact(entity) && entity.IsNew()) {
 			DB.Delete(entity);
 			DB.Commit();
@@ -25,6 +20,22 @@ function SaveAndBack(entity) {
 		Workflow.Back();
 	}
 
+}
+
+function ValidateOutlet(outlet, validateOutlet){
+	
+	if (ConvertToBoolean()==false)
+		return true;
+	
+	var emailValid = Global.ValidateEmail(entity.Email);
+	var phoneNumValid = Global.ValidatePhoneNr(entity.PhoneNumber);
+	var innValid = Global.ValidateField(entity.INN, "([0-9]{10}|[0-9]{12})?", Translate["#inn#"]);
+	var kppValid = Global.ValidateField(entity.KPP, "([0-9]{9})?", Translate["#kpp#"]);
+	
+	if (emailValid && phoneNumValid && innValid && kppValid) {
+		return true;
+	}
+	return false;
 }
 
 function GetString(ref) {

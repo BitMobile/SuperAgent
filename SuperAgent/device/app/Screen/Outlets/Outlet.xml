@@ -153,7 +153,7 @@
 						<c:TextView Id="control{$index}" Text="$parameterValue.Value" CssClass="value"></c:TextView>
 					</s:If>
 					<s:If Test="$parameter.TypeDescription=='Snapshot'">
-						<c:TextView Id="control{$index}" Text="$GetSnapshotText($questionValue.Answer)" CssClass="value"></c:TextView>
+						<c:TextView Id="control{$index}" Text="$GetSnapshotText($parameterValue.Value)" CssClass="value"></c:TextView>
 					</s:If>
 				</c:DockLayout>
 

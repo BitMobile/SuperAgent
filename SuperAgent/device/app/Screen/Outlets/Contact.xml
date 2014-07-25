@@ -5,7 +5,7 @@
 
 	<c:DockLayout>
 
-		<c:HorizontalLayout Id="btnDone" CssClass="bottom_btn" OnEvent="Back" OnClickAction="$SaveAndBack($contact)">
+		<c:HorizontalLayout Id="btnDone" CssClass="bottom_btn" OnEvent="Back" OnClickAction="$SaveAndBack($contact, false)">
 			<c:TextView Text="#ready#"></c:TextView>
 		</c:HorizontalLayout>
 		<c:HorizontalLine CssClass="b_line" />

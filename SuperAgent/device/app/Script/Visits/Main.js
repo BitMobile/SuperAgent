@@ -19,7 +19,7 @@ function GetUncommitedScheduledVisits(searchText, getCount) {
 	var q = new Query();
 	if (String.IsNullOrEmpty(searchText)==false)
 		search = "AND Contains(O.Description, '" + searchText + "') ";
-	q.Text = ("SELECT DISTINCT VP.Outlet, VP.Ref, " +
+	q.Text = ("SELECT DISTINCT VP.Outlet, VP.Ref, TIME(VP.Date) AS Time, " +
 			"(SELECT CASE WHEN COUNT(DISTINCT D.Overdue) = 2 THEN 2	WHEN COUNT(DISTINCT D.Overdue) = 0 THEN 3 " +
 			"ELSE (SELECT D1.Overdue FROM Document_AccountReceivable_ReceivableDocuments D1 " +
 			"JOIN Document_AccountReceivable A1 ON D1.Ref=A1.Id WHERE A1.Outlet = VP.Outlet LIMIT 1) END AS st " +

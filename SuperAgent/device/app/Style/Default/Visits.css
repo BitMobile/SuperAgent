@@ -20,3 +20,21 @@
 	height: 40%;
 	font: 42% Arial;
 }
+
+.grid vl hl{
+	height: 40%;
+	width: 100%;
+}
+
+.grid vl hl description_row{
+	height: 100%;
+	font: 42% Arial;
+}
+
+.bl_description_row{
+	width: 20%;
+	height: 100%;
+	white-space: normal;
+	color: #2d89cf;
+	font: 42% Arial;
+}

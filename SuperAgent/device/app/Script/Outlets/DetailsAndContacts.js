@@ -40,7 +40,7 @@ function ValidateOutlet(outlet, validateOutlet){
 
 function GetString(ref) {
 	if (ref.EmptyRef())
-		return Translate["#select_answer#"];
+		return Translate["#select_answer_low#"];
 	else
 		return ref.Description;
 }

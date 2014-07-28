@@ -26,7 +26,7 @@ function OrderExists(visit) {
 }
 
 function SetDeliveryDate(order, control) {
-    Global.DateTimeDialog(order, "DeliveryDate", order.DeliveryDate, control);
+    DateTimeDialog(order, "DeliveryDate", order.DeliveryDate, control);
 }
 
 function SetnextVisitDate(nextDate, control){
@@ -150,4 +150,9 @@ function VisitIsChecked(visit, order, wfName) {
         else
             return true;
     }
+}
+
+
+function DialogCallBack(control, key){
+	control.Text = key;
 }

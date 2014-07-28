@@ -179,7 +179,7 @@ function GoToQuestionAction(answerType, question, visit, control, attribute) {
 	}
 
 	if (answerType == "Boolean") {
-		Global.BooleanDialogSelect(question, attribute, Variables[control]);
+		BooleanDialogSelect(question, attribute, Variables[control]);
 	}
 
 	if (answerType == "Integer" || answerType == "String" || answerType == "Decimal") {
@@ -242,4 +242,11 @@ function GetActionAndBack() {
 			Workflow.BackTo("Visit_Tasks");
 	} else
 		Workflow.Back();
+}
+
+//------------------------------internal-----------------------------------
+
+function DialogCallBack(control, key){
+	
+	Workflow.Refresh([$.param1, $.param2, $.param3, $.param4, $.skuValue]);
 }

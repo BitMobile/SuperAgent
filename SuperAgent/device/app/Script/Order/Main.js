@@ -276,7 +276,11 @@ function DateTimeDialog(entity, dateTime) {
 
 function SetDeliveryDateDialog(order, control, executedOrder) {
 	if (IsEditable(executedOrder, order))		
-		Global.DateTimeDialog(order, "DeliveryDate", order.DeliveryDate, control);
+		DateTimeDialog(order, "DeliveryDate", order.DeliveryDate, control);
+}
+
+function DialogCallBack(control, key){
+	Workflow.Refresh([null, null, $.executedOrder]);
 }
 
 function OrderBack() {

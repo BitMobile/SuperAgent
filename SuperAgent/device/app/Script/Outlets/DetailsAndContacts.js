@@ -4,6 +4,7 @@ function CreateContactIfNotExist(contact, outlet) {
 		contact = DB.Create("Catalog.Outlet_Contacts");
 		contact.Ref = outlet;
 		contact.Save();
+		Dialog.Debug(contact);
 		return contact.Id;
 	} else
 		return contact;
@@ -39,10 +40,14 @@ function ValidateOutlet(outlet, validateOutlet){
 }
 
 function GetString(ref) {
-	if (ref.EmptyRef())
-		return Translate["#select_answer_low#"];
-	else
-		return ref.Description;
+	if (ref.EmptyRef()){
+		$.Add("style", "comment_row");
+		return Translate["#select_answer_low#"];	
+	}
+	else{
+		$.Add("style", "main_row");
+		return ref.Description;	
+	}
 }
 
 function GetContacts(outlet) {
@@ -95,4 +100,15 @@ function PlanHandler(date, arr) {
 	plan.PlanDate = date;
 	plan.Save();
 	Workflow.Refresh([ outlet ]);
+}
+
+
+//------------------------------internal-----------------------------------
+
+function DialogCallBack(control, key){
+	var v = null;
+	if ($.Exists("param2"))
+		v = $.param2;
+	 
+	Workflow.Refresh([$.contact, $.outlet]);
 }

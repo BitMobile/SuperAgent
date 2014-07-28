@@ -23,7 +23,7 @@
 			<s:Iterator Id="contact" Value="$GetContacts($outlet)" Status="statusCount">
 
 				<c:SwipeHorizontalLayout CssClass="swipe_layout">
-					<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoAction(Select, $contact.Id, $outlet)">
+					<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoAction(Select, $outlet, $contact.Id)">
 						<c:TextView Text="$contact.ContactName"></c:TextView>
 						<c:Image />
 					</c:DockLayout>

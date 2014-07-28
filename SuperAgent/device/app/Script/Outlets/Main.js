@@ -83,13 +83,13 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 		var q = new Query();
 		q.Text = "SELECT Value, Value FROM Catalog_OutletParameter_ValueList WHERE Ref=@ref";
 		q.AddParameter("ref", parameter);
-		Global.ValueListSelect(parameterValue, "Value", q.Execute(), Variables[control]);
+		ValueListSelect(parameterValue, "Value", q.Execute(), Variables[control]);
 	}
 	if (typeDescription == "DateTime") {
-		Global.DateTimeDialog(parameterValue, "Value", parameterValue.Value, Variables[control]);
+		DateTimeDialog(parameterValue, "Value", parameterValue.Value, Variables[control]);
 	}
 	if (typeDescription == "Boolean") {
-		Global.BooleanDialogSelect(parameterValue, "Value", Variables[control]);
+		BooleanDialogSelect(parameterValue, "Value", Variables[control]);
 	}
 	if (typeDescription == "Snapshot") {
 		var guid = GetCameraObject(outlet);
@@ -343,4 +343,11 @@ function CheckIfEmpty(entity, attribute, objectType, objectName, deleteIfEmpty) 
 			return false;
 	} else
 		return true;
+}
+
+
+//------------------------------internal-----------------------------------
+
+function DialogCallBack(control, key){
+	control.Text = key;
 }

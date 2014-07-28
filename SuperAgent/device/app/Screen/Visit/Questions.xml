@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Questions.css">
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="CreateOutlet.css">
 
 	<s:Push Id="outlet" Value="$workflow.outlet"></s:Push>
 	<s:Push Id="visit" Value="$workflow.visit"></s:Push>
@@ -48,7 +48,7 @@
 
 						<s:If Test="$question.AnswerType=='ValueList'">
 							<s:If Test="$questionValue.Answer==''">
-								<c:TextView Id="control{$index}" Text="#select_answer_low#" CssClass="main_row"></c:TextView>
+								<c:TextView Id="control{$index}" Text="#select_answer_low#" CssClass="comment_row"></c:TextView>
 							</s:If>
 							<s:Else>
 								<c:TextView Id="control{$index}" Text="$questionValue.Answer" CssClass="main_row"></c:TextView>
@@ -57,21 +57,30 @@
 
 						<s:If Test="$question.AnswerType=='Snapshot'">
 							<s:Push Id="snapshotText" Value="$GetSnapshotText($questionValue.Answer)"></s:Push>
-							<c:TextView Id="control{$index}" Text="$snapshotText" CssClass="main_row"></c:TextView>
+							<s:If Test="$IsNullOrEmpty($questionValue.Answer)">
+								<c:TextView Id="control{$index}" Text="$snapshotText" CssClass="comment_row"></c:TextView>
+							</s:If>
+							<s:Else>
+								<c:TextView Id="control{$index}" Text="$snapshotText" CssClass="main_row"></c:TextView>
+							</s:Else>
 						</s:If>
 
 						<s:If Test="$question.AnswerType=='DateTime'">
 							<s:If Test="$IsNullOrEmpty($questionValue.Answer)">
-								<s:Push Id="answerValue" Value="#clickToInsert#"></s:Push>
+								<c:TextView Id="control{$index}" Text="#clickToInsert#" CssClass="comment_row"></c:TextView>
 							</s:If>
 							<s:Else>
-								<s:Push Id="answerValue" Value="$questionValue.Answer"></s:Push>
+								<c:TextView Id="control{$index}" Text="$questionValue.Answer" CssClass="main_row"></c:TextView>
 							</s:Else>
-							<c:TextView Id="control{$index}" Text="$answerValue" CssClass="main_row"></c:TextView>
 						</s:If>
 
 						<s:If Test="$question.AnswerType=='Boolean'">
-							<c:TextView Id="control{$index}" Text="$questionValue.Answer" CssClass="main_row"></c:TextView>
+							<s:If Test="$IsNullOrEmpty($questionValue.Answer)">
+								<c:TextView Id="control{$index}" Text="#select_answer_low#" CssClass="comment_row"></c:TextView>
+							</s:If>
+							<s:Else>
+								<c:TextView Id="control{$index}" Text="$questionValue.Answer" CssClass="main_row"></c:TextView>
+							</s:Else>
 						</s:If>
 
 					</c:VerticalLayout>

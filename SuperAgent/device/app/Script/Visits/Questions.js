@@ -62,7 +62,7 @@ function GoToQuestionAction(answerType, question, visit, control, questionItem) 
 		var q = new Query();
 		q.Text = "SELECT Value, Value FROM Catalog_Question_ValueList WHERE Ref=@ref";
 		q.AddParameter("ref", questionItem);
-		Global.ValueListSelect(question, "Answer", q.Execute(),
+		ValueListSelect(question, "Answer", q.Execute(),
 				Variables[control]);
 	}
 
@@ -72,14 +72,19 @@ function GoToQuestionAction(answerType, question, visit, control, questionItem) 
 	}
 
 	if (answerType == "DateTime") {
-		Global.DateTimeDialog(question, "Answer", question.Answer, Variables[control]);
+		DateTimeDialog(question, "Answer", question.Answer, Variables[control]);
 	}
 
 	if (answerType == "Boolean") {
-		Global.BooleanDialogSelect(question, "Answer", Variables[control]);
+		BooleanDialogSelect(question, "Answer", Variables[control]);
 	}
-
+	
 }
+
+function DialogCallBack(control, key){
+	Workflow.Refresh([]);
+}
+		
 
 function SaveAtVisit(arr) {
 	var question = arr[0];

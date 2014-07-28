@@ -24,7 +24,7 @@ function SaveAndBack(entity, validateOutlet) {
 
 function ValidateOutlet(outlet, validateOutlet){
 	
-	if (ConvertToBoolean(validateOutlet)==false)
+	if (ConvertToBoolean1(validateOutlet)==false)
 		return true;
 	
 	var emailValid = Global.ValidateEmail(entity.Email);

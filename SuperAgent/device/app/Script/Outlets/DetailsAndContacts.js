@@ -57,7 +57,7 @@ function GetContacts(outlet) {
 }
 
 function GetPlans(outlet, sr) {
-	var q = new Query("SELECT Id, PlanDate FROM Document_MobileAppPlanVisit WHERE Outlet=@outlet AND SR=@sr");
+	var q = new Query("SELECT Id, strftime('%Y-%m-%d %H:%M', PlanDate) AS PlanDate FROM Document_MobileAppPlanVisit WHERE Outlet=@outlet AND SR=@sr");
 	q.AddParameter("outlet", outlet);
 	q.AddParameter("sr", $.common.UserRef);
 	return q.Execute();

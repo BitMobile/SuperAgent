@@ -221,3 +221,4 @@ nextVisitDate	Next visit date
 incorrect		Incorrect
 contactName		Contact name
 position		Position
+visitdate		Visit date

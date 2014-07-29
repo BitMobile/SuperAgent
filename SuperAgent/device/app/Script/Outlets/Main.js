@@ -149,6 +149,7 @@ function ReviseParameters(outlet, save) {
 
 function CreateOutlet() {
 	var outlet = DB.Create("Catalog.Outlet");
+	outlet.OutletStatus = DB.Current.Constant.OutletStatus.Potential;
 	outlet.Save();
 	return outlet.Id;
 }

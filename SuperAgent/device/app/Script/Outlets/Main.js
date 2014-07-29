@@ -68,7 +68,6 @@ function CreateOutletParameterValue(outlet, parameter, value, parameterValue) {
 	q.AddParameter("ref", outlet);
 	q.AddParameter("parameter", parameter);
 	parameterValue = q.ExecuteScalar();
-	Dialog.Debug(parameterValue);
 	if (parameterValue == null) {
 		parameterValue = DB.Create("Catalog.Outlet_Parameters");
 		parameterValue.Ref = outlet;

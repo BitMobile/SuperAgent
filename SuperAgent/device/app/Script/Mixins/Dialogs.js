@@ -43,7 +43,6 @@ function DoSelectCallback1(key, args) {
 }
 
 function DoSelectCallback2(key, args) {
-	Dialog.Debug(args);
 	var entity = args[0];
 	var attribute = args[1];
 	var control = args[2];

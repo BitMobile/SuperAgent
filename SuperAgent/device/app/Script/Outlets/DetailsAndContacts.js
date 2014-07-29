@@ -4,7 +4,6 @@ function CreateContactIfNotExist(contact, outlet) {
 		contact = DB.Create("Catalog.Outlet_Contacts");
 		contact.Ref = outlet;
 		contact.Save();
-		Dialog.Debug(contact);
 		return contact.Id;
 	} else
 		return contact;

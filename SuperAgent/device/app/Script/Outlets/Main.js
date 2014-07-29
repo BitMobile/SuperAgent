@@ -1,4 +1,4 @@
-function GetOutlets(searchText) {			
+function GetOutlets(searchText) {
 	if (String.IsNullOrEmpty(searchText)) {
 		var query = new Query();
 		query.Text = "SELECT Id, Address, Description FROM Catalog_Outlet ORDER BY Description LIMIT 100";
@@ -26,12 +26,12 @@ function CreateOutletAndForward() {
 	Workflow.Action("Create", parameters);
 }
 
-function CreateVisitEnable(){
-	if ($.sessionConst.PlanEnbl && $.workflow.name=="Outlets")
+function CreateVisitEnable() {
+	if ($.sessionConst.PlanEnbl && $.workflow.name == "Outlets")
 		return true;
 	else
 		return false;
-	
+
 }
 
 function GetOutletParameters(outlet) {
@@ -41,31 +41,55 @@ function GetOutletParameters(outlet) {
 	return query.Execute();
 }
 
-function GetOutletParameterValue(outlet, parameter, parameterValue) {
-
-	if (parameterValue == null) {
-		return CreateOutletParameterValue(outlet, parameter);
-	}
-
+function UseInput(typeDescription) {
+	if (typeDescription != "Integer" && typeDescription != "Decimal" && typeDescription != "String")
+		return false;
 	else
-		return parameterValue;
+		{
+		if (typeDescription == "Integer" || typeDescription == "Decimal") 
+			$.Add("keyboardType", "numeric");
+		else
+			$.Add("keyboardType", "auto");
+		}
+		return true;
 }
 
-function CreateOutletParameterValue(outlet, parameter) {
-	var d = DB.Create("Catalog.Outlet_Parameters");
-	d.Ref = outlet;
-	d.Parameter = parameter;
-	d.Value = "";
-	d.Save();
-	return d.Id;
+function GetOutletParameterValue(outlet, parameter, parameterValue, type) {
+	if (type == 'Snapshot')
+		return GetSnapshotText(parameterValue);
+	if (parameterValue == null)
+		return "";
+	else
+		return parameterValue.Value;
 }
 
-function SaveValue(control, parameterValue) {
-	parameterValue = parameterValue.GetObject();
+function CreateOutletParameterValue(outlet, parameter, value, parameterValue) {
+	var q = new Query("SELECT Id FROM Catalog_Outlet_Parameters WHERE Ref=@ref AND Parameter = @parameter");
+	q.AddParameter("ref", outlet);
+	q.AddParameter("parameter", parameter);
+	parameterValue = q.ExecuteScalar();
+	Dialog.Debug(parameterValue);
+	if (parameterValue == null) {
+		parameterValue = DB.Create("Catalog.Outlet_Parameters");
+		parameterValue.Ref = outlet;
+		parameterValue.Parameter = parameter;
+	} else
+		parameterValue = parameterValue.GetObject();
+	parameterValue.Value = value;
+	parameterValue.Save();
+	return parameterValue.Id;
+}
+
+function SaveValue(control, parameterValue, outlet, parameter) {
+	if (parameterValue == null) {
+		parameterValue = CreateOutletParameterValue(outlet, parameter);
+		parameterValue.Value = control.Text;
+	}
+	// parameterValue = parameterValue.GetObject();
 	parameterValue.Save();
 }
 
-function GetSnapshotText(text){
+function GetSnapshotText(text) {
 	if (String.IsNullOrEmpty(text))
 		return Translate["#noSnapshot#"];
 	else
@@ -78,6 +102,8 @@ function SelectIfNotAVisit(outlet, attribute, entity) {
 }
 
 function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control) {
+
+	parameterValue = CreateOutletParameterValue(outlet, parameter, Variables[control].Text, parameterValue);
 	
 	if (typeDescription == "ValueList") {
 		var q = new Query();
@@ -93,9 +119,16 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 	}
 	if (typeDescription == "Snapshot") {
 		var guid = GetCameraObject(outlet);
-		Camera.MakeSnapshot(SaveAtOutelt, [parameterValue, control, guid]);
+		Camera.MakeSnapshot(SaveAtOutelt, [ parameterValue, control, guid ]);
 	}
+//	if (typeDescription == "Integer" || typeDescription == "Decimal" || typeDescription == "String") {
+//		CreateOutletParameterValue(outlet, parameter, control.Text, parameterValue)
+//	}
 
+}
+
+function AssignParameterValue(control, typeDescription, parameterValue, value, outlet, parameter){
+	CreateOutletParameterValue(outlet, parameter, control.Text, parameterValue)
 }
 
 function GetLookupList(entity, attribute) {
@@ -121,7 +154,6 @@ function UpdateValueAndBack(entity, attribute, value) {
 	Workflow.Back();
 }
 
-
 function CheckNotNullAndForward(outlet, visit) {
 	var c = CoordsChecked(visit);
 	if (CheckEmptyOutletFields(outlet) && c) {
@@ -131,7 +163,6 @@ function CheckNotNullAndForward(outlet, visit) {
 	}
 }
 
-
 function ReviseParameters(outlet, save) {
 	var q = new Query("SELECT Id, Value FROM Catalog_Outlet_Parameters WHERE Ref=@ref");
 	q.AddParameter("ref", outlet);
@@ -140,10 +171,10 @@ function ReviseParameters(outlet, save) {
 	while (param.Next()) {
 		if (String.IsNullOrEmpty(param.Value))
 			DB.Delete(param.Id);
-		else{
+		else {
 			if (save)
 				param.Id.GetObject().Save(false);
-		}			
+		}
 	}
 }
 
@@ -226,17 +257,16 @@ function CoordsChecked(visit) {
 function VisitCoordsHandler(answ, visit) {
 	visit = $.workflow.visit;
 	if (answ == DialogResult.Yes) {
-        var location = GPS.CurrentLocation;
-        if (location.NotEmpty) {
-        	visit = visit.GetObject();
-            visit.Lattitude = location.Latitude;
-            visit.Longitude = location.Longitude;
-            visit.Save();
-            Dialog.Message("#coordinatesAreSet#");
-        }
-        else
-            NoLocationHandler(VisitCoordsHandler);
-    }
+		var location = GPS.CurrentLocation;
+		if (location.NotEmpty) {
+			visit = visit.GetObject();
+			visit.Lattitude = location.Latitude;
+			visit.Longitude = location.Longitude;
+			visit.Save();
+			Dialog.Message("#coordinatesAreSet#");
+		} else
+			NoLocationHandler(VisitCoordsHandler);
+	}
 }
 
 function NoLocationHandler(descriptor) {
@@ -291,18 +321,17 @@ function DeleteAndRollback(visit) {
 }
 
 function SaveAndBack(outlet) {
-	if (CheckEmptyOutletFields(outlet)){
+	if (CheckEmptyOutletFields(outlet)) {
 		outlet.GetObject().Save();
 		ReviseParameters(outlet, true);
 		if ($.Exists("outlet"))
 			$.Remove("outlet");
-		//DB.Commit();
+		// DB.Commit();
 		Workflow.BackTo("Outlets");
-	}	
+	}
 }
 
-
-//---------------------------------internal------------------------
+// ---------------------------------internal------------------------
 
 function SaveAtOutelt(arr) {
 	var paramValue = arr[0];
@@ -318,9 +347,8 @@ function SaveAtOutelt(arr) {
 function GetCameraObject(entity) {
 	FileSystem.CreateDirectory("/private/Catalog.Outlet");
 	var guid = Global.GenerateGuid();
-	//Variables.Add("guid", guid);
-	var path = String.Format("/private/Catalog.Outlet/{0}/{1}.jpg", entity.Id,
-			guid);
+	// Variables.Add("guid", guid);
+	var path = String.Format("/private/Catalog.Outlet/{0}/{1}.jpg", entity.Id, guid);
 	Camera.Size = 300;
 	Camera.Path = path;
 	return guid;
@@ -335,7 +363,6 @@ function CheckEmptyOutletFields(outlet) {
 	return false;
 }
 
-
 function CheckIfEmpty(entity, attribute, objectType, objectName, deleteIfEmpty) {
 
 	if (entity[attribute].Trim() == "" || String(entity[attribute]) == "0") {
@@ -348,9 +375,8 @@ function CheckIfEmpty(entity, attribute, objectType, objectName, deleteIfEmpty) 
 		return true;
 }
 
+// ------------------------------internal-----------------------------------
 
-//------------------------------internal-----------------------------------
-
-function DialogCallBack(control, key){
+function DialogCallBack(control, key) {
 	control.Text = key;
 }

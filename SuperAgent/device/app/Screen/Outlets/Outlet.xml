@@ -6,8 +6,8 @@
 		<s:Push Id="workflow.outlet" Value="$outlet"></s:Push>
 		<s:Push Id="workflow.visit" Value="$CreateVisitIfNotExists($outlet,$common.UserRef, $workflow.visit, $planVisit)" />
 	</s:If>
-	
-	<s:Push Id="outletObj" Value="$GetObject($outlet)"/>
+
+	<s:Push Id="outletObj" Value="$GetObject($outlet)" />
 
 	<c:DockLayout Id="vOutlet">
 
@@ -130,31 +130,17 @@
 
 			<s:Iterator Id="parameter" Value="$GetOutletParameters($outlet)" Status="statusCount">
 
-				<s:Push Id="parameterValue" Value="$GetOutletParameterValue($outlet,$parameter.Id,$parameter.ParameterValue)" />
+				<s:Push Id="valueStr" Value="$GetOutletParameterValue($outlet,$parameter.Id,$parameter.ParameterValue, $parameter.TypeDescription)" />
+				<s:Push Id="editText" Value="$UseInput($parameter.TypeDescription)" />
 				<s:Push Id="index" Value="$statusCount.Index"></s:Push>
-				<c:DockLayout CssClass="parameter_grid" OnClickAction="$GoToParameterAction($parameter.DataType.Description, $parameterValue, Value, $outlet, $parameter.Id, control{$index})">
+				<c:DockLayout CssClass="parameter_grid" OnClickAction="$GoToParameterAction($parameter.TypeDescription, $parameterValue, Value, $outlet, $parameter.Id, control{$index})">
 					<c:TextView Text="$parameter.Description"></c:TextView>
-					<s:If Test="$parameter.TypeDescription=='Integer'">
-						<c:EditText Id="control{$index}" Value="$parameterValue.Value" OnChange="$SaveValue($parameterValue)" CssClass="value" Keyboard="numeric"></c:EditText>
+					<s:If Test="$editText">
+						<c:EditText Id="control{$index}" Text="$valueStr" OnChange = "$AssignParameterValue($parameter.TypeDescription, $parameterValue, Value, $outlet, $parameter.Id)" CssClass="value" Keyboard="$keyboardType"></c:EditText>
 					</s:If>
-					<s:If Test="$parameter.TypeDescription=='Decimal'">
-						<c:EditText Id="control{$index}" Value="$parameterValue.Value" OnChange="$SaveValue($parameterValue)" CssClass="value" Keyboard="numeric"></c:EditText>
-					</s:If>
-					<s:If Test="$parameter.TypeDescription=='String'">
-						<c:EditText Id="control{$index}" Value="$parameterValue.Value" OnChange="$SaveValue($parameterValue)" CssClass="value"></c:EditText>
-					</s:If>
-					<s:If Test="$parameter.TypeDescription=='DateTime'">
-						<c:TextView Id="control{$index}" Text="$parameterValue.Value" CssClass="value"></c:TextView>
-					</s:If>
-					<s:If Test="$parameter.TypeDescription=='Boolean'">
-						<c:TextView Id="control{$index}" Text="$parameterValue.Value" CssClass="value"></c:TextView>
-					</s:If>
-					<s:If Test="$parameter.TypeDescription=='ValueList'">
-						<c:TextView Id="control{$index}" Text="$parameterValue.Value" CssClass="value"></c:TextView>
-					</s:If>
-					<s:If Test="$parameter.TypeDescription=='Snapshot'">
-						<c:TextView Id="control{$index}" Text="$GetSnapshotText($parameterValue.Value)" CssClass="value"></c:TextView>
-					</s:If>
+					<s:Else>
+						<c:TextView Id="control{$index}" Text="$valueStr" CssClass="value"></c:TextView>
+					</s:Else>
 				</c:DockLayout>
 
 				<c:HorizontalLine />

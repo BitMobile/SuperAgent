@@ -79,14 +79,6 @@ function CreateOutletParameterValue(outlet, parameter, value, parameterValue) {
 	return parameterValue.Id;
 }
 
-function SaveValue(control, parameterValue, outlet, parameter) {
-	if (parameterValue == null) {
-		parameterValue = CreateOutletParameterValue(outlet, parameter);
-		parameterValue.Value = control.Text;
-	}
-	// parameterValue = parameterValue.GetObject();
-	parameterValue.Save();
-}
 
 function GetSnapshotText(text) {
 	if (String.IsNullOrEmpty(text))

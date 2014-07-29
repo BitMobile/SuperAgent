@@ -293,6 +293,8 @@ function SaveAndBack(outlet) {
 	if (CheckEmptyOutletFields(outlet)){
 		outlet.GetObject().Save();
 		ReviseParameters(outlet, true);
+		if ($.Exists("outlet"))
+			$.Remove("outlet");
 		//DB.Commit();
 		Workflow.BackTo("Outlets");
 	}	

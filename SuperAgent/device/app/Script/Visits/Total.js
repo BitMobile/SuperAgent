@@ -126,8 +126,6 @@ function CheckAndCommit(order, visit, wfName) {
 
 function NextDateHandler(date, control){
 	
-	//Dialog.Debug(date);
-	
 	var newVistPlan = DB.Create("Document.MobileAppPlanVisit");
 	newVistPlan.SR = $.common.UserRef;
 	newVistPlan.PlanDate = date;

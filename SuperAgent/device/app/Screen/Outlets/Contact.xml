@@ -31,12 +31,12 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid"  OnClickAction="$DoCall($contact.PhoneNumber)">
-				<c:VerticalLayout CssClass = "partialW">
+			<c:HorizontalLayout CssClass="grid">
+				<c:VerticalLayout CssClass="partialW">
 					<c:TextView Text="#phone#" CssClass="description_row"></c:TextView>
 					<c:EditText Value="$contact.PhoneNumber" Placeholder="-" Keyboard="numeric" CssClass="main_row" />
 				</c:VerticalLayout>
-				<c:Image CssClass="phone"/>
+				<c:VerticalLayout CssClass="phone" OnClickAction="$DoCall($contact.PhoneNumber)"></c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 

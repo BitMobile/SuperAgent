@@ -28,11 +28,12 @@ function DoRefresh() {
 	Workflow.Refresh(arguments.array);
 }
 
-function SaveValue(control, ref){
+function SaveValue(control, ref) {
 	ref = ref.GetObject();
 	ref.Save();
 }
 
-function DoCall(numberStr){
-	Phone.Call(numberStr);
+function DoCall(numberStr) {
+	if (String.IsNullOrEmpty(numberStr) == false)
+		Phone.Call(numberStr);
 }

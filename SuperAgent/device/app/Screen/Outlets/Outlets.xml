@@ -56,7 +56,18 @@
 			<s:Iterator Id="outlet" Value="$outlets">
 
 				<c:HorizontalLayout CssClass="grid" OnClickAction="$AddGlobalAndAction(outlet, $outlet.Id, Select)">
-					<c:VerticalLayout CssClass="no_mark" />
+					<s:If Test="$outlet.OutletStatus == 0">
+						<c:Image CssClass="blue_mark" />
+					</s:If>
+					<s:If Test="$outlet.OutletStatus == 1">
+						<c:Image CssClass="yellow_mark" />
+					</s:If>
+					<s:If Test="$outlet.OutletStatus == 2">
+						<c:Image CssClass="y_blue_mark" />
+					</s:If>
+					<s:If Test="$outlet.OutletStatus == 3">
+						<c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
+					</s:If>
 					<c:VerticalLayout>
 						<c:TextView Text="$outlet.Description" CssClass="main_row"></c:TextView>
 						<c:TextView Text="$outlet.Address" CssClass="description_row"></c:TextView>

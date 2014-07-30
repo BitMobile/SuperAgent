@@ -1,6 +1,6 @@
 ﻿
 function GetNextVisitDate(outlet){
-	var q = new Query("SELECT PlanDate FROM Document_MobileAppPlanVisit WHERE Outlet=@outlet AND DATE(PlanDate)>=DATE(@date)");
+	var q = new Query("SELECT PlanDate FROM Document_MobileAppPlanVisit WHERE Outlet=@outlet AND DATE(PlanDate)>=DATE(@date) AND Transformed=0");
 	q.AddParameter("outlet", outlet);
 	q.AddParameter("date", DateTime.Now.Date);
 	return q.ExecuteScalar();

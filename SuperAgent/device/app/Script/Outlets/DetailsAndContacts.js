@@ -50,7 +50,7 @@ function GetString(ref) {
 }
 
 function GetContacts(outlet) {
-	var q = new Query("SELECT C.Id, C.ContactName, P.Description AS Position, PhoneNumber, Email FROM Catalog_Outlet_Contacts C LEFT JOIN Catalog_Positions P ON C.Position=P.Id WHERE C.Ref=@ref ORDER BY C.ContactName");
+	var q = new Query("SELECT C.Id, C.ContactName, P.Description AS Position, PhoneNumber, Email FROM Catalog_Outlet_Contacts C LEFT JOIN Catalog_Positions P ON C.Position=P.Id WHERE C.Ref=@ref AND C.NotActual=0 ORDER BY C.ContactName");
 	q.AddParameter("ref", outlet);
 	return q.Execute();
 }
@@ -70,7 +70,9 @@ function CreatePlan(outlet, plan, planDate) {
 }
 
 function DeleteContact(ref) {
-	DB.Delete(ref);
+	var contact = ref.GetObject();
+	contact.NotActual = true;
+	contact.Save();
 	DB.Commit();
 	Workflow.Refresh([ $.outlet ]);
 }

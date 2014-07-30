@@ -333,7 +333,7 @@ function SelectPriceList(order, priceLists, executedOrder) {
 		query.AddParameter("Ref", order.Outlet);
 		var pl = query.ExecuteCount();
 		if (parseInt(pl) == parseInt(0)) {
-			var query = new Query("SELECT Id FROM Document_PriceList WHERE DefaultPriceList = @true");
+			var query = new Query("SELECT Id, Description FROM Document_PriceList WHERE DefaultPriceList = @true");
 			query.AddParameter("true", true);
 		}
 		var table = query.Execute();

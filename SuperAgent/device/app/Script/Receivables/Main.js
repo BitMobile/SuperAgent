@@ -13,7 +13,7 @@ function GetReceivables(outlet) {
 }
 
 function ValidateAmount(control) {
-	return Global.ValidateField(control.Text, "[0-9.,]*", Translate["#encashmentAmount#"]);
+	return Global.ValidateField(control.Text, "[0-9\.,]*", Translate["#encashmentAmount#"]);
 }
 
 function GetAmount(receivables) {

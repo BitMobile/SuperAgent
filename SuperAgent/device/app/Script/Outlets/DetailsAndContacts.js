@@ -104,6 +104,10 @@ function PlanHandler(date, arr) {
 	Workflow.Refresh([ outlet ]);
 }
 
+function SavePhoneAndCall(contact){
+	contact = contact.GetObject();
+	DoCall(contact.PhoneNumber);
+}
 
 //------------------------------internal-----------------------------------
 

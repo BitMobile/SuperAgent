@@ -70,7 +70,7 @@
 				<c:HorizontalLayout CssClass="grid">
 					<c:VerticalLayout>
 						<c:TextView Text="#markUp#" CssClass="description_row"></c:TextView>
-						<c:MemoEdit Value="$skuValueObj.MarkUp"></c:MemoEdit>
+						<c:MemoEdit Value="$skuValueObj.MarkUp"  Keyboard="numeric"></c:MemoEdit>
 					</c:VerticalLayout>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />

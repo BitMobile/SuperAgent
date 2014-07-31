@@ -80,10 +80,10 @@
 						<c:DockLayout CssClass="parameter_grid">
 							<c:EditText Id="control{$index}" Value="$encasmentItem.EncashmentSum" Keyboard="numeric" OnChange="$RefreshAmount($workflow.encashment, $encasmentItem)"></c:EditText>
 							<s:If Test="$receivableDoc.Overdue">
-								<c:TextView Text="control{$index} #debt#: {$receivableDoc.DocumentSum}" CssClass="r_row"></c:TextView>
+								<c:TextView Text="#debt#: {$receivableDoc.DocumentSum}" CssClass="r_row"></c:TextView>
 							</s:If>
 							<s:Else>
-								<c:TextView Text="control{$index} #debt#: {$receivableDoc.DocumentSum}" CssClass="b_row"></c:TextView>
+								<c:TextView Text="#debt#: {$receivableDoc.DocumentSum}" CssClass="b_row"></c:TextView>
 							</s:Else>
 						</c:DockLayout>
 					</c:VerticalLayout>

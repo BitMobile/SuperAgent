@@ -65,24 +65,25 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<s:Iterator Id="receivableDoc" Value="$receivables">
+			<s:Iterator Id="receivableDoc" Value="$receivables" Status="statusCount">
 				<s:Push Id="encasmentItem" Value="$CreateEncashmentItemIfNotExist($workflow.encashment, $receivableDoc.DocumentName)"></s:Push>
+				<s:Push Id="index" Value="$statusCount.Index"></s:Push>
 
 				<c:HorizontalLayout CssClass="grid">
 					<c:VerticalLayout>
-					<s:If Test="$receivableDoc.Overdue">
-						<c:TextView Text="{$receivableDoc.DocumentName}  #overdueSum#" CssClass="description_row"></c:TextView>
-					</s:If>
-					<s:Else>
-						<c:TextView Text="{$receivableDoc.DocumentName}" CssClass="description_row"></c:TextView>
-					</s:Else>	
+						<s:If Test="$receivableDoc.Overdue">
+							<c:TextView Text="{$receivableDoc.DocumentName}  #overdueSum#" CssClass="description_row"></c:TextView>
+						</s:If>
+						<s:Else>
+							<c:TextView Text="{$receivableDoc.DocumentName}" CssClass="description_row"></c:TextView>
+						</s:Else>
 						<c:DockLayout CssClass="parameter_grid">
-							<c:EditText Value="$encasmentItem.EncashmentSum" Keyboard="numeric" OnChange="$RefreshAmount($workflow.encashment, $encasmentItem)"></c:EditText>
+							<c:EditText Id="control{$index}" Value="$encasmentItem.EncashmentSum" Keyboard="numeric" OnChange="$RefreshAmount($workflow.encashment, $encasmentItem)"></c:EditText>
 							<s:If Test="$receivableDoc.Overdue">
-								<c:TextView Text="#debt#: {$receivableDoc.DocumentSum}" CssClass="r_row"></c:TextView>
+								<c:TextView Text="control{$index} #debt#: {$receivableDoc.DocumentSum}" CssClass="r_row"></c:TextView>
 							</s:If>
 							<s:Else>
-								<c:TextView Text="#debt#: {$receivableDoc.DocumentSum}" CssClass="b_row"></c:TextView>
+								<c:TextView Text="control{$index} #debt#: {$receivableDoc.DocumentSum}" CssClass="b_row"></c:TextView>
 							</s:Else>
 						</c:DockLayout>
 					</c:VerticalLayout>

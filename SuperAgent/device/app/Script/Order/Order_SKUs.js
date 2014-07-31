@@ -21,9 +21,12 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 		stockString = "JOIN Catalog_SKU_Stocks SS ON SS.Ref=S.Id ";
 		stockWhere = " AND SS.Stock=@stock ";
 		query.AddParameter("stock", stock);
+		var stockField = "SS.StockValue AS CommonStock, "
 	}
+	else
+		var stockField = "S.CommonStock AS CommonStock,";
 	
-	query.Text = "SELECT DISTINCT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, " +
+	query.Text = "SELECT DISTINCT S.Id, S.Description, PL.Price, " + stockField + " G.Description AS GroupDescription, " +
 			"G.Id AS GroupId, G.Parent AS GroupParent, P.Description AS ParentDescription, CB.Description AS Brand " +
 			"FROM Catalog_SKU S " +
 			stockString + 
@@ -31,7 +34,7 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 			"JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id " +
 			"JOIN Catalog_Brands CB ON CB.Id=S.Brand " +			
 			"LEFT JOIN Catalog_SKUGroup P ON G.Parent=P.Id " +
-			" WHERE S.CommonStock>0 AND PL.Ref = @Ref " + stockWhere + searchString + filterString + 
+			" WHERE " + stockCondition + " PL.Ref = @Ref " + stockWhere + searchString + filterString + 
 			" ORDER BY G.Description, S.Description LIMIT 100";
 	query.AddParameter("Ref", priceList);	
 	return query.Execute();

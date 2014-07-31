@@ -138,27 +138,14 @@ function SelectStock(order, attr, control) {
 	var q = new Query("SELECT Id, Description FROM Catalog_Stock");
 	var res = q.Execute().Unload();
 	var table = [];
-	table.push([DB.EmptyRef("Catalog_Stock"), Translate["#allStocks#"]]);
+	table.push([ DB.EmptyRef("Catalog_Stock"), Translate["#allStocks#"] ]);
 	while (res.Next()) {
-		table.push([res.Id, res.Description]);
+		table.push([ res.Id, res.Description ]);
 	}
-	Dialog.Select(Translate["#valueList#"], table, StockSelectHandler, [order, attr, control]);
+	Dialog.Select(Translate["#valueList#"], table, StockSelectHandler, [ order, attr, control ]);
 }
 
-function StockSelectHandler(key, args) {
-	var entity = args[0];
-	var attribute = args[1];
-	var control = args[2];
-	entity[attribute] = key;
-	entity.GetObject().Save();
-	if (key.EmptyRef())
-		control.Text = Translate["#allStocks#"];
-	else
-		control.Text = key.Description;
-	return;
-}
-
-function GetStockDescription(stock){
+function GetStockDescription(stock) {
 	if (stock.EmptyRef())
 		return Translate["#allStocks#"];
 	else
@@ -179,55 +166,6 @@ function SelectPriceListIfIsNew(order, priceLists, executedOrder) {
 
 function IsEditable(executedOrder, order) {
 	return executedOrder == null && IsNew(order);
-}
-
-function ReviseSKUs(order, priceList) {
-
-	var query = new Query("SELECT O.Id, O.Qty, O.Discount, O.Price, O.Total,	O.Amount, P.Price AS NewPrice, SP.Multiplier FROM Document_Order_SKUs O LEFT JOIN Document_PriceList_Prices P ON O.SKU=P.SKU AND P.Ref=@priceList JOIN Catalog_SKU_Packing SP ON O.Units=SP.Pack AND SP.Ref=O.SKU WHERE O.Ref=@order");
-	query.AddParameter("order", order);
-	query.AddParameter("priceList", priceList)
-	var SKUs = query.Execute();
-
-	while (SKUs.Next()) {
-		if (SKUs.NewPrice == null)
-			DB.Delete(SKUs.Id);
-		else {
-			var sku = SKUs.Id;
-			sku = sku.GetObject();
-			sku.Price = SKUs.NewPrice * SKUs.Multiplier;
-			sku.Total = (sku.Discount / 100 + 1) * sku.Price;
-			sku.Amount = sku.Qty * sku.Total;
-			sku.Save();
-		}
-
-	}
-
-	return;
-}
-
-function ValueListSelect2(entity, attribute, table, control) {
-	Dialog.Select("Parameters", table, DoSelectCallback1, [ entity, attribute, control ]);
-	return;
-}
-
-function DoSelectCallback1(key, args) {
-	var entity = args[0];
-	var attribute = args[1];
-	var control = args[2];
-
-	if ((entity[attribute]).ToString() == key.ToString())
-		return;
-
-	var q = new Query("SELECT Id FROM Document_Order_SKUs WHERE Ref=@ref");
-	q.AddParameter("ref", entity);
-	if (parseInt(q.ExecuteCount()) != parseInt(0))
-		Dialog.Message(Translate["#SKUWillRevised#"]);
-
-	entity[attribute] = key;
-	entity.GetObject().Save();
-	control.Text = key.Description;
-	ReviseSKUs(entity, key);
-	return;
 }
 
 function CheckIfEmptyAndForward(order, wfName) {
@@ -275,12 +213,12 @@ function DateTimeDialog(entity, dateTime) {
 }
 
 function SetDeliveryDateDialog(order, control, executedOrder) {
-	if (IsEditable(executedOrder, order))		
+	if (IsEditable(executedOrder, order))
 		DateTimeDialog(order, "DeliveryDate", order.DeliveryDate, control);
 }
 
-function DialogCallBack(control, key){
-	Workflow.Refresh([null, null, $.executedOrder]);
+function DialogCallBack(control, key) {
+	Workflow.Refresh([ null, null, $.executedOrder ]);
 }
 
 function OrderBack() {
@@ -337,7 +275,80 @@ function SelectPriceList(order, priceLists, executedOrder) {
 			query.AddParameter("true", true);
 		}
 		var table = query.Execute();
-		ValueListSelect2(order, "PriceList", table, Variables["priceListTextView"]);
+		PriceListSelect(order, "PriceList", table, Variables["priceListTextView"]);
+	}
+}
+
+function PriceListSelect(entity, attribute, table, control) {
+	Dialog.Select("Parameters", table, DoPriceListCallback, [ entity, attribute, control ]);
+	return;
+}
+
+function DoPriceListCallback(key, args) {
+	var entity = args[0];
+	var attribute = args[1];
+	var control = args[2];
+
+	if ((entity[attribute]).ToString() == key.ToString())
+		return;
+
+	entity[attribute] = key;
+	entity.GetObject().Save();
+	control.Text = key.Description;
+	ReviseSKUs(entity, key, entity.Stock);
+	return;
+}
+
+function StockSelectHandler(key, args) {
+	var entity = args[0];
+	var attribute = args[1];
+	var control = args[2];
+	entity[attribute] = key;
+	entity.GetObject().Save();
+	if (key.EmptyRef())
+		control.Text = Translate["#allStocks#"];
+	else
+		control.Text = key.Description;
+	ReviseSKUs($.workflow.order, $.workflow.order.PriceList, key);
+	return;
+}
+
+function ReviseSKUs(order, priceList, stock) {
+
+	var q = new Query("SELECT Id FROM Document_Order_SKUs WHERE Ref=@ref");
+	q.AddParameter("ref", entity);
+	if (parseInt(q.ExecuteCount()) != parseInt(0))
+		Dialog.Message(Translate["#SKUWillRevised#"]);
+
+	var query = new Query();	
+	query.Text = "SELECT O.Id, O.Qty, O.Discount, O.Price, O.Total, " + 
+			" O.Amount, P.Price AS NewPrice, SS.StockValue AS NewStock, SP.Multiplier " + 
+			" FROM Document_Order_SKUs O " + 
+			" LEFT JOIN Document_PriceList_Prices P ON O.SKU=P.SKU AND P.Ref = @priceList " + 
+			" LEFT JOIN Catalog_SKU_Stocks SS ON SS.Ref=O.SKU AND SS.Stock = @stock " +
+			" JOIN Catalog_SKU_Packing SP ON O.Units=SP.Pack AND SP.Ref=O.SKU " + 
+			" WHERE O.Ref=@order";
+	query.AddParameter("order", order);
+	query.AddParameter("priceList", priceList);
+	query.AddParameter("stock", stock);
+	var SKUs = query.Execute();
+
+	while (SKUs.Next()) {
+		if (SKUs.NewStock == null && $.workflow.order.Stock.EmptyRef() == false)
+			DB.Delete(SKUs.Id);
+		else {
+			if (SKUs.NewPrice == null)
+				DB.Delete(SKUs.Id);
+			else {
+				var sku = SKUs.Id;
+				sku = sku.GetObject();
+				sku.Price = SKUs.NewPrice * SKUs.Multiplier;
+				sku.Total = (sku.Discount / 100 + 1) * sku.Price;
+				sku.Amount = sku.Qty * sku.Total;
+				sku.Save();
+			}
+		}
 	}
 
+	return;
 }

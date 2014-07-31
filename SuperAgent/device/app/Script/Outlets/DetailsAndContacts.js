@@ -3,6 +3,7 @@ function CreateContactIfNotExist(contact, outlet) {
 	if (contact == null) {
 		contact = DB.Create("Catalog.Outlet_Contacts");
 		contact.Ref = outlet;
+		contact.NotActual = false;
 		contact.Save();
 		return contact.Id;
 	} else

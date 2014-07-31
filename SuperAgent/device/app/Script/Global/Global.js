@@ -34,7 +34,7 @@ function ValidateEmail(string){
 }
 
 function ValidatePhoneNr(string){
-	return ValidateField(string, "([0-9()-+]{1,20})?", Translate["#phone#"])
+	return ValidateField(string, "([0-9()-+\s]{1,20})?", Translate["#phone#"])
 }
 
 function ValidateField(string, regExp, fieldName){

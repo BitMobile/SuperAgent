@@ -12,6 +12,12 @@ function ToInteger(text) {
 }
 
 function GetSum(val1, val2) {
+	
+	if (val1 == null)
+		val1 = parseFloat(0);
+	if (val2 == null)
+		val2 = parseFloat(0);
+	
     return parseFloat(val1) + parseFloat(val2);
 }
 

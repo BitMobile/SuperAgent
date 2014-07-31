@@ -41,10 +41,11 @@ function RefreshAmount(control, encashment, encasmentItem) {
 
 	if (Global.ValidateField(control.Text, "[0-9\\.,]*", Translate["#encashment#"])) {
 		encasmentItem = encasmentItem.GetObject();
-		if (IsNullOrEmpty(control.Text))
+		Dialog.Debug(parseFloat(control.Text));
+		if (String.IsNullOrEmpty(control.Text))
 			encasmentItem.EncashmentSum = 0;
 		else
-			encasmentItem.EncashmentSum = control.Text;
+			encasmentItem.EncashmentSum = parseFloat(control.Text); 
 		encasmentItem.Save();
 
 		var q = new Query("SELECT SUM(EncashmentSum) FROM Document_Encashment_EncashmentDocuments WHERE Ref=@ref");

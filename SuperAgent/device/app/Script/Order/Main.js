@@ -197,21 +197,6 @@ function SaveOrder(order) {
 	Workflow.Forward([]);
 }
 
-function SetDeliveryDate(order, attrName) {
-	SetDateTime(order, attrName);
-}
-
-function SetDateTime(entity, attribute) {
-	var NewDateTime = DateTime.Parse(entity[attribute]);
-	var Header = Translate["#enterDateTime#"];
-	Dialog.ShowDateTime(Header, NewDateTime, DateTimeDialog, entity);
-}
-
-function DateTimeDialog(entity, dateTime) {
-	entity.DeliveryDate = dateTime;
-	Variables["deliveryDate"].Text = dateTime; // refactoring is needed
-}
-
 function SetDeliveryDateDialog(order, control, executedOrder) {
 	if (IsEditable(executedOrder, order))
 		DateTimeDialog(order, "DeliveryDate", order.DeliveryDate, control);

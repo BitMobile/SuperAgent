@@ -41,7 +41,6 @@ function RefreshAmount(control, encashment, encasmentItem) {
 
 	if (Global.ValidateField(control.Text, "[0-9\\.,]*", Translate["#encashment#"])) {
 		encasmentItem = encasmentItem.GetObject();
-		Dialog.Debug(parseFloat(control.Text));
 		if (String.IsNullOrEmpty(control.Text))
 			encasmentItem.EncashmentSum = 0;
 		else

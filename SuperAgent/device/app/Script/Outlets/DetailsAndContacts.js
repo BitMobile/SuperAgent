@@ -11,42 +11,19 @@ function CreateContactIfNotExist(contact, outlet) {
 }
 
 function SaveAndBack(entity, validateOutlet) {
-
-	if (ValidateOutlet(entity, validateOutlet)) {
-		if (getType(entity.GetObject()) == "DefaultScope.Catalog.Outlet_Contacts" && EmptyContact(entity) && entity.IsNew()) {
-			DB.Delete(entity);
-			DB.Commit();
-		} else
-			entity.GetObject().Save();
+	if (ValidEntity(entity)) {
+		entity.GetObject().Save();
 		Workflow.Back();
 	}
-
-}
-
-function ValidateOutlet(outlet, validateOutlet){
-	
-	if (ConvertToBoolean1(validateOutlet)==false)
-		return true;
-	
-	var emailValid = Global.ValidateEmail(entity.Email);
-	var phoneNumValid = Global.ValidatePhoneNr(entity.PhoneNumber);
-	var innValid = Global.ValidateField(entity.INN, "([0-9]{10}|[0-9]{12})?", Translate["#inn#"]);
-	var kppValid = Global.ValidateField(entity.KPP, "([0-9]{9})?", Translate["#kpp#"]);
-	
-	if (emailValid && phoneNumValid && innValid && kppValid) {
-		return true;
-	}
-	return false;
 }
 
 function GetString(ref) {
-	if (ref.EmptyRef()){
+	if (ref.EmptyRef()) {
 		$.Add("style", "comment_row");
-		return Translate["#select_answer_low#"];	
-	}
-	else{
+		return Translate["#select_answer_low#"];
+	} else {
 		$.Add("style", "main_row");
-		return ref.Description;	
+		return ref.Description;
 	}
 }
 
@@ -96,25 +73,56 @@ function PlanHandler(date, arr) {
 		plan.Outlet = outlet;
 		plan.Transformed = false;
 		plan.Date = DateTime.Now;
-	}
-	else
+	} else
 		plan = plan.GetObject();
 	plan.PlanDate = date;
 	plan.Save();
 	Workflow.Refresh([ outlet ]);
 }
 
-function SavePhoneAndCall(contact){
+function SavePhoneAndCall(contact) {
 	contact = contact.GetObject();
 	DoCall(contact.PhoneNumber);
 }
 
-//------------------------------internal-----------------------------------
 
-function DialogCallBack(control, key){
+function DialogCallBack(control, key) {
 	var v = null;
 	if ($.Exists("param2"))
 		v = $.param2;
-	 
-	Workflow.Refresh([$.contact, $.outlet]);
+
+	Workflow.Refresh([ $.contact, $.outlet ]);
+}
+
+function ValidEntity(entity) {
+
+	// Validate Contact
+	if (getType(entity.GetObject()) == "DefaultScope.Catalog.Outlet_Contacts") {
+		if (EmptyContact(entity) && entity.IsNew()) {
+			DB.Delete(entity);
+			DB.Commit();
+			return true;
+		}
+		if (Global.ValidatePhoneNr(entity.PhoneNumber) && Global.ValidateEmail(entity.Email))
+			return true;
+		else
+			return false;
+	}
+
+	// Validate Details
+	if (getType(entity.GetObject()) == "DefaultScope.Catalog.Outlet")
+		return ValidateOutlet(entity);
+}
+
+function ValidateOutlet(entity) {
+
+	var emailValid = Global.ValidateEmail(entity.Email);
+	var phoneNumValid = Global.ValidatePhoneNr(entity.PhoneNumber);
+	var innValid = Global.ValidateField(entity.INN, "([0-9]{10}|[0-9]{12})?", Translate["#inn#"]);
+	var kppValid = Global.ValidateField(entity.KPP, "([0-9]{9})?", Translate["#kpp#"]);
+
+	if (emailValid && phoneNumValid && innValid && kppValid) {
+		return true;
+	}
+	return false;
 }

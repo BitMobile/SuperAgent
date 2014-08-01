@@ -86,7 +86,9 @@
 						<c:VerticalLayout>
 							<c:TextView Text="$planOutlet.Description" CssClass="main_row"></c:TextView>
 							<c:HorizontalLayout>
-								<c:TextView Text="$pOutlet.Time" CssClass="bl_description_row"/>
+								<s:If Test="$pOutlet.Time != ''">
+									<c:TextView Text="$pOutlet.Time" CssClass="bl_description_row" />
+								</s:If>
 								<c:TextView Text="{$planOutlet.Address}" CssClass="description_row"></c:TextView>
 							</c:HorizontalLayout>
 						</c:VerticalLayout>

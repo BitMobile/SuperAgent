@@ -1,9 +1,12 @@
 ﻿
-function GetNextVisitDate(outlet){
-	var q = new Query("SELECT PlanDate FROM Document_MobileAppPlanVisit WHERE Outlet=@outlet AND DATE(PlanDate)>=DATE(@date) AND Transformed=0");
+function GetNextVisit(outlet){
+	var q = new Query("SELECT Id, PlanDate FROM Document_MobileAppPlanVisit WHERE Outlet=@outlet AND DATE(PlanDate)>=DATE(@date) AND Transformed=0 LIMIT 1");
 	q.AddParameter("outlet", outlet);
 	q.AddParameter("date", DateTime.Now.Date);
-	return q.ExecuteScalar();
+	var res = q.Execute();
+	res.Next();
+	Dialog.Debug(res.PlanDate);	
+	return res;
 	
 }
 
@@ -29,10 +32,12 @@ function SetDeliveryDate(order, control) {
     DateTimeDialog(order, "DeliveryDate", order.DeliveryDate, control);
 }
 
-function SetnextVisitDate(nextDate, control){
-	if (String.IsNullOrEmpty(nextDate))
-		nextDate = DateTime.Now;
-	Dialog.ShowDateTime(Translate["#enterDateTime#"], nextDate, NextDateHandler, control);
+function SetnextVisitDate(nextVisit, control){
+	if (String.IsNullOrEmpty(nextVisit.Id))
+		var nextDate = DateTime.Now;
+	else
+		var nextDate = nextVisit.PlanDate;
+	Dialog.ShowDateTime(Translate["#enterDateTime#"], nextDate, NextDateHandler, [nextVisit, control]);
 }
 
 function GetOrderControlValue() {
@@ -124,14 +129,21 @@ function CheckAndCommit(order, visit, wfName) {
 //--------------------------internal functions--------------
 
 
-function NextDateHandler(date, control){
-	
-	var newVistPlan = DB.Create("Document.MobileAppPlanVisit");
-	newVistPlan.SR = $.common.UserRef;
+function NextDateHandler(date, args){
+
+	var newVistPlan = args[0];
+
+	Dialog.Debug(newVistPlan.Id);
+	if (newVistPlan.Id==null){
+		newVistPlan = DB.Create("Document.MobileAppPlanVisit");
+		newVistPlan.SR = $.common.UserRef;	
+		newVistPlan.Outlet = $.workflow.outlet;
+		newVistPlan.Transformed = false;
+		newVistPlan.Date = DateTime.Now;
+	}
+	else
+		newVistPlan = newVistPlan.Id.GetObject();
 	newVistPlan.PlanDate = date;
-	newVistPlan.Outlet = $.workflow.outlet;
-	newVistPlan.Transformed = false;
-	newVistPlan.Date = DateTime.Now;
 	newVistPlan.Save();
 	
 	//control.Text = date;

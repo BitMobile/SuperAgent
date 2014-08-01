@@ -52,9 +52,9 @@ function RefreshAmount(control, encashment, encasmentItem) {
 		var s = q.ExecuteScalar();
 
 		encashment = encashment.GetObject();
-		encashment.EncashmentAmount = s;
+		encashment.EncashmentAmount = FormatValue(s);
 		encashment.Save();
-		$.encAmount.Text = s;
+		$.encAmount.Text = FormatValue(s);
 	}
 }
 

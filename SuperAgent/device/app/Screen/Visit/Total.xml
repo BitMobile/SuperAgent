@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Visit_Total.css">
 
-	<s:Push Id="nextVisit" Value="$GetNextVisitDate($workflow.outlet)"></s:Push>
+	<s:Push Id="nextVisit" Value="$GetNextVisit($workflow.outlet)"></s:Push>
 
 	<c:VerticalLayout>
 
@@ -40,7 +40,7 @@
 				<c:HorizontalLayout CssClass="grid" OnClickAction="$SetnextVisitDate($nextVisit, $nextVisitControl)">
 					<c:VerticalLayout>
 						<c:TextView Text="#nextVisitDate#" CssClass="description_row"></c:TextView>
-						<c:TextView Id="nextVisitControl" Text="$nextVisit" CssClass="main_row"></c:TextView>
+						<c:TextView Id="nextVisitControl" Text="$nextVisit.PlanDate" CssClass="main_row"></c:TextView>
 					</c:VerticalLayout>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />

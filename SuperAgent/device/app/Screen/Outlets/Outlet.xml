@@ -13,7 +13,7 @@
 
 		<s:If Test="$CreateVisitEnable()">
 			<c:HorizontalLayout Id="btnCancel" CssClass="bottom_btn">
-				<c:VerticalLayout OnEvent="Back" OnClickAction="$DoAction(ShowDetails, $outlet)" CssClass="trple">
+				<c:VerticalLayout OnClickAction="$DoAction(ShowDetails, $outlet)" CssClass="trple">
 					<c:TextView Text="#details#" CssClass="trpl_left_tv"></c:TextView>
 				</c:VerticalLayout>
 				<c:VerticalLayout Id="btnAdd" OnEvent="Forward" OnClickAction="$DoAction(ShowContacts, $outlet)" CssClass="trple">
@@ -26,7 +26,7 @@
 		</s:If>
 		<s:Else>
 			<c:HorizontalLayout Id="btnCancel" CssClass="bottom_btn">
-				<c:VerticalLayout OnEvent="Back" OnClickAction="$DoAction(ShowDetails, $outlet)">
+				<c:VerticalLayout OnClickAction="$DoAction(ShowDetails, $outlet)">
 					<c:TextView Text="#details#" CssClass="left_tv"></c:TextView>
 				</c:VerticalLayout>
 				<c:VerticalLayout Id="btnAdd" OnEvent="Forward" OnClickAction="$DoAction(ShowContacts, $outlet)">

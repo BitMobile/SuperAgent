@@ -4,8 +4,7 @@ function GetNextVisit(outlet){
 	q.AddParameter("outlet", outlet);
 	q.AddParameter("date", DateTime.Now.Date);
 	var res = q.Execute();
-	res.Next();
-	Dialog.Debug(res.PlanDate);	
+	res.Next();	
 	return res;
 	
 }
@@ -133,7 +132,6 @@ function NextDateHandler(date, args){
 
 	var newVistPlan = args[0];
 
-	Dialog.Debug(newVistPlan.Id);
 	if (newVistPlan.Id==null){
 		newVistPlan = DB.Create("Document.MobileAppPlanVisit");
 		newVistPlan.SR = $.common.UserRef;	

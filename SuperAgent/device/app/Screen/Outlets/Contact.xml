@@ -23,10 +23,9 @@
 			<c:HorizontalLine />
 
 			<c:HorizontalLayout CssClass="grid">
-				<c:VerticalLayout OnClickAction="$DoSelect($contact, Position, $positionControl)">
-					<s:Push Id="string" Value="$GetString($contact.Position)" />
+				<c:VerticalLayout>					
 					<c:TextView Text="#position#" CssClass="description_row"></c:TextView>
-					<c:TextView Id="positionControl" Text="$string" CssClass="$style" />
+					<c:EditText Value="$contact.Position" Placeholder="-" CssClass="main_row" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

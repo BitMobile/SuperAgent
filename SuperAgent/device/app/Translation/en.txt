@@ -163,7 +163,7 @@ itemAlreadyExist	This item already exists. Continue edit? ("No" - don't add new 
 YES		Yes
 NO		No
 filter	Filter
-clearFilter		clearFilter
+clearFilter		Clear filter?
 groups	Groups
 brands	Brands
 brand	Brand

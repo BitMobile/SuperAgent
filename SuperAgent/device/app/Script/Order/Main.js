@@ -265,7 +265,7 @@ function SelectPriceList(order, priceLists, executedOrder) {
 }
 
 function PriceListSelect(entity, attribute, table, control) {
-	Dialog.Select("Parameters", table, DoPriceListCallback, [ entity, attribute, control ]);
+	Dialog.Select("#select_answer#", table, DoPriceListCallback, [ entity, attribute, control ]);
 	return;
 }
 

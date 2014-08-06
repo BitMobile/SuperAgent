@@ -1,8 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Main.css">
 
-	<s:Push Id="fake" Value="$DoWarmUp()"></s:Push>
-
 	<s:Push Id="scheduledVisits" Value="$GetCommitedScheduledVisits()" />
 	<s:Push Id="unscheduledVisits" Value="$GetUnscheduledVisits()" />
 	<s:Push Id="visitsTotal" Value="$GetSum($scheduledVisits, $unscheduledVisits)"></s:Push>

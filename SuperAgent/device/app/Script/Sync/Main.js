@@ -22,6 +22,7 @@ function SyncDataFinish() {
 	
 	$.Remove("sessionConst");
 	Global.SetSessionConstants();
+	Indicators.SetIndicators();
 }
 
 function DrawDataReport() {

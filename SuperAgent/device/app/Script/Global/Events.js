@@ -2,6 +2,7 @@
 
 function OnApplicationInit() {
 	SetSessionConstants();
+	Indicators.SetIndicators();
 }
 
 // ------------------------ Events ------------------------
@@ -130,6 +131,9 @@ function OnWorkflowFinish(name, reason) {
 
 	if (Variables.Exists("brand_filter"))
 		Variables.Remove("brand_filter");
+	
+	Indicators.SetIndicators();
+	
 }
 
 function OnWorkflowPause(name) {

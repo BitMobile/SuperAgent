@@ -11,30 +11,15 @@ var receivablesSumm;
 function SetIndicators() {
 	SetCommitedScheduledVisits();
 	SetEncashmentSumm();
-	SetIndicators();
 	SetOrderQty();
 	SetOrderSumm();
 	SetOutletsCount();
 	SetPlannedVisits();
 	SetReceivablesSumm();
-	SetScheduledVisits();
 	SetUnscheduledVisits();
 }
 
 
-function SetScheduledVisits() {
-	var q = new Query("SELECT COUNT(*) FROM Document_VisitPlan_Outlets WHERE DATE(Date)=DATE(@date)");
-	q.AddParameter("date", DateTime.Now.Date);
-	var cnt = q.ExecuteScalar();
-	if (cnt == null)
-		scheduledVisits = 0;
-	else
-		scheduledVisits = cnt;
-}
-
-function GetScheduledVisits() {
-	return scheduledVisits;
-}
 
 
 function SetOutletsCount() {
@@ -81,11 +66,9 @@ function SetPlannedVisits() {
 	var q = new Query("SELECT COUNT(*) FROM Document_VisitPlan_Outlets WHERE DATE(Date)=DATE(@date)");
 	q.AddParameter("date", DateTime.Now.Date);
 	plannedVisits = q.ExecuteScalar();
-	Dialog.Debug(plannedVisits);
 }
 
 function GetPlannedVisits() {
-	Dialog.Debug(plannedVisits);
 	return plannedVisits;
 }
 
@@ -161,6 +144,3 @@ function GetReceivablesSumm() {
 	return receivablesSumm;
 }
 
-function TestCall(){
-	Dialog.Debug("Lucky you!");
-}

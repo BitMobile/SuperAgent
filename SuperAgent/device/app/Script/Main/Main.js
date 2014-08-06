@@ -6,9 +6,7 @@ function OnLoad() {
 	else
 		$.syncTitle.Text = Translate["#error#"];
 
-	if ($.Exists("finishedWorkflow")
-			&& ($.finishedWorkflow == "Sync" || $.finishedWorkflow == "Visits"
-					|| $.finishedWorkflow == "Order" || $.finishedWorkflow == "Outlets")) {
+	if ($.Exists("finishedWorkflow") && ($.finishedWorkflow == "Sync" || $.finishedWorkflow == "Visits" || $.finishedWorkflow == "Order" || $.finishedWorkflow == "Outlets")) {
 		$.swipe_layout.Index = 0;
 	} else
 		$.swipe_layout.Index = 1;
@@ -45,6 +43,10 @@ function GetCameraObject() {
 
 // --------------------------------------------------------------------------------
 
+//function SetIndicators(){
+//	Indicators.SetIndicators();
+//}
+
 function GetScheduledVisits() {
 	var q = new Query(
 			"SELECT COUNT(*) FROM Document_VisitPlan_Outlets WHERE DATE(Date)=DATE(@date)");
@@ -54,6 +56,7 @@ function GetScheduledVisits() {
 		return 0;
 	else
 		return cnt;
+	//return Indicators.GetScheduledVisits();
 }
 
 function GetOutletsCount() {
@@ -63,6 +66,7 @@ function GetOutletsCount() {
 		return 0;
 	else
 		return cnt;
+	//return Indicators.GetOutletsCount();
 }
 
 function GetCommitedScheduledVisits() {
@@ -72,6 +76,7 @@ function GetCommitedScheduledVisits() {
 	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
 	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));
 	return q.ExecuteCount();
+//	return Indicators.GetCommitedScheduledVisits();
 }
 
 function GetUnscheduledVisits() {
@@ -81,13 +86,14 @@ function GetUnscheduledVisits() {
 	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
 	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));
 	return q.ExecuteScalar();
+//	return Indicators.GetUnscheduledVisits();
 }
 
 function GetPlannedVisits(){
 	var q = new Query("SELECT COUNT(*) FROM Document_VisitPlan_Outlets WHERE DATE(Date)=DATE(@date)");
     q.AddParameter("date", DateTime.Now.Date);
     return q.ExecuteScalar();
-    //return (cnt-done);
+//	return Indicators.GetPlannedVisits();
 }
 
 function GetOrderSumm() {
@@ -100,6 +106,7 @@ function GetOrderSumm() {
 		return 0;
 	else
 		return cnt;
+//	return Indicators.GetOrderSumm();
 }
 
 function GetOrderQty(){
@@ -111,6 +118,7 @@ function GetOrderQty(){
 		return 0;
 	else
 		return cnt;
+	//return Indicators.GetOrderQty();
 }
 
 function GetEncashmentSumm() {
@@ -123,6 +131,7 @@ function GetEncashmentSumm() {
 		return 0;
 	else
 		return cnt;
+//	return Indicators.GetEncashmentSumm();
 }
 
 function GetReceivablesSumm() {
@@ -133,33 +142,36 @@ function GetReceivablesSumm() {
 		return 0;
 	else
 		return cnt;
+//	return Indicators.GetReceivablesSumm;
 }
 
+// ---------------------------Warm ups, temporary------------------
 
-//---------------------------Warm ups, temporary------------------
-
-function DoWarmUp(){
-	RequestOutlets();
-	RequestSKUs();
-	RequestOrderList();
+function DoWarmUp() {
+	// RequestOutlets();
+	// RequestSKUs();
+	// RequestOrderList();
 }
 
-function RequestOutlets(){
+function RequestOutlets() {
 	var q = new Query("SELECT P.Id, P.Description, P.DataType, DT.Description AS TypeDescription, OP.Id AS ParameterValue, OP.Value FROM Catalog_OutletParameter P JOIN Enum_DataType DT ON DT.Id=P.DataType LEFT JOIN Catalog_Outlet_Parameters OP ON OP.Parameter = P.Id");
 	var r = q.Execute();
-	while (r.Next()){}
+	while (r.Next()) {
+	}
 }
 
-function RequestSKUs(){
+function RequestSKUs() {
 	var q = new Query;
-        q.Text = "SELECT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, G.Id AS GroupId, G.Parent AS GroupParent, CB.Description AS Brand FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id JOIN Catalog_Brands CB ON CB.Id=S.Brand"; 
-        var r = q.Execute();
-    	while (r.Next()){}
+	q.Text = "SELECT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, G.Id AS GroupId, G.Parent AS GroupParent, CB.Description AS Brand FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id JOIN Catalog_Brands CB ON CB.Id=S.Brand";
+	var r = q.Execute();
+	while (r.Next()) {
+	}
 }
 
 function RequestOrderList() {
 
 	var q = new Query("SELECT DO.Id, DO.Outlet, DO.Date AS Date, DO.Number, CO.Description AS OutletDescription, DO.Status FROM Document_Order DO JOIN Catalog_Outlet CO ON DO.Outlet=CO.Id");
 	var r = q.Execute();
-	while (r.Next()){}
+	while (r.Next()) {
+	}
 }

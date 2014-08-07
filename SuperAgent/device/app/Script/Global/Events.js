@@ -132,7 +132,8 @@ function OnWorkflowFinish(name, reason) {
 	if (Variables.Exists("brand_filter"))
 		Variables.Remove("brand_filter");
 	
-	Indicators.SetIndicators();
+	if (name=="Visit" || name=="CreateOrder" || name=="Outlets")
+		Indicators.SetIndicators();
 	
 }
 

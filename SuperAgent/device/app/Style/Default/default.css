@@ -125,7 +125,7 @@ MemoEdit {
 	margin-left: 11%;
 	color: #2d89cf;
 	text-align: right;
-	font: 42% arial;
+	font: 40% arial;
 }
 
 .btn_back {
@@ -138,10 +138,10 @@ MemoEdit {
 	width: 100%;
 	height: 100%;
 	margin-left: 5%;
-	padding-top: 25%;
+	padding-top: 26%;
 	text-align: left;
 	color: #2d89cf;
-	font: 41% arial;
+	font: 39.5% arial;
 }
 
 .btn_back img {

@@ -40,7 +40,7 @@
 				<c:HorizontalLayout CssClass="grid">
 					<c:VerticalLayout>
 						<c:TextView Text="#facing#" CssClass="description_row"></c:TextView>
-						<c:MemoEdit Value="$skuValueObj.Facing" Keyboard="numeric"></c:MemoEdit>
+						<c:EditText Value="$skuValue.Facing" Keyboard="numeric"></c:EditText>
 					</c:VerticalLayout>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
@@ -50,7 +50,7 @@
 				<c:HorizontalLayout CssClass="grid">
 					<c:VerticalLayout>
 						<c:TextView Text="#stock#" CssClass="description_row"></c:TextView>
-						<c:MemoEdit Value="$skuValueObj.Stock" Keyboard="numeric"></c:MemoEdit>
+						<c:EditText Value="$skuValue.Stock" Keyboard="numeric"></c:EditText>
 					</c:VerticalLayout>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
@@ -60,7 +60,7 @@
 				<c:HorizontalLayout CssClass="grid">
 					<c:VerticalLayout>
 						<c:TextView Text="#price#" CssClass="description_row"></c:TextView>
-						<c:MemoEdit Value="$skuValueObj.Price" Keyboard="numeric"></c:MemoEdit>
+						<c:EditText Value="$skuValue.Price" Keyboard="numeric"></c:EditText>
 					</c:VerticalLayout>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
@@ -70,7 +70,7 @@
 				<c:HorizontalLayout CssClass="grid">
 					<c:VerticalLayout>
 						<c:TextView Text="#markUp#" CssClass="description_row"></c:TextView>
-						<c:MemoEdit Value="$skuValueObj.MarkUp"  Keyboard="numeric"></c:MemoEdit>
+						<c:EditText Value="$skuValue.MarkUp"  Keyboard="numeric"></c:EditText>
 					</c:VerticalLayout>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />

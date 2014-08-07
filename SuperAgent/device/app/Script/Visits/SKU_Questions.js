@@ -190,6 +190,7 @@ function GoToQuestionAction(answerType, question, visit, control, attribute) {
 function SaveAndBack(skuValue) {
 	if (NotEmptyObject(skuValue) == false)
 		DB.Delete(skuValue);
+	skuValue = skuValue.GetObject().Save();
 	Workflow.Back();
 }
 

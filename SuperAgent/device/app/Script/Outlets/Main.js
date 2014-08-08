@@ -368,6 +368,11 @@ function CheckIfEmpty(entity, attribute, objectType, objectName, deleteIfEmpty) 
 		return true;
 }
 
+function CommitAndBack(){
+	DB.Commit();
+	Workflow.Rollback();
+}
+
 // ------------------------------internal-----------------------------------
 
 function DialogCallBack(control, key) {

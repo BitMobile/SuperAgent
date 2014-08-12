@@ -57,8 +57,11 @@ function DeleteContact(ref) {
 
 // --------------------internal--------------
 
-function EmptyContact(contact) {
-	if (String.IsNullOrEmpty(contact.ContactName) && String.IsNullOrEmpty(contact.PhoneNumber) && String.IsNullOrEmpty(contact.Email) && contact.Position.EmptyRef())
+function EmptyContact(contact) {	
+	if (String.IsNullOrEmpty(contact.ContactName) 
+			&& String.IsNullOrEmpty(contact.PhoneNumber) 
+			&& String.IsNullOrEmpty(contact.Email)
+			&& (contact.Position == null || contact.Position.EmptyRef()))
 		return true;
 	else
 		return false;

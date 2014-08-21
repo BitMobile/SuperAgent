@@ -35,10 +35,12 @@ function random_even(a, b) {
 	var num=0;
 	if (k % 2 > 0) {
 		var num = k + 1;
+		return num;
 	} else {
 		var num = k;
+		return num;
 	}
-	return num;
+	
 }
 
 function CheckValue(path, text) {
@@ -74,11 +76,13 @@ function Sync() {
 						+ "Синхронизация произведена");
 		var st = 0;
 		Console.Pause(1000);
+		return st;
 	} else {
 		var st = 1;
 		Console.WriteLine("Еще рано");
+		return st;
 	}
-	return st;
+	
 }
 
 function CheckEmptyScreens() {
@@ -213,8 +217,7 @@ function main() {
 
 		// Вставить установку координат
 
-		var result = Device.Click("grScrollView.Controls[12]"); // Выбор
-																// параметра
+		var result = Device.Click("grScrollView.Controls[12]"); // Выбор параметра
 		Console.WriteLine(result + "Выбор параметра ");
 
 		Console.WriteLine(CheckScreen("OutletParameter.xml"));

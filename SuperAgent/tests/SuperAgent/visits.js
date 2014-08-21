@@ -1,6 +1,7 @@
-﻿/* Создать визит с задачей, вопросами , вопросами по SKU, прайс-листами и инкассацией.
+﻿/* Создать плановый визит с задачей, вопросами , вопросами по SKU, прайс-листами и инкассацией.
  */
-function TextCheck(path, text) {
+function EditTextCheck(path, text) {
+
 	var result1 = Device.SetFocus(path);
 
 	var result2 = Device.SetText(path, text);
@@ -21,17 +22,21 @@ function TextCheck(path, text) {
 function CheckScreen(screen) {
 
 	var result = Device.GetValue("context.CurrentScreen.Name");
-	Console.Terminate(result != screen, "Экран" + screen + "не открывается!");
+	Console.Terminate(result != screen, "Экран " + screen + " не открывается!");
 
 	return result;
 }
 
-function CheckValue(path, text) {
+function CheckTextViewValue(path, text) {
 	var result = Device.GetValue(path);
+	Console.WriteLine(result + " " + text);
 	if (result == text) {
 		result = "True";
+
+		Console.WriteLine(result);
 	} else {
 		result = "False";
+		Console.WriteLine(result);
 	}
 	return result;
 }
@@ -40,75 +45,35 @@ function getRandomArbitary(min, max) {
 	return Math.round(Math.random() * (max - min) + min);
 }
 
-function ClickAndCheck(type, path, value, screen, description) {
+function ClickAndCheck(type, path, value, description) {
 
-	if (type == "string" || type == "integer" || type == "decimal") {
-
+	if (type == "bool") {
 		Console.WriteLine("---------------" + type + "---------------------");
-		Console.WriteLine(type + "--" + path + "--" + value + "--" + screen
-				+ "--" + description);
-		var result = Device.Click(path);
 
-		Console.WriteLine(result + description);
-
-		Console.WriteLine(CheckScreen(screen));
-
-		Console.WriteLine(TextCheck("grScrollView.Controls[2].Controls[0]",
-				value));
-
-		var result = Device.Click("btnForward");
-		Console.WriteLine(result);
-
-		var PathWithText = path + ".Controls[0].Controls[0].Text";
-		Console.WriteLine(CheckValue(PathWithText, value));
-
-		var result = Device.Click(path);
-
-		Console.WriteLine(CheckValue(
-				"grScrollView.Controls[2].Controls[0].Text", value));
-
-		var result = Device.Click("btnForward");
-		Console.WriteLine(result);
-
-		Console.WriteLine(CheckValue(PathWithText, value));
-	}
-
-	else if (type == "bool") {
-		Console.WriteLine("---------------" + type + "---------------------");
 		var result = Device.Click(path);
 		Console.WriteLine(result + description);
 
-		if (value == "Да") {
-			var result = Device.Click("grScrollView.Controls[2].Controls[1]");
+		if (value == "NoAnswer") {
+			var result = Dialog.SelectItem(0);
 			Console.WriteLine(result);
+			Console.WriteLine(Dialog.ClickPositive());
+			value = " ";
+		} else if (value == "Да") {
+			var result = Dialog.SelectItem(1);
+			Console.WriteLine(result);
+			Console.WriteLine(Dialog.ClickPositive());
 		} else if (value == "Нет") {
-			var result = Device.Click("grScrollView.Controls[2].Controls[2]");
+			var result = Dialog.SelectItem(2);
 			Console.WriteLine(result);
+			Console.WriteLine(Dialog.ClickPositive());
 		}
 
-		var result = Device
-				.GetValue("grScrollView.Controls[2].Controls[0].Controls[0].Text");
-		if (result == value) {
+		var textPath = path + ".Controls[1].Text";
+		var result = CheckTextViewValue(textPath, value);
+		// Console.WriteLine(result);
+		if (result == "True") {
 			var result = "True";
 			Console.WriteLine(result + " Result= " + value);
-			var result = Device.Click("btnForward");
-			Console.WriteLine(result);
-
-			var PathWithText = path + ".Controls[0].Controls[0].Text";
-			Console.WriteLine(CheckValue(PathWithText, value));
-
-			var result = Device.Click(path);// Проверка повторного входа на
-			// экран
-			Console.WriteLine(result);
-
-			var result = CheckValue(
-					"grScrollView.Controls[2].Controls[0].Controls[0].Text",
-					value);
-			Console.WriteLine(result);
-
-			var result = Device.Click("btnForward");
-			Console.WriteLine(result);
-			Console.WriteLine(CheckValue(PathWithText, value));
 		}
 
 		else {
@@ -119,62 +84,68 @@ function ClickAndCheck(type, path, value, screen, description) {
 
 	else if (type == "valueList") {
 		Console.WriteLine("---------------" + type + "---------------------");
-		Console.WriteLine(type + "--" + path + "--" + value + "--" + screen
-				+ "--" + description);
+		Console.WriteLine(type + "--" + path + "--" + value + "--" + description);
 
 		var result = Device.Click(path);
 		Console.WriteLine(result);
 
-		Console.WriteLine(CheckScreen(screen));
+		var description = Dialog.GetItem(value); // Add get chosen value description
 
-		var PathWithText = value + ".Controls[0].Controls[0].Text";
-		Console.WriteLine(PathWithText);
-		var ChoosenValue = Device.GetValue(PathWithText);
-		Console.WriteLine(ChoosenValue);
-
-		var result = Device.Click(value); // Выбор класса т.т.
-		Console.WriteLine(result + description);
-
-		var PathWithText = path + ".Controls[0].Controls[0].Text";
-		var result = Device.GetValue(PathWithText);
+		var result = Dialog.SelectItem(value);
 		Console.WriteLine(result);
+		Console.WriteLine(Dialog.ClickPositive());
 
-		Console.WriteLine(CheckValue(PathWithText, ChoosenValue));
+		// Console.WriteLine(Device.GetValue("grScrollView.Controls[14].Controls[1].Text"));
+		var pathWithText = path + ".Controls[1].Text";
+
+		Console.WriteLine(CheckTextViewValue(pathWithText, description));
 
 	}
+}
 
-	else if (type == "task") {
-		var result = Device.Click(path); // Task
-		Console.WriteLine(result + description);
+function TaskExecute(path) {
 
-		var result = Device.Click("btnBack");
-		Console.WriteLine(result);
+	var pathToTask = path + ".Controls[0].Controls[1].Text";
+	var ExecutedTask = Device.GetValue(pathToTask);
+	Console.WriteLine(ExecutedTask);
 
-		Console.WriteLine(CheckScreen(screen));
+	var result = Device.Click(path); // Task execute with screen Task.xml opening
+	Console.WriteLine(result);
 
-		var result = Device.Click(path); // Task
-		Console.WriteLine(result + "Task");
+	Console.WriteLine(CheckScreen("Visit\\Task.xml"));
 
-		Console.Pause(500);
+	var result = Device.Click("grScrollView.Controls[9].Controls[0]"); // Make task executed
+	Console.WriteLine(result + " Task");
 
-		Console.WriteLine(CheckScreen("Visit_Task.xml"));
+	var result = Device.Click("btnDone");
+	Console.WriteLine(result);
 
-		var result = Device
-				.Click("grScrollView.Controls[2].Controls[0].Controls[0]"); // Task
-		// -
-		// result
-		Console.WriteLine(result + "Task - result");
+	Console.WriteLine(CheckScreen("Visit\\Tasks.xml"));
 
-		var result = Device.Click("btnForward");
-		Console.WriteLine(result);
-	}
+	var result = CheckTextViewValue("grScrollView.Controls[4].Controls[0].Controls[0].Controls[1].Text", ExecutedTask); // Checking that task is executed
 
+	Console.WriteLine(result);
+
+	var result = Device.Click("grScrollView.Controls[4]"); // Task unexecute with screen Task.xml opening
+	Console.WriteLine(result);
+
+	var result = Device.Click("grScrollView.Controls[9].Controls[0]"); // Make task unexecuted
+	Console.WriteLine(result + "Task");
+
+	var result = Device.Click("btnDone");
+	Console.WriteLine(result);
+
+	Console.WriteLine(CheckScreen("Visit\\Tasks.xml"));
+
+	var result = CheckTextViewValue("grScrollView.Controls[2].Controls[1].Controls[0].Controls[1].Text", ExecutedTask); // Checking that task is unexecuted
+
+	Console.WriteLine(result);
+	/* Execute task using swipe */
 }
 
 function ClickAndSetDateTime(path, dateTime, CheckSetDateTime, description) {
 
-	Console.WriteLine(path + "--" + dateTime + "--" + CheckSetDateTime + "--"
-			+ description);
+	Console.WriteLine(path + "--" + dateTime + "--" + CheckSetDateTime + "--" + description);
 	var result = Device.Click(path);
 	Console.WriteLine(result + description);
 
@@ -189,381 +160,293 @@ function ClickAndSetDateTime(path, dateTime, CheckSetDateTime, description) {
 	Console.WriteLine(result);
 	Console.WriteLine(Dialog.ClickPositive());
 
-	var PathWithText = path + ".Controls[0].Controls[0].Text";
+	var PathWithText = path + ".Controls[1].Text";
 	var result = Device.GetValue(PathWithText);
 	var appDateTime = Device.GetValue(PathWithText);
 	appDateTime = String(appDateTime);
 	appDateTime = appDateTime.slice(0, -3);
 	Console.WriteLine(appDateTime);
 	var result = (CheckSetDateTime == appDateTime) ? "True" : "False";
-	Console.WriteLine(result
-			+ "Проверка даты в Textview после внесения изменений");
+	Console.WriteLine(result + "Проверка даты в Textview после внесения изменений");
 }
+
+function Search(path, text) {
+	var result1 = Device.SetFocus(path);
+
+	var result2 = Device.SetText(path, text);
+
+	textp = path + ".Text";
+	var result3 = Device.GetValue(textp);
+
+	var result4 = Device.Click("btnSearch");
+
+	if (result3 == text) {
+		result3 = "True";
+	} else {
+		result3 = "False";
+	}
+
+	if (result1 == result2 && result1 == result3 && result1 == result4 && result1 == "True") {
+		result = "True";
+	} else {
+		result = result1 + "; " + result2 + "; " + result3 + "; " + result4;
+	}
+	return result;
+}
+
+function TextIsUnEditable(path) {
+
+	Device.SetText(path, "Text");
+
+	textp = path + "Controls[2].Text";
+
+	var result = Device.GetValue(textp);
+
+	if (result == "Text") {
+		result = "True";
+	} else {
+		result = "False";
+	}
+
+	return result;
+
+}
+
+function ValueListFieldIsUnEditable(path) {
+
+	Device.Click(path);
+
+	var SelectedItem = Dialog.SelectItem(0);
+	
+	//Console.WriteLine(result);
+	var result = (SelectedItem == "Error: Operation is not valid due to the current state of the object") ? "True" : "False";
+
+	return result;
+}
+
+	
+function CheckDoubleGrid(num, count) {
+	//Сделать так, чтобы можно было просто передавать массив индексов
+	var PathWithText = "grScrollView.Controls[" + num + "].Controls[0].Controls[0].Text";
+
+	var description = Device.GetValue(PathWithText);
+	//Console.WriteLine(description);
+	var DoubleResult = "True";
+	var k = 0;
+	var i = 2;
+	// Console.WriteLine(count);
+	while (i <= count & k == 1 || k == 0) {
+
+		var DoublePath = "grScrollView.Controls[" + i + "].Controls[0].Controls[0].Text";
+		var DoubleDesc = Device.GetValue(DoublePath);
+		//Console.WriteLine(DoubleDesc);
+		if (DoubleDesc == description) {
+			k++;
+		}
+		//  Console.WriteLine(k +" "+i);
+		var i = i + 2;
+	}
+
+	if (k > 1) {
+		DoubleResult = "False";
+	} else {
+		DoubleResult = "True";
+	}
+
+	return DoubleResult;
+}
+
 
 function main() {
 
 	var n = getRandomArbitary(1, 865);
 	Console.WriteLine(n);
 
-	var result = Device.Click("btnVisit");
+	var result = Device.Click("swipe_layout.Controls[0].Controls[1]");
 	Console.WriteLine(result);
 
-	Console.WriteLine(CheckScreen("Outlets.xml"));
+	Console.WriteLine(CheckScreen("Visit\\Visits.xml")); // Console.WriteLine(Search("edtSearch", "Болеро"));
 
-	Console.WriteLine(TextCheck("edtSearch", "болеро"));
+	Console.WriteLine(Device.GetValue("grScrollView.Controls[8].Controls[1].Controls[0].Text"));
 
-	var result = Device.Click("btnSearch");
-	Console.WriteLine(result);
-
-	var result = Device.Click("grScrollView.Controls[0]");
-	Console.WriteLine(result);
+	var result = Device.Click("grScrollView.Controls[8]");// Choose outlet Console.WriteLine(result);
 
 	Console.WriteLine(CheckScreen("Outlet.xml"));
 
 	var outlet = Device.GetValue("workflow[outlet].Description");
-	Console.WriteLine(CheckValue(
-			"headerDescr.Controls[0].Controls[0].Controls[0].Controls[0].Text",
-			outlet));
+	Console.WriteLine(outlet);
 
-	var result = TextCheck(
-			"headerDescr.Controls[0].Controls[0].Controls[0].Controls[0]",
-			"Наименование"); // Проверка изменения названия т.т. из
-	// мобильного приложения
-	if (result !== "True; True; True") {
-		result = "True";
-	}
-	Console.WriteLine(result);
+	//var outlet = "ООО Болеро";
 
-	Console.WriteLine(TextCheck(
-			"grScrollView.Controls[0].Controls[0].Controls[0]", "Новый адрес"
-					+ n));
+	Console.WriteLine(CheckTextViewValue("grScrollView.Controls[2].Controls[0].Controls[1].Text", outlet));
 
-	// Вставить установку координат
+	Console.WriteLine(EditTextCheck("grScrollView.Controls[4].Controls[0].Controls[1]", "Новый адрес" + n)); // Вставить установку координат
 
-	ClickAndCheck("valueList", "grScrollView.Controls[4]",
-			"grScrollView.Controls[2]", "ListChoice.xml", "Выбор класса т.т.");
+	Console.WriteLine(ValueListFieldIsUnEditable("grScrollView.Controls[10]")); //Check that main outlet parameters (class, type) are not editable
 
-	ClickAndCheck("integer", "grScrollView.Controls[12]", n,
-			"OutletParameter.xml", "Наличие акционных моделей");
+	Console.WriteLine(ValueListFieldIsUnEditable("grScrollView.Controls[12]"));
 
-	ClickAndCheck("string", "grScrollView.Controls[18]", n,
-			"OutletParameter.xml", "Правильная выкладка");
+	ClickAndCheck("valueList", "grScrollView.Controls[14]", "2", "Выбор дистрибьютора");
 
-	ClickAndCheck("decimal", "grScrollView.Controls[38]", "1," + n,
-			"OutletParameter.xml", "Размер дебиторской задолженности");
+	var result = EditTextCheck("grScrollView.Controls[18].Controls[1]", n); //Integer
 
-	ClickAndCheck("bool", "grScrollView.Controls[14]", "Да",
-			"OutletParameter.xml", "Оформление витрины samsung");
+	Console.WriteLine(result + " Наличие акционных моделей");
 
-	ClickAndSetDateTime("grScrollView.Controls[22]", "14.04.2014 8:45",
-			"14.05.2014 8:45", "Время посещения");
+	Console.WriteLine(EditTextCheck("grScrollView.Controls[24].Controls[1]", n) + " Правильная выкладка "); //string
 
-	var result = Device.Click("grScrollView.Controls[10]"); //
-	Console.WriteLine(result);
+	Console.WriteLine(EditTextCheck("grScrollView.Controls[44].Controls[1]", n) + " Размер дебиторской задолженности "); //decimal
 
-	var result = Device.Click("btnBack");
-	Console.WriteLine(result);
+	Console.WriteLine(EditTextCheck("grScrollView.Controls[24].Controls[1]", "1," + n) + " Правильная выкладка "); //string
 
-	Console.WriteLine(CheckScreen("Outlet.xml"));
+	//ClickAndCheck("bool", "grScrollView.Controls[20]", "Да", "Оформление витрины samsung");
 
-	Console.WriteLine(CheckValue(
-			"grScrollView.Controls[10].Controls[0].Controls[0].Text", "?"));
+	//ClickAndSetDateTime("grScrollView.Controls[28]", "14.04.2014 8:45", "14.05.2014 8:45", "Время посещения");
 
-	Console.Pause(500);
+	/* Add check that placeholders are saving after editing field
+	 */
 
 	var result = Device.Click("btnForward");
 	Console.WriteLine(result);
 
-	Console.Pause(500);
+	Console.WriteLine(CheckScreen("Visit\\Tasks.xml"));
 
-	Console.WriteLine(CheckScreen("Tasks.xml"));
+	Console.WriteLine(TaskExecute("grScrollView.Controls[2].Controls[1]"));
 
-	ClickAndCheck("task", "grScrollView.Controls[0]", n, "Tasks.xml",
-			"Ввод результата задачи");
+	var result = Device.Click("btnForward"); // Переход к экрану Общих вопросов Console.WriteLine(result + "Переход к экрану Общих вопросов");
 
-	var result = Device.Click("btnForward"); // Переход к экрану Общих
-	// вопросов
-	Console.WriteLine(result + "Переход к экрану Общих вопросов");
+	Console.WriteLine(CheckScreen("Visit\\Questions.xml"));
 
-	Console.WriteLine(CheckScreen("Visit_Questions.xml"));
+	ClickAndSetDateTime("grScrollView.Controls[2].Controls[0]", "14.04.2014 8:45", "14.05.2014 8:45", "Дата и время");
 
-	// var
-	// doubleQuestion=CheckValue("grScrollVIew.Controls[3].Controls[0].Controls[0].Text",
-	// "Доля полки %");//Проверка отображения дублирующихся вопросов
-	// doubleQuestion= (doubleQuestion=="False")? "True": "False";
-	// Console.WriteLine(doubleQuestion);
-	// Console.WriteLine("Question (string)");
+	Console.WriteLine(EditTextCheck("grScrollView.Controls[4].Controls[0].Controls[1]", "1," + n) + " Десятичная дробь "); // decimal
 
-	// Console.WriteLine(Device.GetValue("grScrollView.Controls[6].Controls[0].Controls[0].Text"));
-	// Console.WriteLine(CheckValue("grScrollView.Controls[6].Controls[0].Controls[0].Text","Каталог
-	// товара есть в магазине"));// Question string
-	// Console.WriteLine(TextCheck("grScrollView.Controls[7].Controls[0].Controls[0]",
-	// "String"+n));
+	Console.WriteLine(EditTextCheck("grScrollView.Controls[6].Controls[0].Controls[1]", n) + " Доля полки "); // Int
 
-	// Console.WriteLine("Question (Int)");
-	// Console.WriteLine(CheckValue("grScrollView.Controls[3].Controls[0].Controls[0].Text","Доля
-	// полки %")); //Question int
-	// Console.WriteLine(TextCheck("grScrollView.Controls[4].Controls[0].Controls[0]","1"+
-	// n));
+	//ClickAndCheck("bool", "grScrollView.Controls[12].Controls[0]", "Да", "POSM Фокусного SKU месяца размещены");
 
-	// Console.WriteLine(result+"Question (Boolean)"); // Question (Boolean)
-	// Console.WriteLine(Device.GetValue("grScrollView.Controls[21].Controls[0].Controls[0].Text"));
-	// Console.WriteLine(CheckValue("grScrollView.Controls[21].Controls[0].Controls[0].Text","Набор
-	// рекомендуемых к размещению POSM установлен"));
-	// var
-	// result=Device.Click("grScrollView.Controls[22].Controls[0].Controls[0]")
+	//ClickAndCheck("valueList", "grScrollView.Controls[14].Controls[0]", "2", "Ценник у товара присутствует");
 
-	// Console.WriteLine("Question (Decimal)");
-	// Console.WriteLine(Device.GetValue("grScrollView.Controls[24].Controls[0].Controls[0].Text"));
-	// Console.WriteLine(CheckValue("grScrollView.Controls[24].Controls[0].Controls[0].Text","Стандарт
-	// по доле полки относительно конкурентов выполнен")); // Question (Decimal)
-	// Console.WriteLine(TextCheck("grScrollView.Controls[25].Controls[0].Controls[0]",
-	// "1."+n));
+	Console.WriteLine(CheckDoubleGrid("2", "30"));
 
-	// ClickAndCheck("valueList", "grScrollView.Controls[1]",
-	// "grScrollView.Controls[2]", "ListChoice.xml", "Ценник у товара
-	// присутствует");
+	Console.WriteLine(CheckDoubleGrid("6", "30"));
 
-	// ClickAndSetDateTime("grScrollView.Controls[16]", "14.04.2014
-	// 8:45","14.05.2014 8:45", "Дата и время");
+	Console.WriteLine(CheckDoubleGrid("8", "30"));
+
+	Console.WriteLine(CheckDoubleGrid("14", "30"));
 
 	var result = Device.Click("btnForward");
 	Console.WriteLine(result);
 
-	Console.WriteLine(CheckScreen("Visit_SKUs.xml"));
-	Console.WriteLine(Device
-			.GetValue("grScrollView.Controls[2].Controls[0].Controls[1].Text"));
-	Console
-			.WriteLine(CheckValue(
-					"grScrollView.Controls[2].Controls[0].Controls[1].Text",
-					"500 гр,"));// проверка отображения названия Sku и
-	// количества вопросов в нем
+	Console.WriteLine(CheckScreen("Visit\\SKUs.xml"));
 
-	var result = Device.Click("grScrollView.Controls[2]"); // SKU question
-	Console.WriteLine(result + "SKU question ");
+	var SKUDescription = Console.WriteLine(Device.GetValue("grScrollView.Controls[2].Controls[0].Controls[1].Text"));
 
-	Console.WriteLine(CheckScreen("Visit_SKU.xml"));
+	Console.WriteLine(CheckTextViewValue("grScrollView.Controls[2].Controls[0].Controls[1].Text", "Barenhof конфитюр ананас 350 г Россия (1/10),"));
 
-	var result = Device
-			.Click("grScrollView.Controls[0].Controls[0].Controls[0].Controls[1]"); // SKU
-	// answer
-	// 1
-	Console.WriteLine(result + "SKU answer 1");
+	var AnswerCount = Device.GetValue("grScrollView.Controls[2].Controls[0].Controls[0].Text"); //Remember questions count
+	Console.WriteLine(AnswerCount);
 
-	Console
-			.WriteLine(CheckValue(
-					"grScrollView.Controls[0].Controls[0].Controls[0].Controls[0].Controls[0].Text",
-					"Да"));
+	Console.WriteLine(CheckTextViewValue("grScrollView.Controls[2].Controls[0].Controls[0].Text", "0 из 7"));
 
-	var result = Device.Click("btnForward");
+	var result = Device.Click("grScrollView.Controls[2]"); // Open and answer to the question
 	Console.WriteLine(result);
 
-	Console.WriteLine(CheckScreen("Visit_SKUs.xml"));
-	Console.WriteLine(Device
-			.GetValue("grScrollView.Controls[2].Controls[0].Controls[0].Text"));
-	Console.WriteLine(CheckValue(
-			"grScrollView.Controls[2].Controls[0].Controls[0].Text", "1 из 7"));
+	ClickAndCheck("bool", "grScrollView.Controls[0].Controls[0]", "Да", "Доступность");
 
-	var result = Device.Click("grScrollView.Controls[2]"); // SKU question
-	Console.WriteLine(result + "SKU question "); // Проверка повторного входа
-	// на экран
+	Console.WriteLine(EditTextCheck("grScrollView.Controls[2].Controls[0].Controls[1]", n) + " Фейсинг");
 
-	var result = Device
-			.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Value");
-	result = (result == "True") ? "True" : "False";
+	Console.WriteLine(EditTextCheck("grScrollView.Controls[8].Controls[0].Controls[1]", n) + " Наценка");
 
-	var result = Device.Click("btnForward");
+	Console.WriteLine(Device.Click("btnDone"));
+
+	Console.WriteLine(CheckTextViewValue("grScrollView.Controls[2].Controls[0].Controls[0].Text", "3 из 7")); // Check question count
+
+	var result = Device.Click("grScrollView.Controls[2]"); // Open question and delete answers
 	Console.WriteLine(result);
 
-	var result = Device.Click("grScrollView.Controls[4]"); // SKU question
-	Console.WriteLine(result + "SKU question ");
+	ClickAndCheck("bool", "grScrollView.Controls[0].Controls[0]", "NoAnswer", "Доступность");
 
-	Console.WriteLine(CheckScreen("Visit_SKU.xml"));
+	Console.WriteLine(EditTextCheck("grScrollView.Controls[2].Controls[0].Controls[1]", " ") + " Фейсинг");
 
-	var result = Device
-			.Click("grScrollView.Controls[0].Controls[0].Controls[0].Controls[1]"); // SKU
-	// answer
-	// 1
-	Console.WriteLine(result + "SKU answer 1");
+	Console.WriteLine(Device.Click("btnDone"));
 
-	Console.WriteLine(TextCheck(
-			"grScrollView.Controls[2].Controls[0].Controls[0]", "1" + n));
+	Console.WriteLine(CheckTextViewValue("grScrollView.Controls[2].Controls[0].Controls[0].Text", "0 из 7"));
 
-	Console.WriteLine(TextCheck(
-			"grScrollView.Controls[4].Controls[0].Controls[0]", "14" + n));
+	Console.WriteLine(Device.Click("btnForward"));
 
-	Console.WriteLine(TextCheck(
-			"grScrollView.Controls[6].Controls[0].Controls[0]", "5" + n));
+	Console.WriteLine(CheckScreen("Order\\Order.xml"));
 
-	Console.WriteLine(TextCheck(
-			"grScrollView.Controls[8].Controls[0].Controls[0]", "12" + n));
-
-	var result = Device
-			.Click("grScrollView.Controls[10].Controls[0].Controls[0].Controls[1]"); // SKU
-	// answer
-	// 5
-	Console.WriteLine(result + "SKU answer 5");
-
-	var result = Device.Click("btnForward");
+	var result = Device.Click("btnAdd"); // Order
 	Console.WriteLine(result);
 
-	Console.WriteLine(CheckScreen("Visit_SKUs.xml"));
-
-	Console.WriteLine(Device
-			.GetValue("grScrollView.Controls[4].Controls[0].Controls[0].Text"));
-	Console.WriteLine(CheckValue(
-			"grScrollView.Controls[4].Controls[0].Controls[0].Text", "6 из 6"));
-
-	var result = Device.Click("btnForward");
+	var result = CheckScreen("Order\\Order_SKUs.xml");
 	Console.WriteLine(result);
 
-	Console.WriteLine(CheckScreen("Order.xml"));
+	var result = CheckTextViewValue("grScrollView.Controls[0].Controls[0].Text", " /Алкоголь"); // Checking groups
+	Console.WriteLine(result + " Checking groups");
 
-	var result = Device.Click("Orderadd.Controls[0].Controls[0].Controls[2]"); // Order
-	Console.WriteLine(result);
-
-	var result = CheckScreen("Order_SKUs.xml");
-	Console.WriteLine(result);
-
-	Console.WriteLine(Device
-			.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text"));
-	var result = CheckValue(
-			"grScrollView.Controls[0].Controls[0].Controls[0].Text",
-			" / Продовольствие"); // Checking groups
-	Console.WriteLine(result + "Checking groups");
-
-	var result = Device.Click("grScrollView.Controls[8]"); // Add SKU to Order
+	var result = Device.Click("grScrollView.Controls[2]"); // Add SKU to Order
 	Console.WriteLine(result);
 
 	Console.WriteLine(CheckScreen("Order_EditSKU.xml"));
 
-	var result = TextCheck("grScrollView.Controls[2].Controls[1].Controls[0]",
-			"54"); // Quantity
+	var result = EditTextCheck("grScrollView.Controls[4].Controls[1]", "54"); // Quantity
 	Console.WriteLine(result + "Quantity");
 
-	var result = Device.Click("btnForward");
+	var result = Device.Click("btnAdd");
 	Console.WriteLine(result);
-
-	var result = Device.Click("btnForward");
+	
+	var result = Device.Click("btnDone");
 	Console.WriteLine(result);
-
-	var result = Device.Click("btnForward");
-	Console.WriteLine(result);
-
-	Console.WriteLine(CheckScreen("Order_Commentary.xml"));
-
-	Console.WriteLine(TextCheck(
-			"grScrollView.Controls[2].Controls[0].Controls[1]",
-			"Комментарий к заказу"));
 
 	var result = Device.Click("btnForward");
 	Console.WriteLine(result);
 
 	Console.WriteLine(CheckScreen("Receivables.xml")); // Инкассация
 
-	Console.WriteLine(Device
-			.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text"));
+	Console.WriteLine(CheckTextViewValue("grScrollView.Controls[0].Controls[0].Text", "СУММА ЗАДОЛЖЕННОСТИ: 476"));
 
-	Console.WriteLine(CheckValue(
-			"grScrollView.Controls[0].Controls[0].Controls[0].Text", "476"));
+	Console.WriteLine(CheckTextViewValue("grScrollView.Controls[9].Controls[0].Controls[1].Controls[1].Text", "Долг: 434"));
 
-	Console.WriteLine(Device
-			.GetValue("grScrollView.Controls[0].Controls[1].Controls[0].Text"));
+	Console.WriteLine(CheckTextViewValue("grScrollView.Controls[11].Controls[0].Controls[1].Controls[1].Text", "Долг: 42"));
 
-	Console.WriteLine(CheckValue(
-			"grScrollView.Controls[0].Controls[1].Controls[0].Text", "0"));
+	Console.WriteLine(EditTextCheck("grScrollView.Controls[3].Controls[0].Controls[1]", "465")); // Enter enc value
 
-	Console.WriteLine(TextCheck(
-			"grScrollView.Controls[0].Controls[1].Controls[0]", "462")); // Quantity
-
-	Console.WriteLine(Device
-			.GetValue("grScrollView.Controls[4].Controls[0].Controls[1].Text"));
-	Console.WriteLine(CheckValue(
-			"grScrollView.Controls[4].Controls[0].Controls[1].Text",
-			"Сумма документа: 434,00"));
-
-	Console.WriteLine(Device
-			.GetValue("grScrollView.Controls[6].Controls[0].Controls[1].Text"));
-	Console.WriteLine(CheckValue(
-			"grScrollView.Controls[6].Controls[0].Controls[1].Text",
-			"Сумма документа: 42,00"));
-
-	var result = Device.Click("grScrollView.Controls[2]");
+	var result = Device.Click("grScrollView.Controls[5]");
 	Console.WriteLine(result);
 
-	Console.WriteLine(Device
-			.GetValue("grScrollView.Controls[4].Controls[0].Controls[1].Text"));
-	Console.WriteLine(CheckValue(
-			"grScrollView.Controls[4].Controls[0].Controls[1].Text",
-			"Сумма инкассации: 434,00"));
+	Console.WriteLine(CheckTextViewValue("grScrollView.Controls[9].Controls[0].Controls[1].Controls[1].Text", "Долг: 434"));
 
-	Console.WriteLine(Device
-			.GetValue("grScrollView.Controls[6].Controls[0].Controls[1].Text"));
-	Console.WriteLine(CheckValue(
-			"grScrollView.Controls[6].Controls[0].Controls[1].Text",
-			"Сумма инкассации: 28"));
-
-	Console.WriteLine(CheckValue(
-			"grScrollView.Controls[0].Controls[0].Controls[0].Text", "476")); // Проверка
-	// не
-	// изменились
-	// ли
-	// значения
-	// полей,
-	// после
-	// нажатия
-	// на
-	// кноку
-	// "Распределить
-	// на
-	// документы"
-
-	Console.WriteLine(CheckValue(
-			"grScrollView.Controls[0].Controls[1].Controls[0].Text", "462"));
+	Console.WriteLine(CheckTextViewValue("grScrollView.Controls[11].Controls[0].Controls[1].Controls[1].Text", "Долг: 31"));
 
 	var result = Device.Click("btnForward");
 	Console.WriteLine(result);
 
-	Console.WriteLine(CheckScreen("Visit_Total.xml"));
+	Console.WriteLine(CheckScreen("Visit\\Total.xml"));
 
-	var result = Device
-			.GetValue("grScrollView.Controls[4].Controls[0].Controls[0].Text");
-	Console.WriteLine(result);
-	if (result == "5 из 9") {
-		result = "True";
-	} else {
-		result = "False";
-	}
-	Console.WriteLine(result);
+	//Check the date- has to be tomorrow
 
-	var result = Device
-			.GetValue("grScrollView.Controls[6].Controls[0].Controls[0].Text");
-	Console.WriteLine(result);
-	if (result == "7 из 19") {
-		result = "True";
-	} else {
-		result = "False";
-	}
+	Console.WriteLine(ClickAndSetDateTime(grScrollView.Controls[2], "14.07.2014 8:45", "14.06.2014 8:45", "Дата доставки")); // Change delivery date
+	
+	Console.WriteLine(EditTextCheck("grScrollView.Controls[4].Controls[0].Controls[1]", "Comment"));
 
-	Console.WriteLine(result);
+	Console.WriteLine(CheckTextViewValue("grScrollView.Controls[7].Controls[1].Text", "6 из 61"));
 
-	Device.TakeScreenshot("Total_Visit");
+	Console.WriteLine(CheckTextViewValue("grScrollView.Controls[9].Controls[1].Text", "0 из 1"));
 
-	var result = Device.Click("btnForward");
-	Console.WriteLine(result);
+	Console.WriteLine(CheckTextViewValue("grScrollView.Controls[11].Controls[1].Text", "6 из 61"));
 
-	var CheckMessage = Dialog.GetMessage();
-
-	var result = (CheckMessage == "Причина визита должна быть заполнена") ? "True"
-			: "False";
-	Console.WriteLine(result);
-
-	Dialog.ClickPositive();
-
-	ClickAndCheck("valueList", "grScrollView.Controls[8]",
-			"grScrollView.Controls[0]", "ListChoice.xml",
-			"Выбор причины визита");
-
+	Console.WriteLine(CheckTextViewValue("grScrollView.Controls[13].Controls[1].Text", "6 из 61"));
+	//	
+	//	var CheckMessage = Dialog.GetMessage();
+	//
+	//	var result = (CheckMessage == "Причина визита должна быть заполнена") ? "True" : "False";
+	//	Console.WriteLine(result);
+	//
+	//	Dialog.ClickPositive();
+	//
+	//	ClickAndCheck("valueList", "grScrollView.Controls[8]", "grScrollView.Controls[0]", "ListChoice.xml", "Выбор причины визита");
+	//
 	var result = Device.Click("btnForward");
 	Console.WriteLine(result);
 

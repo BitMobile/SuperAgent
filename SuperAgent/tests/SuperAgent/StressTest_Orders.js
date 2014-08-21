@@ -35,10 +35,12 @@ function random_even(a, b) {
 	var num=0;
 	if (k % 2 > 0) {
 		var num = k + 1;
+		return num;
 	} else {
 		var num = k;
+		return num;
 	}
-	return num;
+	
 }
 
 function CheckValue(path, text) {

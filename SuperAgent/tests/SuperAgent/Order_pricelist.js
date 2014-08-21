@@ -60,12 +60,10 @@ function main() {
 	var result = Device.Click("btnSearch");
 	Console.WriteLine(result);
 
-	var outlet = Device
-			.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text");
+	var outlet = Device.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text");
 	if (outlet == "Error: Index has to be between upper and lower bound of the array.") {
 
-		var outlet = Device
-				.GetValue("grScrollView.Controls[0].Controls[1].Controls[0].Text");
+		var outlet = Device.GetValue("grScrollView.Controls[0].Controls[1].Controls[0].Text");
 		Console.WriteLine("Заказ для " + outlet);
 	} else {
 		Console.WriteLine("Заказ для " + outlet);

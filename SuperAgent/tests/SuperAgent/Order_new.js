@@ -122,9 +122,127 @@ function ClickAndSetDateTime(path, dateTime, CheckSetDateTime, description) {
 }
 
 function main() {
+	Console.WriteLine("-----Модуль Заказ------");
 
-	/*-----------------ADDING NEW ORDER-------------------------*/
+	RunStopWatch("swipe_layout.Controls[0].Controls[5]", "Order\\OrderList.xml");
+	
+	var result = Device.Click("btnMenu");
+	Console.WriteLine(result);
 
+	Console.WriteLine(CheckScreen("Main.xml"));
+
+	var result = Device.Click("swipe_layout.Controls[0].Controls[5]");
+	Console.WriteLine(result);
+
+	Console.WriteLine(CheckScreen("Order\\OrderList.xml"));
+	
+	RunStopWatch("btnAdd", "Outlets\\Outlets.xml");
+	
+	var result = Device.Click("btnBack");
+	Console.WriteLine(result);
+	
+	Console.WriteLine(CheckScreen("Order\\OrderList.xml"));	
+	
+	RunStopWatch("btnAdd", "Outlets\\Outlets.xml");
+	
+	RunStopWatch("grScrollView.Controls[2]", "Order\\Order.xml");
+	
+	var result = Device.Click("btnBack");
+	Console.WriteLine(result);
+	
+	Console.WriteLine(CheckScreen("Outlets\\Outlets.xml"));	
+	
+	RunStopWatch("grScrollView.Controls[2]", "Order\\Order.xml");
+	
+	RunStopWatch("grScrollView.Controls[2]", "Order_Info.xml");
+	
+	var result = Device.Click("btnAdd"); //По нажатию "Назад" не должен переходить на предыдущий экран
+	Console.WriteLine(result);
+	
+	Console.WriteLine(CheckScreen("Order_Info.xml"));
+		
+	var result = Device.Click("btnDone");
+	Console.WriteLine(result);
+	
+	Console.WriteLine(CheckScreen("Order\\Order.xml"));
+	
+	var result = Device.Click("btnBack");
+	Console.WriteLine(result);
+	
+	Console.WriteLine(CheckScreen("Outlets\\Outlets.xml"));	
+	
+	RunStopWatch("grScrollView.Controls[2]", "Order\\Order.xml");
+	
+	RunStopWatch("btnAdd", "Order\\Order_SKUs.xml");
+		
+	var result = Device.Click("btnBack"); //По нажатию "Назад" не должен переходить на предыдущий экран
+	Console.WriteLine(result);
+	
+	Console.WriteLine(CheckScreen("Order\\Order_SKUs.xml"));
+	
+	RunStopWatch("grScrollView.Controls[2]", "Order_EditSKU.xml");
+	
+	var result = Device.Click("btnBack"); //По нажатию "Назад" не должен переходить на предыдущий экран
+	Console.WriteLine(result);
+	
+	Console.WriteLine(CheckScreen("Order_EditSKU.xml"));
+	
+	var result = Device.Click("btnCancel");
+	Console.WriteLine(result);
+	
+	Console.WriteLine(CheckScreen("Order\\Order_SKUs.xml"));	
+	
+	RunStopWatch("grScrollView.Controls[2]", "Order_EditSKU.xml");
+	
+	var result = EditTextCheck("grScrollView.Controls[4].Controls[1]", "54"); // Quantity
+	Console.WriteLine(result + "Quantity");
+	
+	var result = Device.Click("btnAdd");
+	Console.WriteLine(result);
+	
+	Console.WriteLine(CheckScreen("Order\\Order_SKUs.xml"));	
+	
+	var result = Device.Click("btnDone");
+	Console.WriteLine(result);
+	
+	Console.WriteLine(CheckScreen("Order\\Order.xml"));
+	
+	var result = Device.Click("btnBack");
+	Console.WriteLine(result);
+	
+	Console.WriteLine(CheckScreen("Outlets\\Outlets.xml"));	
+	
+	RunStopWatch("btnForward", "Order\\Order.xml");
+	
+	RunStopWatch("grScrollView.Controls[6]", "Order_EditSKU.xml");
+	
+	var result = Device.Click("btnAdd");
+	Console.WriteLine(result);
+	
+	Console.WriteLine(CheckScreen("Order\\Order_SKUs.xml"));
+	
+	var result = Device.Click("btnDone");
+	Console.WriteLine(result);
+	
+	Console.WriteLine(CheckScreen("Order.xml"));
+	
+	var result = Device.Click("btnForward");
+	Console.WriteLine(result);
+
+	Console.WriteLine(CheckScreen("Main.xml"));
+
+	var result = Device.Click("btnForward");
+	Console.WriteLine(result);
+	
+	Console.WriteLine(CheckScreen("Order\\OrderList.xml"));	
+	
+	var result = Device.Click("btnMenu");
+	Console.WriteLine(result);
+	
+	Console.WriteLine(CheckScreen("Main.xml"));
+
+/*-----------------ADDING NEW ORDER-------------------------*/
+/*
 	Console.WriteLine("Adding new order");
 	var result = Device.Click("btnOrder");
 	Console.WriteLine(result);
@@ -162,7 +280,7 @@ function main() {
 	} /*else {
 		Console.WriteLine("Заказ для " + outlet);
 	}*/
-
+/*
 	var result = Device.Click("grScrollView.Controls[0]");
 	Console.WriteLine(result);
 
@@ -171,7 +289,6 @@ function main() {
 	var currDateTime = CurrDateTime();
 	Console.WriteLine(currDateTime);
 
-	/* Took outlet descr from workflow in future */
 	var result = Device.Click("Orderadd.Controls[0].Controls[0].Controls[0]");
 	Console.WriteLine(result);
 
@@ -201,7 +318,7 @@ function main() {
 
 	/* ORDER WITHOUT DISCOUNT and First feature */
 
-	Console.WriteLine(Search("edtSearch", "оздь 10"));
+	/*Console.WriteLine(Search("edtSearch", "оздь 10"));
 
 	Console.WriteLine(Device
 			.GetValue("grScrollView.Controls[2].Controls[0].Controls[0].Text"));
@@ -209,7 +326,7 @@ function main() {
 	RunStopWatch("grScrollView.Controls[2]", "Order_EditSKU.xml");
 
 	/* Check descriptions */
-
+/*
 	Console.WriteLine(Device
 			.GetValue("grScrollView.Controls[0].Controls[0].Controls[0].Text"));
 	Console.WriteLine(CheckValue(
@@ -253,7 +370,7 @@ function main() {
 	 * Console.WriteLine(CheckValue("grScrollView.Controls[4].Controls[1].Controls[0].Text",
 	 * "0") +"Discount Value is 0");
 	 */
-	Console.WriteLine(CheckValue(
+/*	Console.WriteLine(CheckValue(
 			"grScrollView.Controls[4].Controls[1].Controls[1].Text", "Скидка")
 			+ "  Check descriptions Discount");
 
@@ -305,7 +422,7 @@ function main() {
 	Console.WriteLine(result);
 
 	/* ORDER WITH DISCOUNT and second feature */
-	Console
+	/*Console
 			.WriteLine("------------------------ORDER WITH DISCOUNT and second feature----------------------------------------");
 
 	RunStopWatch("Orderadd.Controls[0].Controls[0].Controls[2]",
@@ -465,7 +582,7 @@ function main() {
 
 	/* ORDER WITH MarkUP */
 
-	Console
+	/*Console
 			.WriteLine("------------------------ORDER WITH MarkUP----------------------------------------");
 
 	RunStopWatch("Orderadd.Controls[0].Controls[0].Controls[2]",
@@ -540,7 +657,7 @@ function main() {
 
 	var amount = price * quantity;
 	/* amount=amount.toFixed(2); */
-	Console.WriteLine(amount);
+	/*Console.WriteLine(amount);
 
 	var result = Device.Click("grScrollView.Controls[0].Controls[0]");
 	Console.WriteLine(result);
@@ -641,7 +758,7 @@ function main() {
 	Console.WriteLine(CheckScreen("Main.xml"));
 
 	/*-----------NEW ORDER---------------*/
-
+/*
 	Console
 			.WriteLine("------------------------Checking new order----------------------------------------");
 	var result = Device.Click("btnOrder");
@@ -806,5 +923,5 @@ function main() {
 	var result = Device.Click("btnForward");
 	Console.WriteLine(result);
 
-	Console.WriteLine(CheckScreen("Main.xml"));
+	Console.WriteLine(CheckScreen("Main.xml"));*/
 }

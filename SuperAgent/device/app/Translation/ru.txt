@@ -208,6 +208,7 @@ kpp			КПП
 phone		Телефон
 email		Электронная почта
 web_site	Веб-сайт
+<<<<<<< develop_jura
 stockPlace	Склад
 developer	РАЗРАБОТЧИК ПРИЛОЖЕНИЯ
 bitMobile	БИТ.МОБАЙЛ
@@ -221,3 +222,6 @@ incorrect		Некорректное значение
 contactName		Контактное лицо
 position		Должность
 visitdate		Дата визита
+=======
+test		тест
+>>>>>>> local

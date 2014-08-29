@@ -222,6 +222,3 @@ incorrect		Некорректное значение
 contactName		Контактное лицо
 position		Должность
 visitdate		Дата визита
-=======
-test		тест
->>>>>>> local

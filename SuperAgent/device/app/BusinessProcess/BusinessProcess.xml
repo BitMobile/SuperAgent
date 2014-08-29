@@ -10,7 +10,7 @@
 			<bp:Action Name="Outlets" NextWorkflow="Outlets"></bp:Action>
 			<bp:Action Name="Stocks" NextWorkflow="Stocks"></bp:Action>
 			<bp:Action Name="ToDo" NextWorkflow="ToDo"></bp:Action>
-			<bp:Action Name="Settings" NextWorkflow="Settings"></bp:Action> 
+			<bp:Action Name="Settings" NextWorkflow="Settings"></bp:Action>
 			<bp:Action Name="Sync" NextWorkflow="Sync" />
 			<bp:Action Name="About" NextWorkflow="About" />
 		</bp:Step>

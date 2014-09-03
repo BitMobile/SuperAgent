@@ -1,7 +1,11 @@
 ﻿// ------------------------ Visits screen module ------------------------
 
+function OnLoading(){
+	SetListType();
+}
+
 function SetListType() {
-	if ($.Exists("visitsType") == false)
+	if ($.Exists("visitsType") == false)		 		  
 		$.AddGlobal("visitsType", "planned");
 	else
 		return $.visitsType;

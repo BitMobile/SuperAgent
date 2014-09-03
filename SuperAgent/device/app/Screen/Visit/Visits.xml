@@ -2,7 +2,6 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Visits.css">
 
 	<s:Push Id="search" Value="$param1" />
-	<s:Push Id="s" Value="$SetListType()"></s:Push>
 
 
 	<c:VerticalLayout>

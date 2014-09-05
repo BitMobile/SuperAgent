@@ -109,10 +109,6 @@
 					<s:If Test="$outlet.Lattitude != null || $outlet.Longitude != null">
 						<c:TextView Id="outletCoord"
 							Text="{$outlet.Lattitude}; {$outlet.Longitude}" CssClass="main_row"></c:TextView>
-						<c:DockLayout>
-							<c:TextView></c:TextView>
-							<c:Button Text="#map#" OnClickAction="$DoAction(ShowMap, $outlet)"></c:Button>
-						</c:DockLayout>
 					</s:If>
 					<s:Else>
 						<c:TextView Id="outletCoord" Text="#unknown#" CssClass="main_row"></c:TextView>

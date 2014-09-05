@@ -129,6 +129,7 @@ description	Наименование
 coordinates	Координаты
 set			Установить
 coordinatesAreSet	Координаты установлены
+noCoordinates	Координаты не установлены
 setVisitCoordinates		Повторить попытку установить координаты?
 setCoords	Установить координаты
 setCoordinates	Установить координаты по текущему расположению?

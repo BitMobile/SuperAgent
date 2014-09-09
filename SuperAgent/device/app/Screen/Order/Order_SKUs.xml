@@ -58,7 +58,7 @@
 								<c:Button Text="+1" CssClass="add_button" OnClick="$ShowDialog(I'm Buton1)" />
 								<c:Button CssClass="cart_button" OnClick="$ShowDialog(I'm Buton1)" />
 							</c:HorizontalLayout>
-							<c:TextView Text="2 546 шт. уже в заказе" />
+							<c:TextView Text="{$item.Qty} шт. уже в заказе" />
 						</c:VerticalLayout>
 					</c:HorizontalLayout>
 					<c:HorizontalLayout OnClickAction="$DoAction(SelectSKU, $item.Id, $item.Price)" CssClass="grid">

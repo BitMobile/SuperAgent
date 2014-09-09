@@ -30,3 +30,70 @@
 	color: #fff;
 	font: 100% Arial;
 }
+
+.swipe_order {
+	height: 15.3sp;
+}
+
+.quickOrder {
+	height: 15.3sp;
+	width: 73%;
+	background-color: #4dd865;
+}
+
+.quickOrder vl {
+	height: 100%;
+	width: 100%;
+}
+
+.quickOrder vl TextView{
+	height: 100%;
+	width: 100%;
+	margin-left: 9%;
+	margin-top: 5%;
+	color: #ffffff;
+	font: 56% Arial;
+}
+
+.quickOrder vl hl {
+	height: 52%;
+	width: 100%;
+	margin-top: 17%;
+}
+
+.add_button {
+	height: 100%;
+	width: 19.8%;
+	margin-left: 1.7%;
+	selected-color: #50cb65;
+	background-image: url(empty.png);
+	color: #ffffff;
+	font: 33.5% Arial;
+}
+
+.cart_button {
+	height: 100%;
+	width: 30.1%;
+	margin-left: 1.7%;
+	selected-color: #50cb65;
+	background-image: url(cart.png);
+	font: 33.5% Arial;
+}
+
+.quickOrder vl hl vl {
+	height: 98%;
+	width: 38.5%;
+	margin-left: 4.3%;
+	vertical-align: central;
+	background-image: url(order_textfield.png);
+}
+
+.quickOrder vl hl vl TextView {
+	height: 33.5%;
+	width: 100%;
+	color: #ffffff;
+	text-align: center;
+	vertical-align: central;
+	margin-top: 32.5%;
+	font: 100% Arial;
+}

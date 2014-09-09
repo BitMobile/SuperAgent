@@ -229,3 +229,8 @@ function GetBrands(priceList) {
 	q.AddParameter("priceList", priceList);
 	return q.Execute();
 }
+
+function ShowDialog(control, val) {
+	var d = parseInt(50);
+	return d;
+}

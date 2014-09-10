@@ -27,13 +27,14 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 		var stockField = "S.CommonStock AS CommonStock,";
 	
 	query.Text = "SELECT DISTINCT S.Id, S.Description, PL.Price, " + stockField + " G.Description AS GroupDescription, " +
-			"G.Id AS GroupId, G.Parent AS GroupParent, P.Description AS ParentDescription, CB.Description AS Brand , O.Qty " +
+			"G.Id AS GroupId, G.Parent AS GroupParent, P.Description AS ParentDescription, CB.Description AS Brand , U.Description AS Pack, O.Qty " +
 			"FROM Catalog_SKU S " +
 			stockString + 
 			"JOIN Catalog_SKUGroup G ON G.Id = S.Owner " +			
 			"JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id " +
 			"JOIN Catalog_Brands CB ON CB.Id=S.Brand " +			
 			"JOIN Catalog_SKU_Packing SP ON SP.Ref=S.Id AND SP.LineNumber=1 " +
+			"JOIN Catalog_UnitsOfMeasure U ON SP.Pack=U.Id " +
 			"LEFT JOIN Catalog_SKU_Stocks BF ON BF.Ref=S.Id AND BF.LineNumber=1 " +
 			"LEFT JOIN Catalog_SKUGroup P ON G.Parent=P.Id " +
 			"LEFT JOIN Document_Order_SKUs O ON O.Ref = @order AND O.SKU=S.Id AND O.Feature=BF.Feature AND O.Units=SP.Pack " +
@@ -43,6 +44,10 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 	query.AddParameter("order", $.workflow.order);
 	return query.Execute();
 
+}
+
+function AddToOrder(control, editFieldName, packDescr){
+	Variables[editFieldName].Text = parseInt(Variables[editFieldName].Text) + parseInt(1);
 }
 
 function EmptyStockAllowed() {

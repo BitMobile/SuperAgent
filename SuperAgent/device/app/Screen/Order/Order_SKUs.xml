@@ -36,7 +36,8 @@
 		<c:ScrollView Id="grScrollView">
 			<s:Push Id="currentGroup" Value=""></s:Push>
 
-			<s:Iterator Id="item" Value="$skusByGroup">
+			<s:Iterator Id="item" Value="$skusByGroup" Status="statusCount">
+				<s:Push Id="index" Value="$statusCount.Index"></s:Push>
 
 				<s:If Test="$currentGroup != $item.GroupDescription">
 					<s:Push Id="currentGroup" Value="$item.GroupDescription"></s:Push>
@@ -52,13 +53,14 @@
 					<c:HorizontalLayout CssClass="quickOrder">
 						<c:VerticalLayout>
 							<c:HorizontalLayout>
-								<c:VerticalLayout>
-									<c:TextView Text="2 895 шт." />
-								</c:VerticalLayout>
-								<c:Button Text="+1" CssClass="add_button" OnClick="$ShowDialog(I'm Buton1)" />
-								<c:Button CssClass="cart_button" OnClick="$ShowDialog(I'm Buton1)" />
+								<c:HorizontalLayout>
+									<c:EditText Id="editText{$index}" Text="0" Keyboard="numeric" />
+									<c:TextView Text=" {$item.Pack}"/>
+								</c:HorizontalLayout>
+								<c:Button Text="+1" CssClass="add_button" OnClick="$AddToOrder(editText{$index}, {$item.Pack})" />
+								<c:Button CssClass="cart_button" OnClick="$CreateOrderItem(editText{$index})" />
 							</c:HorizontalLayout>
-							<c:TextView Text="{$item.Qty} шт. уже в заказе" />
+							<c:TextView Id="textView{$index}" Text="{$item.Qty} шт. уже в заказе" />
 						</c:VerticalLayout>
 					</c:HorizontalLayout>
 					<c:HorizontalLayout OnClickAction="$DoAction(SelectSKU, $item.Id, $item.Price)" CssClass="grid">

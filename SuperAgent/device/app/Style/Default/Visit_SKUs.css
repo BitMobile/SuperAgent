@@ -46,7 +46,7 @@
 	width: 100%;
 }
 
-.quickOrder vl TextView{
+.quickOrder vl TextView {
 	height: 100%;
 	width: 100%;
 	margin-left: 9%;
@@ -80,7 +80,7 @@
 	font: 33.5% Arial;
 }
 
-.quickOrder vl hl vl {
+.quickOrder vl hl hl {
 	height: 98%;
 	width: 38.5%;
 	margin-left: 4.3%;
@@ -88,12 +88,21 @@
 	background-image: url(order_textfield.png);
 }
 
-.quickOrder vl hl vl TextView {
+.quickOrder vl hl hl EditText {
 	height: 33.5%;
-	width: 100%;
+	width: 50%;
 	color: #ffffff;
-	text-align: center;
+	text-align: right;
 	vertical-align: central;
-	margin-top: 32.5%;
+	font: 100% Arial;
+}
+
+.quickOrder vl hl hl TextView {
+	height: 33.5%;
+	width: 50%;
+	color: #ffffff;
+	margin-left: 5%;
+	text-align: left;
+	vertical-align: central;
 	font: 100% Arial;
 }

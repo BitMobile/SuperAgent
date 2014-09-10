@@ -27,7 +27,8 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 		var stockField = "S.CommonStock AS CommonStock,";
 	
 	query.Text = "SELECT DISTINCT S.Id, S.Description, PL.Price, " + stockField + " G.Description AS GroupDescription, " +
-			"G.Id AS GroupId, G.Parent AS GroupParent, P.Description AS ParentDescription, CB.Description AS Brand , U.Description AS Pack, O.Qty " +
+			"G.Id AS GroupId, G.Parent AS GroupParent, P.Description AS ParentDescription, CB.Description AS Brand , " +
+			"U.Description AS Pack, IfNull(O.Qty, 0) AS Qty, SP.Pack AS DefaultUnit, BF.Feature AS DefaultFeature " +
 			"FROM Catalog_SKU S " +
 			stockString + 
 			"JOIN Catalog_SKUGroup G ON G.Id = S.Owner " +			
@@ -48,6 +49,32 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 
 function AddToOrder(control, editFieldName, packDescr){
 	Variables[editFieldName].Text = parseInt(Variables[editFieldName].Text) + parseInt(1);
+}
+
+function CreateOrderItem(control, editFieldName, textFieldName, sku, feature, price, unit, packDescr){
+	var p = DB.Create("Document.Order_SKUs");
+	p.Ref = $.workflow.order;
+	p.SKU = sku;
+	p.Feature = feature;
+	p.Price = price;
+	p.Qty = Variables[editFieldName].Text;
+	p.Total = p.Price;
+	p.Amount = p.Total * p.Qty;
+	p.Units = unit;
+	p.Discount = 0;
+	p.Save();
+	
+	Global.FindTwinAndUnite(p);
+	
+	var query = new Query("SELECT Qty FROM Document_Order_SKUs WHERE Ref=@ref AND SKU=@sku AND Feature=@feature AND Units=@units");
+	query.AddParameter("ref", p.Ref);
+	query.AddParameter("sku", p.SKU);
+	query.AddParameter("feature", p.Feature);
+	query.AddParameter("units", p.Units);
+	var qty = query.ExecuteScalar();	
+	
+	Variables[editFieldName].Text = 0;
+	Variables[textFieldName].Text = qty + " " + packDescr + " " + Translate["#alreadyOrdered#"];  
 }
 
 function EmptyStockAllowed() {

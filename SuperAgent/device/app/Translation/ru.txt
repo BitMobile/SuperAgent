@@ -159,7 +159,6 @@ snapshot	Фотоснимок
 noSnapshot	Нет фотоснимка
 snapshotAttached	Снимок прикреплен
 clickToInsert	Нажмите для ввода даты
-itemAlreadyExist	Такая позиция уже есть в заказе. Продолжить редактирование? ("Нет" - не добавлять новую позицию к заказу)
 NO		Нет
 YES		Да
 filter	Фильтр
@@ -222,3 +221,4 @@ incorrect		Некорректное значение
 contactName		Контактное лицо
 position		Должность
 visitdate		Дата визита
+alreadyOrdered	уже в заказе

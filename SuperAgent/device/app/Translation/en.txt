@@ -159,7 +159,6 @@ snapshot	Snapshot
 noSnapshot	No snapshot
 snapshotAttached	Snapshot attached
 clickToInsert	Click to insert
-itemAlreadyExist	This item already exists. Continue edit? ("No" - don't add new item to order)
 YES		Yes
 NO		No
 filter	Filter
@@ -222,3 +221,4 @@ incorrect		Incorrect
 contactName		Contact name
 position		Position
 visitdate		Visit date
+alreadyOrdered	already in order

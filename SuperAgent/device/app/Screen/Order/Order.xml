@@ -60,13 +60,13 @@
 
 				<s:If Test="$orderitem != null">
 					<c:SwipeHorizontalLayout Id="swipe_layout2" CssClass="swipe_layout">
-						<c:HorizontalLayout CssClass="grid" OnClickAction="$Workflow.DoAction(Edit,$orderitem.SKU,null,$orderitem.Id)">
+						<c:HorizontalLayout CssClass="grid" OnClickAction="$EditIfNew($workflow.order,$orderitem.SKU,null,$orderitem.Id)">
 							<c:VerticalLayout>
 								<s:Push Id="featureDescr" Value="$GetFeatureDescr($orderitem.Feature)"></s:Push>
 								<c:TextView Text="{$orderitem.SKU.Description}{$GetFeatureDescr($orderitem.Feature)}" CssClass="main_row"></c:TextView>
 								<c:TextView Text="#quantity#: {$orderitem.Qty}   #amount#: {$orderitem.Amount}" CssClass="description_row"></c:TextView>
 							</c:VerticalLayout>
-							<s:If Test="$executedOrder==null">
+							<s:If Test="$IsNew($workflow.order)">
 								<c:Image />
 							</s:If>
 						</c:HorizontalLayout>

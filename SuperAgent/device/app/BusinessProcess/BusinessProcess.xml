@@ -160,10 +160,26 @@
 		</bp:Step>
 
 		<bp:Step Name="Order" Screen="Order\Order.xml" Controller="Order\Main.js">
+			<bp:Action Name="Add" NextStep="AddSKU"></bp:Action>
+			<bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
 			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
 		</bp:Step>
 
 		<bp:Step Name="OrderInfo" Screen="Order_Info.xml" Controller="Order\Main.js">
+		</bp:Step>
+
+		<bp:Step Name="EditSKU" Screen="Order_EditSKU.xml" Controller="Order\Order_EditSKU.js">
+			<bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>
+		</bp:Step>
+
+		<bp:Step Name="AddSKU" Screen="Order_SKUs.xml" Controller="Order\Order_SKUs.js">
+			<bp:Action Name="SetFilter" NextStep="Filters"></bp:Action>
+			<bp:Action Name="SelectSKU" NextStep="EditSKU"></bp:Action>
+			<bp:Action Name="Order" NextStep="Order"></bp:Action>
+		</bp:Step>
+
+		<bp:Step Name="Filters" Screen="Filters.xml" Controller="Order\Order_SKUs.js">
+			<bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>
 		</bp:Step>
 
 	</bp:Workflow>
@@ -214,7 +230,7 @@
 			<bp:Action Name="ShowDetails" NextStep="Details" />
 			<bp:Action Name="ShowContacts" NextStep="Contacts" />
 			<bp:Action Name="ShowMap" NextStep="ShowMap"></bp:Action>
-			<bp:Action Name="Plans" NextStep="Plans"/>
+			<bp:Action Name="Plans" NextStep="Plans" />
 		</bp:Step>
 
 		<bp:Step Name="CreateOutlet" Screen="Outlets\CreateOutlet.xml">
@@ -226,10 +242,10 @@
 		<bp:Step Name="Contacts" Screen="ContactsList.xml" Controller="Outlets\DetailsAndContacts.js">
 			<bp:Action Name="Select" NextStep="Contact" />
 		</bp:Step>
-		
+
 		<bp:Step Name="ShowMap" Screen="Outlet_Map.xml" Controller="Visits\Outlet_Map.js">
 		</bp:Step>
-		
+
 		<bp:Step Name="Plans" Screen="PlanList.xml" Controller="Outlets\DetailsAndContacts.js"></bp:Step>
 
 		<bp:Step Name="Contact" Screen="Contact.xml" Controller="Outlets\DetailsAndContacts.js"></bp:Step>

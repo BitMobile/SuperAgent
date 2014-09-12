@@ -47,36 +47,41 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 }
 
 function AddToOrder(control, editFieldName, packDescr) {
-	Variables[editFieldName].Text = Converter.ToDecimal(Variables[editFieldName].Text) + parseInt(1);
+	var editText = Converter.ToDecimal(0);
+	if (String.IsNullOrEmpty(Variables[editFieldName].Text) == false)
+		editText = Converter.ToDecimal(Variables[editFieldName].Text);
+	Variables[editFieldName].Text = editText + parseInt(1);
 }
 
 function CreateOrderItem(control, editFieldName, textFieldName, sku, feature, price, unit, packDescr) {
 
-	if (Converter.ToDecimal(Variables[editFieldName].Text) != Converter.ToDecimal(0)) {
+	if (String.IsNullOrEmpty(Variables[editFieldName].Text) == false) {
+		if (Converter.ToDecimal(Variables[editFieldName].Text) != Converter.ToDecimal(0)) {
 
-		var p = DB.Create("Document.Order_SKUs");
-		p.Ref = $.workflow.order;
-		p.SKU = sku;
-		p.Feature = feature;
-		p.Price = price;
-		p.Qty = Converter.ToDecimal(Variables[editFieldName].Text);
-		p.Total = p.Price;
-		p.Amount = p.Total * p.Qty;
-		p.Units = unit;
-		p.Discount = 0;
-		p.Save();
+			var p = DB.Create("Document.Order_SKUs");
+			p.Ref = $.workflow.order;
+			p.SKU = sku;
+			p.Feature = feature;
+			p.Price = price;
+			p.Qty = Converter.ToDecimal(Variables[editFieldName].Text);
+			p.Total = p.Price;
+			p.Amount = p.Total * p.Qty;
+			p.Units = unit;
+			p.Discount = 0;
+			p.Save();
 
-		Global.FindTwinAndUnite(p);
+			Global.FindTwinAndUnite(p);
 
-		var query = new Query("SELECT Qty FROM Document_Order_SKUs WHERE Ref=@ref AND SKU=@sku AND Feature=@feature AND Units=@units");
-		query.AddParameter("ref", p.Ref);
-		query.AddParameter("sku", p.SKU);
-		query.AddParameter("feature", p.Feature);
-		query.AddParameter("units", p.Units);
-		var qty = query.ExecuteScalar();
+			var query = new Query("SELECT Qty FROM Document_Order_SKUs WHERE Ref=@ref AND SKU=@sku AND Feature=@feature AND Units=@units");
+			query.AddParameter("ref", p.Ref);
+			query.AddParameter("sku", p.SKU);
+			query.AddParameter("feature", p.Feature);
+			query.AddParameter("units", p.Units);
+			var qty = query.ExecuteScalar();
 
-		Variables[editFieldName].Text = 0;
-		Variables[textFieldName].Text = qty + " " + packDescr + " " + Translate["#alreadyOrdered#"];
+			Variables[editFieldName].Text = 0;
+			Variables[textFieldName].Text = qty + " " + packDescr + " " + Translate["#alreadyOrdered#"];
+		}
 	}
 }
 

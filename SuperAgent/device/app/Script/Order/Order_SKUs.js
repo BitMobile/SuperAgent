@@ -5,7 +5,7 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 	filterString += AddFilter(filterString, "brand_filter", "CB.Id", " AND ");
 
 	var query = new Query();
-	
+
 	if (EmptyStockAllowed())
 		var stockCondition = "";
 	else
@@ -17,64 +17,67 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 
 	var stockString = "";
 	var stockWhere = "";
-	if ($.workflow.order.Stock.EmptyRef()==false){
+	if ($.workflow.order.Stock.EmptyRef() == false) {
 		stockString = "JOIN Catalog_SKU_Stocks SS ON SS.Ref=S.Id ";
 		stockWhere = " AND SS.Stock=@stock ";
 		query.AddParameter("stock", stock);
 		var stockField = "SS.StockValue AS CommonStock, "
-	}
-	else
+	} else
 		var stockField = "S.CommonStock AS CommonStock,";
-	
-	query.Text = "SELECT DISTINCT S.Id, S.Description, PL.Price, " + stockField + " G.Description AS GroupDescription, " +
-			"G.Id AS GroupId, G.Parent AS GroupParent, P.Description AS ParentDescription, CB.Description AS Brand , " +
-			"U.Description AS Pack, IfNull(O.Qty, 0) AS Qty, SP.Pack AS DefaultUnit, BF.Feature AS DefaultFeature " +
-			"FROM Catalog_SKU S " +
-			stockString + 
-			"JOIN Catalog_SKUGroup G ON G.Id = S.Owner " +			
-			"JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id " +
-			"JOIN Catalog_Brands CB ON CB.Id=S.Brand " +			
-			"JOIN Catalog_SKU_Packing SP ON SP.Ref=S.Id AND SP.LineNumber=1 " +
-			"JOIN Catalog_UnitsOfMeasure U ON SP.Pack=U.Id " +
-			"LEFT JOIN Catalog_SKU_Stocks BF ON BF.Ref=S.Id AND BF.LineNumber=1 " +
-			"LEFT JOIN Catalog_SKUGroup P ON G.Parent=P.Id " +
-			"LEFT JOIN Document_Order_SKUs O ON O.Ref = @order AND O.SKU=S.Id AND O.Feature=BF.Feature AND O.Units=SP.Pack " +
-			" WHERE " + stockCondition + " PL.Ref = @Ref " + stockWhere + searchString + filterString + 
-			" ORDER BY G.Description, S.Description LIMIT 100";
-	query.AddParameter("Ref", priceList);	
+
+	query.Text = "SELECT DISTINCT S.Id, S.Description, PL.Price, " + stockField + " G.Description AS GroupDescription, " + 
+		"G.Id AS GroupId, G.Parent AS GroupParent, P.Description AS ParentDescription, CB.Description AS Brand , " + 
+		"U.Description AS Pack, IfNull(O.Qty, 0) AS Qty, SP.Pack AS DefaultUnit, BF.Feature AS DefaultFeature " + 
+		"FROM Catalog_SKU S " + 
+		stockString + 
+		"JOIN Catalog_SKUGroup G ON G.Id = S.Owner " + 
+		"JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id " + 
+		"JOIN Catalog_Brands CB ON CB.Id=S.Brand " + 
+		"JOIN Catalog_SKU_Packing SP ON SP.Ref=S.Id AND SP.LineNumber=1 " + 
+		"JOIN Catalog_UnitsOfMeasure U ON SP.Pack=U.Id " + 
+		"LEFT JOIN Catalog_SKU_Stocks BF ON BF.Ref=S.Id AND BF.LineNumber=1 " + 
+		"LEFT JOIN Catalog_SKUGroup P ON G.Parent=P.Id " + 
+		"LEFT JOIN Document_Order_SKUs O ON O.Ref = @order AND O.SKU=S.Id AND O.Feature=BF.Feature AND O.Units=SP.Pack " + 
+		" WHERE " + stockCondition + " PL.Ref = @Ref " + stockWhere + searchString + filterString + 
+		" ORDER BY G.Description, S.Description LIMIT 100";
+	query.AddParameter("Ref", priceList);
 	query.AddParameter("order", $.workflow.order);
 	return query.Execute();
 
 }
 
-function AddToOrder(control, editFieldName, packDescr){
-	Variables[editFieldName].Text = parseInt(Variables[editFieldName].Text) + parseInt(1);
+function AddToOrder(control, editFieldName, packDescr) {
+	Variables[editFieldName].Text = Converter.ToDecimal(Variables[editFieldName].Text) + parseInt(1);
 }
 
-function CreateOrderItem(control, editFieldName, textFieldName, sku, feature, price, unit, packDescr){
-	var p = DB.Create("Document.Order_SKUs");
-	p.Ref = $.workflow.order;
-	p.SKU = sku;
-	p.Feature = feature;
-	p.Price = price;
-	p.Qty = Variables[editFieldName].Text;
-	p.Total = p.Price;
-	p.Amount = p.Total * p.Qty;
-	p.Units = unit;
-	p.Discount = 0;
-	p.Save();
-	
-	Global.FindTwinAndUnite(p);
-	
-	var query = new Query("SELECT Qty FROM Document_Order_SKUs WHERE Ref=@ref AND SKU=@sku AND Feature=@feature AND Units=@units");
-	query.AddParameter("ref", p.Ref);
-	query.AddParameter("sku", p.SKU);
-	query.AddParameter("feature", p.Feature);
-	query.AddParameter("units", p.Units);
-	var qty = query.ExecuteScalar();	
-	
-	Variables[editFieldName].Text = 0;
-	Variables[textFieldName].Text = qty + " " + packDescr + " " + Translate["#alreadyOrdered#"];  
+function CreateOrderItem(control, editFieldName, textFieldName, sku, feature, price, unit, packDescr) {
+
+	if (Converter.ToDecimal(Variables[editFieldName].Text) != Converter.ToDecimal(0)) {
+
+		var p = DB.Create("Document.Order_SKUs");
+		p.Ref = $.workflow.order;
+		p.SKU = sku;
+		p.Feature = feature;
+		p.Price = price;
+		p.Qty = Converter.ToDecimal(Variables[editFieldName].Text);
+		p.Total = p.Price;
+		p.Amount = p.Total * p.Qty;
+		p.Units = unit;
+		p.Discount = 0;
+		p.Save();
+
+		Global.FindTwinAndUnite(p);
+
+		var query = new Query("SELECT Qty FROM Document_Order_SKUs WHERE Ref=@ref AND SKU=@sku AND Feature=@feature AND Units=@units");
+		query.AddParameter("ref", p.Ref);
+		query.AddParameter("sku", p.SKU);
+		query.AddParameter("feature", p.Feature);
+		query.AddParameter("units", p.Units);
+		var qty = query.ExecuteScalar();
+
+		Variables[editFieldName].Text = 0;
+		Variables[textFieldName].Text = qty + " " + packDescr + " " + Translate["#alreadyOrdered#"];
+	}
 }
 
 function EmptyStockAllowed() {
@@ -93,8 +96,8 @@ function EmptyStockAllowed() {
 
 function GetGroupPath(group, parent, parentDescription) {
 	var string = "";
-	
-	if (String.IsNullOrEmpty(parentDescription)==false)
+
+	if (String.IsNullOrEmpty(parentDescription) == false)
 		string = string + "/ " + parent.Description;
 	return string;
 }

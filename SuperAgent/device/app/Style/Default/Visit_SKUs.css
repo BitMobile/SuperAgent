@@ -89,20 +89,23 @@
 }
 
 .quickOrder vl hl hl EditText {
-	height: 33.5%;
+	height: 65%;
 	width: 50%;
-	color: #ffffff;
 	text-align: right;
-	vertical-align: central;
-	font: 100% Arial;
+	margin-top: 18%;
+	padding-top: 10%;
+	padding-bottom: 17%;
+	color: #ffffff;
+	font: 60% Arial;
 }
 
 .quickOrder vl hl hl TextView {
-	height: 33.5%;
+	height: 67%;
 	width: 50%;
-	color: #ffffff;
+	margin-top: 27%;
 	margin-left: 5%;
 	text-align: left;
 	vertical-align: central;
-	font: 100% Arial;
+	color: #ffffff;
+	font: 50% Arial;
 }

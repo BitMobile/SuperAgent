@@ -96,10 +96,15 @@
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
 				<s:Iterator Id="historyItem" Value="$historyItems">
-					<c:DockLayout CssClass="parameter_grid">
-						<c:TextView Text="$historyItem.Date"></c:TextView>
-						<c:TextView Text="{$historyItem.Qty} {$sku.BaseUnit.Description}, x {$historyItem.Total} {#currency#}" CssClass="value"></c:TextView>
-					</c:DockLayout>
+					<c:SwipeHorizontalLayout CssClass="swipe_history" Index="1">
+						<c:HorizontalLayout CssClass="repeat" OnClick="$RepeatOrder($historyItem,$orderitem)">
+							<c:TextView Text="#repeat#" />
+						</c:HorizontalLayout>
+						<c:DockLayout CssClass="parameter_grid">
+							<c:TextView Text="$historyItem.Date" CssClass="black_text"></c:TextView>
+							<c:TextView Text="{$historyItem.Qty} {$sku.BaseUnit.Description}, x {$historyItem.Total} {#currency#}" CssClass="value"></c:TextView>
+						</c:DockLayout>
+					</c:SwipeHorizontalLayout>
 					<c:HorizontalLine />
 				</s:Iterator>
 			</s:If>

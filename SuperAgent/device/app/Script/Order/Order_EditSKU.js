@@ -200,7 +200,7 @@ function ChangeUnit(sku, orderitem, price) {
 }
 
 function GetItemHistory(sku, order) {
-	var q = new Query("SELECT strftime('%d/%m/%Y', D.Date) AS Date, S.Qty*P.Multiplier AS Qty, S.Total/P.Multiplier AS Total FROM Document_Order_SKUs S JOIN Document_Order D ON S.Ref=D.Id JOIN Catalog_SKU_Packing P ON S.SKU=P.Ref AND P.Pack=S.Units WHERE D.Outlet=@outlet AND S.SKU=@sku AND S.Ref<>@ref ORDER BY D.Date DESC LIMIT 4");
+	var q = new Query("SELECT strftime('%d.%m.%Y', D.Date) AS Date, S.Qty*P.Multiplier AS Qty, S.Total/P.Multiplier AS Total FROM Document_Order_SKUs S JOIN Document_Order D ON S.Ref=D.Id JOIN Catalog_SKU_Packing P ON S.SKU=P.Ref AND P.Pack=S.Units WHERE D.Outlet=@outlet AND S.SKU=@sku AND S.Ref<>@ref ORDER BY D.Date DESC LIMIT 4");
 	q.AddParameter("outlet", order.Outlet);
 	q.AddParameter("sku", sku);
 	q.AddParameter("ref", order);	
@@ -227,5 +227,9 @@ function DeleteAndBack(orderitem) {
 	} else
 		Variables.Remove("AlreadyAdded");
 	Workflow.Back();
+}
+
+function RepeatOrder(historyItem, orderitem){
+	
 }
 

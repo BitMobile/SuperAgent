@@ -222,3 +222,4 @@ contactName		Contact name
 position		Position
 visitdate		Visit date
 alreadyOrdered	already in order
+repeat		Repeat

@@ -222,3 +222,4 @@ contactName		Контактное лицо
 position		Должность
 visitdate		Дата визита
 alreadyOrdered	уже в заказе
+repeat		Повторить

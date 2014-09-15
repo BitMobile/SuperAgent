@@ -70,7 +70,7 @@
 
 			<c:DockLayout CssClass="parameter_grid">
 				<c:TextView Text="#quantity#"></c:TextView>
-				<c:EditText Value="$orderitem.Qty" CssClass="value" Keyboard="numeric"></c:EditText>
+				<c:EditText Id="orderItemQty" Value="$orderitem.Qty" CssClass="value" Keyboard="numeric"></c:EditText>
 			</c:DockLayout>
 			<c:HorizontalLine />
 
@@ -97,7 +97,7 @@
 				<c:HorizontalLine />
 				<s:Iterator Id="historyItem" Value="$historyItems">
 					<c:SwipeHorizontalLayout CssClass="swipe_history" Index="1">
-						<c:HorizontalLayout CssClass="repeat" OnClick="$RepeatOrder($historyItem,$orderitem)">
+						<c:HorizontalLayout CssClass="repeat" OnClickAction="$RepeatOrder($orderitem, $historyItem.Qty, $historyItem.Total, $historyItem.Price, $historyItem.Discount, $sku.BaseUnit, $sku.BaseUnit.Description)">
 							<c:TextView Text="#repeat#" />
 						</c:HorizontalLayout>
 						<c:DockLayout CssClass="parameter_grid">

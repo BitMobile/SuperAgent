@@ -61,7 +61,7 @@ function EmptyContact(contact) {
 	if (String.IsNullOrEmpty(contact.ContactName) 
 			&& String.IsNullOrEmpty(contact.PhoneNumber) 
 			&& String.IsNullOrEmpty(contact.Email)
-			&& (contact.Position == null || contact.Position.EmptyRef()))
+			&& String.IsNullOrEmpty(contact.Position))
 		return true;
 	else
 		return false;
@@ -106,7 +106,7 @@ function ValidEntity(entity) {
 			DB.Commit();
 			return true;
 		}
-		if (Global.ValidatePhoneNr(entity.PhoneNumber) && Global.ValidateEmail(entity.Email))
+		if (Global.ValidatePhoneNr(entity.PhoneNumber) && Global.ValidateEmail(entity.Email) && ValidateContactName(entity))
 			return true;
 		else
 			return false;
@@ -115,6 +115,15 @@ function ValidEntity(entity) {
 	// Validate Details
 	if (getType(entity.GetObject()) == "DefaultScope.Catalog.Outlet")
 		return ValidateOutlet(entity);
+}
+
+function ValidateContactName(entity){
+	if (String.IsNullOrEmpty(entity.ContactName)){
+		Dialog.Message(String.Format("{0} {1}", Translate["#incorrect#"], Translate["#contactName#"]));
+		return false;
+	}
+	else
+		return true;
 }
 
 function ValidateOutlet(entity) {

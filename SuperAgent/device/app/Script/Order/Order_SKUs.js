@@ -1,6 +1,7 @@
 var defFeature;
 var defPack;
 var packDescription;
+var swipedRow;
 
 function GetSKUAndGroups(searchText, priceList, stock) {
 
@@ -46,6 +47,9 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 }
 
 function GetQuickOrder(control, skuId, itemPrice, index, packField, textViewField){
+	if(swipedRow != control)
+		HideSwiped();
+	swipedRow = control;
 	if(parseInt(control.Index)==parseInt(0)){
 		var query = new Query();
 		query.Text = "SELECT S.Id, S.Description, BF.Feature AS DefaultFeature, " +
@@ -146,6 +150,18 @@ function AddFilter(filterString, filterName, condition, connector) {
 		}
 	}
 	return filterString;
+}
+
+function OnScroll(sender)
+{
+	if($.grScrollView.ScrollIndex > 0 && swipedRow != $.grScrollView.Controls[$.grScrollView.ScrollIndex])
+		HideSwiped();
+}
+
+function HideSwiped()
+{
+	if(swipedRow != null)
+		swipedRow.Index = 1;
 }
 
 // --------------------------Filters------------------

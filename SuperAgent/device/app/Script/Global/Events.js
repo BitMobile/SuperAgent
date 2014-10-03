@@ -179,20 +179,19 @@ function PrepareScheduledVisits_Map() {
 }
 
 function GetTasksCount() {
-	var q = new Query("SELECT COUNT(Id) FROM Document_Task WHERE PlanDate >= @planDate AND Outlet=@outlet");
-	q.AddParameter("outlet", $.outlet);
-	q.AddParameter("planDate",  DateTime.Now.Date);
-	return q.Execute;
+	var taskQuery = new Query("SELECT COUNT(Id) FROM Document_Task WHERE PlanDate >= date('now','start of day') AND Outlet=@outlet");
+	taskQuery.AddParameter("outlet", $.outlet);
+	return taskQuery.ExecuteScalar();
 }
 
 function GetQuestionsCount() {
 	q = new Query("SELECT COUNT(QQ.Id) FROM Document_Questionnaire_Questions QQ JOIN Document_QuestionnaireMap_Outlets M ON QQ.Ref=M.Questionnaire WHERE M.Outlet = @outlet");
 	q.AddParameter("outlet", $.outlet);
-	return q.ExecuteCount();
+	return q.ExecuteScalar();
 }
 
 function GetSKUQuestionsCount() {
 	q = new Query("SELECT COUNT(QQ.Id) FROM Document_Questionnaire_SKUs QQ JOIN Document_QuestionnaireMap_Outlets M ON QQ.Ref=M.Questionnaire WHERE M.Outlet = @outlet");
 	q.AddParameter("outlet", $.outlet);
-	return q.Execute();
+	return q.ExecuteScalar();
 }

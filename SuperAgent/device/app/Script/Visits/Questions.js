@@ -2,34 +2,18 @@
 	return [];
 }
 
-function GetQuesttionaire(outlet, scale) {
-
-	var q1 = new Query(
-			"SELECT Id FROM Document_Questionnaire WHERE OutletType=@type AND OutletClass=@class AND Scale=@scale ORDER BY Date desc");
-	q1.AddParameter("type", outlet.Type);
-	q1.AddParameter("class", outlet.Class);
-	q1.AddParameter("scale", scale);
-
-	return q1.ExecuteScalar();
-
-}
 
 function GetQuestionsByQuestionnaires(outlet) {
 
-	var regionQuest = GetQuesttionaire(outlet,
-			DB.Current.Constant.QuestionnaireScale.Region);
-	var territoryQuest = GetQuesttionaire(outlet,
-			DB.Current.Constant.QuestionnaireScale.Territory);
-	var query = new Query(GetQuestionsQueryText());
-	query.AddParameter("ref1", regionQuest);
-	query.AddParameter("ref2", territoryQuest);
+	var query = new Query("SELECT DISTINCT  QQ.Question, CQ.Description AS Description, ED.Description AS AnswerType FROM Document_Questionnaire_Questions QQ " +
+			"JOIN Document_QuestionnaireMap_Outlets M ON QQ.Ref=M.Questionnaire JOIN Catalog_Question CQ ON CQ.Id=QQ.Question " +
+			"JOIN Enum_DataType ED ON CQ.AnswerType=ED.Id" +
+			" WHERE M.Outlet = @outlet ORDER BY Description");
+	query.AddParameter("outlet", outlet);
 	Variables.Add("workflow.questions_qty", query.ExecuteCount());
 	return query.Execute();
 }
 
-function GetQuestionsQueryText() {
-	return "SELECT DQQ.LineNumber, DQQ.Question, CQ.Description, ED.Description AS AnswerType, 1 AS T1 FROM Document_Questionnaire_Questions DQQ JOIN Catalog_Question CQ ON DQQ.Question=CQ.Id JOIN Enum_DataType ED ON CQ.AnswerType=ED.Id WHERE Ref=@ref1 UNION ALL SELECT q1.LineNumber, q1.Question, CQ.Description, ED.Description AS AnswerType, 2 AS T1 FROM Document_Questionnaire_Questions q1 LEFT JOIN Document_Questionnaire_Questions q2 ON q2.Question=q1.Question and q2.ref=@ref1 JOIN Catalog_Question CQ ON q1.Question=CQ.Id JOIN Enum_DataType ED ON CQ.AnswerType=ED.Id WHERE q1.Ref =@ref2  and q2.Id is null ORDER BY T1, LineNumber"
-}
 
 function CreateVisitQuestionValueIfNotExists(visit, question, questionValue) {
 
@@ -121,7 +105,26 @@ function CheckEmptyQuestionsAndForward(visit) {
 		DB.Delete(res.Id);
 	}
 
+	FillQuestionnaires();
+	
 	Workflow.Forward([]);
+}
+
+function FillQuestionnaires() {
+	var q = new Query("SELECT DISTINCT Q.Id FROM Document_Questionnaire Q " +
+			"JOIN Document_QuestionnaireMap_Outlets MO ON MO.Questionnaire=Q.Id AND MO.Outlet = @outlet " +
+			"JOIN Document_Questionnaire_Questions QQ ON Q.Id=QQ.Ref AND QQ.Question IN " +
+			"(SELECT Question FROM Document_Visit_Questions WHERE Ref=@ref)");
+	q.AddParameter("ref", $.workflow.visit);
+	q.AddParameter("outlet", $.workflow.outlet);
+	questionnaires = q.Execute();
+	
+	while (questionnaires.Next()){
+		var quest = DB.Create("Document.Visit_Questionnaires");
+		quest.Questionnaire = questionnaires.Id;
+		quest.Ref = $.workflow.visit;
+		quest.Save();
+	}
 }
 
 function GetActionAndBack() {

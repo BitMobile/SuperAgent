@@ -326,15 +326,16 @@ function SaveAndBack(outlet) {
 
 // ---------------------------------internal------------------------
 
-function SaveAtOutelt(arr) {
-	var paramValue = arr[0];
-	var control = arr[1];
-	var path = arr[2];
-	question = paramValue.GetObject();
-	question.Value = path;
-	question.Save();
-	Variables[control].Text = Translate["#snapshotAttached#"];
-
+function SaveAtOutelt(arr, args) {
+	if (args.Result) {
+		var paramValue = arr[0];
+		var control = arr[1];
+		var path = arr[2];
+		question = paramValue.GetObject();
+		question.Value = path;
+		question.Save();
+		Variables[control].Text = Translate["#snapshotAttached#"];
+	}
 }
 
 function GetCameraObject(entity) {

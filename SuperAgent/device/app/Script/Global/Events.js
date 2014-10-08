@@ -140,10 +140,12 @@ function OnWorkflowPause(name) {
 function SetSessionConstants() { 
 	var planEnbl = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='PlanEnbl'");
 	var multStck = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='MultStck'");
+	var stckEnbl = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='NoStkEnbl'");
 	
 	$.AddGlobal("sessionConst", new Dictionary());
 	$.sessionConst.Add("PlanEnbl", EvaluateBoolean(planEnbl.ExecuteScalar()));
 	$.sessionConst.Add("MultStck", EvaluateBoolean(multStck.ExecuteScalar()));
+	$.sessionConst.Add("NoStkEnbl", EvaluateBoolean(stckEnbl.ExecuteScalar()));
 }
 
 function EvaluateBoolean(res){

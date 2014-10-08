@@ -11,7 +11,7 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 
 	var query = new Query();
 	
-	if (EmptyStockAllowed())
+	if ($.sessionConst.NoStkEnbl)
 		var stockCondition = "";
 	else
 		var stockCondition = " S.CommonStock>0 AND ";

@@ -91,6 +91,15 @@ function IsInCollection(item, collection) {
     return res
 }
 
+function IsInCollection2(item, collection) {
+    var res = false;
+    for (var i in collection) {
+        if (item.ToString() == collection[i].ToString())
+            res = true;
+    }
+    return res
+}
+
 function DeleteFromCollection(item, collection) {
     var arr = [];
     for (var i in collection) {

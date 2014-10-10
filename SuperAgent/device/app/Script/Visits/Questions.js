@@ -11,9 +11,24 @@ function GetQuestionsByQuestionnaires(outlet) {
 			" WHERE M.Outlet = @outlet ORDER BY Description");
 	query.AddParameter("outlet", outlet);
 	Variables.Add("workflow.questions_qty", query.ExecuteCount());
-	return query.Execute();
+	var source = query.Execute();
+	var result = [];
+	var uniqueSKU = [];
+	while (source.Next()){
+//		Dialog.Debug(source.Question);
+//		Dialog.Debug(uniqueSKU);
+		if (IsInCollection2(source.Question, uniqueSKU)==false){
+			uniqueSKU.push(source.Question);
+			result.push(source);
+		}
+	}
+	Dialog.Debug(result);
+	return result;
 }
 
+function ShowDialog(value){
+	Dialog.Debug(value);
+}
 
 function CreateVisitQuestionValueIfNotExists(visit, question, questionValue) {
 

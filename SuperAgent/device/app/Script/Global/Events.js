@@ -28,23 +28,24 @@ function OnWorkflowStart(name) {
 	if (name == "Visit") {
 
 			if (parseInt(GetTasksCount()) != parseInt(0))
-				Variables.Add("workflow.skipTasks", false); // нельзя просто
+				$.workflow.Add("skipTasks", false); // нельзя просто
 															// взять и присвоить
 															// значение
 															// переменной!
 			else
-				Variables.Add("workflow.skipTasks", true);
+				$.workflow.Add("skipTasks", true);
 
 			if (parseInt(GetQuestionsCount()) != parseInt(0))
-				Variables.Add("workflow.skipQuestions", false);
+				$.workflow.Add("skipQuestions", false);
 			else
-				Variables.Add("workflow.skipQuestions", true);
+				$.workflow.Add("skipQuestions", true);
 
 			if (parseInt(GetSKUQuestionsCount()) != parseInt(0)) 
-				Variables.Add("workflow.skipSKUs", false);
+				$.workflow.Add("skipSKUs", false);
 			else
-				Variables.Add("workflow.skipSKUs", true);
+				$.workflow.Add("skipSKUs", true);
 	}
+	
 	
 	Variables["workflow"].Add("name", name);
 

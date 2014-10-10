@@ -83,22 +83,15 @@ function GetControlId(count) {
 }
 
 function IsInCollection(item, collection) {
+	//Dialog.Debug(item.ToString());
     var res = false;
     for (var i in collection) {
         if (item.ToString() == i.ToString())
             res = true;
     }
-    return res
+    return res;
 }
 
-function IsInCollection2(item, collection) {
-    var res = false;
-    for (var i in collection) {
-        if (item.ToString() == collection[i].ToString())
-            res = true;
-    }
-    return res
-}
 
 function DeleteFromCollection(item, collection) {
     var arr = [];

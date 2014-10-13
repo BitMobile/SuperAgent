@@ -83,7 +83,6 @@ function GetControlId(count) {
 }
 
 function IsInCollection(item, collection) {
-	//Dialog.Debug(item.ToString());
     var res = false;
     for (var i in collection) {
         if (item.ToString() == i.ToString())

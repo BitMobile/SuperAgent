@@ -129,6 +129,7 @@ description	Наименование
 coordinates	Координаты
 set			Установить
 coordinatesAreSet	Координаты установлены
+noCoordinates	Координаты не установлены
 setVisitCoordinates		Повторить попытку установить координаты?
 setCoords	Установить координаты
 setCoordinates	Установить координаты по текущему расположению?
@@ -158,7 +159,6 @@ snapshot	Фотоснимок
 noSnapshot	Нет фотоснимка
 snapshotAttached	Снимок прикреплен
 clickToInsert	Нажмите для ввода даты
-itemAlreadyExist	Такая позиция уже есть в заказе. Продолжить редактирование? ("Нет" - не добавлять новую позицию к заказу)
 NO		Нет
 YES		Да
 filter	Фильтр
@@ -208,7 +208,6 @@ kpp			КПП
 phone		Телефон
 email		Электронная почта
 web_site	Веб-сайт
-<<<<<<< develop_jura
 stockPlace	Склад
 developer	РАЗРАБОТЧИК ПРИЛОЖЕНИЯ
 bitMobile	БИТ.МОБАЙЛ
@@ -222,3 +221,5 @@ incorrect		Некорректное значение
 contactName		Контактное лицо
 position		Должность
 visitdate		Дата визита
+alreadyOrdered	уже в заказе
+repeat		Повторить

@@ -27,65 +27,70 @@
 			<c:HorizontalLine />
 
 			<s:Iterator Id="question" Value="$questions" Status="statusCount">
-				<s:Push Id="questionValue" Value="$CreateVisitQuestionValueIfNotExists($visit,$question.Question,$questionValue)"></s:Push>
-				<s:Push Id="index" Value="{$statusCount.Index}"></s:Push>
 
-				<c:HorizontalLayout CssClass="grid">
-					<c:VerticalLayout OnClickAction="$GoToQuestionAction($question.AnswerType, $questionValue, $visit, control{$index}, $question.Question)">
-						<c:TextView Text="$question.Description" CssClass="description_row"></c:TextView>
+				<s:If Test="$UniqueQuestion($question.Question)">
 
-						<s:If Test="$question.AnswerType=='Integer'">
-							<c:MemoEdit Id="control{$index}" Value="$questionValue.Answer" OnChange="$SaveValue($questionValue)" Keyboard="numeric" CssClass="main_row"></c:MemoEdit>
-						</s:If>
+					<s:Push Id="questionValue" Value="$CreateVisitQuestionValueIfNotExists($visit,$question.Question,$questionValue)"></s:Push>
+					<s:Push Id="index" Value="{$statusCount.Index}"></s:Push>
 
-						<s:If Test="$question.AnswerType=='Decimal'">
-							<c:MemoEdit Id="control{$index}" Value="$questionValue.Answer" OnChange="$SaveValue($questionValue)" Keyboard="numeric" CssClass="main_row"></c:MemoEdit>
-						</s:If>
+					<c:HorizontalLayout CssClass="grid">
+						<c:VerticalLayout OnClickAction="$GoToQuestionAction($question.AnswerType, $questionValue, $visit, control{$index}, $question.Question)">
+							<c:TextView Text="$question.Description" CssClass="description_row"></c:TextView>
 
-						<s:If Test="$question.AnswerType=='String'">
-							<c:MemoEdit Id="control{$index}" Value="$questionValue.Answer" OnChange="$SaveValue($questionValue)" CssClass="main_row"></c:MemoEdit>
-						</s:If>
-
-						<s:If Test="$question.AnswerType=='ValueList'">
-							<s:If Test="$questionValue.Answer==''">
-								<c:TextView Id="control{$index}" Text="#select_answer_low#" CssClass="comment_row"></c:TextView>
+							<s:If Test="$question.AnswerType=='Integer'">
+								<c:MemoEdit Id="control{$index}" Value="$questionValue.Answer" OnChange="$SaveValue($questionValue)" Keyboard="numeric" CssClass="main_row"></c:MemoEdit>
 							</s:If>
-							<s:Else>
-								<c:TextView Id="control{$index}" Text="$questionValue.Answer" CssClass="main_row"></c:TextView>
-							</s:Else>
-						</s:If>
 
-						<s:If Test="$question.AnswerType=='Snapshot'">
-							<s:Push Id="snapshotText" Value="$GetSnapshotText($questionValue.Answer)"></s:Push>
-							<s:If Test="$IsNullOrEmpty($questionValue.Answer)">
-								<c:TextView Id="control{$index}" Text="$snapshotText" CssClass="comment_row"></c:TextView>
+							<s:If Test="$question.AnswerType=='Decimal'">
+								<c:MemoEdit Id="control{$index}" Value="$questionValue.Answer" OnChange="$SaveValue($questionValue)" Keyboard="numeric" CssClass="main_row"></c:MemoEdit>
 							</s:If>
-							<s:Else>
-								<c:TextView Id="control{$index}" Text="$snapshotText" CssClass="main_row"></c:TextView>
-							</s:Else>
-						</s:If>
 
-						<s:If Test="$question.AnswerType=='DateTime'">
-							<s:If Test="$IsNullOrEmpty($questionValue.Answer)">
-								<c:TextView Id="control{$index}" Text="#clickToInsert#" CssClass="comment_row"></c:TextView>
+							<s:If Test="$question.AnswerType=='String'">
+								<c:MemoEdit Id="control{$index}" Value="$questionValue.Answer" OnChange="$SaveValue($questionValue)" CssClass="main_row"></c:MemoEdit>
 							</s:If>
-							<s:Else>
-								<c:TextView Id="control{$index}" Text="$questionValue.Answer" CssClass="main_row"></c:TextView>
-							</s:Else>
-						</s:If>
 
-						<s:If Test="$question.AnswerType=='Boolean'">
-							<s:If Test="$IsNullOrEmpty($questionValue.Answer)">
-								<c:TextView Id="control{$index}" Text="#select_answer_low#" CssClass="comment_row"></c:TextView>
+							<s:If Test="$question.AnswerType=='ValueList'">
+								<s:If Test="$questionValue.Answer==''">
+									<c:TextView Id="control{$index}" Text="#select_answer_low#" CssClass="comment_row"></c:TextView>
+								</s:If>
+								<s:Else>
+									<c:TextView Id="control{$index}" Text="$questionValue.Answer" CssClass="main_row"></c:TextView>
+								</s:Else>
 							</s:If>
-							<s:Else>
-								<c:TextView Id="control{$index}" Text="$questionValue.Answer" CssClass="main_row"></c:TextView>
-							</s:Else>
-						</s:If>
 
-					</c:VerticalLayout>
-				</c:HorizontalLayout>
-				<c:HorizontalLine />
+							<s:If Test="$question.AnswerType=='Snapshot'">
+								<s:Push Id="snapshotText" Value="$GetSnapshotText($questionValue.Answer)"></s:Push>
+								<s:If Test="$IsNullOrEmpty($questionValue.Answer)">
+									<c:TextView Id="control{$index}" Text="$snapshotText" CssClass="comment_row"></c:TextView>
+								</s:If>
+								<s:Else>
+									<c:TextView Id="control{$index}" Text="$snapshotText" CssClass="main_row"></c:TextView>
+								</s:Else>
+							</s:If>
+
+							<s:If Test="$question.AnswerType=='DateTime'">
+								<s:If Test="$IsNullOrEmpty($questionValue.Answer)">
+									<c:TextView Id="control{$index}" Text="#clickToInsert#" CssClass="comment_row"></c:TextView>
+								</s:If>
+								<s:Else>
+									<c:TextView Id="control{$index}" Text="$questionValue.Answer" CssClass="main_row"></c:TextView>
+								</s:Else>
+							</s:If>
+
+							<s:If Test="$question.AnswerType=='Boolean'">
+								<s:If Test="$IsNullOrEmpty($questionValue.Answer)">
+									<c:TextView Id="control{$index}" Text="#select_answer_low#" CssClass="comment_row"></c:TextView>
+								</s:If>
+								<s:Else>
+									<c:TextView Id="control{$index}" Text="$questionValue.Answer" CssClass="main_row"></c:TextView>
+								</s:Else>
+							</s:If>
+
+						</c:VerticalLayout>
+					</c:HorizontalLayout>
+					<c:HorizontalLine />
+
+				</s:If>
 
 			</s:Iterator>
 

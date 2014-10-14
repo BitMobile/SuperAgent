@@ -1,7 +1,7 @@
 ﻿function GetSKUsFromQuesionnaires(outlet) {
 
-	var regionQuest = GetQuesttionaire(outlet, DB.Current.Constant.QuestionnaireScale.Region);
-	var territoryQuest = GetQuesttionaire(outlet, DB.Current.Constant.QuestionnaireScale.Territory);
+//	var regionQuest = GetQuesttionaire(outlet, DB.Current.Constant.QuestionnaireScale.Region);
+//	var territoryQuest = GetQuesttionaire(outlet, DB.Current.Constant.QuestionnaireScale.Territory);
 
 	var q = new Query();
 	var fileds = "SELECT q1.LineNumber AS LineNumber, q1.SKU, CS.Description, q1.Ref AS Ref1, DQQ2.Ref AS Ref2, ";
@@ -16,6 +16,8 @@
 	var order = " ORDER BY T1, LineNumber ";
 	q.Text = fileds + " 1 AS T1, " + innerQuery1 + " AS questionsCount1, " + caseThen + innerQuery2 + caseEnd + from + leftJoin1 + where1 + " UNION ALL " + fileds + " 2 AS T1, " + innerQuery2 + " AS questionsCount1, " + caseThen + innerQuery1 + caseEnd + from + leftJoin2 + order;
 
+	Dialog.Debug(q.Text);
+	
 	q.AddParameter("regionRef", regionQuest); // 38426ABE-7EA7-11E3-BD7D-50E549CAB397
 	q.AddParameter("terrRef", territoryQuest); // CD5051D4-7E9C-11E3-BD7D-50E549CAB397
 

@@ -61,7 +61,7 @@
 			<c:HorizontalLayout CssClass="memo_block">
 				<c:VerticalLayout>
 					<c:TextView Text="#commentary#" CssClass="description_row" />
-					<s:If Test="$IsEditable($executedOrder, $workflow.order)">
+					<s:If Test="$IsNew($workflow.order)">
 						<c:MemoEdit Value="$order.Commentary" CssClass="main_row" />
 					</s:If>
 					<s:Else>

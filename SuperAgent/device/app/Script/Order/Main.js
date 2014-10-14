@@ -135,14 +135,16 @@ function GetDescription(priceList) {
 }
 
 function SelectStock(order, attr, control) {
-	var q = new Query("SELECT Id, Description FROM Catalog_Stock");
-	var res = q.Execute().Unload();
-	var table = [];
-	table.push([ DB.EmptyRef("Catalog_Stock"), Translate["#allStocks#"] ]);
-	while (res.Next()) {
-		table.push([ res.Id, res.Description ]);
+	if (IsNew(order)) {
+		var q = new Query("SELECT Id, Description FROM Catalog_Stock");
+		var res = q.Execute().Unload();
+		var table = [];
+		table.push([ DB.EmptyRef("Catalog_Stock"), Translate["#allStocks#"] ]);
+		while (res.Next()) {
+			table.push([ res.Id, res.Description ]);
+		}
+		Dialog.Select(Translate["#valueList#"], table, StockSelectHandler, [ order, attr, control ]);
 	}
-	Dialog.Select(Translate["#valueList#"], table, StockSelectHandler, [ order, attr, control ]);
 }
 
 function GetStockDescription(stock) {
@@ -198,7 +200,7 @@ function SaveOrder(order) {
 }
 
 function SetDeliveryDateDialog(order, control, executedOrder) {
-	if (IsEditable(executedOrder, order))
+	if (IsNew(order))
 		DateTimeDialog(order, "DeliveryDate", order.DeliveryDate, control);
 }
 
@@ -234,6 +236,11 @@ function ShowInfoIfIsNew() {
 function DeleteItem(item, executedOrder) {
 	DB.Delete(item);
 	Workflow.Refresh([ null, executedOrder ]);
+}
+
+function EditIfNew(order, param1, param2, param3) {
+	if (order.IsNew())
+		Workflow.Action("Edit", [ param1, param2, param3 ]);
 }
 
 // ----------------------------------Functions---------------------------
@@ -305,14 +312,8 @@ function ReviseSKUs(order, priceList, stock) {
 	if (parseInt(q.ExecuteCount()) != parseInt(0))
 		Dialog.Message(Translate["#SKUWillRevised#"]);
 
-	var query = new Query();	
-	query.Text = "SELECT O.Id, O.Qty, O.Discount, O.Price, O.Total, " + 
-			" O.Amount, P.Price AS NewPrice, SS.StockValue AS NewStock, SP.Multiplier " + 
-			" FROM Document_Order_SKUs O " + 
-			" LEFT JOIN Document_PriceList_Prices P ON O.SKU=P.SKU AND P.Ref = @priceList " + 
-			" LEFT JOIN Catalog_SKU_Stocks SS ON SS.Ref=O.SKU AND SS.Stock = @stock " +
-			" JOIN Catalog_SKU_Packing SP ON O.Units=SP.Pack AND SP.Ref=O.SKU " + 
-			" WHERE O.Ref=@order";
+	var query = new Query();
+	query.Text = "SELECT O.Id, O.Qty, O.Discount, O.Price, O.Total, " + " O.Amount, P.Price AS NewPrice, SS.StockValue AS NewStock, SP.Multiplier " + " FROM Document_Order_SKUs O " + " LEFT JOIN Document_PriceList_Prices P ON O.SKU=P.SKU AND P.Ref = @priceList " + " LEFT JOIN Catalog_SKU_Stocks SS ON SS.Ref=O.SKU AND SS.Stock = @stock " + " JOIN Catalog_SKU_Packing SP ON O.Units=SP.Pack AND SP.Ref=O.SKU " + " WHERE O.Ref=@order";
 	query.AddParameter("order", order);
 	query.AddParameter("priceList", priceList);
 	query.AddParameter("stock", stock);

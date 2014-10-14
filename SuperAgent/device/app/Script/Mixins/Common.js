@@ -88,8 +88,9 @@ function IsInCollection(item, collection) {
         if (item.ToString() == i.ToString())
             res = true;
     }
-    return res
+    return res;
 }
+
 
 function DeleteFromCollection(item, collection) {
     var arr = [];

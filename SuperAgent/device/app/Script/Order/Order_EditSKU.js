@@ -105,13 +105,6 @@ function GetFeatureDescr(feature) {
 		return (", " + feature.Description);
 }
 
-function CalculatePrice(price, discount, multiplier) {
-
-	var total = (price * (discount / 100 + 1)) * multiplier;
-	return total;
-
-}
-
 function RefreshEditSKU(orderItem, sku, price, discountEdit, showimage) {
 	var d = $.discountEdit.Text;
 	var arr = [ sku, price, orderItem, d, showimage ];// , discountText];
@@ -142,10 +135,11 @@ function CountPrice(orderitem) {
 	return orderitem;
 }
 
-function ReNewControls(p, discount) {
+function CalculatePrice(price, discount, multiplier) {
 
-	
-	// $.discountEdit.Text = discount;
+	var total = (price * (discount / 100 + 1)) * multiplier;
+	return total;
+
 }
 
 function ChangeFeatureAndRefresh(orderItem, feature, sku, price, discountEdit,
@@ -200,7 +194,7 @@ function ChangeUnit(sku, orderitem, price) {
 }
 
 function GetItemHistory(sku, order) {
-	var q = new Query("SELECT strftime('%d/%m/%Y', D.Date) AS Date, S.Qty*P.Multiplier AS Qty, S.Total/P.Multiplier AS Total FROM Document_Order_SKUs S JOIN Document_Order D ON S.Ref=D.Id JOIN Catalog_SKU_Packing P ON S.SKU=P.Ref AND P.Pack=S.Units WHERE D.Outlet=@outlet AND S.SKU=@sku AND S.Ref<>@ref ORDER BY D.Date DESC LIMIT 4");
+	var q = new Query("SELECT strftime('%d.%m.%Y', D.Date) AS Date, S.Qty*P.Multiplier AS Qty, S.Total/P.Multiplier AS Total, S.Discount, S.Price FROM Document_Order_SKUs S JOIN Document_Order D ON S.Ref=D.Id JOIN Catalog_SKU_Packing P ON S.SKU=P.Ref AND P.Pack=S.Units WHERE D.Outlet=@outlet AND S.SKU=@sku AND S.Ref<>@ref ORDER BY D.Date DESC LIMIT 4");
 	q.AddParameter("outlet", order.Outlet);
 	q.AddParameter("sku", sku);
 	q.AddParameter("ref", order);	
@@ -215,7 +209,7 @@ function CalculateSKUAndForward(outlet, orderitem) {
 	if (Converter.ToDecimal(orderitem.Qty) == Converter.ToDecimal(0)) {
 		DB.Delete(orderitem);
 	} else {
-		FindTwinAndUnite(orderitem.GetObject());
+		Global.FindTwinAndUnite(orderitem.GetObject());
 	}
 
 	Workflow.Forward([]);
@@ -229,23 +223,17 @@ function DeleteAndBack(orderitem) {
 	Workflow.Back();
 }
 
-function FindTwinAndUnite(orderitem) {
-	var q = new Query(
-			"SELECT Id FROM Document_Order_SKUs WHERE Ref=@ref AND SKU=@sku AND Discount=@discount AND Units=@units AND Feature=@feature AND Id<>@id LIMIT 1"); // AND
-																																								// Id<>@id
-	q.AddParameter("ref", orderitem.Ref);
-	q.AddParameter("sku", orderitem.SKU);
-	q.AddParameter("discount", orderitem.Discount);
-	q.AddParameter("units", orderitem.Units);
-	q.AddParameter("feature", orderitem.Feature);
-	q.AddParameter("id", orderitem.Id);
-	var rst = q.ExecuteCount();
-	if (parseInt(rst) != parseInt(0)) {
-		var twin = q.ExecuteScalar();
-		twin = twin.GetObject();
-		twin.Qty += orderitem.Qty;
-		twin.Save();
-		DB.Delete(orderitem.Id);
-	} else
-		orderitem.Save();
+function RepeatOrder(orderitem, qty, total, price, discount, baseUnit, baseUnitDescr){
+	orderitem = orderitem.GetObject();
+	orderitem.Qty = qty;
+	$.orderItemQty.Text = qty;
+	orderitem.Total = total;
+	$.orderItemTotalId.Text = total;
+	orderitem.Price = price;
+	orderitem.Discount = discount;
+	$.discountEdit.Text = discount;
+	orderitem.Units = baseUnit;
+	$.itemUnits.Text = baseUnitDescr;
+	orderitem.Save();
 }
+

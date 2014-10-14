@@ -26,34 +26,29 @@ function OnWorkflowStart(name) {
 	}
 
 	if (name == "Visit") {
-		var steps = GetSteps($.outlet);
 
-		Variables.Add("workflow.skipSKUs", true);
-		while (steps.Next()) {
-
-			if (parseInt(steps.Tasks) != parseInt(0))
-				Variables.Add("workflow.skipTasks", false); // нельзя просто
+			if (parseInt(GetTasksCount()) != parseInt(0))
+				$.workflow.Add("skipTasks", false); // нельзя просто
 															// взять и присвоить
 															// значение
 															// переменной!
 			else
-				Variables.Add("workflow.skipTasks", true);
+				$.workflow.Add("skipTasks", true);
 
-			if (parseInt(steps.Questions) != parseInt(0))
-				Variables.Add("workflow.skipQuestions", false);
+			if (parseInt(GetQuestionsCount()) != parseInt(0))
+				$.workflow.Add("skipQuestions", false);
 			else
-				Variables.Add("workflow.skipQuestions", true);
+				$.workflow.Add("skipQuestions", true);
 
-			if (parseInt(steps.SKUQuestions) != parseInt(0))
-				Variables.Add("workflow.skipSKUs", false);
+			if (parseInt(GetSKUQuestionsCount()) != parseInt(0)) 
+				$.workflow.Add("skipSKUs", false);
 			else
-				Variables.Add("workflow.skipSKUs", true);
-
-		}
+				$.workflow.Add("skipSKUs", true);
 	}
 	
-	Variables["workflow"].Add("name", name);
 	
+	Variables["workflow"].Add("name", name);
+
 }
 
 function OnWorkflowForward(name, lastStep, nextStep, parameters) {
@@ -146,10 +141,12 @@ function OnWorkflowPause(name) {
 function SetSessionConstants() { 
 	var planEnbl = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='PlanEnbl'");
 	var multStck = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='MultStck'");
+	var stckEnbl = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='NoStkEnbl'");
 	
 	$.AddGlobal("sessionConst", new Dictionary());
 	$.sessionConst.Add("PlanEnbl", EvaluateBoolean(planEnbl.ExecuteScalar()));
 	$.sessionConst.Add("MultStck", EvaluateBoolean(multStck.ExecuteScalar()));
+	$.sessionConst.Add("NoStkEnbl", EvaluateBoolean(stckEnbl.ExecuteScalar()));
 }
 
 function EvaluateBoolean(res){
@@ -184,35 +181,20 @@ function PrepareScheduledVisits_Map() {
 	}
 }
 
-
-
-function GetSteps(outlet) {
-
-	var regionQuest = GetQuesttionaire(outlet,
-			DB.Current.Constant.QuestionnaireScale.Region);
-	var territoryQuest = GetQuesttionaire(outlet,
-			DB.Current.Constant.QuestionnaireScale.Territory);
-
-	var outlet = $.outlet;
-
-	var q = new Query(
-			"SELECT COUNT(Id) AS Questions, (SELECT COUNT(Id) FROM Document_Task WHERE PlanDate >= @planDate AND Outlet=@outlet) AS Tasks, (SELECT COUNT(Id) FROM Document_Questionnaire_SKUs WHERE Ref=@ref1 OR Ref=@ref2) AS SKUQuestions FROM Document_Questionnaire_Questions	WHERE Ref=@ref1 OR Ref=@ref2");
-	q.AddParameter("outlet", outlet);
-	q.AddParameter("planDate",  DateTime.Now.Date);
-	q.AddParameter("ref1", regionQuest);
-	q.AddParameter("ref2", territoryQuest);
-
-	return q.Execute();
+function GetTasksCount() {
+	var taskQuery = new Query("SELECT COUNT(Id) FROM Document_Task WHERE PlanDate >= date('now','start of day') AND Outlet=@outlet");
+	taskQuery.AddParameter("outlet", $.outlet);
+	return taskQuery.ExecuteScalar();
 }
 
-function GetQuesttionaire(outlet, scale) {
+function GetQuestionsCount() {
+	q = new Query("SELECT COUNT(QQ.Id) FROM Document_Questionnaire_Questions QQ JOIN Document_QuestionnaireMap_Outlets M ON QQ.Ref=M.Questionnaire WHERE M.Outlet = @outlet");
+	q.AddParameter("outlet", $.outlet);
+	return q.ExecuteScalar();
+}
 
-	var q1 = new Query(
-			"SELECT Id FROM Document_Questionnaire WHERE OutletType=@type AND OutletClass=@class AND Scale=@scale ORDER BY Date desc");
-	q1.AddParameter("type", outlet.Type);
-	q1.AddParameter("class", outlet.Class);
-	q1.AddParameter("scale", scale);
-
-	return q1.ExecuteScalar();
-
+function GetSKUQuestionsCount() {
+	q = new Query("SELECT COUNT(QQ.Id) FROM Document_Questionnaire_SKUs QQ JOIN Document_QuestionnaireMap_Outlets M ON QQ.Ref=M.Questionnaire WHERE M.Outlet = @outlet");
+	q.AddParameter("outlet", $.outlet);
+	return q.ExecuteScalar();
 }

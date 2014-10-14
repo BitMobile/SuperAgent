@@ -1,3 +1,8 @@
+var defFeature;
+var defPack;
+var packDescription;
+var swipedRow;
+
 function GetSKUAndGroups(searchText, priceList, stock) {
 
 	var filterString = "";
@@ -6,7 +11,7 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 
 	var query = new Query();
 	
-	if (EmptyStockAllowed())
+	if ($.sessionConst.NoStkEnbl)
 		var stockCondition = "";
 	else
 		var stockCondition = " S.CommonStock>0 AND ";
@@ -41,6 +46,73 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 
 }
 
+function GetQuickOrder(control, skuId, itemPrice, index, packField, textViewField){
+	if(swipedRow != control)
+		HideSwiped();
+	swipedRow = control;
+	if(parseInt(control.Index)==parseInt(0)){
+		var query = new Query();
+		query.Text = "SELECT S.Id, S.Description, BF.Feature AS DefaultFeature, " +
+				"SP.Pack AS DefaultUnit, IfNull(O.Qty, 0) AS Qty, U.Description AS Pack " +
+				"FROM Catalog_SKU S " +
+				"JOIN Catalog_SKU_Packing SP ON S.Id=SP.Ref AND SP.LineNumber=1 " +
+				"JOIN Catalog_SKU_Stocks BF ON BF.Ref=S.Id AND BF.LineNumber=1 " +
+				"JOIN Catalog_UnitsOfMeasure U ON SP.Pack=U.Id " +
+				"LEFT JOIN Document_Order_SKUs O ON O.Ref=@order AND O.SKU = S.Id " +
+					"AND O.Feature=BF.Feature AND O.Units=SP.Pack " +
+				"WHERE S.Id=@sku"
+		query.AddParameter("order", $.workflow.order);
+		query.AddParameter("sku", skuId);
+		var quickOrderItem =  query.Execute();
+		
+		defFeature = quickOrderItem.DefaultFeature;
+		defPack = quickOrderItem.DefaultUnit;
+		packDescription = quickOrderItem.Pack;
+			
+		Variables[packField].Text = packDescription;
+		Variables[textViewField].Text = quickOrderItem.Qty + " " + packDescription + " " + Translate["#alreadyOrdered#"];
+	}
+}
+
+function AddToOrder(control, editFieldName, packDescr) {
+	var editText = Converter.ToDecimal(0);
+	if (String.IsNullOrEmpty(Variables[editFieldName].Text) == false)
+		editText = Converter.ToDecimal(Variables[editFieldName].Text);
+	Variables[editFieldName].Text = editText + parseInt(1);
+}
+
+function CreateOrderItem(control, editFieldName, textFieldName, packFireld, sku, price) {
+
+	if (String.IsNullOrEmpty(Variables[editFieldName].Text) == false) {
+		if (Converter.ToDecimal(Variables[editFieldName].Text) != Converter.ToDecimal(0)) {
+
+			var p = DB.Create("Document.Order_SKUs");
+			p.Ref = $.workflow.order;
+			p.SKU = sku;
+			p.Feature = defFeature;
+			p.Price = price;
+			p.Qty = Converter.ToDecimal(Variables[editFieldName].Text);
+			p.Total = p.Price;
+			p.Amount = p.Total * p.Qty;
+			p.Units = defPack;
+			p.Discount = 0;
+			p.Save();
+
+			Global.FindTwinAndUnite(p);
+
+			var query = new Query("SELECT Qty FROM Document_Order_SKUs WHERE Ref=@ref AND SKU=@sku AND Feature=@feature AND Units=@units");
+			query.AddParameter("ref", p.Ref);
+			query.AddParameter("sku", p.SKU);
+			query.AddParameter("feature", p.Feature);
+			query.AddParameter("units", p.Units);
+			var qty = query.ExecuteScalar();
+
+			Variables[editFieldName].Text = 0;
+			Variables[textFieldName].Text = qty + " " + packDescription + " " + Translate["#alreadyOrdered#"];
+		}
+	}
+}
+
 function EmptyStockAllowed() {
 	var q = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='NoStkEnbl'");
 	var res = q.ExecuteScalar();
@@ -57,8 +129,8 @@ function EmptyStockAllowed() {
 
 function GetGroupPath(group, parent, parentDescription) {
 	var string = "";
-	
-	if (String.IsNullOrEmpty(parentDescription)==false)
+
+	if (String.IsNullOrEmpty(parentDescription) == false)
 		string = string + "/ " + parent.Description;
 	return string;
 }
@@ -78,6 +150,18 @@ function AddFilter(filterString, filterName, condition, connector) {
 		}
 	}
 	return filterString;
+}
+
+function OnScroll(sender)
+{
+	if($.grScrollView.ScrollIndex > 0 && swipedRow != $.grScrollView.Controls[$.grScrollView.ScrollIndex])
+		HideSwiped();
+}
+
+function HideSwiped()
+{
+	if(swipedRow != null)
+		swipedRow.Index = 1;
 }
 
 // --------------------------Filters------------------
@@ -228,4 +312,9 @@ function GetBrands(priceList) {
 	var q = new Query("SELECT DISTINCT B.Id, B.Description FROM Catalog_SKU S JOIN Catalog_Brands B ON S.Brand=B.Id JOIN Catalog_SKUGroup G ON S.Owner=G.Id WHERE S.ID IN (SELECT DISTINCT SKU FROM Document_PriceList_Prices WHERE Ref=@priceList) " + filterString + " ORDER BY B.Description");
 	q.AddParameter("priceList", priceList);
 	return q.Execute();
+}
+
+function ShowDialog(control, val) {
+	var d = parseInt(50);
+	return d;
 }

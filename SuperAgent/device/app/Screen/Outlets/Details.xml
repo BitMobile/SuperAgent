@@ -32,10 +32,10 @@
 
 			<c:HorizontalLayout CssClass="grid">
 				<s:Push Id="outletObj" Value="$GetObject($outlet)" />
-				<c:VerticalLayout OnClickAction="$DoSelect($outlet, OwnershipType, $ownType)">
+				<c:VerticalLayout OnClickAction="$SelectOwnership()">
 					<s:Push Id="ownershipString" Value="$GetString($outlet.OwnershipType)" />
 					<c:TextView Text="#ownership#" CssClass="description_row"></c:TextView>
-					<c:TextView Id="ownType" Text="$ownershipString" CssClass="$style" />
+					<c:TextView Id="OwnershipType" Text="$ownershipString" CssClass="$style" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

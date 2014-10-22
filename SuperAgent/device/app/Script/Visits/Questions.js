@@ -1,4 +1,8 @@
-﻿var questionsAtScreen;
+var questionsAtScreen;
+
+function OnLoading(){
+	questionsAtScreen = null;
+}
 
 function CreateArray() {
 	return [];
@@ -7,7 +11,7 @@ function CreateArray() {
 
 function GetQuestionsByQuestionnaires(outlet) {
 
-	var query = new Query("SELECT QQ.Question, C.Description AS Description, E.Description AS AnswerType, QQ.LineNumber, Q.Date, Q.Number " +
+	var query = new Query("SELECT DISTINCT QQ.Question, C.Description AS Description, E.Description AS AnswerType, QQ.LineNumber, Q.Date, Q.Number " +
 			"FROM Document_Questionnaire Q " +
 			"JOIN Document_QuestionnaireMap_Outlets M ON Q.Id=M.Questionnaire AND M.Outlet=@outletRef " +
 			"JOIN Document_Questionnaire_Questions QQ ON Q.Id=QQ.Ref " +

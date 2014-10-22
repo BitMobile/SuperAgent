@@ -67,7 +67,7 @@ function SelectOwnership() {
 		arr.push([res.Id, ownDictionary[res.Description]]);
 	}
 		
-	Dialog.Select("select", arr, CallBack1, $.outlet);
+	Dialog.Select("#select_answer#", arr, CallBack1, $.outlet);
 	
 }
 

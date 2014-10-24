@@ -17,7 +17,36 @@
 				<c:TextView Text="#questions#" />
 			</c:HorizontalLayout>
 		</c:DockLayout>
+		
+		<c:HorizontalLayout CssClass="small_grid">
+			<s:If Test="@regularAnswers">
+				<c:HorizontalLayout CssClass="mode_left_button_on">
+					<c:HorizontalLayout Id="regular" CssClass="select_zone" OnClick="$ChangeListAndRefresh(1)">
+						<c:TextView Text="#regular#"></c:TextView>
+					</c:HorizontalLayout>
+				</c:HorizontalLayout>
+				<c:HorizontalLayout CssClass="mode_right_button_off">
+					<c:HorizontalLayout Id="nonregular" CssClass="select_zone" OnClick="$ChangeListAndRefresh(0)">
+						<c:TextView Text="#nonregular#"></c:TextView>
+					</c:HorizontalLayout>
+				</c:HorizontalLayout>
+			</s:If>
+			<s:Else>
+				<c:HorizontalLayout CssClass="mode_left_button_off">
+					<c:HorizontalLayout Id="regular" CssClass="select_zone" OnClick="$ChangeListAndRefresh(1)">
+						<c:TextView Text="#regular#"></c:TextView>
+					</c:HorizontalLayout>
+				</c:HorizontalLayout>
+				<c:HorizontalLayout CssClass="mode_right_button_on">
+					<c:HorizontalLayout Id="nonregular" CssClass="select_zone" OnClick="$ChangeListAndRefresh(0)">
+						<c:TextView Text="#nonregular#"></c:TextView>
+					</c:HorizontalLayout>
+				</c:HorizontalLayout>
+			</s:Else>						
+		</c:HorizontalLayout>
+		
 
+		<!-- progress picture -->
 		<c:Image CssClass="3_scroll"></c:Image>
 		<c:HorizontalLine />
 

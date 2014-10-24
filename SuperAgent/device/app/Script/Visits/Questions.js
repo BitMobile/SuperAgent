@@ -1,12 +1,36 @@
 var questionsAtScreen;
+var regularAnswers;
+
+
+//
+//-------------------------------Header handlers-------------------------
+//
+
 
 function OnLoading(){
 	questionsAtScreen = null;
+	SetListType();
+}
+
+function SetListType(){
+	if (regularAnswers==null)
+		regularAnswers = true;
+}
+
+function ChangeListAndRefresh(control, param) {
+	regularAnswers	= ConvertToBoolean1(param);		
+	Workflow.Refresh([]);
 }
 
 function CreateArray() {
 	return [];
 }
+
+
+
+//
+//--------------------------------Questions list handlers--------------------------
+//
 
 
 function GetQuestionsByQuestionnaires(outlet) {

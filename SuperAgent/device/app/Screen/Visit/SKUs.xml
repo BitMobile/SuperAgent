@@ -20,8 +20,37 @@
 			</c:HorizontalLayout>
 		</c:DockLayout>
 
+		<c:HorizontalLayout CssClass="small_grid">
+			<s:If Test="@regularAnswers">
+				<c:HorizontalLayout CssClass="mode_left_button_on">
+					<c:HorizontalLayout Id="regular" CssClass="select_zone" OnClick="$ChangeListAndRefresh(1)">
+						<c:TextView Text="#regular#"></c:TextView>
+					</c:HorizontalLayout>
+				</c:HorizontalLayout>
+				<c:HorizontalLayout CssClass="mode_right_button_off">
+					<c:HorizontalLayout Id="nonregular" CssClass="select_zone" OnClick="$ChangeListAndRefresh(0)">
+						<c:TextView Text="#nonregular#"></c:TextView>
+					</c:HorizontalLayout>
+				</c:HorizontalLayout>
+			</s:If>
+			<s:Else>
+				<c:HorizontalLayout CssClass="mode_left_button_off">
+					<c:HorizontalLayout Id="regular" CssClass="select_zone" OnClick="$ChangeListAndRefresh(1)">
+						<c:TextView Text="#regular#"></c:TextView>
+					</c:HorizontalLayout>
+				</c:HorizontalLayout>
+				<c:HorizontalLayout CssClass="mode_right_button_on">
+					<c:HorizontalLayout Id="nonregular" CssClass="select_zone" OnClick="$ChangeListAndRefresh(0)">
+						<c:TextView Text="#nonregular#"></c:TextView>
+					</c:HorizontalLayout>
+				</c:HorizontalLayout>
+			</s:Else>
+		</c:HorizontalLayout>
+
 		<c:Image CssClass="4_scroll"></c:Image>
 		<c:HorizontalLine />
+
+
 
 		<c:ScrollView Id="grScrollView">
 
@@ -29,18 +58,16 @@
 			<c:HorizontalLine />
 
 			<s:Iterator Id="sku" Value="$SKUs">
-				<s:Push Id="skuValue" Value="$GetVisitSKUValue($visit,$sku.SKU)" />
-				<s:Push Id="sku_qty" Value="$GetSKUQty($outlet, $sku.Ref1, $sku.Ref2, $sku.questionsCount1, $sku.questionsCount2)"></s:Push>
-				<s:Push Id="sku_answered" Value="$GetSKUAnswers($skuValue)"></s:Push>
 
-				<c:HorizontalLayout CssClass="grid" OnClickAction="$Workflow.DoAction(Edit, $visit, $sku.SKU, $sku.Ref1, $sku.Ref2, $skuValue)">
-					<c:VerticalLayout>
-						<c:TextView Text="{$sku_answered} #of# {$sku_qty}" CssClass="description_row" />
-						<c:TextView Text="$sku.Description" CssClass="main_row"></c:TextView>
-					</c:VerticalLayout>
-					<c:Image />
-				</c:HorizontalLayout>
-				<c:HorizontalLine />
+				<s:If Test="$UniqueSKU($sku.SKU)">
+					<c:HorizontalLayout CssClass="grid" OnClick="$CreateItemAndShow($sku.SKU, $sku.visitSKUvalue)">
+						<c:VerticalLayout>
+							<c:TextView Text="0 #of# 0" CssClass="description_row" />
+							<c:TextView Text="$sku.Description" CssClass="main_row"></c:TextView>
+						</c:VerticalLayout>
+					</c:HorizontalLayout>
+					<c:HorizontalLine />
+				</s:If>
 
 			</s:Iterator>
 

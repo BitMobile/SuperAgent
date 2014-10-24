@@ -1,38 +1,62 @@
-﻿function GetSKUsFromQuesionnaires(outlet) {
+﻿var skuOnScreen;
+var regularAnswers;
 
-//	var regionQuest = GetQuesttionaire(outlet, DB.Current.Constant.QuestionnaireScale.Region);
-//	var territoryQuest = GetQuesttionaire(outlet, DB.Current.Constant.QuestionnaireScale.Territory);
+
+//
+//-------------------------------Header handlers-------------------------
+//
+
+
+function OnLoading(){
+	skuOnScreen = null;
+	SetListType();
+}
+
+function SetListType(){
+	if (regularAnswers==null)
+		regularAnswers = true;
+}
+
+function ChangeListAndRefresh(control, param) {
+	regularAnswers	= ConvertToBoolean1(param);		
+	Workflow.Refresh([]);
+}
+
+function CreateArray() {
+	return [];
+}
+
+
+//
+//--------------------------------Questions list handlers--------------------------
+//
+
+
+function GetSKUsFromQuesionnaires(outlet) {
 
 	var q = new Query();
-	var fileds = "SELECT q1.LineNumber AS LineNumber, q1.SKU, CS.Description, q1.Ref AS Ref1, DQQ2.Ref AS Ref2, ";
-	var innerQuery1 = "(SELECT COUNT(Id) FROM Document_Questionnaire_SKUQuestions WHERE UseInQuestionaire=1 AND Ref=@regionRef) ";
-	var caseThen = " CASE WHEN DQQ2.Ref IS NULL THEN NULL ELSE ";
-	var caseEnd = " END AS questionsCount2 ";
-	var innerQuery2 = " (SELECT COUNT(Id) FROM Document_Questionnaire_SKUQuestions WHERE UseInQuestionaire=1 AND Ref=@terrRef) ";
-	var from = " FROM Document_Questionnaire_SKUs q1 JOIN Catalog_SKU CS ON q1.SKU=CS.Id ";
-	var leftJoin1 = " LEFT JOIN Document_Questionnaire_SKUs DQQ2 ON q1.SKU=DQQ2.SKU AND DQQ2.Ref=@terrRef ";
-	var where1 = " WHERE q1.Ref=@regionRef ";
-	var leftJoin2 = " LEFT JOIN Document_Questionnaire_SKUs q2 ON q2.SKU=q1.SKU and q2.ref=@regionRef LEFT JOIN Document_Questionnaire_SKUs DQQ2 ON q1.SKU=DQQ2.SKU AND DQQ2.Ref=@regionRef WHERE q1.Ref = @terrRef and q2.Id is null ";
-	var order = " ORDER BY T1, LineNumber ";
-	q.Text = fileds + " 1 AS T1, " + innerQuery1 + " AS questionsCount1, " + caseThen + innerQuery2 + caseEnd + from + leftJoin1 + where1 + " UNION ALL " + fileds + " 2 AS T1, " + innerQuery2 + " AS questionsCount1, " + caseThen + innerQuery1 + caseEnd + from + leftJoin2 + order;
-
-	Dialog.Debug(q.Text);
-	
-	q.AddParameter("regionRef", regionQuest); // 38426ABE-7EA7-11E3-BD7D-50E549CAB397
-	q.AddParameter("terrRef", territoryQuest); // CD5051D4-7E9C-11E3-BD7D-50E549CAB397
+	q.Text="SELECT distinct QS.SKU, C.Description AS Description, QS.LineNumber, Q.Date, Q.Number, VS.Id AS visitSKUvalue " +
+			"FROM Document_Questionnaire Q " +
+			"JOIN Document_QuestionnaireMap_Outlets M ON Q.Id=M.Questionnaire AND M.Outlet=@outlet " +
+			"JOIN Document_Questionnaire_SKUs QS ON Q.Id=QS.Ref " +
+			"JOIN Catalog_SKU C ON QS.SKU=C.Id " +
+			"LEFT JOIN Document_Visit_SKUs VS ON VS.SKU=C.Id AND VS.Ref=@ref "
+			"ORDER BY Q.Date, QS.LineNumber";
+	q.AddParameter("outlet", outlet);
+	q.AddParameter("ref", $.workflow.visit);
 
 	return q.Execute();
 }
 
-function GetQuesttionaire(outlet, scale) {
-
-	var q1 = new Query("SELECT Id FROM Document_Questionnaire WHERE OutletType=@type AND OutletClass=@class AND Scale=@scale ORDER BY Date desc");
-	q1.AddParameter("type", outlet.Type);
-	q1.AddParameter("class", outlet.Class);
-	q1.AddParameter("scale", scale);
-
-	return q1.ExecuteScalar();
-
+function UniqueSKU(sku){
+	if (skuOnScreen==null)
+		skuOnScreen = new List;
+	if (IsInCollection(sku, skuOnScreen))
+		return false;
+	else{
+		skuOnScreen.Add(sku);
+		return true;
+	}
 }
 
 function GetVisitSKUValue(visit, sku) {
@@ -68,18 +92,6 @@ function GetSKUQty(outlet, ref1, ref2, count1, count2) {
 
 }
 
-function CheckQuestionExistence(questionnaire, description, sku) {
-
-	var q = new Query("SELECT DQ.Id,  E.Description, CS.Description AS SKU, DQ.UseInQuestionaire FROM Document_Questionnaire_SKUQuestions DQ JOIN Enum_SKUQuestions E ON DQ.SKUQuestion=E.Id JOIN Document_Questionnaire_SKUs DS ON DS.Ref=DQ.Ref JOIN Catalog_SKU CS ON DS.SKU=CS.Id WHERE DQ.Ref=@ref AND E.Description=@questionDescr AND DS.SKU=@sku AND DQ.UseInQuestionaire=@use");
-	q.AddParameter("ref", questionnaire);
-	q.AddParameter("questionDescr", description);
-	q.AddParameter("sku", sku);
-	q.AddParameter("use", true);
-	if (parseInt(q.ExecuteCount()) == parseInt(0))
-		return false;
-	else
-		return true;
-}
 
 function GetSKUAnswers(skuvalue) {// , sku_answ) {
 
@@ -100,36 +112,13 @@ function GetSKUAnswers(skuvalue) {// , sku_answ) {
 	}
 }
 
-function IsAnswered(visit, qName, sku) {
+// ------------------------SKU----------------------
 
-	// var n = DB.Current.Document.Visit_SKUs.SelectBy("Ref", visit.Id)
-	// .Where(String.Format("{0}!=@p1 && SKU==@p2", qName), [null, sku.Id])
-	// .Count();
-
-	var n = new Query("SELECT Id FROM Document_Visit_SKUs WHERE Ref=@ref AND " + qName + " IS NOT NULL AND SKU=@sku");
-	n.AddParameter("ref", visit);
-	n.AddParameter("sku", sku);
-	if (parseInt(n.ExecuteCount()) == parseInt(0))
-		return false;
-	else
-		return true;
-
-}
-
-function SKUIsInList(sku) {
-	if (Variables.Exists("skuQuestions") == false)
-		Variables.Add("skuQuestions", new List());
-	if (IsInCollection(sku, Variables["skuQuestions"]))
-		return true;
-	else {
-		var arr = Variables["skuQuestions"];
-		arr.Add(sku);
-		Variables["skuQuestions"] = arr;
-		return false;
+function CreateItemAndShow(control, sku, skuValue) {
+	if (){
+		
 	}
 }
-
-// ------------------------SKU----------------------
 
 function GetSKUQuestions(regionQuest, territoryQuest) {
 

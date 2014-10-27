@@ -57,16 +57,31 @@
 			<c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<s:Iterator Id="sku" Value="$SKUs">
+			<s:Iterator Id="sku" Value="$SKUs" Status="statusCount">
+				<s:Push Id="index" Value="{$statusCount.Index}"></s:Push>
 
 				<s:If Test="$UniqueSKU($sku.SKU)">
-					<c:HorizontalLayout CssClass="grid" OnClick="$CreateItemAndShow($sku.SKU, $sku.visitSKUvalue)">
+					<c:HorizontalLayout CssClass="grid" OnClick="$CreateItemAndShow($sku.SKU, $sku.visitSKUvalue, $index)">
 						<c:VerticalLayout>
 							<c:TextView Text="0 #of# 0" CssClass="description_row" />
 							<c:TextView Text="$sku.Description" CssClass="main_row"></c:TextView>
 						</c:VerticalLayout>
 					</c:HorizontalLayout>
 					<c:HorizontalLine />
+					<s:If Test="$ShowChilds($index)">
+						<s:Push Id="childs" Value="$GetChilds($sku.SKU)"></s:Push>
+						<s:Iterator Id="child" Value="$childs">
+							<c:HorizontalLayout CssClass="child_grid">
+							<c:VerticalLayout>
+								<c:TextView Text="$child.Description" CssClass="description_row"></c:TextView>
+								<!-- <c:TextView Text="$child.Description" CssClass="main_row"></c:TextView> --> 
+								<c:EditText Text="$child.Description" Keyboard="numeric"></c:EditText> 
+							</c:VerticalLayout>
+						</c:HorizontalLayout>
+						<c:HorizontalLine />
+						
+						</s:Iterator>
+					</s:If>					
 				</s:If>
 
 			</s:Iterator>

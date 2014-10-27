@@ -59,12 +59,10 @@
 		<bp:Step Name="Questions" Screen="Visit\Questions.xml" Controller="Visits\Questions.js">
 			<bp:Action Name="Forward" NextStep="SKUs"></bp:Action>
 			<bp:Action Name="Skip3" NextStep="Order"></bp:Action>
-			<bp:Action Name="Edit" NextStep="EditQuestion"></bp:Action>
 		</bp:Step>
 
 		<bp:Step Name="SKUs" Screen="Visit\SKUs.xml" Controller="Visits\SKU_Questions.js">
 			<bp:Action Name="Forward" NextStep="Order"></bp:Action>
-			<bp:Action Name="Edit" NextStep="Visit_EditSKU"></bp:Action>
 		</bp:Step>
 
 		<bp:Step Name="Order" Screen="Order\Order.xml" Controller="Order\Main.js">
@@ -107,9 +105,6 @@
 		</bp:Step>
 
 		<bp:Step Name="EditOutletAddParameter" Screen="OutletParameter.xml">
-		</bp:Step>
-
-		<bp:Step Name="Visit_EditSKU" Screen="Visit\SKU.xml" Controller="Visits\SKU_Questions.js">
 		</bp:Step>
 
 		<bp:Step Name="ShowMap" Screen="Outlet_Map.xml" Controller="Visits\Outlet_Map.js">

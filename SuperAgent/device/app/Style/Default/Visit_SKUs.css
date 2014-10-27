@@ -109,3 +109,26 @@
 	color: #ffffff;
 	font: 50% Arial;
 }
+
+.child_grid {
+	height: 15.9sp;
+	width: 100%;
+	background-color: #ffffff;
+	selected-color: #bacdce;
+}
+
+.child_grid vl{
+	width: 100%;
+	height: 100%;
+	padding-top: 11%;
+	padding-left: 5%;
+	background-color: #efeff4;
+	padding-left: 10%;
+}
+
+.child_grid vl EditText {
+	height: 40%;
+	width: 90%;
+	font: 45% Arial;
+	color: #2d89cf;
+}

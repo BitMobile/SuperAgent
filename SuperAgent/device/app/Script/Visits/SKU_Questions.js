@@ -1,5 +1,6 @@
 ﻿var skuOnScreen;
 var regularAnswers;
+var parentId;
 
 
 //
@@ -9,6 +10,7 @@ var regularAnswers;
 
 function OnLoading(){
 	skuOnScreen = null;
+	//parentId = null;
 	SetListType();
 }
 
@@ -112,27 +114,41 @@ function GetSKUAnswers(skuvalue) {// , sku_answ) {
 	}
 }
 
+function ShowChilds(index) {	
+	var s = "p" + index; 
+	//Dialog.Debug(parentId);
+	//Dialog.Debug(s);
+	if (s == parentId)
+		return true;
+	else
+		return false;
+}
+
+function GetChilds(sku) {
+	var q = new Query();
+	q.Text = "SELECT DISTINCT C.Description FROM Document_Questionnaire Q " +
+			"JOIN Document_QuestionnaireMap_Outlets M ON Q.Id=M.Questionnaire AND M.Outlet = @outlet " +
+			"JOIN Document_Questionnaire_SKUQuestionsNew SQ ON SQ.Ref=Q.Id " +
+			"JOIN Document_Questionnaire_SKUs S ON S.Ref=Q.Id AND S.SKU=@sku " +
+			"JOIN Catalog_Question C ON SQ.Question=C.Id ";
+	q.AddParameter("outlet", $.workflow.outlet);
+	q.AddParameter("sku", sku);
+	return q.Execute();
+}
+
 // ------------------------SKU----------------------
 
-function CreateItemAndShow(control, sku, skuValue) {
-	if (){
-		
+function CreateItemAndShow(control, sku, skuValue, index) {
+	if (skuValue!=null){
+		skuValue = DB.Create("Document.Visit_SKUs");
+		skuValue.Ref = $.workflow.visit;
+		skuValue.SKU = sku;
 	}
+	parentId = "p" + index;
+	Workflow.Refresh([]);
 }
 
-function GetSKUQuestions(regionQuest, territoryQuest) {
 
-	var q = new Query("SELECT DISTINCT ES.Description, DQ.LineNumber, DQ.SKUQuestion FROM Document_Questionnaire_SKUQuestions DQ JOIN Enum_SKUQuestions ES ON DQ.SKUQuestion=ES.Id WHERE (DQ.Ref=@ref1 OR DQ.Ref=@ref2) AND DQ.UseInQuestionaire=1 ORDER BY LineNumber");
-	q.AddParameter("ref1", regionQuest);
-	q.AddParameter("ref2", territoryQuest);
-
-	var res = q.Execute();
-
-	var arr = new List;
-	while (res.Next())
-		arr.Add(res.SKUQuestion.Description);
-	return arr;
-}
 
 function CreateVisitSKUValueIfNotExists(visit, sku, skuValue) {
 	if (skuValue != null)

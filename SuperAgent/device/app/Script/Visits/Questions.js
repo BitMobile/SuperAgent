@@ -37,10 +37,11 @@ function GetQuestionsByQuestionnaires(outlet) {
 
 	var query = new Query("SELECT DISTINCT QQ.Question, C.Description AS Description, E.Description AS AnswerType, QQ.LineNumber, Q.Date, Q.Number " +
 			"FROM Document_Questionnaire Q " +
-			"JOIN Document_QuestionnaireMap_Outlets M ON Q.Id=M.Questionnaire AND M.Outlet=@outletRef " +
+			"JOIN Document_QuestionnaireMap_Outlets M ON Q.Id=M.Questionnaire " +
 			"JOIN Document_Questionnaire_Questions QQ ON Q.Id=QQ.Ref " +
 			"JOIN Catalog_Question C ON QQ.Question=C.Id " +
 			"JOIN Enum_DataType E ON C.AnswerType=E.Id " +
+			"WHERE M.Outlet=@outlet "
 			"ORDER BY Q.Date, QQ.LineNumber");
 	query.AddParameter("outletRef", outlet);
 	Variables.Add("workflow.questions_qty", query.ExecuteCount());
@@ -150,7 +151,7 @@ function CheckEmptyQuestionsAndForward(visit) {
 		DB.Delete(res.Id);
 	}
 
-	FillQuestionnaires();
+	//FillQuestionnaires();
 	
 	Workflow.Forward([]);
 }

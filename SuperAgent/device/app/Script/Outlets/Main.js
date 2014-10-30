@@ -223,7 +223,7 @@ function LocationDialogHandler(answ, outlet) {
 			outlet.Save();
 			Variables["outletCoord"].Text = (outlet.Lattitude + ", " + outlet.Longitude);
 		} else
-			NoLocationHandler(LocationDialogHandler);
+			NoLocationHandler(LocationDialogHandler, outlet);
 	}
 }
 
@@ -258,12 +258,12 @@ function VisitCoordsHandler(answ, visit) {
 			visit.Save();
 			Dialog.Message("#coordinatesAreSet#");
 		} else
-			NoLocationHandler(VisitCoordsHandler);
+			NoLocationHandler(VisitCoordsHandler, visit);
 	}
 }
 
-function NoLocationHandler(descriptor) {
-	Dialog.Question("#locationSetFailed#", descriptor);
+function NoLocationHandler(descriptor, state) {
+	Dialog.Question("#locationSetFailed#", descriptor, state);
 }
 
 // --------------------------- Outlets ---------------------------

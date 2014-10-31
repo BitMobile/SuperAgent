@@ -155,11 +155,11 @@ function RemovePlaceHolder(control) {
 // ------------------------SKU----------------------
 
 function CreateItemAndShow(control, sku, skuValue, index) {
-	if (skuValue!=null){
-		skuValue = DB.Create("Document.Visit_SKUs");
-		skuValue.Ref = $.workflow.visit;
-		skuValue.SKU = sku;
-	}
+//	if (skuValue!=null){
+//		skuValue = DB.Create("Document.Visit_SKUs");
+//		skuValue.Ref = $.workflow.visit;
+//		skuValue.SKU = sku;
+//	}
 	parentId = "p" + index;
 	Workflow.Refresh([]);
 }
@@ -231,8 +231,8 @@ function GoToQuestionAction(control, answerType, question, sku, editControl) {
 		BooleanDialogSelect(skuValue, "Answer", editControl);
 	}
 	
-	if (answerType == "Integer" || answerType == "String" || answerType == "Decimal") 
-		editControl.SetFocus();
+//	if (answerType == "Integer" || answerType == "String" || answerType == "Decimal") 
+//		editControl.SetFocus();
 }
 
 function SaveAndBack(skuValue) {

@@ -116,8 +116,6 @@ function GetSKUAnswers(skuvalue) {// , sku_answ) {
 
 function ShowChilds(index) {	
 	var s = "p" + index; 
-	//Dialog.Debug(parentId);
-	//Dialog.Debug(s);
 	if (s == parentId)
 		return true;
 	else
@@ -126,14 +124,32 @@ function ShowChilds(index) {
 
 function GetChilds(sku) {
 	var q = new Query();
-	q.Text = "SELECT DISTINCT C.Description FROM Document_Questionnaire Q " +
-			"JOIN Document_QuestionnaireMap_Outlets M ON Q.Id=M.Questionnaire AND M.Outlet = @outlet " +
-			"JOIN Document_Questionnaire_SKUQuestionsNew SQ ON SQ.Ref=Q.Id " +
-			"JOIN Document_Questionnaire_SKUs S ON S.Ref=Q.Id AND S.SKU=@sku " +
-			"JOIN Catalog_Question C ON SQ.Question=C.Id ";
+	q.Text = "SELECT DISTINCT C.Description AS Description, C.Id, E.Description AS AnswerType" + 
+			" , CASE WHEN V.Answer IS NULL THEN '—' ELSE V.Answer END AS Answer" +
+			" , CASE WHEN E.Description='Integer' OR E.Description='Decimal' OR E.Description='String' THEN 1 ELSE NULL END AS IsInputField" +
+			" , CASE WHEN E.Description='Integer' OR E.Description='Decimal' THEN 'numeric' ELSE 'auto' END AS KeyboardType" + 
+			" FROM Document_Questionnaire Q" + 
+			" JOIN Document_QuestionnaireMap_Outlets M ON Q.Id=M.Questionnaire AND M.Outlet = @outlet" + 
+			" JOIN Document_Questionnaire_SKUQuestionsNew SQ ON SQ.Ref=Q.Id" + 
+			" JOIN Document_Questionnaire_SKUs S ON S.Ref=Q.Id AND S.SKU=@sku" + 
+			" JOIN Catalog_Question C ON SQ.Question=C.Id" +
+			" JOIN Enum_DataType E ON E.Id=C.AnswerType" + 
+			" LEFT JOIN Document_Visit_SKUs V ON V.Question=C.Id AND V.SKU=S.SKU AND V.Ref=@visit" +
+			" ORDER BY Description";
 	q.AddParameter("outlet", $.workflow.outlet);
 	q.AddParameter("sku", sku);
+	q.AddParameter("visit", $.workflow.visit);
 	return q.Execute();
+}
+
+
+function AssignQuestionValue(control, sku, question) {
+	CreateVisitSKUValueIfNotExists(sku, question, control.Text)
+}
+
+function RemovePlaceHolder(control) {
+	if (control.Text == "—")
+		control.Text = "";
 }
 
 // ------------------------SKU----------------------
@@ -150,17 +166,27 @@ function CreateItemAndShow(control, sku, skuValue, index) {
 
 
 
-function CreateVisitSKUValueIfNotExists(visit, sku, skuValue) {
-	if (skuValue != null)
-		return skuValue;
+function CreateVisitSKUValueIfNotExists(control, sku, question) {
+	
+	var query = new Query();
+	query.Text = "SELECT Id FROM Document_Visit_SKUs WHERE SKU=@sku AND Question=@question AND Ref=@ref";
+	query.AddParameter("ref", $.workflow.visit);
+	query.AddParameter("question", question);
+	query.AddParameter("sku", sku);
+	var skuValue = query.ExecuteScalar();
+	
+	if (skuValue == null){		
+		skuValue = DB.Create("Document.Visit_SKUs");
+		skuValue.Ref = $.workflow.visit;
+		skuValue.SKU = sku;
+		skuValue.Question = question;
+	}
+	else
+		skuValue = skuValue.GetObject();
+	skuValue.Answer = control.Text;
+	skuValue.Save();
 
-	var p = DB.Create("Document.Visit_SKUs");
-
-	p.Ref = visit;
-	p.SKU = sku;
-	p.Save();
-
-	return p.Id;
+	return skuValue.Id;
 }
 
 function GetSnapshotText(text) {
@@ -178,20 +204,35 @@ function GetQuestionSet(quest1, quest2, skuValue) {
 
 }
 
-function GoToQuestionAction(answerType, question, visit, control, attribute) {
+function GoToQuestionAction(control, answerType, question, sku, editControl) {	
+	
+	editControl = Variables[editControl];
+	if (editControl.Text=="—")
+		editControl.Text = "";
+	var skuValue = CreateVisitSKUValueIfNotExists(editControl, sku, question);
+	
+	if (answerType == "ValueList") {
+		var q = new Query();
+		q.Text = "SELECT Value, Value FROM Catalog_Question_ValueList WHERE Ref=@ref";
+		q.AddParameter("ref", question);
+		ValueListSelect(skuValue, "Answer", q.Execute(), editControl);
+	}
 
 	if (answerType == "Snapshot") {
-		GetCameraObject(visit);
-		Camera.MakeSnapshot(SaveAtVisit, question);
+		GetCameraObject($.workflow.visit);
+		Camera.MakeSnapshot(SaveAtVisit, [ skuValue, editControl]);
+	}
+
+	if (answerType == "DateTime") {
+		DateTimeDialog(skuValue, "Answer", skuValue.Answer, editControl);
 	}
 
 	if (answerType == "Boolean") {
-		BooleanDialogSelect(question, attribute, Variables[control]);
+		BooleanDialogSelect(skuValue, "Answer", editControl);
 	}
-
-	if (answerType == "Integer" || answerType == "String" || answerType == "Decimal") {
-		Variables["memoAnswer"].AutoFocus == true;
-	}
+	
+	if (answerType == "Integer" || answerType == "String" || answerType == "Decimal") 
+		editControl.SetFocus();
 }
 
 function SaveAndBack(skuValue) {
@@ -255,6 +296,5 @@ function GetActionAndBack() {
 //------------------------------internal-----------------------------------
 
 function DialogCallBack(control, key){
-	
-	Workflow.Refresh([$.param1, $.param2, $.param3, $.param4, $.skuValue]);
+	control.Text = key;
 }

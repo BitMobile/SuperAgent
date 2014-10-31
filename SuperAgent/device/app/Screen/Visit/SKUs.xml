@@ -70,12 +70,17 @@
 					<c:HorizontalLine />
 					<s:If Test="$ShowChilds($index)">
 						<s:Push Id="childs" Value="$GetChilds($sku.SKU)"></s:Push>
-						<s:Iterator Id="child" Value="$childs">
+						<s:Iterator Id="child" Value="$childs" Status="statusCount">
+							<s:Push Id="index" Value="{$statusCount.Index}"></s:Push>
 							<c:HorizontalLayout CssClass="child_grid">
-							<c:VerticalLayout>
+							<c:VerticalLayout OnClick="$GoToQuestionAction($child.AnswerType, $child.Id, $sku.SKU, control{$index})">
 								<c:TextView Text="$child.Description" CssClass="description_row"></c:TextView>
-								<!-- <c:TextView Text="$child.Description" CssClass="main_row"></c:TextView> --> 
-								<c:EditText Text="$child.Description" Keyboard="numeric"></c:EditText> 
+								<s:If Test="$child.IsInputField==1">
+									<c:EditText Id="control{$index}" Text="$child.Answer" OnGetFocus = "$RemovePlaceHolder()" OnChange="$CreateVisitSKUValueIfNotExists($sku.SKU, $child.Id)" Keyboard="$child.KeyboardType" CssClass="main_row"></c:EditText>
+								</s:If>
+								<s:Else>
+									<c:TextView Id="control{$index}" Text="$child.Answer" CssClass="answer_main_row"></c:TextView>
+								</s:Else>								 								 
 							</c:VerticalLayout>
 						</c:HorizontalLayout>
 						<c:HorizontalLine />

@@ -66,10 +66,10 @@
 						<c:VerticalLayout OnClickAction="$GoToQuestionAction($question.AnswerType, $visit, control{$index}, $question.Question)">
 							<c:TextView Text="$question.Description" CssClass="description_row"></c:TextView>
 							<s:If Test="$question.IsInputField=='1'">
-								<c:MemoEdit Id="control{$index}" Text="$question.Answer" OnChange="$AssignQuestionValue($question.Question)" Keyboard="$question.KeyboardType" CssClass="main_row"></c:MemoEdit>
+								<c:MemoEdit Id="control{$index}" Text="$question.Answer" OnGetFocus = "$RemovePlaceHolder()" OnChange="$AssignQuestionValue($question.Question)" Keyboard="$question.KeyboardType" CssClass="main_row"></c:MemoEdit>
 							</s:If>
 							<s:Else>
-								<c:TextView Id="control{$index}" Text="@answerText" CssClass="$question.Style"></c:TextView>
+								<c:TextView Id="control{$index}" Text="$question.Answer" CssClass="main_row"></c:TextView>
 							</s:Else>
 														
 						</c:VerticalLayout>

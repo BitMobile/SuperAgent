@@ -132,3 +132,12 @@
 	font: 45% Arial;
 	color: #2d89cf;
 }
+
+.answer_main_row {
+	width: 100%;
+	height: 40%;
+	margin-top: 5%;
+	white-space: normal;
+	font: 42% Arial;
+	color: #2D89CF;
+}

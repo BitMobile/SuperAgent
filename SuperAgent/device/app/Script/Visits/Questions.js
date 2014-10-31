@@ -33,8 +33,9 @@ function CreateArray() {
 function GetQuestionsByQuestionnaires(outlet) {
 
 	var query = new Query("SELECT DISTINCT QQ.Question, C.Description AS Description, E.Description AS AnswerType, " + 
-			"QQ.LineNumber, Q.Date, V.Answer " + 
-			" , CASE WHEN Answer IS NULL THEN 'comment_row' ELSE 'main_row' END AS Style " + 
+			"QQ.LineNumber, Q.Date " + 
+			//" , CASE WHEN Answer IS NULL THEN 'comment_row' ELSE 'main_row' END AS Style " +
+			" , CASE WHEN Answer IS NULL THEN '—' ELSE V.Answer END AS Answer " +
 			" , CASE WHEN E.Description='Integer' OR E.Description='Decimal' OR E.Description='String' THEN 1 ELSE NULL END AS IsInputField " +
 			" , CASE WHEN E.Description='Integer' OR E.Description='Decimal' THEN 'numeric' ELSE 'auto' END AS KeyboardType " +
 			"FROM Document_Questionnaire Q " + 
@@ -51,8 +52,10 @@ function GetQuestionsByQuestionnaires(outlet) {
 	return query.Execute();
 }
 
-function ShDialog(value) {
-	Dialog.Debug(value);
+
+function RemovePlaceHolder(control) {
+	if (control.Text == "—")
+		control.Text = "";
 }
 
 function UniqueQuestion(question, answerType, answer, text) {
@@ -67,29 +70,15 @@ function UniqueQuestion(question, answerType, answer, text) {
 		result = true;
 	}
 
-	
-	//set answer text
-	if (answer==null)
-		AnswerText(answerType);
-	else{
-		if (answerType=='Snapshot')
-			answerText = GetSnapshotText(answer);
-		else
-			answerText = answer;
-	}
-		
-	
+	// set answer text
+	if (answerType == 'Snapshot')
+		answerText = GetSnapshotText(answer);
+	else
+		answerText = answer;
+
 	return result;
 }
 
-function AnswerText(answerType) {
-	if (answerType == "ValueList" || answerType == "Boolean")
-		answerText = Translate["#select_answer_low#"];
-	if (answerType == "Snapshot")
-		answerText = GetSnapshotText(null);
-	if (answerType == DateTime)
-		answerText = Translate["#clickToInsert#"];
-}
 
 function CreateVisitQuestionValueIfNotExists(question, answer) {
 
@@ -119,8 +108,11 @@ function GetSnapshotText(text) {
 }
 
 function GoToQuestionAction(answerType, visit, control, questionItem) {
-
-	var question = CreateVisitQuestionValueIfNotExists(questionItem, "");
+	
+	var editControl = Variables[control];
+	if (editControl.Text=="—")
+		editControl.Text = "";
+	var question = CreateVisitQuestionValueIfNotExists(questionItem, editControl.Text);
 
 	if (answerType == "ValueList") {
 		var q = new Query();

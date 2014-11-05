@@ -1,5 +1,5 @@
 ﻿outlet_description	Outlet description
-forward		Forward
+forward		Next
 back		Back
 summary		Summary
 caps_summary	SUMMARY

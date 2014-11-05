@@ -12,7 +12,15 @@
 				<c:Image />
 				<c:TextView Text="#back#" />
 			</c:HorizontalLayout>
-			<c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckEmptyQuestionsAndForward($visit)" />
+			<s:If Test="@regularAnswers">
+				<c:DockLayout Id="btnForward" CssClass="forward" OnClickAction="$CheckEmptyQuestionsAndForward($visit)" OnEvent="Forward">
+					<c:VerticalLayout></c:VerticalLayout>
+					<c:TextView Text="33)"/>
+					<c:Image/>
+					<c:TextView Text="#forward# ("/>					
+				</c:DockLayout>
+			</s:If>
+			<s:Else><c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckEmptyQuestionsAndForward($visit)" /></s:Else>			
 			<c:HorizontalLayout>
 				<c:TextView Text="#questions#" />
 			</c:HorizontalLayout>

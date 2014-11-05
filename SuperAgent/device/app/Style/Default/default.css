@@ -126,7 +126,6 @@ MemoEdit {
 	width: 20%;
 	height: 100%;
 	dock-align: right;
-	/*margin-right: 2%;*/
 	margin-left: 13%;
 	text-align: right;
 	color: #2d89cf;
@@ -145,12 +144,10 @@ MemoEdit {
 	width: 10% auto;
 	padding-top: 26%;
 	text-align: right;
-	/*margin-right: 2%;*/
 	padding-right:0%;
 	color: #bebebe;
 	font: 39.5% arial;
 	dock-align: right;
-	/*background-color: #6495ED;*/
 }
 
 .forward vl{
@@ -327,17 +324,25 @@ MemoEdit {
 	selected-color: #bacdce;
 	background-color: #efeff4;
 	dock-align: top;
+	padding-left: 3.5%;
 }
 
 .caption_grid TextView {
-	width: 100%;
+	width: 25% auto;
 	height: 50%;
 	text-align: left;
-	margin-left: 3.5%;
+	/*margin-left: 3.5%;*/
 	margin-top: 50%;
 	white-space: nowrap;
 	font: 60% arial;
 	color: #4d4d4d;
+}
+
+.required{
+	background-image: url(empty.png);
+	width: 4%;
+	height: 35%;
+	margin-top: 45%;
 }
 
 .empty_caption_grid {

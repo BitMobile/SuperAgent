@@ -225,3 +225,4 @@ alreadyOrdered	уже в заказе
 repeat		Повторить
 nonregular	Единоразровые
 regular		Регулярные
+requiredLeft	Обязательных вопросов осталось:

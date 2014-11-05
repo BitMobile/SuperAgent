@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="CreateOutlet.css">
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Visit_SKUs.css">
 
 	<s:Push Id="outlet" Value="$workflow.outlet"></s:Push>
 	<s:Push Id="visit" Value="$workflow.visit"></s:Push>
@@ -60,8 +60,18 @@
 
 
 		<c:ScrollView Id="grScrollView">
-
-			<c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
+		
+			<s:If Test="@regularAnswers">
+				<c:HorizontalLayout CssClass="required_grid">
+					<c:TextView Text="#requiredLeft# "></c:TextView>
+					<c:Image/>
+					<c:TextView Text=" 33"></c:TextView>
+				</c:HorizontalLayout>
+			<c:HorizontalLine />
+			</s:If>
+			<s:Else>
+				<c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>				
+			</s:Else>
 			<c:HorizontalLine />
 
 			<s:Iterator Id="question" Value="$questions" Status="statusCount">

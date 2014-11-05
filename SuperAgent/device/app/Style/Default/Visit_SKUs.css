@@ -141,3 +141,30 @@
 	font: 42% Arial;
 	color: #2D89CF;
 }
+
+.required_grid {
+	height: 8.9sp;
+	selected-color: #bacdce;
+	background-color: #efeff4;
+	dock-align: top;
+	padding-left: 3.5%;
+}
+
+.required_grid TextView {
+	width: 25% auto;
+	height: 41%;
+	text-align: left;
+	margin-top: 42%;
+	white-space: nowrap;
+	font: 60% arial;
+	color: #8e8e93;
+}
+
+.required_grid img{
+	background-image: url(empty.png);
+	width: 3.75%;
+	height: 25%;
+	margin-top: 44%;
+	margin-left: 0.5%;
+	margin-right: 0.5%;
+}

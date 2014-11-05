@@ -225,3 +225,4 @@ alreadyOrdered	already in order
 repeat		Repeat
 nonregular	Non-regular
 regular		Regular
+requiredLeft	Reqired answers left:

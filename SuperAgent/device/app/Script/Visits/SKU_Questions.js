@@ -24,11 +24,6 @@ function ChangeListAndRefresh(control, param) {
 	Workflow.Refresh([]);
 }
 
-function CreateArray() {
-	return [];
-}
-
-
 //
 //--------------------------------Questions list handlers--------------------------
 //
@@ -58,59 +53,6 @@ function UniqueSKU(sku){
 	else{
 		skuOnScreen.Add(sku);
 		return true;
-	}
-}
-
-function GetVisitSKUValue(visit, sku) {
-	var query = new Query("SELECT Id FROM Document_Visit_SKUs WHERE Ref == @Visit AND SKU == @SKU");
-	query.AddParameter("Visit", visit);
-	query.AddParameter("SKU", sku);
-	return query.ExecuteScalar();
-}
-
-function GetSKUQty(outlet, ref1, ref2, count1, count2) {
-
-	var c = 0;
-
-	if (ref2 == null)
-		c = count1;
-	else {
-		var regionQuest = GetQuesttionaire(outlet, DB.Current.Constant.QuestionnaireScale.Region);
-		var territoryQuest = GetQuesttionaire(outlet, DB.Current.Constant.QuestionnaireScale.Territory);
-
-		var query = new Query("SELECT DISTINCT q1.SKUQuestion FROM Document_Questionnaire_SKUQuestions q1 WHERE (q1.Ref=@ref1 OR q1.Ref=@ref2) AND q1.UseInQuestionaire=1");
-		query.AddParameter("ref1", regionQuest);
-		query.AddParameter("ref2", territoryQuest);
-		var res = query.ExecuteCount();
-
-		c = res;
-	}
-
-	var n = $.workflow.sku_qty;
-	$.workflow.Remove("sku_qty");
-	$.workflow.Add("sku_qty", (n + c));
-
-	return c;
-
-}
-
-
-function GetSKUAnswers(skuvalue) {// , sku_answ) {
-
-	if (skuvalue == null)
-		return parseInt(0);
-
-	else {
-		var sa = parseInt(0);
-		var parameters = [ "Available", "Facing", "Stock", "Price", "MarkUp", "OutOfStock", "Snapshot" ];
-		for ( var i in parameters) {
-			var name = parameters[i];
-			if (String.IsNullOrEmpty(skuvalue[name])==false)
-				sa += parseInt(1);
-		}
-
-		Variables["workflow"]["sku_answ"] += sa;
-		return sa;
 	}
 }
 
@@ -196,14 +138,6 @@ function GetSnapshotText(text) {
 		return Translate["#snapshotAttached#"];
 }
 
-function GetQuestionSet(quest1, quest2, skuValue) {
-	var q = new Query();
-	q.AddParameter("ref1", quest1);
-	q.AddParameter("ref2", quest2);
-	var res = q.Execute();
-
-}
-
 function GoToQuestionAction(control, answerType, question, sku, editControl) {	
 	
 	editControl = Variables[editControl];
@@ -230,39 +164,12 @@ function GoToQuestionAction(control, answerType, question, sku, editControl) {
 	if (answerType == "Boolean") {
 		BooleanDialogSelect(skuValue, "Answer", editControl);
 	}
-	
-//	if (answerType == "Integer" || answerType == "String" || answerType == "Decimal") 
-//		editControl.SetFocus();
 }
 
-function SaveAndBack(skuValue) {
-	if (NotEmptyObject(skuValue) == false)
-		DB.Delete(skuValue);
-	skuValue = skuValue.GetObject().Save();
-	Workflow.Back();
-}
-
-function NotEmptyObject(skuValue) {
-	var stat = false;
-	var arr = [ "Available", "Facing", "Stock", "Price", "MarkUp", "OutOfStock", "Snapshot" ];
-	for ( var i in arr) {
-		var a = arr[i];
-		if (String.IsNullOrEmpty(skuValue[a]) == false){
-			stat = true;
-		}
-			
-	}
-	return stat;
-}
 
 function CheckEmtySKUAndForward(outlet, visit) {
 	var p = [ outlet, visit ];
 	Workflow.Forward(p);
-}
-
-function GetSKUShapshot(visit, question, control) {
-	GetCameraObject(visit.Id);
-	Camera.MakeSnapshot(SaveAtVisit, [ question, control ]);
 }
 
 function GetCameraObject(entity) {

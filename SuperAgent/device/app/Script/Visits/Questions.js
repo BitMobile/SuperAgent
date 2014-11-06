@@ -21,9 +21,6 @@ function ChangeListAndRefresh(control, param) {
 	Workflow.Refresh([]);
 }
 
-function CreateArray() {
-	return [];
-}
 
 //
 // --------------------------------Questions list

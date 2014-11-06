@@ -13,7 +13,7 @@
 				<c:TextView Text="#back#" />
 			</c:HorizontalLayout>
 			<s:If Test="@regularAnswers">
-				<c:DockLayout Id="btnForward" CssClass="forward" OnClickAction="$CheckEmptyQuestionsAndForward($visit)" OnEvent="Forward">
+				<c:DockLayout Id="btnForward" CssClass="forward">
 					<c:VerticalLayout></c:VerticalLayout>
 					<c:TextView Text="33)"/>
 					<c:Image/>
@@ -65,7 +65,7 @@
 				<c:HorizontalLayout CssClass="required_grid">
 					<c:TextView Text="#requiredLeft# "></c:TextView>
 					<c:Image/>
-					<c:TextView Text=" 33"></c:TextView>
+					<c:TextView Text="1"></c:TextView>
 				</c:HorizontalLayout>
 			<c:HorizontalLine />
 			</s:If>
@@ -84,13 +84,13 @@
 						<c:VerticalLayout OnClickAction="$GoToQuestionAction($question.AnswerType, $visit, control{$index}, $question.Question)">
 							<c:TextView Text="$question.Description" CssClass="description_row"></c:TextView>
 							<s:If Test="$question.IsInputField=='1'">
-								<c:MemoEdit Id="control{$index}" Text="$question.Answer" OnGetFocus = "$RemovePlaceHolder()" OnChange="$AssignQuestionValue($question.Question)" Keyboard="$question.KeyboardType" CssClass="main_row"></c:MemoEdit>
+								<c:MemoEdit Id="control{$index}" Text="$question.Answer" OnGetFocus = "$RemovePlaceHolder()" OnChange="$AssignQuestionValue($question.Question)" Keyboard="$question.KeyboardType" CssClass="answer_main_row"></c:MemoEdit>
 							</s:If>
 							<s:Else>
-								<c:TextView Id="control{$index}" Text="$question.Answer" CssClass="main_row"></c:TextView>
-							</s:Else>
-														
+								<c:TextView Id="control{$index}" Text="$question.Answer" CssClass="answer_main_row"></c:TextView>
+							</s:Else>														
 						</c:VerticalLayout>
+						<c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout>
 					</c:HorizontalLayout>
 					<c:HorizontalLine />
 

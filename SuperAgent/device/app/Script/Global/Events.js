@@ -248,6 +248,8 @@ function GetQuestionnairesForOutlet(outlet) {
 		actualQuestionnaire = true;
 	}
 
+	Dialog.Debug(list);
+	
 	return list;
 			
 }
@@ -378,7 +380,7 @@ function GetRegionQueryText() {
 	
 	var loop = 2;
 	
-	while (loop < 4) {
+	while (loop < 11) {
 		recJoin = recJoin + "JOIN Catalog_Region " + "R" + loop + " ON R" + loop + ".Id=R" + (loop-1) + ".Parent ";
 		text = text + "UNION ALL " + startSelect + recJoin + condition + "WHERE R" + loop + ".Id=@region ";
 		loop = loop + 1;

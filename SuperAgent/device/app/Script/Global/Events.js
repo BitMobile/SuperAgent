@@ -215,13 +215,8 @@ function GetQuestionnairesForOutlet(outlet) {
 		
 		while (selectors.Next() && actualQuestionnaire) {				
 				
-			Dialog.Debug(currentSelector!=null);
-			Dialog.Debug(currentSelector!=selectors.Selector);
-			if (currentSelector!=null && currentSelector!=selectors.Selector){ //it's time to check list selector
-				Dialog.Debug("checking list");
+			if (ListSelectorIsChanged(currentSelector, selectors.Selector, selectors.AdditionalParameter, currentParam)){ //it's time to check list selector
 				actualQuestionnaire = CheckListSelector(listParameter);
-				Dialog.Debug("returned list check");
-				Dialog.Debug(actualQuestionnaire);
 				if (actualQuestionnaire==false){
 					break;
 				}
@@ -230,14 +225,13 @@ function GetQuestionnairesForOutlet(outlet) {
 			}
 			
 			if (selectors.ComparisonType=="In list" || selectors.ComparisonType=="В списке"){								
-				listParameter.Add(CheckSelector(outlet, selectors.Selector, "Equal", selectors.Value)); //real check is later, now - only an array
-				Dialog.Debug(listParameter);
+				listParameter.Add(CheckSelector(outlet, selectors.Selector, "Equal", selectors.Value, selectors.AdditionalParameter)); //real check is later, now - only an array
 				listChecked = false;
 				currentSelector = selectors.Selector;			//stuff for
 				currentParam = selectors.AdditionalParameter;	//list selectors, again
 			}
 			else{
-				actualQuestionnaire = CheckSelector(outlet, selectors.Selector, selectors.ComparisonType, selectors.Value);
+				actualQuestionnaire = CheckSelector(outlet, selectors.Selector, selectors.ComparisonType, selectors.Value, selectors.AdditionalParameter);
 				currentSelector = null;
 				currentParam = null;
 			}						
@@ -254,27 +248,33 @@ function GetQuestionnairesForOutlet(outlet) {
 		actualQuestionnaire = true;
 	}
 
-	Dialog.Debug(list);
 	return list;
 			
 }
 
-function NewList() {
-	var l = new List;
-	return l;
+function ListSelectorIsChanged(currentSelector, selector, additionalParam, currentParam) {
+	if (selector=="Catalog_OutletParameter"){
+		if (currentSelector!=null && currentParam!=additionalParam)
+			return true;
+		else 
+			return false;
+	}
+	else{
+		if (currentSelector!=null && currentSelector!=selector)
+			return true;
+		else
+			return false;
+	}
 }
 
-function CheckSelector(outlet, selector, compType, value) {
+function CheckSelector(outlet, selector, compType, value, additionalParameter) {
 	if (selector=="Catalog_OutletType"){
-		Dialog.Debug("1");
 		if ((outlet.Type).ToString()==("@ref[Catalog_OutletType]:" + value))
 			return Compare(compType, true);
 		else
 			return Compare(compType, false);
 	}
 	if (selector=="Catalog_OutletClass"){
-		Dialog.Debug("2");
-		// Dialog.Debug((outlet.Class).ToString());
 		if ((outlet.Class).ToString()==("@ref[Catalog_OutletClass]:" + value))
 			return Compare(compType, true);
 		else
@@ -282,8 +282,6 @@ function CheckSelector(outlet, selector, compType, value) {
 	}
 
 	if (selector=="Enum_OutletStatus"){
-		Dialog.Debug("4");
-		// Dialog.Debug((outlet.Class).ToString());
 		if ((outlet.OutletStatus).ToString()==("@ref[Enum_OutletStatus]:" + value))
 			return Compare(compType, true);
 		else
@@ -291,7 +289,6 @@ function CheckSelector(outlet, selector, compType, value) {
 	}
 	
 	if (selector=="Catalog_Distributor"){
-		Dialog.Debug("5");
 		if ((outlet.Distributor).ToString()==("@ref[Catalog_Distributor]:" + value))
 			return Compare(compType, true);
 		else
@@ -299,7 +296,6 @@ function CheckSelector(outlet, selector, compType, value) {
 	}
 	
 	if (selector=="Catalog_Outlet"){
-		Dialog.Debug("6");
 		if ((outlet.Id).ToString()==(value)){
 			return Compare(compType, true);
 		}
@@ -309,7 +305,6 @@ function CheckSelector(outlet, selector, compType, value) {
 	}
 	
 	if (selector=="Catalog_Territory"){
-		Dialog.Debug("7");
 		var query = new Query("SELECT Id FROM Catalog_Territory_Outlets WHERE Outlet=@outlet AND Ref=@ref")
 		query.AddParameter("outlet", outlet);
 		query.AddParameter("ref", ("@ref[Catalog_Territory]:" + value));
@@ -321,13 +316,7 @@ function CheckSelector(outlet, selector, compType, value) {
 	}
 	
 	if (selector=="Catalog_Region"){
-		Dialog.Debug("8");
-		var query = new Query("WITH Regions(Id) AS " +
-				"(SELECT e.Id FROM Catalog.Region AS e WHERE e.Id = @region " +
-				"UNION All SELECT e.Id FROM Catalog.Region AS e " +
-				"JOIN Regions AS d ON e.Parent = d.Id) " +
-				"SELECT O.Id from Regions JOIN Catalog.Territory t ON t.Owner = Regions.Id " +
-				"JOIN Catalog.Territory_Outlets o ON o.Ref = t.Id AND o.Outlet = @outlet");
+		var query = new Query(GetRegionQueryText());
 		query.AddParameter("outlet", outlet);
 		query.AddParameter("region", "@ref[Catalog_Region]:" + value);
 		var result = query.ExecuteScalar();		
@@ -338,10 +327,10 @@ function CheckSelector(outlet, selector, compType, value) {
 	}
 	
 	if (selector=="Catalog_OutletParameter"){
-		Dialog.Debug("9");
-		var query = new Query("SELECT Id FROM Catalog_OutletParameters WHERE Ref=@ref AND Value=@value");
+		var query = new Query("SELECT Id FROM Catalog_Outlet_Parameters WHERE Ref=@ref AND Parameter=@param AND Value=@value");
 		query.AddParameter("ref", outlet);
-		query.AddParemeter("value", value);
+		query.AddParameter("value", value);
+		query.AddParameter("param", additionalParameter);
 		if (query.ExecuteScalar()!=null)
 			return Compare(compType, true);
 		else
@@ -349,10 +338,19 @@ function CheckSelector(outlet, selector, compType, value) {
 	}
 	
 	if (selector==null){
-		Dialog.Debug("3");
 		return false;
 	}	
 
+}
+
+
+function CheckListSelector(list) {
+	for (var item in list) {
+		if (item){
+			return true;
+		}
+	}
+	return false;
 }
 
 function Compare(compType, equal) {
@@ -370,17 +368,23 @@ function Compare(compType, equal) {
 	}
 }
 
-function CheckListSelector(list) {
-	Dialog.Debug("before check loop");
-	Dialog.Debug(list);
-	for (var item in list) {
-		Dialog.Debug(item);
-		if (item){
-			Dialog.Debug("true item");
-			return true;
-		}
-	}
-	return false;
+function GetRegionQueryText() {
+	var startSelect = "SELECT R1.Id, R1.Description FROM Catalog_Region R1 ";
+	var condition = "JOIN Catalog_Territory T ON T.Owner = R1.Id " +
+			"JOIN Catalog_Territory_Outlets O ON O.Ref = T.Id AND O.Outlet = @outlet ";
+	var recJoin = "";
+	
+	var text = startSelect + condition + "WHERE R1.Id=@region ";	
+	
+	var loop = 2;
+	
+	while (loop < 4) {
+		recJoin = recJoin + "JOIN Catalog_Region " + "R" + loop + " ON R" + loop + ".Id=R" + (loop-1) + ".Parent ";
+		text = text + "UNION ALL " + startSelect + recJoin + condition + "WHERE R" + loop + ".Id=@region ";
+		loop = loop + 1;
+	}	
+	
+	return text;
 }
 
 function GetQuestionsCount() {

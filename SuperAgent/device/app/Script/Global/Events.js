@@ -28,6 +28,8 @@ function OnWorkflowStart(name) {
 	if (name == "Visit") {
 		
 			var questionnaires = GetQuestionnairesForOutlet($.outlet);
+			
+			$.workflow.Add("questionnaires", questionnaires);
 
 			if (parseInt(GetTasksCount()) != parseInt(0))
 				$.workflow.Add("skipTasks", false); // нельзя просто
@@ -37,17 +39,16 @@ function OnWorkflowStart(name) {
 			else
 				$.workflow.Add("skipTasks", true);
 
-			if (parseInt(GetQuestionsCount()) != parseInt(0))
+			if (parseInt(GetQuestionsCount(questionnaires)) != parseInt(0))
 				$.workflow.Add("skipQuestions", false);
 			else
 				$.workflow.Add("skipQuestions", true);
 
-			if (parseInt(GetSKUQuestionsCount()) != parseInt(0)) 
+			if (parseInt(GetSKUQuestionsCount(questionnaires)) != parseInt(0)) 
 				$.workflow.Add("skipSKUs", false);
 			else
 				$.workflow.Add("skipSKUs", true);
 	}
-	
 	
 	Variables["workflow"].Add("name", name);
 
@@ -189,6 +190,9 @@ function GetTasksCount() {
 	return taskQuery.ExecuteScalar();
 }
 
+
+//-----Questionnaire selection-------
+
 function GetQuestionnairesForOutlet(outlet) {
 	var query = new Query("SELECT DISTINCT Q.Id " +//, ST.Selector, ST.ComparisonType, ST.Value, ST.AdditionalParameter " +
 			"FROM Document_Questionnaire_Schedule S " +
@@ -247,8 +251,6 @@ function GetQuestionnairesForOutlet(outlet) {
 		
 		actualQuestionnaire = true;
 	}
-
-	Dialog.Debug(list);
 	
 	return list;
 			
@@ -345,7 +347,6 @@ function CheckSelector(outlet, selector, compType, value, additionalParameter) {
 
 }
 
-
 function CheckListSelector(list) {
 	for (var item in list) {
 		if (item){
@@ -389,12 +390,39 @@ function GetRegionQueryText() {
 	return text;
 }
 
-function GetQuestionsCount() {
-	return 1;
+
+//-----Questions count-----------
+
+function GetQuestionsCount(questionnaires) {
+	var str = CreateCondition(questionnaires);	
+	var query = new Query("SELECT COUNT(Id) FROM Document_Questionnaire_Questions " + str);					
+	var res = query.ExecuteScalar();
+	return res;
 }
 
-function GetSKUQuestionsCount() {	
-	return 1;
+function GetSKUQuestionsCount() {
+	var str = CreateCondition(questionnaires);	
+	var query = new Query("SELECT COUNT(Id) FROM Document_Questionnaire_SKUQuestions " + str);					
+	var res = query.ExecuteScalar();
+	return res;
+}
+
+function CreateCondition(list) {
+	var str = "";
+	var notEmpty = false;
+	
+	for ( var quest in questionnaires) {		
+		if (String.IsNullOrEmpty(str)==false){
+			str = str + ", ";		
+		}
+		str = str + " '" + quest.ToString() + "' ";		
+		notEmpty = true;
+	}
+	if (notEmpty){
+		str = " WHERE Ref IN ( " + str  + ") ";
+	}
+	
+	return str;
 }
 
 function DeleteFromList(item, collection) {

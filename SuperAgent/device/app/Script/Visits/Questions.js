@@ -1,6 +1,7 @@
 var questionsAtScreen;
 var regularAnswers;
 var answerText;
+var parentQuestion;
 
 //
 // -------------------------------Header handlers-------------------------
@@ -23,32 +24,49 @@ function ChangeListAndRefresh(control, param) {
 
 
 //
-// --------------------------------Questions list
-// handlers--------------------------
+// --------------------------------Questions list handlers--------------------------
 //
 
 function GetQuestionsByQuestionnaires(outlet) {
 
-	var query = new Query("SELECT DISTINCT QQ.Question, C.Description AS Description, E.Description AS AnswerType, " + 
-			"QQ.LineNumber, Q.Date " + 
-			//" , CASE WHEN Answer IS NULL THEN 'comment_row' ELSE 'main_row' END AS Style " +
+	var str = CreateCondition($.workflow.questionnaires);		
+	var query = new Query("SELECT D.Date, Q.QuestionOrder, Q.ChildQuestion AS Question, " +
+			"Q.ChildDescription AS Description, Q.ChildType AS AnswerType, Q.Obligatoriness " +
+			", (SELECT COUNT(Id) FROM Document_Questionnaire_Questions QQ WHERE QQ.ParentQuestion=Q.ChildQuestion) AS Childs " +
 			" , CASE WHEN Answer IS NULL THEN '—' ELSE V.Answer END AS Answer " +
-			" , CASE WHEN E.Description='Integer' OR E.Description='Decimal' OR E.Description='String' THEN 1 ELSE NULL END AS IsInputField " +
-			" , CASE WHEN E.Description='Integer' OR E.Description='Decimal' THEN 'numeric' ELSE 'auto' END AS KeyboardType " +
-			"FROM Document_Questionnaire Q " + 
-			"JOIN Document_QuestionnaireMap_Outlets M ON Q.Id=M.Questionnaire " + 
-			"JOIN Document_Questionnaire_Questions QQ ON Q.Id=QQ.Ref " + 
-			"JOIN Catalog_Question C ON QQ.Question=C.Id " + 
-			"JOIN Enum_DataType E ON C.AnswerType=E.Id " + 
-			"LEFT JOIN Document_Visit_Questions V ON V.Question=C.Id AND V.Ref=@visit " + 
-			"WHERE M.Outlet=@outlet " + 
-			"ORDER BY Q.Date, QQ.LineNumber");
-	query.AddParameter("outlet", outlet);
+			" , CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal OR Q.ChildType=@string THEN 1 ELSE NULL END AS IsInputField " +
+			" , CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal THEN 'numeric' ELSE 'auto' END AS KeyboardType " +
+			"FROM Document_Questionnaire D " +
+			"JOIN Document_Questionnaire_Questions Q ON D.Id=Q.Ref " +
+			"LEFT JOIN Document_Visit_Questions V ON V.Question=Q.ChildQuestion AND V.Ref=@visit " + str +
+			"AND ((Q.ParentQuestion=@emptyRef ) OR Q.ParentQuestion IN (" +
+			"SELECT Question FROM Document_Visit_Questions WHERE (Answer='Yes' OR Answer='Да'))) ORDER BY Date, QuestionOrder");
+	query.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
+	query.AddParameter("integer", DB.Current.Constant.DataType.Integer);
+	query.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);
+	query.AddParameter("string", DB.Current.Constant.DataType.String);
 	query.AddParameter("visit", $.workflow.visit);
 	Variables.Add("workflow.questions_qty", query.ExecuteCount());
 	return query.Execute();
 }
 
+function CreateCondition(list) {
+	var str = "";
+	var notEmpty = false;
+	
+	for ( var quest in list) {	
+		if (String.IsNullOrEmpty(str)==false){
+			str = str + ", ";		
+		}
+		str = str + " '" + quest.ToString() + "' ";		
+		notEmpty = true;
+	}
+	if (notEmpty){
+		str = " WHERE D.Id IN ( " + str  + ") ";
+	}
+	
+	return str;
+}
 
 function RemovePlaceHolder(control) {
 	if (control.Text == "—")

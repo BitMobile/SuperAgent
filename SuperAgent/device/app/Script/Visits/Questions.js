@@ -1,8 +1,6 @@
 var questionsAtScreen;
 var regularAnswers;
 var answerText;
-//var obligateredCount;
-//var answeredObligatered;
 var obligateredLeft;
 
 //
@@ -11,8 +9,6 @@ var obligateredLeft;
 
 function OnLoading() {
 	questionsAtScreen = null;
-//	obligateredCount = parseInt(0);
-//	answeredObligatered = parseInt(0);
 	obligateredLeft = parseInt(0);
 	SetListType();
 }
@@ -36,7 +32,11 @@ function GetQuestionsByQuestionnaires(outlet) {
 
 	var str = CreateCondition($.workflow.questionnaires);		
 	var query = new Query("SELECT D.Date, Q.QuestionOrder, Q.ChildQuestion AS Question, " +
-			"Q.ChildDescription AS Description, Q.ChildType AS AnswerType, Q.Obligatoriness " +
+			"Q.ChildDescription AS Description, Q.ChildType AS AnswerType" +
+			//", Q.Obligatoriness " +
+			",(CASE WHEN (SELECT Obligatoriness FROM Document_Questionnaire_Questions " +
+				"WHERE ChildQuestion=Q.ChildQuestion AND Obligatoriness=1) IS NULL THEN 0 ELSE 1 END) " +
+				"AS Obligatoriness " +
 			", (SELECT COUNT(Id) FROM Document_Questionnaire_Questions QQ WHERE QQ.ParentQuestion=Q.ChildQuestion) AS Childs " +
 			" , CASE WHEN Answer IS NULL THEN '—' ELSE V.Answer END AS Answer " +
 			" , CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal OR Q.ChildType=@string THEN 1 ELSE NULL END AS IsInputField " +
@@ -45,7 +45,7 @@ function GetQuestionsByQuestionnaires(outlet) {
 			"JOIN Document_Questionnaire_Questions Q ON D.Id=Q.Ref " +
 			"LEFT JOIN Document_Visit_Questions V ON V.Question=Q.ChildQuestion AND V.Ref=@visit " + str +
 			"AND ((Q.ParentQuestion=@emptyRef ) OR Q.ParentQuestion IN (" +
-			"SELECT Question FROM Document_Visit_Questions WHERE (Answer='Yes' OR Answer='Да'))) ORDER BY Date, QuestionOrder");
+			"SELECT Question FROM Document_Visit_Questions WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit)) ORDER BY Date, QuestionOrder");
 	query.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	query.AddParameter("integer", DB.Current.Constant.DataType.Integer);
 	query.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);
@@ -57,8 +57,10 @@ function GetQuestionsByQuestionnaires(outlet) {
 	var res = query.Execute().Unload();	
 	while (res.Next()) {
 		if (parseInt(res.Obligatoriness)!=parseInt(0)){				
-			if (String.IsNullOrEmpty(res.Answer) || res.Answer=="—")
-				obligateredLeft = obligateredLeft + parseInt(1);
+			if (String.IsNullOrEmpty(res.Answer) || res.Answer=="—"){
+				obligateredLeft = parseInt(1);
+				break;
+			}
 		}		
 	}
 	res.First();
@@ -93,8 +95,10 @@ function RemovePlaceHolder(control) {
 
 function UniqueQuestion(question, answerType, answer, obligatered) {
 
-	if (questionsAtScreen == null)
+	if (questionsAtScreen == null){
 		questionsAtScreen = new List;
+		obligateredLeft = parseInt(0);
+	}
 	var result;
 	if (IsInCollection(question, questionsAtScreen))
 		result = false;
@@ -102,16 +106,17 @@ function UniqueQuestion(question, answerType, answer, obligatered) {
 		questionsAtScreen.Add(question);
 		result = true;
 	}
-
-	//count obligated questions
-//	if (obligatered != null) {
-//		if (parseInt(obligatered) == parseInt(1)) {
-//			//obligateredCount = obligateredCount + parseInt(1);
-//			$.obligateredInfo.Text = obligateredCount;
-//			if (ForwardIsntAllowed())
-//				$.obligateredButton.Text = obligateredCount + ")";
-//		}
-//	}
+	
+	//count obligatered questions	
+	if (result){
+		if (parseInt(obligatered)==parseInt(1)){				
+			if (String.IsNullOrEmpty(answer) || answer=="—"){
+				obligateredLeft = obligateredLeft + parseInt(1);
+				$.obligateredButton.Text = obligateredLeft + ")";
+				$.obligateredInfo.Text = obligateredLeft;
+			}
+		}			
+	}
 	
 	// set answer text
 	if (answerType == 'Snapshot')
@@ -122,16 +127,6 @@ function UniqueQuestion(question, answerType, answer, obligatered) {
 	return result;
 }
 
-//function ObligateredExists() {
-//	
-//	if (obligateredCount!=null){
-//		if (parseInt(obligateredCount)!=parseInt(0))
-//			return true;
-//		else
-//			return false;
-//	}
-//	return false;
-//}
 
 function ForwardIsntAllowed() {
 	if (parseInt(obligateredLeft)!=parseInt(0))

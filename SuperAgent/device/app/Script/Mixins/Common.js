@@ -11,6 +11,10 @@ function ToInteger(text) {
     return parseInt(text);
 }
 
+function ToString(val) {
+	return val.ToString();
+}
+
 function GetSum(val1, val2) {
 	
 	if (val1 == null)

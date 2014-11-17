@@ -12,10 +12,10 @@
 				<c:Image />
 				<c:TextView Text="#back#" />
 			</c:HorizontalLayout>
-			<s:If Test="@regularAnswers">
+			<s:If Test="$ForwardIsntAllowed()">
 				<c:DockLayout Id="btnForward" CssClass="forward">
 					<c:VerticalLayout></c:VerticalLayout>
-					<c:TextView Text="33)"/>
+					<c:TextView Id="obligateredButton" Text="{$ToString(@obligateredLeft)})"/>
 					<c:Image/>
 					<c:TextView Text="#forward# ("/>					
 				</c:DockLayout>
@@ -61,11 +61,11 @@
 
 		<c:ScrollView Id="grScrollView">
 		
-			<s:If Test="@regularAnswers">
+			<s:If Test="$ForwardIsntAllowed()">
 				<c:HorizontalLayout CssClass="required_grid">
 					<c:TextView Text="#requiredLeft# "></c:TextView>
 					<c:Image/>
-					<c:TextView Text="1"></c:TextView>
+					<c:TextView Id="obligateredInfo" Text="$ToString(@obligateredLeft)"></c:TextView>
 				</c:HorizontalLayout>
 			<c:HorizontalLine />
 			</s:If>
@@ -76,7 +76,7 @@
 
 			<s:Iterator Id="question" Value="$questions" Status="statusCount">
 
-				<s:If Test="$UniqueQuestion($question.Question, $question.AnswerType, $question.Answer)">
+				<s:If Test="$UniqueQuestion($question.Question, $question.AnswerType, $question.Answer, $question.Obligatoriness)">
 
 					<s:Push Id="index" Value="{$statusCount.Index}"></s:Push>
 

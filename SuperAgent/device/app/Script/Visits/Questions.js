@@ -1,7 +1,9 @@
 var questionsAtScreen;
 var regularAnswers;
 var answerText;
-var parentQuestion;
+//var obligateredCount;
+//var answeredObligatered;
+var obligateredLeft;
 
 //
 // -------------------------------Header handlers-------------------------
@@ -9,6 +11,9 @@ var parentQuestion;
 
 function OnLoading() {
 	questionsAtScreen = null;
+//	obligateredCount = parseInt(0);
+//	answeredObligatered = parseInt(0);
+	obligateredLeft = parseInt(0);
 	SetListType();
 }
 
@@ -47,8 +52,21 @@ function GetQuestionsByQuestionnaires(outlet) {
 	query.AddParameter("string", DB.Current.Constant.DataType.String);
 	query.AddParameter("visit", $.workflow.visit);
 	Variables.Add("workflow.questions_qty", query.ExecuteCount());
-	return query.Execute();
+
+	//find at least one obligatered question, to show special controls
+	var res = query.Execute().Unload();	
+	while (res.Next()) {
+		if (parseInt(res.Obligatoriness)!=parseInt(0)){				
+			if (String.IsNullOrEmpty(res.Answer) || res.Answer=="—")
+				obligateredLeft = obligateredLeft + parseInt(1);
+		}		
+	}
+	res.First();
+	
+	return res;
 }
+
+
 
 function CreateCondition(list) {
 	var str = "";
@@ -73,7 +91,7 @@ function RemovePlaceHolder(control) {
 		control.Text = "";
 }
 
-function UniqueQuestion(question, answerType, answer, text) {
+function UniqueQuestion(question, answerType, answer, obligatered) {
 
 	if (questionsAtScreen == null)
 		questionsAtScreen = new List;
@@ -85,6 +103,16 @@ function UniqueQuestion(question, answerType, answer, text) {
 		result = true;
 	}
 
+	//count obligated questions
+//	if (obligatered != null) {
+//		if (parseInt(obligatered) == parseInt(1)) {
+//			//obligateredCount = obligateredCount + parseInt(1);
+//			$.obligateredInfo.Text = obligateredCount;
+//			if (ForwardIsntAllowed())
+//				$.obligateredButton.Text = obligateredCount + ")";
+//		}
+//	}
+	
 	// set answer text
 	if (answerType == 'Snapshot')
 		answerText = GetSnapshotText(answer);
@@ -94,6 +122,23 @@ function UniqueQuestion(question, answerType, answer, text) {
 	return result;
 }
 
+//function ObligateredExists() {
+//	
+//	if (obligateredCount!=null){
+//		if (parseInt(obligateredCount)!=parseInt(0))
+//			return true;
+//		else
+//			return false;
+//	}
+//	return false;
+//}
+
+function ForwardIsntAllowed() {
+	if (parseInt(obligateredLeft)!=parseInt(0))
+		return true;
+	else
+		return false;
+}
 
 function CreateVisitQuestionValueIfNotExists(question, answer) {
 
@@ -129,23 +174,23 @@ function GoToQuestionAction(answerType, visit, control, questionItem) {
 		editControl.Text = "";
 	var question = CreateVisitQuestionValueIfNotExists(questionItem, editControl.Text);
 
-	if (answerType == "ValueList") {
+	if ((answerType).ToString() == (DB.Current.Constant.DataType.ValueList).ToString()) {
 		var q = new Query();
 		q.Text = "SELECT Value, Value FROM Catalog_Question_ValueList WHERE Ref=@ref";
 		q.AddParameter("ref", questionItem);
 		ValueListSelect(question, "Answer", q.Execute(), Variables[control]);
 	}
 
-	if (answerType == "Snapshot") {
+	if ((answerType).ToString() == (DB.Current.Constant.DataType.Snapshot).ToString()) {
 		GetCameraObject(visit);
 		Camera.MakeSnapshot(SaveAtVisit, [ question, control ]);
 	}
 
-	if (answerType == "DateTime") {
+	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {
 		DateTimeDialog(question, "Answer", question.Answer, Variables[control]);
 	}
 
-	if (answerType == "Boolean") {
+	if ((answerType).ToString() == (DB.Current.Constant.DataType.Boolean).ToString()) {
 		BooleanDialogSelect(question, "Answer", Variables[control]);
 	}
 

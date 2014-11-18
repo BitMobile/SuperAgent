@@ -30,7 +30,10 @@ function ChangeListAndRefresh(control, param) {
 
 function GetQuestionsByQuestionnaires(outlet) {
 
-	var str = CreateCondition($.workflow.questionnaires);		
+	var str = CreateCondition($.workflow.questionnaires);	
+	var single = 1;
+	if (regularAnswers)	
+		single = 0;
 	var query = new Query("SELECT MIN(D.Date) AS DocDate, Q.ChildQuestion AS Question, Q.ChildDescription AS Description " +
 			", Q.ChildType AS AnswerType, MAX(CAST(Q.Obligatoriness AS int)) AS Obligatoriness " +
 			", (SELECT Qq.QuestionOrder FROM Document_Questionnaire Dd  " +
@@ -40,8 +43,8 @@ function GetQuestionsByQuestionnaires(outlet) {
 			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal THEN 'numeric' ELSE 'auto' END AS KeyboardType " + 
 			" FROM Document_Questionnaire D " +
 			" JOIN Document_Questionnaire_Questions Q ON D.Id=Q.Ref " +
-			" LEFT JOIN Document_Visit_Questions V ON V.Question=Q.ChildQuestion AND V.Ref=@visit " +
-			" WHERE ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_Questions " +
+			" LEFT JOIN Document_Visit_Questions V ON V.Question=Q.ChildQuestion AND V.Ref=@visit " + 
+			" WHERE D.Single=@single AND " + str + " AND ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_Questions " +
 			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit)) " + 
 			" GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, Q.ParentQuestion, Answer " + 
 			" ORDER BY DocDate, QuestionOrder ");
@@ -50,8 +53,10 @@ function GetQuestionsByQuestionnaires(outlet) {
 	query.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);
 	query.AddParameter("string", DB.Current.Constant.DataType.String);
 	query.AddParameter("visit", $.workflow.visit);
-	Variables.Add("workflow.questions_qty", query.ExecuteCount());
+	query.AddParameter("single", single);
 
+	Variables.Add("workflow.questions_qty", query.ExecuteCount());
+	
 	//find at least one obligatered question, to show special controls
 	var res = query.Execute().Unload();	
 	var oblText = "";
@@ -80,7 +85,7 @@ function CreateCondition(list) {
 		notEmpty = true;
 	}
 	if (notEmpty){
-		str = " WHERE D.Id IN ( " + str  + ") ";
+		str = " D.Id IN ( " + str  + ") ";
 	}
 	
 	return str;

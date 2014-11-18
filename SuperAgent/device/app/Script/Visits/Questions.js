@@ -31,21 +31,20 @@ function ChangeListAndRefresh(control, param) {
 function GetQuestionsByQuestionnaires(outlet) {
 
 	var str = CreateCondition($.workflow.questionnaires);		
-	var query = new Query("SELECT D.Date, Q.QuestionOrder, Q.ChildQuestion AS Question, " +
-			"Q.ChildDescription AS Description, Q.ChildType AS AnswerType" +
-			//", Q.Obligatoriness " +
-			",(CASE WHEN (SELECT Obligatoriness FROM Document_Questionnaire_Questions " +
-				"WHERE ChildQuestion=Q.ChildQuestion AND Obligatoriness=1) IS NULL THEN 0 ELSE 1 END) " +
-				"AS Obligatoriness " +
-			", (SELECT COUNT(Id) FROM Document_Questionnaire_Questions QQ WHERE QQ.ParentQuestion=Q.ChildQuestion) AS Childs " +
-			" , CASE WHEN Answer IS NULL THEN '—' ELSE V.Answer END AS Answer " +
-			" , CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal OR Q.ChildType=@string THEN 1 ELSE NULL END AS IsInputField " +
-			" , CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal THEN 'numeric' ELSE 'auto' END AS KeyboardType " +
-			"FROM Document_Questionnaire D " +
-			"JOIN Document_Questionnaire_Questions Q ON D.Id=Q.Ref " +
-			"LEFT JOIN Document_Visit_Questions V ON V.Question=Q.ChildQuestion AND V.Ref=@visit " + str +
-			"AND ((Q.ParentQuestion=@emptyRef ) OR Q.ParentQuestion IN (" +
-			"SELECT Question FROM Document_Visit_Questions WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit)) ORDER BY Date, QuestionOrder");
+	var query = new Query("SELECT MIN(D.Date) AS DocDate, Q.ChildQuestion AS Question, Q.ChildDescription AS Description " +
+			", Q.ChildType AS AnswerType, MAX(CAST(Q.Obligatoriness AS int)) AS Obligatoriness " +
+			", (SELECT Qq.QuestionOrder FROM Document_Questionnaire Dd  " +
+			" JOIN Document_Questionnaire_Questions Qq ON Dd.Id=Qq.Ref AND Q.ChildQuestion=Qq.ChildQuestion ORDER BY Dd.Date LIMIT 1) AS QuestionOrder" +
+			", CASE WHEN Answer IS NULL THEN '—' ELSE V.Answer END AS Answer " +
+			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal OR Q.ChildType=@string THEN 1 ELSE NULL END AS IsInputField " +
+			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal THEN 'numeric' ELSE 'auto' END AS KeyboardType " + 
+			" FROM Document_Questionnaire D " +
+			" JOIN Document_Questionnaire_Questions Q ON D.Id=Q.Ref " +
+			" LEFT JOIN Document_Visit_Questions V ON V.Question=Q.ChildQuestion AND V.Ref=@visit " +
+			" WHERE ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_Questions " +
+			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit)) " + 
+			" GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, Q.ParentQuestion, Answer " + 
+			" ORDER BY DocDate, QuestionOrder ");
 	query.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	query.AddParameter("integer", DB.Current.Constant.DataType.Integer);
 	query.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);
@@ -55,20 +54,19 @@ function GetQuestionsByQuestionnaires(outlet) {
 
 	//find at least one obligatered question, to show special controls
 	var res = query.Execute().Unload();	
+	var oblText = "";
+	var oblInfo = "";
 	while (res.Next()) {
-		if (parseInt(res.Obligatoriness)!=parseInt(0)){				
+		if (parseInt(res.Obligatoriness)!=parseInt(0)){							
 			if (String.IsNullOrEmpty(res.Answer) || res.Answer=="—"){
-				obligateredLeft = parseInt(1);
-				break;
+				obligateredLeft = obligateredLeft + parseInt(1);
 			}
 		}		
-	}
+	}	
 	res.First();
 	
 	return res;
 }
-
-
 
 function CreateCondition(list) {
 	var str = "";
@@ -93,31 +91,7 @@ function RemovePlaceHolder(control) {
 		control.Text = "";
 }
 
-function UniqueQuestion(question, answerType, answer, obligatered) {
-
-	if (questionsAtScreen == null){
-		questionsAtScreen = new List;
-		obligateredLeft = parseInt(0);
-	}
-	var result;
-	if (IsInCollection(question, questionsAtScreen))
-		result = false;
-	else {
-		questionsAtScreen.Add(question);
-		result = true;
-	}
-	
-	//count obligatered questions	
-	if (result){
-		if (parseInt(obligatered)==parseInt(1)){				
-			if (String.IsNullOrEmpty(answer) || answer=="—"){
-				obligateredLeft = obligateredLeft + parseInt(1);
-				$.obligateredButton.Text = obligateredLeft + ")";
-				$.obligateredInfo.Text = obligateredLeft;
-			}
-		}			
-	}
-	
+function UniqueQuestion(question, answerType, answer, obligatered) {	
 	// set answer text
 	if (answerType == 'Snapshot')
 		answerText = GetSnapshotText(answer);

@@ -31,6 +31,20 @@ function ChangeListAndRefresh(control, param) {
 function GetQuestionsByQuestionnaires(outlet) {
 
 	var str = CreateCondition($.workflow.questionnaires);	
+	
+	//find obligatered questions qty
+	var queryCount = new Query("SELECT COUNT(Q.ChildQuestion) FROM Document_Questionnaire D " +
+		"JOIN Document_Questionnaire_Questions Q ON D.Id=Q.Ref " +
+		" LEFT JOIN Document_Visit_Questions V ON V.Question=Q.ChildQuestion AND V.Ref=@visit " +
+		" WHERE " + str + " AND ((Q.ParentQuestion=@emptyRef) " +
+		" OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_Questions " +
+		" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit)) AND Obligatoriness=1 AND (Answer IS NULL OR Answer='—') " +
+		" GROUP BY Q.ChildQuestion ");
+	queryCount.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
+	queryCount.AddParameter("visit", $.workflow.visit);
+	
+	obligateredLeft = queryCount.ExecuteCount();
+	
 	var single = 1;
 	if (regularAnswers)	
 		single = 0;
@@ -53,22 +67,10 @@ function GetQuestionsByQuestionnaires(outlet) {
 	query.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);
 	query.AddParameter("string", DB.Current.Constant.DataType.String);
 	query.AddParameter("visit", $.workflow.visit);
-	query.AddParameter("single", single);
-
-	Variables.Add("workflow.questions_qty", query.ExecuteCount());
-	
-	//find at least one obligatered question, to show special controls
-	var res = query.Execute().Unload();	
-	var oblText = "";
-	var oblInfo = "";
-	while (res.Next()) {
-		if (parseInt(res.Obligatoriness)!=parseInt(0)){							
-			if (String.IsNullOrEmpty(res.Answer) || res.Answer=="—"){
-				obligateredLeft = obligateredLeft + parseInt(1);
-			}
-		}		
-	}	
-	res.First();
+	query.AddParameter("single", single);	
+		
+	var res = query.Execute().Unload();
+	Variables.Add("workflow.questions_qty", res.Count());
 	
 	return res;
 }
@@ -123,10 +125,11 @@ function CreateVisitQuestionValueIfNotExists(question, answer) {
 	if (result == null) {
 		var p = DB.Create("Document.Visit_Questions");
 		p.Ref = $.workflow.visit;
-		p.Question = question;				
+		p.Question = question;
 	}
 	else
 		var p = result.GetObject();
+	p.AnswerDate = DateTime.Now;
 	p.Answer = answer;
 	p.Save();
 	result = p.Id;
@@ -211,17 +214,15 @@ function CheckEmptyQuestionsAndForward(visit) {
 		DB.Delete(res.Id);
 	}
 
-	// FillQuestionnaires();
+	//FillQuestionnaires();
 
 	Workflow.Forward([]);
 }
 
 function FillQuestionnaires() {
-	var q = new Query("SELECT DISTINCT Q.Id FROM Document_Questionnaire Q " + "JOIN Document_QuestionnaireMap_Outlets MO ON MO.Questionnaire=Q.Id AND MO.Outlet = @outlet " + "JOIN Document_Questionnaire_Questions QQ ON Q.Id=QQ.Ref AND QQ.Question IN " + "(SELECT Question FROM Document_Visit_Questions WHERE Ref=@ref)");
-	q.AddParameter("ref", $.workflow.visit);
-	q.AddParameter("outlet", $.workflow.outlet);
-	questionnaires = q.Execute();
-
+	
+	var str = CreateCondition($.workflow.questionnaires);
+	
 	while (questionnaires.Next()) {
 		var quest = DB.Create("Document.Visit_Questionnaires");
 		quest.Questionnaire = questionnaires.Id;

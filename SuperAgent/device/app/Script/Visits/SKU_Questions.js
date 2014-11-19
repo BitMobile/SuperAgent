@@ -1,6 +1,7 @@
 ﻿var skuOnScreen;
 var regularAnswers;
 var parentId;
+var obligateredLeft;
 
 
 //
@@ -10,7 +11,7 @@ var parentId;
 
 function OnLoading(){
 	skuOnScreen = null;
-	//parentId = null;
+	obligateredLeft = parseInt(0);
 	SetListType();
 }
 
@@ -20,7 +21,8 @@ function SetListType(){
 }
 
 function ChangeListAndRefresh(control, param) {
-	regularAnswers	= ConvertToBoolean1(param);		
+	regularAnswers	= ConvertToBoolean1(param);	
+	parentId = null;
 	Workflow.Refresh([]);
 }
 
@@ -31,29 +33,61 @@ function ChangeListAndRefresh(control, param) {
 
 function GetSKUsFromQuesionnaires(outlet) {
 
+	var str = CreateCondition($.workflow.questionnaires, " D.Id ");
+	var single = 1;
+	if (regularAnswers)	
+		single = 0;
+	
+	var queryQty = new Query( "SELECT DISTINCT Q.ChildQuestion, S.Description " +
+			" FROM Document_Questionnaire D " +
+			" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref " +
+			" JOIN Document_Questionnaire_SKUs S ON S.Ref=D.Id " +
+			" LEFT JOIN Document_Visit_SKUs V ON V.Question=Q.ChildQuestion AND S.SKU=V.SKU " +
+			" AND V.Ref=@visit " +
+			" WHERE " + str + " AND ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_Questions " +
+			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit)) AND Obligatoriness=1 " +
+			" AND (Answer IS NULL OR Answer='—' OR Answer='')");
+	queryQty.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
+	queryQty.AddParameter("visit", $.workflow.visit);
+	obligateredLeft = queryQty.ExecuteCount();
+	
 	var q = new Query();
-	q.Text="SELECT distinct QS.SKU, C.Description AS Description, QS.LineNumber, Q.Date, Q.Number, VS.Id AS visitSKUvalue " +
-			"FROM Document_Questionnaire Q " +
-			"JOIN Document_QuestionnaireMap_Outlets M ON Q.Id=M.Questionnaire AND M.Outlet=@outlet " +
-			"JOIN Document_Questionnaire_SKUs QS ON Q.Id=QS.Ref " +
-			"JOIN Catalog_SKU C ON QS.SKU=C.Id " +
-			"LEFT JOIN Document_Visit_SKUs VS ON VS.SKU=C.Id AND VS.Ref=@ref "
-			"ORDER BY Q.Date, QS.LineNumber";
-	q.AddParameter("outlet", outlet);
-	q.AddParameter("ref", $.workflow.visit);
+	q.Text="SELECT DISTINCT S.SKU, S.Description " +
+			" , MAX(CAST(Q.Obligatoriness as int)) as Obligatoriness " +
+			"FROM Document_Questionnaire D JOIN Document_Questionnaire_SKUs S ON D.Id=S.Ref " +
+			"JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref " +
+			"LEFT JOIN Document_Visit_SKUs VS ON VS.SKU=S.SKU AND VS.Question=Q.ChildQuestion AND VS.Ref=@visit " +
+			"WHERE D.Single=@single AND " + str +
+			"GROUP BY S.SKU, S.Description ORDER BY S.Description"; 
+	q.AddParameter("visit", $.workflow.visit);
+	q.AddParameter("single", single);	
 
 	return q.Execute();
 }
 
-function UniqueSKU(sku){
-	if (skuOnScreen==null)
-		skuOnScreen = new List;
-	if (IsInCollection(sku, skuOnScreen))
-		return false;
-	else{
-		skuOnScreen.Add(sku);
-		return true;
+function CreateCondition(list, field) {
+	var str = "";
+	var notEmpty = false;
+	
+	for ( var quest in list) {	
+		if (String.IsNullOrEmpty(str)==false){
+			str = str + ", ";		
+		}
+		str = str + " '" + quest.ToString() + "' ";		
+		notEmpty = true;
 	}
+	if (notEmpty){
+		str = field + " IN ( " + str  + ") ";
+	}
+	
+	return str;
+}
+
+function ForwardIsntAllowed() {
+	if (parseInt(obligateredLeft)!=parseInt(0))
+		return true;
+	else
+		return false;
 }
 
 function ShowChilds(index) {	
@@ -65,22 +99,36 @@ function ShowChilds(index) {
 }
 
 function GetChilds(sku) {
+	var str = CreateCondition($.workflow.questionnaires, " D.Id ");
+	
+	var single = 1;
+	if (regularAnswers)	
+		single = 0;
+	
 	var q = new Query();
-	q.Text = "SELECT DISTINCT C.Description AS Description, C.Id, E.Description AS AnswerType" + 
-			" , CASE WHEN V.Answer IS NULL THEN '—' ELSE V.Answer END AS Answer" +
-			" , CASE WHEN E.Description='Integer' OR E.Description='Decimal' OR E.Description='String' THEN 1 ELSE NULL END AS IsInputField" +
-			" , CASE WHEN E.Description='Integer' OR E.Description='Decimal' THEN 'numeric' ELSE 'auto' END AS KeyboardType" + 
-			" FROM Document_Questionnaire Q" + 
-			" JOIN Document_QuestionnaireMap_Outlets M ON Q.Id=M.Questionnaire AND M.Outlet = @outlet" + 
-			" JOIN Document_Questionnaire_SKUQuestionsNew SQ ON SQ.Ref=Q.Id" + 
-			" JOIN Document_Questionnaire_SKUs S ON S.Ref=Q.Id AND S.SKU=@sku" + 
-			" JOIN Catalog_Question C ON SQ.Question=C.Id" +
-			" JOIN Enum_DataType E ON E.Id=C.AnswerType" + 
-			" LEFT JOIN Document_Visit_SKUs V ON V.Question=C.Id AND V.SKU=S.SKU AND V.Ref=@visit" +
-			" ORDER BY Description";
-	q.AddParameter("outlet", $.workflow.outlet);
-	q.AddParameter("sku", sku);
+	q.Text = "SELECT MIN(D.Date) AS DocDate, Q.ChildQuestion AS Id, Q.ChildDescription AS Description " +
+			", Q.ChildType AS AnswerType, MAX(CAST(Q.Obligatoriness AS int)) AS Obligatoriness " +
+			", (SELECT Qq.QuestionOrder FROM Document_Questionnaire Dd  " +
+			" JOIN Document_Questionnaire_SKUQuestions Qq ON Dd.Id=Qq.Ref AND Q.ChildQuestion=Qq.ChildQuestion ORDER BY Dd.Date LIMIT 1) AS QuestionOrder" +
+			", CASE WHEN (Answer IS NULL OR Answer='') THEN '—' ELSE V.Answer END AS Answer " +
+			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal OR Q.ChildType=@string THEN 1 ELSE NULL END AS IsInputField " +
+			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal THEN 'numeric' ELSE 'auto' END AS KeyboardType " + 
+			" FROM Document_Questionnaire D " +
+			" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref " +
+			" JOIN Document_Questionnaire_SKUs S ON D.Id=S.Ref AND S.SKU=@sku " +
+			" LEFT JOIN Document_Visit_SKUs V ON V.Question=Q.ChildQuestion AND V.Ref=@visit AND V.SKU=S.SKU " + 
+			" WHERE D.Single=@single AND " + str + " AND ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs " +
+			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND SKU=@sku)) " + 
+			" GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, Q.ParentQuestion, Answer " + 
+			" ORDER BY DocDate, QuestionOrder ";
+	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
+	q.AddParameter("integer", DB.Current.Constant.DataType.Integer);
+	q.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);
+	q.AddParameter("string", DB.Current.Constant.DataType.String);
 	q.AddParameter("visit", $.workflow.visit);
+	q.AddParameter("single", single);
+	q.AddParameter("sku", sku);
+	
 	return q.Execute();
 }
 
@@ -96,12 +144,7 @@ function RemovePlaceHolder(control) {
 
 // ------------------------SKU----------------------
 
-function CreateItemAndShow(control, sku, skuValue, index) {
-//	if (skuValue!=null){
-//		skuValue = DB.Create("Document.Visit_SKUs");
-//		skuValue.Ref = $.workflow.visit;
-//		skuValue.SKU = sku;
-//	}
+function CreateItemAndShow(control, sku, index) {
 	parentId = "p" + index;
 	Workflow.Refresh([]);
 }
@@ -127,7 +170,7 @@ function CreateVisitSKUValueIfNotExists(control, sku, question) {
 		skuValue = skuValue.GetObject();
 	skuValue.Answer = control.Text;
 	skuValue.Save();
-
+	
 	return skuValue.Id;
 }
 
@@ -145,23 +188,23 @@ function GoToQuestionAction(control, answerType, question, sku, editControl) {
 		editControl.Text = "";
 	var skuValue = CreateVisitSKUValueIfNotExists(editControl, sku, question);
 	
-	if (answerType == "ValueList") {
+	if ((answerType).ToString() == (DB.Current.Constant.DataType.ValueList).ToString()) {
 		var q = new Query();
 		q.Text = "SELECT Value, Value FROM Catalog_Question_ValueList WHERE Ref=@ref";
 		q.AddParameter("ref", question);
 		ValueListSelect(skuValue, "Answer", q.Execute(), editControl);
 	}
 
-	if (answerType == "Snapshot") {
+	if ((answerType).ToString() == (DB.Current.Constant.DataType.Snapshot).ToString()) {
 		GetCameraObject($.workflow.visit);
 		Camera.MakeSnapshot(SaveAtVisit, [ skuValue, editControl]);
 	}
 
-	if (answerType == "DateTime") {
+	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {
 		DateTimeDialog(skuValue, "Answer", skuValue.Answer, editControl);
 	}
 
-	if (answerType == "Boolean") {
+	if ((answerType).ToString() == (DB.Current.Constant.DataType.Boolean).ToString()) {
 		BooleanDialogSelect(skuValue, "Answer", editControl);
 	}
 }
@@ -169,6 +212,7 @@ function GoToQuestionAction(control, answerType, question, sku, editControl) {
 
 function CheckEmtySKUAndForward(outlet, visit) {
 	var p = [ outlet, visit ];
+	parentId = null;
 	Workflow.Forward(p);
 }
 
@@ -203,5 +247,5 @@ function GetActionAndBack() {
 //------------------------------internal-----------------------------------
 
 function DialogCallBack(control, key){
-	control.Text = key;
+	Workflow.Refresh([]);
 }

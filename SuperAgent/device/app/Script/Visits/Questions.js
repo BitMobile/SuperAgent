@@ -30,7 +30,7 @@ function ChangeListAndRefresh(control, param) {
 
 function GetQuestionsByQuestionnaires(outlet) {
 
-	var str = CreateCondition($.workflow.questionnaires);	
+	var str = CreateCondition($.workflow.questionnaires, " D.Id ");	
 	
 	//find obligatered questions qty
 	var queryCount = new Query("SELECT COUNT(Q.ChildQuestion) FROM Document_Questionnaire D " +
@@ -38,7 +38,7 @@ function GetQuestionsByQuestionnaires(outlet) {
 		" LEFT JOIN Document_Visit_Questions V ON V.Question=Q.ChildQuestion AND V.Ref=@visit " +
 		" WHERE " + str + " AND ((Q.ParentQuestion=@emptyRef) " +
 		" OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_Questions " +
-		" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit)) AND Obligatoriness=1 AND (Answer IS NULL OR Answer='—') " +
+		" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit)) AND Obligatoriness=1 AND (Answer IS NULL OR Answer='—' OR Answer='') " +
 		" GROUP BY Q.ChildQuestion ");
 	queryCount.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	queryCount.AddParameter("visit", $.workflow.visit);
@@ -52,7 +52,7 @@ function GetQuestionsByQuestionnaires(outlet) {
 			", Q.ChildType AS AnswerType, MAX(CAST(Q.Obligatoriness AS int)) AS Obligatoriness " +
 			", (SELECT Qq.QuestionOrder FROM Document_Questionnaire Dd  " +
 			" JOIN Document_Questionnaire_Questions Qq ON Dd.Id=Qq.Ref AND Q.ChildQuestion=Qq.ChildQuestion ORDER BY Dd.Date LIMIT 1) AS QuestionOrder" +
-			", CASE WHEN Answer IS NULL THEN '—' ELSE V.Answer END AS Answer " +
+			", CASE WHEN (Answer IS NULL OR Answer='') THEN '—' ELSE V.Answer END AS Answer " +
 			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal OR Q.ChildType=@string THEN 1 ELSE NULL END AS IsInputField " +
 			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal THEN 'numeric' ELSE 'auto' END AS KeyboardType " + 
 			" FROM Document_Questionnaire D " +
@@ -75,7 +75,7 @@ function GetQuestionsByQuestionnaires(outlet) {
 	return res;
 }
 
-function CreateCondition(list) {
+function CreateCondition(list, field) {
 	var str = "";
 	var notEmpty = false;
 	
@@ -87,7 +87,7 @@ function CreateCondition(list) {
 		notEmpty = true;
 	}
 	if (notEmpty){
-		str = " D.Id IN ( " + str  + ") ";
+		str = field + " IN ( " + str  + ") ";
 	}
 	
 	return str;
@@ -221,9 +221,14 @@ function CheckEmptyQuestionsAndForward(visit) {
 
 function FillQuestionnaires() {
 	
-	var str = CreateCondition($.workflow.questionnaires);
+	var str = CreateCondition($.workflow.questionnaires, " Q.Ref ");
 	
-	while (questionnaires.Next()) {
+	var query = new Query("SELECT VQ.Answer, Q.ChildQuestion, Q.ChildDescription " +
+			"FROM Document_Visit_Questions VQ JOIN Document_Questionnaire_Questions Q ON VQ.Question=Q.ChildQuestion" +
+			"WHERE " + str);
+	var res = query.Execute();
+	
+	while (res.Next()) {
 		var quest = DB.Create("Document.Visit_Questionnaires");
 		quest.Questionnaire = questionnaires.Id;
 		quest.Ref = $.workflow.visit;

@@ -31,7 +31,7 @@ function ChangeListAndRefresh(control, param) {
 //
 
 
-function GetSKUsFromQuesionnaires(outlet) {
+function GetSKUsFromQuesionnaires(search) {
 
 	var str = CreateCondition($.workflow.questionnaires, " D.Id ");
 	var single = 1;
@@ -51,13 +51,18 @@ function GetSKUsFromQuesionnaires(outlet) {
 	queryQty.AddParameter("visit", $.workflow.visit);
 	obligateredLeft = queryQty.ExecuteCount();
 	
+	var searchString = "";
+	if (String.IsNullOrEmpty(search) == false)
+		searchString = " AND Contains(S.Description, '" + search + "') ";
+	Dialog.Debug(searchString);
+	
 	var q = new Query();
 	q.Text="SELECT DISTINCT S.SKU, S.Description " +
 			" , MAX(CAST(Q.Obligatoriness as int)) as Obligatoriness " +
 			"FROM Document_Questionnaire D JOIN Document_Questionnaire_SKUs S ON D.Id=S.Ref " +
 			"JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref " +
 			"LEFT JOIN Document_Visit_SKUs VS ON VS.SKU=S.SKU AND VS.Question=Q.ChildQuestion AND VS.Ref=@visit " +
-			"WHERE D.Single=@single AND " + str +
+			"WHERE D.Single=@single AND " + str + searchString +
 			"GROUP BY S.SKU, S.Description ORDER BY S.Description"; 
 	q.AddParameter("visit", $.workflow.visit);
 	q.AddParameter("single", single);	

@@ -217,16 +217,24 @@ function GetRightFilterStyle(val) {
 function ChangeFilterAndRefresh(type) {
 	Variables.Remove("filterType");
 	Variables.AddGlobal("filterType", type);
-	Workflow.Refresh([]);
+	Workflow.Refresh([$.screenContext]);
 
 }
 
-function GetGroups(priceList) {
+function GetGroups(priceList, screenContext) {
+
 	var filterString = " ";
 	filterString += AddFilter(filterString, "brand_filter", "S.Brand", " AND ");
-	var q = new Query("SELECT DISTINCT G.Id AS ChildId, G.Description AS Child, GP.Id AS ParentId, GP.Description AS Parent FROM Catalog_SKU S LEFT JOIN Catalog_SKUGroup G ON S.Owner=G.Id LEFT JOIN Catalog_SKUGroup GP ON G.Parent=GP.Id WHERE S.ID IN (SELECT DISTINCT SKU FROM Document_PriceList_Prices WHERE Ref=@priceList) " + filterString + " ORDER BY Parent, Child");
-	q.AddParameter("priceList", priceList);
-	return q.Execute();
+	if (screenContext=="Order"){
+		var q = new Query("SELECT DISTINCT G.Id AS ChildId, G.Description AS Child, GP.Id AS ParentId, GP.Description AS Parent FROM Catalog_SKU S LEFT JOIN Catalog_SKUGroup G ON S.Owner=G.Id LEFT JOIN Catalog_SKUGroup GP ON G.Parent=GP.Id WHERE S.ID IN (SELECT DISTINCT SKU FROM Document_PriceList_Prices WHERE Ref=@priceList) " + filterString + " ORDER BY Parent, Child");
+		q.AddParameter("priceList", priceList);
+		return q.Execute();
+	}
+	if (screenContext=="Questionnaire"){
+		var str = CreateCondition($.workflow.questionnaires, " Ref ");
+		var q1 = new Query("SELECT DISTINCT G.Id AS ChildId, G.Description AS Child, GP.Id AS ParentId, GP.Description AS Parent FROM Catalog_SKU S LEFT JOIN Catalog_SKUGroup G ON S.Owner=G.Id LEFT JOIN Catalog_SKUGroup GP ON G.Parent=GP.Id WHERE S.ID IN (SELECT SKU FROM Document_Questionnaire_SKUs WHERE " + str + ") " + filterString + " ORDER BY Parent, Child");
+		return q1.Execute();
+	}
 }
 
 function ShowGroup(currentGroup, parentGroup) {
@@ -289,7 +297,7 @@ function AddFilterAndRefresh(item, filterName) { // refactoring is needed
 
 	Variables.AddGlobal(filterName, nCollection);
 
-	Workflow.Refresh([]);
+	Workflow.Refresh([$.screenContext]);
 }
 
 function GetChildren(parent) {
@@ -306,15 +314,41 @@ function FilterIsSet(itemId, filterName) {
 		return false;
 }
 
-function GetBrands(priceList) {
+function GetBrands(priceList, screenContext) {
 	var filterString = " ";
 	filterString += AddFilter(filterString, "group_filter", "S.Owner", " AND ");
-	var q = new Query("SELECT DISTINCT B.Id, B.Description FROM Catalog_SKU S JOIN Catalog_Brands B ON S.Brand=B.Id JOIN Catalog_SKUGroup G ON S.Owner=G.Id WHERE S.ID IN (SELECT DISTINCT SKU FROM Document_PriceList_Prices WHERE Ref=@priceList) " + filterString + " ORDER BY B.Description");
-	q.AddParameter("priceList", priceList);
-	return q.Execute();
+	
+	if (screenContext=="Order"){
+		var q = new Query("SELECT DISTINCT B.Id, B.Description FROM Catalog_SKU S JOIN Catalog_Brands B ON S.Brand=B.Id JOIN Catalog_SKUGroup G ON S.Owner=G.Id WHERE S.ID IN (SELECT DISTINCT SKU FROM Document_PriceList_Prices WHERE Ref=@priceList) " + filterString + " ORDER BY B.Description");
+		q.AddParameter("priceList", priceList);
+		return q.Execute();
+	}
+	if (screenContext=="Questionnaire"){
+		var str = CreateCondition($.workflow.questionnaires, " Ref ");
+		var q1 = new Query("SELECT DISTINCT B.Id, B.Description FROM Catalog_SKU S JOIN Catalog_Brands B ON S.Brand=B.Id JOIN Catalog_SKUGroup G ON S.Owner=G.Id WHERE S.ID IN (SELECT SKU FROM Document_Questionnaire_SKUs WHERE " + str + ") " + filterString + " ORDER BY B.Description");
+		return q1.Execute();
+	}
 }
 
 function ShowDialog(control, val) {
 	var d = parseInt(50);
 	return d;
+}
+
+function CreateCondition(list, field) {
+	var str = "";
+	var notEmpty = false;
+	
+	for ( var quest in list) {	
+		if (String.IsNullOrEmpty(str)==false){
+			str = str + ", ";		
+		}
+		str = str + " '" + quest.ToString() + "' ";		
+		notEmpty = true;
+	}
+	if (notEmpty){
+		str = field + " IN ( " + str  + ") ";
+	}
+	
+	return str;
 }

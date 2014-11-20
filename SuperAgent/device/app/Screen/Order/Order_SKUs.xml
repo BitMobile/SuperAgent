@@ -25,7 +25,7 @@
 		</c:HorizontalLayout>
 		<c:HorizontalLine />
 
-		<c:DockLayout CssClass="parameter_grid" OnClickAction="$Workflow.DoAction(SetFilter)">
+		<c:DockLayout CssClass="parameter_grid" OnClickAction="$Workflow.DoAction(SetFilter, Order)">
 			<c:TextView Text="#filter#"></c:TextView>
 			<c:Image></c:Image>
 		</c:DockLayout>

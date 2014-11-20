@@ -102,7 +102,17 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 	}
 
 	return true;
+	
+	//clear filters
 
+	if ((lastStep=="Order" && nextStep=="Receivables") || (lastStep=="SKUs" && nextStep=="Order")) {
+		if (Variables.Exists("group_filter"))
+			Variables.Remove("group_filter");
+
+		if (Variables.Exists("brand_filter"))
+			Variables.Remove("brand_filter");
+	}
+	
 }
 
 //function OnWorkflowBack(name, lastStep, nextStep) {}
@@ -123,12 +133,6 @@ function OnWorkflowFinish(name, reason) {
 	}
 
 	Variables.Remove("workflow");
-
-	if (Variables.Exists("group_filter"))
-		Variables.Remove("group_filter");
-
-	if (Variables.Exists("brand_filter"))
-		Variables.Remove("brand_filter");
 	
 	if (name=="Visit" || name=="CreateOrder" || name=="Outlets")
 		Indicators.SetIndicators();

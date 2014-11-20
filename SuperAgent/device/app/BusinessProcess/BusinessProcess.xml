@@ -63,6 +63,11 @@
 
 		<bp:Step Name="SKUs" Screen="Visit\SKUs.xml" Controller="Visits\SKU_Questions.js">
 			<bp:Action Name="Forward" NextStep="Order"></bp:Action>
+			<bp:Action Name="ShowFilters1" NextStep="Filters1"/>
+		</bp:Step>		
+		
+		<bp:Step Name="Filters1" Screen="Filters.xml" Controller="Order\Order_SKUs.js">
+			<bp:Action Name="Forward" NextStep="SKUs"></bp:Action>
 		</bp:Step>
 
 		<bp:Step Name="Order" Screen="Order\Order.xml" Controller="Order\Main.js">

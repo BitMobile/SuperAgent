@@ -54,7 +54,6 @@ function GetSKUsFromQuesionnaires(search) {
 	var searchString = "";
 	if (String.IsNullOrEmpty(search) == false)
 		searchString = " AND Contains(S.Description, '" + search + "') ";
-	Dialog.Debug(searchString);
 	
 	var q = new Query();
 	q.Text="SELECT DISTINCT S.SKU, S.Description " +
@@ -246,7 +245,7 @@ function GetActionAndBack() {
 		} else
 			Workflow.BackTo("Visit_Tasks");
 	} else
-		Workflow.Back();
+		Workflow.BackTo("Questions");
 }
 
 //------------------------------internal-----------------------------------

@@ -73,7 +73,7 @@
 					<c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoRefresh($edtSearch.Text)"></c:Button>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
-				<c:DockLayout CssClass="parameter_grid" OnClickAction="$Workflow.DoAction(SetFilter)">
+				<c:DockLayout CssClass="parameter_grid" OnClickAction="$Workflow.DoAction(ShowFilters1, Questionnaire)">
 					<c:TextView Text="#filter#"></c:TextView>
 					<c:Image></c:Image>
 				</c:DockLayout>
@@ -82,6 +82,8 @@
 				
 			<c:ScrollView Id="grScrollView">
 	
+				<c:HorizontalLine />
+				
 				<s:If Test="$ForwardIsntAllowed()">
 					<c:HorizontalLayout CssClass="required_grid">
 						<c:TextView Text="#requiredLeft# "></c:TextView>

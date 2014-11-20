@@ -214,27 +214,9 @@ function CheckEmptyQuestionsAndForward(visit) {
 		DB.Delete(res.Id);
 	}
 
-	//FillQuestionnaires();
-
 	Workflow.Forward([]);
 }
 
-function FillQuestionnaires() {
-	
-	var str = CreateCondition($.workflow.questionnaires, " Q.Ref ");
-	
-	var query = new Query("SELECT VQ.Answer, Q.ChildQuestion, Q.ChildDescription " +
-			"FROM Document_Visit_Questions VQ JOIN Document_Questionnaire_Questions Q ON VQ.Question=Q.ChildQuestion" +
-			"WHERE " + str);
-	var res = query.Execute();
-	
-	while (res.Next()) {
-		var quest = DB.Create("Document.Visit_Questionnaires");
-		quest.Questionnaire = questionnaires.Id;
-		quest.Ref = $.workflow.visit;
-		quest.Save();
-	}
-}
 
 function GetActionAndBack() {
 	if ($.workflow.skipTasks) {

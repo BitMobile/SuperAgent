@@ -108,7 +108,7 @@ function GetOrderSUM(order) {
 
 function CheckAndCommit(order, visit, wfName) {
 
-    if (VisitIsChecked(visit, order, wfName)) {
+	if (VisitIsChecked(visit, order, wfName)) {
         visit = visit.GetObject();
     	visit.EndTime = DateTime.Now;
 
@@ -116,6 +116,8 @@ function CheckAndCommit(order, visit, wfName) {
             order.GetObject().Save();
         }
 
+        FillQuestionnaires();
+        
         visit.Save();
         Workflow.Commit();
     }
@@ -158,6 +160,106 @@ function VisitIsChecked(visit, order, wfName) {
         else
             return true;
     }
+}
+
+function FillQuestionnaires() {
+	
+	var str = CreateCondition($.workflow.questionnaires, " D.Id ");
+	var q = new Query("SELECT D.Single, VQ.Id AS AnswerId, A.SKU, Q.ChildQuestion AS Question, Q.Ref AS Questionnaire, VQ.AnswerDate, VQ.Answer, A.Id AS OutletAnswerId, VQ.Ref AS Visit " +
+			" FROM Document_Visit_Questions VQ " +
+			" JOIN Document_Questionnaire_Questions Q ON VQ.Question=Q.ChildQuestion " +
+			" JOIN Document_Questionnaire D ON Q.Ref=D.Id " +
+			" LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Question=Q.ChildQuestion AND A.Questionaire=Q.Ref AND A.SKU=@emptySKURef AND A.Ref=@outlet " +
+			" WHERE VQ.Ref=@visit AND " + str + 
+			" UNION ALL " +
+			" SELECT D.Single, VQ.Id AS AnswerId, S.SKU, Q.ChildQuestion AS Question, Q.Ref AS Questionnaire, VQ.AnswerDate, VQ.Answer, A.Id AS OutletAnswerId, VQ.Ref AS Visit  " +
+			" FROM Document_Visit_SKUs VQ " +
+			" JOIN Document_Questionnaire_SKUQuestions Q ON VQ.Question=Q.ChildQuestion " +
+			" JOIN Document_Questionnaire_SKUs S ON Q.Ref=S.Ref AND S.SKU=VQ.SKU " +
+			" JOIN Document_Questionnaire D ON Q.Ref=D.Id " +
+			" LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Question=Q.ChildQuestion AND A.Questionaire=Q.Ref AND A.SKU=S.SKU AND A.Ref=@outlet " +
+			" WHERE VQ.Ref=@visit AND " + str + " ORDER BY A.SKU, Q.ChildQuestion ");
+	
+	q.AddParameter("emptySKURef", DB.EmptyRef("Catalog_SKU"));
+	q.AddParameter("outlet", $.workflow.outlet);
+	q.AddParameter("visit", $.workflow.visit);
+	var res = q.Execute().Unload();
+	
+	var lastSKU;
+	var lastQuestion;
+	
+	while (res.Next()) {
+		if (NewQuestion(lastSKU, res.SKU, lastQuestion, res.Question)==false) 
+			var answerObj = res.AnswerId.GetObject();
+		else{
+			
+			var sku = res.SKU;
+			if (sku==null)
+				sku = DB.EmptyRef("Catalog_SKU");
+			
+			if (sku.ToString()==(DB.EmptyRef("Catalog_SKU")).ToString())
+				var answerObj = DB.Create("Document.Visit_Questions");
+			else{
+				var answerObj = DB.Create("Document.Visit_SKUs");
+				Dialog.Debug(sku);
+				answerObj.SKU = sku; 
+			}
+			
+			answerObj.Ref = res.Visit;
+			answerObj.Question = res.Question;
+			answerObj.Answer = res.Answer;
+			answerObj.AnswerDate = res.Answerdate;
+		}
+		answerObj.Questionnaire = res.Questionnaire;
+		answerObj.Save();
+		if (res.Single==1){
+			if (res.OutletAnswerId==null || NewQuestion(lastSKU, res.SKU, lastQuestion, res.Question)){
+				var outletAnswer = DB.Create("Catalog.Outlet_AnsweredQuestions");
+				outletAnswer.Ref = $.workflow.outlet;
+				outletAnswer.Questionaire = res.Questionnaire;
+				outletAnswer.Question = res.Question;
+				if (res.SKU!=null)
+					outletAnswer.SKU = res.SKU;
+			}
+			else
+				var outletAnswer = res.OutletAnswerId.GetObject();
+			outletAnswer.Answer = res.Answer;
+			outletAnswer.AnswerDate = res.AnswerDate;
+			outletAnswer.Save();			
+		}
+		lastSKU = res.SKU;
+		lastQuestion = res.Question;
+	}
+	
+}
+
+//(lastSKU==null && lastQuestion!=res.Question) || (lastSKU!=res.SKU || lastQuestion!=res.Question))
+function NewQuestion(lastSKU, currSKU, lastQuestion, currQuestion) {
+	if (lastSKU==null)
+		lastSKU = DB.EmptyRef("Catalog_SKU");
+	if (lastSKU==DB.EmptyRef("Catalog_SKU") && lastQuestion!=currQuestion)
+		return true;
+	if (lastSKU!=currSKU || lastQuestion!=currQuestion)
+		return true;
+	return false;
+}
+
+function CreateCondition(list, field) {
+	var str = "";
+	var notEmpty = false;
+	
+	for ( var quest in list) {	
+		if (String.IsNullOrEmpty(str)==false){
+			str = str + ", ";		
+		}
+		str = str + " '" + quest.ToString() + "' ";		
+		notEmpty = true;
+	}
+	if (notEmpty){
+		str = field + " IN ( " + str  + ") ";
+	}
+	
+	return str;
 }
 
 

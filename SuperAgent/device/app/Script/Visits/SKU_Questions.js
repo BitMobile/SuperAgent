@@ -173,6 +173,7 @@ function CreateVisitSKUValueIfNotExists(control, sku, question) {
 	else
 		skuValue = skuValue.GetObject();
 	skuValue.Answer = control.Text;
+	skuValue.AnswerDate = DateTime.Now;
 	skuValue.Save();
 	
 	return skuValue.Id;

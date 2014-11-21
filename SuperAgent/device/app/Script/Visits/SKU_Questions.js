@@ -58,6 +58,12 @@ function GetSKUsFromQuesionnaires(search) {
 	var q = new Query();
 	q.Text="SELECT DISTINCT S.SKU, S.Description " +
 			" , MAX(CAST(Q.Obligatoriness as int)) as Obligatoriness " +
+			" , (SELECT COUNT(DISTINCT Q.ChildDescription) FROM Document_Questionnaire D " +
+				" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref" +
+				" WHERE D.Single=@single AND Q.ParentQuestion=@emptyRef " +
+				" OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs " +
+				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND SKU=S.SKU) AND Single=@single) AS Total " +
+			" , (SELECT COUNT(DISTINCT Question) FROM Document_Visit_SKUs WHERE Ref=@visit AND SKU=S.SKU) AS Answered " +				
 			" FROM Document_Questionnaire D JOIN Document_Questionnaire_SKUs S ON D.Id=S.Ref " +
 			" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref " +
 			" LEFT JOIN Document_Visit_SKUs VS ON VS.SKU=S.SKU AND VS.Question=Q.ChildQuestion AND VS.Ref=@visit " +

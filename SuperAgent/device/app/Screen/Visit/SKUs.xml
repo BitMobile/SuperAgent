@@ -102,7 +102,7 @@
 	
 					<c:HorizontalLayout CssClass="grid" OnClick="$CreateItemAndShow($sku.SKU, $index)">
 						<c:VerticalLayout>
-							<c:TextView Text="0 #of# 0" CssClass="description_row" />
+							<c:TextView Text="{$sku.Answered} #of# {$sku.Total}" CssClass="description_row" />
 							<c:TextView Text="$sku.Description" CssClass="main_row"></c:TextView>
 						</c:VerticalLayout>
 						<s:If Test="$sku.Obligatoriness=='1'"><c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout></s:If>

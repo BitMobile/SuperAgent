@@ -1,3 +1,5 @@
+var swipedRow;
+
 function GetMultiplier(sku, orderitem) {
 
 	if (orderitem != null) {
@@ -10,6 +12,24 @@ function GetMultiplier(sku, orderitem) {
 		return q.ExecuteScalar();
 	}
 	return parseInt(1);
+}
+
+function WriteSwipedRow(control){
+	if(swipedRow != control)
+		HideSwiped();
+	swipedRow = control;
+}
+
+function OnScroll(sender)
+{
+	if($.grScrollView.ScrollIndex > 0 && swipedRow != $.grScrollView.Controls[$.grScrollView.ScrollIndex])
+		HideSwiped();
+}
+
+function HideSwiped()
+{
+	if(swipedRow != null)
+		swipedRow.Index = 1;
 }
 
 function GetFeatures(sku) {
@@ -106,6 +126,7 @@ function GetFeatureDescr(feature) {
 }
 
 function RefreshEditSKU(orderItem, sku, price, discountEdit, showimage) {
+	HideSwiped();
 	var d = $.discountEdit.Text;
 	var arr = [ sku, price, orderItem, d, showimage ];// , discountText];
 	Workflow.Refresh(arr);
@@ -155,6 +176,8 @@ function ChangeFeatureAndRefresh(orderItem, feature, sku, price, discountEdit,
 
 function ChangeUnit(sku, orderitem, price) {
 
+	HideSwiped();
+	
 	orderitem = orderitem.GetObject();
 	
 	if (price==null){

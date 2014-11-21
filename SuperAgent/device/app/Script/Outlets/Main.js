@@ -223,7 +223,7 @@ function LocationDialogHandler(answ, outlet) {
 			outlet.Save();
 			Variables["outletCoord"].Text = (outlet.Lattitude + ", " + outlet.Longitude);
 		} else
-			NoLocationHandler(LocationDialogHandler);
+			NoLocationHandler(LocationDialogHandler, outlet);
 	}
 }
 
@@ -258,12 +258,12 @@ function VisitCoordsHandler(answ, visit) {
 			visit.Save();
 			Dialog.Message("#coordinatesAreSet#");
 		} else
-			NoLocationHandler(VisitCoordsHandler);
+			NoLocationHandler(VisitCoordsHandler, visit);
 	}
 }
 
-function NoLocationHandler(descriptor) {
-	Dialog.Question("#locationSetFailed#", descriptor);
+function NoLocationHandler(descriptor, state) {
+	Dialog.Question("#locationSetFailed#", descriptor, state);
 }
 
 // --------------------------- Outlets ---------------------------
@@ -326,15 +326,16 @@ function SaveAndBack(outlet) {
 
 // ---------------------------------internal------------------------
 
-function SaveAtOutelt(arr) {
-	var paramValue = arr[0];
-	var control = arr[1];
-	var path = arr[2];
-	question = paramValue.GetObject();
-	question.Value = path;
-	question.Save();
-	Variables[control].Text = Translate["#snapshotAttached#"];
-
+function SaveAtOutelt(arr, args) {
+	if (args.Result) {
+		var paramValue = arr[0];
+		var control = arr[1];
+		var path = arr[2];
+		question = paramValue.GetObject();
+		question.Value = path;
+		question.Save();
+		Variables[control].Text = Translate["#snapshotAttached#"];
+	}
 }
 
 function GetCameraObject(entity) {

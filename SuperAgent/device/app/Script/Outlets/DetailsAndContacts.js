@@ -23,7 +23,8 @@ function GetString(ref) {
 		return Translate["#select_answer_low#"];
 	} else {
 		$.Add("style", "main_row");
-		return ref.Description;
+		var ownDictionary = CreateOwnershipDictionary();
+		return ownDictionary[ref.Description];
 	}
 }
 
@@ -55,13 +56,32 @@ function DeleteContact(ref) {
 	Workflow.Refresh([ $.outlet ]);
 }
 
+function SelectOwnership() {
+	var ownDictionary = CreateOwnershipDictionary();
+	var q = new Query();
+	q.Text = "SELECT Id, Description FROM Enum_OwnershipType";
+	var res = q.Execute().Unload();
+	var arr = [];	
+	
+	while (res.Next()) {
+		arr.push([res.Id, ownDictionary[res.Description]]);
+	}
+		
+	Dialog.Select("#select_answer#", arr, CallBack1, $.outlet);
+	
+}
+
+function CallBack1(key, args) {
+	var obj = args.GetObject();
+	obj.OwnershipType = key;
+	obj.Save();
+	Workflow.Refresh([]);
+}
+
 // --------------------internal--------------
 
-function EmptyContact(contact) {	
-	if (String.IsNullOrEmpty(contact.ContactName) 
-			&& String.IsNullOrEmpty(contact.PhoneNumber) 
-			&& String.IsNullOrEmpty(contact.Email)
-			&& String.IsNullOrEmpty(contact.Position))
+function EmptyContact(contact) {
+	if (String.IsNullOrEmpty(contact.ContactName) && String.IsNullOrEmpty(contact.PhoneNumber) && String.IsNullOrEmpty(contact.Email) && String.IsNullOrEmpty(contact.Position))
 		return true;
 	else
 		return false;
@@ -87,7 +107,6 @@ function SavePhoneAndCall(contact) {
 	contact = contact.GetObject();
 	DoCall(contact.PhoneNumber);
 }
-
 
 function DialogCallBack(control, key) {
 	var v = null;
@@ -117,12 +136,11 @@ function ValidEntity(entity) {
 		return ValidateOutlet(entity);
 }
 
-function ValidateContactName(entity){
-	if (String.IsNullOrEmpty(entity.ContactName)){
+function ValidateContactName(entity) {
+	if (String.IsNullOrEmpty(entity.ContactName)) {
 		Dialog.Message(String.Format("{0} {1}", Translate["#incorrect#"], Translate["#contactName#"]));
 		return false;
-	}
-	else
+	} else
 		return true;
 }
 
@@ -137,4 +155,16 @@ function ValidateOutlet(entity) {
 		return true;
 	}
 	return false;
+}
+
+function CreateOwnershipDictionary() {
+	var d = new Dictionary();
+	d.Add("ZAO", "ЗАО");
+	d.Add("OOO", "OOO");
+	d.Add("IP", "ИП");
+	d.Add("NKO", "НКО");
+	d.Add("OAO", "OAO");
+	d.Add("OP", "ОП");
+	d.Add("TSJ", "ТСЖ");
+	return d;
 }

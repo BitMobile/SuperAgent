@@ -47,12 +47,13 @@
 
 .repeat TextView{
 	width: 100%;
-	height: 28%;
+	height: 100%;
 	vertical-align: central;
 	horizontal-align: central;
+	margin-top: 30%;
 	text-align: center;
 	color: #ffffff;
-	font: 100% Arial;
+	font: 45% Arial;
 }
 
 .parameter_grid{

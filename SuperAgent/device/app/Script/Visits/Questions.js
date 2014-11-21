@@ -185,14 +185,15 @@ function DialogCallBack(control, key) {
 	Workflow.Refresh([]);
 }
 
-function SaveAtVisit(arr) {
-	var question = arr[0];
-	var control = arr[1];
-	question = question.GetObject();
-	question.Answer = Variables["guid"];
-	question.Save();
-	Variables[control].Text = Translate["#snapshotAttached#"];
-
+function SaveAtVisit(arr, args) {
+	if (args.Result) {
+		var question = arr[0];
+		var control = arr[1];
+		question = question.GetObject();
+		question.Answer = Variables["guid"];
+		question.Save();
+		Variables[control].Text = Translate["#snapshotAttached#"];
+	}
 }
 
 /*

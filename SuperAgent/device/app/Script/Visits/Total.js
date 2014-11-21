@@ -165,19 +165,17 @@ function VisitIsChecked(visit, order, wfName) {
 function FillQuestionnaires() {
 	
 	var str = CreateCondition($.workflow.questionnaires, " D.Id ");
-	var q = new Query("SELECT D.Single, VQ.Id AS AnswerId, A.SKU, Q.ChildQuestion AS Question, Q.Ref AS Questionnaire, VQ.AnswerDate, VQ.Answer, A.Id AS OutletAnswerId, VQ.Ref AS Visit " +
+	var q = new Query("SELECT D.Single, VQ.Id AS AnswerId, NULL AS SKU, Q.ChildQuestion AS Question, Q.Ref AS Questionnaire, VQ.AnswerDate, VQ.Answer, VQ.Ref AS Visit " +
 			" FROM Document_Visit_Questions VQ " +
 			" JOIN Document_Questionnaire_Questions Q ON VQ.Question=Q.ChildQuestion " +
 			" JOIN Document_Questionnaire D ON Q.Ref=D.Id " +
-			" LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Question=Q.ChildQuestion AND A.Questionaire=Q.Ref AND A.SKU=@emptySKURef AND A.Ref=@outlet " +
 			" WHERE VQ.Ref=@visit AND " + str + 
 			" UNION ALL " +
-			" SELECT D.Single, VQ.Id AS AnswerId, S.SKU, Q.ChildQuestion AS Question, Q.Ref AS Questionnaire, VQ.AnswerDate, VQ.Answer, A.Id AS OutletAnswerId, VQ.Ref AS Visit  " +
+			" SELECT D.Single, VQ.Id AS AnswerId, S.SKU, Q.ChildQuestion AS Question, Q.Ref AS Questionnaire, VQ.AnswerDate, VQ.Answer, VQ.Ref AS Visit  " +
 			" FROM Document_Visit_SKUs VQ " +
 			" JOIN Document_Questionnaire_SKUQuestions Q ON VQ.Question=Q.ChildQuestion " +
 			" JOIN Document_Questionnaire_SKUs S ON Q.Ref=S.Ref AND S.SKU=VQ.SKU " +
 			" JOIN Document_Questionnaire D ON Q.Ref=D.Id " +
-			" LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Question=Q.ChildQuestion AND A.Questionaire=Q.Ref AND A.SKU=S.SKU AND A.Ref=@outlet " +
 			" WHERE VQ.Ref=@visit AND " + str + " ORDER BY A.SKU, Q.ChildQuestion ");
 	
 	q.AddParameter("emptySKURef", DB.EmptyRef("Catalog_SKU"));
@@ -201,7 +199,6 @@ function FillQuestionnaires() {
 				var answerObj = DB.Create("Document.Visit_Questions");
 			else{
 				var answerObj = DB.Create("Document.Visit_SKUs");
-				Dialog.Debug(sku);
 				answerObj.SKU = sku; 
 			}
 			
@@ -213,6 +210,12 @@ function FillQuestionnaires() {
 		answerObj.Questionnaire = res.Questionnaire;
 		answerObj.Save();
 		if (res.Single==1){
+			var q2 = new Query("SELECT Id FROM Catalog_Outlet_AnsweredQuestions WHERE Questionnaire=@questionnaire " +
+					"AND Ref=@outlet AND Question=@question AND SKU=@sku");
+			q2.AddParameter("questionnaire", res.Questionnaire);
+			q2.AddParameter("outlet", $.workflow.outlet);
+			q2.AddParameter("sku", res.SKU);
+			
 			if (res.OutletAnswerId==null || NewQuestion(lastSKU, res.SKU, lastQuestion, res.Question)){
 				var outletAnswer = DB.Create("Catalog.Outlet_AnsweredQuestions");
 				outletAnswer.Ref = $.workflow.outlet;

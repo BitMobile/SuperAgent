@@ -44,7 +44,7 @@ function GetSKUsFromQuesionnaires(search) {
 			" JOIN Document_Questionnaire_SKUs S ON S.Ref=D.Id " +
 			" LEFT JOIN Document_Visit_SKUs V ON V.Question=Q.ChildQuestion AND S.SKU=V.SKU " +
 			" AND V.Ref=@visit " +
-			" WHERE " + str + " AND ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_Questions " +
+			" WHERE " + str + " AND ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs " +
 			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit)) AND Obligatoriness=1 " +
 			" AND (Answer IS NULL OR Answer='—' OR Answer='')");
 	queryQty.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
@@ -58,11 +58,14 @@ function GetSKUsFromQuesionnaires(search) {
 	var q = new Query();
 	q.Text="SELECT DISTINCT S.SKU, S.Description " +
 			" , MAX(CAST(Q.Obligatoriness as int)) as Obligatoriness " +
-			"FROM Document_Questionnaire D JOIN Document_Questionnaire_SKUs S ON D.Id=S.Ref " +
-			"JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref " +
-			"LEFT JOIN Document_Visit_SKUs VS ON VS.SKU=S.SKU AND VS.Question=Q.ChildQuestion AND VS.Ref=@visit " +
-			"WHERE D.Single=@single AND " + str + searchString +
-			"GROUP BY S.SKU, S.Description ORDER BY S.Description"; 
+			" FROM Document_Questionnaire D JOIN Document_Questionnaire_SKUs S ON D.Id=S.Ref " +
+			" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref " +
+			" LEFT JOIN Document_Visit_SKUs VS ON VS.SKU=S.SKU AND VS.Question=Q.ChildQuestion AND VS.Ref=@visit " +
+			" WHERE D.Single=@single AND " + str + searchString +
+			" AND ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs " +
+			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit)) " +
+			" GROUP BY S.SKU, S.Description ORDER BY S.Description"; 
+	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	q.AddParameter("visit", $.workflow.visit);
 	q.AddParameter("single", single);	
 
@@ -144,6 +147,10 @@ function AssignQuestionValue(control, sku, question) {
 function RemovePlaceHolder(control) {
 	if (control.Text == "—")
 		control.Text = "";
+}
+
+function RefreshScreen(control, search) {
+	Workflow.Refresh([search]);
 }
 
 // ------------------------SKU----------------------

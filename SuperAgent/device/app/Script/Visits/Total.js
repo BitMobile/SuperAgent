@@ -176,7 +176,7 @@ function FillQuestionnaires() {
 			" JOIN Document_Questionnaire_SKUQuestions Q ON VQ.Question=Q.ChildQuestion " +
 			" JOIN Document_Questionnaire_SKUs S ON Q.Ref=S.Ref AND S.SKU=VQ.SKU " +
 			" JOIN Document_Questionnaire D ON Q.Ref=D.Id " +
-			" WHERE VQ.Ref=@visit AND " + str + " ORDER BY A.SKU, Q.ChildQuestion ");
+			" WHERE VQ.Ref=@visit AND " + str + " ORDER BY SKU, ChildQuestion ");
 	
 	q.AddParameter("emptySKURef", DB.EmptyRef("Catalog_SKU"));
 	q.AddParameter("outlet", $.workflow.outlet);
@@ -185,6 +185,8 @@ function FillQuestionnaires() {
 	
 	var lastSKU;
 	var lastQuestion;
+	
+	Dialog.Debug(res.Count());
 	
 	while (res.Next()) {
 		if (NewQuestion(lastSKU, res.SKU, lastQuestion, res.Question)==false) 
@@ -208,6 +210,7 @@ function FillQuestionnaires() {
 			answerObj.AnswerDate = res.Answerdate;
 		}
 		answerObj.Questionnaire = res.Questionnaire;
+		Dialog.Debug(answerObj);
 		answerObj.Save();
 		if (res.Single==1){
 			var q2 = new Query("SELECT Id FROM Catalog_Outlet_AnsweredQuestions WHERE Questionnaire=@questionnaire " +

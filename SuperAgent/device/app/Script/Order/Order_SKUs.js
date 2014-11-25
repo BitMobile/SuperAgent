@@ -2,6 +2,11 @@ var defFeature;
 var defPack;
 var packDescription;
 var swipedRow;
+var rec_order;
+
+function OnLoading() {
+	rec_order = "<font size=''>1576 шт.</font>";
+}
 
 function GetSKUAndGroups(searchText, priceList, stock) {
 

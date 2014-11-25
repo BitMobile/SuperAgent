@@ -226,3 +226,4 @@ repeat		Repeat
 nonregular	Non-regular
 regular		Regular
 requiredLeft	Reqired answers left:
+recommended		recommend.

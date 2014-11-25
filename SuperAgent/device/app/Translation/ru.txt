@@ -226,3 +226,4 @@ repeat		Повторить
 nonregular	Единоразровые
 regular		Регулярные
 requiredLeft	Обязательных вопросов осталось:
+recommended		рекоменд.

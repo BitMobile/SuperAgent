@@ -44,7 +44,7 @@ function GetSKUsFromQuesionnaires(search) {
 			" JOIN Document_Questionnaire_SKUs S ON S.Ref=D.Id " +
 			" LEFT JOIN Document_Visit_SKUs V ON V.Question=Q.ChildQuestion AND S.SKU=V.SKU " +
 			" AND V.Ref=@visit " +
-			" WHERE " + str + " AND ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs " +
+			" WHERE " + str + " ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs " +
 			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit)) AND Obligatoriness=1 " +
 			" AND (Answer IS NULL OR Answer='—' OR Answer='')");
 	queryQty.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
@@ -53,7 +53,7 @@ function GetSKUsFromQuesionnaires(search) {
 	
 	var searchString = "";
 	if (String.IsNullOrEmpty(search) == false)
-		searchString = " AND Contains(S.Description, '" + search + "') ";
+		searchString = " Contains(S.Description, '" + search + "') AND ";
 	
 	var q = new Query();
 	q.Text="SELECT DISTINCT S.SKU, S.Description " +
@@ -68,7 +68,7 @@ function GetSKUsFromQuesionnaires(search) {
 			" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref " +
 			" LEFT JOIN Document_Visit_SKUs VS ON VS.SKU=S.SKU AND VS.Question=Q.ChildQuestion AND VS.Ref=@visit " +
 			" WHERE D.Single=@single AND " + str + searchString +
-			" AND ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs " +
+			" ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs " +
 			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit)) " +
 			" GROUP BY S.SKU, S.Description ORDER BY S.Description"; 
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
@@ -90,7 +90,7 @@ function CreateCondition(list, field) {
 		notEmpty = true;
 	}
 	if (notEmpty){
-		str = field + " IN ( " + str  + ") ";
+		str = field + " IN ( " + str  + ") AND ";
 	}
 	
 	return str;
@@ -134,7 +134,7 @@ function GetChilds(sku) {
 			" LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Ref = @emptyRef AND A.Questionaire=D.Id " +
 			" AND A.Question=Q.ChildQuestion AND A.SKU=S.SKU AND A.AnswerDate>=SC.BeginAnswerPeriod " +
 			" AND (A.AnswerDate<=SC.EndAnswerPeriod OR A.AnswerDate='0001-01-01 00:00:00') " +
-			" WHERE D.Single=@single AND " + str + " AND ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs " +
+			" WHERE D.Single=@single AND " + str + " ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs " +
 			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND SKU=@sku)) " + 
 			" GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, Q.ParentQuestion, Answer " + 
 			" ORDER BY DocDate, QuestionOrder ";

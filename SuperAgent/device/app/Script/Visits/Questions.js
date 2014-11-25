@@ -36,7 +36,7 @@ function GetQuestionsByQuestionnaires(outlet) {
 	var queryCount = new Query("SELECT COUNT(Q.ChildQuestion) FROM Document_Questionnaire D " +
 		"JOIN Document_Questionnaire_Questions Q ON D.Id=Q.Ref " +
 		" LEFT JOIN Document_Visit_Questions V ON V.Question=Q.ChildQuestion AND V.Ref=@visit " +
-		" WHERE " + str + " AND ((Q.ParentQuestion=@emptyRef) " +
+		" WHERE " + str + " ((Q.ParentQuestion=@emptyRef) " +
 		" OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_Questions " +
 		" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit)) AND Obligatoriness=1 AND (Answer IS NULL OR Answer='—' OR Answer='') " +
 		" GROUP BY Q.ChildQuestion ");
@@ -62,7 +62,7 @@ function GetQuestionsByQuestionnaires(outlet) {
 			" LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Ref = @emptyRef AND A.Questionaire=D.Id " +
 			" AND A.Question=Q.ChildQuestion AND (A.SKU=@emptyRef OR A.SKU IS NULL) AND A.AnswerDate>=SC.BeginAnswerPeriod " +
 			" AND (A.AnswerDate<=SC.EndAnswerPeriod OR A.AnswerDate='0001-01-01 00:00:00') " +
-			" WHERE D.Single=@single AND " + str + " AND ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_Questions " +
+			" WHERE D.Single=@single AND " + str + " ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_Questions " +
 			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit)) " + 
 			" GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, Q.ParentQuestion, Answer " + 
 			" ORDER BY DocDate, QuestionOrder ");
@@ -91,7 +91,7 @@ function CreateCondition(list, field) {
 		notEmpty = true;
 	}
 	if (notEmpty){
-		str = field + " IN ( " + str  + ") ";
+		str = field + " IN ( " + str  + ") AND ";
 	}
 	
 	return str;

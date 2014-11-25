@@ -176,7 +176,7 @@ function FillQuestionnaires() {
 			" JOIN Document_Questionnaire_SKUQuestions Q ON VQ.Question=Q.ChildQuestion " +
 			" JOIN Document_Questionnaire_SKUs S ON Q.Ref=S.Ref AND S.SKU=VQ.SKU " +
 			" JOIN Document_Questionnaire D ON Q.Ref=D.Id " +
-			" WHERE VQ.Ref=@visit AND " + str + " ORDER BY A.SKU, Q.ChildQuestion ");
+			" WHERE VQ.Ref=@visit AND " + str + " ORDER BY SKU, ChildQuestion ");
 	
 	q.AddParameter("emptySKURef", DB.EmptyRef("Catalog_SKU"));
 	q.AddParameter("outlet", $.workflow.outlet);

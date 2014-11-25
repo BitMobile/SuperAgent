@@ -186,8 +186,6 @@ function FillQuestionnaires() {
 	var lastSKU;
 	var lastQuestion;
 	
-	Dialog.Debug(res.Count());
-	
 	while (res.Next()) {
 		if (NewQuestion(lastSKU, res.SKU, lastQuestion, res.Question)==false) 
 			var answerObj = res.AnswerId.GetObject();
@@ -210,7 +208,6 @@ function FillQuestionnaires() {
 			answerObj.AnswerDate = res.Answerdate;
 		}
 		answerObj.Questionnaire = res.Questionnaire;
-		Dialog.Debug(answerObj);
 		answerObj.Save();
 		if (res.Single==1){
 			var q2 = new Query("SELECT Id FROM Catalog_Outlet_AnsweredQuestions WHERE Questionnaire=@questionnaire " +

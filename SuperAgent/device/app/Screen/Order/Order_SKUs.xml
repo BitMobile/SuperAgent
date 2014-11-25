@@ -65,7 +65,10 @@
 					</c:HorizontalLayout>
 					<c:HorizontalLayout OnClickAction="$DoAction(SelectSKU, $item.Id, $item.Price)" CssClass="grid">
 						<c:VerticalLayout>
-							<c:TextView Text="$item.Description" CssClass="main_row"></c:TextView>
+							<c:DockLayout>
+								<c:TextView Text="1576 шт." CssClass="rec_order"/>
+								<c:TextView Text="$item.Description" CssClass="main_row"></c:TextView>
+							</c:DockLayout>							
 							<c:TextView Text="#price2# {$item.Price}  #stock#: {$item.CommonStock} #brand#: {$item.Brand}" CssClass="description_row"></c:TextView>
 						</c:VerticalLayout>
 						<c:Image />

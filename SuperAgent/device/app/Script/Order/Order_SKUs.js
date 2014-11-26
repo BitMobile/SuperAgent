@@ -13,6 +13,17 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 	var filterString = "";
 	filterString += AddFilter(filterString, "group_filter", "G.Id", " AND ");
 	filterString += AddFilter(filterString, "brand_filter", "CB.Id", " AND ");
+	
+	var groupFields = "";
+	var groupJoin = "";
+	var groupParentJoin = "";
+	var groupSort = "";
+	if (DoGroupping()){
+		groupFields = " G.Description AS GroupDescription, G.Id AS GroupId, G.Parent AS GroupParent, P.Description AS ParentDescription, ";
+		groupJoin = "JOIN Catalog_SKUGroup G ON G.Id = S.Owner ";
+		groupParentJoin = "LEFT JOIN Catalog_SKUGroup P ON G.Parent=P.Id ";
+		groupSort = " G.Description, "; 
+	}
 
 	var query = new Query();
 	
@@ -53,18 +64,19 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 		recOrderSort = " OrderRecOrder DESC, ";
 	}
 	
-	query.Text = "SELECT DISTINCT S.Id, S.Description, PL.Price, " + stockField + " G.Description AS GroupDescription, " +
-			"G.Id AS GroupId, G.Parent AS GroupParent, P.Description AS ParentDescription, CB.Description AS Brand " +
+	query.Text = "SELECT DISTINCT S.Id, S.Description, PL.Price, " + stockField + 
+			groupFields +
+			"CB.Description AS Brand " +
 			recOrderFields +
 			"FROM Catalog_SKU S " +
 			stockString + 
-			"JOIN Catalog_SKUGroup G ON G.Id = S.Owner " +			
+			groupJoin +			
 			"JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id " +
 			"JOIN Catalog_Brands CB ON CB.Id=S.Brand " +			
-			"LEFT JOIN Catalog_SKUGroup P ON G.Parent=P.Id " +
+			groupParentJoin +
 			recOrderStr +
 			" WHERE " + stockCondition + " PL.Ref = @Ref " + stockWhere + searchString + filterString + 
-			" ORDER BY " + recOrderSort + " G.Description, S.Description LIMIT 100";
+			" ORDER BY " + groupSort + recOrderSort + " S.Description LIMIT 100"; //G.Description, S.Description LIMIT 100";
 	query.AddParameter("Ref", priceList);	
 	return query.Execute();
 
@@ -188,15 +200,31 @@ function HideSwiped()
 		swipedRow.Index = 1;
 }
 
-function DoRecommend(recValue) {
-	
-	if (recValue==null)
-		recValue = parseInt(0);
+function DoGroupping() {
 
-	if ($.workflow.name=="Visit" && $.sessionConst.OrderCalc && parseInt(recValue)!=parseInt(0))
+	if ($.Exists("group_filter")){
+		if (parseInt($.group_filter.Count())!=parseInt(0))
+				return true;
+	}
+	return false;
+}
+
+function DoRecommend() {
+	
+//	if (recValue==null)
+//		recValue = parseInt(0);
+
+	if ($.workflow.name=="Visit" && $.sessionConst.OrderCalc) //&& parseInt(recValue)!=parseInt(0))
 		return true;
 	else
 		return false;
+}
+
+function ShowRecommendedQty(order, recOrder) {
+	if (order>0)
+		if (recOrder>0)
+			return true;
+	return false;
 }
 
 // --------------------------Filters------------------

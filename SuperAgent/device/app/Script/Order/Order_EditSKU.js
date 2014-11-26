@@ -39,7 +39,7 @@ function GetFeatures(sku) {
 	return query.Execute();
 }
 
-function CreateOrderItemIfNotExist(order, sku, orderitem, price, features) {
+function CreateOrderItemIfNotExist(order, sku, orderitem, price, features, recOrder) {
 
 	if (orderitem == null) {
 
@@ -56,6 +56,14 @@ function CreateOrderItemIfNotExist(order, sku, orderitem, price, features) {
 		if (r != null)
 			return r;
 		else {
+			if (recOrder!=null){
+				if (recOrder<0)
+					recOrder = 0;
+			}
+			else
+				recOrder = 0;
+				
+			
 			// getting a unit
 			var q = new Query("SELECT Pack, Multiplier FROM Catalog_SKU_Packing WHERE Ref=@ref AND LineNumber=1");
 			q.AddParameter("ref", sku);
@@ -69,6 +77,7 @@ function CreateOrderItemIfNotExist(order, sku, orderitem, price, features) {
 			p.Total = price * defaultUnit.Multiplier;
 			p.Units = defaultUnit.Pack;
 			p.Discount = 0;
+			p.Qty = recOrder;
 			p.Save();
 			return p.Id;
 		}

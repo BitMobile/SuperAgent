@@ -48,7 +48,7 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 		var stockField = "S.CommonStock AS CommonStock,";
 	
 	
-	var recOrderFields = "";
+	var recOrderFields = ", 0 AS RecOrder ";
 	var recOrderStr = "";
 	var recOrderSort = "";
 	if (DoRecommend('1')){

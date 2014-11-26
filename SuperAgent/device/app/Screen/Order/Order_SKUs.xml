@@ -66,10 +66,17 @@
 					<c:HorizontalLayout OnClickAction="$DoAction(SelectSKU, $item.Id, $item.Price)" CssClass="grid">
 						<c:VerticalLayout>
 							<c:DockLayout>
-								<c:VerticalLayout>
-									<c:TextView Text="1576 шт." CssClass="rec_order"/>
-									<c:TextView Text="#recommended#" CssClass="rec_comment"/>
-								</c:VerticalLayout>								
+								<s:If Test="$DoRecommend($item.RecOrder)">
+									<s:If Test="$item.RecOrder>0">
+										<c:VerticalLayout>
+											<c:TextView Text="{$item.RecOrder} {$item.RecUnit}" CssClass="rec_order" />
+											<c:TextView Text="#recommended#" CssClass="rec_comment" />
+										</c:VerticalLayout>
+									</s:If>
+									<s:Else>
+										<c:TextView Text="#recommended#" CssClass="single_rec" />
+									</s:Else>									
+								</s:If>															
 								<c:TextView Text="$item.Description" CssClass="main_row"></c:TextView>
 							</c:DockLayout>							
 							<c:TextView Text="#price2# {$item.Price}  #stock#: {$item.CommonStock} #brand#: {$item.Brand}" CssClass="description_row"></c:TextView>

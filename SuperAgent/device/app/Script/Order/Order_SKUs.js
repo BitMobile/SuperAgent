@@ -36,16 +36,35 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 	else
 		var stockField = "S.CommonStock AS CommonStock,";
 	
+	
+	var recOrderFields = "";
+	var recOrderStr = "";
+	var recOrderSort = "";
+	if (DoRecommend('1')){
+		recOrderFields = ", U.Description AS RecUnit " +
+								", CASE WHEN V.Answer IS NULL THEN MS.Qty ELSE (MS.Qty-V.Answer) END AS RecOrder " +
+								", CASE WHEN MS.Qty IS NULL THEN 0 ELSE CASE WHEN (MS.Qty-V.Answer)>0 OR (V.Answer IS NULL AND MS.Qty>0) THEN 2 ELSE 1 END END AS OrderRecOrder "
+		recOrderStr = "LEFT JOIN Catalog_AssortmentMatrix_SKUs MS ON S.Id=MS.SKU AND MS.Ref IN " +
+							"(SELECT Ref FROM Catalog_AssortmentMatrix_Outlets WHERE Outlet=@outlet) " + 
+							"LEFT JOIN Catalog_UnitsOfMeasure U ON MS.Unit=U.Id " + 
+							"LEFT JOIN Document_Visit_SKUs V ON MS.SKU=V.SKU AND V.Ref=@visit ";
+		query.AddParameter("outlet", $.workflow.outlet);
+		query.AddParameter("visit", $.workflow.visit);
+		recOrderSort = " OrderRecOrder DESC, ";
+	}
+	
 	query.Text = "SELECT DISTINCT S.Id, S.Description, PL.Price, " + stockField + " G.Description AS GroupDescription, " +
 			"G.Id AS GroupId, G.Parent AS GroupParent, P.Description AS ParentDescription, CB.Description AS Brand " +
+			recOrderFields +
 			"FROM Catalog_SKU S " +
 			stockString + 
 			"JOIN Catalog_SKUGroup G ON G.Id = S.Owner " +			
 			"JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id " +
 			"JOIN Catalog_Brands CB ON CB.Id=S.Brand " +			
 			"LEFT JOIN Catalog_SKUGroup P ON G.Parent=P.Id " +
+			recOrderStr +
 			" WHERE " + stockCondition + " PL.Ref = @Ref " + stockWhere + searchString + filterString + 
-			" ORDER BY G.Description, S.Description LIMIT 100";
+			" ORDER BY " + recOrderSort + " G.Description, S.Description LIMIT 100";
 	query.AddParameter("Ref", priceList);	
 	return query.Execute();
 
@@ -167,6 +186,17 @@ function HideSwiped()
 {
 	if(swipedRow != null)
 		swipedRow.Index = 1;
+}
+
+function DoRecommend(recValue) {
+	
+	if (recValue==null)
+		recValue = parseInt(0);
+
+	if ($.workflow.name=="Visit" && $.sessionConst.OrderCalc && parseInt(recValue)!=parseInt(0))
+		return true;
+	else
+		return false;
 }
 
 // --------------------------Filters------------------

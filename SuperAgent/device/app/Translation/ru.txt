@@ -223,6 +223,6 @@ position		Должность
 visitdate		Дата визита
 alreadyOrdered	уже в заказе
 repeat		Повторить
-nonregular	Единоразровые
+nonregular	Единоразовые
 regular		Регулярные
 requiredLeft	Обязательных вопросов осталось:

@@ -105,7 +105,8 @@
 							<c:TextView Text="{$sku.Answered} #of# {$sku.Total}" CssClass="description_row" />
 							<c:TextView Text="$sku.Description" CssClass="main_row"></c:TextView>
 						</c:VerticalLayout>
-						<s:If Test="$sku.Obligatoriness=='1'"><c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout></s:If>
+						<s:If Test="$sku.Obligatoriness=='2'"><c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout></s:If>
+						<s:If Test="$sku.Obligatoriness=='1'"><c:HorizontalLayout CssClass="answered_side_wh"></c:HorizontalLayout></s:If>
 					</c:HorizontalLayout>
 					<c:HorizontalLine />
 					<s:If Test="$ShowChilds($index)">
@@ -122,9 +123,13 @@
 										<c:TextView Id="control{$indexCh}" Text="$child.Answer" CssClass="answer_main_row"></c:TextView>
 									</s:Else>
 								</c:VerticalLayout>
-								<s:If Test="$child.Obligatoriness">
-									<c:HorizontalLayout CssClass="required_side_gr"></c:HorizontalLayout>
+								<s:If Test="$ObligatedAnswered($child.Answer, $child.Obligatoriness)">
+									<c:HorizontalLayout CssClass="answered_side_gr"></c:HorizontalLayout>
 								</s:If>
+								<s:Else>
+									<s:If Test="$child.Obligatoriness"><c:HorizontalLayout CssClass="required_side_gr"></c:HorizontalLayout>
+								</s:If>
+								</s:Else>								
 							</c:HorizontalLayout>
 							<c:HorizontalLine />
 					

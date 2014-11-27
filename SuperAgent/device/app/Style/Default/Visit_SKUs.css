@@ -208,12 +208,27 @@
 	margin-left: 7.5%;	
 }
 
+.answered_side_wh{
+	height: 100%;
+	width: 2.5%;
+	background-image: url(answered_side_wh.png);
+	margin-left: 7.5%;	
+}
+
 .required_side_gr{
 	height: 100%;
 	width: 2.5%;
 	background-image: url(required_side_gr.png);
 	margin-left: 7.5%;	
 }
+
+.answered_side_gr{
+	height: 100%;
+	width: 2.5%;
+	background-image: url(answered_side_gr.png);
+	margin-left: 7.5%;	
+}
+
 
 .search_filter{
 	height: 15.4sp;

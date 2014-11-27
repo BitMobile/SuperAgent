@@ -88,7 +88,12 @@
 							<c:TextView Id="control{$index}" Text="$question.Answer" CssClass="answer_main_row"></c:TextView>
 						</s:Else>														
 					</c:VerticalLayout>
-					<s:If Test="$question.Obligatoriness=='1'"><c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout></s:If>						
+					<s:If Test="$ObligatedAnswered($question.Answer, $question.Obligatoriness)">
+						<c:HorizontalLayout CssClass="answered_side_wh"></c:HorizontalLayout>
+					</s:If>
+					<s:Else>
+						<s:If Test="$question.Obligatoriness=='1'"><c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout></s:If>
+					</s:Else>						
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
 

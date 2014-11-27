@@ -57,7 +57,8 @@ function GetSKUsFromQuesionnaires(search) {
 	
 	var q = new Query();
 	q.Text="SELECT DISTINCT S.SKU, S.Description " +
-			" , MAX(CAST(Q.Obligatoriness as int)) as Obligatoriness " +
+			//" , MAX(CAST(Q.Obligatoriness as int)) as Obligatoriness " +
+			" , MAX(CASE WHEN Obligatoriness=1 THEN CASE WHEN (VS.Answer!='—' AND VS.Answer!='' AND VS.Answer IS NOT NULL) THEN 1 ELSE 2 END ELSE 0 END) AS Obligatoriness " +
 			" , (SELECT COUNT(DISTINCT Q.ChildDescription) FROM Document_Questionnaire D " +
 				" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref" +
 				" WHERE D.Single=@single AND Q.ParentQuestion=@emptyRef " +
@@ -256,6 +257,14 @@ function SaveAtVisit(arr, args) {
 		question.Save();
 		control.Text = Translate["#snapshotAttached#"];
 	}
+}
+
+function ObligatedAnswered(answer, obligatoriness) {
+	if (parseInt(obligatoriness)==parseInt(1)){
+		if (String.IsNullOrEmpty(answer)==false & answer!="—")
+			return true;
+	}
+	return false;	
 }
 
 function GetActionAndBack() {

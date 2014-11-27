@@ -229,3 +229,11 @@ function GetActionAndBack() {
 	} else
 		Workflow.Back();
 }
+
+function ObligatedAnswered(answer, obligatoriness) {
+	if (parseInt(obligatoriness)==parseInt(1)){
+		if (String.IsNullOrEmpty(answer)==false & answer!="—")
+			return true;
+	}
+	return false;	
+}

@@ -28,7 +28,6 @@ function OnWorkflowStart(name) {
 	if (name == "Visit") {
 		
 			var questionnaires = GetQuestionnairesForOutlet($.outlet);
-			
 			$.workflow.Add("questionnaires", questionnaires);
 
 			if (parseInt(GetTasksCount()) != parseInt(0))
@@ -232,7 +231,8 @@ function GetQuestionnairesForOutlet(outlet) {
 				listChecked = true;
 			}
 			
-			if (selectors.ComparisonType=="In list" || selectors.ComparisonType=="В списке"){								
+			//if (selectors.ComparisonType=="In list" || selectors.ComparisonType=="В списке"){								
+			if ((selectors.ComparisonType).ToString()==(DB.Current.Constant.ComparisonType.InList).ToString()){
 				listParameter.Add(CheckSelector(outlet, selectors.Selector, "Equal", selectors.Value, selectors.AdditionalParameter)); //real check is later, now - only an array
 				listChecked = false;
 				currentSelector = selectors.Selector;			//stuff for
@@ -345,8 +345,8 @@ function CheckSelector(outlet, selector, compType, value, additionalParameter) {
 			return Compare(compType, false);
 	}
 	
-	if (selector==null){
-		return false;
+	if (selector=="Catalog_Positions"){
+		return true;
 	}	
 
 }
@@ -361,7 +361,7 @@ function CheckListSelector(list) {
 }
 
 function Compare(compType, equal) {
-	if (compType=="Not equal" || compType=="Не равно"){
+	if ((compType).ToString()==(DB.Current.Constant.ComparisonType.NotEqual).ToString()){
 		if (equal)
 			return false;
 		else

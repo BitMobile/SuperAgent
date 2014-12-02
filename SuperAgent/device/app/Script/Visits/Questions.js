@@ -2,6 +2,10 @@ var questionsAtScreen;
 var regularAnswers;
 var answerText;
 var obligateredLeft;
+var regular_answ;
+var regular_total;
+var single_answ;
+var single_total;
 
 //
 // -------------------------------Header handlers-------------------------
@@ -48,10 +52,19 @@ function GetQuestionsByQuestionnaires(outlet) {
 	var single = 1;
 	if (regularAnswers)	
 		single = 0;
+	var res = GetQuestions(str, single);
+	
+	Variables.Add("workflow.questions_qty", res.Count());
+	SetIndiactors(res, single, str);
+	
+	return res;
+}
+
+function GetQuestions(str, single) {
 	var query = new Query("SELECT MIN(D.Date) AS DocDate, Q.ChildQuestion AS Question, Q.ChildDescription AS Description " +
 			", Q.ChildType AS AnswerType, MAX(CAST(Q.Obligatoriness AS int)) AS Obligatoriness " +
 			", (SELECT Qq.QuestionOrder FROM Document_Questionnaire Dd  " +
-			" JOIN Document_Questionnaire_Questions Qq ON Dd.Id=Qq.Ref AND Q.ChildQuestion=Qq.ChildQuestion ORDER BY Dd.Date LIMIT 1) AS QuestionOrder" +
+			" JOIN Document_Questionnaire_Questions Qq ON Dd.Id=Qq.Ref AND Q.ChildQuestion=Qq.ChildQuestion AND Dd.Id=D.Id ORDER BY Dd.Date LIMIT 1) AS QuestionOrder" +
 			", CASE WHEN V.Answer IS NULL OR V.Answer='' THEN CASE WHEN A.Answer IS NOT NULL THEN A.Answer ELSE '—' END ELSE V.Answer END AS Answer " +
 			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal OR Q.ChildType=@string THEN 1 ELSE NULL END AS IsInputField " +
 			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal THEN 'numeric' ELSE 'auto' END AS KeyboardType " + 
@@ -64,7 +77,7 @@ function GetQuestionsByQuestionnaires(outlet) {
 			" AND (A.AnswerDate<=SC.EndAnswerPeriod OR A.AnswerDate='0001-01-01 00:00:00') " +
 			" WHERE D.Single=@single AND " + str + " ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_Questions " +
 			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit)) " + 
-			" GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, Q.ParentQuestion, Answer " + 
+			" GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, Answer " + 
 			" ORDER BY DocDate, QuestionOrder ");
 	query.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	query.AddParameter("integer", DB.Current.Constant.DataType.Integer);
@@ -73,10 +86,7 @@ function GetQuestionsByQuestionnaires(outlet) {
 	query.AddParameter("visit", $.workflow.visit);
 	query.AddParameter("single", single);	
 		
-	var res = query.Execute().Unload();
-	Variables.Add("workflow.questions_qty", res.Count());
-	
-	return res;
+	return query.Execute().Unload();
 }
 
 function CreateCondition(list, field) {
@@ -95,6 +105,47 @@ function CreateCondition(list, field) {
 	}
 	
 	return str;
+}
+
+function SetIndiactors(res, single, str) {
+	if (parseInt(single)==parseInt(0)){
+		regular_total = res.Count();
+		var s = GetQuestions(str, 1);
+		single_total = s.Count();
+	}
+	else{
+		if (parseInt(single)==parseInt(1)){
+			single_total = res.Count();	
+			var r = GetQuestions(str, 0);
+			regular_total = r.Count();
+		}
+	}
+	regular_answ = GetAnsweredQty(0, str);
+	single_answ = GetAnsweredQty(1, str);
+	//var q2 = new Query("SELECT COUNT(Answer) FROM Document_Visit_Questions WHERE RTRIM(Answer)!='' AND Answer IS NOT NULL");
+	//single_answ = q2.ExecuteScalar();
+}
+
+function GetAnsweredQty(single, str) {
+	var field = " V.Answer, Q.ChildDescription ";
+	var leftJoin = "";
+	var q = new Query; 
+	if (parseInt(single)==parseInt(1)){
+		field = " (CASE WHEN A.Answer IS NOT NULL THEN A.Answer ELSE V.Answer END) AS Answer, Q.ChildDescription";
+		leftJoin = " LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Ref = @visit AND A.Questionaire=D.Id  AND A.Question=Q.ChildQuestion AND A.SKU IS NULL AND A.AnswerDate>=SC.BeginAnswerPeriod  AND (A.AnswerDate<=SC.EndAnswerPeriod OR A.AnswerDate='0001-01-01 00:00:00') ";
+		q.AddParameter("visit", $.workflow.visit);
+	}
+	q.Text = "SELECT DISTINCT " + field + " FROM Document_Questionnaire D " +
+			" JOIN Document_Questionnaire_Questions Q ON D.Id=Q.Ref " +
+			" JOIN Document_Questionnaire_Schedule SC ON SC.Ref=D.Id AND date(SC.Date)=date('now','start of day') " +
+			" JOIN Document_Visit_Questions V ON V.Question=Q.ChildQuestion AND V.Ref=@visit AND RTRIM(V.Answer)!='' AND V.Answer IS NOT NULL" + leftJoin +
+			" WHERE D.Single=@single AND " + str +
+			" (Q.ParentQuestion=@emptyRef OR Q.ParentQuestion IN " +
+			" (SELECT Question FROM Document_Visit_Questions  WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit)) ";
+	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
+	q.AddParameter("visit", $.workflow.visit);
+	q.AddParameter("single", single);
+	return q.ExecuteCount();
 }
 
 function RemovePlaceHolder(control) {

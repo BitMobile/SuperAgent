@@ -5,8 +5,6 @@
 	<s:Push Id="outlet" Value="$workflow.outlet"></s:Push>
 	<s:Push Id="visit" Value="$workflow.visit"></s:Push>
 	<s:Push Id="SKUs" Value="$GetSKUsFromQuesionnaires($search)"></s:Push>
-	<s:Push Id="workflow.sku_answ" Value="$ToInteger(0)"></s:Push>
-	<s:Push Id="workflow.sku_qty" Value="$ToInteger(0)"></s:Push>
 
 	<c:VerticalLayout>
 
@@ -35,24 +33,24 @@
 			<s:If Test="@regularAnswers">
 				<c:HorizontalLayout CssClass="mode_left_button_on">
 					<c:HorizontalLayout Id="regular" CssClass="select_zone" OnClick="$ChangeListAndRefresh(1)">
-						<c:TextView Text="#regular#"></c:TextView>
+						<c:TextView Text="#regular#({@regular_answ} #of# {@regular_total})"></c:TextView>
 					</c:HorizontalLayout>
 				</c:HorizontalLayout>
 				<c:HorizontalLayout CssClass="mode_right_button_off">
 					<c:HorizontalLayout Id="nonregular" CssClass="select_zone" OnClick="$ChangeListAndRefresh(0)">
-						<c:TextView Text="#nonregular#"></c:TextView>
+						<c:TextView Text="#nonregular#({@single_answ} #of# {@single_total})"></c:TextView>
 					</c:HorizontalLayout>
 				</c:HorizontalLayout>
 			</s:If>
 			<s:Else>
 				<c:HorizontalLayout CssClass="mode_left_button_off">
 					<c:HorizontalLayout Id="regular" CssClass="select_zone" OnClick="$ChangeListAndRefresh(1)">
-						<c:TextView Text="#regular#"></c:TextView>
+						<c:TextView Text="#regular#({@regular_answ} #of# {@regular_total})"></c:TextView>
 					</c:HorizontalLayout>
 				</c:HorizontalLayout>
 				<c:HorizontalLayout CssClass="mode_right_button_on">
 					<c:HorizontalLayout Id="nonregular" CssClass="select_zone" OnClick="$ChangeListAndRefresh(0)">
-						<c:TextView Text="#nonregular#"></c:TextView>
+						<c:TextView Text="#nonregular#({@single_answ} #of# {@single_total})"></c:TextView>
 					</c:HorizontalLayout>
 				</c:HorizontalLayout>
 			</s:Else>

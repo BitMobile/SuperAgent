@@ -2,7 +2,10 @@
 var regularAnswers;
 var parentId;
 var obligateredLeft;
-
+var regular_answ;
+var regular_total;
+var single_answ;
+var single_total;
 
 //
 //-------------------------------Header handlers-------------------------
@@ -57,13 +60,13 @@ function GetSKUsFromQuesionnaires(search) {
 	
 	var q = new Query();
 	q.Text="SELECT DISTINCT S.SKU, S.Description " +
-			//" , MAX(CAST(Q.Obligatoriness as int)) as Obligatoriness " +
 			" , MAX(CASE WHEN Obligatoriness=1 THEN CASE WHEN (VS.Answer!='—' AND VS.Answer!='' AND VS.Answer IS NOT NULL) THEN 1 ELSE 2 END ELSE 0 END) AS Obligatoriness " +
 			" , (SELECT COUNT(DISTINCT Q.ChildDescription) FROM Document_Questionnaire D " +
-				" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref" +
-				" WHERE D.Single=@single AND Q.ParentQuestion=@emptyRef " +
+				" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref " +
+				" JOIN Document_Questionnaire_SKUs Ss ON Ss.Ref=D.Id " +
+				" WHERE D.Single=@single AND Ss.SKU=S.SKU AND Q.ParentQuestion=@emptyRef " +
 				" OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs " +
-				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND SKU=S.SKU) AND Single=@single) AS Total " +
+				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND SKU=S.SKU)) AS Total " +
 			" , (SELECT COUNT(DISTINCT Question) FROM Document_Visit_SKUs WHERE Ref=@visit AND SKU=S.SKU) AS Answered " +				
 			" FROM Document_Questionnaire D JOIN Document_Questionnaire_SKUs S ON D.Id=S.Ref " +
 			" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref " +

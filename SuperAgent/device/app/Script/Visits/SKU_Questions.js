@@ -60,6 +60,15 @@ function GetSKUsFromQuesionnaires(search) {
 	if (String.IsNullOrEmpty(search) == false)
 		searchString = " Contains(S.Description, '" + search + "') AND ";
 	
+	var filterString = "";
+	var filterJoin = "";
+	filterString += AddFilter(filterString, "group_filter", "GR.Id", " AND ");
+	filterString += AddFilter(filterString, "brand_filter", "BR.Id", " AND ");
+	if (String.IsNullOrEmpty(filterString)==false)
+		filterJoin = " JOIN Catalog_SKU SK ON SK.Id=S.SKU " +
+		" JOIN Catalog_Brands BR ON BR.Id=SK.Brand " +
+		" JOIN Catalog_SKUGroup GR ON SK.Owner=GR.Id ";
+	
 	var q = new Query();
 	q.Text="SELECT DISTINCT S.SKU, S.Description " +
 			" , MAX(CASE WHEN Obligatoriness=1 THEN CASE WHEN (VS.Answer!='—' AND VS.Answer!='' AND VS.Answer IS NOT NULL) THEN 1 ELSE 2 END ELSE 0 END) AS Obligatoriness " +
@@ -77,9 +86,9 @@ function GetSKUsFromQuesionnaires(search) {
 				" OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs " +
 				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND SKU=S.SKU)) AND V.Ref=@visit ) AS Answered " +				
 			" FROM Document_Questionnaire D JOIN Document_Questionnaire_SKUs S ON D.Id=S.Ref " +
-			" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref " +
+			" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref " + filterJoin +
 			" LEFT JOIN Document_Visit_SKUs VS ON VS.SKU=S.SKU AND VS.Question=Q.ChildQuestion AND VS.Ref=@visit " +
-			" WHERE D.Single=@single AND " + str + searchString +
+			" WHERE D.Single=@single AND " + str + searchString + filterString +
 			" ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs " +
 			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit)) " +
 			" GROUP BY S.SKU, S.Description ORDER BY S.Description"; 
@@ -135,6 +144,23 @@ function CalculateTotal(str, single, answer) {
 	q.AddParameter("visit", $.workflow.visit);
 	q.AddParameter("single", single);
 	return q.ExecuteCount();
+}
+
+function AddFilter(filterString, filterName, condition, connector) {
+	if (Variables.Exists(filterName)) {
+		if (parseInt(Variables[filterName].Count()) != parseInt(0)) {
+			var gr = Variables[filterName];
+			filterString = condition + " IN (";
+			for (var i = 0; i < gr.Count(); i++) {
+				filterString += "'" + (gr[i]).ToString() + "'";
+				if (i != (gr.Count() - 1))
+					filterString += ", ";
+				else
+					filterString += ")" + connector;
+			}
+		}
+	}
+	return filterString;
 }
 
 function ForwardIsntAllowed() {

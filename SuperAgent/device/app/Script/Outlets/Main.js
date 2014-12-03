@@ -275,18 +275,21 @@ function DiscardNewOutlet(outlet) {
 
 function SaveNewOutlet(outlet) {
 
-	if ($.outletName.Text.Trim() != "" && $.outletAddress.Text.Trim() != "" && $.outletClass.Text.Trim() != "" && $.outletType.Text.Trim() != "" && $.outletDistr.Text.Trim() != "") {
+	outlet = outlet.GetObject();
+	
+	if (outlet.Description.Trim() != "" && outlet.Address.Trim() != "" && outlet.Class!=DB.EmptyRef("Catalog_OutletClass") 
+			&& outlet.Type!=DB.EmptyRef("Catalog_OutletType") && outlet.Distributor!=DB.EmptyRef("Catalog_Distributor")) {
 		var q = new Query("SELECT Id FROM Catalog_Territory WHERE SR = @userRef LIMIT 1");
 		q.AddParameter("userRef", $.common.UserRef);
 		var territory = q.ExecuteScalar();
 
 		var to = DB.Create("Catalog.Territory_Outlets");
 		to.Ref = territory;
-		to.Outlet = outlet;
+		to.Outlet = outlet.Id;
 		to.Save();
 
-		outlet.GetObject().Save();
-		Variables.AddGlobal("outlet", outlet);
+		outlet.Save();
+		Variables.AddGlobal("outlet", outlet.Id);
 
 		DoAction("Open");
 	} else {

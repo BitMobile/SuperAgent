@@ -41,6 +41,8 @@ function GetSKUsFromQuesionnaires(search) {
 	if (regularAnswers)	
 		single = 0;
 	
+	SetIndicators(str, single);
+	
 	var queryQty = new Query( "SELECT DISTINCT Q.ChildQuestion, S.Description " +
 			" FROM Document_Questionnaire D " +
 			" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref " +
@@ -61,13 +63,19 @@ function GetSKUsFromQuesionnaires(search) {
 	var q = new Query();
 	q.Text="SELECT DISTINCT S.SKU, S.Description " +
 			" , MAX(CASE WHEN Obligatoriness=1 THEN CASE WHEN (VS.Answer!='—' AND VS.Answer!='' AND VS.Answer IS NOT NULL) THEN 1 ELSE 2 END ELSE 0 END) AS Obligatoriness " +
-			" , (SELECT COUNT(DISTINCT Q.ChildDescription) FROM Document_Questionnaire D " +
-				" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref " +
+			" , (SELECT COUNT(DISTINCT Q.ChildQuestion) FROM Document_Questionnaire D " +
+				" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref" +
 				" JOIN Document_Questionnaire_SKUs Ss ON Ss.Ref=D.Id " +
-				" WHERE D.Single=@single AND Ss.SKU=S.SKU AND Q.ParentQuestion=@emptyRef " +
+				" WHERE D.Single=@single AND Ss.SKU=S.SKU AND (Q.ParentQuestion=@emptyRef " +
 				" OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs " +
-				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND SKU=S.SKU)) AS Total " +
-			" , (SELECT COUNT(DISTINCT Question) FROM Document_Visit_SKUs WHERE Ref=@visit AND SKU=S.SKU) AS Answered " +				
+				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND SKU=S.SKU))) AS Total " +
+			" , (SELECT COUNT(DISTINCT Q.ChildQuestion) FROM Document_Questionnaire D " +
+				" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref" +
+				" JOIN Document_Questionnaire_SKUs Ss ON Ss.Ref=D.Id " +
+				" JOIN Document_Visit_SKUs V ON Ss.SKU=V.SKU AND Q.ChildQuestion=V.Question " +
+				" WHERE D.Single=@single AND Ss.SKU=S.SKU AND (Q.ParentQuestion=@emptyRef " +
+				" OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs " +
+				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND SKU=S.SKU)) AND V.Ref=@visit ) AS Answered " +				
 			" FROM Document_Questionnaire D JOIN Document_Questionnaire_SKUs S ON D.Id=S.Ref " +
 			" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref " +
 			" LEFT JOIN Document_Visit_SKUs VS ON VS.SKU=S.SKU AND VS.Question=Q.ChildQuestion AND VS.Ref=@visit " +
@@ -98,6 +106,35 @@ function CreateCondition(list, field) {
 	}
 	
 	return str;
+}
+
+function SetIndicators(str) {
+	regular_total = CalculateTotal(str, '0', false);
+	single_total = CalculateTotal(str, '1', false);		
+	regular_answ = CalculateTotal(str, '0', true);
+	single_answ = CalculateTotal(str, '1', true);
+}
+
+function CalculateTotal(str, single, answer) {
+	var join="";
+	var cond = "";
+	if (answer){
+		join = " JOIN Document_Visit_SKUs V ON S.SKU=V.SKU AND Q.ChildQuestion=V.Question ";
+		cond = " AND V.Ref=@visit ";
+	}
+	
+	var q = new Query("SELECT DISTINCT S.SKU, Q.ChildQuestion " +
+	" FROM Document_Questionnaire D" +
+	" JOIN Document_Questionnaire_SKUs S ON D.Id=S.Ref" +
+	" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref" +
+	join +
+	" WHERE " + str + " D.Single = @single " +
+	" AND (Q.ParentQuestion=@emptyRef OR Q.ParentQuestion IN " +
+		"(SELECT Question FROM Document_Visit_SKUs WHERE (Answer='Yes' OR Answer='Да') AND SKU=S.SKU AND Ref=@visit))" + cond);	
+	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
+	q.AddParameter("visit", $.workflow.visit);
+	q.AddParameter("single", single);
+	return q.ExecuteCount();
 }
 
 function ForwardIsntAllowed() {

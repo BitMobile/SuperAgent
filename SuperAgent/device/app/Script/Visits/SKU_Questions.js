@@ -233,7 +233,10 @@ function RefreshScreen(control, search) {
 // ------------------------SKU----------------------
 
 function CreateItemAndShow(control, sku, index) {
-	parentId = "p" + index;
+	if (parentId == ("p"+index))
+		parentId = null;
+	else
+		parentId = "p" + index;
 	Workflow.Refresh([]);
 }
 

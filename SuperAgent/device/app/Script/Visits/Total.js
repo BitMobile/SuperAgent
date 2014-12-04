@@ -83,8 +83,9 @@ function CountAnswers(visitId, skuAnsw) {
 }
 
 function CountDoneTasks(visit) {
-    var query = new Query("SELECT Id FROM Document_Visit_Task WHERE Ref=@ref");
+    var query = new Query("SELECT Id FROM Document_Visit_Task WHERE Ref=@ref AND Result=@result");
     query.AddParameter("ref", visit);
+    query.AddParameter("result", true);
     return query.ExecuteCount();
 }
 

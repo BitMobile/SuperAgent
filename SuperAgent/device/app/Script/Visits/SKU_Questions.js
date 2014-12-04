@@ -305,6 +305,15 @@ function GoToQuestionAction(control, answerType, question, sku, editControl) {
 function CheckEmtySKUAndForward(outlet, visit) {
 	var p = [ outlet, visit ];
 	parentId = null;
+	
+	var q = $.workflow.questions_qty + regular_total + single_total;
+	$.workflow.Remove("questions_qty");
+	$.workflow.Add("questions_qty", q);
+	
+	var a = $.workflow.questions_answ + regular_answ + single_answ;
+	$.workflow.Remove("questions_answ");
+	$.workflow.Add("questions_answ", a);
+	
 	Workflow.Forward(p);
 }
 

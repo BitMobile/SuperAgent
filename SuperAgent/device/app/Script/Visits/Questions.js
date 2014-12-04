@@ -54,7 +54,6 @@ function GetQuestionsByQuestionnaires(outlet) {
 		single = 0;
 	var res = GetQuestions(str, single);
 	
-	Variables.Add("workflow.questions_qty", res.Count());
 	SetIndiactors(res, single, str);
 	
 	return res;
@@ -122,8 +121,8 @@ function SetIndiactors(res, single, str) {
 	}
 	regular_answ = GetAnsweredQty(0, str);
 	single_answ = GetAnsweredQty(1, str);
-	//var q2 = new Query("SELECT COUNT(Answer) FROM Document_Visit_Questions WHERE RTRIM(Answer)!='' AND Answer IS NOT NULL");
-	//single_answ = q2.ExecuteScalar();
+	Variables.Add("workflow.questions_qty", (regular_total + single_total));
+	Variables.Add("workflow.questions_answ", (regular_answ + single_answ));
 }
 
 function GetAnsweredQty(single, str) {

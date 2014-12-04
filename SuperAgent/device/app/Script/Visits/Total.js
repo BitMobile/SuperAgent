@@ -184,14 +184,14 @@ function FillQuestionnaires() {
 	q.AddParameter("visit", $.workflow.visit);
 	var res = q.Execute().Unload();
 	
+	
 	var lastSKU;
 	var lastQuestion;
 	
 	while (res.Next()) {
-		if (NewQuestion(lastSKU, res.SKU, lastQuestion, res.Question)==false) 
+		if (NewQuestion(lastSKU, res.SKU, lastQuestion, res.Question)) 
 			var answerObj = res.AnswerId.GetObject();
-		else{
-			
+		else{			
 			var sku = res.SKU;
 			if (sku==null)
 				sku = DB.EmptyRef("Catalog_SKU");
@@ -217,8 +217,9 @@ function FillQuestionnaires() {
 			q2.AddParameter("outlet", $.workflow.outlet);
 			q2.AddParameter("sku", res.SKU);
 			
-			if (res.OutletAnswerId==null || NewQuestion(lastSKU, res.SKU, lastQuestion, res.Question)){
-				var outletAnswer = DB.Create("Catalog.Outlet_AnsweredQuestions");
+			var outletAnswer;
+			if (res.OutletAnswerId==null || NewQuestion(lastSKU, res.SKU, lastQuestion, res.Question)==false){
+				outletAnswer = DB.Create("Catalog.Outlet_AnsweredQuestions");
 				outletAnswer.Ref = $.workflow.outlet;
 				outletAnswer.Questionaire = res.Questionnaire;
 				outletAnswer.Question = res.Question;
@@ -226,7 +227,7 @@ function FillQuestionnaires() {
 					outletAnswer.SKU = res.SKU;
 			}
 			else
-				var outletAnswer = res.OutletAnswerId.GetObject();
+				outletAnswer = res.OutletAnswerId.GetObject();
 			outletAnswer.Answer = res.Answer;
 			outletAnswer.AnswerDate = res.AnswerDate;
 			outletAnswer.Save();			
@@ -241,10 +242,20 @@ function FillQuestionnaires() {
 function NewQuestion(lastSKU, currSKU, lastQuestion, currQuestion) {
 	if (lastSKU==null)
 		lastSKU = DB.EmptyRef("Catalog_SKU");
-	if (lastSKU==DB.EmptyRef("Catalog_SKU") && lastQuestion!=currQuestion)
-		return true;
-	if (lastSKU!=currSKU || lastQuestion!=currQuestion)
-		return true;
+	if (lastQuestion==null)
+		lastQuestion = DB.EmptyRef("Catalog_Question");
+//	if (lastSKU==DB.EmptyRef("Catalog_SKU") && lastQuestion!=currQuestion)
+//		return true;
+//	if (lastSKU!=currSKU || lastQuestion!=currQuestion)
+//		return true;
+	if (lastSKU.ToString()==DB.EmptyRef("Catalog_SKU").ToString()){
+		if (lastQuestion.ToString()!=currQuestion.ToString())
+			return true;
+	}
+	else{
+		if (lastQuestion.ToString()!=currQuestion.ToString() || lastSKU.ToString()!=currSKU.ToString())
+			return true;
+	}
 	return false;
 }
 

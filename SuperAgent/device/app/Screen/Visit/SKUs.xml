@@ -137,6 +137,8 @@
 				</s:Iterator>
 	
 			</c:ScrollView>
+			
+			<!-- <s:Push Id="dummy" Value="$SetScrollIndex()"/>  -->
 
 		</c:SwipeVerticalLayout>
 

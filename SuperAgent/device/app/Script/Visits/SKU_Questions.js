@@ -6,6 +6,7 @@ var regular_answ;
 var regular_total;
 var single_answ;
 var single_total;
+var scrollIndex;
 
 //
 //-------------------------------Header handlers-------------------------
@@ -27,6 +28,13 @@ function ChangeListAndRefresh(control, param) {
 	regularAnswers	= ConvertToBoolean1(param);	
 	parentId = null;
 	Workflow.Refresh([]);
+}
+
+function SetScrollIndex() {
+	if (String.IsNullOrEmpty(scrollIndex))
+		scrollIndex = parseInt(0);
+	var s = parseInt(scrollIndex) + parseInt(1);
+	$.grScrollView.Index = s;
 }
 
 //
@@ -237,6 +245,9 @@ function CreateItemAndShow(control, sku, index) {
 		parentId = null;
 	else
 		parentId = "p" + index;
+	
+	scrollIndex = index;
+	
 	Workflow.Refresh([]);
 }
 

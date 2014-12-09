@@ -7,6 +7,7 @@ var regular_total;
 var single_answ;
 var single_total;
 var scrollIndex;
+var setScroll;
 
 //
 //-------------------------------Header handlers-------------------------
@@ -15,8 +16,17 @@ var scrollIndex;
 
 function OnLoading(){
 	skuOnScreen = null;
-	obligateredLeft = parseInt(0);
+	obligateredLeft = parseInt(0);	
 	SetListType();
+	if (String.IsNullOrEmpty(setScroll))
+		setScroll = true;
+	if ($.param2==true) //works only in case of Forward from Filters 
+		ClearIndex();
+}
+
+function OnLoad() {
+	if (setScroll)
+		SetScrollIndex();
 }
 
 function SetListType(){
@@ -31,10 +41,14 @@ function ChangeListAndRefresh(control, param) {
 }
 
 function SetScrollIndex() {
-	if (String.IsNullOrEmpty(scrollIndex))
-		scrollIndex = parseInt(0);
-	var s = parseInt(scrollIndex) + parseInt(1);
-	$.grScrollView.Index = s;
+	
+	if (String.IsNullOrEmpty(scrollIndex)){
+		$.grScrollView.Index = parseInt(4);
+	}
+	else{
+		var s = (parseInt(scrollIndex) * parseInt(2)) + parseInt(6);
+		$.grScrollView.Index = s;
+	}
 }
 
 //
@@ -241,12 +255,15 @@ function RefreshScreen(control, search) {
 // ------------------------SKU----------------------
 
 function CreateItemAndShow(control, sku, index) {
-	if (parentId == ("p"+index))
+	if (parentId == ("p"+index)){
 		parentId = null;
+		scrollIndex = null;
+	}
 	else
 		parentId = "p" + index;
-	
+		
 	scrollIndex = index;
+	setScroll = true;
 	
 	Workflow.Refresh([]);
 }
@@ -273,6 +290,8 @@ function CreateVisitSKUValueIfNotExists(control, sku, question) {
 	skuValue.Answer = control.Text;
 	skuValue.AnswerDate = DateTime.Now;
 	skuValue.Save();
+	
+	setScroll = false;
 	
 	return skuValue.Id;
 }
@@ -310,6 +329,8 @@ function GoToQuestionAction(control, answerType, question, sku, editControl) {
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.Boolean).ToString()) {
 		BooleanDialogSelect(skuValue, "Answer", editControl);
 	}
+	
+	setScroll = false;
 }
 
 
@@ -364,6 +385,17 @@ function GetActionAndBack() {
 			Workflow.BackTo("Visit_Tasks");
 	} else
 		Workflow.BackTo("Questions");
+}
+
+function DoSearch(searcText) {
+	ClearIndex();
+	Workflow.Refresh([searcText]);
+}
+
+function ClearIndex() {
+	parentId =null;
+	scrollIndex = null;
+	setScroll = null;
 }
 
 //------------------------------internal-----------------------------------

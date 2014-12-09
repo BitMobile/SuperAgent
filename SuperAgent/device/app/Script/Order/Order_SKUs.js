@@ -191,7 +191,7 @@ function CheckFilterAndForward() {
 	CheckFilter("group_filter");
 	CheckFilter("brand_filter");
 
-	Workflow.Forward([]);
+	Workflow.Forward([null, true]);
 }
 
 function CheckFilter(filterName) {

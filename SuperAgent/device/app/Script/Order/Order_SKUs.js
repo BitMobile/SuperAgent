@@ -51,16 +51,22 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 	var recOrderFields = ", 0 AS RecOrder ";
 	var recOrderStr = "";
 	var recOrderSort = "";
-	if (DoRecommend('1')){
-		recOrderFields = ", U.Description AS RecUnit " +
-								", CASE WHEN V.Answer IS NULL THEN MS.Qty ELSE (MS.Qty-V.Answer) END AS RecOrder " +
-								", CASE WHEN MS.Qty IS NULL THEN 0 ELSE CASE WHEN (MS.Qty-V.Answer)>0 OR (V.Answer IS NULL AND MS.Qty>0) THEN 2 ELSE 1 END END AS OrderRecOrder "
-		recOrderStr = "LEFT JOIN Catalog_AssortmentMatrix_SKUs MS ON S.Id=MS.SKU AND MS.Ref IN " +
-							"(SELECT Ref FROM Catalog_AssortmentMatrix_Outlets WHERE Outlet=@outlet) " + 
+	if (DoRecommend()){
+		recOrderFields = 	", CASE WHEN V.Answer IS NULL THEN U.Description ELSE UB.Description END AS RecUnit " +
+							", CASE WHEN V.Answer IS NULL THEN U.Id ELSE UB.Id END AS UnitId " +
+							", CASE WHEN V.Answer IS NULL THEN MS.Qty ELSE (MS.BaseUnitQty-V.Answer) END AS RecOrder " +
+							", CASE WHEN MS.Qty IS NULL THEN 0 ELSE CASE WHEN (MS.Qty-V.Answer)>0 OR (V.Answer IS NULL AND MS.Qty>0) THEN 2 ELSE 1 END END AS OrderRecOrder "
+		recOrderStr =   "JOIN Catalog_UnitsOfMeasure UB ON S.BaseUnit=UB.Id " +
+						"LEFT JOIN Catalog_AssortmentMatrix_Outlets O ON O.Outlet=@outlet " +
+						"LEFT JOIN Catalog_AssortmentMatrix_SKUs MS ON S.Id=MS.SKU AND MS.BaseUnitQty IN " +
+								" (SELECT MAX(SS.BaseUnitQty) FROM Catalog_AssortmentMatrix_SKUs SS " +
+								" JOIN Catalog_AssortmentMatrix_Outlets OO ON SS.Ref=OO.Ref	" +
+								" WHERE Outlet=@outlet AND SS.SKU=MS.SKU LIMIT 1) " + 
 							"LEFT JOIN Catalog_UnitsOfMeasure U ON MS.Unit=U.Id " + 
-							"LEFT JOIN Document_Visit_SKUs V ON MS.SKU=V.SKU AND V.Ref=@visit ";
+							"LEFT JOIN Document_Visit_SKUs V ON MS.SKU=V.SKU AND V.Ref=@visit AND V.Question IN (SELECT Id FROM Catalog_Question CQ WHERE CQ.Assignment=@assignment)";
 		query.AddParameter("outlet", $.workflow.outlet);
 		query.AddParameter("visit", $.workflow.visit);
+		query.AddParameter("assignment", DB.Current.Constant.SKUQuestions.Stock);
 		recOrderSort = " OrderRecOrder DESC, ";
 	}
 	
@@ -211,10 +217,7 @@ function DoGroupping() {
 
 function DoRecommend() {
 	
-//	if (recValue==null)
-//		recValue = parseInt(0);
-
-	if ($.workflow.name=="Visit" && $.sessionConst.OrderCalc) //&& parseInt(recValue)!=parseInt(0))
+	if ($.workflow.name=="Visit" && $.sessionConst.OrderCalc) 
 		return true;
 	else
 		return false;

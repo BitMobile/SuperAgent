@@ -39,7 +39,7 @@ function GetFeatures(sku) {
 	return query.Execute();
 }
 
-function CreateOrderItemIfNotExist(order, sku, orderitem, price, features, recOrder) {
+function CreateOrderItemIfNotExist(order, sku, orderitem, price, features, recOrder, unit) {
 
 	if (orderitem == null) {
 
@@ -64,10 +64,18 @@ function CreateOrderItemIfNotExist(order, sku, orderitem, price, features, recOr
 				recOrder = 0;
 				
 			
-			// getting a unit
-			var q = new Query("SELECT Pack, Multiplier FROM Catalog_SKU_Packing WHERE Ref=@ref AND LineNumber=1");
-			q.AddParameter("ref", sku);
-			var defaultUnit = q.Execute();
+			// getting a unit			
+			if (unit==null){
+				var q = new Query("SELECT Pack, Multiplier FROM Catalog_SKU_Packing WHERE Ref=@ref AND LineNumber=1");
+				q.AddParameter("ref", sku);
+				var defaultUnit = q.Execute();
+			}
+			else{
+				var q = new Query("SELECT Pack, Multiplier FROM Catalog_SKU_Packing WHERE Ref=@ref AND Pack=@pack");
+				q.AddParameter("ref", sku);
+				q.AddParameter("pack", unit);
+				var defaultUnit = q.Execute();
+			}
 
 			var p = DB.Create("Document.Order_SKUs");
 			p.Ref = order;

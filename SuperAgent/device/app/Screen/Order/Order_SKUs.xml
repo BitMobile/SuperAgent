@@ -67,13 +67,13 @@
 							<c:TextView Id="textView{$index}" Text="0 {#alreadyOrdered#}" />
 						</c:VerticalLayout>
 					</c:HorizontalLayout>
-					<c:HorizontalLayout OnClickAction="$DoAction(SelectSKU, $item.Id, $item.Price, null, null, null, $item.RecOrder)" CssClass="grid">
+					<c:HorizontalLayout OnClickAction="$DoAction(SelectSKU, $item.Id, $item.Price, null, null, null, $item.RecOrder, $item.UnitId)" CssClass="grid">
 						<c:VerticalLayout>
 							<c:DockLayout>
 								<s:If Test="$DoRecommend()">
 									<s:If Test="$ShowRecommendedQty($item.OrderRecOrder, $item.recOrder)">
 										<c:VerticalLayout>
-											<c:TextView Text="{$item.RecOrder} {$item.RecUnit}" CssClass="rec_order" />
+											<c:TextView Text="{$item.OrderRecOrder} {$item.RecOrder} {$item.RecUnit}" CssClass="rec_order" />
 											<c:TextView Text="#recommended#" CssClass="rec_comment" />
 										</c:VerticalLayout>
 									</s:If>

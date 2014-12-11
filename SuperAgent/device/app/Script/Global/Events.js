@@ -197,11 +197,11 @@ function GetTasksCount() {
 //-----Questionnaire selection-------
 
 function GetQuestionnairesForOutlet(outlet) {
-	var query = new Query("SELECT DISTINCT Q.Id " +//, ST.Selector, ST.ComparisonType, ST.Value, ST.AdditionalParameter " +
+	var query = new Query("SELECT DISTINCT Q.Id " +
 			"FROM Document_Questionnaire_Schedule S " +
 			"JOIN Document_Questionnaire Q ON Q.Id=S.Ref " +
-			//"JOIN Document_Questionnaire_Selectors ST ON ST.Ref=Q.Id " +
-			"WHERE date(S.Date)=date('now', 'start of day') ORDER BY Q.Id");//, ST.Selector, ST.ComparisonType");
+			"WHERE date(S.Date)=date('now', 'start of day') AND Q.Status=@active ORDER BY Q.Id");
+	query.AddParameter("active", DB.Current.Constant.QuestionnareStatus.Active);
 	var recordset = query.Execute();
 
 	var list = new List;

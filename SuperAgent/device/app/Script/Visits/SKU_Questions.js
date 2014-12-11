@@ -215,14 +215,16 @@ function GetChilds(sku) {
 			", CASE WHEN V.Answer IS NULL OR V.Answer='' THEN CASE WHEN A.Answer IS NOT NULL THEN A.Answer ELSE '—' END ELSE V.Answer END AS Answer " +
 			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal OR Q.ChildType=@string THEN 1 ELSE NULL END AS IsInputField " +
 			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal THEN 'numeric' ELSE 'auto' END AS KeyboardType " + 
+			
 			" FROM Document_Questionnaire D " +
 			" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref " +
 			" JOIN Document_Questionnaire_SKUs S ON D.Id=S.Ref AND S.SKU=@sku " +
 			" JOIN Document_Questionnaire_Schedule SC ON SC.Ref=D.Id AND date(SC.Date)=date('now','start of day') " +
 			" LEFT JOIN Document_Visit_SKUs V ON V.Question=Q.ChildQuestion AND V.Ref=@visit AND V.SKU=S.SKU " + 
-			" LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Ref = @emptyRef AND A.Questionaire=D.Id " +
+			" LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Ref = @outlet AND A.Questionaire=D.Id " +
 			" AND A.Question=Q.ChildQuestion AND A.SKU=S.SKU AND A.AnswerDate>=SC.BeginAnswerPeriod " +
 			" AND (A.AnswerDate<=SC.EndAnswerPeriod OR A.AnswerDate='0001-01-01 00:00:00') " +
+			
 			" WHERE D.Single=@single AND " + str + " ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs " +
 			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND SKU=@sku)) " + 
 			" GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, Q.ParentQuestion, Answer " + 
@@ -234,6 +236,7 @@ function GetChilds(sku) {
 	q.AddParameter("visit", $.workflow.visit);
 	q.AddParameter("single", single);
 	q.AddParameter("sku", sku);
+	q.AddParameter("outlet", $.workflow.outlet);
 	
 	return q.Execute();
 }

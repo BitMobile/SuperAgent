@@ -369,9 +369,10 @@ function SaveAtVisit(arr, args) {
 		var question = arr[0];
 		var control = arr[1];
 		question = question.GetObject();
-		question.Snapshot = Variables["guid"];
+		question.Answer = Variables["guid"];
 		question.Save();
-		control.Text = Translate["#snapshotAttached#"];
+		//control.Text = Translate["#snapshotAttached#"];
+		Workflow.Refresh([$.search]);
 	}
 }
 

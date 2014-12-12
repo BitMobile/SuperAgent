@@ -115,7 +115,7 @@ function CheckAndCommit(order, visit, wfName) {
         if (OrderExists(visit.Id)) {
             order.GetObject().Save();
         }
-
+        
         FillQuestionnaires();
         
         visit.Save();
@@ -165,6 +165,10 @@ function VisitIsChecked(visit, order, wfName) {
 function FillQuestionnaires() {
 	
 	var str = CreateCondition($.workflow.questionnaires, " D.Id ");
+	
+	if (String.IsNullOrEmpty(str))
+		return false;
+	
 	var q = new Query("SELECT D.Single, VQ.Id AS AnswerId, NULL AS SKU, Q.ChildQuestion AS Question, Q.Ref AS Questionnaire, VQ.AnswerDate, VQ.Answer, VQ.Ref AS Visit " +
 			" FROM Document_Visit_Questions VQ " +
 			" JOIN Document_Questionnaire_Questions Q ON VQ.Question=Q.ChildQuestion " +

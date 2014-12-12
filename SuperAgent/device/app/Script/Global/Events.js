@@ -28,13 +28,10 @@ function OnWorkflowStart(name) {
 	if (name == "Visit") {
 		
 			var questionnaires = GetQuestionnairesForOutlet($.outlet);
-			$.workflow.Add("questionnaires", questionnaires);
+			$.workflow.Add("questionnaires", questionnaires);						
 
 			if (parseInt(GetTasksCount()) != parseInt(0))
-				$.workflow.Add("skipTasks", false); // нельзя просто
-															// взять и присвоить
-															// значение
-															// переменной!
+				$.workflow.Add("skipTasks", false); // нельзя просто взять и присвоить значение переменной!
 			else
 				$.workflow.Add("skipTasks", true);
 
@@ -398,17 +395,25 @@ function GetRegionQueryText() {
 //-----Questions count-----------
 
 function GetQuestionsCount(questionnaires) {
-	var str = CreateCondition(questionnaires);	
-	var query = new Query("SELECT COUNT(Id) FROM Document_Questionnaire_Questions " + str);					
-	var res = query.ExecuteScalar();
-	return res;
+	var str = CreateCondition(questionnaires);
+	if (String.IsNullOrEmpty(str))
+		return parseInt(0);
+	else{
+		var query = new Query("SELECT COUNT(Id) FROM Document_Questionnaire_Questions " + str);					
+		var res = query.ExecuteScalar();
+		return res;
+	}
 }
 
 function GetSKUQuestionsCount() {
 	var str = CreateCondition(questionnaires);	
-	var query = new Query("SELECT COUNT(Id) FROM Document_Questionnaire_SKUQuestions " + str);					
-	var res = query.ExecuteScalar();
-	return res;
+	if (String.IsNullOrEmpty(str))
+		return parseInt(0);
+	else{
+		var query = new Query("SELECT COUNT(Id) FROM Document_Questionnaire_SKUQuestions " + str);					
+		var res = query.ExecuteScalar();
+		return res;
+	}
 }
 
 function CreateCondition(list) {

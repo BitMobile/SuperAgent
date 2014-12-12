@@ -212,7 +212,8 @@ function GetChilds(sku) {
 			", Q.ChildType AS AnswerType, MAX(CAST(Q.Obligatoriness AS int)) AS Obligatoriness " +
 			", (SELECT Qq.QuestionOrder FROM Document_Questionnaire Dd  " +
 			" JOIN Document_Questionnaire_SKUQuestions Qq ON Dd.Id=Qq.Ref AND Q.ChildQuestion=Qq.ChildQuestion ORDER BY Dd.Date LIMIT 1) AS QuestionOrder" +
-			", CASE WHEN V.Answer IS NULL OR V.Answer='' THEN CASE WHEN A.Answer IS NOT NULL THEN A.Answer ELSE '—' END ELSE V.Answer END AS Answer " +
+			", CASE WHEN V.Answer IS NULL OR V.Answer='' THEN CASE WHEN A.Answer IS NOT NULL THEN A.Answer ELSE '—' END " +
+				" ELSE CASE WHEN Q.ChildType=@snapshot THEN @attached ELSE V.Answer END END AS Answer " +
 			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal OR Q.ChildType=@string THEN 1 ELSE NULL END AS IsInputField " +
 			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal THEN 'numeric' ELSE 'auto' END AS KeyboardType " + 
 			
@@ -233,10 +234,12 @@ function GetChilds(sku) {
 	q.AddParameter("integer", DB.Current.Constant.DataType.Integer);
 	q.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);
 	q.AddParameter("string", DB.Current.Constant.DataType.String);
+	q.AddParameter("snapshot", DB.Current.Constant.DataType.Snapshot);	
 	q.AddParameter("visit", $.workflow.visit);
 	q.AddParameter("single", single);
 	q.AddParameter("sku", sku);
 	q.AddParameter("outlet", $.workflow.outlet);
+	q.AddParameter("attached", Translate["#snapshotAttached#"]);
 	
 	return q.Execute();
 }

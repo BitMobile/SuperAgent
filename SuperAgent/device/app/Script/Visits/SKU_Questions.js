@@ -271,7 +271,7 @@ function CreateItemAndShow(control, sku, index) {
 	scrollIndex = index;
 	setScroll = true;
 	
-	Workflow.Refresh([]);
+	Workflow.Refresh([$.search]);
 }
 
 
@@ -410,5 +410,5 @@ function ClearIndex() {
 //------------------------------internal-----------------------------------
 
 function DialogCallBack(control, key){
-	Workflow.Refresh([]);
+	Workflow.Refresh([$.search]);
 }

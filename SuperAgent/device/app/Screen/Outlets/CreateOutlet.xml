@@ -13,6 +13,7 @@
 				<c:TextView CssClass="right" Text="#save#" />
 			</c:VerticalLayout>
 		</c:HorizontalLayout>
+		<c:HorizontalLine CssClass="b_line" />
 
 		<c:ScrollView Id="grScrollView">
 			<c:HorizontalLayout CssClass="empty_caption_grid" />

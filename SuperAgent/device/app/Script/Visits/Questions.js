@@ -244,15 +244,17 @@ function DialogCallBack(control, key) {
 }
 
 function SaveAtVisit(arr, args) {
+	var question = arr[0];
+	var control = arr[1];
 	if (args.Result) {
-		var question = arr[0];
-		var control = arr[1];
 		question = question.GetObject();
 		question.Answer = Variables["guid"];
 		question.Save();
 		//Variables[control].Text = Translate["#snapshotAttached#"];
-		Workflow.Refresh([]);
 	}
+	else
+		question.Answer = null;
+	Workflow.Refresh([]);
 }
 
 /*

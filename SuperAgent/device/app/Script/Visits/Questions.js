@@ -250,7 +250,8 @@ function SaveAtVisit(arr, args) {
 		question = question.GetObject();
 		question.Answer = Variables["guid"];
 		question.Save();
-		Variables[control].Text = Translate["#snapshotAttached#"];
+		//Variables[control].Text = Translate["#snapshotAttached#"];
+		Workflow.Refresh([]);
 	}
 }
 

@@ -220,8 +220,11 @@ function OrderBack() {
 					Workflow.BackTo("Visit_Tasks");
 			} else
 				Workflow.BackTo("Questions");
-		} else
+		} else{
+			Variables.Remove("group_filter");
+			Variables.Remove("brand_filter");
 			Workflow.Back();
+		}
 	}
 
 }

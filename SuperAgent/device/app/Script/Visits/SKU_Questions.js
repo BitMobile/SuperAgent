@@ -352,6 +352,9 @@ function CheckEmtySKUAndForward(outlet, visit) {
 	$.workflow.Remove("questions_answ");
 	$.workflow.Add("questions_answ", a);
 	
+	Variables.Remove("group_filter");
+	Variables.Remove("brand_filter");
+	
 	Workflow.Forward(p);
 }
 

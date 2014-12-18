@@ -294,9 +294,9 @@ function GetChilds(sku) {
 }
 
 
-function AssignQuestionValue(control, sku, question) {
-	CreateVisitSKUValueIfNotExists(sku, question, control.Text)
-}
+//function AssignQuestionValue(control, sku, question) {
+//	CreateVisitSKUValueIfNotExists(sku, question, control.Text)
+//}
 
 function RemovePlaceHolder(control) {
 	if (control.Text == "—")
@@ -325,9 +325,9 @@ function CreateItemAndShow(control, sku, index) {
 
 
 
-function CreateVisitSKUValueIfNotExists(control, sku, question) {
+function CreateVisitSKUValueIfNotExists(control, sku, question, isInput) {
 	
-	if (control.Text=="—" || TrimAll(control.Text)=="")
+	if (isInput=='true' && (control.Text=="—" || TrimAll(control.Text)==""))
 		return null;
 	
 	var query = new Query();
@@ -366,7 +366,7 @@ function GoToQuestionAction(control, answerType, question, sku, editControl) {
 	editControl = Variables[editControl];
 	if (editControl.Text=="—")
 		editControl.Text = "";
-	var skuValue = CreateVisitSKUValueIfNotExists(editControl, sku, question);
+	var skuValue = CreateVisitSKUValueIfNotExists(editControl, sku, question, 'false');
 	
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.ValueList).ToString()) {
 		var q = new Query();

@@ -78,11 +78,13 @@ function GetSKUsFromQuesionnaires(search) {
 	queryQty.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	queryQty.AddParameter("visit", $.workflow.visit);
 	
-	var queryHist = new Query( " SELECT DISTINCT Aa.Question, Aa.SKU FROM Catalog_Outlet_AnsweredQuestions Aa " +
+	var queryHist = new Query( " SELECT DISTINCT Aa.Question, Aa.SKU " +
+			" FROM Catalog_Outlet_AnsweredQuestions Aa " +
 			" JOIN Document_Questionnaire_Schedule SCc " +
+			" JOIN Document_Questionnaire_SKUQuestions Q ON Q.Ref=SCc.Ref AND Aa.Question=Q.ChildQuestion " +
 			" WHERE Aa.Ref=@outlet AND " + strAnswered +
 			" DATE(Aa.AnswerDate)>=DATE(SCc.BeginAnswerPeriod) " +
-			" AND (DATE(Aa.AnswerDate)<=DATE(SCc.EndAnswerPeriod) OR Aa.AnswerDate='0001-01-01 00:00:00')");
+			" AND (DATE(Aa.AnswerDate)<=DATE(SCc.EndAnswerPeriod) OR Aa.AnswerDate='0001-01-01 00:00:00') AND Q.Obligatoriness='1'");
 	queryHist.AddParameter("outlet", $.workflow.outlet);
 //	Dialog.Debug(queryQty.ExecuteCount());
 //	Dialog.Debug(queryHist.ExecuteCount());
@@ -202,7 +204,7 @@ function CalculateTotal(str, single, answer) {
 	q.AddParameter("visit", $.workflow.visit);
 	q.AddParameter("single", single);
 	if (answer && single=='1'){
-		var strAnswered = CreateCondition($.workflow.questionnaires, " A.Questionaire ")
+		var strAnswered = CreateCondition($.workflow.questionnaires, " A.Questionaire ");
 		var histQuery = new Query("SELECT DISTINCT A.Question, A.SKU " +
 				" FROM Catalog_Outlet_AnsweredQuestions A " +
 				" JOIN Document_Questionnaire_Schedule SCc " +

@@ -73,21 +73,30 @@ function GetSKUsFromQuesionnaires(search) {
 			" LEFT JOIN Document_Visit_SKUs V ON V.Question=Q.ChildQuestion AND S.SKU=V.SKU " +
 			" AND V.Ref=@visit " +
 			" WHERE " + str + " ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs Vv" +
-			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND Vv.SKU=S.SKU)) AND Obligatoriness=1 " +
+			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND Vv.SKU=S.SKU) " +
+			" OR Q.ParentQuestion IN (SELECT Question FROM Catalog_Outlet_AnsweredQuestions " +
+				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@outlet AND SKU=S.SKU) " +
+			" ) AND Obligatoriness=1 " +
 			" AND (Answer IS NULL OR Answer='—' OR Answer='')");
 	queryQty.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	queryQty.AddParameter("visit", $.workflow.visit);
+	queryQty.AddParameter("outlet", $.workflow.outlet);
 	
 	var queryHist = new Query( " SELECT DISTINCT Aa.Question, Aa.SKU " +
 			" FROM Catalog_Outlet_AnsweredQuestions Aa " +
 			" JOIN Document_Questionnaire_Schedule SCc " +
 			" JOIN Document_Questionnaire_SKUQuestions Q ON Q.Ref=SCc.Ref AND Aa.Question=Q.ChildQuestion " +
-			" WHERE Aa.Ref=@outlet AND " + strAnswered +
+			" LEFT JOIN Document_Visit_SKUs V ON V.Ref=@visit AND V.Question=Aa.Question AND V.SKU=Aa.SKU " +
+			" WHERE V.Ref IS NULL AND Aa.Ref=@outlet AND " + strAnswered +
 			" DATE(Aa.AnswerDate)>=DATE(SCc.BeginAnswerPeriod) " +
-			" AND (DATE(Aa.AnswerDate)<=DATE(SCc.EndAnswerPeriod) OR Aa.AnswerDate='0001-01-01 00:00:00') AND Q.Obligatoriness='1'");
+			" AND (DATE(Aa.AnswerDate)<=DATE(SCc.EndAnswerPeriod) OR Aa.AnswerDate='0001-01-01 00:00:00') AND Q.Obligatoriness='1'" +
+			" AND (Q.ParentQuestion=@emptyRef OR Q.ParentQuestion IN (SELECT Question FROM Catalog_Outlet_AnsweredQuestions " +
+			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=Aa.Ref )) ");
 	queryHist.AddParameter("outlet", $.workflow.outlet);
+	queryHist.AddParameter("visit", $.workflow.visit);
+	queryHist.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 //	Dialog.Debug(queryQty.ExecuteCount());
-//	Dialog.Debug(queryHist.ExecuteCount());
+	//Dialog.Debug(queryHist.ExecuteCount());
 	
 	obligateredLeft = queryQty.ExecuteCount() - queryHist.ExecuteCount();
 	
@@ -106,7 +115,7 @@ function GetSKUsFromQuesionnaires(search) {
 	
 	var q = new Query();
 	q.Text="SELECT DISTINCT S.SKU, S.Description " +
-			" , MAX(CASE WHEN Obligatoriness=1 THEN CASE WHEN (VS.Answer!='—' AND VS.Answer!='' AND VS.Answer IS NOT NULL) THEN 1 ELSE 2 END ELSE 0 END) AS Obligatoriness " +
+			" , MAX(CASE WHEN Q.Obligatoriness=1 THEN CASE WHEN (VS.Answer!='—' AND VS.Answer!='' AND VS.Answer IS NOT NULL) THEN 1 ELSE 2 END ELSE 0 END) AS Obligatoriness " +
 			" , (SELECT COUNT(DISTINCT Q.ChildQuestion) FROM Document_Questionnaire D " +
 				" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref" +
 				" JOIN Document_Questionnaire_SKUs Ss ON Ss.Ref=D.Id " +
@@ -118,7 +127,15 @@ function GetSKUsFromQuesionnaires(search) {
 				" JOIN Document_Questionnaire_SKUs Ss ON Ss.Ref=D.Id " +
 				" WHERE D.Single=@single AND Ss.SKU=S.SKU AND (Q.ParentQuestion=@emptyRef " +
 				" OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs " +
-				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND SKU=S.SKU))) AND Q.Obligatoriness=1 AS ObligateredTotal " +					
+				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND SKU=S.SKU) OR Q.ParentQuestion IN (SELECT Question FROM Catalog_Outlet_AnsweredQuestions " +
+				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@outlet AND SKU=S.SKU) ) AND Q.Obligatoriness=1) AS ObligateredTotal " +	
+			" , (SELECT COUNT(DISTINCT Q.ChildQuestion) FROM Document_Questionnaire D " +
+				" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref" +
+				" JOIN Document_Questionnaire_SKUs Ss ON Ss.Ref=D.Id " +
+				" JOIN Document_Visit_SKUs V ON Ss.SKU=V.SKU AND Q.ChildQuestion=V.Question AND RTRIM(V.Answer)!='' AND V.Answer IS NOT NULL " +
+				" WHERE D.Single=@single AND Ss.SKU=S.SKU AND (Q.ParentQuestion=@emptyRef " +
+				" OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs " +
+				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND SKU=S.SKU)) AND V.Ref=@visit AND Q.Obligatoriness='1') AS ObligateredCurrent " +
 			" , (SELECT COUNT(DISTINCT Q.ChildQuestion) FROM Document_Questionnaire D " +
 				" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref" +
 				" JOIN Document_Questionnaire_SKUs Ss ON Ss.Ref=D.Id " +
@@ -128,7 +145,8 @@ function GetSKUsFromQuesionnaires(search) {
 				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND SKU=S.SKU)) AND V.Ref=@visit) AS Answered " +	
 			" , (SELECT COUNT(DISTINCT Aa.Question) FROM Catalog_Outlet_AnsweredQuestions Aa " +
 				" JOIN Document_Questionnaire_Schedule SCc " +
-				" WHERE Aa.Ref=@outlet AND " + strAnswered + " Aa.SKU=S.SKU " +
+				" LEFT JOIN Document_Visit_SKUs V ON V.Ref=@visit AND V.Question=Aa.Question AND V.SKU=Aa.SKU " +
+				" WHERE V.Ref IS NULL AND Aa.Ref=@outlet AND " + strAnswered + " Aa.SKU=S.SKU " +
 				" AND DATE(Aa.AnswerDate)>=DATE(SCc.BeginAnswerPeriod) " +
 				" AND (DATE(Aa.AnswerDate)<=DATE(SCc.EndAnswerPeriod) OR Aa.AnswerDate='0001-01-01 00:00:00')) AS History " +
 			" , (SELECT COUNT(DISTINCT Aa.Question) FROM Catalog_Outlet_AnsweredQuestions Aa " +
@@ -136,7 +154,10 @@ function GetSKUsFromQuesionnaires(search) {
 				" JOIN Document_Questionnaire_SKUQuestions Q ON Q.Ref=Scc.Ref AND Aa.Question=Q.ChildQuestion " +
 				" WHERE Aa.Ref=@outlet AND " + strAnswered + " Aa.SKU=S.SKU " +
 				" AND DATE(Aa.AnswerDate)>=DATE(SCc.BeginAnswerPeriod) " +
-				" AND (DATE(Aa.AnswerDate)<=DATE(SCc.EndAnswerPeriod) OR Aa.AnswerDate='0001-01-01 00:00:00') AND Q.Obligatoriness='1') AS ObligateredHistory " +
+				" AND (DATE(Aa.AnswerDate)<=DATE(SCc.EndAnswerPeriod) OR Aa.AnswerDate='0001-01-01 00:00:00') " +
+				" AND (Q.ParentQuestion=@emptyRef OR Q.ParentQuestion IN (SELECT Question FROM Catalog_Outlet_AnsweredQuestions " +
+				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=Aa.Ref AND SKU=Aa.SKU)) " +
+				" AND Q.Obligatoriness='1') AS ObligateredHistory " +
 			" FROM Document_Questionnaire D JOIN Document_Questionnaire_SKUs S ON D.Id=S.Ref " +
 			" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref " + filterJoin +
 			" LEFT JOIN Document_Visit_SKUs VS ON VS.SKU=S.SKU AND VS.Question=Q.ChildQuestion AND VS.Ref=@visit " +
@@ -170,11 +191,15 @@ function CreateCondition(list, field) {
 	return str;
 }
 
-function ObligateredAreAnswered(obligatoriness, history, oblTotal) {
-	if (parseInt(obligatoriness)==parseInt(1) || (parseInt(history)==parseInt(oblTotal)))
-		return true;
-	else
+function ObligateredAreAnswered(obligatoriness, history, current, oblTotal) {
+	if (parseInt(obligatoriness)==parseInt(0))
 		return false;
+	else{
+		if (parseInt(obligatoriness)==parseInt(1) || (parseInt(oblTotal)==(parseInt(history)+parseInt(current))))
+			return true;
+		else
+			return false;
+	}
 }
 
 function SetIndicators(str) {
@@ -208,9 +233,15 @@ function CalculateTotal(str, single, answer) {
 		var histQuery = new Query("SELECT DISTINCT A.Question, A.SKU " +
 				" FROM Catalog_Outlet_AnsweredQuestions A " +
 				" JOIN Document_Questionnaire_Schedule SCc " +
-				" WHERE A.Ref=@outlet AND " + strAnswered + " DATE(A.AnswerDate)>=DATE(SCc.BeginAnswerPeriod) " +
-				" AND (DATE(A.AnswerDate)<=DATE(SCc.EndAnswerPeriod) OR A.AnswerDate='0001-01-01 00:00:00')");
-		histQuery.AddParameter("outlet", $.workflow.outlet);		
+				" JOIN Document_Questionnaire_SKUQuestions Q " +
+				" LEFT JOIN Document_Visit_SKUs V ON V.Ref=@visit AND V.Question=A.Question AND V.SKU=A.SKU " +
+				" WHERE V.Ref IS NULL AND A.Ref=@outlet AND " + strAnswered + " DATE(A.AnswerDate)>=DATE(SCc.BeginAnswerPeriod) " +
+				" AND (DATE(A.AnswerDate)<=DATE(SCc.EndAnswerPeriod) OR A.AnswerDate='0001-01-01 00:00:00') " +
+				" AND (Q.ParentQuestion=@emptyRef OR Q.ParentQuestion IN (SELECT Question FROM Catalog_Outlet_AnsweredQuestions " +
+				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=A.Ref)) ");
+				histQuery.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
+				histQuery.AddParameter("outlet", $.workflow.outlet);
+				histQuery.AddParameter("visit", $.workflow.visit);
 		return (histQuery.ExecuteCount() + q.ExecuteCount()); 
 	}
 	else
@@ -261,8 +292,13 @@ function GetChilds(sku) {
 			", Q.ChildType AS AnswerType, MAX(CAST(Q.Obligatoriness AS int)) AS Obligatoriness " +
 			", (SELECT Qq.QuestionOrder FROM Document_Questionnaire Dd  " +
 			" JOIN Document_Questionnaire_SKUQuestions Qq ON Dd.Id=Qq.Ref AND Q.ChildQuestion=Qq.ChildQuestion ORDER BY Dd.Date LIMIT 1) AS QuestionOrder" +
-			", CASE WHEN V.Answer IS NULL OR V.Answer='' THEN CASE WHEN A.Answer IS NOT NULL THEN A.Answer ELSE '—' END " +
-				" ELSE CASE WHEN Q.ChildType=@snapshot THEN @attached ELSE V.Answer END END AS Answer " +
+			", CASE WHEN (RTRIM(V.Answer)='' OR V.Answer IS NULL) THEN " +
+				" CASE WHEN A.Answer IS NOT NULL THEN " +
+					" A.Answer " +
+				" ELSE " +
+					" CASE WHEN Q.ChildType!=@integer AND Q.ChildType!=@decimal AND Q.ChildType!=@string THEN '—' END " +
+				" END " +
+			" ELSE CASE WHEN Q.ChildType=@snapshot THEN @attached ELSE V.Answer END END AS Answer " +
 			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal OR Q.ChildType=@string THEN 1 ELSE NULL END AS IsInputField " +
 			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal THEN 'numeric' ELSE 'auto' END AS KeyboardType " + 
 			
@@ -276,7 +312,9 @@ function GetChilds(sku) {
 			" AND (DATE(A.AnswerDate)<=DATE(SC.EndAnswerPeriod) OR A.AnswerDate='0001-01-01 00:00:00') " +
 			
 			" WHERE D.Single=@single AND " + str + " ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs " +
-			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND SKU=@sku)) " + 
+			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND SKU=@sku) " + 
+			" OR Q.ParentQuestion IN (SELECT Question FROM Catalog_Outlet_AnsweredQuestions " +
+			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@outlet AND SKU=S.SKU)) " +
 			" GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, Q.ParentQuestion, Answer " + 
 			" ORDER BY DocDate, QuestionOrder ";
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
@@ -327,8 +365,8 @@ function CreateItemAndShow(control, sku, index) {
 
 function CreateVisitSKUValueIfNotExists(control, sku, question, isInput) {
 	
-	if (isInput=='true' && (control.Text=="—" || TrimAll(control.Text)==""))
-		return null;
+//	if (isInput=='true' && (control.Text=="—" || TrimAll(control.Text)==""))
+//		return null;
 	
 	var query = new Query();
 	query.Text = "SELECT Id FROM Document_Visit_SKUs WHERE SKU=@sku AND Question=@question AND Ref=@ref";

@@ -96,7 +96,7 @@
 						<c:TextView Text="{$GetSum($sku.Answered,$sku.History)} #of# {$sku.Total}" CssClass="description_row" />
 						<c:TextView Text="$sku.Description" CssClass="main_row"></c:TextView>
 					</c:VerticalLayout>					
-					<s:If Test="$ObligateredAreAnswered($sku.Obligatoriness,$sku.ObligateredHistory,$sku.ObligateredTotal)"><c:HorizontalLayout CssClass="answered_side_wh"></c:HorizontalLayout></s:If>
+					<s:If Test="$ObligateredAreAnswered($sku.Obligatoriness,$sku.ObligateredHistory,$sku.ObligateredCurrent,$sku.ObligateredTotal)"><c:HorizontalLayout CssClass="answered_side_wh"></c:HorizontalLayout></s:If>
 					<s:Else>
 						<s:If Test="$sku.Obligatoriness=='2'"><c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout></s:If>
 					</s:Else>

@@ -59,13 +59,14 @@ function SetScrollIndex() {
 function GetSKUsFromQuesionnaires(search) {
 
 	var str = CreateCondition($.workflow.questionnaires, " D.Id ");
+	var strAnswered = CreateCondition($.workflow.questionnaires, " Aa.Questionaire ");
 	var single = 1;
 	if (regularAnswers)	
 		single = 0;
 	
 	SetIndicators(str, single);
 	
-	var queryQty = new Query( "SELECT DISTINCT Q.ChildQuestion, S.Description " +
+	var queryQty = new Query( "SELECT DISTINCT Q.ChildQuestion, S.SKU " +
 			" FROM Document_Questionnaire D " +
 			" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref " +
 			" JOIN Document_Questionnaire_SKUs S ON S.Ref=D.Id " +
@@ -76,7 +77,17 @@ function GetSKUsFromQuesionnaires(search) {
 			" AND (Answer IS NULL OR Answer='—' OR Answer='')");
 	queryQty.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	queryQty.AddParameter("visit", $.workflow.visit);
-	obligateredLeft = queryQty.ExecuteCount();
+	
+	var queryHist = new Query( " SELECT DISTINCT Aa.Question, Aa.SKU FROM Catalog_Outlet_AnsweredQuestions Aa " +
+			" JOIN Document_Questionnaire_Schedule SCc " +
+			" WHERE Aa.Ref=@outlet AND " + strAnswered +
+			" DATE(Aa.AnswerDate)>=DATE(SCc.BeginAnswerPeriod) " +
+			" AND (DATE(Aa.AnswerDate)<=DATE(SCc.EndAnswerPeriod) OR Aa.AnswerDate='0001-01-01 00:00:00')");
+	queryHist.AddParameter("outlet", $.workflow.outlet);
+//	Dialog.Debug(queryQty.ExecuteCount());
+//	Dialog.Debug(queryHist.ExecuteCount());
+	
+	obligateredLeft = queryQty.ExecuteCount() - queryHist.ExecuteCount();
 	
 	var searchString = "";
 	if (String.IsNullOrEmpty(search) == false)
@@ -103,10 +114,27 @@ function GetSKUsFromQuesionnaires(search) {
 			" , (SELECT COUNT(DISTINCT Q.ChildQuestion) FROM Document_Questionnaire D " +
 				" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref" +
 				" JOIN Document_Questionnaire_SKUs Ss ON Ss.Ref=D.Id " +
+				" WHERE D.Single=@single AND Ss.SKU=S.SKU AND (Q.ParentQuestion=@emptyRef " +
+				" OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs " +
+				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND SKU=S.SKU))) AND Q.Obligatoriness=1 AS ObligateredTotal " +					
+			" , (SELECT COUNT(DISTINCT Q.ChildQuestion) FROM Document_Questionnaire D " +
+				" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref" +
+				" JOIN Document_Questionnaire_SKUs Ss ON Ss.Ref=D.Id " +
 				" JOIN Document_Visit_SKUs V ON Ss.SKU=V.SKU AND Q.ChildQuestion=V.Question AND RTRIM(V.Answer)!='' AND V.Answer IS NOT NULL " +
 				" WHERE D.Single=@single AND Ss.SKU=S.SKU AND (Q.ParentQuestion=@emptyRef " +
 				" OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs " +
-				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND SKU=S.SKU)) AND V.Ref=@visit ) AS Answered " +				
+				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND SKU=S.SKU)) AND V.Ref=@visit) AS Answered " +	
+			" , (SELECT COUNT(DISTINCT Aa.Question) FROM Catalog_Outlet_AnsweredQuestions Aa " +
+				" JOIN Document_Questionnaire_Schedule SCc " +
+				" WHERE Aa.Ref=@outlet AND " + strAnswered + " Aa.SKU=S.SKU " +
+				" AND DATE(Aa.AnswerDate)>=DATE(SCc.BeginAnswerPeriod) " +
+				" AND (DATE(Aa.AnswerDate)<=DATE(SCc.EndAnswerPeriod) OR Aa.AnswerDate='0001-01-01 00:00:00')) AS History " +
+			" , (SELECT COUNT(DISTINCT Aa.Question) FROM Catalog_Outlet_AnsweredQuestions Aa " +
+				" JOIN Document_Questionnaire_Schedule SCc " +
+				" JOIN Document_Questionnaire_SKUQuestions Q ON Q.Ref=Scc.Ref AND Aa.Question=Q.ChildQuestion " +
+				" WHERE Aa.Ref=@outlet AND " + strAnswered + " Aa.SKU=S.SKU " +
+				" AND DATE(Aa.AnswerDate)>=DATE(SCc.BeginAnswerPeriod) " +
+				" AND (DATE(Aa.AnswerDate)<=DATE(SCc.EndAnswerPeriod) OR Aa.AnswerDate='0001-01-01 00:00:00') AND Q.Obligatoriness='1') AS ObligateredHistory " +
 			" FROM Document_Questionnaire D JOIN Document_Questionnaire_SKUs S ON D.Id=S.Ref " +
 			" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref " + filterJoin +
 			" LEFT JOIN Document_Visit_SKUs VS ON VS.SKU=S.SKU AND VS.Question=Q.ChildQuestion AND VS.Ref=@visit " +
@@ -114,6 +142,7 @@ function GetSKUsFromQuesionnaires(search) {
 			" ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs Vv " +
 			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND Vv.SKU=S.SKU)) " +
 			" GROUP BY S.SKU, S.Description ORDER BY S.Description"; 
+	q.AddParameter("outlet", $.workflow.outlet);
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	q.AddParameter("visit", $.workflow.visit);
 	q.AddParameter("single", single);	
@@ -139,6 +168,13 @@ function CreateCondition(list, field) {
 	return str;
 }
 
+function ObligateredAreAnswered(obligatoriness, history, oblTotal) {
+	if (parseInt(obligatoriness)==parseInt(1) || (parseInt(history)==parseInt(oblTotal)))
+		return true;
+	else
+		return false;
+}
+
 function SetIndicators(str) {
 	regular_total = CalculateTotal(str, '0', false);
 	single_total = CalculateTotal(str, '1', false);		
@@ -151,7 +187,7 @@ function CalculateTotal(str, single, answer) {
 	var cond = "";
 	if (answer){
 		join = " JOIN Document_Visit_SKUs V ON S.SKU=V.SKU AND Q.ChildQuestion=V.Question AND RTRIM(V.Answer)!='' AND V.Answer IS NOT NULL ";
-		cond = " AND V.Ref=@visit ";
+		cond = " AND V.Ref=@visit ";			
 	}
 	
 	var q = new Query("SELECT DISTINCT S.SKU, Q.ChildQuestion " +
@@ -165,7 +201,18 @@ function CalculateTotal(str, single, answer) {
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	q.AddParameter("visit", $.workflow.visit);
 	q.AddParameter("single", single);
-	return q.ExecuteCount();
+	if (answer && single=='1'){
+		var strAnswered = CreateCondition($.workflow.questionnaires, " A.Questionaire ")
+		var histQuery = new Query("SELECT DISTINCT A.Question, A.SKU " +
+				" FROM Catalog_Outlet_AnsweredQuestions A " +
+				" JOIN Document_Questionnaire_Schedule SCc " +
+				" WHERE A.Ref=@outlet AND " + strAnswered + " DATE(A.AnswerDate)>=DATE(SCc.BeginAnswerPeriod) " +
+				" AND (DATE(A.AnswerDate)<=DATE(SCc.EndAnswerPeriod) OR A.AnswerDate='0001-01-01 00:00:00')");
+		histQuery.AddParameter("outlet", $.workflow.outlet);		
+		return (histQuery.ExecuteCount() + q.ExecuteCount()); 
+	}
+	else
+		return q.ExecuteCount();
 }
 
 function AddFilter(filterString, filterName, condition, connector) {
@@ -277,6 +324,9 @@ function CreateItemAndShow(control, sku, index) {
 
 
 function CreateVisitSKUValueIfNotExists(control, sku, question) {
+	
+	if (control.Text=="—" || TrimAll(control.Text)=="")
+		return null;
 	
 	var query = new Query();
 	query.Text = "SELECT Id FROM Document_Visit_SKUs WHERE SKU=@sku AND Question=@question AND Ref=@ref";

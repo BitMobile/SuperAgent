@@ -79,7 +79,7 @@
 				<s:Push Id="index" Value="{$statusCount.Index}"></s:Push>
 
 				<c:HorizontalLayout CssClass="grid">
-					<c:VerticalLayout OnClickAction="$GoToQuestionAction($question.AnswerType, $visit, control{$index}, $question.Question)">
+					<c:VerticalLayout OnClickAction="$GoToQuestionAction($question.AnswerType, $visit, control{$index}, $question.Question, $question.Answer)">
 						<c:TextView Text="$question.Description" CssClass="description_row"></c:TextView>
 						<s:If Test="$question.IsInputField=='1'">
 							<c:MemoEdit Id="control{$index}" Text="$question.Answer" Placeholder = "—" OnChange="$AssignQuestionValue($question.Question)" OnLostFocus="$Workflow.DoRefresh()" Keyboard="$question.KeyboardType" CssClass="answer_main_row"></c:MemoEdit>

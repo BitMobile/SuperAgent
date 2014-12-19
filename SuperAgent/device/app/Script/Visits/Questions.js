@@ -59,12 +59,12 @@ function GetQuestionsByQuestionnaires(outlet) {
 			" WHERE V.Ref IS NULL AND Aa.Ref=@outlet AND  Aa.SKU=@emptySKU AND " + strAnswered +
 			" DATE(Aa.AnswerDate)>=DATE(SCc.BeginAnswerPeriod) " +
 			" AND (DATE(Aa.AnswerDate)<=DATE(SCc.EndAnswerPeriod) OR Aa.AnswerDate='0001-01-01 00:00:00') AND Q.Obligatoriness='1'" +
-			" AND (Q.ParentQuestion=@emptyRef OR Q.ParentQuestion IN (SELECT Question FROM Catalog_Outlet_AnsweredQuestions " +
-			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=Aa.Ref AND SKU=@emptySKU)) ");
+			" AND (Q.ParentQuestion=@emptyRef OR Q.ParentQuestion IN (SELECT CA.Question FROM Catalog_Outlet_AnsweredQuestions CA " +
+			" WHERE (CA.Answer='Yes' OR CA.Answer='Да') AND CA.Ref=@outlet AND SKU=@emptySKU)) ");
 	queryHist.AddParameter("outlet", $.workflow.outlet);
 	queryHist.AddParameter("visit", $.workflow.visit);
 	queryHist.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
-	queryHist.AddParameter("emptySKU", DB.EmptyRef("Catalog_SKU"));
+	queryHist.AddParameter("emptySKU", DB.EmptyRef("Catalog_SKU"));	
 	
 	obligateredLeft = queryCurr.ExecuteCount() - queryHist.ExecuteCount();
 	
@@ -104,7 +104,7 @@ function GetQuestions(str, single) {
 			" WHERE D.Single=@single AND " + str + " ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_Questions " +
 			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit) " + 
 			" OR Q.ParentQuestion IN (SELECT Aa.Question FROM Catalog_Outlet_AnsweredQuestions Aa " +
-			" WHERE (Aa.Answer='Yes' OR Aa.Answer='Да') AND Aa.Ref=@outlet AND Aa.SKU=@emptySKU) )" +
+			" WHERE (Aa.Answer='Yes' OR Aa.Answer='Да') AND Aa.Ref=@outlet AND Aa.SKU=@emptySKU))" +
 			
 			" GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, Answer " + 
 			" ORDER BY DocDate, QuestionOrder ");
@@ -160,25 +160,41 @@ function SetIndiactors(res, single, str) {
 }
 
 function GetAnsweredQty(single, str) {
-	var field = " V.Answer, Q.ChildDescription ";
-	var leftJoin = "";
+	
 	var q = new Query; 
-	if (parseInt(single)==parseInt(1)){
-		field = " (CASE WHEN A.Answer IS NOT NULL THEN A.Answer ELSE V.Answer END) AS Answer, Q.ChildDescription";
-		leftJoin = " LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Ref = @visit AND A.Questionaire=D.Id  AND A.Question=Q.ChildQuestion AND A.SKU IS NULL AND A.AnswerDate>=SC.BeginAnswerPeriod  AND (A.AnswerDate<=SC.EndAnswerPeriod OR A.AnswerDate='0001-01-01 00:00:00') ";
-		q.AddParameter("visit", $.workflow.visit);
-	}
-	q.Text = "SELECT DISTINCT " + field + " FROM Document_Questionnaire D " +
+
+	q.Text = "SELECT DISTINCT Q.ChildDescription FROM Document_Questionnaire D " +
 			" JOIN Document_Questionnaire_Questions Q ON D.Id=Q.Ref " +
 			" JOIN Document_Questionnaire_Schedule SC ON SC.Ref=D.Id AND date(SC.Date)=date('now','start of day') " +
-			" JOIN Document_Visit_Questions V ON V.Question=Q.ChildQuestion AND V.Ref=@visit AND RTRIM(V.Answer)!='' AND V.Answer IS NOT NULL" + leftJoin +
-			" WHERE D.Single=@single AND " + str +
-			" (Q.ParentQuestion=@emptyRef OR Q.ParentQuestion IN " +
-			" (SELECT Question FROM Document_Visit_Questions  WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit)) ";
+			" JOIN Document_Visit_Questions V ON V.Question=Q.ChildQuestion AND V.Ref=@visit AND RTRIM(V.Answer)!='' AND V.Answer IS NOT NULL" + 
+			" WHERE D.Single=@single AND " + str + 
+			" (Q.ParentQuestion=@emptyRef OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_Questions  WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit))";
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	q.AddParameter("visit", $.workflow.visit);
 	q.AddParameter("single", single);
-	return q.ExecuteCount();
+	
+	if (parseInt(single)==parseInt(1)){
+		var strAnswered = CreateCondition($.workflow.questionnaires, " A.Questionaire ");
+		var histQuery = new Query("SELECT DISTINCT A.Question, V.Ref " +
+				" FROM Catalog_Outlet_AnsweredQuestions A " +
+				" JOIN Document_Questionnaire_Schedule SC ON A.Questionaire=SC.Ref " +
+				" JOIN Document_Questionnaire_Questions Q ON Q.Ref=SC.Ref " +
+				" LEFT JOIN Document_Visit_Questions V ON A.Question=V.Question AND V.Ref=@visit " +
+				" WHERE DATE(A.AnswerDate)>=DATE(SC.BeginAnswerPeriod) AND (DATE(A.AnswerDate)<=DATE(SC.EndAnswerPeriod) OR A.AnswerDate='0001-01-01 00:00:00') " +
+				" AND A.SKU=@emptySKU AND A.Ref=@outlet AND " + strAnswered + " V.Ref IS NULL " +
+				" AND (Q.ParentQuestion=@emptyRef OR Q.ParentQuestion IN (SELECT Question FROM Catalog_Outlet_AnsweredQuestions " +
+					" WHERE (Answer='Yes' OR Answer='Да') AND Ref=A.Ref AND SKU=@emptySKU))");
+				histQuery.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
+				histQuery.AddParameter("outlet", $.workflow.outlet);
+				histQuery.AddParameter("visit", $.workflow.visit);
+				histQuery.AddParameter("emptySKU", DB.EmptyRef("Catalog_SKU"));
+				Dialog.Debug(histQuery.ExecuteCount());
+				Dialog.Debug(q.ExecuteCount());
+		return (histQuery.ExecuteCount() + q.ExecuteCount());
+	}
+	else{
+		return q.ExecuteCount();
+	}
 }
 
 function RemovePlaceHolder(control) {

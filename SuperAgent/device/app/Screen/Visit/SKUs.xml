@@ -93,7 +93,12 @@
 
 				<c:HorizontalLayout CssClass="grid" OnClick="$CreateItemAndShow($sku.SKU, $index)">
 					<c:VerticalLayout>
-						<c:TextView Text="{$GetSum($sku.Answered,$sku.History)} #of# {$sku.Total}" CssClass="description_row" />
+						<s:If Test="@regularAnswers">
+							<c:TextView Text="{$sku.Answered} #of# {$sku.Total}" CssClass="description_row" />
+						</s:If>
+						<s:Else>
+							<c:TextView Text="{$GetSum($sku.Answered,$sku.History)} #of# {$sku.Total}" CssClass="description_row" />
+						</s:Else>						
 						<c:TextView Text="$sku.Description" CssClass="main_row"></c:TextView>
 					</c:VerticalLayout>					
 					<s:If Test="$ObligateredAreAnswered($sku.Obligatoriness,$sku.ObligateredHistory,$sku.ObligateredCurrent,$sku.ObligateredTotal)"><c:HorizontalLayout CssClass="answered_side_wh"></c:HorizontalLayout></s:If>

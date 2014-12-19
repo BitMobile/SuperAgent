@@ -294,7 +294,7 @@ function GetChilds(sku) {
 			" JOIN Document_Questionnaire_SKUQuestions Qq ON Dd.Id=Qq.Ref AND Q.ChildQuestion=Qq.ChildQuestion ORDER BY Dd.Date LIMIT 1) AS QuestionOrder" +
 			", CASE WHEN (RTRIM(V.Answer)='' OR V.Answer IS NULL) THEN " +
 				" CASE WHEN A.Answer IS NOT NULL THEN " +
-					" A.Answer " +
+					" CASE WHEN Q.ChildType=@snapshot THEN @attached ELSE A.Answer END " +
 				" ELSE " +
 					" CASE WHEN Q.ChildType!=@integer AND Q.ChildType!=@decimal AND Q.ChildType!=@string THEN '—' END " +
 				" END " +
@@ -402,8 +402,9 @@ function GetSnapshotText(text) {
 function GoToQuestionAction(control, answerType, question, sku, editControl) {	
 	
 	editControl = Variables[editControl];
-	if (editControl.Text=="—")
+	if (editControl.Text=="—"){
 		editControl.Text = "";
+	}
 	var skuValue = CreateVisitSKUValueIfNotExists(editControl, sku, question, 'false');
 	
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.ValueList).ToString()) {
@@ -414,8 +415,8 @@ function GoToQuestionAction(control, answerType, question, sku, editControl) {
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.Snapshot).ToString()) {
-		GetCameraObject($.workflow.visit);
-		Camera.MakeSnapshot(SaveAtVisit, [ skuValue, editControl]);
+		var guid = GetCameraObject($.workflow.visit);
+		Camera.MakeSnapshot(SaveAtVisit, [ skuValue, editControl, guid]);
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {
@@ -451,18 +452,20 @@ function CheckEmtySKUAndForward(outlet, visit) {
 function GetCameraObject(entity) {
 	FileSystem.CreateDirectory("/private/Document.Visit");
 	var guid = Global.GenerateGuid();
-	Variables.Add("guid", guid);
+	//Variables.Add("guid", guid);
 	var path = String.Format("/private/Document.Visit/{0}/{1}.jpg", entity, guid);
 	Camera.Size = 300;
 	Camera.Path = path;
+	return guid; 
 }
 
 function SaveAtVisit(arr, args) {
 	var question = arr[0];
 	var control = arr[1];
+	var guid = arr[2];
 	if (args.Result) {
 		question = question.GetObject();
-		question.Answer = Variables["guid"];
+		question.Answer = guid;
 		question.Save();
 		//control.Text = Translate["#snapshotAttached#"];
 	}

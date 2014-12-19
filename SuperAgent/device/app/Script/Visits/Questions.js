@@ -73,10 +73,7 @@ function GetQuestionsByQuestionnaires(outlet) {
 	queryHist.AddParameter("outlet", $.workflow.outlet);
 	queryHist.AddParameter("visit", $.workflow.visit);
 	queryHist.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
-	queryHist.AddParameter("emptySKU", DB.EmptyRef("Catalog_SKU"));	
-	
-	Dialog.Debug(queryCurr.ExecuteCount());
-	Dialog.Debug(queryHist.ExecuteCount());
+	queryHist.AddParameter("emptySKU", DB.EmptyRef("Catalog_SKU"));		
 	
 	obligateredLeft = queryCurr.ExecuteCount() - queryHist.ExecuteCount();
 	

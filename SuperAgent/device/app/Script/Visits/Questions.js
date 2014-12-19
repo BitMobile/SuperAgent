@@ -290,6 +290,37 @@ function AssignQuestionValue(control, question) {
 function DialogCallBack(control, key) {
 	if ((bool_answer=='Yes' || bool_answer=='Да') && (key=='No' || key=='Нет')){
 		GetChildQuestions();
+		var q3 = new Query("SELECT A.Id FROM Catalog_Outlet_AnsweredQuestions A " +
+				" JOIN Document_Questionnaire_Schedule SC ON A.Questionaire=SC.Ref " +
+				" WHERE A.Ref=@outlet AND A.Question=@question AND A.SKU=@emptySKU AND DATE(A.AnswerDate)>=DATE(SC.BeginAnswerPeriod) " +
+				" AND (DATE(A.AnswerDate)<=DATE(SC.EndAnswerPeriod) OR A.AnswerDate='0001-01-01 00:00:00')");
+		q3.AddParameter("outlet", $.workflow.outlet);
+		q3.AddParameter("question", curr_item.Question);
+		q3.AddParameter("emptySKU", DB.EmptyRef("Catalog_SKU"));
+		var items = q3.Execute();
+		
+		while (items.Next()){
+			var item = items.Id;
+			item = item.GetObject();
+			item.Answer = Translate["#NO#"];
+			item.Save();
+		}
+	}
+	if ((bool_answer=='Yes' || bool_answer=='Да') && key==null){
+		GetChildQuestions();
+		var q3 = new Query("SELECT A.Id FROM Catalog_Outlet_AnsweredQuestions A " +
+				" JOIN Document_Questionnaire_Schedule SC ON A.Questionaire=SC.Ref " +
+				" WHERE A.Ref=@outlet AND A.Question=@question AND A.SKU=@emptySKU AND DATE(A.AnswerDate)>=DATE(SC.BeginAnswerPeriod) " +
+				" AND (DATE(A.AnswerDate)<=DATE(SC.EndAnswerPeriod) OR A.AnswerDate='0001-01-01 00:00:00')");
+		q3.AddParameter("outlet", $.workflow.outlet);
+		q3.AddParameter("question", curr_item.Question);
+		q3.AddParameter("emptySKU", DB.EmptyRef("Catalog_SKU"));
+		var items = q3.Execute();
+		
+		while (items.Next()){
+			DB.Delete(items.Id);
+		}
+		
 	}
 	Workflow.Refresh([]);
 }
@@ -317,20 +348,21 @@ function GetChildQuestions() {
 	q.AddParameter("parent", curr_item.Question);
 	var res1 = q.Execute();
 	
-	var str2 = CreateCondition($.workflow.questionnaires, " Q.Ref ");
 	var q2 = new Query("SELECT DISTINCT A.Id, Q.ChildDescription FROM Catalog_Outlet_AnsweredQuestions A " +
 			" JOIN Document_Questionnaire_Questions Q ON A.Question=Q.ChildQuestion " +
-			" WHERE " + str + " A.Ref=@outlet AND Q.ParentQuestion=@parent");
+			" WHERE " + str + " A.Ref=@outlet AND Q.ParentQuestion=@parent AND A.SKU=@emptySKU");
 	q2.AddParameter("outlet", $.workflow.outlet);
 	q2.AddParameter("parent", curr_item.Question);
+	q2.AddParameter("emptySKU", DB.EmptyRef("Catalog_SKU"));
 	var res2 = q2.Execute();
 	
 	var q3 = new Query("SELECT A.Id FROM Catalog_Outlet_AnsweredQuestions A " +
 			" JOIN Document_Questionnaire_Schedule SC ON A.Questionaire=SC.Ref " +
-			" WHERE A.Ref=@outlet AND A.Question=@question AND DATE(A.AnswerDate)>=DATE(SC.BeginAnswerPeriod) " +
+			" WHERE A.Ref=@outlet AND A.Question=@question AND A.SKU=@emptySKU AND DATE(A.AnswerDate)>=DATE(SC.BeginAnswerPeriod) " +
 			" AND (DATE(A.AnswerDate)<=DATE(SC.EndAnswerPeriod) OR A.AnswerDate='0001-01-01 00:00:00')");
 	q3.AddParameter("outlet", $.workflow.outlet);
 	q3.AddParameter("question", curr_item.Question);
+	q3.AddParameter("emptySKU", DB.EmptyRef("Catalog_SKU"));
 	var items = q3.Execute();
 	
 	while (items.Next()){

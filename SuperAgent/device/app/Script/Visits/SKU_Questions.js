@@ -8,6 +8,9 @@ var single_answ;
 var single_total;
 var scrollIndex;
 var setScroll;
+var bool_answer;
+var curr_item;
+var curr_sku;
 
 //
 //-------------------------------Header handlers-------------------------
@@ -400,7 +403,7 @@ function GetSnapshotText(text) {
 		return Translate["#snapshotAttached#"];
 }
 
-function GoToQuestionAction(control, answerType, question, sku, editControl) {	
+function GoToQuestionAction(control, answerType, question, sku, editControl, currAnswer, currSKU) {	
 	
 	editControl = Variables[editControl];
 	if (editControl.Text=="—"){
@@ -425,6 +428,9 @@ function GoToQuestionAction(control, answerType, question, sku, editControl) {
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.Boolean).ToString()) {
+		bool_answer = currAnswer;
+		curr_item = skuValue;
+		curr_sku = currSKU;
 		BooleanDialogSelect(skuValue, "Answer", editControl);
 	}
 	
@@ -507,5 +513,66 @@ function ClearIndex() {
 //------------------------------internal-----------------------------------
 
 function DialogCallBack(control, key){
+	if ((bool_answer=='Yes' || bool_answer=='Да') && (key=='No' || key=='Нет')){
+		GetChildQuestions();
+		var q3 = new Query("SELECT A.Id FROM Catalog_Outlet_AnsweredQuestions A " +
+				" JOIN Document_Questionnaire_Schedule SC ON A.Questionaire=SC.Ref " +
+				" WHERE A.Ref=@outlet AND A.SKU=@sku AND A.Question=@question AND DATE(A.AnswerDate)>=DATE(SC.BeginAnswerPeriod) " +
+				" AND (DATE(A.AnswerDate)<=DATE(SC.EndAnswerPeriod) OR A.AnswerDate='0001-01-01 00:00:00')");
+		q3.AddParameter("outlet", $.workflow.outlet);
+		q3.AddParameter("question", curr_item.Question);
+		q3.AddParameter("sku", curr_sku);
+		var items = q3.Execute();
+		
+		while (items.Next()){
+			var item = items.Id;
+			item = item.GetObject();
+			item.Answer = Translate["#NO#"];
+			item.Save();
+		}
+	}
+	if ((bool_answer=='Yes' || bool_answer=='Да') && key==null){
+		GetChildQuestions();
+		var q3 = new Query("SELECT A.Id FROM Catalog_Outlet_AnsweredQuestions A " +
+				" JOIN Document_Questionnaire_Schedule SC ON A.Questionaire=SC.Ref " +
+				" WHERE A.Ref=@outlet AND A.SKU=@sku AND A.Question=@question AND DATE(A.AnswerDate)>=DATE(SC.BeginAnswerPeriod) " +
+				" AND (DATE(A.AnswerDate)<=DATE(SC.EndAnswerPeriod) OR A.AnswerDate='0001-01-01 00:00:00')");
+		q3.AddParameter("outlet", $.workflow.outlet);
+		q3.AddParameter("question", curr_item.Question);
+		q3.AddParameter("sku", curr_sku);
+		var items = q3.Execute();
+		while (items.Next()){
+			DB.Delete(items.Id);
+		}
+	}
 	Workflow.Refresh([$.search]);
+}
+	
+function GetChildQuestions() {
+	var str = CreateCondition($.workflow.questionnaires, " Q.Ref ");
+	var q = new Query("SELECT DISTINCT V.Id, Q.ChildDescription FROM Document_Visit_SKUs V " +
+			" JOIN Document_Questionnaire_SKUQuestions Q ON V.Question=Q.ChildQuestion " +
+			" JOIN Document_Questionnaire_SKUs S ON Q.Ref=S.Ref AND S.SKU=V.SKU " +
+			" WHERE " + str + " V.Ref=@visit AND Q.ParentQuestion=@parent");			
+	q.AddParameter("visit", $.workflow.visit);
+	q.AddParameter("parent", curr_item.Question);
+	var res1 = q.Execute();
+	
+	var q2 = new Query("SELECT DISTINCT A.Id, Q.ChildDescription FROM Catalog_Outlet_AnsweredQuestions A " +
+			" JOIN Document_Questionnaire_SKUQuestions Q ON A.Question=Q.ChildQuestion " +
+			//" JOIN Document_Questionnaire_SKUs S ON Q.Ref=S.Ref AND S.SKU=A.SKU " +
+			" WHERE " + str + " A.Ref=@outlet AND Q.ParentQuestion=@parent AND A.SKU=@sku");
+	q2.AddParameter("outlet", $.workflow.outlet);
+	q2.AddParameter("parent", curr_item.Question);
+	q2.AddParameter("sku", curr_sku);
+	var res2 = q2.Execute();
+	
+	DeleteAnswers(res1);
+	DeleteAnswers(res2);
+}
+
+function DeleteAnswers(recordset) {	
+	while (recordset.Next()){
+		DB.Delete(recordset.Id);
+	}	
 }

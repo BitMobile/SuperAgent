@@ -112,7 +112,7 @@
 					<s:Iterator Id="child" Value="$childs" Status="statusCountCh">
 						<s:Push Id="indexCh" Value="{$statusCountCh.Index}"></s:Push>
 						<c:HorizontalLayout CssClass="child_grid">
-							<c:VerticalLayout OnClick="$GoToQuestionAction($child.AnswerType, $child.Id, $sku.SKU, control{$indexCh})">
+							<c:VerticalLayout OnClick="$GoToQuestionAction($child.AnswerType, $child.Id, $sku.SKU, control{$indexCh}, $child.Answer, $sku.SKU)">
 								<c:TextView Text="$child.Description" CssClass="description_row"></c:TextView>
 								<s:If Test="$child.IsInputField==1">
 									<c:EditText Id="control{$indexCh}" Text="$child.Answer" Placeholder = "—" OnChange="$CreateVisitSKUValueIfNotExists($sku.SKU, $child.Id, true)" OnLostFocus="$RefreshScreen($search)" Keyboard="$child.KeyboardType" CssClass="answer_main_row"></c:EditText>

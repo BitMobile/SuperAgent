@@ -277,24 +277,27 @@ function SaveNewOutlet(outlet) {
 
 	outlet = outlet.GetObject();
 	
-	if (outlet.Description.Trim() != "" && outlet.Address.Trim() != "" && outlet.Class!=DB.EmptyRef("Catalog_OutletClass") 
-			&& outlet.Type!=DB.EmptyRef("Catalog_OutletType") && outlet.Distributor!=DB.EmptyRef("Catalog_Distributor")) {
-		var q = new Query("SELECT Id FROM Catalog_Territory WHERE SR = @userRef LIMIT 1");
-		q.AddParameter("userRef", $.common.UserRef);
-		var territory = q.ExecuteScalar();
+	if (outlet.Description != null && outlet.Address != null){
+		if (TrimAll(outlet.Description) != "" && TrimAll(outlet.Address) != "" && outlet.Class!=DB.EmptyRef("Catalog_OutletClass") 
+				&& outlet.Type!=DB.EmptyRef("Catalog_OutletType") && outlet.Distributor!=DB.EmptyRef("Catalog_Distributor")) {
+			var q = new Query("SELECT Id FROM Catalog_Territory WHERE SR = @userRef LIMIT 1");
+			q.AddParameter("userRef", $.common.UserRef);
+			var territory = q.ExecuteScalar();
 
-		var to = DB.Create("Catalog.Territory_Outlets");
-		to.Ref = territory;
-		to.Outlet = outlet.Id;
-		to.Save();
+			var to = DB.Create("Catalog.Territory_Outlets");
+			to.Ref = territory;
+			to.Outlet = outlet.Id;
+			to.Save();
 
-		outlet.Save();
-		Variables.AddGlobal("outlet", outlet.Id);
+			outlet.Save();
+			Variables.AddGlobal("outlet", outlet.Id);
 
-		DoAction("Open");
-	} else {
-		Dialog.Message("#messageNulls#");
-	}
+			DoAction("Open");
+			
+			return null;
+		}
+	}		
+	Dialog.Message("#messageNulls#");
 }
 
 function Back(outlet) {

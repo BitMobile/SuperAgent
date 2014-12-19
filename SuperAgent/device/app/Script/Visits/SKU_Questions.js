@@ -241,7 +241,7 @@ function CalculateTotal(str, single, answer) {
 				" WHERE V.Ref IS NULL AND A.Ref=@outlet AND A.SKU!=@emptySKU AND " + strAnswered + " DATE(A.AnswerDate)>=DATE(SCc.BeginAnswerPeriod) " +
 				" AND (DATE(A.AnswerDate)<=DATE(SCc.EndAnswerPeriod) OR A.AnswerDate='0001-01-01 00:00:00') " +
 				" AND (Q.ParentQuestion=@emptyRef OR Q.ParentQuestion IN (SELECT Question FROM Catalog_Outlet_AnsweredQuestions " +
-				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=A.Ref AND SKU!=@emptySKU)) ");
+				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=A.Ref AND Questionaire=A.Questionaire AND SKU!=@emptySKU)) ");
 				histQuery.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 				histQuery.AddParameter("outlet", $.workflow.outlet);
 				histQuery.AddParameter("visit", $.workflow.visit);

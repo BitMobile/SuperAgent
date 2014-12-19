@@ -223,8 +223,8 @@ function FillQuestionnaires() {
 					" JOIN Document_Questionnaire_Schedule S ON A.Questionaire=S.Ref " +
 					" WHERE A.Questionaire=@questionnaire " +
 					" AND A.Ref=@outlet AND A.Question=@question AND A.SKU=@sku " +
-					" AND (date('now','start of day')>= S.BeginAnswerPeriod AND S.EndAnswerPeriod >= date('now','start of day')) " +
-					" AND (A.AnswerDate>= S.BeginAnswerPeriod AND S.EndAnswerPeriod >= A.AnswerDate)");
+					" AND (date('now','start of day')>= DATE(S.BeginAnswerPeriod) AND DATE(S.EndAnswerPeriod) >= date('now','start of day')) " +
+					" AND (DATE(A.AnswerDate)>= DATE(S.BeginAnswerPeriod) AND DATE(S.EndAnswerPeriod) >= DATE(A.AnswerDate))");
 			q2.AddParameter("questionnaire", res.Questionnaire);
 			q2.AddParameter("outlet", $.workflow.outlet);
 			q2.AddParameter("sku", resSKU);

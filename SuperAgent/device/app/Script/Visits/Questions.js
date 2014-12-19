@@ -39,15 +39,20 @@ function GetQuestionsByQuestionnaires(outlet) {
 	var str = CreateCondition($.workflow.questionnaires, " D.Id ");
 	var strAnswered = CreateCondition($.workflow.questionnaires, " Aa.Questionaire ");
 	
+	var single = 1;
+	if (regularAnswers)	
+		single = 0;
+	
 	//find obligatered questions qty
-	var queryCurr = new Query("SELECT DISTINCT Q.ChildQuestion FROM Document_Questionnaire D " +
-		"JOIN Document_Questionnaire_Questions Q ON D.Id=Q.Ref " +
+	var queryCurr = new Query("SELECT DISTINCT Q.ChildQuestion, D.Single " +
+		" FROM Document_Questionnaire D " +
+		" JOIN Document_Questionnaire_Questions Q ON D.Id=Q.Ref " +
 		" LEFT JOIN Document_Visit_Questions V ON V.Question=Q.ChildQuestion AND V.Ref=@visit " +
 		" WHERE " + str + " ((Q.ParentQuestion=@emptyRef) " +
 		" OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_Questions WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit) " +
 		" OR Q.ParentQuestion IN (SELECT Aa.Question FROM Catalog_Outlet_AnsweredQuestions Aa " +
-		" WHERE (Aa.Answer='Yes' OR Aa.Answer='Да') AND Aa.Ref=@outlet AND Aa.SKU=@emptySKU)) AND Obligatoriness=1 AND (Answer IS NULL OR Answer='—' OR Answer='') " +
-		" GROUP BY Q.ChildQuestion ");
+		" WHERE (Aa.Answer='Yes' OR Aa.Answer='Да') AND Aa.Ref=@outlet AND Aa.Questionaire=D.Id AND Aa.SKU=@emptySKU)) AND Obligatoriness=1 AND (Answer IS NULL OR Answer='—' OR Answer='') " +
+		" GROUP BY Q.ChildQuestion, D.Single ");
 	queryCurr.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	queryCurr.AddParameter("visit", $.workflow.visit);
 	queryCurr.AddParameter("outlet", $.workflow.outlet);
@@ -70,11 +75,12 @@ function GetQuestionsByQuestionnaires(outlet) {
 	queryHist.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	queryHist.AddParameter("emptySKU", DB.EmptyRef("Catalog_SKU"));	
 	
+	Dialog.Debug(queryCurr.ExecuteCount());
+	Dialog.Debug(queryHist.ExecuteCount());
+	
 	obligateredLeft = queryCurr.ExecuteCount() - queryHist.ExecuteCount();
 	
-	var single = 1;
-	if (regularAnswers)	
-		single = 0;
+
 	var res = GetQuestions(str, single);
 	
 	SetIndiactors(res, single, str);

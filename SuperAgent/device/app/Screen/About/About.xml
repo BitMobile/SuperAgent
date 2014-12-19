@@ -25,7 +25,7 @@
 			</c:HorizontalLayout>
 			<c:TextView	Text="#version#" CssClass="main_row" />
 			<c:TextView	Text="#superDescription#" CssClass="description_row" />
-			<c:HorizontalLayout CssClass="end_of_block" />
+			<!-- <c:HorizontalLayout CssClass="end_of_block" />
 			<c:HorizontalLine/>
 			
 			<c:DockLayout CssClass="parameter_grid">
@@ -39,7 +39,7 @@
 			</c:DockLayout>
 			<c:HorizontalLine/>
 			
-			<c:HorizontalLayout CssClass="end_of_block" />
+			<c:HorizontalLayout CssClass="end_of_block" /> -->
 			
 			<c:TextView	Text="#agreement#" CssClass="description_row" />
 			<c:TextView	Text="#icons#" CssClass="description_row" />
@@ -55,7 +55,7 @@
 			<c:TextView	Text="#firstBIT#" CssClass="description_row" />
 			<c:HorizontalLayout CssClass="end_of_block" />
 			
-			<c:HorizontalLine/>
+			<!-- <c:HorizontalLine/>
 			<c:DockLayout CssClass="parameter_grid">
 				<c:TextView Text="#webSite#"></c:TextView>
 				<c:Image />
@@ -67,7 +67,7 @@
 			</c:DockLayout>
 			<c:HorizontalLine/>
 			
-			<c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
+			<c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout> -->
 			
 		</c:ScrollView>
 

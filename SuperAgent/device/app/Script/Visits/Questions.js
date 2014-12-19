@@ -34,20 +34,39 @@ function ChangeListAndRefresh(control, param) {
 
 function GetQuestionsByQuestionnaires(outlet) {
 
-	var str = CreateCondition($.workflow.questionnaires, " D.Id ");	
+	var str = CreateCondition($.workflow.questionnaires, " D.Id ");
+	var strAnswered = CreateCondition($.workflow.questionnaires, " Aa.Questionaire ");
 	
 	//find obligatered questions qty
-	var queryCount = new Query("SELECT COUNT(Q.ChildQuestion) FROM Document_Questionnaire D " +
+	var queryCurr = new Query("SELECT DISTINCT Q.ChildQuestion FROM Document_Questionnaire D " +
 		"JOIN Document_Questionnaire_Questions Q ON D.Id=Q.Ref " +
 		" LEFT JOIN Document_Visit_Questions V ON V.Question=Q.ChildQuestion AND V.Ref=@visit " +
 		" WHERE " + str + " ((Q.ParentQuestion=@emptyRef) " +
-		" OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_Questions " +
-		" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit)) AND Obligatoriness=1 AND (Answer IS NULL OR Answer='—' OR Answer='') " +
+		" OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_Questions WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit) " +
+		" OR Q.ParentQuestion IN (SELECT Aa.Question FROM Catalog_Outlet_AnsweredQuestions Aa " +
+		" WHERE (Aa.Answer='Yes' OR Aa.Answer='Да') AND Aa.Ref=@outlet AND Aa.SKU=@emptySKU)) AND Obligatoriness=1 AND (Answer IS NULL OR Answer='—' OR Answer='') " +
 		" GROUP BY Q.ChildQuestion ");
-	queryCount.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
-	queryCount.AddParameter("visit", $.workflow.visit);
+	queryCurr.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
+	queryCurr.AddParameter("visit", $.workflow.visit);
+	queryCurr.AddParameter("outlet", $.workflow.outlet);
+	queryCurr.AddParameter("emptySKU", DB.EmptyRef("Catalog_SKU"));
 	
-	obligateredLeft = queryCount.ExecuteCount();
+	var queryHist = new Query( " SELECT DISTINCT Aa.Question " +
+			" FROM Catalog_Outlet_AnsweredQuestions Aa " +
+			" JOIN Document_Questionnaire_Schedule SCc " +
+			" JOIN Document_Questionnaire_Questions Q ON Q.Ref=SCc.Ref AND Aa.Question=Q.ChildQuestion " +
+			" LEFT JOIN Document_Visit_Questions V ON V.Ref=@visit AND V.Question=Aa.Question " +
+			" WHERE V.Ref IS NULL AND Aa.Ref=@outlet AND  Aa.SKU=@emptySKU AND " + strAnswered +
+			" DATE(Aa.AnswerDate)>=DATE(SCc.BeginAnswerPeriod) " +
+			" AND (DATE(Aa.AnswerDate)<=DATE(SCc.EndAnswerPeriod) OR Aa.AnswerDate='0001-01-01 00:00:00') AND Q.Obligatoriness='1'" +
+			" AND (Q.ParentQuestion=@emptyRef OR Q.ParentQuestion IN (SELECT Question FROM Catalog_Outlet_AnsweredQuestions " +
+			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=Aa.Ref AND SKU=@emptySKU)) ");
+	queryHist.AddParameter("outlet", $.workflow.outlet);
+	queryHist.AddParameter("visit", $.workflow.visit);
+	queryHist.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
+	queryHist.AddParameter("emptySKU", DB.EmptyRef("Catalog_SKU"));
+	
+	obligateredLeft = queryCurr.ExecuteCount() - queryHist.ExecuteCount();
 	
 	var single = 1;
 	if (regularAnswers)	
@@ -64,8 +83,13 @@ function GetQuestions(str, single) {
 			", Q.ChildType AS AnswerType, MAX(CAST(Q.Obligatoriness AS int)) AS Obligatoriness " +
 			", (SELECT Qq.QuestionOrder FROM Document_Questionnaire Dd  " +
 			" JOIN Document_Questionnaire_Questions Qq ON Dd.Id=Qq.Ref AND Q.ChildQuestion=Qq.ChildQuestion AND Dd.Id=D.Id ORDER BY Dd.Date LIMIT 1) AS QuestionOrder" +
-			", CASE WHEN V.Answer IS NULL OR V.Answer='' THEN CASE WHEN A.Answer IS NOT NULL THEN A.Answer ELSE '—' END " +
-				" ELSE CASE WHEN Q.ChildType=@snapshot THEN @attached ELSE V.Answer END END AS Answer " +
+			", CASE WHEN (RTRIM(V.Answer)='' OR V.Answer IS NULL) THEN " +
+				" CASE WHEN A.Answer IS NOT NULL THEN " +
+					" CASE WHEN Q.ChildType=@snapshot THEN @attached ELSE A.Answer END " +
+				" ELSE " +
+					" CASE WHEN Q.ChildType!=@integer AND Q.ChildType!=@decimal AND Q.ChildType!=@string THEN '—' END " +
+				" END " +
+			" ELSE CASE WHEN Q.ChildType=@snapshot THEN @attached ELSE V.Answer END END AS Answer " +
 			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal OR Q.ChildType=@string THEN 1 ELSE NULL END AS IsInputField " +
 			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal THEN 'numeric' ELSE 'auto' END AS KeyboardType " + 
 			
@@ -78,7 +102,9 @@ function GetQuestions(str, single) {
 			" AND (DATE(A.AnswerDate)<=DATE(SC.EndAnswerPeriod) OR A.AnswerDate='0001-01-01 00:00:00') " +
 			
 			" WHERE D.Single=@single AND " + str + " ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_Questions " +
-			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit)) " + 
+			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit) " + 
+			" OR Q.ParentQuestion IN (SELECT Aa.Question FROM Catalog_Outlet_AnsweredQuestions Aa " +
+			" WHERE (Aa.Answer='Yes' OR Aa.Answer='Да') AND Aa.Ref=@outlet AND Aa.SKU=@emptySKU) )" +
 			
 			" GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, Answer " + 
 			" ORDER BY DocDate, QuestionOrder ");

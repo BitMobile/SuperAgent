@@ -460,7 +460,7 @@ function GetCameraObject(entity) {
 	FileSystem.CreateDirectory("/private/Document.Visit");
 	var guid = Global.GenerateGuid();
 	//Variables.Add("guid", guid);
-	var path = String.Format("/private/Document.Visit/{0}/{1}.jpg", entity, guid);
+	var path = String.Format("/private/Document.Visit/{0}/{1}.jpg", entity.Id, guid);
 	Camera.Size = 300;
 	Camera.Path = path;
 	return guid; 

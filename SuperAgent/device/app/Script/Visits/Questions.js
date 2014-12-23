@@ -259,17 +259,29 @@ function CreateVisitQuestionValueIfNotExists(question, answer) {
 	query.AddParameter("Question", question);
 	var result = query.ExecuteScalar();
 	if (result == null) {
-		var p = DB.Create("Document.Visit_Questions");
-		p.Ref = $.workflow.visit;
-		p.Question = question;
+		if (answer!="—" && TrimAll(answer)!="") {
+			var p = DB.Create("Document.Visit_Questions");
+			p.Ref = $.workflow.visit;
+			p.Question = question;
+			p.AnswerDate = DateTime.Now;
+			p.Answer = answer;
+			p.Save();
+			result = p.Id;
+			return result;
+		}		
 	}
-	else
-		var p = result.GetObject();
-	p.AnswerDate = DateTime.Now;
-	p.Answer = answer;
-	p.Save();
-	result = p.Id;
-	return result;
+	else{
+		if (answer=="—" || TrimAll(answer)=="")
+			DB.Delete(result);
+		else{
+			var p = result.GetObject();
+			p.AnswerDate = DateTime.Now;
+			p.Answer = answer;
+			p.Save();
+			result = p.Id;
+			return result;
+		}
+	}	
 
 }
 

@@ -124,8 +124,9 @@ function GetSKUsFromQuesionnaires(search) {
 				" JOIN Document_Questionnaire_SKUs Ss ON Ss.Ref=D.Id " +
 				" WHERE D.Single=@single AND Ss.SKU=S.SKU AND (Q.ParentQuestion=@emptyRef " +
 				" OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs " +
-				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND SKU=S.SKU) OR Q.ParentQuestion IN (SELECT Question FROM Catalog_Outlet_AnsweredQuestions " +
-				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@outlet AND SKU=S.SKU))) AS Total " +
+				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND SKU=S.SKU) OR (Q.ParentQuestion IN (SELECT Question FROM Catalog_Outlet_AnsweredQuestions " +
+				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@outlet AND SKU=S.SKU) AND Q.ParentQuestion NOT IN (SELECT Question FROM Document_Visit_SKUs " +
+					" WHERE (Answer='No' OR Answer='Нет') AND Ref=@visit AND SKU=S.SKU)))) AS Total " +
 			" , (SELECT COUNT(DISTINCT Q.ChildQuestion) FROM Document_Questionnaire D " +
 				" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref" +
 				" JOIN Document_Questionnaire_SKUs Ss ON Ss.Ref=D.Id " +
@@ -229,8 +230,9 @@ function CalculateTotal(str, single, answer) {
 	" WHERE " + str + " D.Single = @single " +
 	" AND (Q.ParentQuestion=@emptyRef OR Q.ParentQuestion IN " +
 		"(SELECT Question FROM Document_Visit_SKUs WHERE (Answer='Yes' OR Answer='Да') AND SKU=S.SKU AND Ref=@visit) " +
-		" OR ParentQuestion IN (SELECT Question FROM Catalog_Outlet_AnsweredQuestions " +
-		" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@outlet AND Questionaire=D.Id AND SKU!=@emptySKU))" + cond);	
+		" OR (ParentQuestion IN (SELECT Question FROM Catalog_Outlet_AnsweredQuestions " +
+		" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@outlet AND Questionaire=D.Id AND SKU=S.SKU) AND Q.ParentQuestion NOT IN " +
+		" (SELECT Question FROM Document_Visit_SKUs WHERE (Answer='No' OR Answer='Нет') AND SKU=S.SKU AND Ref=@visit)))" + cond);	
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	q.AddParameter("visit", $.workflow.visit);
 	q.AddParameter("single", single);
@@ -246,7 +248,7 @@ function CalculateTotal(str, single, answer) {
 				" WHERE V.Ref IS NULL AND A.Ref=@outlet AND A.SKU!=@emptySKU AND " + strAnswered + " DATE(A.AnswerDate)>=DATE(SCc.BeginAnswerPeriod) " +
 				" AND (DATE(A.AnswerDate)<=DATE(SCc.EndAnswerPeriod) OR A.AnswerDate='0001-01-01 00:00:00') " +
 				" AND (Q.ParentQuestion=@emptyRef OR Q.ParentQuestion IN (SELECT Question FROM Catalog_Outlet_AnsweredQuestions " +
-				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=A.Ref AND Questionaire=A.Questionaire AND SKU!=@emptySKU)) ");
+				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=A.Ref AND Questionaire=A.Questionaire AND SKU=A.SKU)) ");
 				histQuery.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 				histQuery.AddParameter("outlet", $.workflow.outlet);
 				histQuery.AddParameter("visit", $.workflow.visit);

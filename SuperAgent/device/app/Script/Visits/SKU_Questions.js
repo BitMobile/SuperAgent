@@ -94,7 +94,8 @@ function GetSKUsFromQuesionnaires(search) {
 			" DATE(Aa.AnswerDate)>=DATE(SCc.BeginAnswerPeriod) " +
 			" AND (DATE(Aa.AnswerDate)<=DATE(SCc.EndAnswerPeriod) OR Aa.AnswerDate='0001-01-01 00:00:00') AND Q.Obligatoriness='1'" +
 			" AND (Q.ParentQuestion=@emptyRef OR Q.ParentQuestion IN (SELECT Question FROM Catalog_Outlet_AnsweredQuestions " +
-			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=Aa.Ref )) ");
+			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=Aa.Ref AND DATE(AnswerDate)>=DATE(SCc.BeginAnswerPeriod) " +
+			" AND (DATE(AnswerDate)<=DATE(SCc.EndAnswerPeriod) OR AnswerDate='0001-01-01 00:00:00'))) ");
 	queryHist.AddParameter("outlet", $.workflow.outlet);
 	queryHist.AddParameter("visit", $.workflow.visit);
 	queryHist.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));

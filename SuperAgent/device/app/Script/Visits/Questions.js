@@ -51,7 +51,9 @@ function GetQuestionsByQuestionnaires(outlet) {
 		" WHERE " + str + " ((Q.ParentQuestion=@emptyRef) " +
 		" OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_Questions WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit) " +
 		" OR Q.ParentQuestion IN (SELECT Aa.Question FROM Catalog_Outlet_AnsweredQuestions Aa " +
-		" WHERE (Aa.Answer='Yes' OR Aa.Answer='Да') AND Aa.Ref=@outlet AND Aa.Questionaire=D.Id AND Aa.SKU=@emptySKU)) AND Obligatoriness=1 AND (Answer IS NULL OR Answer='—' OR Answer='') " +
+		" JOIN Document_Questionnaire_Schedule SC ON Aa.Questionaire=SC.Id " +
+		" WHERE (Aa.Answer='Yes' OR Aa.Answer='Да') AND Aa.Ref=@outlet AND Aa.Questionaire=D.Id AND Aa.SKU=@emptySKU AND DATE(Aa.AnswerDate)>=DATE(SC.BeginAnswerPeriod) " +
+			" AND (DATE(Aa.AnswerDate)<=DATE(SC.EndAnswerPeriod) OR Aa.AnswerDate='0001-01-01 00:00:00'))) AND Obligatoriness=1 AND (Answer IS NULL OR Answer='—' OR Answer='') " +
 		" GROUP BY Q.ChildQuestion, D.Single ");
 	queryCurr.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	queryCurr.AddParameter("visit", $.workflow.visit);
@@ -67,7 +69,8 @@ function GetQuestionsByQuestionnaires(outlet) {
 			" DATE(Aa.AnswerDate)>=DATE(SCc.BeginAnswerPeriod) " +
 			" AND (DATE(Aa.AnswerDate)<=DATE(SCc.EndAnswerPeriod) OR Aa.AnswerDate='0001-01-01 00:00:00') AND Q.Obligatoriness='1'" +
 			" AND (Q.ParentQuestion=@emptyRef OR (Q.ParentQuestion IN (SELECT CA.Question FROM Catalog_Outlet_AnsweredQuestions CA " +
-			" WHERE (CA.Answer='Yes' OR CA.Answer='Да') AND CA.Ref=@outlet AND SKU=@emptySKU) AND Q.ParentQuestion NOT IN " +
+			" WHERE (CA.Answer='Yes' OR CA.Answer='Да') AND CA.Ref=@outlet AND SKU=@emptySKU AND DATE(CA.AnswerDate)>=DATE(SCc.BeginAnswerPeriod) " +
+			" AND (DATE(CA.AnswerDate)<=DATE(SCc.EndAnswerPeriod) OR CA.AnswerDate='0001-01-01 00:00:00')) AND Q.ParentQuestion NOT IN " +
 			" (SELECT Question FROM Document_Visit_Questions " +
 			" WHERE (Answer='No' OR Answer='Нет') AND Ref=@visit))) ");
 	queryHist.AddParameter("outlet", $.workflow.outlet);
@@ -111,7 +114,8 @@ function GetQuestions(str, single) {
 			" WHERE D.Single=@single AND " + str + " ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_Questions " +
 			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit) " + 
 			" OR (Q.ParentQuestion IN (SELECT Aa.Question FROM Catalog_Outlet_AnsweredQuestions Aa " +
-			" WHERE (Aa.Answer='Yes' OR Aa.Answer='Да') AND Aa.Ref=@outlet AND Aa.SKU=@emptySKU) " +
+			" WHERE (Aa.Answer='Yes' OR Aa.Answer='Да') AND Aa.Ref=@outlet AND Aa.Questionaire=D.Id AND Aa.SKU=@emptySKU AND DATE(A.AnswerDate)>=DATE(SC.BeginAnswerPeriod) " +
+			" AND (DATE(A.AnswerDate)<=DATE(SC.EndAnswerPeriod) OR A.AnswerDate='0001-01-01 00:00:00')) " +
 			"AND Q.ParentQuestion NOT IN (SELECT Question FROM Document_Visit_Questions " +
 			" WHERE (Answer='No' OR Answer='Нет') AND Ref=@visit)))" +
 			

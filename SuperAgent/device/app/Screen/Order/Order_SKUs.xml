@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Visit_SKUs.css">
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Order_SKUs.css">
 
 	<s:Push Id="order" Value="$workflow.order"></s:Push>
 	<s:Push Id="search" Value="$param1"></s:Push>
@@ -34,18 +34,22 @@
 
 
 		<c:ScrollView Id="grScrollView" OnScroll="$OnScroll()">
-			<s:Push Id="currentGroup" Value=""></s:Push>
+			<s:If Test="$DoGroupping()">
+				<s:Push Id="currentGroup" Value=""></s:Push>
+			</s:If>			
 
 			<s:Iterator Id="item" Value="$skusByGroup" Status="statusCount">
 				<s:Push Id="index" Value="$statusCount.Index"></s:Push>
 
-				<s:If Test="$currentGroup != $item.GroupDescription">
-					<s:Push Id="currentGroup" Value="$item.GroupDescription"></s:Push>
-					<s:Push Id="groupPath" Value="$GetGroupPath($item.GroupId, $item.GroupParent, $item.ParentDescription)"></s:Push>
-					<c:HorizontalLayout CssClass="caption_grid">
-						<c:TextView Text="{$groupPath} / {$currentGroup}"></c:TextView>
-					</c:HorizontalLayout>
-					<c:HorizontalLine CssClass="editLine" />
+				<s:If Test="$DoGroupping()">
+					<s:If Test="$currentGroup != $item.GroupDescription">
+						<s:Push Id="currentGroup" Value="$item.GroupDescription"></s:Push>
+						<s:Push Id="groupPath" Value="$GetGroupPath($item.GroupId, $item.GroupParent, $item.ParentDescription)"></s:Push>
+						<c:HorizontalLayout CssClass="caption_grid">
+							<c:TextView Text="{$groupPath} / {$currentGroup}"></c:TextView>
+						</c:HorizontalLayout>
+						<c:HorizontalLine CssClass="editLine" />
+					</s:If>
 				</s:If>
 
 
@@ -63,9 +67,24 @@
 							<c:TextView Id="textView{$index}" Text="0 {#alreadyOrdered#}" />
 						</c:VerticalLayout>
 					</c:HorizontalLayout>
-					<c:HorizontalLayout OnClickAction="$DoAction(SelectSKU, $item.Id, $item.Price)" CssClass="grid">
+					<c:HorizontalLayout OnClickAction="$DoAction(SelectSKU, $item.Id, $item.Price, null, null, null, $item.RecOrder, $item.UnitId)" CssClass="grid">
 						<c:VerticalLayout>
-							<c:TextView Text="$item.Description" CssClass="main_row"></c:TextView>
+							<c:DockLayout>
+								<s:If Test="$DoRecommend()">
+									<s:If Test="$ShowRecommendedQty($item.OrderRecOrder, $item.recOrder)">
+										<c:VerticalLayout>
+											<c:TextView Text="{$item.RecOrder} {$item.RecUnit}" CssClass="rec_order" />
+											<c:TextView Text="#recommended#" CssClass="rec_comment" />
+										</c:VerticalLayout>
+									</s:If>
+									<s:Else>
+										<s:If Test="$item.OrderRecOrder>0">
+											<c:TextView Text="#recommended#" CssClass="single_rec" />
+										</s:If>										
+									</s:Else>									
+								</s:If>															
+								<c:TextView Text="$item.Description" CssClass="main_row"></c:TextView>
+							</c:DockLayout>							
 							<c:TextView Text="#price2# {$item.Price}  #stock#: {$item.CommonStock} #brand#: {$item.Brand}" CssClass="description_row"></c:TextView>
 						</c:VerticalLayout>
 						<c:Image />

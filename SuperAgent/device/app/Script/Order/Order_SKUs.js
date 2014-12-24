@@ -2,13 +2,28 @@ var defFeature;
 var defPack;
 var packDescription;
 var swipedRow;
-var multiplier;
+var rec_order;
+
+function OnLoading() {
+	rec_order = "<font size=''>1576 шт.</font>";
+}
 
 function GetSKUAndGroups(searchText, priceList, stock) {
 
 	var filterString = "";
 	filterString += AddFilter(filterString, "group_filter", "G.Id", " AND ");
 	filterString += AddFilter(filterString, "brand_filter", "CB.Id", " AND ");
+	
+	var groupFields = "";
+	var groupJoin = "";
+	var groupParentJoin = "";
+	var groupSort = "";
+	if (DoGroupping()){
+		groupFields = " G.Description AS GroupDescription, G.Id AS GroupId, G.Parent AS GroupParent, P.Description AS ParentDescription, ";
+		groupJoin = "JOIN Catalog_SKUGroup G ON G.Id = S.Owner ";
+		groupParentJoin = "LEFT JOIN Catalog_SKUGroup P ON G.Parent=P.Id ";
+		groupSort = " G.Description, "; 
+	}
 
 	var query = new Query();
 	
@@ -32,16 +47,42 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 	else
 		var stockField = "S.CommonStock AS CommonStock,";
 	
-	query.Text = "SELECT DISTINCT S.Id, S.Description, PL.Price, " + stockField + " G.Description AS GroupDescription, " +
-			"G.Id AS GroupId, G.Parent AS GroupParent, P.Description AS ParentDescription, CB.Description AS Brand " +
+	
+	var recOrderFields = ", 0 AS RecOrder ";
+	var recOrderStr = "";
+	var recOrderSort = "";
+	if (DoRecommend()){
+		recOrderFields = 	", CASE WHEN V.Answer IS NULL THEN U.Description ELSE UB.Description END AS RecUnit " +
+							", CASE WHEN V.Answer IS NULL THEN U.Id ELSE UB.Id END AS UnitId " +
+							", CASE WHEN V.Answer IS NULL THEN MS.Qty ELSE (MS.BaseUnitQty-V.Answer) END AS RecOrder " +
+							", CASE WHEN MS.Qty IS NULL THEN 0 ELSE CASE WHEN (MS.Qty-V.Answer)>0 OR (V.Answer IS NULL AND MS.Qty>0) THEN 2 ELSE 1 END END AS OrderRecOrder "
+		recOrderStr =   "JOIN Catalog_UnitsOfMeasure UB ON S.BaseUnit=UB.Id " +
+						"LEFT JOIN Catalog_AssortmentMatrix_Outlets O ON O.Outlet=@outlet " +
+						"LEFT JOIN Catalog_AssortmentMatrix_SKUs MS ON S.Id=MS.SKU AND MS.BaseUnitQty IN " +
+								" (SELECT MAX(SS.BaseUnitQty) FROM Catalog_AssortmentMatrix_SKUs SS " +
+								" JOIN Catalog_AssortmentMatrix_Outlets OO ON SS.Ref=OO.Ref	" +
+								" WHERE Outlet=@outlet AND SS.SKU=MS.SKU LIMIT 1) " + 
+							"LEFT JOIN Catalog_UnitsOfMeasure U ON MS.Unit=U.Id " + 
+							"LEFT JOIN Document_Visit_SKUs V ON MS.SKU=V.SKU AND V.Ref=@visit AND V.Question IN (SELECT Id FROM Catalog_Question CQ WHERE CQ.Assignment=@assignment)";
+		query.AddParameter("outlet", $.workflow.outlet);
+		query.AddParameter("visit", $.workflow.visit);
+		query.AddParameter("assignment", DB.Current.Constant.SKUQuestions.Stock);
+		recOrderSort = " OrderRecOrder DESC, ";
+	}
+	
+	query.Text = "SELECT DISTINCT S.Id, S.Description, PL.Price, " + stockField + 
+			groupFields +
+			"CB.Description AS Brand " +
+			recOrderFields +
 			"FROM Catalog_SKU S " +
 			stockString + 
-			"JOIN Catalog_SKUGroup G ON G.Id = S.Owner " +			
+			groupJoin +			
 			"JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id " +
 			"JOIN Catalog_Brands CB ON CB.Id=S.Brand " +			
-			"LEFT JOIN Catalog_SKUGroup P ON G.Parent=P.Id " +
+			groupParentJoin +
+			recOrderStr +
 			" WHERE " + stockCondition + " PL.Ref = @Ref " + stockWhere + searchString + filterString + 
-			" ORDER BY G.Description, S.Description LIMIT 100";
+			" ORDER BY " + groupSort + recOrderSort + " S.Description LIMIT 100"; //G.Description, S.Description LIMIT 100";
 	query.AddParameter("Ref", priceList);	
 	return query.Execute();
 
@@ -164,6 +205,30 @@ function HideSwiped()
 {
 	if(swipedRow != null)
 		swipedRow.Index = 1;
+}
+
+function DoGroupping() {
+
+	if ($.Exists("group_filter")){
+		if (parseInt($.group_filter.Count())!=parseInt(0))
+				return true;
+	}
+	return false;
+}
+
+function DoRecommend() {
+	
+	if ($.workflow.name=="Visit" && $.sessionConst.OrderCalc) 
+		return true;
+	else
+		return false;
+}
+
+function ShowRecommendedQty(order, recOrder) {
+	if (order>0)
+		if (recOrder>0)
+			return true;
+	return false;
 }
 
 // --------------------------Filters------------------

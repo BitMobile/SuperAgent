@@ -223,6 +223,7 @@ repeat		Repeat
 nonregular	Non-regular
 regular		Regular
 requiredLeft	Reqired answers left:
+recommended		recommend.
 developer	DEVELOPER
 bitMobile	BIT.MOBILE
 bitmobileDesc	BIT.MOBILE is a division of the First Bit. We are developing mobile solutions for business.

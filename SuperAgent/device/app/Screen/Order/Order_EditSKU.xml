@@ -7,7 +7,7 @@
 	<s:Push Id="orderitem" Value="$param3"></s:Push>
 	<s:Push Id="showimage" Value="$param5"></s:Push>
 	<s:Push Id="features" Value="$GetFeatures($sku.Id)"></s:Push>
-	<s:Push Id="orderitem" Value="$CreateOrderItemIfNotExist($order.Id,$sku,$orderitem,$price,$features)"></s:Push>
+	<s:Push Id="orderitem" Value="$CreateOrderItemIfNotExist($order.Id,$sku,$orderitem,$price,$features, $param6, $param7)"></s:Push>
 	<s:Push Id="featureDescr" Value="$GetFeatureDescr($orderitem.Feature)"></s:Push>
 
 	<s:If Test="$showimage == null">

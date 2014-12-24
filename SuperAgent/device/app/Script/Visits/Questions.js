@@ -252,14 +252,14 @@ function ForwardIsntAllowed() {
 		return false;
 }
 
-function CreateVisitQuestionValueIfNotExists(question, answer) {
+function CreateVisitQuestionValueIfNotExists(question, answer, dialogInput) {
 
 	var query = new Query("SELECT Id FROM Document_Visit_Questions WHERE Ref == @Visit AND Question == @Question");
 	query.AddParameter("Visit", $.workflow.visit);
 	query.AddParameter("Question", question);
 	var result = query.ExecuteScalar();
 	if (result == null) {
-		if (answer!="—" && TrimAll(answer)!="") {
+		if (dialogInput || (answer!="—" && TrimAll(answer)!="")) {
 			var p = DB.Create("Document.Visit_Questions");
 			p.Ref = $.workflow.visit;
 			p.Question = question;
@@ -271,7 +271,7 @@ function CreateVisitQuestionValueIfNotExists(question, answer) {
 		}		
 	}
 	else{
-		if (answer=="—" || TrimAll(answer)=="")
+		if ((answer=="—" || TrimAll(answer)=="") && dialogInput==false)
 			DB.Delete(result);
 		else{
 			var p = result.GetObject();
@@ -297,12 +297,14 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 	var editControl = Variables[control];
 	if (editControl.Text=="—")
 		editControl.Text = "";
-	var question = CreateVisitQuestionValueIfNotExists(questionItem, editControl.Text);
+	
+	var question = CreateVisitQuestionValueIfNotExists(questionItem, editControl.Text, true);
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.ValueList).ToString()) {
 		var q = new Query();
 		q.Text = "SELECT Value, Value FROM Catalog_Question_ValueList WHERE Ref=@ref";
 		q.AddParameter("ref", questionItem);
+		
 		ValueListSelect(question, "Answer", q.Execute(), Variables[control]);
 	}
 
@@ -324,7 +326,7 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 }
 
 function AssignQuestionValue(control, question) {
-	CreateVisitQuestionValueIfNotExists(question, control.Text)
+	CreateVisitQuestionValueIfNotExists(question, control.Text, false);
 }
 
 function DialogCallBack(control, key) {

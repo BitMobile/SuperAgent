@@ -1,23 +1,52 @@
-.title_grid {
-	height: 20sp;
+
+.caption_grid{
+	padding-left: 5%;
+}
+
+.main_row {
+	height: 2.15sp auto;
 	width: 100%;
+	padding-top: 1sp;
+	margin-top: 0%;
+	padding-left: 5%;
+	padding-right: 7%;	
+	white-space: normal;
+	font: 100% Arial;
+	color: #000000;
+}
+
+.description_row {
+	height: 2.15sp auto;
+	width: 100%;
+	padding-top: 1sp;
+	margin-top: 0%;
+	padding-left: 5%;
+	padding-right: 7%;	
+	white-space: normal;
+	color: #8e8e93;
+	font: 100% Arial;
+}
+
+.image_block{
+	height: 11% auto;
+	width: 100%;
+	padding-left: 5%;
+	padding-top: 11%;
+	padding-bottom: 11%;
 	background-color: none;
-	padding-left: 3.5%;
-	padding-right: 3.5%;
-	padding-top: 5%;
-	padding-bottom: 5%;	
 }
 
-.title_grid main_row {
-	height: 30%;
-	width: 100%;	
-	color: #228AED;
-	font: 80% Arial-BoldMT;
+.image_block super_agent{
+	background-image: url(logo_superagent.png);
+	height: 8sp;
 }
 
-.title_grid description_row {
-	height: 70%;
-	width: 100%;
-	margin-top: 5%;	
-	font: 20% Arial;
+.image_block firstBIT{
+	background-image: url(logo_firstbit.png);
+	height: 8sp;
+}
+
+.parameter_grid TextView {
+	width: 74%;
+	color: #000000;
 }

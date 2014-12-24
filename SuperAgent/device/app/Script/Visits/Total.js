@@ -83,13 +83,13 @@ function CountAnswers(visitId, skuAnsw) {
 }
 
 function CountDoneTasks(visit) {
-    var query = new Query("SELECT Id FROM Document_Visit_Task WHERE Ref=@ref");
+    var query = new Query("SELECT Id FROM Document_Visit_Task WHERE Ref=@ref AND Result=@result");
     query.AddParameter("ref", visit);
+    query.AddParameter("result", true);
     return query.ExecuteCount();
 }
 
 function CountTasks(outlet) {
-    //return DB.Current.Document.Task.SelectBy("Outlet", outlet.Id).Where("PlanDate >= @p1", [DateTime.Now.Date]).Count();
     var query = new Query("SELECT Id FROM Document_Task WHERE PlanDate >= @planDate AND Outlet = @outlet");
     query.AddParameter("outlet", outlet);
     query.AddParameter("planDate", DateTime.Now.Date);
@@ -115,7 +115,7 @@ function CheckAndCommit(order, visit, wfName) {
         if (OrderExists(visit.Id)) {
             order.GetObject().Save();
         }
-
+        
         FillQuestionnaires();
         
         visit.Save();
@@ -165,6 +165,10 @@ function VisitIsChecked(visit, order, wfName) {
 function FillQuestionnaires() {
 	
 	var str = CreateCondition($.workflow.questionnaires, " D.Id ");
+	
+	if (String.IsNullOrEmpty(str))
+		return false;
+	
 	var q = new Query("SELECT D.Single, VQ.Id AS AnswerId, NULL AS SKU, Q.ChildQuestion AS Question, Q.Ref AS Questionnaire, VQ.AnswerDate, VQ.Answer, VQ.Ref AS Visit " +
 			" FROM Document_Visit_Questions VQ " +
 			" JOIN Document_Questionnaire_Questions Q ON VQ.Question=Q.ChildQuestion " +
@@ -183,14 +187,14 @@ function FillQuestionnaires() {
 	q.AddParameter("visit", $.workflow.visit);
 	var res = q.Execute().Unload();
 	
+	
 	var lastSKU;
 	var lastQuestion;
 	
 	while (res.Next()) {
-		if (NewQuestion(lastSKU, res.SKU, lastQuestion, res.Question)==false) 
+		if (NewQuestion(lastSKU, res.SKU, lastQuestion, res.Question))
 			var answerObj = res.AnswerId.GetObject();
-		else{
-			
+		else{			
 			var sku = res.SKU;
 			if (sku==null)
 				sku = DB.EmptyRef("Catalog_SKU");
@@ -210,22 +214,32 @@ function FillQuestionnaires() {
 		answerObj.Questionnaire = res.Questionnaire;
 		answerObj.Save();
 		if (res.Single==1){
-			var q2 = new Query("SELECT Id FROM Catalog_Outlet_AnsweredQuestions WHERE Questionnaire=@questionnaire " +
-					"AND Ref=@outlet AND Question=@question AND SKU=@sku");
+			 
+			var resSKU = res.SKU; 
+			if (resSKU==null)
+				resSKU = DB.EmptyRef("Catalog_SKU");
+			
+			var q2 = new Query("SELECT A.Id FROM Catalog_Outlet_AnsweredQuestions A " +
+					" JOIN Document_Questionnaire_Schedule S ON A.Questionaire=S.Ref " +
+					" WHERE A.Questionaire=@questionnaire " +
+					" AND A.Ref=@outlet AND A.Question=@question AND A.SKU=@sku");
 			q2.AddParameter("questionnaire", res.Questionnaire);
 			q2.AddParameter("outlet", $.workflow.outlet);
-			q2.AddParameter("sku", res.SKU);
+			q2.AddParameter("sku", resSKU);
+			q2.AddParameter("question", res.Question);
+			var outletAnswer = q2.ExecuteScalar();
 			
-			if (res.OutletAnswerId==null || NewQuestion(lastSKU, res.SKU, lastQuestion, res.Question)){
-				var outletAnswer = DB.Create("Catalog.Outlet_AnsweredQuestions");
+			if (outletAnswer==null){
+				outletAnswer = DB.Create("Catalog.Outlet_AnsweredQuestions");
 				outletAnswer.Ref = $.workflow.outlet;
 				outletAnswer.Questionaire = res.Questionnaire;
 				outletAnswer.Question = res.Question;
 				if (res.SKU!=null)
 					outletAnswer.SKU = res.SKU;
 			}
-			else
-				var outletAnswer = res.OutletAnswerId.GetObject();
+			else{
+				outletAnswer = outletAnswer.GetObject();
+			}
 			outletAnswer.Answer = res.Answer;
 			outletAnswer.AnswerDate = res.AnswerDate;
 			outletAnswer.Save();			
@@ -236,14 +250,22 @@ function FillQuestionnaires() {
 	
 }
 
-//(lastSKU==null && lastQuestion!=res.Question) || (lastSKU!=res.SKU || lastQuestion!=res.Question))
 function NewQuestion(lastSKU, currSKU, lastQuestion, currQuestion) {
 	if (lastSKU==null)
 		lastSKU = DB.EmptyRef("Catalog_SKU");
-	if (lastSKU==DB.EmptyRef("Catalog_SKU") && lastQuestion!=currQuestion)
-		return true;
-	if (lastSKU!=currSKU || lastQuestion!=currQuestion)
-		return true;
+	if (currSKU==null)
+		currSKU = DB.EmptyRef("Catalog_SKU");
+	if (lastQuestion==null)
+		lastQuestion = DB.EmptyRef("Catalog_Question");
+
+	if (lastSKU.ToString()==DB.EmptyRef("Catalog_SKU").ToString()){
+		if (lastQuestion.ToString()!=currQuestion.ToString())
+			return true;
+	}
+	else{
+		if (lastQuestion.ToString()!=currQuestion.ToString() || lastSKU.ToString()!=currSKU.ToString())
+			return true;
+	}
 	return false;
 }
 

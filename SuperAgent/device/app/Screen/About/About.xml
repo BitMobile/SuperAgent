@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack"
-	StyleSheet="About.css">
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="About.css">
 	<c:VerticalLayout Id="VLayout">
 
 		<c:DockLayout CssClass="top_navigator">
@@ -14,20 +13,62 @@
 			</c:HorizontalLayout>
 		</c:DockLayout>
 		<c:HorizontalLine />
+		<c:HorizontalLine />
 
 		<c:ScrollView Id="grScrollView">
 
 			<c:HorizontalLayout CssClass="caption_grid">
+				<c:TextView Text="#about#:" />
+			</c:HorizontalLayout>
+			<c:HorizontalLayout CssClass="image_block">
+				<c:Image CssClass="super_agent"/>
+			</c:HorizontalLayout>
+			<c:TextView	Text="#version#" CssClass="main_row" />
+			<c:TextView	Text="#superDescription#" CssClass="description_row" />
+			<!-- <c:HorizontalLayout CssClass="end_of_block" />
+			<c:HorizontalLine/>
+			
+			<c:DockLayout CssClass="parameter_grid">
+				<c:TextView Text="#support#"></c:TextView>
+				<c:Image />
+			</c:DockLayout>
+			<c:HorizontalLine/>
+			<c:DockLayout CssClass="parameter_grid">
+				<c:TextView Text="#idea#"></c:TextView>
+				<c:Image />
+			</c:DockLayout>
+			<c:HorizontalLine/>
+			
+			<c:HorizontalLayout CssClass="end_of_block" /> -->
+			
+			<c:TextView	Text="#agreement#" CssClass="description_row" />
+			<c:TextView	Text="#icons#" CssClass="description_row" />
+
+			<c:HorizontalLayout CssClass="caption_grid">
 				<c:TextView Text="#developer#:" />
 			</c:HorizontalLayout>
-			<c:VerticalLayout CssClass="title_grid">
-				<c:TextView Text="#bitMobile#" CssClass="main_row" />
-				<c:TextView
-					Text="#bitmobileDesc#"
-					CssClass="description_row" />
-			</c:VerticalLayout>
-			<c:HorizontalLayout CssClass="end_of_block" />
+			
+			<c:HorizontalLayout CssClass="image_block">
+				<c:Image CssClass="firstBIT"/>
+			</c:HorizontalLayout>
 
+			<c:TextView	Text="#firstBIT#" CssClass="description_row" />
+			<c:HorizontalLayout CssClass="end_of_block" />
+			
+			<!-- <c:HorizontalLine/>
+			<c:DockLayout CssClass="parameter_grid">
+				<c:TextView Text="#webSite#"></c:TextView>
+				<c:Image />
+			</c:DockLayout>
+			<c:HorizontalLine/>
+			<c:DockLayout CssClass="parameter_grid">
+				<c:TextView Text="#others#"></c:TextView>
+				<c:Image />
+			</c:DockLayout>
+			<c:HorizontalLine/>
+			
+			<c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout> -->
+			
 		</c:ScrollView>
 
 	</c:VerticalLayout>

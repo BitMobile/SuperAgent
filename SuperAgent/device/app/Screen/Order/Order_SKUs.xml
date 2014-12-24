@@ -2,7 +2,7 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Order_SKUs.css">
 
 	<s:Push Id="order" Value="$workflow.order"></s:Push>
-	<s:Push Id="search" Value="$param2"></s:Push>
+	<s:Push Id="search" Value="$param1"></s:Push>
 
 	<s:Push Id="skusByGroup" Value="$GetSKUAndGroups($search, $order.PriceList, $order.Stock)"></s:Push>
 
@@ -21,7 +21,7 @@
 				<c:Image />
 				<c:EditText Id="edtSearch" Text="$search" OnGetFocus="$HideSwiped()" Placeholder="#search#"></c:EditText>
 			</c:DockLayout>
-			<c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoRefresh($param1,$edtSearch.Text)"></c:Button>
+			<c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoRefresh($edtSearch.Text,$param2)"></c:Button>
 		</c:HorizontalLayout>
 		<c:HorizontalLine />
 
@@ -73,7 +73,7 @@
 								<s:If Test="$DoRecommend()">
 									<s:If Test="$ShowRecommendedQty($item.OrderRecOrder, $item.recOrder)">
 										<c:VerticalLayout>
-											<c:TextView Text="{$item.OrderRecOrder} {$item.RecOrder} {$item.RecUnit}" CssClass="rec_order" />
+											<c:TextView Text="{$item.RecOrder} {$item.RecUnit}" CssClass="rec_order" />
 											<c:TextView Text="#recommended#" CssClass="rec_comment" />
 										</c:VerticalLayout>
 									</s:If>

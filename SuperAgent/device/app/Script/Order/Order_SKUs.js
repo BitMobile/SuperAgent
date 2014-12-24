@@ -95,7 +95,7 @@ function GetQuickOrder(control, skuId, itemPrice, index, packField, textViewFiel
 	if(parseInt(control.Index)==parseInt(0)){
 		var query = new Query();
 		query.Text = "SELECT S.Id, S.Description, BF.Feature AS DefaultFeature, " +
-				"SP.Pack AS DefaultUnit, IfNull(O.Qty, 0) AS Qty, U.Description AS Pack " +
+				"SP.Pack AS DefaultUnit, IfNull(O.Qty, 0) AS Qty, U.Description AS Pack, SP.Multiplier AS Multiplier " +
 				"FROM Catalog_SKU S " +
 				"JOIN Catalog_SKU_Packing SP ON S.Id=SP.Ref AND SP.LineNumber=1 " +
 				"JOIN Catalog_SKU_Stocks BF ON BF.Ref=S.Id AND BF.LineNumber=1 " +
@@ -113,6 +113,7 @@ function GetQuickOrder(control, skuId, itemPrice, index, packField, textViewFiel
 			
 		Variables[packField].Text = packDescription;
 		Variables[textViewField].Text = quickOrderItem.Qty + " " + packDescription + " " + Translate["#alreadyOrdered#"];
+		multiplier = quickOrderItem.Multiplier;
 	}
 }
 
@@ -134,7 +135,7 @@ function CreateOrderItem(control, editFieldName, textFieldName, packFireld, sku,
 			p.Feature = defFeature;
 			p.Price = price;
 			p.Qty = Converter.ToDecimal(Variables[editFieldName].Text);
-			p.Total = p.Price;
+			p.Total = p.Price * multiplier;
 			p.Amount = p.Total * p.Qty;
 			p.Units = defPack;
 			p.Discount = 0;
@@ -255,7 +256,7 @@ function CheckFilterAndForward() {
 	CheckFilter("group_filter");
 	CheckFilter("brand_filter");
 
-	Workflow.Forward([]);
+	Workflow.Forward([null, true]);
 }
 
 function CheckFilter(filterName) {

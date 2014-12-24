@@ -82,8 +82,8 @@
 			</c:HorizontalLayout>
 
 			<c:DockLayout CssClass="parameter_grid">
-				<s:Push Id="answered" Value="$CountAnswers($workflow.visit, $workflow.sku_answ)"></s:Push>
-				<s:Push Id="questions" Value="$GetSum($workflow.questions_qty, $workflow.sku_qty)"></s:Push>
+				<s:Push Id="answered" Value="$workflow.questions_answ"></s:Push>
+				<s:Push Id="questions" Value="$workflow.questions_qty"></s:Push>
 				<c:TextView Text="#questAnswers#"></c:TextView>
 				<c:TextView Text="{$answered} #of# {$questions}" CssClass="value"></c:TextView>
 			</c:DockLayout>

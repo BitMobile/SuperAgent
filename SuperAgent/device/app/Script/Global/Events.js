@@ -28,14 +28,10 @@ function OnWorkflowStart(name) {
 	if (name == "Visit") {
 		
 			var questionnaires = GetQuestionnairesForOutlet($.outlet);
-			
-			$.workflow.Add("questionnaires", questionnaires);
+			$.workflow.Add("questionnaires", questionnaires);						
 
 			if (parseInt(GetTasksCount()) != parseInt(0))
-				$.workflow.Add("skipTasks", false); // нельзя просто
-															// взять и присвоить
-															// значение
-															// переменной!
+				$.workflow.Add("skipTasks", false); // нельзя просто взять и присвоить значение переменной!
 			else
 				$.workflow.Add("skipTasks", true);
 
@@ -200,11 +196,11 @@ function GetTasksCount() {
 //-----Questionnaire selection-------
 
 function GetQuestionnairesForOutlet(outlet) {
-	var query = new Query("SELECT DISTINCT Q.Id " +//, ST.Selector, ST.ComparisonType, ST.Value, ST.AdditionalParameter " +
+	var query = new Query("SELECT DISTINCT Q.Id " +
 			"FROM Document_Questionnaire_Schedule S " +
 			"JOIN Document_Questionnaire Q ON Q.Id=S.Ref " +
-			//"JOIN Document_Questionnaire_Selectors ST ON ST.Ref=Q.Id " +
-			"WHERE date(S.Date)=date('now', 'start of day') ORDER BY Q.Id");//, ST.Selector, ST.ComparisonType");
+			"WHERE date(S.Date)=date('now', 'start of day') AND Q.Status=@active ORDER BY Q.Id");
+	query.AddParameter("active", DB.Current.Constant.QuestionnareStatus.Active);
 	var recordset = query.Execute();
 
 	var list = new List;
@@ -234,7 +230,8 @@ function GetQuestionnairesForOutlet(outlet) {
 				listChecked = true;
 			}
 			
-			if (selectors.ComparisonType=="In list" || selectors.ComparisonType=="В списке"){								
+			//if (selectors.ComparisonType=="In list" || selectors.ComparisonType=="В списке"){								
+			if ((selectors.ComparisonType).ToString()==(DB.Current.Constant.ComparisonType.InList).ToString()){
 				listParameter.Add(CheckSelector(outlet, selectors.Selector, "Equal", selectors.Value, selectors.AdditionalParameter)); //real check is later, now - only an array
 				listChecked = false;
 				currentSelector = selectors.Selector;			//stuff for
@@ -347,8 +344,8 @@ function CheckSelector(outlet, selector, compType, value, additionalParameter) {
 			return Compare(compType, false);
 	}
 	
-	if (selector==null){
-		return false;
+	if (selector=="Catalog_Positions"){
+		return true;
 	}	
 
 }
@@ -363,7 +360,7 @@ function CheckListSelector(list) {
 }
 
 function Compare(compType, equal) {
-	if (compType=="Not equal" || compType=="Не равно"){
+	if ((compType).ToString()==(DB.Current.Constant.ComparisonType.NotEqual).ToString()){
 		if (equal)
 			return false;
 		else
@@ -400,17 +397,25 @@ function GetRegionQueryText() {
 //-----Questions count-----------
 
 function GetQuestionsCount(questionnaires) {
-	var str = CreateCondition(questionnaires);	
-	var query = new Query("SELECT COUNT(Id) FROM Document_Questionnaire_Questions " + str);					
-	var res = query.ExecuteScalar();
-	return res;
+	var str = CreateCondition(questionnaires);
+	if (String.IsNullOrEmpty(str))
+		return parseInt(0);
+	else{
+		var query = new Query("SELECT COUNT(Id) FROM Document_Questionnaire_Questions " + str);					
+		var res = query.ExecuteScalar();
+		return res;
+	}
 }
 
 function GetSKUQuestionsCount() {
 	var str = CreateCondition(questionnaires);	
-	var query = new Query("SELECT COUNT(Id) FROM Document_Questionnaire_SKUQuestions " + str);					
-	var res = query.ExecuteScalar();
-	return res;
+	if (String.IsNullOrEmpty(str))
+		return parseInt(0);
+	else{
+		var query = new Query("SELECT COUNT(Id) FROM Document_Questionnaire_SKUQuestions " + str);					
+		var res = query.ExecuteScalar();
+		return res;
+	}
 }
 
 function CreateCondition(list) {

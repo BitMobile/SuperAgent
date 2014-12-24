@@ -209,9 +209,6 @@ phone		Phone number
 email		E-mail
 web_site	Web-site
 stockPlace	Stock
-developer	DEVELOPER
-bitMobile	BIT.MOBILE
-bitmobileDesc	BIT.MOBILE is a division of the First Bit. We are developing mobile solutions for business.
 total_receivable	Total sum:
 overdue		Overdue:
 overdueSum	[overdue]
@@ -227,3 +224,16 @@ nonregular	Non-regular
 regular		Regular
 requiredLeft	Reqired answers left:
 recommended		recommend.
+developer	DEVELOPER
+bitMobile	BIT.MOBILE
+bitmobileDesc	BIT.MOBILE is a division of the First Bit. We are developing mobile solutions for business.
+about		ПОДРОБНЕЕ О ПРИЛОЖЕНИИ
+version		Версия 2.2.1.55
+superDescription	СуперАгент — мобильное решение для сбора заказов, анкетирования и мерчандайзинга, контроля работы сотрудников.
+support		Тех.поддержка
+idea		Предложить идею
+agreement		Используя приложение вы принимаете условия лицензионного соглашения.
+icons		При создании приложения использованы иконки Icons8. Сайт разработчика icons8.com
+firstBIT	Первый БИТ — эффективные решения для вашего бизнеса. Лидер на рынке автоматизации 1С с 17 летним опытом!
+webSite		Сайт разработчика
+others		Другие приложения

@@ -51,7 +51,7 @@ function GetQuestionsByQuestionnaires(outlet) {
 		" WHERE " + str + " ((Q.ParentQuestion=@emptyRef) " +
 		" OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_Questions WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit) " +
 		" OR Q.ParentQuestion IN (SELECT Aa.Question FROM Catalog_Outlet_AnsweredQuestions Aa " +
-		" JOIN Document_Questionnaire_Schedule SC ON Aa.Questionaire=SC.Id " +
+		" JOIN Document_Questionnaire_Schedule SC ON Aa.Questionaire=SC.Ref " +
 		" WHERE (Aa.Answer='Yes' OR Aa.Answer='Да') AND Aa.Ref=@outlet AND Aa.Questionaire=D.Id AND Aa.SKU=@emptySKU AND DATE(Aa.AnswerDate)>=DATE(SC.BeginAnswerPeriod) " +
 			" AND (DATE(Aa.AnswerDate)<=DATE(SC.EndAnswerPeriod) OR Aa.AnswerDate='0001-01-01 00:00:00'))) AND Obligatoriness=1 AND (Answer IS NULL OR Answer='—' OR Answer='') " +
 		" GROUP BY Q.ChildQuestion, D.Single ");

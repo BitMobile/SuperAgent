@@ -39,7 +39,7 @@
 			<c:HorizontalLine />
 
 			<c:DockLayout OnClickAction="$DoAction(Order)">
-				<c:TextView CssClass="menu_text" Text="{$orderQty} | {$orderSum}"></c:TextView>
+				<c:TextView CssClass="menu_text" Text="{$orderQty} | {$FormatValue($orderSum)}"></c:TextView>
 				<c:HorizontalLayout>
 					<c:Image CssClass="btn_orders" />
 					<c:TextView Text="#orders#"></c:TextView>
@@ -124,7 +124,7 @@
 				<c:DockLayout CssClass="short_panel">
 					<c:DockLayout CssClass="grid">
 						<c:VerticalLayout>
-							<c:TextView Text="{$orderSum} #currency#" CssClass="main_row"></c:TextView>
+							<c:TextView Text="{$FormatValue($orderSum)} #currency#" CssClass="main_row"></c:TextView>
 							<c:TextView Text="#amountOfOrdersForToday#" CssClass="description_row" />
 						</c:VerticalLayout>
 					</c:DockLayout>

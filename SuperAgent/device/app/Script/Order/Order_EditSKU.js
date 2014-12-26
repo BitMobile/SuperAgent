@@ -176,7 +176,7 @@ function CountPrice(orderitem) {
 function CalculatePrice(price, discount, multiplier) {
 
 	var total = (price * (discount / 100 + 1)) * multiplier;
-	return total;
+	return FormatValue(total);
 
 }
 

@@ -126,13 +126,19 @@ function OnWorkflowFinish(name, reason) {
 			Variables.Remove("steps");
 
 		GPS.StopTracking();
+		
+		Indicators.SetIndicators();
 	}
 
 	Variables.Remove("workflow");
 	
-	if (name=="Visit" || name=="CreateOrder" || name=="Outlets")
-		Indicators.SetIndicators();
-	
+	if (name=="Visit" || name=="CreateOrder"){
+		if (Variables.Exists("group_filter"))
+			Variables.Remove("group_filter");
+
+		if (Variables.Exists("brand_filter"))
+			Variables.Remove("brand_filter");
+	}
 }
 
 function OnWorkflowPause(name) {

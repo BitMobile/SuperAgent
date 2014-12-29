@@ -303,7 +303,7 @@ function GetChilds(sku) {
 	q.Text = "SELECT MIN(D.Date) AS DocDate, Q.ChildQuestion AS Id, Q.ChildDescription AS Description " +
 			", Q.ChildType AS AnswerType, MAX(CAST(Q.Obligatoriness AS int)) AS Obligatoriness " +
 			", (SELECT Qq.QuestionOrder FROM Document_Questionnaire Dd  " +
-			" JOIN Document_Questionnaire_SKUQuestions Qq ON Dd.Id=Qq.Ref AND Q.ChildQuestion=Qq.ChildQuestion ORDER BY Dd.Date LIMIT 1) AS QuestionOrder" +
+			" JOIN Document_Questionnaire_SKUQuestions Qq ON Dd.Id=Qq.Ref AND Q.ChildQuestion=Qq.ChildQuestion WHERE D.Id=Dd.Id ORDER BY Dd.Date LIMIT 1) AS QuestionOrder" +
 			", CASE WHEN (RTRIM(V.Answer)='' OR V.Answer IS NULL) THEN " +
 				" CASE WHEN A.Answer IS NOT NULL THEN " +
 					" CASE WHEN Q.ChildType=@snapshot THEN @attached ELSE A.Answer END " +

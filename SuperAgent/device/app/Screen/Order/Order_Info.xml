@@ -58,18 +58,18 @@
 				<c:HorizontalLine />
 			</s:If>
 
-			<c:HorizontalLayout CssClass="memo_block">
-				<c:VerticalLayout>
-					<c:TextView Text="#commentary#" CssClass="description_row" />
-					<s:If Test="$IsNew($workflow.order)">
-						<c:MemoEdit Value="$order.Commentary" CssClass="main_row" />
-					</s:If>
-					<s:Else>
-						<c:TextView Text="$order.Commentary" CssClass="main_row" />
-					</s:Else>
-				</c:VerticalLayout>
-			</c:HorizontalLayout>
-			<c:HorizontalLine />
+				<c:HorizontalLayout CssClass="memo_block">
+					<c:VerticalLayout>
+						<c:TextView Text="#commentary#" CssClass="description_row" />
+						<s:If Test="$IsEditable($executedOrder, $order)">
+							<c:MemoEdit Value="$order.Commentary" CssClass="main_row" />
+						</s:If>
+						<s:Else>
+							<c:TextView Text="$order.Commentary" CssClass="main_row" />
+						</s:Else>
+					</c:VerticalLayout>
+				</c:HorizontalLayout>
+				<c:HorizontalLine />
 
 		</c:ScrollView>
 

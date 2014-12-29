@@ -135,7 +135,7 @@ function GetDescription(priceList) {
 }
 
 function SelectStock(order, attr, control) {
-	if (IsNew(order)) {
+	if (IsNew(order) && NotEmptyRef(order.PriceList)) {
 		var q = new Query("SELECT Id, Description FROM Catalog_Stock");
 		var res = q.Execute().Unload();
 		var table = [];
@@ -167,7 +167,7 @@ function SelectPriceListIfIsNew(order, priceLists, executedOrder) {
 }
 
 function IsEditable(executedOrder, order) {
-	return executedOrder == null && IsNew(order);
+	return executedOrder == null && IsNew(order) && NotEmptyRef(order.PriceList);
 }
 
 function CheckIfEmptyAndForward(order, wfName) {
@@ -200,7 +200,7 @@ function SaveOrder(order) {
 }
 
 function SetDeliveryDateDialog(order, control, executedOrder) {
-	if (IsNew(order))
+	if (IsNew(order) && NotEmptyRef(order.PriceList))
 		DateTimeDialog(order, "DeliveryDate", order.DeliveryDate, control);
 }
 

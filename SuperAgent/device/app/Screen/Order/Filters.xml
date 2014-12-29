@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Filter.css">
 
 	<s:Push Id="screenContext" Value="$param1"></s:Push>
 	<s:Push Id="screenFilter" Value="$SetFilter()"></s:Push>

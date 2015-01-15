@@ -127,27 +127,6 @@
 
 	</bp:Workflow>
 
-	<bp:Workflow Name="ToDo">
-		<bp:Step Name="ToDo" Screen="Tasks.xml">
-			<bp:Action Name="Forward" NextStep=""></bp:Action>
-		</bp:Step>
-	</bp:Workflow>
-
-	<bp:Workflow Name="Stocks">
-		<bp:Step Name="Stocks" Screen="Stock_SKUs.xml">
-			<bp:Action Name="Select" NextStep="SKUImage" />
-			<bp:Action Name="SetFilter" NextStep="Filters"></bp:Action>
-		</bp:Step>
-
-		<bp:Step Name="SKUImage" Screen="SKU_Image.xml">
-		</bp:Step>
-
-		<bp:Step Name="Filters" Screen="Filters.xml">
-			<bp:Action Name="Forward" NextStep="Stocks"></bp:Action>
-		</bp:Step>
-
-	</bp:Workflow>
-
 	<bp:Workflow Name="Order">
 
 		<bp:Step Name="OrderList" Screen="Order\OrderList.xml" Controller="Order\Main.js">

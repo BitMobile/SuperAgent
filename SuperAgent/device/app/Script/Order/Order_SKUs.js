@@ -255,19 +255,10 @@ function SetFilter() {
 }
 
 function AskAndBack() {
-    //Dialog.Question(Translate["#clearFilter#"], ClearFilterHandler);
     Variables.Remove("group_filter");
     Variables.Remove("brand_filter");
-    Workflow.Refresh($.screenContext);	
+    Workflow.Refresh([$.screenContext]);	
 }
-
-//function ClearFilterHandler(answ, state) {
-//    if (answ == DialogResult.Yes) {
-//        Variables.Remove("group_filter");
-//        Variables.Remove("brand_filter");
-//        Workflow.Refresh($.screenContext);
-//    }
-//}
 
 function CheckFilterAndForward() {
     CheckFilter("group_filter");

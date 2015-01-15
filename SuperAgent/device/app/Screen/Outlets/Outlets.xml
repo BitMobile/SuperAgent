@@ -31,13 +31,13 @@
 		</s:Else>
 		<c:HorizontalLine />
 
-		<c:HorizontalLayout CssClass="search">
+		<c:DockLayout CssClass="search">
+			<c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoRefresh($edtSearch.Text)"></c:Button>
 			<c:DockLayout>
 				<c:Image />
 				<c:EditText Id="edtSearch" Text="$search" Placeholder="#search#"></c:EditText>
-			</c:DockLayout>
-			<c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoRefresh($edtSearch.Text)"></c:Button>
-		</c:HorizontalLayout>
+			</c:DockLayout>			
+		</c:DockLayout>
 		<c:HorizontalLine />
 
 		<s:If Test="$workflow.name=='Outlets'">
@@ -55,7 +55,7 @@
 
 			<s:Iterator Id="outlet" Value="$outlets">
 
-				<c:HorizontalLayout CssClass="grid" OnClickAction="$AddGlobalAndAction(outlet, $outlet.Id, Select)">
+				<c:DockLayout CssClass="grid" OnClickAction="$AddGlobalAndAction(outlet, $outlet.Id, Select)">
 					<s:If Test="$outlet.OutletStatus == 0">
 						<c:Image CssClass="blue_mark" />
 					</s:If>
@@ -68,12 +68,12 @@
 					<s:If Test="$outlet.OutletStatus == 3">
 						<c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
 					</s:If>
+					<c:Image />
 					<c:VerticalLayout>
 						<c:TextView Text="$outlet.Description" CssClass="main_row"></c:TextView>
 						<c:TextView Text="$outlet.Address" CssClass="description_row"></c:TextView>
-					</c:VerticalLayout>
-					<c:Image />
-				</c:HorizontalLayout>
+					</c:VerticalLayout>					
+				</c:DockLayout>
 				<c:HorizontalLine />
 
 			</s:Iterator>

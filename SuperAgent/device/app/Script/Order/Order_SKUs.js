@@ -48,7 +48,7 @@ function GetSKUAndGroups(searchText, priceList, stock) {
         var stockField = "S.CommonStock AS CommonStock,";
     
     
-    var recOrderFields = ", 0 AS RecOrder, NULL AS UnitId ";
+    var recOrderFields = ", 0 AS RecOrder, NULL AS UnitId, NULL AS RecUnit ";
     var recOrderStr = "";
     var recOrderSort = "";
     if (DoRecommend()){
@@ -255,16 +255,19 @@ function SetFilter() {
 }
 
 function AskAndBack() {
-    Dialog.Question(Translate["#clearFilter#"], ClearFilterHandler);
+    //Dialog.Question(Translate["#clearFilter#"], ClearFilterHandler);
+    Variables.Remove("group_filter");
+    Variables.Remove("brand_filter");
+    Workflow.Refresh($.screenContext);	
 }
 
-function ClearFilterHandler(answ, state) {
-    if (answ == DialogResult.Yes) {
-        Variables.Remove("group_filter");
-        Variables.Remove("brand_filter");
-        Workflow.Back();
-    }
-}
+//function ClearFilterHandler(answ, state) {
+//    if (answ == DialogResult.Yes) {
+//        Variables.Remove("group_filter");
+//        Variables.Remove("brand_filter");
+//        Workflow.Refresh($.screenContext);
+//    }
+//}
 
 function CheckFilterAndForward() {
     CheckFilter("group_filter");

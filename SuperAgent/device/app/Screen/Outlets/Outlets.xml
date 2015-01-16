@@ -67,12 +67,12 @@
 					</s:If>
 					<s:If Test="$outlet.OutletStatus == 3">
 						<c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
-					</s:If>
-					<c:Image />
+					</s:If>			
 					<c:VerticalLayout>
 						<c:TextView Text="$outlet.Description" CssClass="main_row"></c:TextView>
 						<c:TextView Text="$outlet.Address" CssClass="description_row"></c:TextView>
-					</c:VerticalLayout>					
+					</c:VerticalLayout>
+					<c:Image />							
 				</c:DockLayout>
 				<c:HorizontalLine />
 

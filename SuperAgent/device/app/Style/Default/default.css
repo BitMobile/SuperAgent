@@ -162,6 +162,7 @@ MemoEdit {
 	height: 67%;
 	margin-top: 5.7%;
 	margin-left: 2%;
+	horizontal-align: central;
 }
 
 .mode_left_button_on select_zone {
@@ -177,6 +178,7 @@ MemoEdit {
 	width: 48%;
 	height: 67%;
 	margin-top: 5.7%;
+	horizontal-align: central;
 }
 
 .mode_right_button_off select_zone TextView {
@@ -188,6 +190,7 @@ MemoEdit {
 	width: 48%;
 	height: 67%;
 	margin-top: 5.7%;
+	horizontal-align: central;
 }
 
 .mode_right_button_on select_zone {
@@ -204,6 +207,7 @@ MemoEdit {
 	height: 67%;
 	margin-top: 5.7%;
 	margin-left: 2%;
+	horizontal-align: central;
 }
 
 .mode_left_button_off select_zone TextView {
@@ -211,9 +215,11 @@ MemoEdit {
 }
 
 .small_grid {
-	height: 7.6%;
+	height: 6.7mm;
+	width: 48.6mm;
 	selected-color: #bacdce;
 	dock-align: top;
+	horizontal-align: central;
 }
 
 .small_grid hl select_zone {
@@ -353,6 +359,7 @@ MemoEdit {
 
 .grid img {
 	height: 15.4%;
+	width: 1.3mm;
 	margin-top: 16%;
 	dock-align: right;
 	margin-right: 2.4mm;

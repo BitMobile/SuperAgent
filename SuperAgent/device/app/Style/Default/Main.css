@@ -3,6 +3,7 @@
 	height: 40%;
 	margin-left: 4%;
 	vertical-align: central;
+	dock-align: left;
 	color: #ffffff;
 	font: 90% arial;
 }
@@ -34,7 +35,7 @@ svl vl {
 .menu line {
 	width: 100%;
 	height: 1px;
-	margin-left: 2.8%;
+	margin-left: 1.4mm;
 	background-color: #43acfd;
 }
 
@@ -58,6 +59,7 @@ svl vl {
 
 .menu dl {
 	width: 100%;
+	height: 6.9mm;
 	selected-color: #5ea6dc;
 }
 
@@ -66,21 +68,21 @@ svl vl {
 	margin-top: 30%;
 	dock-align: right;
 	text-align: right;
-	margin-right: 2.7%;
+	margin-right: 1.4mm;
 	color: #c5e3f7;
 }
 
 .menu dl hl {
 	width: 100%;
 	height: 100%;
-	margin-left: 5%;
+	margin-left: 2.4mm;
 	dock-align: left;
 }
 
 .menu dl hl TextView {
-	width: 60%;
+	width: 100%;
 	height: 40%;
-	margin-left: 4%;
+	margin-left: 2mm;
 	vertical-align: central;
 	color: #ffffff;
 	font: 90% arial;
@@ -100,15 +102,17 @@ svl vl {
 }
 
 .header {
-	height: 8sp;
-	width: 100%;
 	margin-top: 2%;
 	background-color: #43acfd;
+	margin-left: 0mm;
+}
+
+.header hl TextView{
+	margin-left: 2mm;
 }
 
 .btn_summary {
-	height: 65%;
-	margin-left: 5%;
+	height: 64%;
 	vertical-align: central;
 	background-image: url(SuperShield.png);
 }
@@ -150,10 +154,10 @@ svl vl {
 }
 
 .btn_sync {
-	height: 48%;
-	padding-right: 3%;
+	height: 50%;
+	/*padding-right: 3%;*/
 	vertical-align: central;
-	margin-left: 1%;
+	margin-left: 0.65%;
 	background-image: url(TudaSuda.png);
 }
 

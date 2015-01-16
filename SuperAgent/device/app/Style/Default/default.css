@@ -574,10 +574,10 @@ MemoEdit {
 
 .parameter_grid img {
 	height: 35%;
-	margin-left: 15%;
+	margin-right: 2.4mm;
 	margin-top: 35%;
 	background-image: url(arrow.png);
-	dock-align: left;
+	dock-align: right;
 }
 
 .parameter_grid EditText {

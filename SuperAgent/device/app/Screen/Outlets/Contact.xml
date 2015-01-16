@@ -30,13 +30,15 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid">
+			<c:DockLayout CssClass="grid">
+				<c:HorizontalLayout CssClass="phone">
+					<c:VerticalLayout  OnClickAction="$SavePhoneAndCall($contact)"></c:VerticalLayout>
+				</c:HorizontalLayout>				
 				<c:VerticalLayout CssClass="partialW">
 					<c:TextView Text="#phone#" CssClass="description_row"></c:TextView>
 					<c:EditText Value="$contact.PhoneNumber" Placeholder="-" Keyboard="numeric" CssClass="main_row" />
 				</c:VerticalLayout>
-				<c:VerticalLayout CssClass="phone" OnClickAction="$SavePhoneAndCall($contact)"></c:VerticalLayout>
-			</c:HorizontalLayout>
+			</c:DockLayout>
 			<c:HorizontalLine />
 
 			<c:HorizontalLayout CssClass="grid">

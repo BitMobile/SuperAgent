@@ -41,16 +41,24 @@ body dl {
 .partialW {
 	width: 80%;
 	height: 100%;
-	padding-right: 11%;
+	padding-right: 2.4mm;
 	padding-top: 11%;
-	padding-left: 5%;
+	dock-align: left;
 }
 
 .phone {
-	width: 7.5%;
-	height: 0%;
-	margin-top: 37%;
+	width: 3.5mm;
+	height: 100%;
+	/*margin-top: 37%;*/
+	margin-right: 3mm;
+	dock-align: right;	
+}
+
+.phone vl{
 	background-image: url(phone.png);
+	height: 0%;
+	width: 100%;
+	vertical-align: central;
 }
 
 .description_row {

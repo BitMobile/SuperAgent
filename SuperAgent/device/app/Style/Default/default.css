@@ -302,7 +302,7 @@ MemoEdit {
 	selected-color: #bacdce;
 	background-color: #efeff4;
 	dock-align: top;
-	padding-left: 3.5%;
+	padding-left: 2.4mm;
 }
 
 .caption_grid TextView {
@@ -742,14 +742,14 @@ MemoEdit {
 }
 
 .memo_block {
-	height: 48sp;
+	height: 42mm;
 }
 
 .memo_block vl {
 	width: 98%;
 	height: 90%;
 	margin-top: 5%;
-	margin-left: 3.5%;
+	margin-left: 2.7mm;
 	padding-left: 0%;
 }
 

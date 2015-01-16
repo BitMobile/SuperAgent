@@ -41,14 +41,14 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid" OnClickAction="$DoAction(ShowInfo,$sum,null)">
+			<c:DockLayout CssClass="grid" OnClickAction="$DoAction(ShowInfo,$sum,null)">
+				<c:Image />
 				<c:VerticalLayout>
 					<c:TextView Text="$GetDescription($workflow.order.PriceList)" CssClass="description_row"></c:TextView>
 					<c:TextView Text="#orderSum#:" CssClass="description_row"></c:TextView>
 					<c:TextView Text="$sum" CssClass="main_row"></c:TextView>
 				</c:VerticalLayout>
-				<c:Image />
-			</c:HorizontalLayout>
+			</c:DockLayout>
 			<c:HorizontalLine />
 
 			<c:HorizontalLayout CssClass="caption_grid">

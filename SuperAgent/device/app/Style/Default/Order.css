@@ -1,14 +1,11 @@
-.grid vl {
-	width: 90%;
-}
 
 .swipe_layout {
-	height: 15.3sp;
+	height: 13.8mm;
 }
 
 .red_swipe {
-	height: 15.3sp;
-	width: 28%;
+	height: 13.8mm;
+	width: 13.8mm;
 	background-color: #f74747;
 }
 

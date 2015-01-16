@@ -61,13 +61,13 @@
 				
 		<c:ScrollView Id="grScrollView">
 		
-			<c:HorizontalLayout CssClass="search">
+			<c:DockLayout CssClass="search">
+				<c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoSearch($edtSearch.Text)"></c:Button>
 				<c:DockLayout>
 					<c:Image />
 					<c:EditText Id="edtSearch" Text="$search" Placeholder="#search#"></c:EditText>
-				</c:DockLayout>
-				<c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoSearch($edtSearch.Text)"></c:Button>
-			</c:HorizontalLayout>
+				</c:DockLayout>				
+			</c:DockLayout>
 			<c:HorizontalLine />
 			
 			<c:DockLayout CssClass="parameter_grid" OnClickAction="$Workflow.DoAction(ShowFilters1, Questionnaire)">
@@ -91,7 +91,11 @@
 			<s:Iterator Id="sku" Value="$SKUs" Status="statusCount">
 				<s:Push Id="index" Value="{$statusCount.Index}"></s:Push>
 
-				<c:HorizontalLayout CssClass="grid" OnClick="$CreateItemAndShow($sku.SKU, $index)">
+				<c:DockLayout CssClass="grid" OnClick="$CreateItemAndShow($sku.SKU, $index)">
+					<s:If Test="$ObligateredAreAnswered($sku.Obligatoriness,$sku.ObligateredHistory,$sku.ObligateredCurrent,$sku.ObligateredTotal)"><c:HorizontalLayout CssClass="answered_side_wh"></c:HorizontalLayout></s:If>
+					<s:Else>
+						<s:If Test="$sku.Obligatoriness=='2'"><c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout></s:If>
+					</s:Else>
 					<c:VerticalLayout>
 						<s:If Test="@regularAnswers">
 							<c:TextView Text="{$sku.Answered} #of# {$sku.Total}" CssClass="description_row" />
@@ -100,37 +104,33 @@
 							<c:TextView Text="{$GetSum($sku.Answered,$sku.History)} #of# {$sku.Total}" CssClass="description_row" />
 						</s:Else>						
 						<c:TextView Text="$sku.Description" CssClass="main_row"></c:TextView>
-					</c:VerticalLayout>					
-					<s:If Test="$ObligateredAreAnswered($sku.Obligatoriness,$sku.ObligateredHistory,$sku.ObligateredCurrent,$sku.ObligateredTotal)"><c:HorizontalLayout CssClass="answered_side_wh"></c:HorizontalLayout></s:If>
-					<s:Else>
-						<s:If Test="$sku.Obligatoriness=='2'"><c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout></s:If>
-					</s:Else>
-				</c:HorizontalLayout>
+					</c:VerticalLayout>										
+				</c:DockLayout>
 				<c:HorizontalLine />
 				<s:If Test="$ShowChilds($index)">
 					<s:Push Id="childs" Value="$GetChilds($sku.SKU)"></s:Push>
 					<s:Iterator Id="child" Value="$childs" Status="statusCountCh">
 						<s:Push Id="indexCh" Value="{$statusCountCh.Index}"></s:Push>
-						<c:HorizontalLayout CssClass="child_grid">
-							<c:VerticalLayout OnClick="$GoToQuestionAction($child.AnswerType, $child.Id, $sku.SKU, control{$indexCh}, $child.Answer, $sku.SKU)">
-								<c:TextView Text="$child.Description" CssClass="description_row"></c:TextView>
-								<s:If Test="$child.IsInputField==1">
-									<c:EditText Id="control{$indexCh}" Text="$child.Answer" Placeholder = "—" OnChange="$CreateVisitSKUValueIfNotExists($sku.SKU, $child.Id, true)" OnLostFocus="$RefreshScreen($search)" Keyboard="$child.KeyboardType" CssClass="answer_main_row"></c:EditText>
-								</s:If>
-								<s:Else>
-									<c:TextView Id="control{$indexCh}" Text="$child.Answer" CssClass="answer_main_row"></c:TextView>
-								</s:Else>
-							</c:VerticalLayout>
+						<c:DockLayout CssClass="child_grid">
 							<s:If Test="$ObligatedAnswered($child.Answer, $child.Obligatoriness)">
 								<c:HorizontalLayout CssClass="answered_side_gr"></c:HorizontalLayout>
 							</s:If>
 							<s:Else>
-								<s:If Test="$child.Obligatoriness"><c:HorizontalLayout CssClass="required_side_gr"></c:HorizontalLayout>
-							</s:If>
-							</s:Else>								
-						</c:HorizontalLayout>
-						<c:HorizontalLine />
-				
+								<s:If Test="$child.Obligatoriness">
+									<c:HorizontalLayout CssClass="required_side_gr"></c:HorizontalLayout>
+								</s:If>
+							</s:Else>
+							<c:VerticalLayout OnClick="$GoToQuestionAction($child.AnswerType, $child.Id, $sku.SKU, control{$indexCh}, $child.Answer, $sku.SKU)">								
+								<c:TextView Text="$child.Description" CssClass="description_row"></c:TextView>
+								<s:If Test="$child.IsInputField==1">
+									<c:EditText Id="control{$indexCh}" Text="$child.Answer" Placeholder="—" OnChange="$CreateVisitSKUValueIfNotExists($sku.SKU, $child.Id, true)" OnLostFocus="$RefreshScreen($search)" Keyboard="$child.KeyboardType" CssClass="answer_main_row"></c:EditText>
+								</s:If>
+								<s:Else>
+									<c:TextView Id="control{$indexCh}" Text="$child.Answer" CssClass="answer_main_row"></c:TextView>
+								</s:Else>
+							</c:VerticalLayout>								
+						</c:DockLayout>
+						<c:HorizontalLine />				
 					</s:Iterator>
 				</s:If>				
 

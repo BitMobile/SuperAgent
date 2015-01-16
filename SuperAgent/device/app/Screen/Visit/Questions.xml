@@ -78,7 +78,13 @@
 
 				<s:Push Id="index" Value="{$statusCount.Index}"></s:Push>
 
-				<c:HorizontalLayout CssClass="grid">
+				<c:DockLayout CssClass="grid">
+					<s:If Test="$ObligatedAnswered($question.Answer, $question.Obligatoriness)">
+						<c:HorizontalLayout CssClass="answered_side_wh"></c:HorizontalLayout>
+					</s:If>
+					<s:Else>
+						<s:If Test="$question.Obligatoriness=='1'"><c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout></s:If>
+					</s:Else>	
 					<c:VerticalLayout OnClickAction="$GoToQuestionAction($question.AnswerType, $visit, control{$index}, $question.Question, $question.Answer)">
 						<c:TextView Text="$question.Description" CssClass="description_row"></c:TextView>
 						<s:If Test="$question.IsInputField=='1'">
@@ -87,14 +93,8 @@
 						<s:Else>
 							<c:TextView Id="control{$index}" Text="$question.Answer" CssClass="answer_main_row"></c:TextView>
 						</s:Else>														
-					</c:VerticalLayout>
-					<s:If Test="$ObligatedAnswered($question.Answer, $question.Obligatoriness)">
-						<c:HorizontalLayout CssClass="answered_side_wh"></c:HorizontalLayout>
-					</s:If>
-					<s:Else>
-						<s:If Test="$question.Obligatoriness=='1'"><c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout></s:If>
-					</s:Else>						
-				</c:HorizontalLayout>
+					</c:VerticalLayout>					
+				</c:DockLayout>
 				<c:HorizontalLine />
 
 			</s:Iterator>

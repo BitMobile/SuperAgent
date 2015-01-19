@@ -358,7 +358,7 @@ MemoEdit {
 }
 
 .grid img {
-	height: 15.4%;
+	height: 1.9mm;
 	width: 1.3mm;
 	margin-top: 16%;
 	dock-align: right;
@@ -573,7 +573,8 @@ MemoEdit {
 }
 
 .parameter_grid img {
-	height: 35%;
+	height: 1.9mm;
+	width: 1.3mm;
 	margin-right: 2.4mm;
 	margin-top: 35%;
 	background-image: url(arrow.png);
@@ -604,29 +605,30 @@ MemoEdit {
 }
 
 .tick {
-	width: 5%;
-	margin-left: 3%;
+	width: 2.1mm;
+	margin-left: 1.7mm;
+	margin-right: 0%;
 	margin-top: 35%;
 	background-image: url(tick.png);
 	dock-align: left;
 }
 
 .empty_tick {
-	width: 8%;
+	width: 3.8mm;
 	height: 100%;
 	dock-align: left;
 }
 
 .child_tick {
-	width: 5%;
-	margin-left: 13%;
+	width: 2.1mm;
+	margin-left: 6.5mm;
 	margin-top: 35%;
 	background-image: url(tick.png);
 	dock-align: left;
 }
 
 .child_empty_tick {
-	width: 18%;
+	width: 8.6mm;
 	height: 100%;
 	dock-align: left;
 }

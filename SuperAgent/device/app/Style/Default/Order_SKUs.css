@@ -1,6 +1,3 @@
-.grid vl {
-	width: 90%;
-}
 
 .grid vl dl{
 	width: 100%;
@@ -8,10 +5,11 @@
 }
 
 .grid vl dl vl{
-	width: 22%;
+	width: 9.2mm;
 	height: 84%;
 	dock-align: right;
 	margin-top: 10%;
+	margin-right: 0.7mm;
 	padding-bottom: 7%;
 	padding-top: 4%;
 	text-align: center;
@@ -24,10 +22,11 @@
 }
 
 .single_rec{
-	width: 22%;
+	width: 9.2mm;
 	height: 47%;
 	dock-align: right;
 	margin-top: 10%;
+	margin-right: 0.7mm;
 	padding-bottom: 4%;
 	padding-top: 4%;
 	padding-left: 5%;

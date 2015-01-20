@@ -454,11 +454,11 @@ MemoEdit {
 }
 
 .half_grid {
-	height: 8sp;
+	height: 6.7mm;
 	width: 100%;
 	background-color: #ffffff;
-	padding-left: 5%;
-	padding-right: 5%;
+	padding-left: 2.4mm;
+	padding-right: 2.4mm;
 }
 
 .half_grid Button {
@@ -748,7 +748,7 @@ MemoEdit {
 	height: 100%;
 	text-align: left;
 	padding-top: 25%;
-	padding-left: 10%;
+	padding-left: 2.4mm;
 	color: #2d89cf;
 	font: 37% arial;
 }
@@ -758,13 +758,13 @@ MemoEdit {
 	height: 100%;
 	text-align: right;
 	padding-top: 25%;
-	padding-right: 10%;
+	padding-right: 2.4mm;
 	color: #2d89cf;
 	font: 37% arial;
 }
 
 .memo_block {
-	height: 42mm;
+	height: 20.5mm;
 }
 
 .memo_block vl {
@@ -776,12 +776,12 @@ MemoEdit {
 }
 
 .memo_block vl description_row {
-	height: 9%;
+	height: 3.2mm;
 }
 
 .memo_block vl main_row {
 	height: 80%;
 	width: 100%;
 	margin-left: 0%;
-	font: 8% Arial;
+	font: 15% Arial;
 }

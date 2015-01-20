@@ -12,11 +12,13 @@
 	<c:DockLayout>
 
 		<c:DockLayout CssClass="top_navigator">
-			<c:HorizontalLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$OrderBack()">
+			<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$OrderBack()">
 				<c:Image />
 				<c:TextView Text="#back#" />
-			</c:HorizontalLayout>
-			<c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckIfEmptyAndForward($workflow.order, $workflow.name)" />
+			</c:DockLayout>
+			<c:DockLayout CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckIfEmptyAndForward($workflow.order, $workflow.name)">
+				<c:TextView Id="btnForward" Text="#forward#" />
+			</c:DockLayout>
 			<c:HorizontalLayout>
 				<c:TextView Text="#order#" />
 			</c:HorizontalLayout>
@@ -68,7 +70,7 @@
 								<s:Push Id="featureDescr" Value="$GetFeatureDescr($orderitem.Feature)"></s:Push>
 								<c:TextView Text="{$orderitem.SKU.Description}{$GetFeatureDescr($orderitem.Feature)}" CssClass="main_row"></c:TextView>
 								<c:TextView Text="#quantity#: {$orderitem.Qty}   #amount#: {$orderitem.Amount}" CssClass="description_row"></c:TextView>
-							</c:VerticalLayout>							
+							</c:VerticalLayout>
 						</c:DockLayout>
 						<s:If Test="$IsNew($workflow.order)">
 							<c:HorizontalLayout CssClass="red_swipe" OnClickAction="$DeleteItem($orderitem.Id, $executedOrder)">

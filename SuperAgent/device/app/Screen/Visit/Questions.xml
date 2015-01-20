@@ -8,24 +8,28 @@
 	<c:VerticalLayout>
 
 		<c:DockLayout CssClass="top_navigator">
-			<c:HorizontalLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$GetActionAndBack()">
+			<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$GetActionAndBack()">
 				<c:Image />
 				<c:TextView Text="#back#" />
-			</c:HorizontalLayout>
+			</c:DockLayout>
 			<s:If Test="$ForwardIsntAllowed()">
 				<c:DockLayout Id="btnForward" CssClass="forward">
 					<c:VerticalLayout></c:VerticalLayout>
-					<c:TextView Id="obligateredButton" Text="{$ToString(@obligateredLeft)})"/>
-					<c:Image/>
-					<c:TextView Text="#forward# ("/>					
+					<c:TextView Id="obligateredButton" Text="{$ToString(@obligateredLeft)})" />
+					<c:Image />
+					<c:TextView Text="#forward# (" />
 				</c:DockLayout>
 			</s:If>
-			<s:Else><c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckEmptyQuestionsAndForward($visit)" /></s:Else>			
+			<s:Else>
+				<c:DockLayout CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckEmptyQuestionsAndForward($visit)" >
+					<c:TextView Id="btnForward" Text="#forward#" />
+				</c:DockLayout>
+			</s:Else>
 			<c:HorizontalLayout>
 				<c:TextView Text="#questions#" />
 			</c:HorizontalLayout>
 		</c:DockLayout>
-		
+
 		<c:HorizontalLayout CssClass="small_grid">
 			<s:If Test="@regularAnswers">
 				<c:HorizontalLayout CssClass="mode_left_button_on">
@@ -50,9 +54,9 @@
 						<c:TextView Text="#nonregular# ({@single_answ} #of# {@single_total})"></c:TextView>
 					</c:HorizontalLayout>
 				</c:HorizontalLayout>
-			</s:Else>						
+			</s:Else>
 		</c:HorizontalLayout>
-		
+
 
 		<!-- progress picture -->
 		<c:Image CssClass="3_scroll"></c:Image>
@@ -60,17 +64,17 @@
 
 
 		<c:ScrollView Id="grScrollView">
-		
+
 			<s:If Test="$ForwardIsntAllowed()">
 				<c:HorizontalLayout CssClass="required_grid">
 					<c:TextView Text="#requiredLeft# "></c:TextView>
-					<c:Image/>
+					<c:Image />
 					<c:TextView Id="obligateredInfo" Text="$ToString(@obligateredLeft)"></c:TextView>
 				</c:HorizontalLayout>
-			<c:HorizontalLine />
+				<c:HorizontalLine />
 			</s:If>
 			<s:Else>
-				<c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>				
+				<c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
 			</s:Else>
 			<c:HorizontalLine />
 
@@ -83,17 +87,19 @@
 						<c:HorizontalLayout CssClass="answered_side_wh"></c:HorizontalLayout>
 					</s:If>
 					<s:Else>
-						<s:If Test="$question.Obligatoriness=='1'"><c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout></s:If>
-					</s:Else>	
+						<s:If Test="$question.Obligatoriness=='1'">
+							<c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout>
+						</s:If>
+					</s:Else>
 					<c:VerticalLayout OnClickAction="$GoToQuestionAction($question.AnswerType, $visit, control{$index}, $question.Question, $question.Answer)">
 						<c:TextView Text="$question.Description" CssClass="description_row"></c:TextView>
 						<s:If Test="$question.IsInputField=='1'">
-							<c:MemoEdit Id="control{$index}" Text="$question.Answer" Placeholder = "—" OnChange="$AssignQuestionValue($question.Question)" OnLostFocus="$Workflow.DoRefresh()" Keyboard="$question.KeyboardType" CssClass="answer_main_row"></c:MemoEdit>
+							<c:MemoEdit Id="control{$index}" Text="$question.Answer" Placeholder="—" OnChange="$AssignQuestionValue($question.Question)" OnLostFocus="$Workflow.DoRefresh()" Keyboard="$question.KeyboardType" CssClass="answer_main_row"></c:MemoEdit>
 						</s:If>
 						<s:Else>
 							<c:TextView Id="control{$index}" Text="$question.Answer" CssClass="answer_main_row"></c:TextView>
-						</s:Else>														
-					</c:VerticalLayout>					
+						</s:Else>
+					</c:VerticalLayout>
 				</c:DockLayout>
 				<c:HorizontalLine />
 

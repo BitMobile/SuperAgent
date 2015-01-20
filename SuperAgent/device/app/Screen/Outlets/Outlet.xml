@@ -51,11 +51,13 @@
 		</s:If>
 		<s:Else>
 			<c:DockLayout CssClass="top_navigator">
-				<c:HorizontalLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoRollback()">
+				<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoRollback()">
 					<c:Image />
 					<c:TextView Text="#visits#" />
-				</c:HorizontalLayout>
-				<c:Button Id="btnForward" Text="#forward#" OnEvent="Forward" CssClass="btn_forward" OnClickAction="$CheckNotNullAndForward($outlet, $workflow.visit)" />
+				</c:DockLayout>
+				<c:DockLayout OnEvent="Forward" CssClass="btn_forward" OnClickAction="$CheckNotNullAndForward($outlet, $workflow.visit)" >
+					<c:TextView Id="btnForward" Text="#forward#" />
+				</c:DockLayout>				
 				<c:HorizontalLayout>
 					<c:TextView Text="#client#" />
 				</c:HorizontalLayout>

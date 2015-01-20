@@ -8,11 +8,11 @@
 
 		<s:If Test="$workflow.name=='Order'">
 			<c:DockLayout CssClass="top_navigator">
-				<c:HorizontalLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoBack()">
+				<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoBack()">
 					<c:Image />
 					<c:TextView Text="#back#" />
-				</c:HorizontalLayout>
-				<c:HorizontalLayout Id="btnForward" CssClass="btn_forward" />
+				</c:DockLayout>
+				<c:DockLayout Id="btnForward" CssClass="btn_forward" />
 				<c:HorizontalLayout>
 					<c:TextView Text="#clients#" />
 				</c:HorizontalLayout>
@@ -20,10 +20,10 @@
 		</s:If>
 		<s:Else>
 			<c:DockLayout CssClass="top_navigator">
-				<c:HorizontalLayout Id="btnMenu" CssClass="btn_menu" OnEvent="Back" OnClickAction="$CommitAndBack()">
+				<c:DockLayout Id="btnMenu" CssClass="btn_menu" OnEvent="Back" OnClickAction="$CommitAndBack()">
 					<c:Image CssClass="menuIcon" />
-				</c:HorizontalLayout>
-				<c:HorizontalLayout CssClass="empty_forward" />
+				</c:DockLayout>
+				<c:DockLayout CssClass="btn_space" />
 				<c:HorizontalLayout>
 					<c:TextView Text="#clients#" />
 				</c:HorizontalLayout>

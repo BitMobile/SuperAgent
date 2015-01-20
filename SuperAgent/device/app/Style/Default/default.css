@@ -88,7 +88,8 @@ MemoEdit {
 .top_navigator hl {
 	width: 100%;
 	height: 100%;
-	dock-align: top; 
+	dock-align: top;
+	horizontal-align: central;	
 }
 
 .top_navigator hl TextView {
@@ -96,6 +97,7 @@ MemoEdit {
 	height: 100%;
 	margin-left: 0%;
 	padding-top: 25%;
+	horizontal-align: central;
 	text-align: center;
 	color: #000000;
 	font: 38% Arial;
@@ -106,35 +108,29 @@ MemoEdit {
 	selected-color: #D3D3D3;
 }
 
-.btn_menu {
-	width: 20%;
-	height: 100%;
-	dock-align: left;
-	margin-right: 0%;
-	margin-left: 2%;
-}
-
-.btn_menu menuIcon {
-	background-image: url(button_menu.png);
-	height: 37%;
-	margin-top: 30%;
-	margin-left: 5%;
-	margin-bottom: 20%;
+.top_navigator dl {
+	width: 16.3mm;
+	height: 100%;	
 }
 
 .btn_forward {
-	width: 20%;
+	width: 16.3mm;
 	height: 100%;
-	dock-align: right;
-	margin-left: 13%;
+	dock-align: right;	
+}
+
+.btn_forward TextView {
+	width: 100%;
+	height: 100%;
+	margin-right: 1mm;
+	padding-top: 26%;
 	text-align: right;
 	color: #2d89cf;
-	text-align: right;
-	font: 40% arial;
+	font: 39.5% arial;
 }
 
 .btn_back {
-	width: 33%;
+	width: 16.3mm;
 	height: 100%;
 	dock-align: left;
 }
@@ -142,9 +138,10 @@ MemoEdit {
 .btn_back TextView {
 	width: 100%;
 	height: 100%;
-	margin-left: 5%;
+	margin-left: 1mm;
 	padding-top: 26%;
 	text-align: left;
+	dock-align: left;
 	color: #2d89cf;
 	font: 39.5% arial;
 }
@@ -152,8 +149,31 @@ MemoEdit {
 .btn_back img {
 	background-image: url(arrow_left.png);
 	margin-top: 24%;
-	margin-left: 5%;
+	margin-left: 1mm;
+	dock-align: left;
 	height: 50%;
+}
+
+.btn_menu {
+	width: 7mm;
+	height: 100%;
+	dock-align: left;
+	margin-right: 0%;
+	margin-left: 0%;
+}
+
+.btn_menu menuIcon {
+	background-image: url(button_menu.png);
+	height: 37%;
+	margin-top: 30%;
+	margin-left: 1mm;
+	margin-bottom: 20%;
+}
+
+.btn_space{
+	width: 7mm;
+	height: 100%;
+	dock-align: right;
 }
 
 .mode_left_button_on {
@@ -216,7 +236,7 @@ MemoEdit {
 
 .small_grid {
 	height: 6.7mm;
-	width: 48.6mm;
+	width: 49.6mm;
 	selected-color: #bacdce;
 	dock-align: top;
 	horizontal-align: central;

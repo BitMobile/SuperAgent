@@ -71,10 +71,10 @@
 		<c:VerticalLayout>
 
 			<c:DockLayout CssClass="top_navigator">
-				<c:HorizontalLayout Id="btnMenu" CssClass="btn_menu" OnClickAction="$Facade.OpenMenu()">
+				<c:DockLayout Id="btnMenu" CssClass="btn_menu" OnClickAction="$Facade.OpenMenu()">
 					<c:Image CssClass="menuIcon" />
-				</c:HorizontalLayout>
-				<c:HorizontalLayout CssClass="btn_forward" />
+				</c:DockLayout>
+				<c:DockLayout CssClass="btn_space" />
 				<c:HorizontalLayout>
 					<c:TextView Text="#summary#" />
 				</c:HorizontalLayout>

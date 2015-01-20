@@ -33,7 +33,7 @@
 }
 
 .forward{
-	width: 32%;
+	width: 16.3mm;
 	height: 100%;
 	dock-align: right;
 }
@@ -43,7 +43,6 @@
 	width: 10% auto;
 	padding-top: 26%;
 	text-align: right;
-	padding-right:0%;
 	color: #bebebe;
 	font: 39.5% arial;
 	dock-align: right;

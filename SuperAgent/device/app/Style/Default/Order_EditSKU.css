@@ -1,5 +1,5 @@
 .btn_showpicture {
-	height: 2.9sp;
+	height: 2.5mm;
 	width: 100%;
 	selected-color: #bacdce;
 	background-color: #efeff4;
@@ -61,7 +61,7 @@
 }
 
 .parameter_grid TextView{
-	width: 100%;
+	width: 50% auto;
 }
 
 .black_text{

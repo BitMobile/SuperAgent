@@ -88,7 +88,7 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 
 }
 
-function GetQuickOrder(control, skuId, itemPrice, index, packField, editField, textViewField, recOrder, recUnitId, recUnit){
+function GetQuickOrder(control, skuId, itemPrice, packField, editField, textViewField, recOrder, recUnitId, recUnit){
     if(swipedRow != control)
         HideSwiped();
     swipedRow = control;
@@ -138,7 +138,10 @@ function AddToOrder(control, editFieldName, packDescr) {
     Variables[editFieldName].Text = editText + parseInt(1);
 }
 
-function CreateOrderItem(control, editFieldName, textFieldName, packFireld, sku, price) {
+function CreateOrderItem(control, editFieldName, textFieldName, packFireld, sku, price, swiped_rowName, recOrder, recUnitId) {
+	
+	if (swipedRow!=Variables[swiped_rowName])
+		GetQuickOrder(Variables[swiped_rowName], sku, price, packField, editFieldName, textViewField, recOrder, recUnitId, recUnit)		
 
     if (String.IsNullOrEmpty(Variables[editFieldName].Text) == false) {
         if (Converter.ToDecimal(Variables[editFieldName].Text) != Converter.ToDecimal(0)) {

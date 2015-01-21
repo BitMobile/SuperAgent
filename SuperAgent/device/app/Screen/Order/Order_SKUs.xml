@@ -54,7 +54,7 @@
 				</s:If>
 
 
-				<c:SwipeHorizontalLayout Id="swipe_layout" CssClass="swipe_order" Index="1" OnSwipe="$GetQuickOrder($item.Id, $item.Price, $index, pack{$index}, editText{$index}, textView{$index}, $item.RecOrder, $item.UnitId, $item.RecUnit)">
+				<c:SwipeHorizontalLayout Id="swipe_layout{$index}" CssClass="swipe_order" Index="1" OnSwipe="$GetQuickOrder($item.Id, $item.Price, pack{$index}, editText{$index}, textView{$index}, $item.RecOrder, $item.UnitId, $item.RecUnit)">
 					<c:HorizontalLayout CssClass="quickOrder">
 						<c:VerticalLayout>
 							<c:HorizontalLayout>
@@ -63,7 +63,7 @@
 									<c:TextView Id="pack{$index}" Text=""/>
 								</c:HorizontalLayout>
 								<c:Button Text="+1" CssClass="add_button" OnClick="$AddToOrder(editText{$index})" />
-								<c:Button CssClass="cart_button" OnClick="$CreateOrderItem(editText{$index}, textView{$index}, pack{$index}, $item.Id, $item.Price)" />
+								<c:Button CssClass="cart_button" OnClick="$CreateOrderItem(editText{$index}, textView{$index}, pack{$index}, $item.Id, $item.Price, swipe_layout{$index}, $item.RecOrder, $item.UnitId)" />
 							</c:HorizontalLayout>
 							<c:TextView Id="textView{$index}" Text="0 {#alreadyOrdered#}" />
 						</c:VerticalLayout>

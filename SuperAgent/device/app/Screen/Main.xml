@@ -18,7 +18,7 @@
 			<c:DockLayout CssClass="header" OnEvent="Forward" OnClickAction="$CloseMenu()">							
 				<c:HorizontalLayout>
 					<c:Image CssClass="btn_summary" />
-					<c:TextView CssClass="menu_text" Text="#summary#" />	
+					<c:TextView Text="#summary#" />	
 				</c:HorizontalLayout>
 			</c:DockLayout>
 
@@ -50,7 +50,7 @@
 			<c:HorizontalLine />
 
 			<c:DockLayout OnClickAction="$DoAction(Sync)">
-				<c:TextView Id="syncTitle" CssClass="menu_text" />
+				<c:TextView Id="syncTitle" CssClass="menu_text" Text="$GetLastSyncTime()"></c:TextView>
 				<c:HorizontalLayout>
 					<c:Image CssClass="btn_sync" />
 					<c:TextView Text="#sync#" />

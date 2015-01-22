@@ -15,16 +15,18 @@
 	<c:SwipeHorizontalLayout Id="swipe_layout">
 		<c:VerticalLayout CssClass="menu">
 
-			<c:HorizontalLayout CssClass="header" OnEvent="Forward" OnClickAction="$CloseMenu()">
-				<c:Image CssClass="btn_summary" />
-				<c:TextView CssClass="menu_text" Text="#summary#" />
-			</c:HorizontalLayout>
+			<c:DockLayout CssClass="header" OnEvent="Forward" OnClickAction="$CloseMenu()">							
+				<c:HorizontalLayout>
+					<c:Image CssClass="btn_summary" />
+					<c:TextView Text="#summary#" />	
+				</c:HorizontalLayout>
+			</c:DockLayout>
 
 			<c:DockLayout OnClickAction="$DoAction(Visits)">
 				<c:TextView CssClass="menu_text" Text="{$scheduledVisits} | {$plannedVisits}" />
 				<c:HorizontalLayout>
 					<c:Image CssClass="btn_visits" />
-					<c:TextView CssClass="menu_text" Text="#visits#" />
+					<c:TextView Text="#visits#" />
 				</c:HorizontalLayout>
 			</c:DockLayout>
 			<c:HorizontalLine />
@@ -33,7 +35,7 @@
 				<c:TextView CssClass="menu_text" Text="$outletsCount" />
 				<c:HorizontalLayout>
 					<c:Image CssClass="btn_clients" />
-					<c:TextView CssClass="menu_text" Text="#clients#" />
+					<c:TextView Text="#clients#" />
 				</c:HorizontalLayout>
 			</c:DockLayout>
 			<c:HorizontalLine />
@@ -48,10 +50,10 @@
 			<c:HorizontalLine />
 
 			<c:DockLayout OnClickAction="$DoAction(Sync)">
-				<c:TextView Id="syncTitle" CssClass="menu_text" />
+				<c:TextView Id="syncTitle" CssClass="menu_text" Text="$GetLastSyncTime()"></c:TextView>
 				<c:HorizontalLayout>
 					<c:Image CssClass="btn_sync" />
-					<c:TextView CssClass="menu_text" Text="#sync#" />
+					<c:TextView Text="#sync#" />
 				</c:HorizontalLayout>
 			</c:DockLayout>
 			<c:HorizontalLine />
@@ -60,7 +62,7 @@
 				<c:TextView CssClass="menu_text" Text="ver. 2.2" />
 				<c:HorizontalLayout>
 					<c:Image CssClass="btn_info" />
-					<c:TextView CssClass="menu_text" Text="#info#" />
+					<c:TextView Text="#info#" />
 				</c:HorizontalLayout>
 			</c:DockLayout>
 			<c:HorizontalLine />
@@ -69,10 +71,10 @@
 		<c:VerticalLayout>
 
 			<c:DockLayout CssClass="top_navigator">
-				<c:HorizontalLayout Id="btnMenu" CssClass="btn_menu" OnClickAction="$Facade.OpenMenu()">
+				<c:DockLayout Id="btnMenu" CssClass="btn_menu" OnClickAction="$Facade.OpenMenu()">
 					<c:Image CssClass="menuIcon" />
-				</c:HorizontalLayout>
-				<c:HorizontalLayout CssClass="btn_forward" />
+				</c:DockLayout>
+				<c:DockLayout CssClass="btn_space" />
 				<c:HorizontalLayout>
 					<c:TextView Text="#summary#" />
 				</c:HorizontalLayout>

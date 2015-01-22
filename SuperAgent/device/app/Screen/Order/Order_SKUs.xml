@@ -16,13 +16,14 @@
 		<c:HorizontalLine CssClass="b_line" />
 
 		<c:HorizontalLine />
-		<c:HorizontalLayout CssClass="search">
+		
+		<c:DockLayout CssClass="search">
+			<c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoRefresh($edtSearch.Text)"></c:Button>
 			<c:DockLayout>
 				<c:Image />
-				<c:EditText Id="edtSearch" Text="$search" OnGetFocus="$HideSwiped()" Placeholder="#search#"></c:EditText>
-			</c:DockLayout>
-			<c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoRefresh($edtSearch.Text,$param2)"></c:Button>
-		</c:HorizontalLayout>
+				<c:EditText Id="edtSearch" Text="$search" Placeholder="#search#"></c:EditText>
+			</c:DockLayout>			
+		</c:DockLayout>
 		<c:HorizontalLine />
 
 		<c:DockLayout CssClass="parameter_grid" OnClickAction="$Workflow.DoAction(SetFilter, Order)">
@@ -53,7 +54,7 @@
 				</s:If>
 
 
-				<c:SwipeHorizontalLayout Id="swipe_layout" CssClass="swipe_order" Index="1" OnSwipe="$GetQuickOrder($item.Id, $item.Price, $index, pack{$index}, textView{$index})">
+				<c:SwipeHorizontalLayout Id="swipe_layout{$index}" CssClass="swipe_order" Index="1" OnSwipe="$GetQuickOrder($item.Id, $item.Price, pack{$index}, editText{$index}, textView{$index}, $item.RecOrder, $item.UnitId, $item.RecUnit)">
 					<c:HorizontalLayout CssClass="quickOrder">
 						<c:VerticalLayout>
 							<c:HorizontalLayout>
@@ -62,16 +63,17 @@
 									<c:TextView Id="pack{$index}" Text=""/>
 								</c:HorizontalLayout>
 								<c:Button Text="+1" CssClass="add_button" OnClick="$AddToOrder(editText{$index})" />
-								<c:Button CssClass="cart_button" OnClick="$CreateOrderItem(editText{$index}, textView{$index}, pack{$index}, $item.Id, $item.Price)" />
+								<c:Button CssClass="cart_button" OnClick="$CreateOrderItem(editText{$index}, textView{$index}, pack{$index}, $item.Id, $item.Price, swipe_layout{$index}, $item.RecOrder, $item.UnitId)" />
 							</c:HorizontalLayout>
 							<c:TextView Id="textView{$index}" Text="0 {#alreadyOrdered#}" />
 						</c:VerticalLayout>
 					</c:HorizontalLayout>
-					<c:HorizontalLayout OnClickAction="$DoAction(SelectSKU, $item.Id, $item.Price, null, null, null, $item.RecOrder, $item.UnitId)" CssClass="grid">
+					<c:DockLayout OnClickAction="$DoAction(SelectSKU, $item.Id, $item.Price, null, null, null, $item.RecOrder, $item.UnitId)" CssClass="grid">
+						<c:Image />
 						<c:VerticalLayout>
 							<c:DockLayout>
 								<s:If Test="$DoRecommend()">
-									<s:If Test="$ShowRecommendedQty($item.OrderRecOrder, $item.recOrder)">
+									<s:If Test="$ShowRecommendedQty($item.OrderRecOrder, $item.RecOrder)">
 										<c:VerticalLayout>
 											<c:TextView Text="{$item.RecOrder} {$item.RecUnit}" CssClass="rec_order" />
 											<c:TextView Text="#recommended#" CssClass="rec_comment" />
@@ -86,9 +88,8 @@
 								<c:TextView Text="$item.Description" CssClass="main_row"></c:TextView>
 							</c:DockLayout>							
 							<c:TextView Text="#price2# {$item.Price}  #stock#: {$item.CommonStock} #brand#: {$item.Brand}" CssClass="description_row"></c:TextView>
-						</c:VerticalLayout>
-						<c:Image />
-					</c:HorizontalLayout>
+						</c:VerticalLayout>						
+					</c:DockLayout>
 				</c:SwipeHorizontalLayout>
 				<c:HorizontalLine />
 

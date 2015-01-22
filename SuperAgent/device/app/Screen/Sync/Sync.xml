@@ -3,10 +3,10 @@
 	<c:VerticalLayout Id="VLayout">
 
 		<c:DockLayout CssClass="top_navigator">
-			<c:HorizontalLayout Id="btnMenu" CssClass="btn_menu" OnEvent="Back" OnClick="$DoRollback()">
+			<c:DockLayout Id="btnMenu" CssClass="btn_menu" OnEvent="Back" OnClick="$DoRollback()">
 				<c:Image CssClass="menuIcon" />
-			</c:HorizontalLayout>
-			<c:HorizontalLayout CssClass="btn_forward" />
+			</c:DockLayout>
+			<c:DockLayout CssClass="btn_space" />
 			<c:HorizontalLayout>
 				<c:TextView Text="#sync#" />
 			</c:HorizontalLayout>

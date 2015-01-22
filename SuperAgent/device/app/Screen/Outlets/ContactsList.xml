@@ -24,8 +24,8 @@
 
 				<c:SwipeHorizontalLayout CssClass="swipe_layout">
 					<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoAction(Select, $contact.Id, $outlet)">
-						<c:TextView Text="$contact.ContactName"></c:TextView>
 						<c:Image />
+						<c:TextView Text="$contact.ContactName"></c:TextView>						
 					</c:DockLayout>
 					<c:HorizontalLayout CssClass="red_swipe" OnClickAction="$DeleteContact($contact.Id)">
 						<c:TextView Text="#delete#"></c:TextView>

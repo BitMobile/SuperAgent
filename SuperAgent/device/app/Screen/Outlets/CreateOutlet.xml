@@ -7,10 +7,10 @@
 
 		<c:HorizontalLayout Id="btnCancel" CssClass="bottom_btn">
 			<c:VerticalLayout OnEvent="Back" OnClickAction="$DeleteAndBack($outlet)">
-				<c:TextView Text="#cancel#" />
+				<c:TextView CssClass="left_tv" Text="#cancel#" />
 			</c:VerticalLayout>
 			<c:VerticalLayout Id="btnSave" OnClickAction="$SaveNewOutlet($outlet)">
-				<c:TextView CssClass="right" Text="#save#" />
+				<c:TextView CssClass="right_tv" Text="#save#" />
 			</c:VerticalLayout>
 		</c:HorizontalLayout>
 		<c:HorizontalLine CssClass="b_line" />

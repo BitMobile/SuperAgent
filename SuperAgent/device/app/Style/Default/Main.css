@@ -1,11 +1,13 @@
-.menu_text {
+/*.menu_text {
 	width: 100%;
-	height: 40%;
-	margin-left: 4%;
+	height: 32%;
+	margin-left: 0.5mm;
 	vertical-align: central;
+	dock-align: left;
 	color: #ffffff;
 	font: 90% arial;
-}
+	background-color: #11aaaa;
+}*/
 
 dl {
 	width: 100%;
@@ -24,25 +26,19 @@ sv {
 
 svl vl {
 	height: 100%;
+	width: 100%;
 }
 
 .menu {
 	background-color: #2d89cf;
-	width: 90%;
+	width: 43.4mm;
 }
 
 .menu line {
 	width: 100%;
 	height: 1px;
-	margin-left: 2.8%;
+	margin-left: 1.4mm;
 	background-color: #43acfd;
-}
-
-.menu img {
-	height: 15.4%;
-	margin-top: 16%;
-	margin-left: 2.5%;
-	background-image: url(arrow.png);
 }
 
 .menu vl {
@@ -58,29 +54,39 @@ svl vl {
 
 .menu dl {
 	width: 100%;
+	height: 6.9mm;
 	selected-color: #5ea6dc;
 }
 
-.menu dl TextView {
-	width: 30%;
-	margin-top: 30%;
+.menu_text {
+	width: 30% auto;	
+	height: 32%;
 	dock-align: right;
 	text-align: right;
-	margin-right: 2.7%;
+	vertical-align: central;
+	margin-top: 30%;
+	margin-right: 2mm;
+	margin-left: 0.5mm;
 	color: #c5e3f7;
+	font: 90% arial;
 }
 
 .menu dl hl {
 	width: 100%;
 	height: 100%;
-	margin-left: 5%;
+	margin-left: 2mm;
 	dock-align: left;
 }
 
+.menu dl hl img{
+	height: 65%;
+	vertical-align: central;
+}
+
 .menu dl hl TextView {
-	width: 60%;
+	width: 100% auto;;
 	height: 40%;
-	margin-left: 4%;
+	margin-left: 1.4mm;
 	vertical-align: central;
 	color: #ffffff;
 	font: 90% arial;
@@ -100,67 +106,46 @@ svl vl {
 }
 
 .header {
-	height: 8sp;
-	width: 100%;
 	margin-top: 2%;
 	background-color: #43acfd;
+	margin-left: 0mm;
 }
 
+
 .btn_summary {
-	height: 65%;
-	margin-left: 5%;
-	vertical-align: central;
-	background-image: url(SuperShield.png);
+	background-image: url(Menu_01.png);
 }
 
 .btn_visits {
-	height: 44%;
-	vertical-align: central;
-	background-image: url(BiBiCar.png);
+	background-image: url(Menu_02.png);
 }
 
 .btn_orders {
-	height: 58%;
-	vertical-align: central;
-	background-image: url(BITiPhone.png);
+	background-image: url(Menu_03.png);
 }
 
 .btn_clients {
-	height: 48.9%;
-	vertical-align: central;
-	background-image: url(Cheloveki.png);
+	background-image: url(Menu_04.png);
 }
 
 .btn_stocks {
-	height: 48.9%;
-	vertical-align: central;
-	background-image: url(Posilka.png);
+	background-image: url(Menu_05.png);
 }
 
 .btn_kpi {
-	height: 54.5%;
-	vertical-align: central;
-	background-image: url(AllRight.png);
+	background-image: url(Menu_06.png);
 }
 
 .btn_set {
-	height: 58%;
-	vertical-align: central;
-	background-image: url(Detalka.png);
+	background-image: url(Menu_07.png);
 }
 
 .btn_sync {
-	height: 48%;
-	padding-right: 3%;
-	vertical-align: central;
-	margin-left: 1%;
-	background-image: url(TudaSuda.png);
+	background-image: url(Menu_08.png);
 }
 
 .btn_info {
-	height: 56.8%;
-	vertical-align: central;
-	background-image: url(interesno.png);
+	background-image: url(Menu_09.png);
 }
 
 .grid {
@@ -331,6 +316,3 @@ svl vl {
 	background-color: #3384b8;
 }
 
-.btn_forward {
-	margin-left: 0%;
-}

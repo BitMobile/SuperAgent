@@ -1,3 +1,11 @@
+
 .parameter_grid TextView {
 	width: 100%;
+}
+
+.aligner{
+	height: 6.7mm;
+	width: 100%;
+	dock-align: top;
+	horizontal-align: central;
 }

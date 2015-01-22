@@ -3,7 +3,7 @@
 }
 
 .grid vl dl Button {
-	width: 45%;
+	width: 19.4mm;
 	margin-left: -45%;
 }
 
@@ -15,6 +15,7 @@
 
 .grid vl hl Indicator {
 	height: 100%;
+	width: 2.3mm;
 	color: #2d89cf;
 }
 

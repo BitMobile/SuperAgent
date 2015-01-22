@@ -12,11 +12,13 @@
 	<c:DockLayout>
 
 		<c:DockLayout CssClass="top_navigator">
-			<c:HorizontalLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$OrderBack()">
+			<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$OrderBack()">
 				<c:Image />
 				<c:TextView Text="#back#" />
-			</c:HorizontalLayout>
-			<c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckIfEmptyAndForward($workflow.order, $workflow.name)" />
+			</c:DockLayout>
+			<c:DockLayout CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckIfEmptyAndForward($workflow.order, $workflow.name)">
+				<c:TextView Id="btnForward" Text="#forward#" />
+			</c:DockLayout>
 			<c:HorizontalLayout>
 				<c:TextView Text="#order#" />
 			</c:HorizontalLayout>
@@ -41,14 +43,14 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid" OnClickAction="$DoAction(ShowInfo,$sum,null)">
+			<c:DockLayout CssClass="grid" OnClickAction="$DoAction(ShowInfo,$sum,null)">
+				<c:Image />
 				<c:VerticalLayout>
 					<c:TextView Text="$GetDescription($workflow.order.PriceList)" CssClass="description_row"></c:TextView>
 					<c:TextView Text="#orderSum#:" CssClass="description_row"></c:TextView>
 					<c:TextView Text="$sum" CssClass="main_row"></c:TextView>
 				</c:VerticalLayout>
-				<c:Image />
-			</c:HorizontalLayout>
+			</c:DockLayout>
 			<c:HorizontalLine />
 
 			<c:HorizontalLayout CssClass="caption_grid">
@@ -60,16 +62,16 @@
 
 				<s:If Test="$orderitem != null">
 					<c:SwipeHorizontalLayout Id="swipe_layout2" CssClass="swipe_layout">
-						<c:HorizontalLayout CssClass="grid" OnClickAction="$EditIfNew($workflow.order,$orderitem.SKU,null,$orderitem.Id)">
+						<c:DockLayout CssClass="grid" OnClickAction="$EditIfNew($workflow.order,$orderitem.SKU,null,$orderitem.Id)">
+							<s:If Test="$IsNew($workflow.order)">
+								<c:Image />
+							</s:If>
 							<c:VerticalLayout>
 								<s:Push Id="featureDescr" Value="$GetFeatureDescr($orderitem.Feature)"></s:Push>
 								<c:TextView Text="{$orderitem.SKU.Description}{$GetFeatureDescr($orderitem.Feature)}" CssClass="main_row"></c:TextView>
 								<c:TextView Text="#quantity#: {$orderitem.Qty}   #amount#: {$orderitem.Amount}" CssClass="description_row"></c:TextView>
 							</c:VerticalLayout>
-							<s:If Test="$IsNew($workflow.order)">
-								<c:Image />
-							</s:If>
-						</c:HorizontalLayout>
+						</c:DockLayout>
 						<s:If Test="$IsNew($workflow.order)">
 							<c:HorizontalLayout CssClass="red_swipe" OnClickAction="$DeleteItem($orderitem.Id, $executedOrder)">
 								<c:VerticalLayout>

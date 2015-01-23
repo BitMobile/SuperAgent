@@ -9,7 +9,7 @@
 				<c:Image />
 				<c:TextView Text="#back#" />
 			</c:DockLayout>
-			<c:DockLayout CssClass="btn_space" />
+			<c:HorizontalLayout CssClass="btn_forward" />
 			<c:HorizontalLayout>
 				<c:TextView Text="#map#" />
 			</c:HorizontalLayout>			

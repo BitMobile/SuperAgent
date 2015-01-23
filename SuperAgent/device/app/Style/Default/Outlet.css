@@ -71,10 +71,12 @@
 	vertical-align: central;
 }
 
-.grid img {
+.grid Button {
 	width: 10.3mm;
 	height: 9mm;
-	dock-align: right;
+	margin-top: 16%;
+	margin-right: 2.4mm;
+	dock-align: right;	
 }
 
 .empty_coord {

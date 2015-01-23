@@ -211,6 +211,14 @@ function SetLocation(outlet) {
 	Dialog.Question("#setCoordinates#", LocationDialogHandler, outlet);
 }
 
+function GetCoordIconStyle(outlet) {
+	return true;
+} 
+
+function CoordsAreEmpty(outlet) {
+	return true;
+}
+
 function LocationDialogHandler(answ, outlet) {
 	if (answ == DialogResult.Yes) {
 		var location = GPS.CurrentLocation;

@@ -60,3 +60,37 @@
 	color: #fff;
 	font: 100% Arial;
 }
+
+.grid vl hl {
+	height: 100%;
+	width: 100%;
+}
+
+.grid vl hl TextView {
+	height: 60%;
+}
+
+.grid img {
+	width: 10.3mm;
+	height: 9mm;
+	dock-align: right;
+}
+
+.empty_coord {
+	background-image: url(geo_empty.png);
+}
+
+.coordButton {
+	width: 15mm;
+	height: 4.1mm;
+	vertical-align: central;
+	margin-top: 10%; 
+	border-style : solid;
+	border-width: 1px;
+	border-color: #43acfd;
+	border-radius: 5px;
+	color: #2d89cf;
+	text-align: center;
+	font: 60% arial;
+	border-style: solid;
+}

@@ -55,9 +55,9 @@
 					<c:Image />
 					<c:TextView Text="#visits#" />
 				</c:DockLayout>
-				<c:DockLayout OnEvent="Forward" CssClass="btn_forward" OnClickAction="$CheckNotNullAndForward($outlet, $workflow.visit)" >
+				<c:DockLayout OnEvent="Forward" CssClass="btn_forward" OnClickAction="$CheckNotNullAndForward($outlet, $workflow.visit)">
 					<c:TextView Id="btnForward" Text="#forward#" />
-				</c:DockLayout>				
+				</c:DockLayout>
 				<c:HorizontalLayout>
 					<c:TextView Text="#client#" />
 				</c:HorizontalLayout>
@@ -91,20 +91,20 @@
 			<c:HorizontalLine />
 
 
-			<c:HorizontalLayout CssClass="grid">
+			<c:DockLayout CssClass="grid">
+				<c:Image CssClass="empty_coord" />
 				<c:VerticalLayout>
-					<c:DockLayout>
-						<c:TextView Text="#coordinates#"></c:TextView>
-						<c:Button Text="#set#" OnClickAction="$SetLocation($outlet)"></c:Button>
-					</c:DockLayout>
-					<s:If Test="$outlet.Lattitude != null || $outlet.Longitude != null">
-						<c:TextView Id="outletCoord" Text="{$outlet.Lattitude}; {$outlet.Longitude}" CssClass="main_row"></c:TextView>
+					<c:TextView Text="#coordinates#" CssClass="description_row"></c:TextView>
+					<s:If Test="$CoordsAreEmpty($outlet)">
+						<c:Button OnClick="$SetLocation($outlet)" Text="#set#" CssClass="coordButton"/>
 					</s:If>
 					<s:Else>
-						<c:TextView Id="outletCoord" Text="#unknown#" CssClass="main_row"></c:TextView>
+						<c:HorizontalLayout  OnClickAction="$SetLocation($outlet)">
+							<c:TextView Id="outletCoord" Text="{$outlet.Lattitude}; {$outlet.Longitude}" CssClass="main_row"></c:TextView>
+						</c:HorizontalLayout>
 					</s:Else>
-				</c:VerticalLayout>
-			</c:HorizontalLayout>
+				</c:VerticalLayout>				
+			</c:DockLayout>
 			<c:HorizontalLine />
 
 			<c:HorizontalLayout CssClass="caption_grid">

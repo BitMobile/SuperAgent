@@ -67,7 +67,8 @@
 }
 
 .grid vl hl TextView {
-	height: 60%;
+	height: 65%;
+	vertical-align: central;
 }
 
 .grid img {
@@ -78,6 +79,10 @@
 
 .empty_coord {
 	background-image: url(geo_empty.png);
+}
+
+.set_coord {
+	background-image: url(geo_set.png);
 }
 
 .coordButton {

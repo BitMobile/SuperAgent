@@ -207,32 +207,33 @@ function CreateVisitIfNotExists(outlet, userRef, visit, planVisit) {
 
 // -----------------------------------Coodinates--------------------------------
 
-function SetLocation(outlet) {
-	Dialog.Question("#setCoordinates#", LocationDialogHandler, outlet);
+function SetLocation(control, outlet) {
+	var location = GPS.CurrentLocation;
+	if (location.NotEmpty) {
+		outlet = outlet.GetObject();
+		outlet.Lattitude = location.Latitude;
+		outlet.Longitude = location.Longitude;
+		outlet.Save();
+		Workflow.Refresh([]);
+	} else
+		NoLocationHandler(SetLocation, outlet);
 }
 
 function GetCoordIconStyle(outlet) {
-	return true;
+	if (HasCoordinates(outlet))
+		return "set_coord";
+	else
+		return "empty_coord";
 } 
 
-function CoordsAreEmpty(outlet) {
-	return true;
-}
-
-function LocationDialogHandler(answ, outlet) {
-	if (answ == DialogResult.Yes) {
-		var location = GPS.CurrentLocation;
-		if (location.NotEmpty) {
-			outlet = outlet.GetObject();
-			outlet.Lattitude = location.Latitude;
-			outlet.Longitude = location.Longitude;
-			Dialog.Message("#coordinatesAreSet#");
-			// var outlet = $.outlet;
-			outlet.Save();
-			Variables["outletCoord"].Text = (outlet.Lattitude + ", " + outlet.Longitude);
-		} else
-			NoLocationHandler(LocationDialogHandler, outlet);
+function HasCoordinates(outlet) {
+	if (outlet == null) {
+		return false;
 	}
+	if (!isDefault(outlet.Lattitude) && !isDefault(outlet.Longitude)) {
+		return true;
+	}
+	return false;
 }
 
 function CoordsChecked(visit) {
@@ -271,7 +272,28 @@ function VisitCoordsHandler(answ, visit) {
 }
 
 function NoLocationHandler(descriptor, state) {
-	Dialog.Question("#locationSetFailed#", descriptor, state);
+	Dialog.Message("#locationSetFailed#");
+}
+
+function ShowCoordOptions(control, outlet) {
+	Dialog.Choose("#select_answer#", [[0,Translate["#clear_coord#"]], [1,Translate["#refresh#"]], [2,Translate["#copy#"]]], ChooseHandler, outlet);
+}
+
+function ChooseHandler(state, args) {
+	var outlet = state;
+	if (parseInt(args.Result)==parseInt(0)){
+		outlet = outlet.GetObject();
+		outlet.Lattitude = parseInt(0);
+		outlet.Longitude = parseInt(0);
+		outlet.Save();
+		Workflow.Refresh([]);
+	}
+	if (parseInt(args.Result)==parseInt(1)){
+		SetLocation(null, outlet);
+	}
+	if (parseInt(args.Result)==parseInt(2)){
+		Clipboard.SetString(outlet.Lattitude + "; " + outlet.Longitude);		
+	}
 }
 
 // --------------------------- Outlets ---------------------------

@@ -92,16 +92,16 @@
 
 
 			<c:DockLayout CssClass="grid">
-				<c:Image CssClass="empty_coord" />
+				<c:Image CssClass="$GetCoordIconStyle($outlet)" />
 				<c:VerticalLayout>
 					<c:TextView Text="#coordinates#" CssClass="description_row"></c:TextView>
-					<s:If Test="$CoordsAreEmpty($outlet)">
-						<c:Button OnClick="$SetLocation($outlet)" Text="#set#" CssClass="coordButton"/>
+					<s:If Test="$HasCoordinates($outlet)">
+						<c:HorizontalLayout  OnClick="$ShowCoordOptions($outlet)">
+							<c:TextView Id="outletCoord" Text="{$outlet.Lattitude}; {$outlet.Longitude}" CssClass="main_row"></c:TextView>
+						</c:HorizontalLayout>						
 					</s:If>
 					<s:Else>
-						<c:HorizontalLayout  OnClickAction="$SetLocation($outlet)">
-							<c:TextView Id="outletCoord" Text="{$outlet.Lattitude}; {$outlet.Longitude}" CssClass="main_row"></c:TextView>
-						</c:HorizontalLayout>
+						<c:Button OnClick="$SetLocation($outlet)" Text="#set#" CssClass="coordButton"/>
 					</s:Else>
 				</c:VerticalLayout>				
 			</c:DockLayout>

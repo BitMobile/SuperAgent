@@ -150,11 +150,8 @@ function RefreshEditSKU(orderItem, sku, price, discountEdit, showimage) {
     Workflow.Refresh(arr);
 }
 
-function GetSharedImagePath(objectType, objectID, pictID, pictExt) {
-
-    return "/shared/" + objectType + "/" + objectID.Id.ToString() + "/"
-            + pictID.ToString() + pictExt;
-
+function GetImagePath(objectType, objectID, pictID, pictExt) {
+    return GetSharedImagePath(objectType, objectID, pictID, pictExt);
 }
 
 function CountPrice(orderitem) {

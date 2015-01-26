@@ -74,6 +74,15 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
+			<c:SwipeHorizontalLayout Id="snapshotLayout" CssClass="carousel" Alignment="Center">
+				<s:Push Id="snapshots" Value="$GetSnapshots($outlet)" />
+				<s:Iterator Id="snapshot" Value="$snapshots">
+					<c:VerticalLayout OnClick="$ImageActions($snapshot.Id)">
+						<c:Image Source="$GetImagePath(Catalog.Outlet, $outlet, $snapshot.FileName, .jpg)" />
+					</c:VerticalLayout>
+				</s:Iterator>
+			</c:SwipeHorizontalLayout>
+
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#description#" CssClass="description_row"></c:TextView>
@@ -93,22 +102,22 @@
 
 			<c:DockLayout CssClass="grid">
 				<s:If Test="$HasCoordinates($outlet)">
-					<c:Button OnClickAction="$DoAction(ShowMap, $outlet)"/>
+					<c:Button OnClickAction="$DoAction(ShowMap, $outlet)" />
 				</s:If>
 				<s:Else>
-					<c:Image/>
+					<c:Image />
 				</s:Else>
 				<c:VerticalLayout>
 					<c:TextView Text="#coordinates#" CssClass="description_row"></c:TextView>
 					<s:If Test="$HasCoordinates($outlet)">
-						<c:HorizontalLayout  OnClick="$ShowCoordOptions($outlet)">
+						<c:HorizontalLayout OnClick="$ShowCoordOptions($outlet)">
 							<c:TextView Id="outletCoord" Text="{$outlet.Lattitude}; {$outlet.Longitude}" CssClass="main_row"></c:TextView>
-						</c:HorizontalLayout>						
+						</c:HorizontalLayout>
 					</s:If>
 					<s:Else>
-						<c:Button OnClick="$SetLocation($outlet)" Text="#set#" CssClass="coordButton"/>
+						<c:Button OnClick="$SetLocation($outlet)" Text="#set#" CssClass="coordButton" />
 					</s:Else>
-				</c:VerticalLayout>				
+				</c:VerticalLayout>
 			</c:DockLayout>
 			<c:HorizontalLine />
 

@@ -101,3 +101,19 @@
 	font: 60% arial;
 	border-style: solid;
 }
+
+.carousel{
+	height: 22.8mm;
+}
+
+.carousel vl{
+	height: 100%;
+	width: 45.7mm;
+}
+
+.carousel vl img{
+	height: 100%;
+	horizontal-align: central;
+	background-color: #ccc01f;
+}
+

@@ -114,9 +114,6 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 		var guid = GetCameraObject(outlet);
 		Camera.MakeSnapshot(SaveAtOutelt, [ parameterValue, control, guid ]);
 	}
-//	if (typeDescription == "Integer" || typeDescription == "Decimal" || typeDescription == "String") {
-//		CreateOutletParameterValue(outlet, parameter, control.Text, parameterValue)
-//	}
 
 }
 
@@ -178,6 +175,26 @@ function CreateOutlet() {
 	return outlet.Id;
 }
 
+function GetSnapshots(outlet) {
+	var q = new Query("SELECT Id, FileName, LineNumber FROM Catalog_Outlet_Snapshots WHERE Ref=@ref ORDER BY LineNumber");
+	q.AddParameter("ref", outlet);
+	return q.Execute();
+}
+
+function GetImagePath(objectType, objectID, pictID, pictExt) {
+	var s = GetSharedImagePath(objectType, objectID, pictID, pictExt);
+    return s;
+}
+
+function ImageActions(control, id) {
+	Dialog.Ask(Translate["#deleteImage#"], DeleteImage, id); //Translate["#deleteImage#"]
+}
+
+function DeleteImage(state, args) {
+	DB.Delete(state);
+	Workflow.Refresh([]);
+}
+
 // --------------------------case Visits----------------------
 
 function CreateVisitIfNotExists(outlet, userRef, visit, planVisit) {
@@ -205,7 +222,7 @@ function CreateVisitIfNotExists(outlet, userRef, visit, planVisit) {
 	return visit;
 }
 
-// -----------------------------------Coodinates--------------------------------
+// -----------------------------------Coordinates--------------------------------
 
 function SetLocation(control, outlet) {
 	var location = GPS.CurrentLocation;
@@ -402,8 +419,6 @@ function CommitAndBack(){
 	DB.Commit();
 	Workflow.Rollback();
 }
-
-// ------------------------------internal-----------------------------------
 
 function DialogCallBack(control, key) {
 	control.Text = key;

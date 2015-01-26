@@ -240,3 +240,4 @@ others		Другие приложения
 clear_coord		Clear coordinates
 refresh		Refresh
 copy		Copy
+deleteImage		Delete this image?

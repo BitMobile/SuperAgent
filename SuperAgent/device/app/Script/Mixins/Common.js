@@ -133,4 +133,7 @@ function GetObject(val){
 	return val.GetObject();
 }
 
-
+function GetSharedImagePath(objectType, objectID, pictID, pictExt) {
+	return "/shared/" + objectType + "/" + objectID.Id.ToString() + "/"
+    + pictID.ToString() + pictExt;
+}

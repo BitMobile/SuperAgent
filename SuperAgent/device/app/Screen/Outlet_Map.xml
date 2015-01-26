@@ -12,20 +12,11 @@
 			<c:HorizontalLayout CssClass="btn_forward" />
 			<c:HorizontalLayout>
 				<c:TextView Text="#map#" />
-			</c:HorizontalLayout>			
+			</c:HorizontalLayout>
 		</c:DockLayout>
 		<c:HorizontalLine CssClass="b_line" />
 
-		<s:If Test="$HasCoordinates($outlet)">
-			<c:WebMapGoogle Id="map" />
-		</s:If>
-		<s:Else>
-			<c:HorizontalLayout CssClass="grid">
-				<c:VerticalLayout>
-					<c:TextView Text="#noCoordinates#" CssClass="main_row"></c:TextView>
-				</c:VerticalLayout>
-			</c:HorizontalLayout>
-		</s:Else>
+		<c:WebMapGoogle Id="map" />
 
 	</c:VerticalLayout>
 

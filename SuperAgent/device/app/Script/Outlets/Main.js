@@ -219,13 +219,6 @@ function SetLocation(control, outlet) {
 		NoLocationHandler(SetLocation, outlet);
 }
 
-function GetCoordIconStyle(outlet) {
-	if (HasCoordinates(outlet))
-		return "set_coord";
-	else
-		return "empty_coord";
-} 
-
 function HasCoordinates(outlet) {
 	if (outlet == null) {
 		return false;
@@ -267,7 +260,7 @@ function VisitCoordsHandler(answ, visit) {
 			visit.Save();
 			Dialog.Message("#coordinatesAreSet#");
 		} else
-			NoLocationHandler(VisitCoordsHandler, visit);
+			NoLocationHandler(SetLocation, outlet);
 	}
 }
 

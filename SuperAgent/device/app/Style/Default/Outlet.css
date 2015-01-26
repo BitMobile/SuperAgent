@@ -76,15 +76,15 @@
 	height: 9mm;
 	margin-top: 16%;
 	margin-right: 2.4mm;
-	dock-align: right;	
+	dock-align: right;
+	background-image: url(geo_set.png);	
 }
 
-.empty_coord {
-	background-image: url(geo_empty.png);
-}
-
-.set_coord {
-	background-image: url(geo_set.png);
+.grid img{
+	width: 10.3mm;
+	height: 9mm;	
+	dock-align: right;
+	background-image: url(geo_empty.png);	
 }
 
 .coordButton {

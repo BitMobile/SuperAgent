@@ -92,7 +92,12 @@
 
 
 			<c:DockLayout CssClass="grid">
-				<c:Button CssClass="$GetCoordIconStyle($outlet)" OnClickAction="$DoAction(ShowMap, $outlet)"/>
+				<s:If Test="$HasCoordinates($outlet)">
+					<c:Button OnClickAction="$DoAction(ShowMap, $outlet)"/>
+				</s:If>
+				<s:Else>
+					<c:Image/>
+				</s:Else>
 				<c:VerticalLayout>
 					<c:TextView Text="#coordinates#" CssClass="description_row"></c:TextView>
 					<s:If Test="$HasCoordinates($outlet)">

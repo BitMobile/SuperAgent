@@ -229,6 +229,7 @@ function AddSnapshotHandler(state, args) {
 	
 	if (parseInt(args.Result)==parseInt(1)){
 		var pictId = GetCameraObject(state);
+		var path = GetPrivateImagePath("catalog.outlet", state, pictId, ".jpg");
 		Camera.MakeSnapshot(path, 300, GalleryHandler, [ state, pictId ]);
 	}
 }

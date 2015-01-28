@@ -491,14 +491,6 @@ MemoEdit {
 }
 
 
-.clear{
-	height: 2.2mm;
-	width: 2.2mm;
-	margin-top: 45%;
-	dock-align: right;
-	background-image: url(red_mark.png);
-}
-
 .blue_mark {
 	background-image: url(blue_mark.png);
 	height: 0%;

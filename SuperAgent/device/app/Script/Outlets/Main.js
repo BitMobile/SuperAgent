@@ -226,7 +226,13 @@ function DeleteImage(state, args) {
 }
 
 function AddSnapshot(control, outlet) {
-	Dialog.Choose("select_answer", [[0, Translate["#addFromGallery#"]], [1, Translate["#makeSnapshot#"]]], AddSnapshotHandler, outlet);
+	if ($.sessionConst.galleryChoose)
+		Dialog.Choose("select_answer", [[0, Translate["#addFromGallery#"]], [1, Translate["#makeSnapshot#"]]], AddSnapshotHandler, outlet);
+	else{
+		var pictId = GetCameraObject(outlet);
+		var path = GetPrivateImagePath("catalog.outlet", outlet, pictId, ".jpg");
+		Camera.MakeSnapshot(path, 300, GalleryHandler, [ outlet, pictId ]);
+	}		
 }
 
 function AddSnapshotHandler(state, args) {

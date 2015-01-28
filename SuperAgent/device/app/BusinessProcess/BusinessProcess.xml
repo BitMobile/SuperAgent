@@ -75,6 +75,7 @@
 			<bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
 			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
 			<bp:Action Name="Forward" NextStep="Receivables"></bp:Action>
+			<bp:Action Name="SkipEncashment" NextStep="Total"/>
 			<bp:Action Name="SKUs" NextStep="SKUs"></bp:Action>
 			<bp:Action Name="Skip1" NextStep="Questions"></bp:Action>
 			<bp:Action Name="Skip2" NextStep="Visit_Tasks"></bp:Action>

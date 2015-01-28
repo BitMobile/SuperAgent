@@ -158,6 +158,31 @@ function SetSessionConstants() {
 	$.sessionConst.Add("MultStck", EvaluateBoolean(multStck.ExecuteScalar()));
 	$.sessionConst.Add("NoStkEnbl", EvaluateBoolean(stckEnbl.ExecuteScalar()));
 	$.sessionConst.Add("OrderCalc", EvaluateBoolean(orderCalc.ExecuteScalar()));
+	
+	var q = new Query("SELECT U.AccessRight, A.Id, A.Code FROM Catalog_MobileAppAccessRights A " +
+			" LEFT JOIN Catalog_User_UserRights U ON U.AccessRight=A.Id ");
+	var rights = q.Execute();
+	while (rights.Next()) {
+		if (rights.Code=='000000002'){
+			if (rights.AccessRight==null)
+				$.sessionConst.Add("editOutletParameters", false);
+			else
+				$.sessionConst.Add("editOutletParameters", true);
+		}
+		if (rights.Code=='000000003'){
+			if (rights.AccessRight==null)
+				$.sessionConst.Add("galleryChoose", false);
+			else
+				$.sessionConst.Add("galleryChoose", true);
+		}			
+		if (rights.Code=='000000004'){
+			if (rights.AccessRight==null)
+				$.sessionConst.Add("encashEnabled", false);
+			else
+				$.sessionConst.Add("encashEnabled", true);
+		}
+	}				
+	
 }
 
 function EvaluateBoolean(res){

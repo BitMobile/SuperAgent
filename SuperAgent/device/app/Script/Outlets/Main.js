@@ -111,7 +111,10 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 		ValueListSelect(parameterValue, "Value", q.Execute(), Variables[control]);
 	}
 	if (typeDescription == "DateTime") {
-		DateTimeDialog(parameterValue, "Value", parameterValue.Value, Variables[control]);
+		if (String.IsNullOrEmpty(parameterValue.Value))
+			DateTimeDialog(parameterValue, "Value", parameterValue.Value, Variables[control]);
+		else
+			Dialog.Choose(Translate["#valueList#"], [[0, Translate["#clearValue#"]], [1, Translate["#setDate#"]]], DateHandler, parameterValue);		
 	}
 	if (typeDescription == "Boolean") {
 		BooleanDialogSelect(parameterValue, "Value", Variables[control]);
@@ -123,11 +126,16 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 
 }
 
-function IsEditable() {
-	if ($.sessionConst.editOutletParameters)
-		return true;
-	else
-		return false;
+function DateHandler(parameterValue, args) {
+	if (parseInt(args.Result)==parseInt(0)){
+		parameterValue = parameterValue.GetObject();
+		parameterValue.Value = "";
+		parameterValue.Save();
+		Workflow.Refresh([]);
+	}
+	if (parseInt(args.Result)==parseInt(1)){
+		DateTimeDialog(parameterValue, "Value", parameterValue.Value, Variables[control]);
+	}	
 }
 
 function AssignParameterValue(control, typeDescription, parameterValue, value, outlet, parameter){

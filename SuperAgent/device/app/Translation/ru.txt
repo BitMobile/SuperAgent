@@ -245,3 +245,5 @@ outletSnapshots	Фотографии торговой точки
 addFromGallery	Выбрать из галереи
 makeSnapshot	Сделать снимок
 notAvailable	Снимок не доступен
+clearValue		Очистить значение
+setDate			Установить дату

@@ -245,3 +245,5 @@ outletSnapshots	Outlet snapshots
 addFromGallery	Add from gallery
 makeSnapshot	Make snapshot
 notAvailable	Snapshot isnt't available
+clearValue		Clear value
+setDate			Set date

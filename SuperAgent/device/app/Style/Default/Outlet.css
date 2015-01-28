@@ -134,10 +134,14 @@
 
 .carousel vl MemoEdit{
 	height: 100%;
-	width: 45.7mm;
+	width: 35mm;
 	color: #8e8e93;
 	text-align: center;
-	vertical-align: central;
+	horizontal-align: central;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #000000;	
+	padding-top: 35%;
 	font: 10% arial;
 }
 

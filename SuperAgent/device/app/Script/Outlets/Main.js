@@ -1,3 +1,5 @@
+var snapshotsExists;
+
 function GetOutlets(searchText) {
 	var search = "";
 	if (String.IsNullOrEmpty(searchText)==false)
@@ -178,7 +180,18 @@ function CreateOutlet() {
 function GetSnapshots(outlet) {
 	var q = new Query("SELECT Id, FileName, LineNumber FROM Catalog_Outlet_Snapshots WHERE Ref=@ref ORDER BY LineNumber");
 	q.AddParameter("ref", outlet);
+	snapshotsExists = true;
+	//Dialog.Debug()
+	if (parseInt(q.ExecuteCount())==parseInt(0))
+		snapshotsExists = false;
 	return q.Execute();
+}
+
+function NoSnapshots() {
+	if (snapshotsExists) 
+		return false;
+	else
+		return true;
 }
 
 function GetImagePath(objectType, objectID, pictID, pictExt) {
@@ -193,6 +206,43 @@ function ImageActions(control, id) {
 function DeleteImage(state, args) {
 	DB.Delete(state);
 	Workflow.Refresh([]);
+}
+
+function AddSnapshot(control, outlet) {
+	Dialog.Choose("select_answer", [[0, Translate["#addFromGallery#"]], [1, Translate["#makeSnapshot#"]]], AddSnapshotHandler, outlet);
+}
+
+function AddSnapshotHandler(state, args) {
+	
+	if (parseInt(args.Result)==parseInt(0)){		
+		var pictId = GenerateGuid();				
+		var path = GetPrivateImagePath("catalog.outlet", state, pictId, ".jpg");
+		Gallery.Size = 300;
+		Gallery.Copy(path, GalleryHandler, [state, pictId]);					
+	}
+	
+	if (parseInt(args.Result)==parseInt(1)){
+		var pictId = GetCameraObject(state);
+		Camera.MakeSnapshot(path, 300, GalleryHandler, [ state, pictId ]);
+	}
+}
+
+function GalleryHandler(state, args) {
+	if (args.Result){		
+		var outlet = state[0];
+		var fileName = state[1];
+		var newPicture = DB.Create("Catalog.Outlet_Snapshots");
+		newPicture.Ref = outlet;
+		newPicture.FileName = fileName;
+		newPicture.Save();
+				
+//		var path = GetSharedImagePath("catalog.outlet", outlet, fileName, ".jpg");
+//		Gallery.Size = 1000;
+//		Gallery.Path = path;
+//		Gallery.Copy(path);
+		
+		Workflow.Refresh([]);
+	}
 }
 
 // --------------------------case Visits----------------------

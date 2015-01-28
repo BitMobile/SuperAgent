@@ -74,14 +74,30 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:SwipeHorizontalLayout Id="snapshotLayout" CssClass="carousel" Alignment="Center">
-				<s:Push Id="snapshots" Value="$GetSnapshots($outlet)" />
-				<s:Iterator Id="snapshot" Value="$snapshots">
-					<c:VerticalLayout OnClick="$ImageActions($snapshot.Id)">
-						<c:Image Source="$GetImagePath(Catalog.Outlet, $outlet, $snapshot.FileName, .jpg)" />
+			<s:Push Id="snapshots" Value="$GetSnapshots($outlet)" />
+
+			<s:If Test="@snapshotsExists">
+				<c:DockLayout CssClass="snapshot_grid">
+					<c:Button Text="#add#" OnClick="$AddSnapshot($outlet)" />
+					<c:TextView Text="#outletSnapshots#" />
+				</c:DockLayout>
+				<c:SwipeHorizontalLayout Id="snapshotLayout" CssClass="carousel" Alignment="Center">
+					<s:Iterator Id="snapshot" Value="$snapshots">
+						<c:VerticalLayout OnClick="$ImageActions($snapshot.Id)">
+							<c:Image Source="$GetImagePath(catalog.outlet, $outlet, $snapshot.FileName, .jpg)" />
+						</c:VerticalLayout>
+					</s:Iterator>
+				</c:SwipeHorizontalLayout>
+			</s:If>
+			<s:Else>
+				<c:DockLayout CssClass="grid">
+					<c:VerticalLayout>
+						<c:TextView Text="#outletSnapshots#" CssClass="description_row" />
+						<c:Button OnClick="$AddSnapshot($outlet)" Text="#add#" CssClass="add_button" />
 					</c:VerticalLayout>
-				</s:Iterator>
-			</c:SwipeHorizontalLayout>
+				</c:DockLayout>
+			</s:Else>
+			<c:HorizontalLine />
 
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>

@@ -241,3 +241,6 @@ clear_coord		Удалить координаты
 refresh		Обновить
 copy		Скопировать
 deleteImage		Удалить изображение?
+outletSnapshots	Фотографии торговой точки
+addFromGallery	Выбрать из галереи
+makeSnapshot	Сделать снимок

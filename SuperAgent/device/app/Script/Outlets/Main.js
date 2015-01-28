@@ -102,7 +102,7 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 	
 	if (typeDescription == "ValueList") {
 		var q = new Query();
-		q.Text = "SELECT Value, Value FROM Catalog_OutletParameter_ValueList WHERE Ref=@ref UNION SELECT NULL, '—' ORDER BY Value";
+		q.Text = "SELECT Value, Value FROM Catalog_OutletParameter_ValueList WHERE Ref=@ref UNION SELECT '', '—' ORDER BY Value";
 		q.AddParameter("ref", parameter);
 		ValueListSelect(parameterValue, "Value", q.Execute(), Variables[control]);
 	}
@@ -156,18 +156,20 @@ function CheckNotNullAndForward(outlet, visit) {
 }
 
 function ReviseParameters(outlet, save) {
-	var q = new Query("SELECT Id, Value FROM Catalog_Outlet_Parameters WHERE Ref=@ref");
+	var q =
+			new Query("SELECT Id, Value FROM Catalog_Outlet_Parameters WHERE Ref=@ref");
 	q.AddParameter("ref", outlet);
-	var param = q.Execute();
+	var param =
+			q.Execute();
 
 	while (param.Next()) {
-		if (String.IsNullOrEmpty(param.Value))
-			DB.Delete(param.Id);
-		else {
-			if (save)
-				param.Id.GetObject().Save(false);
-		}
+		// if (String.IsNullOrEmpty(param.Value))
+		// DB.Delete(param.Id);
+		// else {
+		if (save)
+			param.Id.GetObject().Save(false);
 	}
+	//	}
 }
 
 function CreateOutlet() {

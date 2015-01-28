@@ -174,7 +174,12 @@
 				<c:DockLayout CssClass="parameter_grid" OnClickAction="$GoToParameterAction($parameter.TypeDescription, $parameterValue, Value, $outlet, $parameter.Id, control{$index})">
 					<c:TextView Text="$parameter.Description"></c:TextView>
 					<s:If Test="$editText">
-						<c:EditText Id="control{$index}" Text="$valueStr" OnChange="$AssignParameterValue($parameter.TypeDescription, $parameterValue, Value, $outlet, $parameter.Id)" CssClass="value" Keyboard="$keyboardType"></c:EditText>
+						<s:If Test="$sessionConst.editOutletParameters">
+							<c:EditText Id="control{$index}" Text="$valueStr" OnChange="$AssignParameterValue($parameter.TypeDescription, $parameterValue, Value, $outlet, $parameter.Id)" CssClass="value" Keyboard="$keyboardType"></c:EditText>
+						</s:If>
+						<s:Else>
+							<c:TextView Id="control{$index}" Text="$valueStr" CssClass="value"></c:TextView>
+						</s:Else>
 					</s:If>
 					<s:Else>
 						<c:TextView Id="control{$index}" Text="$valueStr" CssClass="value"></c:TextView>

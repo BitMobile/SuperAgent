@@ -97,6 +97,10 @@ function SelectIfNotAVisit(outlet, attribute, entity) {
 }
 
 function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control) {
+	
+	if (!$.sessionConst.editOutletParameters){
+		break;
+	}
 
 	parameterValue = CreateOutletParameterValue(outlet, parameter, Variables[control].Text, parameterValue);
 	
@@ -117,6 +121,13 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 		Camera.MakeSnapshot(SaveAtOutelt, [ parameterValue, control, guid ]);
 	}
 
+}
+
+function IsEditable() {
+	if ($.sessionConst.editOutletParameters)
+		return true;
+	else
+		return false;
 }
 
 function AssignParameterValue(control, typeDescription, parameterValue, value, outlet, parameter){

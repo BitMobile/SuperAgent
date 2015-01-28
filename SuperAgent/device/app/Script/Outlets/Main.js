@@ -102,7 +102,7 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 	
 	if (typeDescription == "ValueList") {
 		var q = new Query();
-		q.Text = "SELECT Value, Value FROM Catalog_OutletParameter_ValueList WHERE Ref=@ref";
+		q.Text = "SELECT Value, Value FROM Catalog_OutletParameter_ValueList WHERE Ref=@ref UNION SELECT NULL, '—' ORDER BY Value";
 		q.AddParameter("ref", parameter);
 		ValueListSelect(parameterValue, "Value", q.Execute(), Variables[control]);
 	}

@@ -244,3 +244,4 @@ deleteImage		Удалить изображение?
 outletSnapshots	Фотографии торговой точки
 addFromGallery	Выбрать из галереи
 makeSnapshot	Сделать снимок
+notAvailable	Снимок не доступен

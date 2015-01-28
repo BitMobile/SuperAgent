@@ -180,7 +180,7 @@ function CreateOutlet() {
 }
 
 function GetSnapshots(outlet) {
-	var q = new Query("SELECT Id, FileName, LineNumber FROM Catalog_Outlet_Snapshots WHERE Ref=@ref ORDER BY LineNumber");
+	var q = new Query("SELECT Id, FileName, LineNumber, Unavailable FROM Catalog_Outlet_Snapshots WHERE Ref=@ref ORDER BY LineNumber");
 	q.AddParameter("ref", outlet);
 	snapshotsExists = true;
 	//Dialog.Debug()
@@ -194,6 +194,10 @@ function NoSnapshots() {
 		return false;
 	else
 		return true;
+}
+
+function IsUnavailable(value) {
+	Dialog.Debug(value);
 }
 
 function GetImagePath(objectType, objectID, pictID, pictExt) {
@@ -236,6 +240,7 @@ function GalleryHandler(state, args) {
 		var newPicture = DB.Create("Catalog.Outlet_Snapshots");
 		newPicture.Ref = outlet;
 		newPicture.FileName = fileName;
+		newPicture.Unavailable = true;
 		newPicture.Save();
 				
 //		var path = GetSharedImagePath("catalog.outlet", outlet, fileName, ".jpg");

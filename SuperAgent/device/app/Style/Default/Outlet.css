@@ -130,7 +130,15 @@
 .carousel vl img{
 	height: 100%;
 	horizontal-align: central;
-	background-color: #ccc01f;
+}
+
+.carousel vl MemoEdit{
+	height: 100%;
+	width: 45.7mm;
+	color: #8e8e93;
+	text-align: center;
+	vertical-align: central;
+	font: 10% arial;
 }
 
 .snapshot_grid{

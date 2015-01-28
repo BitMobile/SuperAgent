@@ -144,3 +144,23 @@ function GetPrivateImagePath(objectType, objectID, pictID, pictExt) {
     + pictID + pictExt;
 	return r;
 }
+
+
+//--------------------Clear Button part----------------------
+
+function ShowClearButton(source, button) {
+	button.Visible = true;
+}
+
+function HideClearButton(source, button) {
+	button.Visible = false;
+}
+
+function ClearField(source, field, objectRef, attribute) {
+	field.Text = "";
+	var object = objectRef.GetObject();
+	object[attribute] = "";
+	object.Save();
+	source.Visible = false;
+}
+

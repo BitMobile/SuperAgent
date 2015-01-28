@@ -465,6 +465,7 @@ MemoEdit {
 	height: 100%;
 	width: 100%;
 	vertical-align: central;
+	font: 45% arial;
 }
 
 .half_grid TextView {
@@ -487,6 +488,15 @@ MemoEdit {
 
 .negative_decision {
 	color: #f00;
+}
+
+
+.clear{
+	height: 2.2mm;
+	width: 2.2mm;
+	margin-top: 45%;
+	dock-align: right;
+	background-image: url(red_mark.png);
 }
 
 .blue_mark {

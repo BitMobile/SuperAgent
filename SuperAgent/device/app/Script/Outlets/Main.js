@@ -233,7 +233,8 @@ function GetImagePath(objectType, objectID, pictID, pictExt) {
 }
 
 function ImageActions(control, id) {
-	Dialog.Ask(Translate["#deleteImage#"], DeleteImage, id); //Translate["#deleteImage#"]
+	if ($.sessionConst.editOutletParameters)
+		Dialog.Ask(Translate["#deleteImage#"], DeleteImage, id); //Translate["#deleteImage#"]
 }
 
 function DeleteImage(state, args) {

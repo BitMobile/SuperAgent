@@ -246,9 +246,9 @@ function AddSnapshot(control, outlet) {
 	if ($.sessionConst.galleryChoose)
 		Gallery.AddSnapshot(outlet, null, GalleryHandler, [[0, Translate["#addFromGallery#"]], [1, Translate["#makeSnapshot#"]]]);
 	else{
-		var pictId = GetCameraObject(objectRef);
-		var path = GetPrivateImagePath("catalog.outlet", objectRef, pictId, ".jpg");
-		Camera.MakeSnapshot(path, 300, GalleryHandler, [ objectRef, pictId ]);
+		var pictId = GetCameraObject(outlet);
+		var path = GetPrivateImagePath("catalog.outlet", outlet, pictId, ".jpg");
+		Camera.MakeSnapshot(path, 300, GalleryHandler, [ outlet, pictId ]);
 	}			
 }
 

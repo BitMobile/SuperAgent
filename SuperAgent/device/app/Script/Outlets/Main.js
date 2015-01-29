@@ -79,7 +79,10 @@ function CreateOutletParameterValue(outlet, parameter, value, parameterValue) {
 		parameterValue.Parameter = parameter;
 	} else
 		parameterValue = parameterValue.GetObject();
-	parameterValue.Value = value;
+	if ((parameter.DataType).ToString() != (DB.Current.Constant.DataType.Snapshot).ToString()) 
+//		parameterValue.Value = "";
+//	else
+		parameterValue.Value = value;
 	parameterValue.Save();
 	return parameterValue.Id;
 }
@@ -102,12 +105,8 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 	if (!$.sessionConst.editOutletParameters){
 		break;
 	}
-
-	var value = Variables[control].Text;
-	if (typeDescription == "Snapshot")
-		value = "";
 	
-	parameterValue = CreateOutletParameterValue(outlet, parameter, value, parameterValue);
+	parameterValue = CreateOutletParameterValue(outlet, parameter, Variables[control].Text, parameterValue);
 	
 	if (typeDescription == "ValueList") {
 		var q = new Query();
@@ -213,7 +212,6 @@ function GetSnapshots(outlet) {
 	var q = new Query("SELECT Id, FileName, LineNumber, Unavailable FROM Catalog_Outlet_Snapshots WHERE Ref=@ref ORDER BY LineNumber");
 	q.AddParameter("ref", outlet);
 	snapshotsExists = true;
-	//Dialog.Debug()
 	if (parseInt(q.ExecuteCount())==parseInt(0))
 		snapshotsExists = false;
 	return q.Execute();
@@ -493,5 +491,5 @@ function CommitAndBack(){
 }
 
 function DialogCallBack(control, key) {
-	control.Text = key;
+	Workflow.Refresh([]);
 }

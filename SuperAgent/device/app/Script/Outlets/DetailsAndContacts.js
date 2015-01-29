@@ -12,7 +12,7 @@ function CreateContactIfNotExist(contact, outlet) {
 
 function SaveAndBack(entity, validateOutlet) {
 	if (ValidEntity(entity)) {
-		entity.GetObject().Save();
+		entity.GetObject().Save(false);
 		Workflow.Back();
 	}
 }
@@ -122,7 +122,7 @@ function ValidEntity(entity) {
 	if (getType(entity.GetObject()) == "DefaultScope.Catalog.Outlet_Contacts") {
 		if (EmptyContact(entity) && entity.IsNew()) {
 			DB.Delete(entity);
-			DB.Commit();
+			//DB.Commit();
 			return true;
 		}
 		if (Global.ValidatePhoneNr(entity.PhoneNumber) && Global.ValidateEmail(entity.Email) && ValidateContactName(entity))

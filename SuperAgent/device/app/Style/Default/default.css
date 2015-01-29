@@ -585,7 +585,7 @@ MemoEdit {
 }
 
 .parameter_grid TextView {
-	width: 50%;
+	width: 50% auto;
 	height: 100%;
 	margin-left: 2.7mm;
 	padding-top: 30%;
@@ -679,7 +679,7 @@ MemoEdit {
 }
 
 .value {
-	width: 100%;
+	width: 100% auto;
 	height: 100%;
 	white-space: nowrap;
 	margin-right: 2.4mm;

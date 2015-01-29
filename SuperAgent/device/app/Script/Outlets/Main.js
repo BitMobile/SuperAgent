@@ -103,7 +103,11 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 		break;
 	}
 
-	parameterValue = CreateOutletParameterValue(outlet, parameter, Variables[control].Text, parameterValue);
+	var value = Variables[control].Text;
+	if (typeDescription == "Snapshot")
+		value = "";
+	
+	parameterValue = CreateOutletParameterValue(outlet, parameter, value, parameterValue);
 	
 	if (typeDescription == "ValueList") {
 		var q = new Query();
@@ -125,8 +129,7 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 		listChoice.Add([1, Translate["#makeSnapshot#"]]);
 		if ($.sessionConst.galleryChoose)
 			listChoice.Add([0, Translate["#addFromGallery#"]]);
-		//Dialog.Debug(parameterValue.Value);
-		if (String.IsNullOrEmpty(parameterValue.Value)==false || parameterValue.Value=='Нет фотоснимка')
+		if (String.IsNullOrEmpty(parameterValue.Value)==false)
 			listChoice.Add([2, Translate["#clearValue#"]]);
 		Gallery.AddSnapshot(outlet, parameterValue, SaveAtOutelt, listChoice);
 		parameterValueC = parameterValue;		

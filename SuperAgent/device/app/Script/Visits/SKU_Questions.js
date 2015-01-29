@@ -11,6 +11,7 @@ var setScroll;
 var bool_answer;
 var curr_item;
 var curr_sku;
+var skuValueGl;
 
 //
 //-------------------------------Header handlers-------------------------
@@ -427,8 +428,14 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.Snapshot).ToString()) {
-		var guid = GetCameraObject($.workflow.visit);
-		Camera.MakeSnapshot(SaveAtVisit, [ skuValue, editControl, guid]);
+		skuValueGl = skuValue;
+		var listChoice = new List;
+		listChoice.Add([1, Translate["#makeSnapshot#"]]);
+		if ($.sessionConst.galleryChoose)
+			listChoice.Add([0, Translate["#addFromGallery#"]]);
+		if (String.IsNullOrEmpty(skuValue.Answer)==false)
+			listChoice.Add([2, Translate["#clearValue#"]]);
+		Gallery.AddSnapshot($.workflow.visit, skuValue, SaveAtVisit, listChoice);
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {
@@ -475,14 +482,12 @@ function GetCameraObject(entity) {
 }
 
 function SaveAtVisit(arr, args) {
-	var question = arr[0];
-	var control = arr[1];
-	var guid = arr[2];
+	var question = skuValueGl;
+	var path = arr[1];
 	if (args.Result) {
 		question = question.GetObject();
-		question.Answer = guid;
+		question.Answer = path;
 		question.Save();
-		//control.Text = Translate["#snapshotAttached#"];
 	}
 	else
 		question.Answer = null;

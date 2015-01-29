@@ -1,4 +1,5 @@
 var snapshotsExists;
+var parameterValueC;
 
 function GetOutlets(searchText) {
 	var search = "";
@@ -25,7 +26,7 @@ function CreateOutletAndForward() {
 	var p = DB.Create("Catalog.Outlet");
 	p.Lattitude = 0;
 	p.Longitude = 0;
-
+	p.Save();
 	var parameters = [ p ];
 	Workflow.Action("Create", parameters);
 }
@@ -120,8 +121,15 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 		BooleanDialogSelect(parameterValue, "Value", Variables[control]);
 	}
 	if (typeDescription == "Snapshot") {
-		var guid = GetCameraObject(outlet);
-		Camera.MakeSnapshot(SaveAtOutelt, [ parameterValue, control, guid ]);
+		var listChoice = new List;
+		listChoice.Add([1, Translate["#makeSnapshot#"]]);
+		if ($.sessionConst.galleryChoose)
+			listChoice.Add([0, Translate["#addFromGallery#"]]);
+		//Dialog.Debug(parameterValue.Value);
+		if (String.IsNullOrEmpty(parameterValue.Value)==false || parameterValue.Value=='Нет фотоснимка')
+			listChoice.Add([2, Translate["#clearValue#"]]);
+		Gallery.AddSnapshot(outlet, parameterValue, SaveAtOutelt, listChoice);
+		parameterValueC = parameterValue;		
 	}
 
 }
@@ -215,9 +223,6 @@ function NoSnapshots() {
 		return true;
 }
 
-function IsUnavailable(value) {
-	Dialog.Debug(value);
-}
 
 function GetImagePath(objectType, objectID, pictID, pictExt) {
 	var s = GetSharedImagePath(objectType, objectID, pictID, pictExt);
@@ -234,7 +239,13 @@ function DeleteImage(state, args) {
 }
 
 function AddSnapshot(control, outlet) {
-	Gallery.AddSnapshot(outlet, GalleryHandler);
+	if ($.sessionConst.galleryChoose)
+		Gallery.AddSnapshot(outlet, null, GalleryHandler, [[0, Translate["#addFromGallery#"]], [1, Translate["#makeSnapshot#"]]]);
+	else{
+		var pictId = GetCameraObject(objectRef);
+		var path = GetPrivateImagePath("catalog.outlet", objectRef, pictId, ".jpg");
+		Camera.MakeSnapshot(path, 300, GalleryHandler, [ objectRef, pictId ]);
+	}			
 }
 
 function GalleryHandler(state, args) {
@@ -376,7 +387,7 @@ function SaveNewOutlet(outlet) {
 	if (outlet.Description != null && outlet.Address != null){
 		if (TrimAll(outlet.Description) != "" && TrimAll(outlet.Address) != "" && outlet.Class!=DB.EmptyRef("Catalog_OutletClass") 
 				&& outlet.Type!=DB.EmptyRef("Catalog_OutletType") && outlet.Distributor!=DB.EmptyRef("Catalog_Distributor")) {
-			var q = new Query("SELECT Id FROM Catalog_Territory WHERE SR = @userRef LIMIT 1");
+			var q = new Query("SELECT Ref FROM Catalog_Territory_SRs WHERE SR = @userRef LIMIT 1");+
 			q.AddParameter("userRef", $.common.UserRef);
 			var territory = q.ExecuteScalar();
 
@@ -385,6 +396,8 @@ function SaveNewOutlet(outlet) {
 			to.Outlet = outlet.Id;
 			to.Save();
 
+			outlet.Lattitude = parseInt(0);
+			outlet.Longitude = parseInt(0);
 			outlet.Save();
 			Variables.AddGlobal("outlet", outlet.Id);
 
@@ -430,13 +443,12 @@ function SaveAndBack(outlet) {
 
 function SaveAtOutelt(arr, args) {
 	if (args.Result) {
-		var paramValue = arr[0];
-		var control = arr[1];
-		var path = arr[2];
-		question = paramValue.GetObject();
+		var paramValue = parameterValueC;
+		var path = arr[1];
+		var question = paramValue.GetObject();
 		question.Value = path;
 		question.Save();
-		Variables[control].Text = Translate["#snapshotAttached#"];
+		Workflow.Refresh([]);
 	}
 }
 

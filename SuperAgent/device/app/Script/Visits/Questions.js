@@ -8,6 +8,7 @@ var single_answ;
 var single_total;
 var bool_answer;
 var curr_item;
+var questionGl;
 
 //
 // -------------------------------Header handlers-------------------------
@@ -309,8 +310,14 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.Snapshot).ToString()) {
-		GetCameraObject(visit);
-		Camera.MakeSnapshot(SaveAtVisit, [ question, control ]);
+		questionGl = question;
+		var listChoice = new List;
+		listChoice.Add([1, Translate["#makeSnapshot#"]]);
+		if ($.sessionConst.galleryChoose)
+			listChoice.Add([0, Translate["#addFromGallery#"]]);
+		if (String.IsNullOrEmpty(question.Answer)==false)
+			listChoice.Add([2, Translate["#clearValue#"]]);		
+		Gallery.AddSnapshot(visit, question, SaveAtVisit, listChoice);
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {
@@ -367,14 +374,13 @@ function DialogCallBack(control, key) {
 	Workflow.Refresh([]);
 }
 
-function SaveAtVisit(arr, args) {
-	var question = arr[0];
-	var control = arr[1];
+function SaveAtVisit(arr, args) {	
+	var question = questionGl;
+	var  path = arr[1];
 	if (args.Result) {
 		question = question.GetObject();
-		question.Answer = Variables["guid"];
+		question.Answer = path;
 		question.Save();
-		//Variables[control].Text = Translate["#snapshotAttached#"];
 	}
 	else
 		question.Answer = null;

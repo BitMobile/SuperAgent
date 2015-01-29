@@ -85,7 +85,7 @@
 					<s:Iterator Id="snapshot" Value="$snapshots">
 						<c:VerticalLayout OnClick="$ImageActions($snapshot.Id)">
 							<s:If Test="$snapshot.Unavailable">
-								<c:MemoEdit Text="#notAvailable#"/>
+								<c:TextView Text="#notAvailable#"/>
 							</s:If>
 							<s:Else>
 								<c:Image Source="$GetImagePath(catalog.outlet, $outlet, $snapshot.FileName, .jpg)" />

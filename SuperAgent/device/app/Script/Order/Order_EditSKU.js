@@ -256,8 +256,19 @@ function CalculateSKUAndForward(outlet, orderitem) {
 function DeleteAndBack(orderitem) {
     if (Variables.Exists("AlreadyAdded") == false) {
         DB.Delete(orderitem);
-    } else
-        Variables.Remove("AlreadyAdded");
+    } else{        
+        orderitem = orderitem.GetObject();
+        orderitem.Qty = $.itemFields.Qty;
+        orderitem.Price = $.itemFields.Price;
+        orderitem.Discount = $.itemFields.Discount;
+        orderitem.Total = $.itemFields.Total;
+        orderitem.Units = $.itemFields.Units;
+        orderitem.Feature = $.itemFields.Feature;
+        orderitem.Save();
+        $.Remove("AlreadyAdded");
+    }
+    if ($.Exists("itemFields"))
+    	$.Remove("itemFields");
     Workflow.Back();
 }
 

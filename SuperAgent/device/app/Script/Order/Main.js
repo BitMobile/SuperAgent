@@ -247,8 +247,19 @@ function DeleteItem(item, executedOrder) {
 }
 
 function EditIfNew(order, param1, param2, param3) {
-	if (order.IsNew())
-		Workflow.Action("Edit", [ param1, param2, param3 ]);
+	var orderItem = param3.GetObject();	
+	if (order.IsNew()){
+		if (Variables.Exists("AlreadyAdded") == false) 
+			Variables.AddGlobal("AlreadyAdded", true);
+		$.AddGlobal("itemFields", new Dictionary());
+		$.itemFields.Add("Qty", orderItem.Qty);
+		$.itemFields.Add("Price", orderItem.Price);
+		$.itemFields.Add("Discount", orderItem.Discount);
+		$.itemFields.Add("Total", orderItem.Total);
+		$.itemFields.Add("Units", orderItem.Units);
+		$.itemFields.Add("Feature", orderItem.Feature);
+		Workflow.Action("Edit", [ param1, param2, param3 ]);	
+	}
 }
 
 // ----------------------------------Functions---------------------------

@@ -228,7 +228,9 @@ function ImageActions(control, id) {
 }
 
 function DeleteImage(state, args) {
-	DB.Delete(state);
+	state = state.GetObject();
+	state.FileName="";
+	state.Save();
 	Workflow.Refresh([]);
 }
 

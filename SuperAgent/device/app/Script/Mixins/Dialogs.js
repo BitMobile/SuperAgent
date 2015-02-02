@@ -35,8 +35,9 @@ function DoSelectCallback1(key, args) {
 	var entity = args[0];
 	var attribute = args[1];
 	var control = args[2];
+	entity = entity.GetObject();
 	entity[attribute] = key;
-	entity.GetObject().Save();
+	entity.Save();
 	
 	DialogCallBack(control, key.Description);
 //	return;

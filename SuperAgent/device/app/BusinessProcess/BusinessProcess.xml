@@ -213,7 +213,7 @@
 			<bp:Action Name="Plans" NextStep="Plans" />
 		</bp:Step>
 
-		<bp:Step Name="CreateOutlet" Screen="Outlets\CreateOutlet.xml">
+		<bp:Step Name="CreateOutlet" Screen="Outlets\CreateOutlet.xml" Controller="Outlets\CreateOutlet.js">
 			<bp:Action Name="Open" NextStep="OpenOutlet" />
 		</bp:Step>
 

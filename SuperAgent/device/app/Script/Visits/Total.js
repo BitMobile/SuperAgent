@@ -291,3 +291,17 @@ function CreateCondition(list, field) {
 function DialogCallBack(control, key){
 	control.Text = key;
 }
+
+function NoQuestionnaires(noQuest, noSKUQuest) {
+	if (noQuest && noSKUQuest)
+		return false;
+	else
+		return true;
+}
+
+function NoTasks(skipTasks) {
+	if (skipTasks)
+		return false;
+	else
+		return true;
+}

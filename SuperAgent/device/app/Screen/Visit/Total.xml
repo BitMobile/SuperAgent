@@ -84,21 +84,25 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="parameter_grid">
-				<s:Push Id="answered" Value="$workflow.questions_answ"></s:Push>
-				<s:Push Id="questions" Value="$workflow.questions_qty"></s:Push>
-				<c:TextView Text="#questAnswers#"></c:TextView>
-				<c:TextView Text="{$answered} #of# {$questions}" CssClass="value"></c:TextView>
-			</c:DockLayout>
-			<c:HorizontalLine />
+			<s:If Test="$NoQuestionnaires($.workflow.skipQuestions, $.workflow.skipSKUs)">
+				<c:DockLayout CssClass="parameter_grid">
+					<s:Push Id="answered" Value="$workflow.questions_answ"></s:Push>
+					<s:Push Id="questions" Value="$workflow.questions_qty"></s:Push>
+					<c:TextView Text="#questAnswers#"></c:TextView>
+					<c:TextView Text="{$answered} #of# {$questions}" CssClass="value"></c:TextView>
+				</c:DockLayout>
+				<c:HorizontalLine />
+			</s:If>
 
-			<c:DockLayout CssClass="parameter_grid">
-				<s:Push Id="todoDone" Value="$CountDoneTasks($workflow.visit)"></s:Push>
-				<s:Push Id="todo" Value="$CountTasks($workflow.outlet)"></s:Push>
-				<c:TextView Text="#todoDone#"></c:TextView>
-				<c:TextView Text="{$todoDone} #of# {$todo}" CssClass="value"></c:TextView>
-			</c:DockLayout>
-			<c:HorizontalLine />
+			<s:If Test="$NoTasks($workflow.skipTasks)">
+				<c:DockLayout CssClass="parameter_grid">
+					<s:Push Id="todoDone" Value="$CountDoneTasks($workflow.visit)"></s:Push>
+					<s:Push Id="todo" Value="$CountTasks($workflow.outlet)"></s:Push>
+					<c:TextView Text="#todoDone#"></c:TextView>
+					<c:TextView Text="{$todoDone} #of# {$todo}" CssClass="value"></c:TextView>
+				</c:DockLayout>
+				<c:HorizontalLine />
+			</s:If>
 
 			<c:DockLayout CssClass="parameter_grid">
 				<c:TextView Text="#orderSum#"></c:TextView>

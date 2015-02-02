@@ -86,8 +86,8 @@
 
 			<s:If Test="$NoQuestionnaires($.workflow.skipQuestions, $.workflow.skipSKUs)">
 				<c:DockLayout CssClass="parameter_grid">
-					<s:Push Id="answered" Value="$workflow.questions_answ"></s:Push>
-					<s:Push Id="questions" Value="$workflow.questions_qty"></s:Push>
+					<s:Push Id="answered" Value="$GetSum($workflow.questions_answ, $workflow.questions_answ_sku)"></s:Push>
+					<s:Push Id="questions" Value="$GetSum($workflow.questions_qty, $workflow.questions_qty_sku)"></s:Push>
 					<c:TextView Text="#questAnswers#"></c:TextView>
 					<c:TextView Text="{$answered} #of# {$questions}" CssClass="value"></c:TextView>
 				</c:DockLayout>

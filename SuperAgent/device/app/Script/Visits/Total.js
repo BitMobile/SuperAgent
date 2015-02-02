@@ -293,7 +293,7 @@ function DialogCallBack(control, key){
 }
 
 function NoQuestionnaires(noQuest, noSKUQuest) {
-	if (noQuest && noSKUQuest)
+	if ((noQuest && noSKUQuest) || (noQuest==null && noSKUQuest==null))
 		return false;
 	else
 		return true;

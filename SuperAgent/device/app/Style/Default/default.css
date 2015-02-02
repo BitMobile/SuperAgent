@@ -679,7 +679,7 @@ MemoEdit {
 }
 
 .value {
-	width: 100% auto;
+	width: 35%;
 	height: 100%;
 	white-space: nowrap;
 	margin-right: 2.4mm;

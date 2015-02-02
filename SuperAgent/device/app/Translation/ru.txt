@@ -247,3 +247,4 @@ makeSnapshot	Сделать снимок
 notAvailable	Снимок не доступен
 clearValue		Очистить значение
 setDate			Установить дату
+choose_action	Выберите действие:

@@ -1,6 +1,6 @@
 ﻿function AddSnapshot(objectRef, valueRef, func, listChoice) {
 //	if ($.sessionConst.galleryChoose)
-		Dialog.Choose("select_answer", listChoice, AddSnapshotHandler, [objectRef,func,valueRef]);
+		Dialog.Choose(Translate["#choose_action#"], listChoice, AddSnapshotHandler, [objectRef,func,valueRef]);
 //	else{
 //		var pictId = GetCameraObject(objectRef);
 //		var path = GetPrivateImagePath("catalog.outlet", objectRef, pictId, ".jpg");

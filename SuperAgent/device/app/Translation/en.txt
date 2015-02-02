@@ -247,3 +247,4 @@ makeSnapshot	Make snapshot
 notAvailable	Snapshot isnt't available
 clearValue		Clear value
 setDate			Set date
+choose_action	Choose action:

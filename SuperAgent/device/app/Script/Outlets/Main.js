@@ -89,7 +89,7 @@ function CreateOutletParameterValue(outlet, parameter, value, parameterValue) {
 
 
 function GetSnapshotText(text) {
-	if (String.IsNullOrEmpty(text))
+	if (String.IsNullOrEmpty(text.Value))
 		return Translate["#noSnapshot#"];
 	else
 		return Translate["#snapshotAttached#"];

@@ -27,8 +27,16 @@ function AddSnapshotHandler(state, args) {
 	}
 	
 	if (parseInt(args.Result)==parseInt(2)){
-		DB.Delete(valueRef);
-		Workflow.Refresh([]);
+		if (valueRef.IsNew()){
+			DB.Delete(valueRef);
+			Workflow.Refresh([]);
+		}
+		else{
+			var value = valueRef.GetObject();
+			value.Value = "";
+			value.Save();
+			Workflow.Refresh([]);
+		}
 	}
 }
 

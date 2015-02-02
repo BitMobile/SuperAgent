@@ -132,21 +132,23 @@
 					</c:DockLayout>
 				</c:DockLayout>
 
-				<c:DockLayout>
-					<c:DockLayout CssClass="grid">
-						<c:VerticalLayout>
-							<c:TextView Text="{$encashmentSumm} #currency#" CssClass="main_row"></c:TextView>
-							<c:TextView Text="#programmingCollectionForToday#" CssClass="description_row" />
-						</c:VerticalLayout>
+				<s:If Test="$sessionConst.encashEnabled">
+					<c:DockLayout>
+						<c:DockLayout CssClass="grid">
+							<c:VerticalLayout>
+								<c:TextView Text="{$encashmentSumm} #currency#" CssClass="main_row"></c:TextView>
+								<c:TextView Text="#programmingCollectionForToday#" CssClass="description_row" />
+							</c:VerticalLayout>
+						</c:DockLayout>
+						<c:HorizontalLine />
+						<c:DockLayout CssClass="grid">
+							<c:VerticalLayout>
+								<c:TextView Text="{$receivablesSumm} #currency#" CssClass="main_row"></c:TextView>
+								<c:TextView Text="#accountsReceivables#" CssClass="description_row" />
+							</c:VerticalLayout>
+						</c:DockLayout>
 					</c:DockLayout>
-					<c:HorizontalLine />
-					<c:DockLayout CssClass="grid">
-						<c:VerticalLayout>
-							<c:TextView Text="{$receivablesSumm} #currency#" CssClass="main_row"></c:TextView>
-							<c:TextView Text="#accountsReceivables#" CssClass="description_row" />
-						</c:VerticalLayout>
-					</c:DockLayout>
-				</c:DockLayout>
+				</s:If>
 
 			</c:VerticalLayout>
 

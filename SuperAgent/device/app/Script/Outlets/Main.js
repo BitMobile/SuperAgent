@@ -102,38 +102,36 @@ function SelectIfNotAVisit(outlet, attribute, entity) {
 
 function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control) {
 	
-	if (!$.sessionConst.editOutletParameters){
-		break;
-	}
+	if ($.sessionConst.editOutletParameters){
 	
-	parameterValue = CreateOutletParameterValue(outlet, parameter, Variables[control].Text, parameterValue);
-	
-	if (typeDescription == "ValueList") {
-		var q = new Query();
-		q.Text = "SELECT Value, Value FROM Catalog_OutletParameter_ValueList WHERE Ref=@ref UNION SELECT '', '—' ORDER BY Value";
-		q.AddParameter("ref", parameter);
-		ValueListSelect(parameterValue, "Value", q.Execute(), Variables[control]);
+		parameterValue = CreateOutletParameterValue(outlet, parameter, Variables[control].Text, parameterValue);
+		
+		if (typeDescription == "ValueList") {
+			var q = new Query();
+			q.Text = "SELECT Value, Value FROM Catalog_OutletParameter_ValueList WHERE Ref=@ref UNION SELECT '', '—' ORDER BY Value";
+			q.AddParameter("ref", parameter);
+			ValueListSelect(parameterValue, "Value", q.Execute(), Variables[control]);
+		}
+		if (typeDescription == "DateTime") {
+			if (String.IsNullOrEmpty(parameterValue.Value))
+				DateTimeDialog(parameterValue, "Value", parameterValue.Value, Variables[control]);
+			else
+				Dialog.Choose(Translate["#valueList#"], [[0, Translate["#clearValue#"]], [1, Translate["#setDate#"]]], DateHandler, parameterValue);		
+		}
+		if (typeDescription == "Boolean") {
+			BooleanDialogSelect(parameterValue, "Value", Variables[control]);
+		}
+		if (typeDescription == "Snapshot") {
+			var listChoice = new List;
+			listChoice.Add([1, Translate["#makeSnapshot#"]]);
+			if ($.sessionConst.galleryChoose)
+				listChoice.Add([0, Translate["#addFromGallery#"]]);
+			if (String.IsNullOrEmpty(parameterValue.Value)==false)
+				listChoice.Add([2, Translate["#clearValue#"]]);
+			Gallery.AddSnapshot(outlet, parameterValue, SaveAtOutelt, listChoice);
+			parameterValueC = parameterValue;		
+		}
 	}
-	if (typeDescription == "DateTime") {
-		if (String.IsNullOrEmpty(parameterValue.Value))
-			DateTimeDialog(parameterValue, "Value", parameterValue.Value, Variables[control]);
-		else
-			Dialog.Choose(Translate["#valueList#"], [[0, Translate["#clearValue#"]], [1, Translate["#setDate#"]]], DateHandler, parameterValue);		
-	}
-	if (typeDescription == "Boolean") {
-		BooleanDialogSelect(parameterValue, "Value", Variables[control]);
-	}
-	if (typeDescription == "Snapshot") {
-		var listChoice = new List;
-		listChoice.Add([1, Translate["#makeSnapshot#"]]);
-		if ($.sessionConst.galleryChoose)
-			listChoice.Add([0, Translate["#addFromGallery#"]]);
-		if (String.IsNullOrEmpty(parameterValue.Value)==false)
-			listChoice.Add([2, Translate["#clearValue#"]]);
-		Gallery.AddSnapshot(outlet, parameterValue, SaveAtOutelt, listChoice);
-		parameterValueC = parameterValue;		
-	}
-
 }
 
 function DateHandler(parameterValue, args) {

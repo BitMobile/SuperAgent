@@ -203,7 +203,7 @@ function ReviseParameters(outlet, save) {
 
 
 function GetSnapshots(outlet) {
-	var q = new Query("SELECT Id, FileName, LineNumber, Unavailable FROM Catalog_Outlet_Snapshots WHERE Ref=@ref AND Deleted=='0' ORDER BY LineNumber");
+	var q = new Query("SELECT Id, FileName, LineNumber, Unavailable FROM Catalog_Outlet_Snapshots WHERE Ref=@ref AND (Deleted!='1' OR Deleted IS NULL) ORDER BY LineNumber");
 	q.AddParameter("ref", outlet);
 	snapshotsExists = true;
 	if (parseInt(q.ExecuteCount())==parseInt(0))

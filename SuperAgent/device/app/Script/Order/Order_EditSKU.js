@@ -250,6 +250,9 @@ function CalculateSKUAndForward(outlet, orderitem) {
         Global.FindTwinAndUnite(orderitem.GetObject());
     }
 
+    if ($.Exists("itemFields"))
+    	$.Remove("itemFields");
+    
     Workflow.Forward([]);
 }
 

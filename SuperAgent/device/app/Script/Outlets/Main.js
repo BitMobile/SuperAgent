@@ -1,4 +1,5 @@
 var snapshotsExists;
+var singlePicture;
 var parameterValueC;
 
 function GetOutlets(searchText) {
@@ -208,6 +209,9 @@ function GetSnapshots(outlet) {
 	snapshotsExists = true;
 	if (parseInt(q.ExecuteCount())==parseInt(0))
 		snapshotsExists = false;
+	singlePicture = false;
+	if (parseInt(q.ExecuteCount())==parseInt(1)) 
+		singlePicture = true;
 	return q.Execute();
 }
 

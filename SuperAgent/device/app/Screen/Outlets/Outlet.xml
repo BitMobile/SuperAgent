@@ -82,19 +82,31 @@
 						<c:Button Text="#add#" OnClick="$AddSnapshot($outlet)" />
 					</s:If>
 					<c:TextView Text="#outletSnapshots#" />
-				</c:DockLayout>				
-				<c:SwipeHorizontalLayout Id="snapshotLayout" CssClass="carousel" Alignment="Center">
-					<s:Iterator Id="snapshot" Value="$snapshots">
-						<c:VerticalLayout OnClick="$ImageActions($snapshot.Id)">
-							<s:If Test="$snapshot.Unavailable">
-								<c:TextView Text="#notAvailable#"/>
-							</s:If>
-							<s:Else>
-								<c:Image Source="$GetImagePath(catalog.outlet, $outlet, $snapshot.FileName, .jpg)" />
-							</s:Else>							
-						</c:VerticalLayout>
-					</s:Iterator>
-				</c:SwipeHorizontalLayout>
+				</c:DockLayout>			
+				<s:If Test="@singlePicture">
+					<c:VerticalLayout CssClass="single_picture">
+						<s:If Test="$snapshots.Unavailable">
+							<c:TextView Text="#notAvailable#"/>
+						</s:If>
+						<s:Else>
+							<c:Image Source="$GetImagePath(catalog.outlet, $outlet, $snapshots.FileName, .jpg)" />
+						</s:Else>
+					</c:VerticalLayout>					
+				</s:If>
+				<s:Else>
+					<c:SwipeHorizontalLayout Id="snapshotLayout" CssClass="carousel" Alignment="Center">
+						<s:Iterator Id="snapshot" Value="$snapshots">
+							<c:VerticalLayout OnClick="$ImageActions($snapshot.Id)">
+								<s:If Test="$snapshot.Unavailable">
+									<c:TextView Text="#notAvailable#"/>
+								</s:If>
+								<s:Else>
+									<c:Image Source="$GetImagePath(catalog.outlet, $outlet, $snapshot.FileName, .jpg)" />
+								</s:Else>							
+							</c:VerticalLayout>
+						</s:Iterator>
+					</c:SwipeHorizontalLayout>
+				</s:Else>					
 				<c:HorizontalLine />
 			</s:If>
 			<s:Else>

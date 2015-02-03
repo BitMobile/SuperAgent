@@ -201,7 +201,7 @@ function ReviseParameters(outlet, save) {
 
 
 function GetSnapshots(outlet) {
-	var q = new Query("SELECT Id, FileName, LineNumber, Unavailable FROM Catalog_Outlet_Snapshots WHERE Ref=@ref AND FileName!='' ORDER BY LineNumber");
+	var q = new Query("SELECT Id, FileName, LineNumber, Unavailable FROM Catalog_Outlet_Snapshots WHERE Ref=@ref AND Deleted=='0' ORDER BY LineNumber");
 	q.AddParameter("ref", outlet);
 	snapshotsExists = true;
 	if (parseInt(q.ExecuteCount())==parseInt(0))
@@ -229,7 +229,8 @@ function ImageActions(control, id) {
 
 function DeleteImage(state, args) {
 	state = state.GetObject();
-	state.FileName="";
+	//state.FileName="";
+	state.Deleted = true;
 	state.Save();
 	Workflow.Refresh([]);
 }

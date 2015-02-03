@@ -10,6 +10,10 @@ function DateTimeDialog(entity, attribute, date, control) {
 	var header = Translate["#enterDateTime#"];
 	if (String.IsNullOrEmpty(date))
 		date = DateTime.Now;
+//	Dialog.Debug(entity);
+//	Dialog.Debug(attribute);
+//	Dialog.Debug(date);
+//	Dialog.Debug(control);
 	Dialog.ShowDateTime(header, date, DoSelectCallback2, [ entity, attribute, control ]);
 }
 

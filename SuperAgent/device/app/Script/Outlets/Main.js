@@ -116,7 +116,7 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 			if (String.IsNullOrEmpty(parameterValue.Value))
 				DateTimeDialog(parameterValue, "Value", parameterValue.Value, Variables[control]);
 			else
-				Dialog.Choose(Translate["#valueList#"], [[0, Translate["#clearValue#"]], [1, Translate["#setDate#"]]], DateHandler, parameterValue);		
+				Dialog.Choose(Translate["#valueList#"], [[0, Translate["#clearValue#"]], [1, Translate["#setDate#"]]], DateHandler, [parameterValue, control]);		
 		}
 		if (typeDescription == "Boolean") {
 			BooleanDialogSelect(parameterValue, "Value", Variables[control]);
@@ -134,7 +134,9 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 	}
 }
 
-function DateHandler(parameterValue, args) {
+function DateHandler(state, args) {
+	var parameterValue = state[0];
+	var control = state[1];
 	if (parseInt(args.Result)==parseInt(0)){
 		parameterValue = parameterValue.GetObject();
 		parameterValue.Value = "";

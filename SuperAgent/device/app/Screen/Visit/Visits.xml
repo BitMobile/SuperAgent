@@ -7,10 +7,10 @@
 	<c:VerticalLayout>
 
 		<c:DockLayout CssClass="top_navigator">
-			<c:HorizontalLayout Id="btnMenu" CssClass="btn_menu" OnEvent="Back" OnClickAction="$Workflow.DoRollback()">
+			<c:DockLayout Id="btnMenu" CssClass="btn_menu" OnEvent="Back" OnClickAction="$Workflow.DoRollback()">
 				<c:Image CssClass="menuIcon" />
-			</c:HorizontalLayout>
-			<c:Button Id="btnForward" Text="" CssClass="btn_forward" />
+			</c:DockLayout>
+			<c:DockLayout Id="btnForward" CssClass="btn_space" />
 			<c:HorizontalLayout>
 				<c:TextView Text="#visits#" />
 			</c:HorizontalLayout>
@@ -46,13 +46,13 @@
 		</c:HorizontalLayout>
 		<c:HorizontalLine />
 
-		<c:HorizontalLayout CssClass="search">
+		<c:DockLayout CssClass="search">
+			<c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoRefresh($edtSearch.Text)"></c:Button>
 			<c:DockLayout>
 				<c:Image />
 				<c:EditText Id="edtSearch" Text="$search" Placeholder="#search#"></c:EditText>
-			</c:DockLayout>
-			<c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoRefresh($edtSearch.Text)"></c:Button>
-		</c:HorizontalLayout>
+			</c:DockLayout>			
+		</c:DockLayout>
 		<c:HorizontalLayout CssClass="shadowLine"></c:HorizontalLayout>
 
 		<s:If Test="$visitsType=='planned'">
@@ -69,7 +69,7 @@
 				<s:Iterator Id="pOutlet" Value="$uncommitedVisits">
 					<s:Push Id="planOutlet" Value="$pOutlet.Outlet"></s:Push>
 
-					<c:HorizontalLayout CssClass="grid" OnClickAction="$AddGlobalAndAction($pOutlet.Ref, $planOutlet, Select)">
+					<c:DockLayout CssClass="grid" OnClickAction="$AddGlobalAndAction($pOutlet.Ref, $planOutlet, Select)">
 						<s:If Test="$pOutlet.OutletStatus == 0">
 							<c:Image CssClass="blue_mark" />
 						</s:If>
@@ -82,6 +82,7 @@
 						<s:If Test="$pOutlet.OutletStatus == 3">
 							<c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
 						</s:If>
+						<c:Image />
 						<c:VerticalLayout>
 							<c:TextView Text="$planOutlet.Description" CssClass="main_row"></c:TextView>
 							<c:HorizontalLayout>
@@ -91,8 +92,8 @@
 								<c:TextView Text="{$planOutlet.Address}" CssClass="description_row"></c:TextView>
 							</c:HorizontalLayout>
 						</c:VerticalLayout>
-						<c:Image />
-					</c:HorizontalLayout>
+						
+					</c:DockLayout>
 					<c:HorizontalLine />
 
 				</s:Iterator>
@@ -111,7 +112,7 @@
 
 				<s:Iterator Id="pOutlet" Value="$commitedVisits">
 
-					<c:HorizontalLayout CssClass="grid">
+					<c:DockLayout CssClass="grid">
 						<s:If Test="$pOutlet.OutletStatus == 0">
 							<c:Image CssClass="blue_mark" />
 						</s:If>
@@ -128,7 +129,7 @@
 							<c:TextView Text="$pOutlet.Description" CssClass="main_row"></c:TextView>
 							<c:TextView Text="{$pOutlet.Address}" CssClass="description_row"></c:TextView>
 						</c:VerticalLayout>
-					</c:HorizontalLayout>
+					</c:DockLayout>
 					<c:HorizontalLine />
 
 
@@ -143,7 +144,7 @@
 
 			<c:ScrollView Id="grScrollView">
 				<s:Iterator Id="uOutlet" Value="$unscheduledOutlets">
-					<c:HorizontalLayout CssClass="grid" OnClickAction="$AddGlobalAndAction(null, $uOutlet.Outlet, Select)">
+					<c:DockLayout CssClass="grid" OnClickAction="$AddGlobalAndAction(null, $uOutlet.Outlet, Select)">
 						<s:If Test="$uOutlet.OutletStatus == 0">
 							<c:Image CssClass="blue_mark" />
 						</s:If>
@@ -156,12 +157,12 @@
 						<s:If Test="$uOutlet.OutletStatus == 3">
 							<c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
 						</s:If>
+						<c:Image />
 						<c:VerticalLayout>
 							<c:TextView Text="$uOutlet.Description" CssClass="main_row"></c:TextView>
 							<c:TextView Text="{$uOutlet.Address}" CssClass="description_row"></c:TextView>
-						</c:VerticalLayout>
-						<c:Image />
-					</c:HorizontalLayout>
+						</c:VerticalLayout>						
+					</c:DockLayout>
 					<c:HorizontalLine />
 				</s:Iterator>
 			</c:ScrollView>

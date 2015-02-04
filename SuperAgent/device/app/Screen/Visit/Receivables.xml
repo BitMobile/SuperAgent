@@ -8,11 +8,13 @@
 	<c:VerticalLayout>
 
 		<c:DockLayout CssClass="top_navigator">
-			<c:HorizontalLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoBack()">
+			<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoBack()">
 				<c:Image />
-				<c:TextView Text="#order#" />
-			</c:HorizontalLayout>
-			<c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$SaveAndForward($workflow.encashment)" />
+				<c:TextView Text="#back#" />
+			</c:DockLayout>
+			<c:DockLayout CssClass="btn_forward" OnEvent="Forward" OnClickAction="$SaveAndForward($workflow.encashment)">
+				<c:TextView Id="btnForward" Text="#forward#" />
+			</c:DockLayout>
 			<c:HorizontalLayout>
 				<c:TextView Text="#encashment#" />
 			</c:HorizontalLayout>
@@ -78,13 +80,13 @@
 							<c:TextView Text="{$receivableDoc.DocumentName}" CssClass="description_row"></c:TextView>
 						</s:Else>
 						<c:DockLayout CssClass="parameter_grid">
-							<c:EditText Id="control{$index}" Value="$encasmentItem.EncashmentSum" Keyboard="numeric" OnChange="$RefreshAmount($workflow.encashment, $encasmentItem)"></c:EditText>
 							<s:If Test="$receivableDoc.Overdue">
 								<c:TextView Text="#debt#: {$receivableDoc.DocumentSum}" CssClass="r_row"></c:TextView>
 							</s:If>
 							<s:Else>
 								<c:TextView Text="#debt#: {$receivableDoc.DocumentSum}" CssClass="b_row"></c:TextView>
 							</s:Else>
+							<c:EditText Id="control{$index}" Value="$encasmentItem.EncashmentSum" Keyboard="numeric" OnChange="$RefreshAmount($workflow.encashment, $encasmentItem)"></c:EditText>
 						</c:DockLayout>
 					</c:VerticalLayout>
 				</c:HorizontalLayout>

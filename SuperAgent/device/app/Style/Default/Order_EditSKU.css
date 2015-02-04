@@ -1,5 +1,5 @@
 .btn_showpicture {
-	height: 2.9sp;
+	height: 2.5mm;
 	width: 100%;
 	selected-color: #bacdce;
 	background-color: #efeff4;
@@ -28,35 +28,43 @@
 
 .clickable {
 	width: 60%;
+	dock-align: left;
+	margin-left: 0%;
 }
 
 .clickable TextView {
 	height: 100%;
 	width: 100%;
+	margin-left: 2.7mm;
 }
 
 .swipe_history{
-	height: 7.8sp;
+	height: 6.7mm;
 }
 
 .repeat{
-	width: 27%;
+	width: 13.8mm;
 	height: 100%;
 	background-color: #4dd865;
 }
 
 .repeat TextView{
 	width: 100%;
-	height: 28%;
+	height: 100%;
 	vertical-align: central;
 	horizontal-align: central;
+	margin-top: 30%;
 	text-align: center;
 	color: #ffffff;
-	font: 100% Arial;
+	font: 45% Arial;
 }
 
 .parameter_grid{
 	background-color: #ffffff;
+}
+
+.parameter_grid TextView{
+	width: 50% auto;
 }
 
 .black_text{

@@ -101,7 +101,7 @@ function GetPriceListRef(outlet) {
 function GetOrderedSKUs(order) {
 
 	var query = new Query();
-	query.Text = "SELECT Id, SKU, Feature, Qty, Discount, Total, Units, Qty*Total AS Amount FROM Document_Order_SKUs WHERE Ref = @Ref";
+	query.Text = "SELECT Id, SKU, Feature, Qty, Discount, Total, Units, ROUND(Qty*Total, 2) AS Amount FROM Document_Order_SKUs WHERE Ref = @Ref";
 	query.AddParameter("Ref", order);
 	return query.Execute();
 }
@@ -135,7 +135,7 @@ function GetDescription(priceList) {
 }
 
 function SelectStock(order, attr, control) {
-	if (IsNew(order)) {
+	if (IsNew(order) && NotEmptyRef(order.PriceList)) {
 		var q = new Query("SELECT Id, Description FROM Catalog_Stock");
 		var res = q.Execute().Unload();
 		var table = [];
@@ -167,7 +167,7 @@ function SelectPriceListIfIsNew(order, priceLists, executedOrder) {
 }
 
 function IsEditable(executedOrder, order) {
-	return executedOrder == null && IsNew(order);
+	return executedOrder == null && IsNew(order) && NotEmptyRef(order.PriceList);
 }
 
 function CheckIfEmptyAndForward(order, wfName) {
@@ -190,8 +190,13 @@ function CheckIfEmptyAndForward(order, wfName) {
 			DB.Commit();
 		}
 		DoBackTo("OrderList");
-	} else
-		Workflow.Action("Forward", []);
+	} else{
+		if ($.sessionConst.encashEnabled)
+			Workflow.Action("Forward", []);
+		else
+			Workflow.Action("SkipEncashment", []);
+	}
+		
 }
 
 function SaveOrder(order) {
@@ -200,7 +205,7 @@ function SaveOrder(order) {
 }
 
 function SetDeliveryDateDialog(order, control, executedOrder) {
-	if (IsNew(order))
+	if (IsNew(order) && NotEmptyRef(order.PriceList))
 		DateTimeDialog(order, "DeliveryDate", order.DeliveryDate, control);
 }
 
@@ -220,8 +225,11 @@ function OrderBack() {
 					Workflow.BackTo("Visit_Tasks");
 			} else
 				Workflow.BackTo("Questions");
-		} else
+		} else{
+			Variables.Remove("group_filter");
+			Variables.Remove("brand_filter");
 			Workflow.Back();
+		}
 	}
 
 }
@@ -239,8 +247,19 @@ function DeleteItem(item, executedOrder) {
 }
 
 function EditIfNew(order, param1, param2, param3) {
-	if (order.IsNew())
-		Workflow.Action("Edit", [ param1, param2, param3 ]);
+	var orderItem = param3.GetObject();	
+	if (order.IsNew()){
+		if (Variables.Exists("AlreadyAdded") == false) 
+			Variables.AddGlobal("AlreadyAdded", true);
+		$.AddGlobal("itemFields", new Dictionary());
+		$.itemFields.Add("Qty", orderItem.Qty);
+		$.itemFields.Add("Price", orderItem.Price);
+		$.itemFields.Add("Discount", orderItem.Discount);
+		$.itemFields.Add("Total", orderItem.Total);
+		$.itemFields.Add("Units", orderItem.Units);
+		$.itemFields.Add("Feature", orderItem.Feature);
+		Workflow.Action("Edit", [ param1, param2, param3 ]);	
+	}
 }
 
 // ----------------------------------Functions---------------------------

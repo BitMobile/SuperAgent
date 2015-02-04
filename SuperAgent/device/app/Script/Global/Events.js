@@ -26,36 +26,34 @@ function OnWorkflowStart(name) {
 	}
 
 	if (name == "Visit") {
+		
+			var questionnaires = GetQuestionnairesForOutlet($.outlet);
+			$.workflow.Add("questionnaires", questionnaires);						
 
 			if (parseInt(GetTasksCount()) != parseInt(0))
-				$.workflow.Add("skipTasks", false); // нельзя просто
-															// взять и присвоить
-															// значение
-															// переменной!
+				$.workflow.Add("skipTasks", false); // нельзя просто взять и присвоить значение переменной!
 			else
 				$.workflow.Add("skipTasks", true);
 
-			if (parseInt(GetQuestionsCount()) != parseInt(0))
+			if (parseInt(GetQuestionsCount(questionnaires)) != parseInt(0))
 				$.workflow.Add("skipQuestions", false);
 			else
 				$.workflow.Add("skipQuestions", true);
 
-			if (parseInt(GetSKUQuestionsCount()) != parseInt(0)) 
+			if (parseInt(GetSKUQuestionsCount(questionnaires)) != parseInt(0)) 
 				$.workflow.Add("skipSKUs", false);
 			else
 				$.workflow.Add("skipSKUs", true);
 	}
-	
 	
 	Variables["workflow"].Add("name", name);
 
 }
 
 function OnWorkflowForward(name, lastStep, nextStep, parameters) {
-	if (lastStep == "Order" && nextStep == "EditSKU"
-			&& Variables.Exists("AlreadyAdded") == false) {
-		Variables.AddGlobal("AlreadyAdded", true);
-	}
+//	if (lastStep == "Order" && nextStep == "EditSKU" && Variables.Exists("AlreadyAdded") == false) {
+//		Variables.AddGlobal("AlreadyAdded", true);
+//	}
 }
 
 function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
@@ -99,7 +97,17 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 	}
 
 	return true;
+	
+	//clear filters
 
+	if ((lastStep=="Order" && nextStep=="Receivables") || (lastStep=="SKUs" && nextStep=="Order")) {
+		if (Variables.Exists("group_filter"))
+			Variables.Remove("group_filter");
+
+		if (Variables.Exists("brand_filter"))
+			Variables.Remove("brand_filter");
+	}
+	
 }
 
 //function OnWorkflowBack(name, lastStep, nextStep) {}
@@ -117,19 +125,19 @@ function OnWorkflowFinish(name, reason) {
 			Variables.Remove("steps");
 
 		GPS.StopTracking();
+		
+		Indicators.SetIndicators();
 	}
 
 	Variables.Remove("workflow");
-
-	if (Variables.Exists("group_filter"))
-		Variables.Remove("group_filter");
-
-	if (Variables.Exists("brand_filter"))
-		Variables.Remove("brand_filter");
 	
-	if (name=="Visit" || name=="CreateOrder" || name=="Outlets")
-		Indicators.SetIndicators();
-	
+	if (name=="Visit" || name=="CreateOrder"){
+		if (Variables.Exists("group_filter"))
+			Variables.Remove("group_filter");
+
+		if (Variables.Exists("brand_filter"))
+			Variables.Remove("brand_filter");
+	}
 }
 
 function OnWorkflowPause(name) {
@@ -142,11 +150,38 @@ function SetSessionConstants() {
 	var planEnbl = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='PlanEnbl'");
 	var multStck = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='MultStck'");
 	var stckEnbl = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='NoStkEnbl'");
+	var orderCalc = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='OrderCalc'");
 	
 	$.AddGlobal("sessionConst", new Dictionary());
 	$.sessionConst.Add("PlanEnbl", EvaluateBoolean(planEnbl.ExecuteScalar()));
 	$.sessionConst.Add("MultStck", EvaluateBoolean(multStck.ExecuteScalar()));
 	$.sessionConst.Add("NoStkEnbl", EvaluateBoolean(stckEnbl.ExecuteScalar()));
+	$.sessionConst.Add("OrderCalc", EvaluateBoolean(orderCalc.ExecuteScalar()));
+	
+	var q = new Query("SELECT U.AccessRight, A.Id, A.Code FROM Catalog_MobileAppAccessRights A " +
+			" LEFT JOIN Catalog_User_UserRights U ON U.AccessRight=A.Id ");
+	var rights = q.Execute();
+	while (rights.Next()) {
+		if (rights.Code=='000000002'){
+			if (rights.AccessRight==null)
+				$.sessionConst.Add("editOutletParameters", false);
+			else
+				$.sessionConst.Add("editOutletParameters", true);
+		}
+		if (rights.Code=='000000003'){
+			if (rights.AccessRight==null)
+				$.sessionConst.Add("galleryChoose", false);
+			else
+				$.sessionConst.Add("galleryChoose", true);
+		}			
+		if (rights.Code=='000000004'){
+			if (rights.AccessRight==null)
+				$.sessionConst.Add("encashEnabled", false);
+			else
+				$.sessionConst.Add("encashEnabled", true);
+		}
+	}				
+	
 }
 
 function EvaluateBoolean(res){
@@ -187,14 +222,255 @@ function GetTasksCount() {
 	return taskQuery.ExecuteScalar();
 }
 
-function GetQuestionsCount() {
-	q = new Query("SELECT COUNT(QQ.Id) FROM Document_Questionnaire_Questions QQ JOIN Document_QuestionnaireMap_Outlets M ON QQ.Ref=M.Questionnaire WHERE M.Outlet = @outlet");
-	q.AddParameter("outlet", $.outlet);
-	return q.ExecuteScalar();
+
+//-----Questionnaire selection-------
+
+function GetQuestionnairesForOutlet(outlet) {
+	var query = new Query("SELECT DISTINCT Q.Id " +
+			"FROM Document_Questionnaire_Schedule S " +
+			"JOIN Document_Questionnaire Q ON Q.Id=S.Ref " +
+			"WHERE date(S.Date)=date('now', 'start of day') AND Q.Status=@active ORDER BY Q.Id");
+	query.AddParameter("active", DB.Current.Constant.QuestionnareStatus.Active);
+	var recordset = query.Execute();
+
+	var list = new List;
+	var actualQuestionnaire = true;
+	var currentQuestionnaire;
+	
+	while (recordset.Next()) {		
+		
+		var query1 = new Query("SELECT Selector, ComparisonType, Value, AdditionalParameter, Ref " +
+				"FROM Document_Questionnaire_Selectors WHERE Ref=@ref ORDER BY Selector, ComparisonType");
+		query1.AddParameter("ref",recordset.Id);
+		var selectors = query1.Execute();
+		
+		var listParameter = new List;	//
+		var listChecked = true;			//stuff for
+		var currentSelector=null;		//list selector
+		var currentParam = null;				//
+		
+		while (selectors.Next() && actualQuestionnaire) {				
+				
+			if (ListSelectorIsChanged(currentSelector, selectors.Selector, selectors.AdditionalParameter, currentParam)){ //it's time to check list selector
+				actualQuestionnaire = CheckListSelector(listParameter);
+				if (actualQuestionnaire==false){
+					break;
+				}
+				listParameter = new List;
+				listChecked = true;
+			}
+			
+			//if (selectors.ComparisonType=="In list" || selectors.ComparisonType=="В списке"){								
+			if ((selectors.ComparisonType).ToString()==(DB.Current.Constant.ComparisonType.InList).ToString()){
+				listParameter.Add(CheckSelector(outlet, selectors.Selector, "Equal", selectors.Value, selectors.AdditionalParameter)); //real check is later, now - only an array
+				listChecked = false;
+				currentSelector = selectors.Selector;			//stuff for
+				currentParam = selectors.AdditionalParameter;	//list selectors, again
+			}
+			else{
+				actualQuestionnaire = CheckSelector(outlet, selectors.Selector, selectors.ComparisonType, selectors.Value, selectors.AdditionalParameter);
+				currentSelector = null;
+				currentParam = null;
+			}						
+			
+		}
+		
+		if (listChecked==false){ //one more time try to check list if it's hasn't been done in loop
+			actualQuestionnaire = CheckListSelector(listParameter);
+		}
+		
+		if (actualQuestionnaire) //this is what it's all for
+			list.Add(recordset.Id);
+		
+		actualQuestionnaire = true;
+	}
+	
+	return list;
+			
+}
+
+function ListSelectorIsChanged(currentSelector, selector, additionalParam, currentParam) {
+	if (selector=="Catalog_OutletParameter"){
+		if (currentSelector!=null && currentParam!=additionalParam)
+			return true;
+		else 
+			return false;
+	}
+	else{
+		if (currentSelector!=null && currentSelector!=selector)
+			return true;
+		else
+			return false;
+	}
+}
+
+function CheckSelector(outlet, selector, compType, value, additionalParameter) {
+	if (selector=="Catalog_OutletType"){
+		if ((outlet.Type).ToString()==("@ref[Catalog_OutletType]:" + value))
+			return Compare(compType, true);
+		else
+			return Compare(compType, false);
+	}
+	if (selector=="Catalog_OutletClass"){
+		if ((outlet.Class).ToString()==("@ref[Catalog_OutletClass]:" + value))
+			return Compare(compType, true);
+		else
+			return Compare(compType, false);
+	}
+
+	if (selector=="Enum_OutletStatus"){
+		if ((outlet.OutletStatus).ToString()==("@ref[Enum_OutletStatus]:" + value))
+			return Compare(compType, true);
+		else
+			return Compare(compType, false);
+	}
+	
+	if (selector=="Catalog_Distributor"){
+		if ((outlet.Distributor).ToString()==("@ref[Catalog_Distributor]:" + value))
+			return Compare(compType, true);
+		else
+			return Compare(compType, false);
+	}
+	
+	if (selector=="Catalog_Outlet"){
+		if ((outlet.Id).ToString()==(value)){
+			return Compare(compType, true);
+		}
+		else{
+			return Compare(compType, false);
+		}			
+	}
+	
+	if (selector=="Catalog_Territory"){
+		var query = new Query("SELECT Id FROM Catalog_Territory_Outlets WHERE Outlet=@outlet AND Ref=@ref")
+		query.AddParameter("outlet", outlet);
+		query.AddParameter("ref", ("@ref[Catalog_Territory]:" + value));
+		var result = query.ExecuteScalar();		
+		if (result!=null)
+			return Compare(compType, true);
+		else
+			return Compare(compType, false);
+	}
+	
+	if (selector=="Catalog_Region"){
+		var query = new Query(GetRegionQueryText());
+		query.AddParameter("outlet", outlet);
+		query.AddParameter("region", "@ref[Catalog_Region]:" + value);
+		var result = query.ExecuteScalar();		
+		if (result!=null)
+			return Compare(compType, true);
+		else
+			return Compare(compType, false);
+	}
+	
+	if (selector=="Catalog_OutletParameter"){
+		var query = new Query("SELECT Id FROM Catalog_Outlet_Parameters WHERE Ref=@ref AND Parameter=@param AND Value=@value");
+		query.AddParameter("ref", outlet);
+		query.AddParameter("value", value);
+		query.AddParameter("param", additionalParameter);
+		if (query.ExecuteScalar()!=null)
+			return Compare(compType, true);
+		else
+			return Compare(compType, false);
+	}
+	
+	if (selector=="Catalog_Positions"){
+		return true;
+	}	
+
+}
+
+function CheckListSelector(list) {
+	for (var item in list) {
+		if (item){
+			return true;
+		}
+	}
+	return false;
+}
+
+function Compare(compType, equal) {
+	if ((compType).ToString()==(DB.Current.Constant.ComparisonType.NotEqual).ToString()){
+		if (equal)
+			return false;
+		else
+			return true;
+	}
+	else{
+		if (equal)
+			return true;
+		else
+			return false;
+	}
+}
+
+function GetRegionQueryText() {
+	var startSelect = "SELECT R1.Id, R1.Description FROM Catalog_Region R1 ";
+	var condition = "JOIN Catalog_Territory T ON T.Owner = R1.Id " +
+			"JOIN Catalog_Territory_Outlets O ON O.Ref = T.Id AND O.Outlet = @outlet ";
+	var recJoin = "";
+	
+	var text = startSelect + condition + "WHERE R1.Id=@region ";	
+	
+	var loop = 2;
+	
+	while (loop < 11) {
+		recJoin = recJoin + "JOIN Catalog_Region " + "R" + loop + " ON R" + loop + ".Id=R" + (loop-1) + ".Parent ";
+		text = text + "UNION ALL " + startSelect + recJoin + condition + "WHERE R" + loop + ".Id=@region ";
+		loop = loop + 1;
+	}	
+	
+	return text;
+}
+
+
+//-----Questions count-----------
+
+function GetQuestionsCount(questionnaires) {
+	var str = CreateCondition(questionnaires);
+	if (String.IsNullOrEmpty(str))
+		return parseInt(0);
+	else{
+		var query = new Query("SELECT COUNT(Id) FROM Document_Questionnaire_Questions " + str);					
+		var res = query.ExecuteScalar();
+		return res;
+	}
 }
 
 function GetSKUQuestionsCount() {
-	q = new Query("SELECT COUNT(QQ.Id) FROM Document_Questionnaire_SKUs QQ JOIN Document_QuestionnaireMap_Outlets M ON QQ.Ref=M.Questionnaire WHERE M.Outlet = @outlet");
-	q.AddParameter("outlet", $.outlet);
-	return q.ExecuteScalar();
+	var str = CreateCondition(questionnaires);	
+	if (String.IsNullOrEmpty(str))
+		return parseInt(0);
+	else{
+		var query = new Query("SELECT COUNT(Id) FROM Document_Questionnaire_SKUQuestions " + str);					
+		var res = query.ExecuteScalar();
+		return res;
+	}
+}
+
+function CreateCondition(list) {
+	var str = "";
+	var notEmpty = false;
+	
+	for ( var quest in questionnaires) {		
+		if (String.IsNullOrEmpty(str)==false){
+			str = str + ", ";		
+		}
+		str = str + " '" + quest.ToString() + "' ";		
+		notEmpty = true;
+	}
+	if (notEmpty){
+		str = " WHERE Ref IN ( " + str  + ") ";
+	}
+	
+	return str;
+}
+
+function DeleteFromList(item, collection) {
+    var list = new List;
+    for (var i in collection) {
+        if (item.ToString() != i.ToString())
+            list.Add(i);
+    }
+    return list;
 }

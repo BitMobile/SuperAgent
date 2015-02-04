@@ -5,12 +5,16 @@
 
 	<c:VerticalLayout>
 		<c:DockLayout CssClass="top_navigator">
-			<c:HorizontalLayout CssClass="btn_back" OnClickAction="$Workflow.DoBack()">
+			<c:DockLayout CssClass="btn_back" OnClickAction="$Workflow.DoBack()">
 				<c:Image />
 				<c:TextView Text="#visits#" />
-			</c:HorizontalLayout>
-			<c:Button Id="btnForward" Text="#forward#" CssClass="btn_forward" OnClickAction="$Workflow.DoBack()" />
-			<c:TextView Text="#map#" />
+			</c:DockLayout>
+			<c:DockLayout CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckIfEmptyAndForward($workflow.order, $workflow.name)">
+				<c:TextView Id="btnForward" Text="#forward#" />
+			</c:DockLayout>
+			<c:HorizontalLayout>
+				<c:TextView Text="#map#" />
+			</c:HorizontalLayout>			
 		</c:DockLayout>
 
 		<s:If Test="$Facade.HasCoordinates($visitPlans)">

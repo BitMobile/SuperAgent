@@ -7,7 +7,7 @@
 	<s:Push Id="orderitem" Value="$param3"></s:Push>
 	<s:Push Id="showimage" Value="$param5"></s:Push>
 	<s:Push Id="features" Value="$GetFeatures($sku.Id)"></s:Push>
-	<s:Push Id="orderitem" Value="$CreateOrderItemIfNotExist($order.Id,$sku,$orderitem,$price,$features)"></s:Push>
+	<s:Push Id="orderitem" Value="$CreateOrderItemIfNotExist($order.Id,$sku,$orderitem,$price,$features, $param6, $param7)"></s:Push>
 	<s:Push Id="featureDescr" Value="$GetFeatureDescr($orderitem.Feature)"></s:Push>
 
 	<s:If Test="$showimage == null">
@@ -46,12 +46,12 @@
 			</s:If>
 		</s:If>
 
-		<c:ScrollView Id="grScrollView">
+		<c:ScrollView Id="grScrollView" OnScroll="$OnScroll()">
 
 			<s:If Test="$sku.DefaultPicture != null">
 				<s:If Test="$showimage == 'Show'">
 					<c:HorizontalLine />
-					<c:Image CssClass="60" Source="$GetSharedImagePath(Catalog.SKU, $sku.Id, $sku.DefaultPicture, $sku.DefaultPictureExtension)" />
+					<c:Image CssClass="60" Source="$GetImagePath(Catalog.SKU, $sku.Id, $sku.DefaultPicture, $sku.DefaultPictureExtension)" />
 					<c:HorizontalLine />
 					<c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
 				</s:If>
@@ -70,7 +70,7 @@
 
 			<c:DockLayout CssClass="parameter_grid">
 				<c:TextView Text="#quantity#"></c:TextView>
-				<c:EditText Id="orderItemQty" Value="$orderitem.Qty" CssClass="value" Keyboard="numeric"></c:EditText>
+				<c:EditText Id="orderItemQty" Value="$orderitem.Qty" CssClass="value" Keyboard="numeric" OnGetFocus="$HideSwiped()"></c:EditText>
 			</c:DockLayout>
 			<c:HorizontalLine />
 
@@ -85,7 +85,7 @@
 				<c:HorizontalLayout CssClass="clickable" OnClickAction="$ChandeDiscount($orderitem)">
 					<c:TextView Id="discountDescr" Text="$discountDescrText" />
 				</c:HorizontalLayout>
-				<c:EditText Id="discountEdit" Text="$param4" CssClass="value" Keyboard="numeric" OnChange="$ApplyDiscount($orderitem)"></c:EditText>
+				<c:EditText Id="discountEdit" Text="$param4" CssClass="value" Keyboard="numeric" OnChange="$ApplyDiscount($orderitem)" OnGetFocus="$HideSwiped()"></c:EditText>
 			</c:DockLayout>
 			<c:HorizontalLine />
 
@@ -96,7 +96,7 @@
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
 				<s:Iterator Id="historyItem" Value="$historyItems">
-					<c:SwipeHorizontalLayout CssClass="swipe_history" Index="1">
+					<c:SwipeHorizontalLayout CssClass="swipe_history" Index="1" OnSwipe="$WriteSwipedRow()">
 						<c:HorizontalLayout CssClass="repeat" OnClickAction="$RepeatOrder($orderitem, $historyItem.Qty, $historyItem.Total, $historyItem.Price, $historyItem.Discount, $sku.BaseUnit, $sku.BaseUnit.Description)">
 							<c:TextView Text="#repeat#" />
 						</c:HorizontalLayout>

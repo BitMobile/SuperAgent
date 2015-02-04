@@ -1,3 +1,7 @@
+var snapshotsExists;
+var singlePicture;
+var parameterValueC;
+
 function GetOutlets(searchText) {
 	var search = "";
 	if (String.IsNullOrEmpty(searchText)==false)
@@ -23,7 +27,7 @@ function CreateOutletAndForward() {
 	var p = DB.Create("Catalog.Outlet");
 	p.Lattitude = 0;
 	p.Longitude = 0;
-
+	p.Save();
 	var parameters = [ p ];
 	Workflow.Action("Create", parameters);
 }
@@ -76,14 +80,17 @@ function CreateOutletParameterValue(outlet, parameter, value, parameterValue) {
 		parameterValue.Parameter = parameter;
 	} else
 		parameterValue = parameterValue.GetObject();
-	parameterValue.Value = value;
+	if ((parameter.DataType).ToString() != (DB.Current.Constant.DataType.Snapshot).ToString()) 
+//		parameterValue.Value = "";
+//	else
+		parameterValue.Value = value;
 	parameterValue.Save();
 	return parameterValue.Id;
 }
 
 
 function GetSnapshotText(text) {
-	if (String.IsNullOrEmpty(text))
+	if (String.IsNullOrEmpty(text.Value))
 		return Translate["#noSnapshot#"];
 	else
 		return Translate["#snapshotAttached#"];
@@ -95,29 +102,51 @@ function SelectIfNotAVisit(outlet, attribute, entity) {
 }
 
 function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control) {
-
-	parameterValue = CreateOutletParameterValue(outlet, parameter, Variables[control].Text, parameterValue);
 	
-	if (typeDescription == "ValueList") {
-		var q = new Query();
-		q.Text = "SELECT Value, Value FROM Catalog_OutletParameter_ValueList WHERE Ref=@ref";
-		q.AddParameter("ref", parameter);
-		ValueListSelect(parameterValue, "Value", q.Execute(), Variables[control]);
+	if ($.sessionConst.editOutletParameters){
+	
+		parameterValue = CreateOutletParameterValue(outlet, parameter, Variables[control].Text, parameterValue);
+		
+		if (typeDescription == "ValueList") {
+			var q = new Query();
+			q.Text = "SELECT Value, Value FROM Catalog_OutletParameter_ValueList WHERE Ref=@ref UNION SELECT '', '—' ORDER BY Value";
+			q.AddParameter("ref", parameter);
+			ValueListSelect(parameterValue, "Value", q.Execute(), Variables[control]);
+		}
+		if (typeDescription == "DateTime") {
+			if (String.IsNullOrEmpty(parameterValue.Value))
+				DateTimeDialog(parameterValue, "Value", parameterValue.Value, Variables[control]);
+			else
+				Dialog.Choose(Translate["#valueList#"], [[0, Translate["#clearValue#"]], [1, Translate["#setDate#"]]], DateHandler, [parameterValue, control]);		
+		}
+		if (typeDescription == "Boolean") {
+			BooleanDialogSelect(parameterValue, "Value", Variables[control]);
+		}
+		if (typeDescription == "Snapshot") {
+			var listChoice = new List;
+			listChoice.Add([1, Translate["#makeSnapshot#"]]);
+			if ($.sessionConst.galleryChoose)
+				listChoice.Add([0, Translate["#addFromGallery#"]]);
+			if (String.IsNullOrEmpty(parameterValue.Value)==false)
+				listChoice.Add([2, Translate["#clearValue#"]]);
+			Gallery.AddSnapshot(outlet, parameterValue, SaveAtOutelt, listChoice);
+			parameterValueC = parameterValue;		
+		}
 	}
-	if (typeDescription == "DateTime") {
-		DateTimeDialog(parameterValue, "Value", parameterValue.Value, Variables[control]);
-	}
-	if (typeDescription == "Boolean") {
-		BooleanDialogSelect(parameterValue, "Value", Variables[control]);
-	}
-	if (typeDescription == "Snapshot") {
-		var guid = GetCameraObject(outlet);
-		Camera.MakeSnapshot(SaveAtOutelt, [ parameterValue, control, guid ]);
-	}
-//	if (typeDescription == "Integer" || typeDescription == "Decimal" || typeDescription == "String") {
-//		CreateOutletParameterValue(outlet, parameter, control.Text, parameterValue)
-//	}
+}
 
+function DateHandler(state, args) {
+	var parameterValue = state[0];
+	var control = state[1];
+	if (parseInt(args.Result)==parseInt(0)){
+		parameterValue = parameterValue.GetObject();
+		parameterValue.Value = "";
+		parameterValue.Save();
+		Workflow.Refresh([]);
+	}
+	if (parseInt(args.Result)==parseInt(1)){
+		DateTimeDialog(parameterValue, "Value", parameterValue.Value, Variables[control]);
+	}	
 }
 
 function AssignParameterValue(control, typeDescription, parameterValue, value, outlet, parameter){
@@ -157,25 +186,83 @@ function CheckNotNullAndForward(outlet, visit) {
 }
 
 function ReviseParameters(outlet, save) {
-	var q = new Query("SELECT Id, Value FROM Catalog_Outlet_Parameters WHERE Ref=@ref");
+	var q =
+			new Query("SELECT Id, Value FROM Catalog_Outlet_Parameters WHERE Ref=@ref");
 	q.AddParameter("ref", outlet);
-	var param = q.Execute();
+	var param =
+			q.Execute();
 
 	while (param.Next()) {
-		if (String.IsNullOrEmpty(param.Value))
-			DB.Delete(param.Id);
-		else {
-			if (save)
-				param.Id.GetObject().Save(false);
-		}
+		// if (String.IsNullOrEmpty(param.Value))
+		// DB.Delete(param.Id);
+		// else {
+		if (save)
+			param.Id.GetObject().Save(false);
 	}
+	//	}
 }
 
-function CreateOutlet() {
-	var outlet = DB.Create("Catalog.Outlet");
-	outlet.OutletStatus = DB.Current.Constant.OutletStatus.Potential;
-	outlet.Save();
-	return outlet.Id;
+
+function GetSnapshots(outlet) {
+	var q = new Query("SELECT Id, FileName, LineNumber, Unavailable FROM Catalog_Outlet_Snapshots WHERE Ref=@ref AND (Deleted!='1' OR Deleted IS NULL) ORDER BY LineNumber");
+	q.AddParameter("ref", outlet);
+	snapshotsExists = true;
+	if (parseInt(q.ExecuteCount())==parseInt(0))
+		snapshotsExists = false;
+	singlePicture = false;
+	if (parseInt(q.ExecuteCount())==parseInt(1)) 
+		singlePicture = true;
+	return q.Execute();
+}
+
+function NoSnapshots() {
+	if (snapshotsExists) 
+		return false;
+	else
+		return true;
+}
+
+
+function GetImagePath(objectType, objectID, pictID, pictExt) {
+	var s = GetSharedImagePath(objectType, objectID, pictID, pictExt);
+    return s;
+}
+
+function ImageActions(control, id) {
+	if ($.sessionConst.editOutletParameters)
+		Dialog.Ask(Translate["#deleteImage#"], DeleteImage, id); //Translate["#deleteImage#"]
+}
+
+function DeleteImage(state, args) {
+	state = state.GetObject();
+	//state.FileName="";
+	state.Deleted = true;
+	state.Save();
+	Workflow.Refresh([]);
+}
+
+function AddSnapshot(control, outlet) {
+	if ($.sessionConst.galleryChoose)
+		Gallery.AddSnapshot(outlet, null, GalleryHandler, [[0, Translate["#addFromGallery#"]], [1, Translate["#makeSnapshot#"]]]);
+	else{
+		var pictId = GetCameraObject(outlet);
+		var path = GetPrivateImagePath("catalog.outlet", outlet, pictId, ".jpg");
+		Camera.MakeSnapshot(path, 300, GalleryHandler, [ outlet, pictId ]);
+	}			
+}
+
+function GalleryHandler(state, args) {
+	if (args.Result){		
+		var outlet = state[0];
+		var fileName = state[1];
+		var newPicture = DB.Create("Catalog.Outlet_Snapshots");
+		newPicture.Ref = outlet;
+		newPicture.FileName = fileName;
+		newPicture.Unavailable = true;
+		newPicture.Save();
+		
+		Workflow.Refresh([]);
+	}
 }
 
 // --------------------------case Visits----------------------
@@ -205,26 +292,28 @@ function CreateVisitIfNotExists(outlet, userRef, visit, planVisit) {
 	return visit;
 }
 
-// -----------------------------------Coodinates--------------------------------
+// -----------------------------------Coordinates--------------------------------
 
-function SetLocation(outlet) {
-	Dialog.Question("#setCoordinates#", LocationDialogHandler, outlet);
+function SetLocation(control, outlet) {
+	var location = GPS.CurrentLocation;
+	if (location.NotEmpty) {
+		outlet = outlet.GetObject();
+		outlet.Lattitude = location.Latitude;
+		outlet.Longitude = location.Longitude;
+		outlet.Save();
+		Workflow.Refresh([]);
+	} else
+		NoLocationHandler(SetLocation, outlet);
 }
 
-function LocationDialogHandler(answ, outlet) {
-	if (answ == DialogResult.Yes) {
-		var location = GPS.CurrentLocation;
-		if (location.NotEmpty) {
-			outlet = outlet.GetObject();
-			outlet.Lattitude = location.Latitude;
-			outlet.Longitude = location.Longitude;
-			Dialog.Message("#coordinatesAreSet#");
-			// var outlet = $.outlet;
-			outlet.Save();
-			Variables["outletCoord"].Text = (outlet.Lattitude + ", " + outlet.Longitude);
-		} else
-			NoLocationHandler(LocationDialogHandler);
+function HasCoordinates(outlet) {
+	if (outlet == null) {
+		return false;
 	}
+	if (!isDefault(outlet.Lattitude) && !isDefault(outlet.Longitude)) {
+		return true;
+	}
+	return false;
 }
 
 function CoordsChecked(visit) {
@@ -258,41 +347,36 @@ function VisitCoordsHandler(answ, visit) {
 			visit.Save();
 			Dialog.Message("#coordinatesAreSet#");
 		} else
-			NoLocationHandler(VisitCoordsHandler);
+			NoLocationHandler(SetLocation, outlet);
 	}
 }
 
-function NoLocationHandler(descriptor) {
-	Dialog.Question("#locationSetFailed#", descriptor);
+function NoLocationHandler(descriptor, state) {
+	Dialog.Message("#locationSetFailed#");
+}
+
+function ShowCoordOptions(control, outlet) {
+	Dialog.Choose("#select_answer#", [[0,Translate["#clear_coord#"]], [1,Translate["#refresh#"]], [2,Translate["#copy#"]]], ChooseHandler, outlet);
+}
+
+function ChooseHandler(state, args) {
+	var outlet = state;
+	if (parseInt(args.Result)==parseInt(0)){
+		outlet = outlet.GetObject();
+		outlet.Lattitude = parseInt(0);
+		outlet.Longitude = parseInt(0);
+		outlet.Save();
+		Workflow.Refresh([]);
+	}
+	if (parseInt(args.Result)==parseInt(1)){
+		SetLocation(null, outlet);
+	}
+	if (parseInt(args.Result)==parseInt(2)){
+		Clipboard.SetString(outlet.Lattitude + "; " + outlet.Longitude);		
+	}
 }
 
 // --------------------------- Outlets ---------------------------
-
-function DiscardNewOutlet(outlet) {
-	DB.Delete(outlet);
-	DoBack();
-}
-
-function SaveNewOutlet(outlet) {
-
-	if ($.outletName.Text.Trim() != "" && $.outletAddress.Text.Trim() != "" && $.outletClass.Text.Trim() != "" && $.outletType.Text.Trim() != "" && $.outletDistr.Text.Trim() != "") {
-		var q = new Query("SELECT Id FROM Catalog_Territory WHERE SR = @userRef LIMIT 1");
-		q.AddParameter("userRef", $.common.UserRef);
-		var territory = q.ExecuteScalar();
-
-		var to = DB.Create("Catalog.Territory_Outlets");
-		to.Ref = territory;
-		to.Outlet = outlet;
-		to.Save();
-
-		outlet.GetObject().Save();
-		Variables.AddGlobal("outlet", outlet);
-
-		DoAction("Open");
-	} else {
-		Dialog.Message("#messageNulls#");
-	}
-}
 
 function Back(outlet) {
 	if (CheckEmptyOutletFields(outlet)) {
@@ -301,11 +385,6 @@ function Back(outlet) {
 		Variables.Remove("outlet");
 		DoBackTo("List");
 	}
-}
-
-function DeleteAndBack(entity) {
-	DB.Delete(entity);
-	Workflow.Back();
 }
 
 function DeleteAndRollback(visit) {
@@ -326,15 +405,15 @@ function SaveAndBack(outlet) {
 
 // ---------------------------------internal------------------------
 
-function SaveAtOutelt(arr) {
-	var paramValue = arr[0];
-	var control = arr[1];
-	var path = arr[2];
-	question = paramValue.GetObject();
-	question.Value = path;
-	question.Save();
-	Variables[control].Text = Translate["#snapshotAttached#"];
-
+function SaveAtOutelt(arr, args) {
+	if (args.Result) {
+		var paramValue = parameterValueC;
+		var path = arr[1];
+		var question = paramValue.GetObject();
+		question.Value = path;
+		question.Save();
+		Workflow.Refresh([]);
+	}
 }
 
 function GetCameraObject(entity) {
@@ -373,8 +452,6 @@ function CommitAndBack(){
 	Workflow.Rollback();
 }
 
-// ------------------------------internal-----------------------------------
-
 function DialogCallBack(control, key) {
-	control.Text = key;
+	Workflow.Refresh([]);
 }

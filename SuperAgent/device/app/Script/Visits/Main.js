@@ -85,14 +85,6 @@ function GetCommitedScheduledVisits(searchText, getCount) {
 
 }
 
-
-function ChangeListAndRefresh(control) {
-	$.Remove("visitsType");
-	$.AddGlobal("visitsType", control);
-	Workflow.Refresh([]);
-}
-
-
 function GetOutlets(searchText, returnQty) {
 
 	var search = "";

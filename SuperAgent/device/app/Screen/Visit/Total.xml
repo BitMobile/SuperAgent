@@ -6,11 +6,13 @@
 	<c:VerticalLayout>
 
 		<c:DockLayout CssClass="top_navigator">
-			<c:HorizontalLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoBack()">
+			<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoBack()">
 				<c:Image />
 				<c:TextView Text="#back#" />
-			</c:HorizontalLayout>
-			<c:Button Id="btnForward" Text="#ready#" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckAndCommit($workflow.order, $workflow.visit, $workflow.name)" />
+			</c:DockLayout>
+			<c:DockLayout CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckAndCommit($workflow.order, $workflow.visit, $workflow.name)" >
+				<c:TextView Id="btnForward" Text="#ready#" />
+			</c:DockLayout>			
 			<c:HorizontalLayout>
 				<c:TextView Text="#visitTotal#" />
 			</c:HorizontalLayout>
@@ -80,22 +82,27 @@
 			<c:HorizontalLayout CssClass="caption_grid">
 				<c:TextView Text="#caps_summary#:"></c:TextView>
 			</c:HorizontalLayout>
-
-			<c:DockLayout CssClass="parameter_grid">
-				<s:Push Id="answered" Value="$CountAnswers($workflow.visit, $workflow.sku_answ)"></s:Push>
-				<s:Push Id="questions" Value="$GetSum($workflow.questions_qty, $workflow.sku_qty)"></s:Push>
-				<c:TextView Text="#questAnswers#"></c:TextView>
-				<c:TextView Text="{$answered} #of# {$questions}" CssClass="value"></c:TextView>
-			</c:DockLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="parameter_grid">
-				<s:Push Id="todoDone" Value="$CountDoneTasks($workflow.visit)"></s:Push>
-				<s:Push Id="todo" Value="$CountTasks($workflow.outlet)"></s:Push>
-				<c:TextView Text="#todoDone#"></c:TextView>
-				<c:TextView Text="{$todoDone} #of# {$todo}" CssClass="value"></c:TextView>
-			</c:DockLayout>
-			<c:HorizontalLine />
+			<s:If Test="$NoQuestionnaires($workflow.skipQuestions, $workflow.skipSKUs)">
+				<c:DockLayout CssClass="parameter_grid">
+					<s:Push Id="answered" Value="$GetSum($workflow.questions_answ, $workflow.questions_answ_sku)"></s:Push>
+					<s:Push Id="questions" Value="$GetSum($workflow.questions_qty, $workflow.questions_qty_sku)"></s:Push>
+					<c:TextView Text="#questAnswers#"></c:TextView>
+					<c:TextView Text="{$answered} #of# {$questions}" CssClass="value"></c:TextView>
+				</c:DockLayout>
+				<c:HorizontalLine />
+			</s:If>
+
+			<s:If Test="$NoTasks($workflow.skipTasks)">
+				<c:DockLayout CssClass="parameter_grid">
+					<s:Push Id="todoDone" Value="$CountDoneTasks($workflow.visit)"></s:Push>
+					<s:Push Id="todo" Value="$CountTasks($workflow.outlet)"></s:Push>
+					<c:TextView Text="#todoDone#"></c:TextView>
+					<c:TextView Text="{$todoDone} #of# {$todo}" CssClass="value"></c:TextView>
+				</c:DockLayout>
+				<c:HorizontalLine />
+			</s:If>
 
 			<c:DockLayout CssClass="parameter_grid">
 				<c:TextView Text="#orderSum#"></c:TextView>
@@ -103,11 +110,13 @@
 			</c:DockLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="parameter_grid">
-				<c:TextView Text="#encashmentSum#"></c:TextView>
-				<c:TextView Text="{$workflow.encashment.EncashmentAmount}" CssClass="value"></c:TextView>
-			</c:DockLayout>
-			<c:HorizontalLine />
+			<s:If Test="$sessionConst.encashEnabled">
+				<c:DockLayout CssClass="parameter_grid">
+					<c:TextView Text="#encashmentSum#"></c:TextView>
+					<c:TextView Text="{$workflow.encashment.EncashmentAmount}" CssClass="value"></c:TextView>
+				</c:DockLayout>
+				<c:HorizontalLine />
+			</s:If>
 
 		</c:ScrollView>
 

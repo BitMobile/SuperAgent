@@ -11,6 +11,10 @@ function ToInteger(text) {
     return parseInt(text);
 }
 
+function ToString(val) {
+	return val.ToString();
+}
+
 function GetSum(val1, val2) {
 	
 	if (val1 == null)
@@ -129,4 +133,34 @@ function GetObject(val){
 	return val.GetObject();
 }
 
+function GetSharedImagePath(objectType, objectID, pictID, pictExt) {
+	var r = "/shared/" + objectType + "/" + objectID.Id.ToString() + "/"
+    + pictID + pictExt;
+	return r;
+}
+
+function GetPrivateImagePath(objectType, objectID, pictID, pictExt) {
+	var r = "/private/" + objectType + "/" + objectID.Id.ToString() + "/"
+    + pictID + pictExt;
+	return r;
+}
+
+
+//--------------------Clear Button part----------------------
+
+function ShowClearButton(source, button) {
+	button.Visible = true;
+}
+
+function HideClearButton(source, button) {
+	button.Visible = false;
+}
+
+function ClearField(source, field, objectRef, attribute) {
+	field.Text = "";
+	var object = objectRef.GetObject();
+	object[attribute] = "";
+	object.Save();
+	source.Visible = false;
+}
 

@@ -17,7 +17,7 @@
 	height: 100%;
 	text-align: left;
 	padding-top: 25%;
-	margin-left: 15%;
+	margin-left: 2.4mm;
 	color: #2d89cf;
 	font: 37% arial;
 }
@@ -36,7 +36,7 @@
 	height: 100%;
 	text-align: right;
 	padding-top: 25%;
-	margin-right: 15%;
+	margin-right: 2.4mm;
 	color: #2d89cf;
 	font: 37% arial;
 }
@@ -59,4 +59,156 @@
 	vertical-align: central;
 	color: #fff;
 	font: 100% Arial;
+}
+
+.grid vl hl {
+	height: 100%;
+	width: 100%;
+}
+
+.grid vl hl TextView {
+	height: 65%;
+	vertical-align: central;
+}
+
+.grid Button {
+	width: 10.3mm;
+	height: 9mm;
+	margin-top: 16%;
+	margin-right: 2.4mm;
+	dock-align: right;
+	background-image: url(geo_set.png);	
+}
+
+.grid img{
+	width: 10.3mm;
+	height: 9mm;	
+	dock-align: right;
+	background-image: url(geo_empty.png);	
+}
+
+.coordButton {
+	width: 15mm;
+	height: 4.1mm;
+	vertical-align: central;
+	margin-top: 10%; 
+	border-style : solid;
+	border-width: 1px;
+	border-color: #43acfd;
+	border-radius: 5px;
+	color: #2d89cf;
+	text-align: center;
+	font: 60% arial;
+}
+
+.add_button{
+	width: 13.5mm;
+	height: 4.1mm;
+	vertical-align: central;
+	margin-top: 10%; 
+	border-style : solid;
+	border-width: 1px;
+	border-color: #43acfd;
+	border-radius: 5px;
+	color: #2d89cf;
+	text-align: center;
+	font: 60% arial;
+}
+
+.carousel{
+	height: 25.6mm;
+	background-color: #ffffff;
+}
+
+.carousel vl{
+	height: 100%;
+	width: 45.7mm;
+	margin-top: 0.5mm;
+	margin-bottom: 2.3mm;
+}
+
+.carousel vl img{
+	height: 100%;
+	horizontal-align: central;
+}
+
+.carousel vl TextView{
+	height: 100%;
+	width: 35mm;
+	color: #8e8e93;
+	text-align: center;
+	horizontal-align: central;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #000000;	
+	padding-top: 35%;
+	font: 10% arial;
+}
+
+.single_picture{
+	height: 25.6mm;
+	width: 100%;
+	background-color: #ffffff;
+}
+
+.single_picture TextView{
+	height: 100%;
+	width: 35mm;
+	color: #8e8e93;
+	text-align: center;
+	horizontal-align: central;
+	margin-top: 0.5mm;
+	margin-bottom: 2.3mm;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #000000;	
+	padding-top: 35%;
+	font: 10% arial;
+}
+
+.single_picture img{
+	height: 100%;
+	horizontal-align: central;
+	margin-top: 0.5mm;
+	margin-bottom: 2.3mm;
+}
+
+.snapshot_grid{
+	width: 100%;
+	height: 6.7mm;
+	dock-align: top;
+}
+
+.snapshot_grid TextView{
+	width: 100%;
+	height: 100%;
+	white-space: nowrap;
+	margin-left: 2.4mm;
+	padding-top: 35%;
+	font: 28% Arial;
+	color: #8e8e93;
+	dock-align: left;
+	text-align: left;
+}
+
+.snapshot_grid Button{
+	height: 48%;
+	width: 10.7mm;
+	dock-align: right;
+	margin-right: 2.4mm;
+	margin-top: 25.9%;
+	border-style : solid;
+	border-width: 1px;
+	border-color: #43acfd;
+	border-radius: 5px;
+	text-align: center;
+	font: 60% arial;
+}
+
+.clear{
+	height: 2.2mm;
+	width: 2.2mm;
+	margin-top: 45%;
+	dock-align: right;
+	background-image: url(clear_field.png);
 }

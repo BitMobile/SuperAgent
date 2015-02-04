@@ -9,7 +9,11 @@ function DoSelect(entity, attribute, control) {
 function DateTimeDialog(entity, attribute, date, control) {
 	var header = Translate["#enterDateTime#"];
 	if (String.IsNullOrEmpty(date))
-		date = DateTime.Now.Date;
+		date = DateTime.Now;
+//	Dialog.Debug(entity);
+//	Dialog.Debug(attribute);
+//	Dialog.Debug(date);
+//	Dialog.Debug(control);
 	Dialog.ShowDateTime(header, date, DoSelectCallback2, [ entity, attribute, control ]);
 }
 
@@ -35,8 +39,9 @@ function DoSelectCallback1(key, args) {
 	var entity = args[0];
 	var attribute = args[1];
 	var control = args[2];
+	entity = entity.GetObject();
 	entity[attribute] = key;
-	entity.GetObject().Save();
+	entity.Save();
 	
 	DialogCallBack(control, key.Description);
 //	return;

@@ -1,5 +1,6 @@
 .grid vl {
-	width: 90%;
+	dock-align: left;
+	
 }
 
 .parameter_grid TextView {
@@ -12,13 +13,13 @@
 }
 
 .swipe_layout {
-	height: 7.8sp;
+	height: 6.7mm;
 	background-color: #ffffff;
 }
 
 .red_swipe {
-	height: 7.8sp;
-	width: 28%;
+	height: 6.7mm;
+	width: 13.6mm;
 	background-color: #f74747;
 }
 
@@ -31,81 +32,131 @@
 	font: 100% Arial;
 }
 
-.swipe_order {
-	height: 15.3sp;
-}
-
-.quickOrder {
-	height: 15.3sp;
-	width: 73%;
-	background-color: #4dd865;
-}
-
-.quickOrder vl {
+.forward{
+	width: 16.3mm;
 	height: 100%;
-	width: 100%;
+	dock-align: right;
 }
 
-.quickOrder vl TextView {
+.forward TextView{
 	height: 100%;
-	width: 100%;
-	margin-left: 9%;
-	margin-top: 5%;
-	color: #ffffff;
-	font: 56% Arial;
-}
-
-.quickOrder vl hl {
-	height: 52%;
-	width: 100%;
-	margin-top: 17%;
-}
-
-.add_button {
-	height: 100%;
-	width: 19.8%;
-	margin-left: 1.7%;
-	selected-color: #50cb65;
-	background-image: url(empty.png);
-	color: #ffffff;
-	font: 33.5% Arial;
-}
-
-.cart_button {
-	height: 100%;
-	width: 30.1%;
-	margin-left: 1.7%;
-	selected-color: #50cb65;
-	background-image: url(cart.png);
-	font: 33.5% Arial;
-}
-
-.quickOrder vl hl hl {
-	height: 98%;
-	width: 38.5%;
-	margin-left: 4.3%;
-	vertical-align: central;
-	background-image: url(order_textfield.png);
-}
-
-.quickOrder vl hl hl EditText {
-	height: 65%;
-	width: 50%;
+	width: 10% auto;
+	padding-top: 26%;
 	text-align: right;
-	margin-top: 18%;
-	padding-top: 10%;
-	padding-bottom: 17%;
-	color: #ffffff;
-	font: 60% Arial;
+	color: #bebebe;
+	font: 39.5% arial;
+	dock-align: right;
 }
 
-.quickOrder vl hl hl TextView {
-	height: 67%;
-	width: 50%;
-	margin-top: 27%;
-	margin-left: 5%;
+.forward vl{
+	height: 100%;
+	width: 5%;
+	dock-align: right;
+}
+
+.forward img{
+	background-image: url(required_h_wh.png);
+	width: 0%;
+	height: 28%;
+	margin-right: 1%;
+	margin-top: 36%;
+	dock-align: right;
+}
+
+.child_grid {
+	height: 13.8mm;
+	width: 100%;
+	background-color: #efeff4;
+	selected-color: #bacdce;
+}
+
+.child_grid vl{
+	width: 90%;
+	height: 100%;
+	padding-top: 11%;
+	padding-left: 4mm;
+	background-color: #efeff4;
+	padding-left: 10%;
+}
+
+.child_grid vl EditText {
+	height: 40%;
+	width: 90%;
+	font: 45% Arial;
+	color: #2d89cf;
+}
+
+.answer_main_row {
+	width: 100%;
+	height: 40%;
+	margin-top: 5%;
+	white-space: normal;
+	font: 42% Arial;
+	color: #2D89CF;
+	placeholder-color: #2D89CF; 
+}
+
+.required_grid {
+	height: 7.9mm;
+	selected-color: #bacdce;
+	background-color: #efeff4;
+	dock-align: top;
+	padding-left: 2.4mm;
+}
+
+.required_grid TextView {
+	width: 25% auto;
+	height: 50%;
 	text-align: left;
-	vertical-align: central;
-	color: #ffffff;
-	font: 50% Arial;
+	margin-top: 42%;
+	white-space: nowrap;
+	font: 60% arial;
+	color: #8e8e93;
+}
+
+.required_grid img{
+	background-image: url(required_h_gr.png);
+	width: 0%;
+	height: 25%;
+	margin-top: 44%;
+	margin-left: 0.5%;
+	margin-right: 0.5%;
+}
+
+.required_side_wh{
+	height: 100%;
+	width: 1.2mm;
+	background-image: url(required_side_wh.png);
+	margin-left: 7.5%;	
+	dock-align: right;
+}
+
+.answered_side_wh{
+	height: 100%;
+	width: 1.2mm;
+	background-image: url(answered_side_wh.png);
+	margin-left: 7.5%;	
+	dock-align: right;
+}
+
+.required_side_gr{
+	height: 100%;
+	width: 1.2mm;
+	background-image: url(required_side_gr.png);
+	margin-left: 7.5%;
+	dock-align: right;	
+}
+
+.answered_side_gr{
+	height: 100%;
+	width: 1.2mm;
+	background-image: url(answered_side_gr.png);
+	margin-left: 7.5%;	
+	dock-align: right;
+}
+
+
+.search_filter{
+	height: 15.4sp;
+	width: 100%;	
 }

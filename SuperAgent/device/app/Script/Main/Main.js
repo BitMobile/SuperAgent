@@ -1,15 +1,18 @@
 ﻿// ------------------------ Main screen module ------------------------
 
 function OnLoad() {
-	if (DB.SuccessSync)
-		$.syncTitle.Text = DB.LastSyncTime.ToString("dd.MM HH:mm");
-	else
-		$.syncTitle.Text = Translate["#error#"];
 
 	if ($.Exists("finishedWorkflow") && ($.finishedWorkflow == "Sync" || $.finishedWorkflow == "Visits" || $.finishedWorkflow == "Order" || $.finishedWorkflow == "Outlets")) {
 		$.swipe_layout.Index = 0;
 	} else
 		$.swipe_layout.Index = 1;
+}
+
+function GetLastSyncTime() {
+	if (DB.SuccessSync)
+		return DB.LastSyncTime.ToString("dd.MM HH:mm");
+	else
+		return Translate["#error#"];
 }
 
 function CloseMenu() {

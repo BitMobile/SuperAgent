@@ -59,12 +59,15 @@
 		<bp:Step Name="Questions" Screen="Visit\Questions.xml" Controller="Visits\Questions.js">
 			<bp:Action Name="Forward" NextStep="SKUs"></bp:Action>
 			<bp:Action Name="Skip3" NextStep="Order"></bp:Action>
-			<bp:Action Name="Edit" NextStep="EditQuestion"></bp:Action>
 		</bp:Step>
 
 		<bp:Step Name="SKUs" Screen="Visit\SKUs.xml" Controller="Visits\SKU_Questions.js">
 			<bp:Action Name="Forward" NextStep="Order"></bp:Action>
-			<bp:Action Name="Edit" NextStep="Visit_EditSKU"></bp:Action>
+			<bp:Action Name="ShowFilters1" NextStep="Filters1"/>
+		</bp:Step>		
+		
+		<bp:Step Name="Filters1" Screen="Filters.xml" Controller="Order\Order_SKUs.js">
+			<bp:Action Name="Forward" NextStep="SKUs"></bp:Action>
 		</bp:Step>
 
 		<bp:Step Name="Order" Screen="Order\Order.xml" Controller="Order\Main.js">
@@ -72,6 +75,7 @@
 			<bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
 			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
 			<bp:Action Name="Forward" NextStep="Receivables"></bp:Action>
+			<bp:Action Name="SkipEncashment" NextStep="Total"/>
 			<bp:Action Name="SKUs" NextStep="SKUs"></bp:Action>
 			<bp:Action Name="Skip1" NextStep="Questions"></bp:Action>
 			<bp:Action Name="Skip2" NextStep="Visit_Tasks"></bp:Action>
@@ -109,9 +113,6 @@
 		<bp:Step Name="EditOutletAddParameter" Screen="OutletParameter.xml">
 		</bp:Step>
 
-		<bp:Step Name="Visit_EditSKU" Screen="Visit\SKU.xml" Controller="Visits\SKU_Questions.js">
-		</bp:Step>
-
 		<bp:Step Name="ShowMap" Screen="Outlet_Map.xml" Controller="Visits\Outlet_Map.js">
 		</bp:Step>
 
@@ -123,27 +124,6 @@
 
 		<bp:Step Name="Contact" Screen="Contact.xml" Controller="Outlets\DetailsAndContacts.js">
 
-		</bp:Step>
-
-	</bp:Workflow>
-
-	<bp:Workflow Name="ToDo">
-		<bp:Step Name="ToDo" Screen="Tasks.xml">
-			<bp:Action Name="Forward" NextStep=""></bp:Action>
-		</bp:Step>
-	</bp:Workflow>
-
-	<bp:Workflow Name="Stocks">
-		<bp:Step Name="Stocks" Screen="Stock_SKUs.xml">
-			<bp:Action Name="Select" NextStep="SKUImage" />
-			<bp:Action Name="SetFilter" NextStep="Filters"></bp:Action>
-		</bp:Step>
-
-		<bp:Step Name="SKUImage" Screen="SKU_Image.xml">
-		</bp:Step>
-
-		<bp:Step Name="Filters" Screen="Filters.xml">
-			<bp:Action Name="Forward" NextStep="Stocks"></bp:Action>
 		</bp:Step>
 
 	</bp:Workflow>
@@ -233,7 +213,7 @@
 			<bp:Action Name="Plans" NextStep="Plans" />
 		</bp:Step>
 
-		<bp:Step Name="CreateOutlet" Screen="Outlets\CreateOutlet.xml">
+		<bp:Step Name="CreateOutlet" Screen="Outlets\CreateOutlet.xml" Controller="Outlets\CreateOutlet.js">
 			<bp:Action Name="Open" NextStep="OpenOutlet" />
 		</bp:Step>
 

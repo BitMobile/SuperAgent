@@ -142,6 +142,9 @@
 	border-width: 1px;
 	border-color: #000000;	
 	padding-top: 35%;
+	padding-left: 0.5mm;
+	padding-right: 0.5mm;
+	white-space: normal;
 	font: 10% arial;
 }
 
@@ -163,6 +166,9 @@
 	border-width: 1px;
 	border-color: #000000;	
 	padding-top: 35%;
+	white-space: normal;
+	padding-left: 0.5mm;
+	padding-right: 0.5mm;
 	font: 10% arial;
 }
 

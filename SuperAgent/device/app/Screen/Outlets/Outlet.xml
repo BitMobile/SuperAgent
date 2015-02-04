@@ -84,7 +84,7 @@
 					<c:TextView Text="#outletSnapshots#" />
 				</c:DockLayout>			
 				<s:If Test="@singlePicture">
-					<c:VerticalLayout CssClass="single_picture">
+					<c:VerticalLayout CssClass="single_picture" OnClick="$ImageActions($snapshots.Id)">
 						<s:If Test="$snapshots.Unavailable">
 							<c:TextView Text="#notAvailable#"/>
 						</s:If>

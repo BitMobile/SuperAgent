@@ -347,11 +347,11 @@ function VisitCoordsHandler(answ, visit) {
 			visit.Save();
 			Dialog.Message("#coordinatesAreSet#");
 		} else
-			NoLocationHandler(SetLocation, outlet);
+			NoLocationHandler(SetLocation);
 	}
 }
 
-function NoLocationHandler(descriptor, state) {
+function NoLocationHandler(descriptor) {
 	Dialog.Message("#locationSetFailed#");
 }
 

@@ -45,14 +45,12 @@ function AddSnapshotHandler(state, args) {
 function GetSharedImagePath(objectType, objectID, pictID, pictExt) {
 	var r = "/shared/" + objectType + "/" + objectID.Id.ToString() + "/"
     + pictID + pictExt;
-	Dialog.Debug(r);
 	return r;
 }
 
 function GetPrivateImagePath(objectType, objectID, pictID, pictExt) {
 	var r = "/private/" + objectType + "/" + objectID.Id.ToString() + "/"
     + pictID + pictExt;
-	Dialog.Debug(r);
 	return r;
 }
 

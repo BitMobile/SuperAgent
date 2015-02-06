@@ -317,7 +317,7 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 			listChoice.Add([0, Translate["#addFromGallery#"]]);
 		if (String.IsNullOrEmpty(question.Answer)==false)
 			listChoice.Add([2, Translate["#clearValue#"]]);		
-		Gallery.AddSnapshot(visit, question, SaveAtVisit, listChoice, "catalog.visit");
+		Gallery.AddSnapshot(visit, question, SaveAtVisit, listChoice, "document.visit");
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {

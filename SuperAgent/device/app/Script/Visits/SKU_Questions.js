@@ -435,7 +435,7 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 			listChoice.Add([0, Translate["#addFromGallery#"]]);
 		if (String.IsNullOrEmpty(skuValue.Answer)==false)
 			listChoice.Add([2, Translate["#clearValue#"]]);
-		Gallery.AddSnapshot($.workflow.visit, skuValue, SaveAtVisit, listChoice, "catalog.visit");
+		Gallery.AddSnapshot($.workflow.visit, skuValue, SaveAtVisit, listChoice, "document.visit");
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {

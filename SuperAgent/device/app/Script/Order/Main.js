@@ -174,7 +174,7 @@ function IsEditable(executedOrder, order) {
 	return executedOrder == null && IsNew(order) && NotEmptyRef(order.PriceList);
 }
 
-function CheckIfEmptyAndForward(order, wfName, index) {
+function CheckIfEmptyAndForward(order, wfName) {
 	var save = true;
 	if (parseInt(itemsQty) == parseInt(0)) {
 		DB.Delete(order);

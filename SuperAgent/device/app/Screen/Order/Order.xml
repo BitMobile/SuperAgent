@@ -16,7 +16,7 @@
 				<c:Image />
 				<c:TextView Text="#back#" />
 			</c:DockLayout>
-			<c:DockLayout CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckIfEmptyAndForward($workflow.order, $workflow.name, $index)">
+			<c:DockLayout CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckIfEmptyAndForward($workflow.order, $workflow.name)">
 				<c:TextView Id="btnForward" Text="#forward#" />
 			</c:DockLayout>
 			<c:HorizontalLayout>

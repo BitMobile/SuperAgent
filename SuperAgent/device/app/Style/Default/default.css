@@ -610,6 +610,7 @@ MemoEdit {
 	padding-top: 30%;
 	dock-align: left;
 	font: 37% arial;
+	placeholder-color: #2d89cf; 
 }
 
 .parameter_grid hl {

@@ -1,14 +1,16 @@
-function GetReceivables(outlet) {
+var amount;
+var overdueAmount;
+var encashment_c;
 
+function GetReceivables(outlet) {
+	
+	GetAmount(outlet);
+	GetOverdueAmount(outlet);
+	
 	var receivables = new Query("SELECT RD.DocumentName, RD.DocumentSum, RD.Overdue FROM Document_AccountReceivable_ReceivableDocuments RD JOIN Document_AccountReceivable AR ON AR.Id=RD.Ref WHERE AR.Outlet = @outlet ORDER BY AR.Date, RD.LineNumber");
 	receivables.AddParameter("outlet", outlet);
-	var d = receivables.Execute();
-
-	Variables.Add("receivableAmount", GetAmount(d));
-	Variables.Add("overdueAmount", GetOverdueAmount(outlet));
-
-	return d;
-
+	
+	return receivables.Execute();
 }
 
 function ValidateAmount(control) {
@@ -26,15 +28,10 @@ function ValidateEncashments() {
 	return true;
 }
 
-function GetAmount(receivables) {
-	var receivables = new Query("SELECT RD.DocumentName, RD.DocumentSum FROM Document_AccountReceivable_ReceivableDocuments RD JOIN Document_AccountReceivable AR ON AR.Id=RD.Ref WHERE AR.Outlet = @outlet ORDER BY RD.LineNumber");
+function GetAmount(outlet) {
+	var receivables = new Query("SELECT SUM(RD.DocumentSum) FROM Document_AccountReceivable_ReceivableDocuments RD JOIN Document_AccountReceivable AR ON AR.Id=RD.Ref WHERE AR.Outlet = @outlet ORDER BY RD.LineNumber");
 	receivables.AddParameter("outlet", outlet);
-	var d = receivables.Execute();
-	var amount = parseInt(0);
-	while (d.Next()) {
-		amount += d.DocumentSum;
-	}
-	return amount;
+	amount = FormatValue(receivables.ExecuteScalar());
 }
 
 function RefreshAmount(control, encashment, encasmentItem) {
@@ -142,9 +139,8 @@ function ClearEmptyRecDocs(encashment) {
 }
 
 function GetOverdueAmount(outlet) {
-	// var outlet = Variables["workflow"].outlet;
 	var q = new Query("SELECT SUM(R.DocumentSum) FROM Document_AccountReceivable A JOIN Document_AccountReceivable_ReceivableDocuments R ON A.Id=R.Ref WHERE A.Outlet = @outlet AND Overdue=1");
 	q.AddParameter("outlet", outlet);
 
-	return q.ExecuteScalar();
+	overdueAmount = FormatValue(q.ExecuteScalar());
 }

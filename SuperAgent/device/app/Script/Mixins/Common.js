@@ -61,7 +61,10 @@ function GetMultiple(val1, val2) {
 }
 
 function FormatValue(value) {
-    return String.Format("{0:F2}", value);
+	if (value==null)
+		return String.Format("{0:F2}", 0);
+	else
+		return String.Format("{0:F2}", value);
 }
 
 function ConvertToBoolean(val) {

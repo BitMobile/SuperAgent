@@ -36,8 +36,8 @@
 					<c:TextView Text="#overdue#" CssClass="t_row"></c:TextView>
 				</c:VerticalLayout>
 				<c:VerticalLayout>
-					<c:TextView Text="$receivableAmount"></c:TextView>
-					<c:TextView Text="$overdueAmount" CssClass="overdue_text"></c:TextView>
+					<c:TextView Text="@amount"></c:TextView>
+					<c:TextView Text="@overdueAmount" CssClass="overdue_text"></c:TextView>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -60,7 +60,6 @@
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
-
 
 			<c:HorizontalLayout CssClass="caption_grid">
 				<c:TextView Text="#byDocs#:"></c:TextView>
@@ -92,7 +91,7 @@
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
 
-			</s:Iterator>
+			</s:Iterator> 
 
 			<c:HorizontalLayout CssClass="caption_grid">
 				<c:TextView Text="#mainInfo#:"></c:TextView>

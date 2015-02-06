@@ -1,3 +1,5 @@
+var itemsQty;
+
 //---------------------------UI calls----------------
 
 function GetOrderList() {
@@ -103,7 +105,9 @@ function GetOrderedSKUs(order) {
 	var query = new Query();
 	query.Text = "SELECT Id, SKU, Feature, Qty, Discount, Total, Units, ROUND(Qty*Total, 2) AS Amount FROM Document_Order_SKUs WHERE Ref = @Ref";
 	query.AddParameter("Ref", order);
-	return query.Execute();
+	var r = query.Execute().Unload();
+	itemsQty = r.Count();
+	return r;
 }
 
 function GetOrderSUM(order) {
@@ -170,11 +174,9 @@ function IsEditable(executedOrder, order) {
 	return executedOrder == null && IsNew(order) && NotEmptyRef(order.PriceList);
 }
 
-function CheckIfEmptyAndForward(order, wfName) {
-	var query = new Query("SELECT Id FROM Document_Order_SKUs WHERE Ref=@ref");
-	query.AddParameter("ref", order);
+function CheckIfEmptyAndForward(order, wfName, index) {
 	var save = true;
-	if (parseInt(query.ExecuteCount()) == parseInt(0)) {
+	if (parseInt(itemsQty) == parseInt(0)) {
 		DB.Delete(order);
 		$.workflow.Remove("order");
 		save = false;

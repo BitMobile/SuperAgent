@@ -49,7 +49,7 @@
 						<c:TextView Text="#encashmentAmount#:"></c:TextView>
 						<c:Button Text="#spread#" OnClickAction="$SpreadEncasmentAndRefresh($workflow.encashment, $visit.Outlet, $receivables)"></c:Button>
 					</c:DockLayout>
-					<c:EditText Id="encAmount" Value="$workflow.encashment.EncashmentAmount" CssClass="main_row" Keyboard="numeric" OnChange="$ValidateAmount()"></c:EditText>
+					<c:EditText Id="encAmount" Text="$FormatSum(null, $workflow.encashment.EncashmentAmount)" CssClass="main_row" Keyboard="numeric" OnChange="$ValidateAmount()" Placeholder="—" OnLostFocus="$DoRefresh()"></c:EditText>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -84,7 +84,7 @@
 							<s:Else>
 								<c:TextView Text="#debt#: {$receivableDoc.DocumentSum}" CssClass="b_row"></c:TextView>
 							</s:Else>
-							<c:EditText Id="control{$index}" Text="$FormatValue($receivableDoc.EncSum)" Keyboard="numeric" Placeholder="—" OnChange="$RefreshAmount($workflow.encashment, $receivableDoc.EncItem, $receivableDoc.DocumentName)" OnLostFocus="$Workflow.DoRefresh()"></c:EditText>
+							<c:EditText Id="control{$index}" Text="$FormatSum($receivableDoc.EncSum)" Keyboard="numeric" Placeholder="—" OnChange="$RefreshAmount($workflow.encashment, $receivableDoc.EncItem, $receivableDoc.DocumentName)" OnLostFocus="$Workflow.DoRefresh()"></c:EditText>
 						</c:DockLayout>
 					</c:VerticalLayout>
 				</c:HorizontalLayout>

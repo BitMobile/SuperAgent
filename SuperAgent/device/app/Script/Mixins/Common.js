@@ -15,6 +15,13 @@ function ToString(val) {
 	return val.ToString();
 }
 
+function ToDecimal(val) {
+	if (String.IsNullOrEmpty(val))
+		return Converter.ToDecimal(0);
+	else
+		return Converter.ToDecimal(val);
+}
+
 function GetSum(val1, val2) {
 	
 	if (val1 == null)

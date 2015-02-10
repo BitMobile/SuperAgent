@@ -31,6 +31,10 @@ function SetDeliveryDate(order, control) {
     DateTimeDialog(order, "DeliveryDate", order.DeliveryDate, control);
 }
 
+function DoSelect(outlet, attribute, control) {
+	Dialogs.DoChoose(null, outlet, attribute, control, null);
+}
+
 function SetnextVisitDate(nextVisit, control){
 	if (String.IsNullOrEmpty(nextVisit.Id))
 		var nextDate = DateTime.Now;

@@ -147,7 +147,7 @@ function SelectStock(order, attr, control) {
 		while (res.Next()) {
 			table.push([ res.Id, res.Description ]);
 		}
-		Dialog.Select(Translate["#valueList#"], table, StockSelectHandler, [ order, attr, control ]);
+		Dialogs.DoChoose(table, order, attr, control, StockSelectHandler);
 	}
 }
 
@@ -211,9 +211,9 @@ function SetDeliveryDateDialog(order, control, executedOrder) {
 		DateTimeDialog(order, "DeliveryDate", order.DeliveryDate, control);
 }
 
-function DialogCallBack(control, key) {
-	Workflow.Refresh([ null, null, $.executedOrder ]);
-}
+//function DialogCallBack(control, key) {
+//	Workflow.Refresh([ null, null, $.executedOrder ]);
+//}
 
 function OrderBack() {
 	if ($.workflow.name == "CreateOrder")
@@ -293,36 +293,32 @@ function SelectPriceList(order, priceLists, executedOrder) {
 }
 
 function PriceListSelect(entity, attribute, table, control) {
-	Dialog.Select("#select_answer#", table, DoPriceListCallback, [ entity, attribute, control ]);
+	Dialogs.DoChoose(table, entity, attribute, control, DoPriceListCallback);
 	return;
 }
 
-function DoPriceListCallback(key, args) {
-	var entity = args[0];
-	var attribute = args[1];
-	var control = args[2];
-
-	if ((entity[attribute]).ToString() == key.ToString())
+function DoPriceListCallback(state, args) {	
+	if ((state[0][state[1]]).ToString()==(args.Result).ToString()){
 		return;
+	}
 
-	entity[attribute] = key;
-	entity.GetObject().Save();
-	control.Text = key.Description;
-	ReviseSKUs(entity, key, entity.Stock);
+	var entity = AssignDialogValue(state, args); 
+	
+	var control = state[2];
+	control.Text = args.Result.Description;
+	ReviseSKUs(entity, args.Result, entity.Stock);
 	return;
 }
 
-function StockSelectHandler(key, args) {
-	var entity = args[0];
-	var attribute = args[1];
-	var control = args[2];
-	entity[attribute] = key;
-	entity.GetObject().Save();
-	if (key.EmptyRef())
+function StockSelectHandler(state, args) {
+	var entity = AssignDialogValue(state, args);
+	
+	var control = state[2];
+	if (args.Result.EmptyRef())
 		control.Text = Translate["#allStocks#"];
 	else
-		control.Text = key.Description;
-	ReviseSKUs($.workflow.order, $.workflow.order.PriceList, key);
+		control.Text = args.Result.Description;
+	ReviseSKUs($.workflow.order, $.workflow.order.PriceList, args.Result);
 	return;
 }
 

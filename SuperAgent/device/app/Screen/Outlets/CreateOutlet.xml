@@ -35,7 +35,7 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid" OnClickAction="$DoSelect($outlet,Class,$outletClass)">
+			<c:HorizontalLayout CssClass="grid" OnClick="$DoSelect($outlet,Class,$outletClass)">
 				<c:VerticalLayout>
 					<c:TextView Text="#outlet_class#" CssClass="description_row"></c:TextView>
 					<c:TextView Id="outletClass" Text="$outlet.Class.Description" CssClass="main_row" />
@@ -43,7 +43,7 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid" OnClickAction="$DoSelect($outlet,Type,$outletType)">
+			<c:HorizontalLayout CssClass="grid" OnClick="$DoSelect($outlet,Type,$outletType)">
 				<c:VerticalLayout>
 					<c:TextView Text="#outlet_type#" CssClass="description_row"></c:TextView>
 					<c:TextView Id="outletType" Text="$outlet.Type.Description" CssClass="main_row" />
@@ -51,7 +51,7 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid" OnClickAction="$DoSelect($outlet,Distributor,$outletDistr)">
+			<c:HorizontalLayout CssClass="grid" OnClick="$DoSelect($outlet,Distributor,$outletDistr)">
 				<c:VerticalLayout>
 					<c:TextView Text="#distributor#" CssClass="description_row"></c:TextView>
 					<c:TextView Id="outletDistr" Text="$outlet.Distributor.Description" CssClass="main_row" />

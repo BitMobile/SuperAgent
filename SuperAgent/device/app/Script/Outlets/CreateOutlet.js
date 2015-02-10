@@ -6,10 +6,6 @@ function CreateOutlet() {
 	return outlet.Id;
 }
 
-function DialogCallBack(control, key) {
-	control.Text = key;
-}
-
 function DeleteAndBack(entity) {
 	DB.Delete(entity);
 	Workflow.Back();
@@ -42,4 +38,8 @@ function SaveNewOutlet(outlet) {
 		}
 	}		
 	Dialog.Message("#messageNulls#");
+}
+
+function DoSelect(source, outlet, attribute, control) {
+	Dialogs.DoChoose(null, outlet, attribute, control, null);
 }

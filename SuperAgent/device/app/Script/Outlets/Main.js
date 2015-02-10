@@ -69,6 +69,53 @@ function GetOutletParameterValue(outlet, parameter, parameterValue, type) {
 		return parameterValue.Value;
 }
 
+function GetSnapshotText(text) {
+	if (String.IsNullOrEmpty(text.Value))
+		return Translate["#noSnapshot#"];
+	else
+		return Translate["#snapshotAttached#"];
+}
+
+function CheckNotNullAndForward(outlet, visit) {
+	var c = CoordsChecked(visit);
+	if (CheckEmptyOutletFields(outlet) && c) {
+		outlet.GetObject().Save();
+		ReviseParameters(outlet, false);
+		Workflow.Forward([]);
+	}
+}
+
+
+function ReviseParameters(outlet, save) {
+	var q =
+			new Query("SELECT Id, Value FROM Catalog_Outlet_Parameters WHERE Ref=@ref");
+	q.AddParameter("ref", outlet);
+	var param =
+			q.Execute();
+
+	while (param.Next()) {
+		if (save)
+			param.Id.GetObject().Save(false);
+	}
+}
+
+
+//---------------------------header parameters dialog.choose--------------------
+
+
+function SelectIfNotAVisit(outlet, attribute, control) {
+	if ($.workflow.name != "Visit")
+		DoSelect(outlet, attribute, control);
+}
+
+function DoSelect(outlet, attribute, control) {
+	Dialogs.DoChoose(null, outlet, attribute, control, null);
+}
+
+
+//--------------------------editing additional parameters handlers-----------------------------
+
+
 function CreateOutletParameterValue(outlet, parameter, value, parameterValue) {
 	var q = new Query("SELECT Id FROM Catalog_Outlet_Parameters WHERE Ref=@ref AND Parameter = @parameter");
 	q.AddParameter("ref", outlet);
@@ -81,25 +128,16 @@ function CreateOutletParameterValue(outlet, parameter, value, parameterValue) {
 	} else
 		parameterValue = parameterValue.GetObject();
 	if ((parameter.DataType).ToString() != (DB.Current.Constant.DataType.Snapshot).ToString()) 
-//		parameterValue.Value = "";
-//	else
 		parameterValue.Value = value;
 	parameterValue.Save();
 	return parameterValue.Id;
 }
 
 
-function GetSnapshotText(text) {
-	if (String.IsNullOrEmpty(text.Value))
-		return Translate["#noSnapshot#"];
-	else
-		return Translate["#snapshotAttached#"];
+function AssignParameterValue(control, typeDescription, parameterValue, value, outlet, parameter){
+	CreateOutletParameterValue(outlet, parameter, control.Text, parameterValue)
 }
 
-function SelectIfNotAVisit(outlet, attribute, entity) {
-	if ($.workflow.name != "Visit")
-		DoSelect(outlet, attribute, entity);
-}
 
 function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control) {
 	
@@ -107,22 +145,22 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 	
 		parameterValue = CreateOutletParameterValue(outlet, parameter, Variables[control].Text, parameterValue);
 		
-		if (typeDescription == "ValueList") {
+		if (typeDescription == "ValueList") {  //--------ValueList-------
 			var q = new Query();
 			q.Text = "SELECT Value, Value FROM Catalog_OutletParameter_ValueList WHERE Ref=@ref UNION SELECT '', '—' ORDER BY Value";
 			q.AddParameter("ref", parameter);
-			ValueListSelect(parameterValue, "Value", q.Execute(), Variables[control]);
+			Dialogs.DoChoose(q.Execute(), parameterValue, "Value", Variables[control], null);
 		}
-		if (typeDescription == "DateTime") {
+		if (typeDescription == "DateTime") {  //---------DateTime-------
 			if (String.IsNullOrEmpty(parameterValue.Value))
-				DateTimeDialog(parameterValue, "Value", parameterValue.Value, Variables[control]);
+				Dialogs.SetDateTime(parameterValue, "Value", Variables[control], DateHandler);
 			else
 				Dialog.Choose(Translate["#valueList#"], [[0, Translate["#clearValue#"]], [1, Translate["#setDate#"]]], DateHandler, [parameterValue, control]);		
 		}
-		if (typeDescription == "Boolean") {
-			BooleanDialogSelect(parameterValue, "Value", Variables[control]);
+		if (typeDescription == "Boolean") {  //----------Boolean--------
+			Dialogs.ChooseBool(parameterValue, "Value", Variables[control]);
 		}
-		if (typeDescription == "Snapshot") {
+		if (typeDescription == "Snapshot") { //----------Snapshot-------
 			var listChoice = new List;
 			listChoice.Add([1, Translate["#makeSnapshot#"]]);
 			if ($.sessionConst.galleryChoose)
@@ -135,6 +173,7 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 	}
 }
 
+
 function DateHandler(state, args) {
 	var parameterValue = state[0];
 	var control = state[1];
@@ -145,61 +184,8 @@ function DateHandler(state, args) {
 		Workflow.Refresh([]);
 	}
 	if (parseInt(args.Result)==parseInt(1)){
-		DateTimeDialog(parameterValue, "Value", parameterValue.Value, Variables[control]);
+		Dialogs.SetDateTime(parameterValue, "Value", Variables[control]);
 	}	
-}
-
-function AssignParameterValue(control, typeDescription, parameterValue, value, outlet, parameter){
-	CreateOutletParameterValue(outlet, parameter, control.Text, parameterValue)
-}
-
-function GetLookupList(entity, attribute) {
-	var tableName = entity[attribute].Metadata().TableName;
-	var query = new Query();
-	query.Text = "SELECT Id, Description FROM " + tableName;
-	return query.Execute();
-}
-
-function UpdateValueAndBack(entity, attribute, value) {
-	if (attribute != "Answer" && attribute != "Value") { // for
-		// Visit_Questions
-		entity[attribute] = value;
-		if (attribute == "PriceList") {
-			var n = CountEntities("Document", "Order_SKUs", Variables["workflow"]["order"].Id, "Ref");
-			if (parseInt(n) != parseInt(0))
-				Dialog.Message("#SKUWillRevised#");
-		}
-	} else {
-		entity[attribute] = value.Value;
-	}
-
-	Workflow.Back();
-}
-
-function CheckNotNullAndForward(outlet, visit) {
-	var c = CoordsChecked(visit);
-	if (CheckEmptyOutletFields(outlet) && c) {
-		outlet.GetObject().Save();
-		ReviseParameters(outlet, false);
-		Workflow.Forward([]);
-	}
-}
-
-function ReviseParameters(outlet, save) {
-	var q =
-			new Query("SELECT Id, Value FROM Catalog_Outlet_Parameters WHERE Ref=@ref");
-	q.AddParameter("ref", outlet);
-	var param =
-			q.Execute();
-
-	while (param.Next()) {
-		// if (String.IsNullOrEmpty(param.Value))
-		// DB.Delete(param.Id);
-		// else {
-		if (save)
-			param.Id.GetObject().Save(false);
-	}
-	//	}
 }
 
 
@@ -215,6 +201,7 @@ function GetSnapshots(outlet) {
 	return q.Execute();
 }
 
+
 function NoSnapshots() {
 	if (snapshotsExists) 
 		return false;
@@ -228,10 +215,12 @@ function GetImagePath(objectType, objectID, pictID, pictExt) {
     return s;
 }
 
+
 function ImageActions(control, id) {
 	if ($.sessionConst.editOutletParameters)
 		Dialog.Ask(Translate["#deleteImage#"], DeleteImage, id); //Translate["#deleteImage#"]
 }
+
 
 function DeleteImage(state, args) {
 	state = state.GetObject();
@@ -240,6 +229,7 @@ function DeleteImage(state, args) {
 	state.Save();
 	Workflow.Refresh([]);
 }
+
 
 function AddSnapshot(control, outlet) {
 	if ($.sessionConst.galleryChoose)
@@ -250,6 +240,7 @@ function AddSnapshot(control, outlet) {
 		Camera.MakeSnapshot(path, 300, GalleryHandler, [ outlet, pictId ]);
 	}			
 }
+
 
 function GalleryHandler(state, args) {
 	if (args.Result){		
@@ -265,7 +256,9 @@ function GalleryHandler(state, args) {
 	}
 }
 
+
 // --------------------------case Visits----------------------
+
 
 function CreateVisitIfNotExists(outlet, userRef, visit, planVisit) {
 
@@ -376,6 +369,7 @@ function ChooseHandler(state, args) {
 	}
 }
 
+
 // --------------------------- Outlets ---------------------------
 
 function Back(outlet) {
@@ -450,8 +444,4 @@ function CheckIfEmpty(entity, attribute, objectType, objectName, deleteIfEmpty) 
 function CommitAndBack(){
 	DB.Commit();
 	Workflow.Rollback();
-}
-
-function DialogCallBack(control, key) {
-	Workflow.Refresh([]);
 }

@@ -120,7 +120,7 @@ function GetQuestions(str, single) {
 			"AND Q.ParentQuestion NOT IN (SELECT Question FROM Document_Visit_Questions " +
 			" WHERE (Answer='No' OR Answer='Нет') AND Ref=@visit)))" +
 			
-			" GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, Answer " + 
+			" GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, V.Answer " + 
 			" ORDER BY DocDate, QuestionOrder ");
 	query.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	query.AddParameter("emptySKU", DB.EmptyRef("Catalog_SKU"));

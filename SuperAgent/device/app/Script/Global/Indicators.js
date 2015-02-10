@@ -37,9 +37,12 @@ function GetOutletsCount(){
 
 
 function SetCommitedScheduledVisits(){
-	var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet WHERE V.Date >= @today AND V.Date < @tomorrow AND DATE(VP.Date) >= DATE(@today) AND DATE(VP.Date) < DATE(@tomorrow) AND V.Plan <> @emptyRef ORDER BY O.Description LIMIT 100");
-	q.AddParameter("today", DateTime.Now.Date);
-	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
+	var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V " +
+			" JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet AND V.Date = VP.Date " +
+			" JOIN Catalog_Outlet O ON O.Id = VP.Outlet " +
+			" WHERE DATE(V.Date) >= DATE('now', 'start of a day') " +			
+			" AND V.Plan <> @emptyRef " +
+			" ORDER BY O.Description");
 	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));
 	scheduledVisits = q.ExecuteCount();
 }

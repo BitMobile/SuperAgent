@@ -12,6 +12,7 @@ var bool_answer;
 var curr_item;
 var curr_sku;
 var skuValueGl;
+var doRefresh;
 
 //
 //-------------------------------Header handlers-------------------------
@@ -19,6 +20,7 @@ var skuValueGl;
 
 
 function OnLoading(){
+	doRefresh = false;
 	skuOnScreen = null;
 	obligateredLeft = parseInt(0);	
 	SetListType();
@@ -381,6 +383,8 @@ function CreateVisitSKUValueIfNotExists(control, sku, question, isInput) {
 //	if (isInput=='true' && (control.Text=="—" || TrimAll(control.Text)==""))
 //		return null;
 	
+	doRefresh = true;
+	
 	var query = new Query();
 	query.Text = "SELECT Id FROM Document_Visit_SKUs WHERE SKU=@sku AND Question=@question AND Ref=@ref";
 	query.AddParameter("ref", $.workflow.visit);
@@ -454,18 +458,23 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 
 
 function CheckEmtySKUAndForward(outlet, visit) {
-	var p = [ outlet, visit ];
-	parentId = null;		
-	var q = regular_total + single_total;
-	$.workflow.Add("questions_qty_sku", q);
-	
-	var a = regular_answ + single_answ;
-	$.workflow.Add("questions_answ_sku", a);
-	
-	Variables.Remove("group_filter");
-	Variables.Remove("brand_filter");
-	
-	Workflow.Forward(p);
+	if (doRefresh) {
+		Workflow.Refresh([]);
+	}
+	else{
+		var p = [ outlet, visit ];
+		parentId = null;		
+		var q = regular_total + single_total;
+		$.workflow.Add("questions_qty_sku", q);
+		
+		var a = regular_answ + single_answ;
+		$.workflow.Add("questions_answ_sku", a);
+		
+		Variables.Remove("group_filter");
+		Variables.Remove("brand_filter");
+		
+		Workflow.Forward(p);
+	}
 }
 
 function GetCameraObject(entity) {

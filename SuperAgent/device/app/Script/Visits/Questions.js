@@ -9,12 +9,14 @@ var single_total;
 var bool_answer;
 var curr_item;
 var questionGl;
+var doRefresh;
 
 //
 // -------------------------------Header handlers-------------------------
 //
 
 function OnLoading() {
+	doRefresh = false;
 	questionsAtScreen = null;
 	obligateredLeft = parseInt(0);
 	SetListType();
@@ -333,6 +335,7 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 }
 
 function AssignQuestionValue(control, question) {
+	doRefresh = true;
 	CreateVisitQuestionValueIfNotExists(question, control.Text, false);
 }
 
@@ -445,15 +448,21 @@ function GetCameraObject(entity) {
 }
 
 function CheckEmptyQuestionsAndForward(visit) {
+	
+	if (doRefresh){
+		Workflow.Refresh([]);
 
-	var qr = new Query("SELECT Id FROM Document_Visit_Questions WHERE Answer IS NULL  OR Answer=''");
-	var res = qr.Execute();
-
-	while (res.Next()) {
-		DB.Delete(res.Id);
 	}
-
-	Workflow.Forward([]);
+	else{
+		var qr = new Query("SELECT Id FROM Document_Visit_Questions WHERE Answer IS NULL  OR Answer=''");
+		var res = qr.Execute();
+	
+		while (res.Next()) {
+			DB.Delete(res.Id);
+		}
+	
+		Workflow.Forward([]);
+	}
 }
 
 

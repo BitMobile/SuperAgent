@@ -153,7 +153,7 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 		}
 		if (typeDescription == "DateTime") {  //---------DateTime-------
 			if (String.IsNullOrEmpty(parameterValue.Value))
-				Dialogs.SetDateTime(parameterValue, "Value", Variables[control], DateHandler);
+				Dialogs.ChooseDateTime(parameterValue, "Value", Variables[control], DateHandler);
 			else
 				Dialog.Choose(Translate["#valueList#"], [[0, Translate["#clearValue#"]], [1, Translate["#setDate#"]]], DateHandler, [parameterValue, control]);		
 		}
@@ -184,7 +184,7 @@ function DateHandler(state, args) {
 		Workflow.Refresh([]);
 	}
 	if (parseInt(args.Result)==parseInt(1)){
-		Dialogs.SetDateTime(parameterValue, "Value", Variables[control]);
+		Dialogs.ChooseDateTime(parameterValue, "Value", Variables[control]);
 	}	
 }
 

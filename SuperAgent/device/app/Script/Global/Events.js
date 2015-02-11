@@ -262,7 +262,7 @@ function GetQuestionnairesForOutlet(outlet) {
 			
 			//if (selectors.ComparisonType=="In list" || selectors.ComparisonType=="В списке"){								
 			if ((selectors.ComparisonType).ToString()==(DB.Current.Constant.ComparisonType.InList).ToString()){
-				listParameter.Add(CheckSelector(outlet, selectors.Selector, "Equal", selectors.Value, selectors.AdditionalParameter)); //real check is later, now - only an array
+				listParameter.Add(CheckSelector(outlet, selectors.Selector, DB.Current.Constant.ComparisonType.Equal, selectors.Value, selectors.AdditionalParameter)); //real check is later, now - only an array
 				listChecked = false;
 				currentSelector = selectors.Selector;			//stuff for
 				currentParam = selectors.AdditionalParameter;	//list selectors, again

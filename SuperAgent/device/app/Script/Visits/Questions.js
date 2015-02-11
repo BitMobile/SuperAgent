@@ -306,7 +306,7 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 		q.Text = "SELECT Value, Value FROM Catalog_Question_ValueList WHERE Ref=@ref";
 		q.AddParameter("ref", questionItem);
 		
-		ValueListSelect(question, "Answer", q.Execute(), Variables[control]);
+		Dialogs.DoChoose(q.Execute(), question, "Answer", Variables[control], DialogCallBack);
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.Snapshot).ToString()) {
@@ -336,7 +336,12 @@ function AssignQuestionValue(control, question) {
 	CreateVisitQuestionValueIfNotExists(question, control.Text, false);
 }
 
-function DialogCallBack(control, key) {
+function DialogCallBack(state, args) {
+	
+	var entity = AssignDialogValue(state, args);
+	var control = state[2];
+	var key = args.Result;
+	
 	if ((bool_answer=='Yes' || bool_answer=='Да') && (key=='No' || key=='Нет')){
 		GetChildQuestions();
 		var q3 = new Query("SELECT A.Id FROM Catalog_Outlet_AnsweredQuestions A " +

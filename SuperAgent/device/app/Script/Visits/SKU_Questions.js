@@ -424,7 +424,8 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 		var q = new Query();
 		q.Text = "SELECT Value, Value FROM Catalog_Question_ValueList WHERE Ref=@ref";
 		q.AddParameter("ref", question);
-		ValueListSelect(skuValue, "Answer", q.Execute(), editControl);
+		Dialogs.DoChoose(q.Execute(), skuValue, "Answer", editControl, DialogCallBack);
+		//ValueListSelect(skuValue, "Answer", q.Execute(), editControl);
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.Snapshot).ToString()) {
@@ -522,7 +523,12 @@ function ClearIndex() {
 
 //------------------------------internal-----------------------------------
 
-function DialogCallBack(control, key){
+function DialogCallBack(state, args){
+	
+	AssignDialogValue(state, args);
+	
+	var key = args.Result;
+	
 	if ((bool_answer=='Yes' || bool_answer=='Да') && (key=='No' || key=='Нет')){
 		GetChildQuestions();
 		var q3 = new Query("SELECT A.Id FROM Catalog_Outlet_AnsweredQuestions A " +

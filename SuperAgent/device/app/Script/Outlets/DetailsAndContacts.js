@@ -56,27 +56,16 @@ function DeleteContact(ref) {
 	Workflow.Refresh([ $.outlet ]);
 }
 
-function SelectOwnership() {
+function SelectOwnership(control) {
 	var ownDictionary = CreateOwnershipDictionary();
 	var q = new Query();
-	q.Text = "SELECT Id, Description FROM Enum_OwnershipType";
-	var res = q.Execute().Unload();
-	var arr = [];	
-	
-	while (res.Next()) {
-		arr.push([res.Id, ownDictionary[res.Description]]);
-	}
+	q.Text = "SELECT Id, Description FROM Enum_OwnershipType";// UNION SELECT NULL, '—' ORDER BY Description";
+	var res = q.Execute().Unload();	
 		
-	Dialog.DoChoose(arr, $.outlet, CallBack1, );
+	Dialogs.DoChoose(q.Execute().Unload(), $.outlet, "OwnershipType", control, null);
 	
 }
 
-function CallBack1(key, args) {
-	var obj = args.GetObject();
-	obj.OwnershipType = key;
-	obj.Save();
-	Workflow.Refresh([]);
-}
 
 // --------------------internal--------------
 

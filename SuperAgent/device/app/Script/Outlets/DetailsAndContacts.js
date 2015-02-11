@@ -1,3 +1,9 @@
+var outlet;
+
+function OnLoad() {
+	outlet = $.param1;
+}
+
 function CreateContactIfNotExist(contact, outlet) {
 
 	if (contact == null) {
@@ -42,10 +48,7 @@ function GetPlans(outlet, sr) {
 }
 
 function CreatePlan(outlet, plan, planDate) {
-	if (String.IsNullOrEmpty(planDate))
-		planDate = DateTime.Now;
-	var header = Translate["#enterDateTime#"];
-	Dialog.ShowDateTime(header, planDate, PlanHandler, [ outlet, plan ]);
+	Dialogs.ChooseDateTime(plan, "PlanDate", null, PlanHandler); //(header, planDate, PlanHandler, [ outlet, plan ]);
 }
 
 function DeleteContact(ref) {
@@ -76,9 +79,8 @@ function EmptyContact(contact) {
 		return false;
 }
 
-function PlanHandler(date, arr) {
-	var outlet = arr[0];
-	var plan = arr[1];
+function PlanHandler(state, args) {
+	var plan = state[0];
 	if (plan == null) {
 		plan = DB.Create("Document.MobileAppPlanVisit");
 		plan.SR = $.common.UserRef;
@@ -87,7 +89,7 @@ function PlanHandler(date, arr) {
 		plan.Date = DateTime.Now;
 	} else
 		plan = plan.GetObject();
-	plan.PlanDate = date;
+	plan.PlanDate = args.Result;
 	plan.Save();
 	Workflow.Refresh([ outlet ]);
 }

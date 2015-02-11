@@ -208,7 +208,7 @@ function SaveOrder(order) {
 
 function SetDeliveryDateDialog(order, control, executedOrder) {
 	if (IsNew(order) && NotEmptyRef(order.PriceList))
-		DateTimeDialog(order, "DeliveryDate", order.DeliveryDate, control);
+		Dialogs.ChooseDateTime(order, "DeliveryDate", control, null);
 }
 
 //function DialogCallBack(control, key) {

@@ -321,13 +321,13 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {
-		DateTimeDialog(question, "Answer", question.Answer, Variables[control]);
+		Dialogs.ChooseDateTime(question, "Answer", Variables[control], DialogCallBack); //(question, "Answer", question.Answer, Variables[control]);
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.Boolean).ToString()) {
 		bool_answer = currAnswer;
 		curr_item = question;
-		BooleanDialogSelect(question, "Answer", Variables[control]);
+		Dialogs.ChooseBool(question, "Answer", Variables[control], DialogCallBack);
 	}
 
 }

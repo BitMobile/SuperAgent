@@ -10,18 +10,22 @@ function DoChoose(listChoice, entity, attribute, control, func) {
 	Dialog.Choose("#select_answer#", listChoice, entity[attribute], func, [entity, attribute, control]); 
 }
 
-function ChooseDateTime(entity, attribute, control) {
-	var current;
+function ChooseDateTime(entity, attribute, control, func) {
+	var startKey;
 	if (String.IsNullOrEmpty(entity[attribute]))
-		current = DateTime.Now;
+		startKey = DateTime.Now;
 	else
-		current = entity[attribute];
-	Dialog.DateTime("#enterDateTime#", current, CallBack, [entity, attribute, control]);
+		startKey = entity[attribute];
+	if (func == null)
+		func = CallBack;
+	Dialog.DateTime("#enterDateTime#", startKey, func, [entity, attribute, control]);
 }
 
-function ChooseBool(entity, attribute, control) {
+function ChooseBool(entity, attribute, control, func) {
 	var listChoice = [[ "—", "—" ], [Translate["#YES#"], Translate["#YES#"]], [Translate["#NO#"], Translate["#NO#"]]];
-	Dialog.Choose("#select_answer#", listChoice, entity[attribute], CallBack, [entity, attribute, control]);  
+	if (func == null)
+		func = CallBack;
+	Dialog.Choose("#select_answer#", listChoice, entity[attribute], func, [entity, attribute, control]);  
 }
 
 //----------------------Dialog CallBack functions-------------

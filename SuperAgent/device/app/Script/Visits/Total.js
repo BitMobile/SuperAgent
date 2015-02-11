@@ -28,7 +28,7 @@ function OrderExists(visit) {
 }
 
 function SetDeliveryDate(order, control) {
-    DateTimeDialog(order, "DeliveryDate", order.DeliveryDate, control);
+    Dialogs.ChooseDateTime(order, "DeliveryDate", control, null);
 }
 
 function DoSelect(outlet, attribute, control) {
@@ -40,7 +40,7 @@ function SetnextVisitDate(nextVisit, control){
 		var nextDate = DateTime.Now;
 	else
 		var nextDate = nextVisit.PlanDate;
-	Dialog.ShowDateTime(Translate["#enterDateTime#"], nextDate, NextDateHandler, [nextVisit, control]);
+	Dialogs.ChooseDateTime(nextVisit, "PlanDate", control, NextDateHandler); //nextDate, NextDateHandler, [nextVisit, control]);
 }
 
 function GetOrderControlValue() {
@@ -134,9 +134,9 @@ function CheckAndCommit(order, visit, wfName) {
 //--------------------------internal functions--------------
 
 
-function NextDateHandler(date, args){
+function NextDateHandler(state, args){
 
-	var newVistPlan = args[0];
+	var newVistPlan = state[0];
 
 	if (newVistPlan.Id==null){
 		newVistPlan = DB.Create("Document.MobileAppPlanVisit");
@@ -147,10 +147,9 @@ function NextDateHandler(date, args){
 	}
 	else
 		newVistPlan = newVistPlan.Id.GetObject();
-	newVistPlan.PlanDate = date;
+	newVistPlan.PlanDate = args.Result;
 	newVistPlan.Save();
 	
-	//control.Text = date;
 	Workflow.Refresh([]);
 }
 

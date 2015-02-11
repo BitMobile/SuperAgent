@@ -440,14 +440,14 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {
-		DateTimeDialog(skuValue, "Answer", skuValue.Answer, editControl);
+		Dialogs.ChooseDateTime(skuValue, "Answer", editControl, DialogCallBack);
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.Boolean).ToString()) {
 		bool_answer = currAnswer;
 		curr_item = skuValue;
 		curr_sku = currSKU;
-		BooleanDialogSelect(skuValue, "Answer", editControl);
+		Dialogs.ChooseBool(skuValue, "Answer", editControl, DialogCallBack);
 	}
 	
 	setScroll = false;

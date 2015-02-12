@@ -9,12 +9,14 @@ var single_total;
 var bool_answer;
 var curr_item;
 var questionGl;
+var doRefresh;
 
 //
 // -------------------------------Header handlers-------------------------
 //
 
 function OnLoading() {
+	doRefresh = false;
 	questionsAtScreen = null;
 	obligateredLeft = parseInt(0);
 	SetListType();
@@ -120,7 +122,7 @@ function GetQuestions(str, single) {
 			"AND Q.ParentQuestion NOT IN (SELECT Question FROM Document_Visit_Questions " +
 			" WHERE (Answer='No' OR Answer='Нет') AND Ref=@visit)))" +
 			
-			" GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, Answer " + 
+			" GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, V.Answer " + 
 			" ORDER BY DocDate, QuestionOrder ");
 	query.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	query.AddParameter("emptySKU", DB.EmptyRef("Catalog_SKU"));
@@ -317,7 +319,7 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 			listChoice.Add([0, Translate["#addFromGallery#"]]);
 		if (String.IsNullOrEmpty(question.Answer)==false)
 			listChoice.Add([2, Translate["#clearValue#"]]);		
-		Gallery.AddSnapshot(visit, question, SaveAtVisit, listChoice);
+		Gallery.AddSnapshot(visit, question, SaveAtVisit, listChoice, "document.visit");
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {
@@ -333,6 +335,7 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 }
 
 function AssignQuestionValue(control, question) {
+	doRefresh = true;
 	CreateVisitQuestionValueIfNotExists(question, control.Text, false);
 }
 
@@ -441,24 +444,30 @@ function DeleteAnswers(recordset) {
  */
 
 function GetCameraObject(entity) {
-	FileSystem.CreateDirectory("/private/Document.Visit");
+	FileSystem.CreateDirectory("/private/document.visit");
 	var guid = Global.GenerateGuid();
 	Variables.Add("guid", guid);
-	var path = String.Format("/private/Document.Visit/{0}/{1}.jpg", entity.Id, guid);
+	var path = String.Format("/private/document.visit/{0}/{1}.jpg", entity.Id, guid);
 	Camera.Size = 300;
 	Camera.Path = path;
 }
 
 function CheckEmptyQuestionsAndForward(visit) {
+	
+	if (doRefresh){
+		Workflow.Refresh([]);
 
-	var qr = new Query("SELECT Id FROM Document_Visit_Questions WHERE Answer IS NULL  OR Answer=''");
-	var res = qr.Execute();
-
-	while (res.Next()) {
-		DB.Delete(res.Id);
 	}
-
-	Workflow.Forward([]);
+	else{
+		var qr = new Query("SELECT Id FROM Document_Visit_Questions WHERE Answer IS NULL  OR Answer=''");
+		var res = qr.Execute();
+	
+		while (res.Next()) {
+			DB.Delete(res.Id);
+		}
+	
+		Workflow.Forward([]);
+	}
 }
 
 

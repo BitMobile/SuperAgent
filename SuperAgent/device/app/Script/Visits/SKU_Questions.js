@@ -12,6 +12,7 @@ var bool_answer;
 var curr_item;
 var curr_sku;
 var skuValueGl;
+var doRefresh;
 
 //
 //-------------------------------Header handlers-------------------------
@@ -19,6 +20,7 @@ var skuValueGl;
 
 
 function OnLoading(){
+	doRefresh = false;
 	skuOnScreen = null;
 	obligateredLeft = parseInt(0);	
 	SetListType();
@@ -381,6 +383,8 @@ function CreateVisitSKUValueIfNotExists(control, sku, question, isInput) {
 //	if (isInput=='true' && (control.Text=="—" || TrimAll(control.Text)==""))
 //		return null;
 	
+	doRefresh = true;
+	
 	var query = new Query();
 	query.Text = "SELECT Id FROM Document_Visit_SKUs WHERE SKU=@sku AND Question=@question AND Ref=@ref";
 	query.AddParameter("ref", $.workflow.visit);
@@ -436,7 +440,7 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 			listChoice.Add([0, Translate["#addFromGallery#"]]);
 		if (String.IsNullOrEmpty(skuValue.Answer)==false)
 			listChoice.Add([2, Translate["#clearValue#"]]);
-		Gallery.AddSnapshot($.workflow.visit, skuValue, SaveAtVisit, listChoice);
+		Gallery.AddSnapshot($.workflow.visit, skuValue, SaveAtVisit, listChoice, "document.visit");
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {
@@ -455,25 +459,30 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 
 
 function CheckEmtySKUAndForward(outlet, visit) {
-	var p = [ outlet, visit ];
-	parentId = null;		
-	var q = regular_total + single_total;
-	$.workflow.Add("questions_qty_sku", q);
-	
-	var a = regular_answ + single_answ;
-	$.workflow.Add("questions_answ_sku", a);
-	
-	Variables.Remove("group_filter");
-	Variables.Remove("brand_filter");
-	
-	Workflow.Forward(p);
+	if (doRefresh) {
+		Workflow.Refresh([]);
+	}
+	else{
+		var p = [ outlet, visit ];
+		parentId = null;		
+		var q = regular_total + single_total;
+		$.workflow.Add("questions_qty_sku", q);
+		
+		var a = regular_answ + single_answ;
+		$.workflow.Add("questions_answ_sku", a);
+		
+		Variables.Remove("group_filter");
+		Variables.Remove("brand_filter");
+		
+		Workflow.Forward(p);
+	}
 }
 
 function GetCameraObject(entity) {
-	FileSystem.CreateDirectory("/private/Document.Visit");
+	FileSystem.CreateDirectory("/private/document.visit");
 	var guid = Global.GenerateGuid();
 	//Variables.Add("guid", guid);
-	var path = String.Format("/private/Document.Visit/{0}/{1}.jpg", entity.Id, guid);
+	var path = String.Format("/private/document.visit/{0}/{1}.jpg", entity.Id, guid);
 	Camera.Size = 300;
 	Camera.Path = path;
 	return guid; 

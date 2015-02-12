@@ -1,6 +1,6 @@
-﻿function AddSnapshot(objectRef, valueRef, func, listChoice) {
+﻿function AddSnapshot(objectRef, valueRef, func, listChoice, objectType) {
 //	if ($.sessionConst.galleryChoose)
-		Dialog.Choose(Translate["#choose_action#"], listChoice, AddSnapshotHandler, [objectRef,func,valueRef]);
+		Dialog.Choose(Translate["#choose_action#"], listChoice, AddSnapshotHandler, [objectRef,func,valueRef,objectType]);
 //	else{
 //		var pictId = GetCameraObject(objectRef);
 //		var path = GetPrivateImagePath("catalog.outlet", objectRef, pictId, ".jpg");
@@ -12,17 +12,18 @@ function AddSnapshotHandler(state, args) {
 	var objRef = state[0];
 	var func = state[1];
 	var valueRef = state[2];
+	var objectType = state[3];
 	
 	if (parseInt(args.Result)==parseInt(0)){	
 		var pictId = GenerateGuid();				
-		var path = GetPrivateImagePath("catalog.outlet", objRef, pictId, ".jpg");
+		var path = GetPrivateImagePath(objectType, objRef, pictId, ".jpg");
 		Gallery.Size = 300;
 		Gallery.Copy(path, func, [objRef, pictId]);					
 	}
 	
 	if (parseInt(args.Result)==parseInt(1)){
 		var pictId = GetCameraObject(objRef);
-		var path = GetPrivateImagePath("catalog.outlet", objRef, pictId, ".jpg");
+		var path = GetPrivateImagePath(objectType, objRef, pictId, ".jpg");
 		Camera.MakeSnapshot(path, 300, func, [ objRef, pictId]);
 	}
 	

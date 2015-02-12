@@ -21,24 +21,24 @@
 			<s:Push Id="usv" Value="$GetOutletsCount()"></s:Push>
 			<s:If Test="$visitsType=='planned'">
 				<c:HorizontalLayout CssClass="mode_left_button_on">
-					<c:HorizontalLayout Id="planned" CssClass="select_zone" OnClickAction="$Facade.ChangeListAndRefresh(planned)">
+					<c:HorizontalLayout Id="planned" CssClass="select_zone" OnClickAction="$ChangeListAndRefresh(planned)">
 						<c:TextView Text="#planVisit# ({$sv})"></c:TextView>
 					</c:HorizontalLayout>
 				</c:HorizontalLayout>
 				<c:HorizontalLayout CssClass="mode_right_button_off">
-					<c:HorizontalLayout Id="unPlanned" CssClass="select_zone" OnClickAction="$Facade.ChangeListAndRefresh(unPlanned)">
+					<c:HorizontalLayout Id="unPlanned" CssClass="select_zone" OnClickAction="$ChangeListAndRefresh(unPlanned)">
 						<c:TextView Text="#unplanned# ({$usv})"></c:TextView>
 					</c:HorizontalLayout>
 				</c:HorizontalLayout>
 			</s:If>
 			<s:Else>
 				<c:HorizontalLayout CssClass="mode_left_button_off">
-					<c:HorizontalLayout Id="planned" CssClass="select_zone" OnClickAction="$Facade.ChangeListAndRefresh(planned)">
+					<c:HorizontalLayout Id="planned" CssClass="select_zone" OnClickAction="$ChangeListAndRefresh(planned)">
 						<c:TextView Text="#planVisit# ({$sv})"></c:TextView>
 					</c:HorizontalLayout>
 				</c:HorizontalLayout>
 				<c:HorizontalLayout CssClass="mode_right_button_on">
-					<c:HorizontalLayout Id="unPlanned" CssClass="select_zone" OnClickAction="$Facade.ChangeListAndRefresh(unPlanned)">
+					<c:HorizontalLayout Id="unPlanned" CssClass="select_zone" OnClickAction="$ChangeListAndRefresh(unPlanned)">
 						<c:TextView Text="#unplanned# ({$usv})"></c:TextView>
 					</c:HorizontalLayout>
 				</c:HorizontalLayout>

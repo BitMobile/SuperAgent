@@ -1,26 +1,27 @@
 var amount;
 var overdueAmount;
 var editingItem;
-var receivablesRecdset;
+//var receivablesRecdset;
 
 function OnLoad() {
 	editingItem = null;
 }
-
-function GetReceivables(outlet) {
 	
+function GetHeader(outlet) {	
 	GetAmount(outlet);
 	GetOverdueAmount(outlet);
+}
+
+function GetReceivables(outlet) {	
 	
 	var receivables = new Query("SELECT RD.DocumentName, RD.DocumentSum, RD.Overdue, E.ID AS EncItem, E.EncashmentSum AS EncSum " + //IFNULL(E.EncashmentSum, '') AS EncSum" +
 			" FROM Document_AccountReceivable_ReceivableDocuments RD " +
-			" JOIN Document_AccountReceivable AR ON AR.Id=RD.Ref " +
+			" JOIN Document_AccountReceivable AR ON AR.Id=RD.Ref AND AR.Outlet = @outlet " +
 			" LEFT JOIN Document_Encashment_EncashmentDocuments E ON E.Ref = @encashment AND E.DocumentName=RD.DocumentName " +
-			" WHERE AR.Outlet = @outlet ORDER BY AR.Date, RD.LineNumber");
+			" ORDER BY AR.Date, RD.LineNumber");
 	receivables.AddParameter("encashment", $.workflow.encashment);
 	receivables.AddParameter("outlet", outlet);
-	var r = receivables.Execute().Unload();
-	receivablesRecdset = r;
+	var r = receivables.Execute();
 	
 	return r;
 }
@@ -48,7 +49,10 @@ function ValidateEncashments() {
 }
 
 function GetAmount(outlet) {
-	var receivables = new Query("SELECT SUM(RD.DocumentSum) FROM Document_AccountReceivable_ReceivableDocuments RD JOIN Document_AccountReceivable AR ON AR.Id=RD.Ref WHERE AR.Outlet = @outlet ORDER BY RD.LineNumber");
+	var receivables = new Query("SELECT SUM(RD.DocumentSum) " +
+			" FROM Document_AccountReceivable_ReceivableDocuments RD " +
+			" JOIN Document_AccountReceivable AR ON AR.Id=RD.Ref AND AR.Outlet = @outlet" +
+			" ORDER BY RD.LineNumber");
 	receivables.AddParameter("outlet", outlet);
 	amount = FormatValue(receivables.ExecuteScalar());
 }
@@ -113,23 +117,23 @@ function CreateEncashmentItem(encashment, receivableDoc) {
 
 function SpreadEncasmentAndRefresh(encashment, outlet, receivables) {
 	
-	receivablesRecdset.First();
+	receivables = GetReceivables(outlet);
 	
 	var sumToSpread = encashment.EncashmentAmount;
-	while (receivablesRecdset.Next()) {
+	while (receivables.Next()) {		
 		
 		if (parseInt(0)!=parseInt(sumToSpread)) {
 			var encRowObj;		
-			if (receivables.encItem==null){
-				encRowObj = CreateEncashmentItem(encashment, receivablesRecdset.DocumentName);
+			if (receivables.EncItem==null){
+				encRowObj = CreateEncashmentItem(encashment, receivables.DocumentName);
 				encRowObj = encRowObj.GetObject();
 			}
 			else
 				encRowObj = receivables.encItem.GetObject();
 
-			if (Converter.ToDecimal(sumToSpread) > Converter.ToDecimal(receivablesRecdset.DocumentSum)) {
-				encRowObj.EncashmentSum = FormatValue(receivablesRecdset.DocumentSum);
-				sumToSpread = sumToSpread - receivablesRecdset.DocumentSum;
+			if (Converter.ToDecimal(sumToSpread) > Converter.ToDecimal(receivables.DocumentSum)) {
+				encRowObj.EncashmentSum = FormatValue(receivables.DocumentSum);
+				sumToSpread = sumToSpread - receivables.DocumentSum;
 			} else {
 				encRowObj.EncashmentSum = FormatValue(sumToSpread);
 				sumToSpread = Converter.ToDecimal(0);
@@ -166,14 +170,17 @@ function ClearEmptyRecDocs(encashment) {
 }
 
 function GetOverdueAmount(outlet) {
-	var q = new Query("SELECT SUM(R.DocumentSum) FROM Document_AccountReceivable A JOIN Document_AccountReceivable_ReceivableDocuments R ON A.Id=R.Ref WHERE A.Outlet = @outlet AND Overdue=1");
+	var q = new Query("SELECT SUM(R.DocumentSum) " +
+			" FROM Document_AccountReceivable_ReceivableDocuments R " +
+			" JOIN Document_AccountReceivable A ON A.Id=R.Ref AND A.Outlet = @outlet" +
+			" WHERE Overdue=1");
 	q.AddParameter("outlet", outlet);
 
 	overdueAmount = FormatValue(q.ExecuteScalar());
 }
 
 function FormatSum(control, value) {
-
+	
 	if (value==null || parseInt(value)==parseInt(0))
 		return "";
 	else

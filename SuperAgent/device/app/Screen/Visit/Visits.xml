@@ -18,7 +18,7 @@
 
 		<c:HorizontalLayout CssClass="small_grid">
 			<s:Push Id="sv" Value="$GetScheduledVisitsCount()"></s:Push>
-			<s:Push Id="usv" Value="$GetOutlets(null, 1)"></s:Push>
+			<s:Push Id="usv" Value="$GetOutletsCount()"></s:Push>
 			<s:If Test="$visitsType=='planned'">
 				<c:HorizontalLayout CssClass="mode_left_button_on">
 					<c:HorizontalLayout Id="planned" CssClass="select_zone" OnClickAction="$Facade.ChangeListAndRefresh(planned)">
@@ -61,7 +61,7 @@
 
 				<c:HorizontalLayout CssClass="caption_grid">
 					<s:Push Id="uncommitedVisits" Value="$GetUncommitedScheduledVisits($search)"></s:Push>
-					<s:Push Id="sv" Value="$CountCollection($uncommitedVisits)"></s:Push>
+					<s:Push Id="sv" Value="$GetUncommitedScheduledVisitsCount($search)"></s:Push>
 					<c:TextView Text="#incompletedVisits# ({$sv}):"></c:TextView>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
@@ -104,7 +104,7 @@
 				<c:HorizontalLayout CssClass="caption_grid">
 
 					<s:Push Id="commitedVisits" Value="$GetCommitedScheduledVisits($search)"></s:Push>
-					<s:Push Id="cv" Value="$CountCollection($commitedVisits)"></s:Push>
+					<s:Push Id="cv" Value="$GetCommitedScheduledVisitsCount($search)"></s:Push>
 					<c:TextView Text="#completedVisits# ({$cv}):"></c:TextView>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
@@ -140,7 +140,7 @@
 
 
 		<s:Else>
-			<s:Push Id="unscheduledOutlets" Value="$GetOutlets($search, 0)"></s:Push>
+			<s:Push Id="unscheduledOutlets" Value="$GetOutlets($search)"></s:Push>
 
 			<c:ScrollView Id="grScrollView">
 				<s:Iterator Id="uOutlet" Value="$unscheduledOutlets">

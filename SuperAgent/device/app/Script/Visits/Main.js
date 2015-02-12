@@ -1,4 +1,5 @@
-﻿// ------------------------ Visits screen module ------------------------
+﻿
+// ------------------------ Visits screen module ------------------------
 
 function OnLoading(){
 	SetListType();
@@ -17,7 +18,7 @@ function ChangeListAndRefresh(control) {
 	Workflow.Refresh([]);
 }
 
-function GetUncommitedScheduledVisits(searchText, getCount) {
+function GetUncommitedScheduledVisits(searchText) {
 
 	var search = "";
 	var q = new Query();
@@ -37,13 +38,7 @@ function GetUncommitedScheduledVisits(searchText, getCount) {
 	q.AddParameter("today", DateTime.Now.Date);
 	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
 	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));
-	if (getCount == "1")
-		return q.ExecuteCount();
-	else {
-		var c = q.Execute();
-		return c;
-
-	}
+	return q.Execute().Unload();
 
 }
 
@@ -58,7 +53,7 @@ function GetScheduledVisitsCount() {
 		return cnt;
 }
 
-function GetCommitedScheduledVisits(searchText, getCount) {
+function GetCommitedScheduledVisits(searchText) {
 	
 	//на самом деле функция возвращает все визиты подряд, но мне кажется что это ненадолго, поэтому в комментарии - еще вариант запроса, отражающий изначальный смысл
 	
@@ -76,12 +71,7 @@ function GetCommitedScheduledVisits(searchText, getCount) {
 		"FROM Document_Visit V JOIN Catalog_Outlet O ON V.Outlet=O.Id WHERE V.Date >= @today AND V.Date < @tomorrow");
 	q.AddParameter("today", DateTime.Now.Date);
 	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
-	if (getCount == "1")
-		return q.ExecuteCount();
-	else {
-		var c = q.Execute();
-		return c;
-	}
+	return q.Execute().Unload();	
 
 }
 
@@ -97,14 +87,11 @@ function GetOutlets(searchText, returnQty) {
 			"FROM Document_AccountReceivable_ReceivableDocuments D JOIN Document_AccountReceivable A ON D.Ref=A.Id " +
 			"WHERE A.Outlet=O.Id) AS OutletStatus"+			
 			" FROM Catalog_Outlet O " + search + " ORDER BY O.Description LIMIT 500");
+	var res = q.Execute().Unload();
 	if (parseInt(returnQty)==parseInt(0))
-		return q.Execute();
-	else{
-		var c = q.ExecuteCount();
-		if (c==null)
-			return parseInt(0);
-		else
-			return c;
+		return res;
+	else{		
+		return CountCollection(res);
 	}
 		
 }

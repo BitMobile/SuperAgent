@@ -60,8 +60,8 @@
 				<s:Push Id="hasRow" Value="false" />
 
 				<c:HorizontalLayout CssClass="caption_grid">
-					<s:Push Id="uncommitedVisits" Value="$GetUncommitedScheduledVisits($search, 0)"></s:Push>
-					<s:Push Id="sv" Value="$GetUncommitedScheduledVisits($search, 1)"></s:Push>
+					<s:Push Id="uncommitedVisits" Value="$GetUncommitedScheduledVisits($search)"></s:Push>
+					<s:Push Id="sv" Value="$CountCollection($uncommitedVisits)"></s:Push>
 					<c:TextView Text="#incompletedVisits# ({$sv}):"></c:TextView>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
@@ -103,8 +103,8 @@
 
 				<c:HorizontalLayout CssClass="caption_grid">
 
-					<s:Push Id="commitedVisits" Value="$GetCommitedScheduledVisits($search, 0)"></s:Push>
-					<s:Push Id="cv" Value="$GetCommitedScheduledVisits($search, 1)"></s:Push>
+					<s:Push Id="commitedVisits" Value="$GetCommitedScheduledVisits($search)"></s:Push>
+					<s:Push Id="cv" Value="$CountCollection($commitedVisits)"></s:Push>
 					<c:TextView Text="#completedVisits# ({$cv}):"></c:TextView>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />

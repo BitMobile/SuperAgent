@@ -58,7 +58,8 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<s:Iterator Id="orderitem" Value="$items">
+			<s:Iterator Id="orderitem" Value="$items" Status="statusCount">
+				<s:Push Id="index" Value="$statusCount.Index"></s:Push>
 
 				<s:If Test="$orderitem != null">
 					<c:SwipeHorizontalLayout Id="swipe_layout2" CssClass="swipe_layout">

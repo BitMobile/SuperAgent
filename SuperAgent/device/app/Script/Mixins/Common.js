@@ -15,6 +15,13 @@ function ToString(val) {
 	return val.ToString();
 }
 
+function ToDecimal(val) {
+	if (String.IsNullOrEmpty(val))
+		return Converter.ToDecimal(0);
+	else
+		return Converter.ToDecimal(val);
+}
+
 function GetSum(val1, val2) {
 	
 	if (val1 == null)
@@ -164,3 +171,10 @@ function ClearField(source, field, objectRef, attribute) {
 	source.Visible = false;
 }
 
+function AssignDialogValue(state, args) {
+	var entity = state[0];
+	var attribute = state[1];
+	entity[attribute] = args.Result;
+	entity.GetObject().Save();
+	return entity;
+}

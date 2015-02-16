@@ -91,7 +91,7 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 function GetQuickOrder(control, skuId, itemPrice, packField, editField, textViewField, recOrder, recUnitId, recUnit){
     if(swipedRow != control)
         HideSwiped();
-    swipedRow = control;
+    
     if(parseInt(control.Index)==parseInt(0)){
         var query = new Query();
         query.Text = "SELECT S.Id, S.Description, BF.Feature AS DefaultFeature, " +
@@ -129,19 +129,21 @@ function GetQuickOrder(control, skuId, itemPrice, packField, editField, textView
         Variables[textViewField].Text = quickOrderItem.Qty + " " + packDescription + " " + Translate["#alreadyOrdered#"];
         multiplier = quickOrderItem.Multiplier;
     }
+    
+    swipedRow = control;
 }
 
-function AddToOrder(control, editFieldName, packDescr) {
+function AddToOrder(control, editFieldName) {
     var editText = Converter.ToDecimal(0);
     if (String.IsNullOrEmpty(Variables[editFieldName].Text) == false)
         editText = Converter.ToDecimal(Variables[editFieldName].Text);
     Variables[editFieldName].Text = editText + parseInt(1);
 }
 
-function CreateOrderItem(control, editFieldName, textFieldName, packFireld, sku, price, swiped_rowName, recOrder, recUnitId) {
+function CreateOrderItem(control, editFieldName, textFieldName, packField, sku, price, swiped_rowName, recOrder, recUnitId) {
 	
 	if (swipedRow!=Variables[swiped_rowName])
-		GetQuickOrder(Variables[swiped_rowName], sku, price, packField, editFieldName, textViewField, recOrder, recUnitId, recUnit)		
+		GetQuickOrder(Variables[swiped_rowName], sku, price, packField, editFieldName, textViewField, recOrder, recUnitId, recUnit);		
 
     if (String.IsNullOrEmpty(Variables[editFieldName].Text) == false) {
         if (Converter.ToDecimal(Variables[editFieldName].Text) != Converter.ToDecimal(0)) {

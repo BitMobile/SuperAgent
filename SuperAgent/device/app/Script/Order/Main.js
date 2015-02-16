@@ -1,3 +1,5 @@
+var itemsQty;
+
 //---------------------------UI calls----------------
 
 function GetOrderList() {
@@ -103,7 +105,9 @@ function GetOrderedSKUs(order) {
 	var query = new Query();
 	query.Text = "SELECT Id, SKU, Feature, Qty, Discount, Total, Units, ROUND(Qty*Total, 2) AS Amount FROM Document_Order_SKUs WHERE Ref = @Ref";
 	query.AddParameter("Ref", order);
-	return query.Execute();
+	var r = query.Execute().Unload();
+	itemsQty = r.Count();
+	return r;
 }
 
 function GetOrderSUM(order) {
@@ -143,7 +147,7 @@ function SelectStock(order, attr, control) {
 		while (res.Next()) {
 			table.push([ res.Id, res.Description ]);
 		}
-		Dialog.Select(Translate["#valueList#"], table, StockSelectHandler, [ order, attr, control ]);
+		Dialogs.DoChoose(table, order, attr, control, StockSelectHandler);
 	}
 }
 
@@ -171,10 +175,8 @@ function IsEditable(executedOrder, order) {
 }
 
 function CheckIfEmptyAndForward(order, wfName) {
-	var query = new Query("SELECT Id FROM Document_Order_SKUs WHERE Ref=@ref");
-	query.AddParameter("ref", order);
 	var save = true;
-	if (parseInt(query.ExecuteCount()) == parseInt(0)) {
+	if (parseInt(itemsQty) == parseInt(0)) {
 		DB.Delete(order);
 		$.workflow.Remove("order");
 		save = false;
@@ -206,12 +208,12 @@ function SaveOrder(order) {
 
 function SetDeliveryDateDialog(order, control, executedOrder) {
 	if (IsNew(order) && NotEmptyRef(order.PriceList))
-		DateTimeDialog(order, "DeliveryDate", order.DeliveryDate, control);
+		Dialogs.ChooseDateTime(order, "DeliveryDate", control, null);
 }
 
-function DialogCallBack(control, key) {
-	Workflow.Refresh([ null, null, $.executedOrder ]);
-}
+//function DialogCallBack(control, key) {
+//	Workflow.Refresh([ null, null, $.executedOrder ]);
+//}
 
 function OrderBack() {
 	if ($.workflow.name == "CreateOrder")
@@ -291,36 +293,32 @@ function SelectPriceList(order, priceLists, executedOrder) {
 }
 
 function PriceListSelect(entity, attribute, table, control) {
-	Dialog.Select("#select_answer#", table, DoPriceListCallback, [ entity, attribute, control ]);
+	Dialogs.DoChoose(table, entity, attribute, control, DoPriceListCallback);
 	return;
 }
 
-function DoPriceListCallback(key, args) {
-	var entity = args[0];
-	var attribute = args[1];
-	var control = args[2];
-
-	if ((entity[attribute]).ToString() == key.ToString())
+function DoPriceListCallback(state, args) {	
+	if ((state[0][state[1]]).ToString()==(args.Result).ToString()){
 		return;
+	}
 
-	entity[attribute] = key;
-	entity.GetObject().Save();
-	control.Text = key.Description;
-	ReviseSKUs(entity, key, entity.Stock);
+	var entity = AssignDialogValue(state, args); 
+	
+	var control = state[2];
+	control.Text = args.Result.Description;
+	ReviseSKUs(entity, args.Result, entity.Stock);
 	return;
 }
 
-function StockSelectHandler(key, args) {
-	var entity = args[0];
-	var attribute = args[1];
-	var control = args[2];
-	entity[attribute] = key;
-	entity.GetObject().Save();
-	if (key.EmptyRef())
+function StockSelectHandler(state, args) {
+	var entity = AssignDialogValue(state, args);
+	
+	var control = state[2];
+	if (args.Result.EmptyRef())
 		control.Text = Translate["#allStocks#"];
 	else
-		control.Text = key.Description;
-	ReviseSKUs($.workflow.order, $.workflow.order.PriceList, key);
+		control.Text = args.Result.Description;
+	ReviseSKUs($.workflow.order, $.workflow.order.PriceList, args.Result);
 	return;
 }
 

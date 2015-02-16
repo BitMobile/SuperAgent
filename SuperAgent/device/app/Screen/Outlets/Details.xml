@@ -17,7 +17,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#legal_name#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$outlet.LegalName" Placeholder="-" CssClass="main_row" />
+					<c:EditText Value="$outlet.LegalName" Placeholder="—" CssClass="main_row" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -25,17 +25,20 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#legal_address#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$outlet.LegalAddress" Placeholder="-" CssClass="main_row" />
+					<c:EditText Value="$outlet.LegalAddress" Placeholder="—" CssClass="main_row" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
 			<c:HorizontalLayout CssClass="grid">
-				<s:Push Id="outletObj" Value="$GetObject($outlet)" />
-				<c:VerticalLayout OnClickAction="$SelectOwnership()">
-					<s:Push Id="ownershipString" Value="$GetString($outlet.OwnershipType)" />
+				<c:VerticalLayout OnClickAction="$SelectOwnership($OwnershipType)">					
 					<c:TextView Text="#ownership#" CssClass="description_row"></c:TextView>
-					<c:TextView Id="OwnershipType" Text="$ownershipString" CssClass="$style" />
+					<s:If Test="$NotEmptyRef($outlet.OwnershipType)">
+						<c:TextView Id="OwnershipType" Text="$outlet.OwnershipType" CssClass="main_row"/>
+					</s:If>
+					<s:Else>
+						<c:TextView Id="OwnershipType" Text="—" CssClass="main_row"/>
+					</s:Else>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -43,7 +46,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#inn#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$outlet.INN" Placeholder="-" Keyboard="numeric" CssClass="main_row" />
+					<c:EditText Value="$outlet.INN" Placeholder="—" Keyboard="numeric" CssClass="main_row" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -51,7 +54,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#kpp#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$outlet.KPP" Placeholder="-" Keyboard="numeric" CssClass="main_row" />
+					<c:EditText Value="$outlet.KPP" Placeholder="—" Keyboard="numeric" CssClass="main_row" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -59,7 +62,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#phone#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$outlet.PhoneNumber" Placeholder="-" Keyboard="numeric" CssClass="main_row" />
+					<c:EditText Value="$outlet.PhoneNumber" Placeholder="—" Keyboard="numeric" CssClass="main_row" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -67,7 +70,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#email#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$outlet.Email" Placeholder="-" CssClass="main_row" />
+					<c:EditText Value="$outlet.Email" Placeholder="—" CssClass="main_row" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -75,7 +78,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#web_site#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$outlet.WebSite" Placeholder="-" CssClass="main_row" />
+					<c:EditText Value="$outlet.WebSite" Placeholder="—" CssClass="main_row" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

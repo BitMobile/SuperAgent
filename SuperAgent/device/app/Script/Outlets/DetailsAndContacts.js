@@ -1,3 +1,9 @@
+var outlet;
+
+function OnLoad() {
+	outlet = $.param1;
+}
+
 function CreateContactIfNotExist(contact, outlet) {
 
 	if (contact == null) {
@@ -42,10 +48,7 @@ function GetPlans(outlet, sr) {
 }
 
 function CreatePlan(outlet, plan, planDate) {
-	if (String.IsNullOrEmpty(planDate))
-		planDate = DateTime.Now;
-	var header = Translate["#enterDateTime#"];
-	Dialog.ShowDateTime(header, planDate, PlanHandler, [ outlet, plan ]);
+	Dialogs.ChooseDateTime(plan, "PlanDate", null, PlanHandler); //(header, planDate, PlanHandler, [ outlet, plan ]);
 }
 
 function DeleteContact(ref) {
@@ -56,27 +59,16 @@ function DeleteContact(ref) {
 	Workflow.Refresh([ $.outlet ]);
 }
 
-function SelectOwnership() {
+function SelectOwnership(control) {
 	var ownDictionary = CreateOwnershipDictionary();
 	var q = new Query();
-	q.Text = "SELECT Id, Description FROM Enum_OwnershipType";
-	var res = q.Execute().Unload();
-	var arr = [];	
-	
-	while (res.Next()) {
-		arr.push([res.Id, ownDictionary[res.Description]]);
-	}
+	q.Text = "SELECT Id, Description FROM Enum_OwnershipType";// UNION SELECT NULL, '—' ORDER BY Description";
+	var res = q.Execute().Unload();	
 		
-	Dialog.Select("#select_answer#", arr, CallBack1, $.outlet);
+	Dialogs.DoChoose(q.Execute().Unload(), $.outlet, "OwnershipType", control, null);
 	
 }
 
-function CallBack1(key, args) {
-	var obj = args.GetObject();
-	obj.OwnershipType = key;
-	obj.Save();
-	Workflow.Refresh([]);
-}
 
 // --------------------internal--------------
 
@@ -87,9 +79,8 @@ function EmptyContact(contact) {
 		return false;
 }
 
-function PlanHandler(date, arr) {
-	var outlet = arr[0];
-	var plan = arr[1];
+function PlanHandler(state, args) {
+	var plan = state[0];
 	if (plan == null) {
 		plan = DB.Create("Document.MobileAppPlanVisit");
 		plan.SR = $.common.UserRef;
@@ -98,7 +89,7 @@ function PlanHandler(date, arr) {
 		plan.Date = DateTime.Now;
 	} else
 		plan = plan.GetObject();
-	plan.PlanDate = date;
+	plan.PlanDate = args.Result;
 	plan.Save();
 	Workflow.Refresh([ outlet ]);
 }

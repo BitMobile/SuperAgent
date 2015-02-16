@@ -36,8 +36,8 @@
 					<c:TextView Text="#overdue#" CssClass="t_row"></c:TextView>
 				</c:VerticalLayout>
 				<c:VerticalLayout>
-					<c:TextView Text="$receivableAmount"></c:TextView>
-					<c:TextView Text="$overdueAmount" CssClass="overdue_text"></c:TextView>
+					<c:TextView Text="$FormatValue($receivableAmount)"></c:TextView>
+					<c:TextView Text="$FormatValue($overdueAmount)" CssClass="overdue_text"></c:TextView>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -81,10 +81,10 @@
 						</s:Else>
 						<c:DockLayout CssClass="parameter_grid">
 							<s:If Test="$receivableDoc.Overdue">
-								<c:TextView Text="#debt#: {$receivableDoc.DocumentSum}" CssClass="r_row"></c:TextView>
+								<c:TextView Text="#debt#: {$FormatValue($receivableDoc.DocumentSum)}" CssClass="r_row"></c:TextView>
 							</s:If>
 							<s:Else>
-								<c:TextView Text="#debt#: {$receivableDoc.DocumentSum}" CssClass="b_row"></c:TextView>
+								<c:TextView Text="#debt#: {$FormatValue($receivableDoc.DocumentSum)}" CssClass="b_row"></c:TextView>
 							</s:Else>
 							<c:EditText Id="control{$index}" Value="$encasmentItem.EncashmentSum" Keyboard="numeric" OnChange="$RefreshAmount($workflow.encashment, $encasmentItem)"></c:EditText>
 						</c:DockLayout>

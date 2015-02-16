@@ -64,7 +64,7 @@
 
 			<c:DockLayout CssClass="parameter_grid">
 				<c:TextView Text="#price#" CssClass="description_row"></c:TextView>
-				<c:TextView Id="orderItemTotalId" Text="$orderitem.Total" CssClass="value"></c:TextView>
+				<c:TextView Id="orderItemTotalId" Text="$FormatValue($orderitem.Total)" CssClass="value"></c:TextView>
 			</c:DockLayout>
 			<c:HorizontalLine />
 

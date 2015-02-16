@@ -100,10 +100,7 @@ function GetOrderSUM(order) {
     var query = new Query("SELECT SUM(Qty*Total) FROM Document_Order_SKUs WHERE Ref = @Ref");
     query.AddParameter("Ref", order);
     var sum = query.ExecuteScalar();
-    if (sum == null)
-        return 0;
-    else
-        return String.Format("{0:F2}", sum);
+    return FormatValue(sum);
 }
 
 function CheckAndCommit(order, visit, wfName) {

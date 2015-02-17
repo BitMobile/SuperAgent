@@ -70,16 +70,17 @@ function GetSKUAndGroups(searchText, priceList, stock) {
         recOrderSort = " OrderRecOrder DESC, ";
     }
     
-    query.Text = "SELECT DISTINCT S.Id, S.Description, PL.Price, " + stockField +
+    query.Text = "
+SELECT DISTINCT S.Id, S.Description, PL.Price, " + stockField +
             groupFields +
             "CB.Description AS Brand " +
             recOrderFields +
-            "FROM Catalog_SKU S " +
-            stockString +
-            groupJoin +            
-            "JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id " +
+            "FROM Document_PriceList_Prices PL " +
+            "JOIN Catalog_SKU S ON PL.SKU = S.Id " +            
+            groupJoin +                        
             "JOIN Catalog_Brands CB ON CB.Id=S.Brand " +            
             groupParentJoin +
+            stockString +
             recOrderStr +
             " WHERE " + stockCondition + " PL.Ref = @Ref " + stockWhere + searchString + filterString +
             " ORDER BY " + groupSort + recOrderSort + " S.Description LIMIT 100"; //G.Description, S.Description LIMIT 100";

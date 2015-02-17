@@ -306,8 +306,9 @@ function GetGroups(priceList, screenContext) {
     var filterString = " ";
     filterString += AddFilter(filterString, "brand_filter", "S.Brand", " AND ");
     if (screenContext=="Order"){
-        var q = new Query("SELECT DISTINCT G.Id AS ChildId, G.Description AS Child, GP.Id AS ParentId, GP.Description AS Parent FROM Catalog_SKU S LEFT JOIN Catalog_SKUGroup G ON S.Owner=G.Id LEFT JOIN Catalog_SKUGroup GP ON G.Parent=GP.Id WHERE S.ID IN (SELECT DISTINCT SKU FROM Document_PriceList_Prices WHERE Ref=@priceList) " + filterString + " ORDER BY Parent, Child");
+        var q = new Query("SELECT DISTINCT SG.Id AS ChildId, SG.Description As Child, SGP.Id AS ParentId, SGP.Description AS Parent FROM Document_PriceList_Prices SP JOIN Catalog_SKU S On SP.SKU = S.Id JOIN Catalog_SKU_Stocks SS ON SS.Ref = SP.SKU JOIN Catalog_SKUGroup SG ON S.Owner = SG.Id LEFT JOIN Catalog_SKUGroup SGP ON SG.Parent = SGP.Id WHERE SP.Ref = @priceList AND CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE SS.StockValue > 0 END " + filterString + " ORDER BY Parent, Child");
         q.AddParameter("priceList", priceList);
+        q.AddParameter("NoStkEnbl", $.sessionConst.NoStkEnbl);
         return q.Execute();
     }
     if (screenContext=="Questionnaire"){
@@ -399,8 +400,9 @@ function GetBrands(priceList, screenContext) {
     filterString += AddFilter(filterString, "group_filter", "S.Owner", " AND ");
     
     if (screenContext=="Order"){
-        var q = new Query("SELECT DISTINCT B.Id, B.Description FROM Catalog_SKU S JOIN Catalog_Brands B ON S.Brand=B.Id JOIN Catalog_SKUGroup G ON S.Owner=G.Id WHERE S.ID IN (SELECT DISTINCT SKU FROM Document_PriceList_Prices WHERE Ref=@priceList) " + filterString + " ORDER BY B.Description");
+        var q = new Query("SELECT DISTINCT SB.Id, SB.Description FROM Document_PriceList_Prices SP JOIN Catalog_SKU S ON SP.SKU = S.Id JOIN Catalog_SKU_Stocks SS ON SS.Ref = S.Id JOIN Catalog_Brands SB ON S.Brand = SB.Id WHERE SP.Ref = @priceList AND CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE SS.StockValue > 0 END " + filterString + " ORDER BY SB.Description");
         q.AddParameter("priceList", priceList);
+        q.AddParameter("NoStkEnbl", $.sessionConst.NoStkEnbl);
         return q.Execute();
     }
     if (screenContext=="Questionnaire"){

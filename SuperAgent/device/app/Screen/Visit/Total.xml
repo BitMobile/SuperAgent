@@ -113,7 +113,7 @@
 			<s:If Test="$sessionConst.encashEnabled">
 				<c:DockLayout CssClass="parameter_grid">
 					<c:TextView Text="#encashmentSum#"></c:TextView>
-					<c:TextView Text="{$workflow.encashment.EncashmentAmount}" CssClass="value"></c:TextView>
+					<c:TextView Text="{$FormatValue($workflow.encashment.EncashmentAmount)}" CssClass="value"></c:TextView>
 				</c:DockLayout>
 				<c:HorizontalLine />
 			</s:If>

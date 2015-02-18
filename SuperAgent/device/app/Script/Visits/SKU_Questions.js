@@ -330,7 +330,7 @@ function GetChilds(sku) {
 			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND SKU=@sku) " + 
 			" OR Q.ParentQuestion IN (SELECT Question FROM Catalog_Outlet_AnsweredQuestions " +
 			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@outlet AND SKU=S.SKU)) " +
-			" GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, Q.ParentQuestion, Answer " + 
+			" GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, Q.ParentQuestion, A.Answer " + 
 			" ORDER BY DocDate, QuestionOrder ";
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	q.AddParameter("integer", DB.Current.Constant.DataType.Integer);

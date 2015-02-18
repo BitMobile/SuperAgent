@@ -70,8 +70,7 @@ function GetSKUAndGroups(searchText, priceList, stock) {
         recOrderSort = " OrderRecOrder DESC, ";
     }
     
-    query.Text = "
-SELECT DISTINCT S.Id, S.Description, PL.Price, " + stockField +
+    query.Text = "SELECT DISTINCT S.Id, S.Description, PL.Price, " + stockField +
             groupFields +
             "CB.Description AS Brand " +
             recOrderFields +

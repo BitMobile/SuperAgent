@@ -28,7 +28,9 @@ function OnWorkflowStart(name) {
 	if (name == "Visit") {
 		
 			var questionnaires = GetQuestionnairesForOutlet($.outlet);
-			$.workflow.Add("questionnaires", questionnaires);						
+			$.workflow.Add("questionnaires", questionnaires);
+			
+			CreateQuestionnareTable($.outlet);
 
 			if (parseInt(GetTasksCount()) != parseInt(0))
 				$.workflow.Add("skipTasks", false); // нельзя просто взять и присвоить значение переменной!
@@ -287,6 +289,77 @@ function GetQuestionnairesForOutlet(outlet) {
 	
 	return list;
 			
+}
+
+function CreateQuestionnareTable(outlet) {
+	var drop = new Query("DROP TABLE IF EXISTS USR_Questionnaires");
+	drop.Execute();
+	
+	var query = new Query("CREATE TABLE USR_Questionnaires AS " +
+			"SELECT DISTINCT Q.Id AS Id, Q.Number AS Number " +
+			"FROM Document_Questionnaire_Schedule S " +
+			"JOIN Document_Questionnaire Q ON Q.Id=S.Ref " +
+			"WHERE date(S.Date)=date('now', 'start of day') AND Q.Status=@active ORDER BY Q.Id");
+	query.AddParameter("active", DB.Current.Constant.QuestionnareStatus.Active);
+	query.Execute();
+
+	var queryQ = new Query("SELECT Id FROM USR_Questionnaires");
+	var recordset = queryQ.Execute();
+		
+	var actualQuestionnaire = true;
+	var currentQuestionnaire;
+	
+	while (recordset.Next()) {		
+		
+		var query1 = new Query("SELECT Selector, ComparisonType, Value, AdditionalParameter, Ref " +
+				"FROM Document_Questionnaire_Selectors WHERE Ref=@ref ORDER BY Selector, ComparisonType");
+		query1.AddParameter("ref",recordset.Id);
+		var selectors = query1.Execute();
+		
+		var listParameter = new List;	//
+		var listChecked = true;			//stuff for
+		var currentSelector=null;		//list selector
+		var currentParam = null;				//
+		
+		while (selectors.Next() && actualQuestionnaire) {				
+				
+			if (ListSelectorIsChanged(currentSelector, selectors.Selector, selectors.AdditionalParameter, currentParam)){ //it's time to check list selector
+				actualQuestionnaire = CheckListSelector(listParameter);
+				if (actualQuestionnaire==false){
+					break;
+				}
+				listParameter = new List;
+				listChecked = true;
+			}
+			
+			//if (selectors.ComparisonType=="In list" || selectors.ComparisonType=="В списке"){								
+			if ((selectors.ComparisonType).ToString()==(DB.Current.Constant.ComparisonType.InList).ToString()){
+				listParameter.Add(CheckSelector(outlet, selectors.Selector, DB.Current.Constant.ComparisonType.Equal, selectors.Value, selectors.AdditionalParameter)); //real check is later, now - only an array
+				listChecked = false;
+				currentSelector = selectors.Selector;			//stuff for
+				currentParam = selectors.AdditionalParameter;	//list selectors, again
+			}
+			else{
+				actualQuestionnaire = CheckSelector(outlet, selectors.Selector, selectors.ComparisonType, selectors.Value, selectors.AdditionalParameter);
+				currentSelector = null;
+				currentParam = null;
+			}						
+			
+		}
+		
+		if (listChecked==false){ //one more time try to check list if it's hasn't been done in loop
+			actualQuestionnaire = CheckListSelector(listParameter);
+		}
+		
+		if (actualQuestionnaire==false){ //this is what it's all for
+			var qDelete = new Query("DELETE FROM USR_Questionnaires WHERE Id=@id");
+			qDelete.AddParameter("id", recordset.Id);
+			qDelete.Execute();			
+		}
+		
+		actualQuestionnaire = true;
+	}
+
 }
 
 function ListSelectorIsChanged(currentSelector, selector, additionalParam, currentParam) {

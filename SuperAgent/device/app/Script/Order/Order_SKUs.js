@@ -301,13 +301,24 @@ function ChangeFilterAndRefresh(type) {
 
 }
 
-function GetGroups(priceList, screenContext) {
+function GetGroups(priceList, stock, screenContext) {
 
     var filterString = " ";
     filterString += AddFilter(filterString, "brand_filter", "S.Brand", " AND ");
     if (screenContext=="Order"){
-        var q = new Query("SELECT DISTINCT SG.Id AS ChildId, SG.Description As Child, SGP.Id AS ParentId, SGP.Description AS Parent FROM Document_PriceList_Prices SP JOIN Catalog_SKU S On SP.SKU = S.Id JOIN Catalog_SKU_Stocks SS ON SS.Ref = SP.SKU JOIN Catalog_SKUGroup SG ON S.Owner = SG.Id LEFT JOIN Catalog_SKUGroup SGP ON SG.Parent = SGP.Id WHERE SP.Ref = @priceList AND CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE SS.StockValue > 0 END " + filterString + " ORDER BY Parent, Child");
+        var q = new Query("SELECT DISTINCT SG.Id AS ChildId, SG.Description As Child, SGP.Id AS ParentId, SGP.Description AS Parent " +
+        		"FROM Document_PriceList_Prices SP " +
+        		"JOIN Catalog_SKU S On SP.SKU = S.Id " +
+        		"JOIN Catalog_SKU_Stocks SS ON SS.Ref = SP.SKU " +
+        		"JOIN Catalog_SKUGroup SG ON S.Owner = SG.Id " +
+        		"LEFT JOIN Catalog_SKUGroup SGP ON SG.Parent = SGP.Id " +
+        		"WHERE SP.Ref = @priceList " +
+        		"AND CASE WHEN @isStockEmptyRef = 0 THEN SS.Stock = @stock ELSE 1 END " +
+        		"AND CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE SS.StockValue > 0 END " + filterString + " ORDER BY Parent, Child");
         q.AddParameter("priceList", priceList);
+        q.AddParameter("stock", stock);
+        isStockEmptyRef = stock.ToString() == DB.EmptyRef("Catalog_Stock").ToString() ? 1 : 0;
+        q.AddParameter("isStockEmptyRef", isStockEmptyRef);
         q.AddParameter("NoStkEnbl", $.sessionConst.NoStkEnbl);
         return q.Execute();
     }
@@ -395,13 +406,23 @@ function FilterIsSet(itemId, filterName) {
         return false;
 }
 
-function GetBrands(priceList, screenContext) {
+function GetBrands(priceList, stock, screenContext) {
     var filterString = " ";
     filterString += AddFilter(filterString, "group_filter", "S.Owner", " AND ");
     
     if (screenContext=="Order"){
-        var q = new Query("SELECT DISTINCT SB.Id, SB.Description FROM Document_PriceList_Prices SP JOIN Catalog_SKU S ON SP.SKU = S.Id JOIN Catalog_SKU_Stocks SS ON SS.Ref = S.Id JOIN Catalog_Brands SB ON S.Brand = SB.Id WHERE SP.Ref = @priceList AND CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE SS.StockValue > 0 END " + filterString + " ORDER BY SB.Description");
+        var q = new Query("SELECT DISTINCT SB.Id, SB.Description " +
+        		"FROM Document_PriceList_Prices SP " +
+        		"JOIN Catalog_SKU S ON SP.SKU = S.Id " +
+        		"JOIN Catalog_SKU_Stocks SS ON SS.Ref = S.Id " +
+        		"JOIN Catalog_Brands SB ON S.Brand = SB.Id " +
+        		"WHERE SP.Ref = @priceList " +
+        		"AND CASE WHEN @isStockEmptyRef = 0 THEN SS.Stock = @stock ELSE 1 END " +
+        		"AND CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE SS.StockValue > 0 END " + filterString + " ORDER BY SB.Description");
         q.AddParameter("priceList", priceList);
+        q.AddParameter("stock", stock);
+        isStockEmptyRef = stock.ToString() == DB.EmptyRef("Catalog_Stock").ToString() ? 1 : 0;
+        q.AddParameter("isStockEmptyRef", isStockEmptyRef);        
         q.AddParameter("NoStkEnbl", $.sessionConst.NoStkEnbl);
         return q.Execute();
     }

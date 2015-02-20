@@ -167,18 +167,21 @@ function GetSKUsFromQuesionnaires(search) {
 				" AND (Q.ParentQuestion=@emptyRef OR Q.ParentQuestion IN (SELECT Question FROM Catalog_Outlet_AnsweredQuestions " +
 				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=Aa.Ref AND SKU=Aa.SKU)) " +
 				" AND Q.Obligatoriness='1') AS ObligateredHistory " +
+			", MAX(AMS.BaseUnitQty) AS BaseUnitQty" + 
 			" FROM Document_Questionnaire D JOIN Document_Questionnaire_SKUs S ON D.Id=S.Ref " +
 			" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref " + filterJoin +
-			" LEFT JOIN Document_Visit_SKUs VS ON VS.SKU=S.SKU AND VS.Question=Q.ChildQuestion AND VS.Ref=@visit " +
+			" LEFT JOIN Document_Visit_SKUs VS ON VS.SKU=S.SKU AND VS.Question=Q.ChildQuestion AND VS.Ref=@visit " + 
+			" LEFT JOIN Catalog_AssortmentMatrix_SKUs AMS ON S.SKU=AMS.SKU " +
+			" LEFT JOIN Catalog_AssortmentMatrix_Outlets AMO ON AMS.Ref = AMO.Ref AND AMO.Outlet = @outlet " + 
 			" WHERE D.Single=@single AND " + str + searchString + filterString +
 			" ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs Vv " +
 			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND Vv.SKU=S.SKU)) " +
-			" GROUP BY S.SKU, S.Description ORDER BY S.Description"; 
+			" GROUP BY S.SKU, S.Description ORDER BY AMS.BaseUnitQty DESC, S.Description"; 
 	q.AddParameter("outlet", $.workflow.outlet);
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	q.AddParameter("visit", $.workflow.visit);
 	q.AddParameter("single", single);	
-
+	
 	return q.Execute();
 }
 

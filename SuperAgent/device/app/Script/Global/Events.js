@@ -31,6 +31,7 @@ function OnWorkflowStart(name) {
 			$.workflow.Add("questionnaires", questionnaires);
 			
 			CreateQuestionnareTable($.outlet);
+			CreateQuestionsTable($.outlet);
 
 			if (parseInt(GetTasksCount()) != parseInt(0))
 				$.workflow.Add("skipTasks", false); // нельзя просто взять и присвоить значение переменной!
@@ -296,7 +297,8 @@ function CreateQuestionnareTable(outlet) {
 	drop.Execute();
 	
 	var query = new Query("CREATE TABLE USR_Questionnaires AS " +
-			"SELECT DISTINCT Q.Id AS Id, Q.Number AS Number " +
+			"SELECT DISTINCT Q.Id AS Id, Q.Number AS Number, Q.Date AS Date, Q.Single AS Single " +
+				", S.BeginAnswerPeriod AS BeginAnswerPeriod, S.EndAnswerPeriod AS EndAnswerPeriod " +
 			"FROM Document_Questionnaire_Schedule S " +
 			"JOIN Document_Questionnaire Q ON Q.Id=S.Ref " +
 			"WHERE date(S.Date)=date('now', 'start of day') AND Q.Status=@active ORDER BY Q.Id");
@@ -360,6 +362,38 @@ function CreateQuestionnareTable(outlet) {
 		actualQuestionnaire = true;
 	}
 
+}
+
+function CreateQuestionsTable(outlet) {
+	var check = new Query("DROP TABLE IF EXISTS USR_Questions");
+	check.Execute();
+	var query = new Query("CREATE TABLE USR_Questions AS " +
+			"SELECT MIN(D.Date) AS DocDate, Q.ChildQuestion AS Question, Q.ChildDescription AS Description" +
+			", Q.ParentQuestion AS ParentQuestion, Q.ChildType AS AnswerType" +
+			", A.Answer AS Answer, MAX(A.AnswerDate) AS AnswerDate, D.Single AS Single " +
+			", (SELECT MAX(CAST (QQ.Obligatoriness AS int)) FROM Document_Questionnaire_Questions QQ " +
+				"JOIN USR_Questionnaires DD ON QQ.Ref=DD.Id WHERE QQ.ChildQuestion=Q.ChildQuestion) AS Obligatoriness" +
+			", (SELECT Qq.QuestionOrder FROM Document_Questionnaire Dd  " +
+			" JOIN Document_Questionnaire_Questions Qq ON Dd.Id=Qq.Ref AND Q.ChildQuestion=Qq.ChildQuestion AND Dd.Id=D.Id ORDER BY Dd.Date LIMIT 1) AS QuestionOrder" + //QuestionOrder
+			
+			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal OR Q.ChildType=@string THEN 1 ELSE NULL END AS IsInputField " + //IsInputField
+			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal THEN 'numeric' ELSE 'auto' END AS KeyboardType " + //KeyboardType
+			
+			"FROM Document_Questionnaire_Questions Q " +
+			"JOIN USR_Questionnaires D ON Q.Ref=D.Id " +
+			"LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Ref = @outlet AND A.Questionaire=D.Id " +
+				"AND A.Question=Q.ChildQuestion AND (A.SKU=@emptySKU OR A.SKU IS NULL) AND DATE(A.AnswerDate)>=DATE(D.BeginAnswerPeriod) " +
+				"AND (DATE(A.AnswerDate)<=DATE(D.EndAnswerPeriod) OR A.AnswerDate='0001-01-01 00:00:00')" +
+			"GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, D.Single " + 
+			"ORDER BY DocDate, QuestionOrder ");
+	query.AddParameter("emptySKU", DB.EmptyRef("Catalog_SKU"));
+	query.AddParameter("integer", DB.Current.Constant.DataType.Integer);
+	query.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);
+	query.AddParameter("string", DB.Current.Constant.DataType.String);
+	query.AddParameter("snapshot", DB.Current.Constant.DataType.Snapshot);
+	query.AddParameter("outlet", outlet);
+	query.AddParameter("attached", Translate["#snapshotAttached#"]);
+	query.Execute();
 }
 
 function ListSelectorIsChanged(currentSelector, selector, additionalParam, currentParam) {
@@ -500,14 +534,9 @@ function GetRegionQueryText() {
 //-----Questions count-----------
 
 function GetQuestionsCount(questionnaires) {
-	var str = CreateCondition(questionnaires);
-	if (String.IsNullOrEmpty(str))
-		return parseInt(0);
-	else{
-		var query = new Query("SELECT COUNT(Id) FROM Document_Questionnaire_Questions " + str);					
-		var res = query.ExecuteScalar();
-		return res;
-	}
+	var query = new Query("SELECT COUNT(Question) FROM USR_Questions ");					
+	var res = query.ExecuteScalar();
+	return res;
 }
 
 function GetSKUQuestionsCount() {

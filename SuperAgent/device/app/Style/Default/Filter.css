@@ -9,3 +9,7 @@
 	dock-align: top;
 	horizontal-align: central;
 }
+
+.parameter_grid img {
+	margin-right: 0mm;
+}

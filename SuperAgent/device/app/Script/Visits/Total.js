@@ -117,7 +117,7 @@ function CheckAndCommit(order, visit, wfName) {
             order.GetObject().Save();
         }
         
-        FillQuestionnaires();
+        CreateQuestionnaireAnswers();
         
         visit.Save();
         Workflow.Commit();
@@ -160,6 +160,70 @@ function VisitIsChecked(visit, order, wfName) {
         else
             return true;
     }
+}
+
+function DialogCallBack(control, key){
+	control.Text = key;
+}
+
+function NoQuestionnaires(noQuest, noSKUQuest) {
+	if ((noQuest && noSKUQuest) || (noQuest==null && noSKUQuest==null))
+		return false;
+	else
+		return true;
+}
+
+function NoTasks(skipTasks) {
+	if (skipTasks)
+		return false;
+	else
+		return true;
+}
+
+
+//------------------------------Questionnaires handlers------------------
+
+
+function CreateQuestionnaireAnswers() {	
+	var q = new Query("SELECT DISTINCT Q.Question, Q.Description, Q.Answer, Q.AnswerDate" +
+			", D.Number, D.Id AS Questionnaire, D.Single, A.Id AS AnswerId " +
+			"FROM USR_Questions Q " +
+			"JOIN Document_Questionnaire_Questions DQ ON Q.Question=DQ.ChildQuestion " +
+			"JOIN USR_Questionnaires D ON DQ.Ref=D.Id " +
+			"LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Question=Q.Question AND A.Questionaire=DQ.Ref " +
+			"AND A.SKU='@ref[Catalog_SKU]:00000000-0000-0000-0000-000000000000'" +
+			"AND A.Ref=@outlet " +
+			"WHERE Q.Answer!='' AND RTRIM(Q.Answer) IS NOT NULL");
+	q.AddParameter("outlet", $.workflow.outlet);
+	var answers = q.Execute();
+	
+	while (answers.Next()) {
+		var p = DB.Create("Document.Visit_Questions");
+		p.Ref = $.workflow.visit;
+		p.Question = answers.Question;
+		p.Answer = answers.Answer;			
+		p.AnswerDate = answers.AnswerDate;
+		p.Questionnaire = answers.Questionnaire;
+		p.Save();
+		if (answers.Single==1){
+			var a;
+			if (answers.AnswerId == null){
+				a = DB.Create("Catalog.Outlet_AnsweredQuestions");
+				a.Ref = $.workflow.outlet;
+				a.Questionaire = answers.Questionnaire;
+				a.Question = answers.Question;
+//				if (answers.SKU!=null)
+//					a.SKU = answers.SKU;									
+			}
+			else{
+				a = answers.AnswerId;
+				a = a.GetObject();
+			}
+			a.Answer = answers.Answer;
+			a.AnswerDate = answers.AnswerDate;
+			a.Save();
+		}
+	}
 }
 
 function FillQuestionnaires() {
@@ -287,21 +351,3 @@ function CreateCondition(list, field) {
 	return str;
 }
 
-
-function DialogCallBack(control, key){
-	control.Text = key;
-}
-
-function NoQuestionnaires(noQuest, noSKUQuest) {
-	if ((noQuest && noSKUQuest) || (noQuest==null && noSKUQuest==null))
-		return false;
-	else
-		return true;
-}
-
-function NoTasks(skipTasks) {
-	if (skipTasks)
-		return false;
-	else
-		return true;
-}

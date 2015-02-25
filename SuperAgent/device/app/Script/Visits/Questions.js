@@ -177,7 +177,7 @@ function AssignAnswer(control, question, answer) {
 		else
 			answer = control.Text;
 	}
-	var q = new Query("UPDATE USR_Questions SET Answer=@answer, AnswerDate=DATETIME('now') WHERE Question=@question");
+	var q = new Query("UPDATE USR_Questions SET Answer=@answer, AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question");
 	q.AddParameter("answer", answer);
 	q.AddParameter("question", question);
 	q.Execute();

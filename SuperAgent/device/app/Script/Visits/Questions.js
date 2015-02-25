@@ -89,22 +89,6 @@ function GetAnsweredQty(single) {
 
 }
 
-function RemovePlaceHolder(control) {
-	if (control.Text == "—")
-		control.Text = "";
-}
-
-function UniqueQuestion(question, answerType, answer, obligatered) {	
-	// set answer text
-	if (answerType == 'Snapshot')
-		answerText = GetSnapshotText(answer);
-	else
-		answerText = answer;
-
-	return result;
-}
-
-
 function ForwardIsntAllowed() {
 	if (parseInt(obligateredLeft)!=parseInt(0))
 		return true;
@@ -143,13 +127,6 @@ function CreateVisitQuestionValueIfNotExists(question, answer, dialogInput) {
 		}
 	}	
 
-}
-
-function GetSnapshotText(text) {
-	if (String.IsNullOrEmpty(text))
-		return Translate["#noSnapshot#"];
-	else
-		return Translate["#snapshotAttached#"];
 }
 
 function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer) {
@@ -194,11 +171,12 @@ function AssignQuestionValue(control, question) {
 }
 
 function AssignAnswer(control, question, answer) { 
-	Dialog.Debug(question);
-	Dialog.Debug(answer);
-
-	if (control!=null)
-		answer = control.Text;
+	if (control!=null){
+		if (control.Text=="—")
+			answer = "";
+		else
+			answer = control.Text;
+	}
 	var q = new Query("UPDATE USR_Questions SET Answer=@answer, AnswerDate=DATETIME('now') WHERE Question=@question");
 	q.AddParameter("answer", answer);
 	q.AddParameter("question", question);
@@ -218,16 +196,6 @@ function GalleryCallBack(state, args) {
 	Workflow.Refresh([]);
 }
 
-function DeleteAnswers(recordset) {	
-	while (recordset.Next()){
-		DB.Delete(recordset.Id);
-	}	
-}
-
-/*
- * function SaveValue(control, questionValue){ questionValue =
- * questionValue.GetObject(); questionValue.Save(); }
- */
 
 function GetCameraObject(entity) {
 	FileSystem.CreateDirectory("/private/document.visit");
@@ -244,14 +212,7 @@ function CheckEmptyQuestionsAndForward(visit) {
 		Workflow.Refresh([]);
 
 	}
-	else{
-		var qr = new Query("SELECT Id FROM Document_Visit_Questions WHERE Answer IS NULL  OR Answer=''");
-		var res = qr.Execute();
-	
-		while (res.Next()) {
-			DB.Delete(res.Id);
-		}
-	
+	else{	
 		Workflow.Forward([]);
 	}
 }
@@ -299,7 +260,6 @@ function AddSnapshotHandler(state, args) {
 	}
 	
 	if (parseInt(args.Result)==parseInt(2)){
-		Dialog.Debug("1");
 		AssignAnswer(null, questionGl["Question"], "");
 		Workflow.Refresh([]);
 	}

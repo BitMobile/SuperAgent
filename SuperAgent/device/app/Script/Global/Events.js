@@ -371,10 +371,7 @@ function CreateQuestionsTable(outlet) {
 			"SELECT MIN(D.Date) AS DocDate, Q.ChildQuestion AS Question, Q.ChildDescription AS Description" +
 			", Q.ParentQuestion AS ParentQuestion, Q.ChildType AS AnswerType" +
 			", A.Answer AS Answer, MAX(A.AnswerDate) AS AnswerDate, D.Single AS Single " +
-			", (SELECT MAX(CAST (QQ.Obligatoriness AS int)) FROM Document_Questionnaire_Questions QQ " +
-				"JOIN USR_Questionnaires DD ON QQ.Ref=DD.Id " +
-				//"JOIN Document_Questionnaire DQ ON DQ.Id=QQ.Ref AND DQ.Single=D.Single " +
-				"WHERE QQ.ChildQuestion=Q.ChildQuestion) AS Obligatoriness" +
+			", MAX(CAST (Q.Obligatoriness AS int)) AS Obligatoriness" +
 			", (SELECT Qq.QuestionOrder FROM Document_Questionnaire Dd  " +
 			" JOIN Document_Questionnaire_Questions Qq ON Dd.Id=Qq.Ref AND Q.ChildQuestion=Qq.ChildQuestion AND Dd.Id=D.Id ORDER BY Dd.Date LIMIT 1) AS QuestionOrder" + //QuestionOrder
 			

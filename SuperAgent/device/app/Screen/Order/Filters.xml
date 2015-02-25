@@ -60,10 +60,10 @@
 
 						<c:DockLayout CssClass="parameter_grid" OnClickAction="$AddFilterAndRefresh($parentId, group_filter)">
 							<s:If Test="$isSet">
-								<c:Image CssClass="tick" />
+								<c:Image Id="flag{$parentId}" CssClass="tick" Visible = "true" />
 							</s:If>
 							<s:Else>
-								<c:VerticalLayout CssClass="empty_tick"></c:VerticalLayout>
+								<c:Image Id="flag{$parentId}" CssClass="tick" Visible = "false" />
 							</s:Else>
 							<c:TextView Text="$parent"></c:TextView>
 						</c:DockLayout>
@@ -73,10 +73,10 @@
 					<s:If Test="$childExists">
 						<c:DockLayout CssClass="parameter_grid" OnClickAction="$AddFilterAndRefresh($group.ChildId, group_filter)">
 							<s:If Test="$group.ChildIsSet != null">
-								<c:Image CssClass="child_tick" />
+								<c:Image Id="flag{$group.ChildId}" CssClass="child_tick" Visible = "true" />
 							</s:If>
 							<s:Else>
-								<c:VerticalLayout CssClass="child_empty_tick"></c:VerticalLayout>
+								<c:Image Id="flag{$group.ChildId}" CssClass="child_tick" Visible = "false" />
 							</s:Else>
 							<c:TextView Text="$group.Child"></c:TextView>
 						</c:DockLayout>
@@ -93,10 +93,10 @@
 
 					<c:HorizontalLayout CssClass="parameter_grid" OnClickAction="$AddFilterAndRefresh($brand.Id, brand_filter)">
 						<s:If Test="$brand.BrandIsSet != null">
-							<c:Image CssClass="tick" />
+							<c:Image Id="flag{$brand.Id}" CssClass="tick" Visible = "true" />
 						</s:If>
 						<s:Else>
-							<c:VerticalLayout CssClass="empty_tick"></c:VerticalLayout>
+							<c:Image Id="flag{$brand.Id}" CssClass="tick" Visible = "false" />
 						</s:Else>
 						<c:TextView Text="$brand.Description"></c:TextView>
 					</c:HorizontalLayout>

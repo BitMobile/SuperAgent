@@ -397,7 +397,8 @@ function ShowGroup(currentGroup, parentGroup) {
 }
 
 function AssignHierarchy(rcs) {
-    if (rcs.ParentId == null) {
+    
+	if (rcs.ParentId == null) {
         
     	$.Add("parentId", rcs.ChildId);
         $.Add("parent", rcs.Child);
@@ -422,7 +423,9 @@ function AssignHierarchy(rcs) {
 		}
         
     }
-    return "dummy"
+    
+	return "dummy"
+
 }
 
 function AddFilterAndRefresh(item, filterName) { 
@@ -433,6 +436,8 @@ function AddFilterAndRefresh(item, filterName) {
 	
 	var res = q.ExecuteScalar();
 	
+	var flagName = "";
+	
 	if (res == null) {
 		
 		ins = new Query("INSERT INTO USR_Filters (Id, FilterType) VALUES (@item, @filterName)");
@@ -441,6 +446,14 @@ function AddFilterAndRefresh(item, filterName) {
 		ins.AddParameter("filterName", filterName);
 		
 		ins.Execute();
+		
+		flagName = "flag" + item.ToString();
+		
+		if (Variables.Exists(flagName)) {
+		
+			Variables[flagName].Visible = true;
+			
+		}
 		
 		if (item.IsFolder) {
             
@@ -454,7 +467,15 @@ function AddFilterAndRefresh(item, filterName) {
 				ins.AddParameter("filterName", filterName);
 				
 				ins.Execute();
-            
+				
+				flagName = "flag" + chld.Id.ToString();
+				
+				if (Variables.Exists(flagName)) {
+				
+					Variables[flagName].Visible = true;
+					
+				}
+				
 			}
 			
 		}
@@ -467,6 +488,14 @@ function AddFilterAndRefresh(item, filterName) {
 				
 		del.Execute();
 		
+		flagName = "flag" + item.ToString();
+		
+		if (Variables.Exists(flagName)) {
+			
+			Variables[flagName].Visible = false;
+			
+		}
+		
 		if (item.IsFolder) {
             
 			var chld = GetChildren(item);
@@ -478,15 +507,21 @@ function AddFilterAndRefresh(item, filterName) {
 				del.AddParameter("item", chld.Id);
 						
 				del.Execute();
+				
+				flagName = "flag" + chld.Id.ToString();
+				
+				if (Variables.Exists(flagName)) {
+				
+					Variables[flagName].Visible = false;
+					
+				}
             
 			}
 			
 		}
 		
 	}
-	
-	  Workflow.Refresh([$.screenContext]
-	);
+		
 }
 
 function GetChildren(parent) {

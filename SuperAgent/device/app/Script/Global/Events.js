@@ -48,6 +48,18 @@ function OnWorkflowStart(name) {
 	
 	Variables["workflow"].Add("name", name);
 
+	if (name=="Visit" || name=="CreateOrder"){
+		
+		var drop = new Query("DROP TABLE IF EXISTS USR_Filters");
+		 
+		drop.Execute();
+		
+		var createTable = new Query("CREATE TABLE IF NOT EXISTS USR_Filters(Id Text, FilterType Text)");
+		 
+		createTable.Execute();
+				
+	}
+	
 }
 
 function OnWorkflowForward(name, lastStep, nextStep, parameters) {
@@ -97,17 +109,7 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 	}
 
 	return true;
-	
-	//clear filters
-
-	if ((lastStep=="Order" && nextStep=="Receivables") || (lastStep=="SKUs" && nextStep=="Order")) {
-		if (Variables.Exists("group_filter"))
-			Variables.Remove("group_filter");
-
-		if (Variables.Exists("brand_filter"))
-			Variables.Remove("brand_filter");
-	}
-	
+			
 }
 
 //function OnWorkflowBack(name, lastStep, nextStep) {}
@@ -132,11 +134,11 @@ function OnWorkflowFinish(name, reason) {
 	Variables.Remove("workflow");
 	
 	if (name=="Visit" || name=="CreateOrder"){
-		if (Variables.Exists("group_filter"))
-			Variables.Remove("group_filter");
-
-		if (Variables.Exists("brand_filter"))
-			Variables.Remove("brand_filter");
+		
+		var drop = new Query("DROP TABLE IF EXISTS USR_Filters");
+		 
+		drop.Execute();
+				
 	}
 }
 

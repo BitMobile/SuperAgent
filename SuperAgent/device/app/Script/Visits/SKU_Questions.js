@@ -267,20 +267,41 @@ function CalculateTotal(str, single, answer) {
 }
 
 function AddFilter(filterString, filterName, condition, connector) {
-	if (Variables.Exists(filterName)) {
-		if (parseInt(Variables[filterName].Count()) != parseInt(0)) {
-			var gr = Variables[filterName];
-			filterString = condition + " IN (";
-			for (var i = 0; i < gr.Count(); i++) {
-				filterString += "'" + (gr[i]).ToString() + "'";
-				if (i != (gr.Count() - 1))
-					filterString += ", ";
-				else
-					filterString += ")" + connector;
-			}
+
+	var q = new Query("SELECT F.Id FROM USR_Filters F WHERE F.FilterType = @filterName");
+	
+	q.AddParameter("filterName", filterName);
+	
+	var res = q.Execute();
+	
+	var recordExist = false;
+	
+	while (res.Next()) {
+        
+		if (!recordExist) {
+			
+			recordExist = true;
+			
+			filterString = condition + " IN(";
+				
+		} else {
+			
+			filterString += ", ";
+			
 		}
+		
+		filterString += "'" + res.Id.ToString() + "'";
+    
 	}
+	
+	if (recordExist) {
+		
+		filterString += ")" + connector;
+		
+	}
+	
 	return filterString;
+	
 }
 
 function ForwardIsntAllowed() {
@@ -462,23 +483,33 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 
 
 function CheckEmtySKUAndForward(outlet, visit) {
+	
 	if (doRefresh) {
+	
 		Workflow.Refresh([]);
-	}
-	else{
+	
+	} else {
+		
 		var p = [ outlet, visit ];
+		
 		parentId = null;		
+		
 		var q = regular_total + single_total;
+		
 		$.workflow.Add("questions_qty_sku", q);
 		
 		var a = regular_answ + single_answ;
+		
 		$.workflow.Add("questions_answ_sku", a);
 		
-		Variables.Remove("group_filter");
-		Variables.Remove("brand_filter");
+		del = new Query("DELETE FROM USR_Filters");
+		
+		del.Execute();
 		
 		Workflow.Forward(p);
+		
 	}
+	
 }
 
 function GetCameraObject(entity) {

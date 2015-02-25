@@ -59,7 +59,6 @@
 						<s:Push Id="dummy" Value="$AssignHierarchy($group)" />
 
 						<c:DockLayout CssClass="parameter_grid" OnClickAction="$AddFilterAndRefresh($parentId, group_filter)">
-							<s:Push Id="isSet" Value="$FilterIsSet($parentId, group_filter)"></s:Push>
 							<s:If Test="$isSet">
 								<c:Image CssClass="tick" />
 							</s:If>
@@ -73,8 +72,7 @@
 
 					<s:If Test="$childExists">
 						<c:DockLayout CssClass="parameter_grid" OnClickAction="$AddFilterAndRefresh($group.ChildId, group_filter)">
-							<s:Push Id="isSet" Value="$FilterIsSet($group.ChildId, group_filter)"></s:Push>
-							<s:If Test="$isSet">
+							<s:If Test="$group.ChildIsSet != null">
 								<c:Image CssClass="child_tick" />
 							</s:If>
 							<s:Else>
@@ -94,8 +92,7 @@
 				<s:Iterator Id="brand" Value="$brands">
 
 					<c:HorizontalLayout CssClass="parameter_grid" OnClickAction="$AddFilterAndRefresh($brand.Id, brand_filter)">
-						<s:Push Id="isSet" Value="$FilterIsSet($brand.Id, brand_filter)"></s:Push>
-						<s:If Test="$isSet">
+						<s:If Test="$brand.BrandIsSet != null">
 							<c:Image CssClass="tick" />
 						</s:If>
 						<s:Else>

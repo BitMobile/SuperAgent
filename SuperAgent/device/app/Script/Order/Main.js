@@ -216,21 +216,40 @@ function SetDeliveryDateDialog(order, control, executedOrder) {
 //}
 
 function OrderBack() {
-	if ($.workflow.name == "CreateOrder")
+	if ($.workflow.name == "CreateOrder") {
+	
 		Workflow.Rollback();
-	else {
+	
+	} else {
+		
 		if ($.workflow.skipSKUs) {
+			
 			if ($.workflow.skipQuestions) {
+				
 				if ($.workflow.skipTasks) {
+				
 					Workflow.BackTo("Outlet");
-				} else
+				
+				} else {
+					
 					Workflow.BackTo("Visit_Tasks");
-			} else
+					
+				}
+				
+			} else {
+		
 				Workflow.BackTo("Questions");
-		} else{
-			Variables.Remove("group_filter");
-			Variables.Remove("brand_filter");
+		
+			}
+			
+		} else {
+			
+			del = new Query("DELETE FROM USR_Filters");
+			
+			del.Execute();
+			
 			Workflow.Back();
+		
 		}
 	}
 

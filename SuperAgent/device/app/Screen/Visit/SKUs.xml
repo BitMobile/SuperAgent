@@ -102,15 +102,18 @@
 							<c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout>
 						</s:If>
 					</s:Else>
-					<c:VerticalLayout>
+					<c:DockLayout>
+						<s:If Test="$sku.BaseUnitQty != NULL">
+							<c:TextView Text="#recommended#" CssClass="single_rec"/>
+						</s:If>
 						<s:If Test="@regularAnswers">
 							<c:TextView Text="{$sku.Answered} #of# {$sku.Total}" CssClass="description_row" />
 						</s:If>
 						<s:Else>
 							<c:TextView Text="{$GetSum($sku.Answered,$sku.History)} #of# {$sku.Total}" CssClass="description_row" />
 						</s:Else>
-						<c:TextView Text="$sku.Description" CssClass="main_row"></c:TextView>
-					</c:VerticalLayout>
+					</c:DockLayout>
+					<c:TextView Text="$sku.Description" CssClass="main_row"></c:TextView>
 				</c:DockLayout>
 				<c:HorizontalLine />
 				<s:If Test="$ShowChilds($index)">

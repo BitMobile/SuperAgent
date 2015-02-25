@@ -167,18 +167,21 @@ function GetSKUsFromQuesionnaires(search) {
 				" AND (Q.ParentQuestion=@emptyRef OR Q.ParentQuestion IN (SELECT Question FROM Catalog_Outlet_AnsweredQuestions " +
 				" WHERE (Answer='Yes' OR Answer='Да') AND Ref=Aa.Ref AND SKU=Aa.SKU)) " +
 				" AND Q.Obligatoriness='1') AS ObligateredHistory " +
+			", MAX(AMS.BaseUnitQty) AS BaseUnitQty" + 
 			" FROM Document_Questionnaire D JOIN Document_Questionnaire_SKUs S ON D.Id=S.Ref " +
 			" JOIN Document_Questionnaire_SKUQuestions Q ON D.Id=Q.Ref " + filterJoin +
-			" LEFT JOIN Document_Visit_SKUs VS ON VS.SKU=S.SKU AND VS.Question=Q.ChildQuestion AND VS.Ref=@visit " +
+			" LEFT JOIN Document_Visit_SKUs VS ON VS.SKU=S.SKU AND VS.Question=Q.ChildQuestion AND VS.Ref=@visit " + 
+			" LEFT JOIN Catalog_AssortmentMatrix_SKUs AMS ON S.SKU=AMS.SKU " +
+			" LEFT JOIN Catalog_AssortmentMatrix_Outlets AMO ON AMS.Ref = AMO.Ref AND AMO.Outlet = @outlet " + 
 			" WHERE D.Single=@single AND " + str + searchString + filterString +
 			" ((Q.ParentQuestion=@emptyRef) OR Q.ParentQuestion IN (SELECT Question FROM Document_Visit_SKUs Vv " +
 			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND Vv.SKU=S.SKU)) " +
-			" GROUP BY S.SKU, S.Description ORDER BY S.Description"; 
+			" GROUP BY S.SKU, S.Description ORDER BY AMS.BaseUnitQty DESC, S.Description"; 
 	q.AddParameter("outlet", $.workflow.outlet);
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	q.AddParameter("visit", $.workflow.visit);
 	q.AddParameter("single", single);	
-
+	
 	return q.Execute();
 }
 
@@ -264,20 +267,41 @@ function CalculateTotal(str, single, answer) {
 }
 
 function AddFilter(filterString, filterName, condition, connector) {
-	if (Variables.Exists(filterName)) {
-		if (parseInt(Variables[filterName].Count()) != parseInt(0)) {
-			var gr = Variables[filterName];
-			filterString = condition + " IN (";
-			for (var i = 0; i < gr.Count(); i++) {
-				filterString += "'" + (gr[i]).ToString() + "'";
-				if (i != (gr.Count() - 1))
-					filterString += ", ";
-				else
-					filterString += ")" + connector;
-			}
+
+	var q = new Query("SELECT F.Id FROM USR_Filters F WHERE F.FilterType = @filterName");
+	
+	q.AddParameter("filterName", filterName);
+	
+	var res = q.Execute();
+	
+	var recordExist = false;
+	
+	while (res.Next()) {
+        
+		if (!recordExist) {
+			
+			recordExist = true;
+			
+			filterString = condition + " IN(";
+				
+		} else {
+			
+			filterString += ", ";
+			
 		}
+		
+		filterString += "'" + res.Id.ToString() + "'";
+    
 	}
+	
+	if (recordExist) {
+		
+		filterString += ")" + connector;
+		
+	}
+	
 	return filterString;
+	
 }
 
 function ForwardIsntAllowed() {
@@ -330,7 +354,7 @@ function GetChilds(sku) {
 			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@visit AND SKU=@sku) " + 
 			" OR Q.ParentQuestion IN (SELECT Question FROM Catalog_Outlet_AnsweredQuestions " +
 			" WHERE (Answer='Yes' OR Answer='Да') AND Ref=@outlet AND SKU=S.SKU)) " +
-			" GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, Q.ParentQuestion, Answer " + 
+			" GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, Q.ParentQuestion, A.Answer " + 
 			" ORDER BY DocDate, QuestionOrder ";
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	q.AddParameter("integer", DB.Current.Constant.DataType.Integer);
@@ -459,23 +483,33 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 
 
 function CheckEmtySKUAndForward(outlet, visit) {
+	
 	if (doRefresh) {
+	
 		Workflow.Refresh([]);
-	}
-	else{
+	
+	} else {
+		
 		var p = [ outlet, visit ];
+		
 		parentId = null;		
+		
 		var q = regular_total + single_total;
+		
 		$.workflow.Add("questions_qty_sku", q);
 		
 		var a = regular_answ + single_answ;
+		
 		$.workflow.Add("questions_answ_sku", a);
 		
-		Variables.Remove("group_filter");
-		Variables.Remove("brand_filter");
+		del = new Query("DELETE FROM USR_Filters");
+		
+		del.Execute();
 		
 		Workflow.Forward(p);
+		
 	}
+	
 }
 
 function GetCameraObject(entity) {

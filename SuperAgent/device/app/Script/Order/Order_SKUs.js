@@ -12,6 +12,10 @@ function OnLoading() {
     doRecommend = DoRecommend();
 }
 
+function WarMupFunction() {
+	
+}
+
 function GetSKUAndGroups(searchText, priceList, stock) {
 
     var filterString = "";
@@ -226,34 +230,14 @@ function AddFilter(filterString, filterName, condition, connector) {
 	
 	q.AddParameter("filterName", filterName);
 	
-	var res = q.Execute();
+	var res = q.ExecuteScalar();
 	
-	var recordExist = false;
-	
-	while (res.Next()) {
-        
-		if (!recordExist) {
-			
-			recordExist = true;
-			
-			filterString = connector + condition + " IN(";
-				
-		} else {
-			
-			filterString += ", ";
-			
-		}
+	if (res!=null) {
 		
-		filterString += "'" + res.Id.ToString() + "'";
-    
-	}
-	
-	if (recordExist) {
-		
-		filterString += ")";
+		filterString += connector + condition + " IN(SELECT F.Id FROM USR_Filters F WHERE F.FilterType = '" + filterName + "') ";
 		
 	}
-	
+		
 	return filterString;
 	
 }

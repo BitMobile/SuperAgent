@@ -272,36 +272,16 @@ function AddFilter(filterString, filterName, condition, connector) {
 	
 	q.AddParameter("filterName", filterName);
 	
-	var res = q.Execute();
+	var res = q.ExecuteScalar();
 	
-	var recordExist = false;
-	
-	while (res.Next()) {
-        
-		if (!recordExist) {
-			
-			recordExist = true;
-			
-			filterString = condition + " IN(";
-				
-		} else {
-			
-			filterString += ", ";
-			
-		}
+	if (res!=null) {
 		
-		filterString += "'" + res.Id.ToString() + "'";
-    
-	}
-	
-	if (recordExist) {
-		
-		filterString += ")" + connector;
+		filterString += condition + " IN(SELECT F.Id FROM USR_Filters F WHERE F.FilterType = '" + filterName + "') " + connector;
 		
 	}
-	
+		
 	return filterString;
-	
+		
 }
 
 function ForwardIsntAllowed() {

@@ -22,6 +22,10 @@ function OnLoading() {
 	SetListType();
 }
 
+function WarMupFunction() {
+	
+}
+
 function SetListType() {
 	if (regularAnswers == null)
 		regularAnswers = true;

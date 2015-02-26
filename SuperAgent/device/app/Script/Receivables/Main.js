@@ -7,6 +7,10 @@ function OnLoad() {
 	editingItem = null;
 }
 	
+function WarMupFunction() {
+	
+}
+
 function GetHeader(outlet) {	
 	GetAmount(outlet);
 	GetOverdueAmount(outlet);

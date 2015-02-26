@@ -177,6 +177,12 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 function DateHandler(state, args) {
 	var parameterValue = state[0];
 	var control = state[1];
+	if(getType(args.Result)=="System.DateTime"){
+		parameterValue = parameterValue.GetObject();
+		parameterValue.Value = args.Result;
+		parameterValue.Save();
+		Workflow.Refresh([]);
+	}
 	if (parseInt(args.Result)==parseInt(0)){
 		parameterValue = parameterValue.GetObject();
 		parameterValue.Value = "";

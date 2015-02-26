@@ -35,14 +35,14 @@
 
 
 		<c:ScrollView Id="grScrollView" OnScroll="$OnScroll()">
-			<s:If Test="$DoGroupping()">
+			<s:If Test="@doGroupping">
 				<s:Push Id="currentGroup" Value=""></s:Push>
 			</s:If>			
 
 			<s:Iterator Id="item" Value="$skusByGroup" Status="statusCount">
 				<s:Push Id="index" Value="$statusCount.Index"></s:Push>
 
-				<s:If Test="$DoGroupping()">
+				<s:If Test="@doGroupping">
 					<s:If Test="$currentGroup != $item.GroupDescription">
 						<s:Push Id="currentGroup" Value="$item.GroupDescription"></s:Push>
 						<s:Push Id="groupPath" Value="$GetGroupPath($item.GroupId, $item.GroupParent, $item.ParentDescription)"></s:Push>
@@ -72,7 +72,7 @@
 						<c:Image />
 						<c:VerticalLayout>
 							<c:DockLayout>
-								<s:If Test="$DoRecommend()">
+								<s:If Test="@doRecommend">
 									<s:If Test="$ShowRecommendedQty($item.OrderRecOrder, $item.RecOrder)">
 										<c:VerticalLayout>
 											<c:TextView Text="{$item.RecOrder} {$item.RecUnit}" CssClass="rec_order" />

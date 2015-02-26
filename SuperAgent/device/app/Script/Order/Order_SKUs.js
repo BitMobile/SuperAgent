@@ -3,9 +3,13 @@ var defPack;
 var packDescription;
 var swipedRow;
 var rec_order;
+var doRecommend;
+var doGroupping;
 
 function OnLoading() {
     rec_order = "<font size=''>1576 шт.</font>";
+    doGroupping = DoGroupping();
+    doRecommend = DoRecommend();
 }
 
 function GetSKUAndGroups(searchText, priceList, stock) {
@@ -18,7 +22,7 @@ function GetSKUAndGroups(searchText, priceList, stock) {
     var groupJoin = "";
     var groupParentJoin = "";
     var groupSort = "";
-    if (DoGroupping()){
+    if (doGroupping){
         groupFields = " G.Description AS GroupDescription, G.Id AS GroupId, G.Parent AS GroupParent, P.Description AS ParentDescription, ";
         groupJoin = "JOIN Catalog_SKUGroup G ON G.Id = S.Owner ";
         groupParentJoin = "LEFT JOIN Catalog_SKUGroup P ON G.Parent=P.Id ";
@@ -36,7 +40,7 @@ function GetSKUAndGroups(searchText, priceList, stock) {
     var recOrderFields = ", 0 AS RecOrder, NULL AS UnitId, NULL AS RecUnit ";
     var recOrderStr = "";
     var recOrderSort = "";
-    if (DoRecommend()){
+    if (doRecommend){
         recOrderFields =     ", CASE WHEN V.Answer IS NULL THEN U.Description ELSE UB.Description END AS RecUnit " +
                             ", CASE WHEN V.Answer IS NULL THEN U.Id ELSE UB.Id END AS UnitId " +
                             ", CASE WHEN V.Answer IS NULL THEN MS.Qty ELSE (MS.BaseUnitQty-V.Answer) END AS RecOrder " +
@@ -134,7 +138,7 @@ function GetQuickOrder(control, skuId, itemPrice, packField, editField, textView
         var quickOrderItem =  query.Execute();
         
         defFeature = quickOrderItem.DefaultFeature;
-        if (DoRecommend() && recUnit!=null){ //&& parseInt(quickOrderItem.Qty)==parseInt(0)) {
+        if (doRecommend && recUnit!=null){ //&& parseInt(quickOrderItem.Qty)==parseInt(0)) {
             defPack = recUnitId;
             packDescription = recUnit;
             Variables[editField].Text = recOrder;

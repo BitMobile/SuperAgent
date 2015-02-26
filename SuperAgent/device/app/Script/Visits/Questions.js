@@ -185,7 +185,7 @@ function AssignAnswer(control, question, answer) {
 			answer = control.Text;
 	}
 	var q = new Query("UPDATE USR_Questions SET Answer=@answer, AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question");
-	q.AddParameter("answer", answer);
+	q.AddParameter("answer", answer.ToString());
 	q.AddParameter("question", question);
 	q.Execute();
 }
@@ -206,7 +206,7 @@ function GalleryCallBack(state, args) {
 
 function GetCameraObject(entity) {
 	FileSystem.CreateDirectory("/private/document.visit");
-	var guid = Global.GenerateGuid();
+	var guid = GenerateGuid();
 	Variables.Add("guid", guid);
 	var path = String.Format("/private/document.visit/{0}/{1}.jpg", entity.Id, guid);
 	Camera.Size = 300;

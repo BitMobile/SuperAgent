@@ -32,6 +32,7 @@ function OnWorkflowStart(name) {
 			
 			CreateQuestionnareTable($.outlet);
 			CreateQuestionsTable($.outlet);
+			CreateSKUQuestionsTable($.outlet);
 
 			if (parseInt(GetTasksCount()) != parseInt(0))
 				$.workflow.Add("skipTasks", false); // нельзя просто взять и присвоить значение переменной!
@@ -312,27 +313,11 @@ function GetQuestionnairesForOutlet(outlet) {
 			
 }
 
-function CreateQuestionnareTable(outlet) {
+function CreateQuestionnareTable(outlet) {			
 	
-	var checkQS = new Query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='USR_Questionnaires'");
+	var tableCommand = Global.CreateUserTableIfNotExists("USR_Questionnaires");
 	
-	var checkQSResult = checkQS.ExecuteScalar();
-	
-	if (checkQSResult == parseInt(1)) {
-	
-		var dropQS = new Query("DELETE FROM USR_Questionnaires");
-		 
-		dropQS.Execute();
-		
-		var headerText = "INSERT INTO USR_Questionnaires ";
-				
-	} else {
-		
-		var headerText = "CREATE TABLE USR_Questionnaires AS ";
-		
-	}
-	
-	var query = new Query(headerText +
+	var query = new Query(tableCommand +
 			"SELECT DISTINCT Q.Id AS Id, Q.Number AS Number, Q.Date AS Date, Q.Single AS Single " +
 				", S.BeginAnswerPeriod AS BeginAnswerPeriod, S.EndAnswerPeriod AS EndAnswerPeriod " +
 			"FROM Document_Questionnaire_Schedule S " +
@@ -400,27 +385,10 @@ function CreateQuestionnareTable(outlet) {
 
 }
 
-function CreateQuestionsTable(outlet) {
+function CreateQuestionsTable(outlet) {			
 	
-	var checkQ = new Query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='USR_Questions'");
-	
-	var checkQResult = checkQ.ExecuteScalar();
-	
-	if (checkQResult == parseInt(1)) {
-	
-		var dropQ = new Query("DELETE FROM USR_Questions");
-		 
-		dropQ.Execute();
-		
-		var headerText = "INSERT INTO USR_Questions ";
-				
-	} else {
-		
-		var headerText = "CREATE TABLE USR_Questions AS ";
-		
-	}
-	
-	var query = new Query(headerText +
+	var tableCommand = Global.CreateUserTableIfNotExists("USR_Questions");	
+	var query = new Query(tableCommand +
 			"SELECT MIN(D.Date) AS DocDate, Q.ChildQuestion AS Question, Q.ChildDescription AS Description" +
 			", Q.ParentQuestion AS ParentQuestion, Q.ChildType AS AnswerType" +
 			", A.Answer AS Answer, MAX(A.AnswerDate) AS AnswerDate, D.Single AS Single " +
@@ -447,6 +415,37 @@ function CreateQuestionsTable(outlet) {
 	query.AddParameter("attached", Translate["#snapshotAttached#"]);
 	query.Execute();
 
+}
+
+function CreateSKUQuestionsTable(outlet) {
+	var tableCommand = Global.CreateUserTableIfNotExists("USR_SKUQuestions");
+	var query = new Query(tableCommand + 
+			"SELECT MIN(D.Date) AS DocDate, S.SKU, Q.ChildQuestion AS Question, Q.ChildDescription AS Description" +
+			", Q.ParentQuestion AS ParentQuestion, Q.ChildType AS AnswerType" +
+			", A.Answer AS Answer, MAX(A.AnswerDate) AS AnswerDate, D.Single AS Single " +
+			", MAX(CAST (Q.Obligatoriness AS int)) AS Obligatoriness" +
+			", (SELECT Qq.QuestionOrder FROM Document_Questionnaire Dd  " +
+			" JOIN Document_Questionnaire_SKUQuestions Qq ON Dd.Id=Qq.Ref AND Q.ChildQuestion=Qq.ChildQuestion AND Dd.Id=D.Id" +
+			" JOIN Document_Questionnaire_SKUs Ss ON Qq.Ref=Ss.Ref AND Ss.SKU=S.SKU ORDER BY Dd.Date LIMIT 1) AS QuestionOrder" + //QuestionOrder
+			
+			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal OR Q.ChildType=@string THEN 1 ELSE NULL END AS IsInputField " + //IsInputField
+			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal THEN 'numeric' ELSE 'auto' END AS KeyboardType " + //KeyboardType
+			
+			"FROM Document_Questionnaire_SKUQuestions Q " +
+			"JOIN Document_Questionnaire_SKUs S ON Q.Ref=S.Ref " +
+			"JOIN USR_Questionnaires D ON Q.Ref=D.Id " +
+			"LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Ref = @outlet AND A.Questionaire=D.Id " +
+				"AND A.Question=Q.ChildQuestion AND A.SKU=S.SKU AND DATE(A.AnswerDate)>=DATE(D.BeginAnswerPeriod) " +
+				"AND (DATE(A.AnswerDate)<=DATE(D.EndAnswerPeriod) OR A.AnswerDate='0001-01-01 00:00:00')" +
+			"GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, D.Single " + 
+			"ORDER BY DocDate, QuestionOrder ");
+	query.AddParameter("integer", DB.Current.Constant.DataType.Integer);
+	query.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);
+	query.AddParameter("string", DB.Current.Constant.DataType.String);
+	query.AddParameter("snapshot", DB.Current.Constant.DataType.Snapshot);
+	query.AddParameter("outlet", outlet);
+	query.AddParameter("attached", Translate["#snapshotAttached#"]);
+	query.Execute();	
 }
 
 function ListSelectorIsChanged(currentSelector, selector, additionalParam, currentParam) {

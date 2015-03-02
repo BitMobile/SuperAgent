@@ -94,26 +94,23 @@
 				<s:Push Id="index" Value="{$statusCount.Index}"></s:Push>
 
 				<c:DockLayout CssClass="grid" OnClick="$CreateItemAndShow($sku.SKU, $index)">
-					<s:If Test="$ObligateredAreAnswered($sku.Obligatoriness,$sku.ObligateredHistory,$sku.ObligateredCurrent,$sku.ObligateredTotal)">
+					<!-- <s:If Test="$ObligateredAreAnswered($sku.Obligatoriness,$sku.ObligateredHistory,$sku.ObligateredCurrent,$sku.ObligateredTotal)">
 						<c:HorizontalLayout CssClass="answered_side_wh"></c:HorizontalLayout>
 					</s:If>
 					<s:Else>
 						<s:If Test="$sku.Obligatoriness=='2'">
 							<c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout>
 						</s:If>
-					</s:Else>
+					</s:Else> -->
 					<c:DockLayout>
-						<s:If Test="$sku.BaseUnitQty != NULL">
+						<!-- <s:If Test="$sku.BaseUnitQty != NULL">
 							<c:TextView Text="#recommended#" CssClass="single_rec"/>
-						</s:If>
+						</s:If> -->
 						<s:If Test="@regularAnswers">
 							<c:TextView Text="{$sku.Answered} #of# {$sku.Total}" CssClass="description_row" />
 						</s:If>
-						<s:Else>
-							<c:TextView Text="{$GetSum($sku.Answered,$sku.History)} #of# {$sku.Total}" CssClass="description_row" />
-						</s:Else>
 					</c:DockLayout>
-					<c:TextView Text="$sku.Description" CssClass="main_row"></c:TextView>
+					<c:TextView Text="$sku.SKUDescription" CssClass="main_row"></c:TextView>
 				</c:DockLayout>
 				<c:HorizontalLine />
 				<s:If Test="$ShowChilds($index)">

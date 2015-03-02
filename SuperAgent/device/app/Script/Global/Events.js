@@ -420,10 +420,11 @@ function CreateQuestionsTable(outlet) {
 function CreateSKUQuestionsTable(outlet) {
 	var tableCommand = Global.CreateUserTableIfNotExists("USR_SKUQuestions");
 	var query = new Query(tableCommand + 
-			"SELECT MIN(D.Date) AS DocDate, S.SKU, Q.ChildQuestion AS Question, Q.ChildDescription AS Description" +
+			"SELECT MIN(D.Date) AS DocDate, S.SKU AS SKU, S.Description AS SKUDescription, Q.ChildQuestion AS Question, Q.ChildDescription AS Description" +
 			", Q.ParentQuestion AS ParentQuestion, Q.ChildType AS AnswerType" +
 			", A.Answer AS Answer, MAX(A.AnswerDate) AS AnswerDate, D.Single AS Single " +
 			", MAX(CAST (Q.Obligatoriness AS int)) AS Obligatoriness" +
+			", GR.Id AS OwnerGroup, BR.Id AS Brand " +
 			", (SELECT Qq.QuestionOrder FROM Document_Questionnaire Dd  " +
 			" JOIN Document_Questionnaire_SKUQuestions Qq ON Dd.Id=Qq.Ref AND Q.ChildQuestion=Qq.ChildQuestion AND Dd.Id=D.Id" +
 			" JOIN Document_Questionnaire_SKUs Ss ON Qq.Ref=Ss.Ref AND Ss.SKU=S.SKU ORDER BY Dd.Date LIMIT 1) AS QuestionOrder" + //QuestionOrder
@@ -434,10 +435,13 @@ function CreateSKUQuestionsTable(outlet) {
 			"FROM Document_Questionnaire_SKUQuestions Q " +
 			"JOIN Document_Questionnaire_SKUs S ON Q.Ref=S.Ref " +
 			"JOIN USR_Questionnaires D ON Q.Ref=D.Id " +
+			" JOIN Catalog_SKU SK ON SK.Id=S.SKU " +
+			" JOIN Catalog_Brands BR ON BR.Id=SK.Brand " +
+			" JOIN Catalog_SKUGroup GR ON SK.Owner=GR.Id " +
 			"LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Ref = @outlet AND A.Questionaire=D.Id " +
 				"AND A.Question=Q.ChildQuestion AND A.SKU=S.SKU AND DATE(A.AnswerDate)>=DATE(D.BeginAnswerPeriod) " +
 				"AND (DATE(A.AnswerDate)<=DATE(D.EndAnswerPeriod) OR A.AnswerDate='0001-01-01 00:00:00')" +
-			"GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, D.Single " + 
+			"GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, D.Single, S.SKU, S.Description, GR.Id, BR.Id " + 
 			"ORDER BY DocDate, QuestionOrder ");
 	query.AddParameter("integer", DB.Current.Constant.DataType.Integer);
 	query.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);
@@ -445,7 +449,8 @@ function CreateSKUQuestionsTable(outlet) {
 	query.AddParameter("snapshot", DB.Current.Constant.DataType.Snapshot);
 	query.AddParameter("outlet", outlet);
 	query.AddParameter("attached", Translate["#snapshotAttached#"]);
-	query.Execute();	
+	query.Execute();
+	
 }
 
 function ListSelectorIsChanged(currentSelector, selector, additionalParam, currentParam) {

@@ -156,7 +156,7 @@ function GetQuickOrder(control, skuId, itemPrice, packField, editField, textView
         Variables[textViewField].Text = quickOrderItem.Qty + " " + packDescription + " " + Translate["#alreadyOrdered#"];
         multiplier = quickOrderItem.Multiplier;
 
-        Variables[editField].SetFocus();
+        FocusOnEditText(editField);
     }
 
     swipedRow = control;

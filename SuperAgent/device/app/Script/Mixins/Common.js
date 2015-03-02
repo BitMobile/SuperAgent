@@ -23,12 +23,12 @@ function ToDecimal(val) {
 }
 
 function GetSum(val1, val2) {
-	
+
 	if (val1 == null)
 		val1 = parseFloat(0);
 	if (val2 == null)
 		val2 = parseFloat(0);
-	
+
     return parseFloat(val1) + parseFloat(val2);
 }
 
@@ -117,9 +117,9 @@ function EmptyRef(ref) {
 }
 
 function NotEmptyRef(ref) {
-    if (ref.EmptyRef()) 
+    if (ref.EmptyRef())
         return false;
-    else 
+    else
         return true;
 }
 
@@ -152,6 +152,9 @@ function GetPrivateImagePath(objectType, objectID, pictID, pictExt) {
 	return r;
 }
 
+function FocusOnEditText(editFieldName) {
+  Variables[editFieldName].SetFocus();
+}
 
 //--------------------Clear Button part----------------------
 

@@ -58,7 +58,7 @@
 					<c:HorizontalLayout CssClass="quickOrder">
 						<c:VerticalLayout>
 							<c:HorizontalLayout>
-								<c:HorizontalLayout>
+								<c:HorizontalLayout OnClickAction="$FocusOnEditText(editText{$index})">
 									<c:EditText Id="editText{$index}" Text="0" Keyboard="numeric" />
 									<c:TextView Id="pack{$index}" Text=""/>
 								</c:HorizontalLayout>

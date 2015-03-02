@@ -68,7 +68,7 @@
 			</c:DockLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="parameter_grid">
+			<c:DockLayout CssClass="parameter_grid" OnClickAction="$FocusOnEditText(orderItemQty)">
 				<c:TextView Text="#quantity#"></c:TextView>
 				<c:EditText Id="orderItemQty" Value="$orderitem.Qty" CssClass="value" Keyboard="numeric" OnGetFocus="$HideSwiped()"></c:EditText>
 			</c:DockLayout>
@@ -134,6 +134,3 @@
 	</c:DockLayout>
 
 </c:Screen>
-
-
-

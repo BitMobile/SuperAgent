@@ -82,7 +82,7 @@
 
 				<s:Push Id="index" Value="{$statusCount.Index}"></s:Push>
 
-				<c:DockLayout CssClass="grid">
+				<c:DockLayout CssClass="grid" OnClickAction="$FocusOnEditText(control{$index}, $question.IsInputField)">
 					<s:If Test="$question.Obligatoriness=='1'">
 						<s:If Test="$ObligatedAnswered($question.Answer, $question.Obligatoriness)">
 							<c:HorizontalLayout CssClass="answered_side_wh"></c:HorizontalLayout>

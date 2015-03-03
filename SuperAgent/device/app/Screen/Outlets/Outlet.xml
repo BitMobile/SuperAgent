@@ -129,7 +129,7 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="grid" OnClickAction="$FocusOnEditText(outletAddress)">
+			<c:DockLayout CssClass="grid" OnClickAction="$FocusOnEditText(outletAddress, 1)">
 				<c:Button Id="clearButton" CssClass="clear" Visible="false" OnClick="$ClearField($outletAddress, $outlet, Address)"/>
 				<c:VerticalLayout>
 					<c:TextView Text="#address#" CssClass="description_row"></c:TextView>

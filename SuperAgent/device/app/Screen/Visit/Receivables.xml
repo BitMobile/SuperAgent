@@ -45,7 +45,7 @@
 
 
 			<c:HorizontalLayout CssClass="grid">
-				<c:VerticalLayout OnClickAction="$FocusOnEditText(encAmount)">
+				<c:VerticalLayout OnClickAction="$FocusOnEditText(encAmount, 1)">
 					<c:DockLayout>
 						<c:TextView Text="#encashmentAmount#:"></c:TextView>
 						<c:Button Text="#spread#" OnClickAction="$SpreadEncasmentAndRefresh($workflow.encashment, $visit.Outlet, $receivables)"></c:Button>
@@ -70,7 +70,7 @@
 			<s:Iterator Id="receivableDoc" Value="$receivables" Status="statusCount">
 				<s:Push Id="index" Value="$statusCount.Index"></s:Push>
 
-				<c:HorizontalLayout CssClass="grid" OnClickAction="FocusOnEditText(control{index})">
+				<c:HorizontalLayout CssClass="grid" OnClickAction="FocusOnEditText(control{index}, 1)">
 					<c:VerticalLayout>
 						<s:If Test="$receivableDoc.Overdue">
 							<c:TextView Text="{$receivableDoc.DocumentName}  #overdueSum#" CssClass="description_row"></c:TextView>
@@ -98,7 +98,7 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(doc_number)">
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(doc_number, 1)">
 				<c:VerticalLayout>
 					<c:TextView Text="#docNumber#" CssClass="description_row"></c:TextView>
 					<c:MemoEdit Value="$workflow.encashment.DocNumber" Keyboard="numeric" Id="doc_number"></c:MemoEdit>
@@ -106,7 +106,7 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(name_surname)">
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(name_surname, 1)">
 				<c:VerticalLayout>
 					<c:TextView Text="#nameSurname#" CssClass="description_row"></c:TextView>
 					<c:MemoEdit Value="$workflow.encashment.NameSurname" Id="name_surname"></c:MemoEdit>
@@ -114,7 +114,7 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(commentary)">
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(commentary, 1)">
 				<c:VerticalLayout>
 					<c:TextView Text="#commentary#" CssClass="description_row"></c:TextView>
 					<c:MemoEdit Value="$workflow.encashment.Commentary" Id="commentary"></c:MemoEdit>

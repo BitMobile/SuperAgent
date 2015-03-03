@@ -171,7 +171,7 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 			parameterValueC = parameterValue;
 		}
 		if (typeDescription == "String" || typeDescription == "Integer" || typeDescription == "Decimal") {
-			FocusOnEditText(control);
+			FocusOnEditText(control, '1');
 		}
 	}
 }

@@ -152,8 +152,13 @@ function GetPrivateImagePath(objectType, objectID, pictID, pictExt) {
 	return r;
 }
 
-function FocusOnEditText(editFieldName) {
-  Variables[editFieldName].SetFocus();
+function FocusOnEditText(editFieldName, isInputField) {
+  if (isInputField != null) {
+    if (isInputField == '1') {
+      Console.WriteLine('hi');
+      Variables[editFieldName].SetFocus();
+    }
+  }
 }
 
 //--------------------Clear Button part----------------------

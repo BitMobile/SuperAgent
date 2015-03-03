@@ -94,12 +94,15 @@ function GetSKUsFromQuesionnaires(search) {
 				" AND (Answer!='' OR Answer IS NOT NULL) " +
 				" AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +
 				" WHERE SKU=S.SKU AND Question=S.Question AND (Answer='Yes' OR Answer='Да')))) AS Answered " +
-			", (SELECT COUNT(DISTINCT Question) FROM USR_SKUQuestions " +
-				" WHERE Single=@single AND Obligatoriness='1' AND SKU=S.SKU AND " +
+			", (SELECT MAX(CAST (Obligatoriness AS INT)) FROM USR_SKUQuestions " +
+				" WHERE Single=@single AND SKU=S.SKU AND " +
 				" (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +
-				" WHERE SKU=S.SKU AND (Answer='Yes' OR Answer='Да')))) AS Obligatered " +
-			", CASE WHEN IsInputField='1' THEN Answer ELSE " +
-			"CASE WHEN (RTRIM(Answer)!='' AND Answer IS NOT NULL) THEN CASE WHEN AnswerType=@snapshot THEN @attached ELSE Answer END ELSE '—' END END AS AnswerOutput " +
+				" WHERE SKU=S.SKU AND (Answer='Yes' OR Answer='Да')))) AS Obligatoriness " +
+			", (SELECT COUNT(DISTINCT U1.Question) FROM USR_SKUQuestions U1 " +
+				" WHERE U1.Single='0' AND (Answer='' OR Answer IS NULL) " +
+				" AND U1.SKU=S.SKU AND Obligatoriness = 1 " +
+				" AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +
+				" WHERE SKU=S.SKU AND (Answer='Yes' OR Answer='Да')))) AS ObligateredAnswered " +
 			"FROM USR_SKUQuestions S " + filterJoin +
 			"WHERE Single=@single AND " + searchString + filterString + 
 			" (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +

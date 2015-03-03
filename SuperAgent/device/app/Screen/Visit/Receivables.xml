@@ -101,7 +101,7 @@
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(doc_number, 1)">
 				<c:VerticalLayout>
 					<c:TextView Text="#docNumber#" CssClass="description_row"></c:TextView>
-					<c:MemoEdit Value="$workflow.encashment.DocNumber" Keyboard="numeric" Id="doc_number"></c:MemoEdit>
+					<c:MemoEdit Value="$workflow.encashment.DocNumber" Id="doc_number"></c:MemoEdit>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

@@ -70,7 +70,7 @@
 			<s:Iterator Id="receivableDoc" Value="$receivables" Status="statusCount">
 				<s:Push Id="index" Value="$statusCount.Index"></s:Push>
 
-				<c:HorizontalLayout CssClass="grid" OnClickAction="FocusOnEditText(control{index}, 1)">
+				<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(control{$index}, 1)">
 					<c:VerticalLayout>
 						<s:If Test="$receivableDoc.Overdue">
 							<c:TextView Text="{$receivableDoc.DocumentName}  #overdueSum#" CssClass="description_row"></c:TextView>

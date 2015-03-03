@@ -84,7 +84,8 @@ function GetSKUsFromQuesionnaires(search) {
 	filterString += AddFilter(filterString, "brand_filter", "Brand", " AND ");
 	
 	var q = new Query();
-	q.Text="SELECT DISTINCT SKU, SKUDescription " +
+	q.Text="SELECT DISTINCT S.SKU, S.SKUDescription " +
+			", MAX(AMS.BaseUnitQty) AS BaseUnitQty" + 
 			", (SELECT COUNT(DISTINCT U1.Question) FROM USR_SKUQuestions U1 WHERE U1.Single=@single " +
 				" AND U1.SKU=S.SKU AND " +
 				" (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +
@@ -104,14 +105,18 @@ function GetSKUsFromQuesionnaires(search) {
 				" AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +
 				" WHERE SKU=S.SKU AND (Answer='Yes' OR Answer='Да')))) AS ObligateredAnswered " +
 			"FROM USR_SKUQuestions S " + filterJoin +
+			"LEFT JOIN Catalog_AssortmentMatrix_SKUs AMS ON S.SKU=AMS.SKU " +
+			"LEFT JOIN Catalog_AssortmentMatrix_Outlets AMO ON AMS.Ref = AMO.Ref AND AMO.Outlet = @outlet " + 
 			"WHERE Single=@single AND " + searchString + filterString + 
 			" (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +
 				"WHERE (Answer='Yes' OR Answer='Да')))" +
-			"ORDER BY SKUDescription "; 
+			"GROUP BY S.SKU, S.SKUDescription " +
+			" ORDER BY AMS.BaseUnitQty DESC, S.SKUDescription "; 
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	q.AddParameter("single", single);	
 	q.AddParameter("snapshot", DB.Current.Constant.DataType.Snapshot);
-	q.AddParameter("attached", Translate["#snapshotAttached#"]);	
+	q.AddParameter("attached", Translate["#snapshotAttached#"]);		
+	q.AddParameter("outlet", $.workflow.outlet);
 	
 	return q.Execute();
 }

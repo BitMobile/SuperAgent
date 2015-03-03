@@ -103,9 +103,9 @@
 						</s:Else>
 					</s:If>
 					<c:DockLayout>
-						<!-- <s:If Test="$sku.BaseUnitQty != NULL">
+						<s:If Test="$sku.BaseUnitQty != NULL">
 							<c:TextView Text="#recommended#" CssClass="single_rec"/>
-						</s:If> -->
+						</s:If>
 						<c:TextView Text="{$sku.Answered} #of# {$sku.Total}" CssClass="description_row" />
 					</c:DockLayout>
 					<c:TextView Text="$sku.SKUDescription" CssClass="main_row"></c:TextView>

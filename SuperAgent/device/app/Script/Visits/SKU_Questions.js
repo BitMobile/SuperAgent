@@ -86,21 +86,21 @@ function GetSKUsFromQuesionnaires(search) {
 	var q = new Query();
 	q.Text="SELECT DISTINCT S.SKU, S.SKUDescription " +
 			", MAX(AMS.BaseUnitQty) AS BaseUnitQty" + 
-			", COUNT(S.Question) AS Total " +
+			", COUNT(DISTINCT S.Question) AS Total " +
 			", COUNT(S.Answer) AS Answered " +
 			", MAX(CAST (Obligatoriness AS INT)) AS Obligatoriness " +
 			", (SELECT COUNT(DISTINCT U1.Question) FROM USR_SKUQuestions U1 " +
-				" WHERE U1.Single='0' AND (Answer='' OR Answer IS NULL) " +
+				" WHERE U1.Single=@single AND (Answer='' OR Answer IS NULL) " +
 				" AND U1.SKU=S.SKU AND Obligatoriness = 1 " +
 				" AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +
-				" WHERE SKU=S.SKU AND (Answer='Yes' OR Answer='Да')))) AS ObligateredAnswered " +
+				" WHERE SKU=S.SKU AND (Answer='Yes' OR Answer='Да')))) AS ObligateredLeft " +
 			"FROM USR_SKUQuestions S " + filterJoin +
 			"LEFT JOIN Catalog_AssortmentMatrix_SKUs AMS ON S.SKU=AMS.SKU " +
 			"LEFT JOIN Catalog_AssortmentMatrix_Outlets AMO ON AMS.Ref = AMO.Ref AND AMO.Outlet = @outlet " + 
 			"WHERE Single=@single AND " + searchString + filterString + 
 			" (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +
 				"WHERE (Answer='Yes' OR Answer='Да')))" +
-			"GROUP BY S.SKU, S.SKUDescription, AMS.BaseUnitQty " +
+			"GROUP BY S.SKU, S.SKUDescription " +
 			" ORDER BY AMS.BaseUnitQty DESC, S.SKUDescription "; 
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	q.AddParameter("single", single);	
@@ -123,18 +123,19 @@ function ObligateredAreAnswered(obligatoriness, history, current, oblTotal) {
 }
 
 function SetIndicators() {
-	regular_total = 0;//CalculateTotal('0');
-	single_total = 0;//CalculateTotal('1');		
+	regular_total = CalculateTotal('0');
+	single_total = CalculateTotal('1');		
 	regular_answ = 0;//CalculateTotal(str, '0', true);
 	single_answ = 0;//CalculateTotal(str, '1', true);
 }
 
 function CalculateTotal(single) {
-	var q = new Query("SELECT COUNT(DISTINCT (U1.Question, U1.SKU)) FROM USR_SKUQuestions U1 WHERE U1.Single=@single " +
+	var q = new Query("SELECT COUNT(U1.Question) FROM USR_SKUQuestions U1 WHERE U1.Single=@single " +
 	" AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +
 	" WHERE (Answer='Yes' OR Answer='Да')))");
 	q.AddParameter("single", single);
-	return q.Execute();
+	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
+	return q.ExecuteScalar();
 }
 
 function AddFilter(filterString, filterName, condition, connector) {

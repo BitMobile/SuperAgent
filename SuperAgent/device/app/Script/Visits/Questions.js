@@ -139,8 +139,6 @@ function CreateVisitQuestionValueIfNotExists(question, answer, dialogInput) {
 function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer) {
 	
 	var editControl = Variables[control];
-	if (editControl.Text=="—")
-		editControl.Text = "";
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.ValueList).ToString()) {
 		var q = new Query();
@@ -184,8 +182,10 @@ function AssignAnswer(control, question, answer) {
 		else
 			answer = control.Text;
 	}
+	else
+		answer = answer.ToString();
 	var q = new Query("UPDATE USR_Questions SET Answer=@answer, AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question");
-	q.AddParameter("answer", answer.ToString());
+	q.AddParameter("answer", answer);
 	q.AddParameter("question", question);
 	q.Execute();
 }

@@ -232,15 +232,6 @@ function GetActionAndBack() {
 		Workflow.Back();
 }
 
-function ObligatedAnswered(answer, obligatoriness) {
-	if (parseInt(obligatoriness)==parseInt(1)){
-		if (String.IsNullOrEmpty(answer)==false & answer!="—")
-			return true;
-	}
-	return false;	
-}
-
-
 //--------------------------------Gallery handlers----------------
 
 function AddSnapshot(objectRef, valueRef, func, listChoice, objectType) {

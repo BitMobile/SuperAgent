@@ -11,7 +11,7 @@ function GetOutlets(searchText) {
 			"ELSE (SELECT D1.Overdue FROM Document_AccountReceivable_ReceivableDocuments D1 " +
 			"JOIN Document_AccountReceivable A1 ON D1.Ref=A1.Id WHERE A1.Outlet = O.Id LIMIT 1) END AS st " +
 			"FROM Document_AccountReceivable_ReceivableDocuments D JOIN Document_AccountReceivable A ON D.Ref=A.Id " +
-			"WHERE A.Outlet=O.Id) AS OutletStatus"+			
+			"WHERE A.Outlet=O.Id) AS OutletStatus"+
 			" FROM Catalog_Outlet O " + search + " ORDER BY O.Description LIMIT 500");
 	return q.Execute();
 }
@@ -52,7 +52,7 @@ function UseInput(typeDescription) {
 		return false;
 	else
 		{
-		if (typeDescription == "Integer" || typeDescription == "Decimal") 
+		if (typeDescription == "Integer" || typeDescription == "Decimal")
 			$.Add("keyboardType", "numeric");
 		else
 			$.Add("keyboardType", "auto");
@@ -127,7 +127,7 @@ function CreateOutletParameterValue(outlet, parameter, value, parameterValue) {
 		parameterValue.Parameter = parameter;
 	} else
 		parameterValue = parameterValue.GetObject();
-	if ((parameter.DataType).ToString() != (DB.Current.Constant.DataType.Snapshot).ToString()) 
+	if ((parameter.DataType).ToString() != (DB.Current.Constant.DataType.Snapshot).ToString())
 		parameterValue.Value = value;
 	parameterValue.Save();
 	return parameterValue.Id;
@@ -140,11 +140,11 @@ function AssignParameterValue(control, typeDescription, parameterValue, value, o
 
 
 function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control) {
-	
+
 	if ($.sessionConst.editOutletParameters){
-	
+
 		parameterValue = CreateOutletParameterValue(outlet, parameter, Variables[control].Text, parameterValue);
-		
+
 		if (typeDescription == "ValueList") {  //--------ValueList-------
 			var q = new Query();
 			q.Text = "SELECT Value, Value FROM Catalog_OutletParameter_ValueList WHERE Ref=@ref UNION SELECT '', '—' ORDER BY Value";
@@ -155,7 +155,7 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 			if (String.IsNullOrEmpty(parameterValue.Value))
 				Dialogs.ChooseDateTime(parameterValue, "Value", Variables[control], DateHandler);
 			else
-				Dialog.Choose(Translate["#valueList#"], [[0, Translate["#clearValue#"]], [1, Translate["#setDate#"]]], DateHandler, [parameterValue, control]);		
+				Dialog.Choose(Translate["#valueList#"], [[0, Translate["#clearValue#"]], [1, Translate["#setDate#"]]], DateHandler, [parameterValue, control]);
 		}
 		if (typeDescription == "Boolean") {  //----------Boolean--------
 			Dialogs.ChooseBool(parameterValue, "Value", Variables[control]);
@@ -168,7 +168,10 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 			if (String.IsNullOrEmpty(parameterValue.Value)==false)
 				listChoice.Add([2, Translate["#clearValue#"]]);
 			Gallery.AddSnapshot(outlet, parameterValue, SaveAtOutelt, listChoice, "catalog.outlet");
-			parameterValueC = parameterValue;		
+			parameterValueC = parameterValue;
+		}
+		if (typeDescription == "String" || typeDescription == "Integer" || typeDescription == "Decimal") {
+			FocusOnEditText(control);
 		}
 	}
 }
@@ -191,7 +194,7 @@ function DateHandler(state, args) {
 	}
 	if (parseInt(args.Result)==parseInt(1)){
 		Dialogs.ChooseDateTime(parameterValue, "Value", Variables[control]);
-	}	
+	}
 }
 
 
@@ -202,14 +205,14 @@ function GetSnapshots(outlet) {
 	if (parseInt(q.ExecuteCount())==parseInt(0))
 		snapshotsExists = false;
 	singlePicture = false;
-	if (parseInt(q.ExecuteCount())==parseInt(1)) 
+	if (parseInt(q.ExecuteCount())==parseInt(1))
 		singlePicture = true;
 	return q.Execute();
 }
 
 
 function NoSnapshots() {
-	if (snapshotsExists) 
+	if (snapshotsExists)
 		return false;
 	else
 		return true;
@@ -244,12 +247,12 @@ function AddSnapshot(control, outlet) {
 		var pictId = GetCameraObject(outlet);
 		var path = GetPrivateImagePath("catalog.outlet", outlet, pictId, ".jpg");
 		Camera.MakeSnapshot(path, 300, GalleryHandler, [ outlet, pictId ]);
-	}			
+	}
 }
 
 
 function GalleryHandler(state, args) {
-	if (args.Result){		
+	if (args.Result){
 		var outlet = state[0];
 		var fileName = state[1];
 		var newPicture = DB.Create("Catalog.Outlet_Snapshots");
@@ -257,7 +260,7 @@ function GalleryHandler(state, args) {
 		newPicture.FileName = fileName;
 		newPicture.Unavailable = true;
 		newPicture.Save();
-		
+
 		Workflow.Refresh([]);
 	}
 }
@@ -371,7 +374,7 @@ function ChooseHandler(state, args) {
 		SetLocation(null, outlet);
 	}
 	if (parseInt(args.Result)==parseInt(2)){
-		Clipboard.SetString(outlet.Lattitude + "; " + outlet.Longitude);		
+		Clipboard.SetString(outlet.Lattitude + "; " + outlet.Longitude);
 	}
 }
 

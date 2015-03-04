@@ -25,7 +25,7 @@ function ChooseDateTime(entity, attribute, control, func) {
 	else
 		startKey = entity[attribute];
 	
-	if (String.IsNullOrEmpty(startKey))
+	if (String.IsNullOrEmpty(startKey) || startKey=="—")
 		startKey = DateTime.Now;
 
 	if (func == null)

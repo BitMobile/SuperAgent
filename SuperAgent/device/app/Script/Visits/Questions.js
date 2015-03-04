@@ -138,8 +138,6 @@ function CreateVisitQuestionValueIfNotExists(question, answer, dialogInput) {
 
 function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer) {
 
-	var editControl = Variables[control];
-
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.ValueList).ToString()) {
 		var q = new Query();
 		q.Text = "SELECT Value, Value FROM Catalog_Question_ValueList WHERE Ref=@ref";
@@ -149,7 +147,7 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.Snapshot).ToString()) {
-		var question = CreateVisitQuestionValueIfNotExists(questionItem, editControl.Text, true);
+		var question = CreateVisitQuestionValueIfNotExists(questionItem, Variables[control].Text, true);
 		questionGl = question;
 		var listChoice = new List;
 		listChoice.Add([1, Translate["#makeSnapshot#"]]);

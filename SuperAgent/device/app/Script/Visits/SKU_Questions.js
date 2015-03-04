@@ -193,10 +193,6 @@ function GetChilds(sku) {
 }
 
 
-//function AssignQuestionValue(control, sku, question) {
-//	CreateVisitSKUValueIfNotExists(sku, question, control.Text)
-//}
-
 function RemovePlaceHolder(control) {
 	if (control.Text == "—")
 		control.Text = "";
@@ -265,9 +261,7 @@ function GetSnapshotText(text) {
 function GoToQuestionAction(control, answerType, question, sku, editControl, currAnswer, currSKU) {	
 	
 	editControl = Variables[editControl];
-	if (editControl.Text=="—"){
-		editControl.Text = "";
-	}
+
 	var skuValue = CreateVisitSKUValueIfNotExists(editControl, sku, question, 'false');
 	
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.ValueList).ToString()) {
@@ -304,35 +298,6 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 }
 
 
-function CheckEmtySKUAndForward(outlet, visit) {
-	
-	if (doRefresh) {
-	
-		Workflow.Refresh([]);
-	
-	} else {
-		
-		var p = [ outlet, visit ];
-		
-		parentId = null;		
-		
-		var q = regular_total + single_total;
-		
-		$.workflow.Add("questions_qty_sku", q);
-		
-		var a = regular_answ + single_answ;
-		
-		$.workflow.Add("questions_answ_sku", a);
-		
-		del = new Query("DELETE FROM USR_Filters");
-		
-		del.Execute();
-		
-		Workflow.Forward(p);
-		
-	}
-	
-}
 
 function GetCameraObject(entity) {
 	FileSystem.CreateDirectory("/private/document.visit");

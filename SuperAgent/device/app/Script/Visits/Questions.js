@@ -213,17 +213,6 @@ function GetCameraObject(entity) {
 	Camera.Path = path;
 }
 
-function CheckEmptyQuestionsAndForward(visit) {
-	
-	if (doRefresh){
-		Workflow.Refresh([]);
-
-	}
-	else{	
-		Workflow.Forward([]);
-	}
-}
-
 
 function GetActionAndBack() {
 	if ($.workflow.skipTasks) {

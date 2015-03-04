@@ -76,13 +76,13 @@
 
 			<s:Push Id="snapshots" Value="$GetSnapshots($outlet)" />
 
-			<s:If Test="@snapshotsExists">				
+			<s:If Test="@snapshotsExists">
 				<c:DockLayout CssClass="snapshot_grid">
 					<s:If Test="$sessionConst.editOutletParameters">
 						<c:Button Text="#add#" OnClick="$AddSnapshot($outlet)" />
 					</s:If>
 					<c:TextView Text="#outletSnapshots#" />
-				</c:DockLayout>			
+				</c:DockLayout>
 				<s:If Test="@singlePicture">
 					<c:VerticalLayout CssClass="single_picture" OnClick="$ImageActions($snapshots.Id)">
 						<s:If Test="$snapshots.Unavailable">
@@ -91,7 +91,7 @@
 						<s:Else>
 							<c:Image Source="$GetImagePath(catalog.outlet, $outlet, $snapshots.FileName, .jpg)" />
 						</s:Else>
-					</c:VerticalLayout>					
+					</c:VerticalLayout>
 				</s:If>
 				<s:Else>
 					<c:SwipeHorizontalLayout Id="snapshotLayout" CssClass="carousel" Alignment="Center">
@@ -102,11 +102,11 @@
 								</s:If>
 								<s:Else>
 									<c:Image Source="$GetImagePath(catalog.outlet, $outlet, $snapshot.FileName, .jpg)" />
-								</s:Else>							
+								</s:Else>
 							</c:VerticalLayout>
 						</s:Iterator>
 					</c:SwipeHorizontalLayout>
-				</s:Else>					
+				</s:Else>
 				<c:HorizontalLine />
 			</s:If>
 			<s:Else>
@@ -119,7 +119,7 @@
 					</c:DockLayout>
 					<c:HorizontalLine />
 				</s:If>
-			</s:Else>			
+			</s:Else>
 
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
@@ -129,7 +129,7 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="grid">
+			<c:DockLayout CssClass="grid" OnClickAction="$FocusOnEditText(outletAddress, 1)">
 				<c:Button Id="clearButton" CssClass="clear" Visible="false" OnClick="$ClearField($outletAddress, $outlet, Address)"/>
 				<c:VerticalLayout>
 					<c:TextView Text="#address#" CssClass="description_row"></c:TextView>
@@ -188,7 +188,7 @@
 				<s:Push Id="valueStr" Value="$GetOutletParameterValue($outlet,$parameter.Id,$parameter.ParameterValue, $parameter.TypeDescription)" />
 				<s:Push Id="editText" Value="$UseInput($parameter.TypeDescription)" />
 				<s:Push Id="index" Value="$statusCount.Index"></s:Push>
-				<c:DockLayout CssClass="parameter_grid" OnClickAction="$GoToParameterAction($parameter.TypeDescription, $parameterValue, Value, $outlet, $parameter.Id, control{$index})">					
+				<c:DockLayout CssClass="parameter_grid" OnClickAction="$GoToParameterAction($parameter.TypeDescription, $parameterValue, Value, $outlet, $parameter.Id, control{$index})">
 					<s:If Test="$editText">
 						<s:If Test="$sessionConst.editOutletParameters">
 							<c:EditText Id="control{$index}" Text="$valueStr" OnChange="$AssignParameterValue($parameter.TypeDescription, $parameterValue, Value, $outlet, $parameter.Id)" CssClass="value" Keyboard="$keyboardType"></c:EditText>

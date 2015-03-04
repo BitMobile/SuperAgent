@@ -23,7 +23,7 @@ function OnLoading() {
 }
 
 function WarMupFunction() {
-	
+
 }
 
 function SetListType() {
@@ -47,20 +47,20 @@ function GetQuestionsByQuestionnaires(outlet) {
 			"AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_Questions " +
 			"WHERE (Answer='Yes' OR Answer='Да')))");
 	oblQuest.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
-	
+
 	obligateredLeft = oblQuest.ExecuteScalar();
-	
+
 	var single = 1;
-	if (regularAnswers)	
-		single = 0;	
-	
+	if (regularAnswers)
+		single = 0;
+
 	SetIndiactors(single);
-	
+
 	return GetQuestions(single, false);
-	
+
 }
 
-function GetQuestions(single, doCnt) {	
+function GetQuestions(single, doCnt) {
 	var q = new Query("SELECT *, " +
 			"CASE WHEN IsInputField='1' THEN Answer ELSE " +
 				"CASE WHEN (RTRIM(Answer)!='' AND Answer IS NOT NULL) THEN CASE WHEN AnswerType=@snapshot THEN @attached ELSE Answer END ELSE '—' END END AS AnswerOutput " +
@@ -68,10 +68,10 @@ function GetQuestions(single, doCnt) {
 			"WHERE Single=@single AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_Questions " +
 			"WHERE (Answer='Yes' OR Answer='Да')))");
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
-	q.AddParameter("single", single);	
+	q.AddParameter("single", single);
 	q.AddParameter("snapshot", DB.Current.Constant.DataType.Snapshot);
 	q.AddParameter("attached", Translate["#snapshotAttached#"]);
-	
+
 	if (doCnt)
 		return q.ExecuteCount();
 	else
@@ -89,9 +89,9 @@ function SetIndiactors(res, single) {
 }
 
 
-function GetAnsweredQty(single) {	
+function GetAnsweredQty(single) {
 	var q = new Query("SELECT COUNT(Question) FROM USR_Questions WHERE Single=@single AND RTRIM(Answer)!='' AND Answer IS NOT NULL");
-	q.AddParameter("single", single);	
+	q.AddParameter("single", single);
 	return q.ExecuteScalar();
 
 }
@@ -119,7 +119,7 @@ function CreateVisitQuestionValueIfNotExists(question, answer, dialogInput) {
 			p.Save();
 			result = p.Id;
 			return result;
-		}		
+		}
 	}
 	else{
 		if ((answer=="—" || TrimAll(answer)=="") && dialogInput==false)
@@ -132,19 +132,19 @@ function CreateVisitQuestionValueIfNotExists(question, answer, dialogInput) {
 			result = p.Id;
 			return result;
 		}
-	}	
+	}
 
 }
 
 function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer) {
-	
+
 	var editControl = Variables[control];
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.ValueList).ToString()) {
 		var q = new Query();
 		q.Text = "SELECT Value, Value FROM Catalog_Question_ValueList WHERE Ref=@ref";
 		q.AddParameter("ref", questionItem);
-		
+
 		Dialogs.DoChoose(q.Execute(), questionItem, null, Variables[control], DialogCallBack);
 	}
 
@@ -156,7 +156,7 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 		if ($.sessionConst.galleryChoose)
 			listChoice.Add([0, Translate["#addFromGallery#"]]);
 		if (String.IsNullOrEmpty(question.Answer)==false)
-			listChoice.Add([2, Translate["#clearValue#"]]);		
+			listChoice.Add([2, Translate["#clearValue#"]]);
 		AddSnapshot(visit, question, GalleryCallBack, listChoice, "document.visit");
 	}
 
@@ -175,30 +175,30 @@ function AssignQuestionValue(control, question) {
 	AssignAnswer(question, control.Text);
 }
 
-function AssignAnswer(control, question, answer) { 
-	if (control!=null){
-		if (control.Text=="—")
-			answer = "";
-		else
-			answer = control.Text;
-	}
-	else
-		answer = answer.ToString();
-	var q = new Query("UPDATE USR_Questions SET Answer=@answer, AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question");
-	q.AddParameter("answer", answer);
-	q.AddParameter("question", question);
-	q.Execute();
+function AssignAnswer(control, question, answer) {
+  if (control!=null){
+  	if (control.Text=="—")
+   		answer = "";
+  	else
+   		answer = control.Text;
+ 	}
+ 	else
+  	answer = answer.ToString();
+ 	var q = new Query("UPDATE USR_Questions SET Answer=@answer, AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question");
+ 	q.AddParameter("answer", answer);
+ 	q.AddParameter("question", question);
+ 	q.Execute();
 }
 
-function DialogCallBack(state, args) {	
+function DialogCallBack(state, args) {
 	var entity = state[0];
 	AssignAnswer(null, entity, args.Result);
-	
+
 	Workflow.Refresh([]);
 }
 
 function GalleryCallBack(state, args) {
-	var question = questionGl;	
+	var question = questionGl;
 	AssignAnswer(null, question["Question"], state[1]);
 	Workflow.Refresh([]);
 }
@@ -221,31 +221,40 @@ function GetActionAndBack() {
 		Workflow.Back();
 }
 
+function ObligatedAnswered(answer, obligatoriness) {
+	if (parseInt(obligatoriness)==parseInt(1)){
+		if (String.IsNullOrEmpty(answer)==false & answer!="—")
+			return true;
+	}
+	return false;	
+}
+
+
 //--------------------------------Gallery handlers----------------
 
 function AddSnapshot(objectRef, valueRef, func, listChoice, objectType) {
-	Dialog.Choose(Translate["#choose_action#"], listChoice, AddSnapshotHandler, [objectRef,func,valueRef,objectType]);		
+	Dialog.Choose(Translate["#choose_action#"], listChoice, AddSnapshotHandler, [objectRef,func,valueRef,objectType]);
 }
 
-function AddSnapshotHandler(state, args) {	
+function AddSnapshotHandler(state, args) {
 	var objRef = state[0];
 	var func = state[1];
 	var valueRef = state[2];
 	var objectType = state[3];
-	
-	if (parseInt(args.Result)==parseInt(0)){	
-		var pictId = GenerateGuid();				
+
+	if (parseInt(args.Result)==parseInt(0)){
+		var pictId = GenerateGuid();
 		var path = GetPrivateImagePath(objectType, objRef, pictId, ".jpg");
 		Gallery.Size = 300;
-		Gallery.Copy(path, func, [objRef, pictId]);					
+		Gallery.Copy(path, func, [objRef, pictId]);
 	}
-	
+
 	if (parseInt(args.Result)==parseInt(1)){
 		var pictId = GetCameraObject(objRef);
 		var path = GetPrivateImagePath(objectType, objRef, pictId, ".jpg");
 		Camera.MakeSnapshot(path, 300, func, [ objRef, pictId]);
 	}
-	
+
 	if (parseInt(args.Result)==parseInt(2)){
 		AssignAnswer(null, questionGl["Question"], "");
 		Workflow.Refresh([]);

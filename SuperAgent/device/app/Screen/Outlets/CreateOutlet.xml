@@ -19,7 +19,7 @@
 			<c:HorizontalLayout CssClass="empty_caption_grid" />
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid">
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(outletName, 1)">
 				<c:VerticalLayout>
 					<c:TextView Text="#outlet_description#" CssClass="description_row"></c:TextView>
 					<c:MemoEdit Id="outletName" AutoFocus="True" Value="$outlet.Description" CssClass="main_row" />
@@ -27,7 +27,7 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid">
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(outletAddress, 1)">
 				<c:VerticalLayout>
 					<c:TextView Text="#address#" CssClass="description_row"></c:TextView>
 					<c:MemoEdit Id="outletAddress" Value="$outlet.Address" CssClass="main_row" />

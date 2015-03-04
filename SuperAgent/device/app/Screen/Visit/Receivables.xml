@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Receivables.css">
 
-	<s:Push Id="visit" Value="$workflow.visit" />	
+	<s:Push Id="visit" Value="$workflow.visit" />
 	<s:Push Id="workflow.encashment" Value="$CreateEncashmentIfNotExist($workflow.visit)"></s:Push>
 	<s:Push Id="receivables" Value="$GetReceivables($visit.Outlet)"></s:Push>
 	<s:Push Id="t" Value="$GetHeader($workflow.outlet)"/>
@@ -45,7 +45,7 @@
 
 
 			<c:HorizontalLayout CssClass="grid">
-				<c:VerticalLayout>
+				<c:VerticalLayout OnClickAction="$FocusOnEditText(encAmount, 1)">
 					<c:DockLayout>
 						<c:TextView Text="#encashmentAmount#:"></c:TextView>
 						<c:Button Text="#spread#" OnClickAction="$SpreadEncasmentAndRefresh($workflow.encashment, $visit.Outlet, $receivables)"></c:Button>
@@ -67,10 +67,10 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<s:Iterator Id="receivableDoc" Value="$receivables" Status="statusCount">				
+			<s:Iterator Id="receivableDoc" Value="$receivables" Status="statusCount">
 				<s:Push Id="index" Value="$statusCount.Index"></s:Push>
 
-				<c:HorizontalLayout CssClass="grid">
+				<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(control{$index}, 1)">
 					<c:VerticalLayout>
 						<s:If Test="$receivableDoc.Overdue">
 							<c:TextView Text="{$receivableDoc.DocumentName}  #overdueSum#" CssClass="description_row"></c:TextView>
@@ -91,33 +91,33 @@
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
 
-			</s:Iterator> 
+			</s:Iterator>
 
 			<c:HorizontalLayout CssClass="caption_grid">
 				<c:TextView Text="#mainInfo#:"></c:TextView>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid">
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(doc_number, 1)">
 				<c:VerticalLayout>
 					<c:TextView Text="#docNumber#" CssClass="description_row"></c:TextView>
-					<c:MemoEdit Value="$workflow.encashment.DocNumber" Keyboard="numeric"></c:MemoEdit>
+					<c:MemoEdit Value="$workflow.encashment.DocNumber" Id="doc_number"></c:MemoEdit>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid">
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(name_surname, 1)">
 				<c:VerticalLayout>
 					<c:TextView Text="#nameSurname#" CssClass="description_row"></c:TextView>
-					<c:MemoEdit Value="$workflow.encashment.NameSurname"></c:MemoEdit>
+					<c:MemoEdit Value="$workflow.encashment.NameSurname" Id="name_surname"></c:MemoEdit>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid">
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(commentary, 1)">
 				<c:VerticalLayout>
 					<c:TextView Text="#commentary#" CssClass="description_row"></c:TextView>
-					<c:MemoEdit Value="$workflow.encashment.Commentary"></c:MemoEdit>
+					<c:MemoEdit Value="$workflow.encashment.Commentary" Id="commentary"></c:MemoEdit>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

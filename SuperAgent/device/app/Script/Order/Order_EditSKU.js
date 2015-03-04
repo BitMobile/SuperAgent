@@ -63,9 +63,9 @@ function CreateOrderItemIfNotExist(order, sku, orderitem, price, features, recOr
             }
             else
                 recOrder = 0;
-                
-            
-            // getting a unit            
+
+
+            // getting a unit
             if (unit==null){
                 var q = new Query("SELECT Pack, Multiplier FROM Catalog_SKU_Packing WHERE Ref=@ref AND LineNumber=1");
                 q.AddParameter("ref", sku);
@@ -134,6 +134,8 @@ function ChandeDiscount(orderitem) {
 
     $.discountEdit.Text = orderitem.Discount;
     CountPrice(orderitem.Id);
+
+    FocusOnEditText('discountEdit', '1');
 }
 
 function GetFeatureDescr(feature) {
@@ -157,7 +159,7 @@ function GetImagePath(objectType, objectID, pictID, pictExt) {
 function CountPrice(orderitem) {
 
     orderitem = orderitem.GetObject();
-    
+
     var discount = $.discountEdit.Text;
     if (String.IsNullOrEmpty(discount))
         discount = parseInt(0);
@@ -165,9 +167,9 @@ function CountPrice(orderitem) {
     // orderitem.Discount = Converter.ToDecimal(discount);
     orderitem.Total = p;
     orderitem.Save();
-    
+
     $.orderItemTotalId.Text = p;
-    
+
     return orderitem;
 }
 
@@ -192,9 +194,9 @@ function ChangeFeatureAndRefresh(orderItem, feature, sku, price, discountEdit,
 function ChangeUnit(sku, orderitem, price) {
 
     HideSwiped();
-    
+
     orderitem = orderitem.GetObject();
-    
+
     if (price==null){
         var q = new Query("SELECT Price FROM Document_PriceList_Prices WHERE Ref=@priceList AND SKU=@sku");
         q.AddParameter("priceList", $.workflow.order.PriceList);
@@ -235,10 +237,10 @@ function GetItemHistory(sku, order) {
     var q = new Query("SELECT strftime('%d.%m.%Y', D.Date) AS Date, S.Qty*P.Multiplier AS Qty, S.Total/P.Multiplier AS Total, S.Discount, S.Price FROM Document_Order_SKUs S JOIN Document_Order D ON S.Ref=D.Id JOIN Catalog_SKU_Packing P ON S.SKU=P.Ref AND P.Pack=S.Units WHERE D.Outlet=@outlet AND S.SKU=@sku AND S.Ref<>@ref ORDER BY D.Date DESC LIMIT 4");
     q.AddParameter("outlet", order.Outlet);
     q.AddParameter("sku", sku);
-    q.AddParameter("ref", order);    
-    
+    q.AddParameter("ref", order);
+
     $.Add("historyCount", q.ExecuteCount());
-    
+
     return q.Execute();
 }
 
@@ -252,14 +254,14 @@ function CalculateSKUAndForward(outlet, orderitem) {
 
     if ($.Exists("itemFields"))
     	$.Remove("itemFields");
-    
+
     Workflow.Forward([]);
 }
 
 function DeleteAndBack(orderitem) {
     if (Variables.Exists("AlreadyAdded") == false) {
         DB.Delete(orderitem);
-    } else{        
+    } else{
         orderitem = orderitem.GetObject();
         orderitem.Qty = $.itemFields.Qty;
         orderitem.Price = $.itemFields.Price;

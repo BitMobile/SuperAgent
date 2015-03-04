@@ -16,13 +16,13 @@
 		<c:HorizontalLine CssClass="b_line" />
 
 		<c:HorizontalLine />
-		
+
 		<c:DockLayout CssClass="search">
 			<c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoRefresh($edtSearch.Text)"></c:Button>
 			<c:DockLayout>
 				<c:Image />
 				<c:EditText Id="edtSearch" Text="$search" Placeholder="#search#"></c:EditText>
-			</c:DockLayout>			
+			</c:DockLayout>
 		</c:DockLayout>
 		<c:HorizontalLine />
 
@@ -37,7 +37,7 @@
 		<c:ScrollView Id="grScrollView" OnScroll="$OnScroll()">
 			<s:If Test="@doGroupping">
 				<s:Push Id="currentGroup" Value=""></s:Push>
-			</s:If>			
+			</s:If>
 
 			<s:Iterator Id="item" Value="$skusByGroup" Status="statusCount">
 				<s:Push Id="index" Value="$statusCount.Index"></s:Push>
@@ -58,7 +58,7 @@
 					<c:HorizontalLayout CssClass="quickOrder">
 						<c:VerticalLayout>
 							<c:HorizontalLayout>
-								<c:HorizontalLayout>
+								<c:HorizontalLayout OnClickAction="$FocusOnEditText(editText{$index}, 1)">
 									<c:EditText Id="editText{$index}" Text="0" Keyboard="numeric" />
 									<c:TextView Id="pack{$index}" Text=""/>
 								</c:HorizontalLayout>
@@ -82,13 +82,13 @@
 									<s:Else>
 										<s:If Test="$item.OrderRecOrder>0">
 											<c:TextView Text="#recommended#" CssClass="single_rec" />
-										</s:If>										
-									</s:Else>									
-								</s:If>															
+										</s:If>
+									</s:Else>
+								</s:If>
 								<c:TextView Text="$item.Description" CssClass="main_row"></c:TextView>
-							</c:DockLayout>							
+							</c:DockLayout>
 							<c:TextView Text="#price2# {$FormatValue($item.Price)}  #stock#: {$item.CommonStock} #brand#: {$item.Brand}" CssClass="description_row"></c:TextView>
-						</c:VerticalLayout>						
+						</c:VerticalLayout>
 					</c:DockLayout>
 				</c:SwipeHorizontalLayout>
 				<c:HorizontalLine />

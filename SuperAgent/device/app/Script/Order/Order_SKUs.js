@@ -13,7 +13,7 @@ function OnLoading() {
 }
 
 function WarMupFunction() {
-	
+
 }
 
 function GetSKUAndGroups(searchText, priceList, stock) {
@@ -21,7 +21,7 @@ function GetSKUAndGroups(searchText, priceList, stock) {
     var filterString = "";
     filterString += AddFilter(filterString, "group_filter", "G.Id", " AND ");
     filterString += AddFilter(filterString, "brand_filter", "CB.Id", " AND ");
-    
+
     var groupFields = "";
     var groupJoin = "";
     var groupParentJoin = "";
@@ -34,13 +34,13 @@ function GetSKUAndGroups(searchText, priceList, stock) {
     }
 
     var query = new Query();
-    
+
     var searchString = "";
-    
+
     if (String.IsNullOrEmpty(searchText) == false) {
         searchString = " AND Contains(S.Description, '" + searchText + "') ";
     }
-        
+
     var recOrderFields = ", 0 AS RecOrder, NULL AS UnitId, NULL AS RecUnit ";
     var recOrderStr = "";
     var recOrderSort = "";
@@ -62,63 +62,63 @@ function GetSKUAndGroups(searchText, priceList, stock) {
         query.AddParameter("assignment", DB.Current.Constant.SKUQuestions.Stock);
         recOrderSort = " OrderRecOrder DESC, ";
     }
-    
+
     if ($.workflow.order.Stock.EmptyRef()==true){
-    
+
     	if ($.sessionConst.NoStkEnbl) {
             var stockCondition = "";
         } else {
             var stockCondition = " S.CommonStock > 0 AND ";
     	}
-    	
+
 	    query.Text = "SELECT DISTINCT S.Id, S.Description, PL.Price, S.CommonStock AS CommonStock, " +
 	            groupFields +
 	            "CB.Description AS Brand " +
 	            recOrderFields +
 	            "FROM Document_PriceList_Prices PL " +
-	            "JOIN Catalog_SKU S ON PL.SKU = S.Id " +            
-	            groupJoin +                        
-	            "JOIN Catalog_Brands CB ON CB.Id=S.Brand " +            
+	            "JOIN Catalog_SKU S ON PL.SKU = S.Id " +
+	            groupJoin +
+	            "JOIN Catalog_Brands CB ON CB.Id=S.Brand " +
 	            groupParentJoin +
 	            recOrderStr +
 	            " WHERE " + stockCondition + " PL.Ref = @Ref " + searchString + filterString +
 	            " ORDER BY " + groupSort + recOrderSort + " S.Description LIMIT 100";
-    
+
     } else {
-    	
+
     	if ($.sessionConst.NoStkEnbl) {
             var stockCondition = "";
         } else {
             var stockCondition = " SS.StockValue > 0 AND ";
     	}
-    	
+
     	query.Text = "SELECT INQ.*, SS.StockValue AS CommonStock FROM Catalog_SKU_Stocks SS JOIN (SELECT DISTINCT S.Id, S.Description, PL.Price, " +
 	            groupFields +
 	            "CB.Description AS Brand " +
 	            recOrderFields +
 	            "FROM Document_PriceList_Prices PL " +
-	            "JOIN Catalog_SKU S ON PL.SKU = S.Id " +            
-	            groupJoin +                        
-	            "JOIN Catalog_Brands CB ON CB.Id=S.Brand " +            
+	            "JOIN Catalog_SKU S ON PL.SKU = S.Id " +
+	            groupJoin +
+	            "JOIN Catalog_Brands CB ON CB.Id=S.Brand " +
 	            groupParentJoin +
 	            recOrderStr +
 	            " WHERE PL.Ref = @Ref " + searchString + filterString +
 	            " ORDER BY " + groupSort + recOrderSort + " S.Description) INQ ON SS.Ref = INQ.Id WHERE " + stockCondition + " SS.Stock=@stock LIMIT 100";
-    	
+
     	query.AddParameter("stock", stock);
-    	    	
+
     }
-	    
-    query.AddParameter("Ref", priceList);    
-    
+
+    query.AddParameter("Ref", priceList);
+
     return query.Execute();
 
 }
 
-function GetQuickOrder(control, skuId, itemPrice, packField, editField, textViewField, recOrder, recUnitId, recUnit){
+function GetQuickOrder(control, skuId, itemPrice, packField, editField, textViewField, recOrder, recUnitId, recUnit, index){
     if(swipedRow != control)
         HideSwiped();
-    
+
     if(parseInt(control.Index)==parseInt(0)){
         var query = new Query();
         query.Text = "SELECT S.Id, S.Description, BF.Feature AS DefaultFeature, " +
@@ -135,28 +135,30 @@ function GetQuickOrder(control, skuId, itemPrice, packField, editField, textView
         if (recUnit==null){
             var q = new Query("SELECT Pack FROM Catalog_SKU_Packing WHERE Ref=@ref AND LineNumber=1");
             q.AddParameter("ref", skuId);
-            query.AddParameter("pack", q.ExecuteScalar());            
+            query.AddParameter("pack", q.ExecuteScalar());
         }
         else
             query.AddParameter("pack", recUnitId);
         var quickOrderItem =  query.Execute();
-        
+
         defFeature = quickOrderItem.DefaultFeature;
         if (doRecommend && recUnit!=null){ //&& parseInt(quickOrderItem.Qty)==parseInt(0)) {
             defPack = recUnitId;
             packDescription = recUnit;
             Variables[editField].Text = recOrder;
-            
+
         } else {
             defPack = quickOrderItem.DefaultUnit;
             packDescription = quickOrderItem.Pack;
-        }                                
-            
+        }
+
         Variables[packField].Text = packDescription;
         Variables[textViewField].Text = quickOrderItem.Qty + " " + packDescription + " " + Translate["#alreadyOrdered#"];
         multiplier = quickOrderItem.Multiplier;
+
+        FocusOnEditText(editField, '1');
     }
-    
+
     swipedRow = control;
 }
 
@@ -168,9 +170,9 @@ function AddToOrder(control, editFieldName) {
 }
 
 function CreateOrderItem(control, editFieldName, textFieldName, packField, sku, price, swiped_rowName, recOrder, recUnitId) {
-	
+
 	if (swipedRow!=Variables[swiped_rowName])
-		GetQuickOrder(Variables[swiped_rowName], sku, price, packField, editFieldName, textViewField, recOrder, recUnitId, recUnit);		
+		GetQuickOrder(Variables[swiped_rowName], sku, price, packField, editFieldName, textViewField, recOrder, recUnitId, recUnit);
 
     if (String.IsNullOrEmpty(Variables[editFieldName].Text) == false) {
         if (Converter.ToDecimal(Variables[editFieldName].Text) != Converter.ToDecimal(0)) {
@@ -225,21 +227,21 @@ function GetGroupPath(group, parent, parentDescription) {
 }
 
 function AddFilter(filterString, filterName, condition, connector) {
-    
+
 	var q = new Query("SELECT F.Id FROM USR_Filters F WHERE F.FilterType = @filterName");
-	
+
 	q.AddParameter("filterName", filterName);
-	
+
 	var res = q.ExecuteScalar();
-	
+
 	if (res!=null) {
-		
+
 		filterString += connector + condition + " IN(SELECT F.Id FROM USR_Filters F WHERE F.FilterType = '" + filterName + "') ";
-		
+
 	}
-		
+
 	return filterString;
-	
+
 }
 
 function OnScroll(sender)
@@ -257,11 +259,11 @@ function HideSwiped()
 function DoGroupping() {
 
 	var q = new Query("SELECT F.Id FROM USR_Filters F WHERE F.FilterType = @filterName");
-	
+
 	q.AddParameter("filterName", "group_filter");
-	
+
 	var res = q.ExecuteScalar();
-	
+
 	if (res != null) {
 		return true;
     }
@@ -269,7 +271,7 @@ function DoGroupping() {
 }
 
 function DoRecommend() {
-    
+
     if ($.workflow.name=="Visit" && $.sessionConst.OrderCalc)
         return true;
     else
@@ -293,17 +295,17 @@ function SetFilter() {
 }
 
 function AskAndBack() {
-    
+
 	del = new Query("DELETE FROM USR_Filters");
-	
+
 	del.Execute();
-	
-	Workflow.Refresh([$.screenContext]);	
+
+	Workflow.Refresh([$.screenContext]);
 
 }
 
 function CheckFilterAndForward() {
-    
+
 	 Workflow.Forward([null, true]);
 
 }
@@ -333,11 +335,11 @@ function ChangeFilterAndRefresh(type) {
 function GetGroups(priceList, stock, screenContext) {
 
     var filterString = " ";
-    
+
     filterString += AddFilter(filterString, "brand_filter", "S.Brand", " AND ");
-    
+
     if (screenContext=="Order"){
-        
+
     	var q = new Query("SELECT DISTINCT SG.Id AS ChildId, USGF.Id AS ChildIsSet, SG.Description As Child, SGP.Id AS ParentId, SGP.Description AS Parent, USPF.Id AS ParentIsSet " +
         		"FROM Document_PriceList_Prices SP " +
         		"JOIN Catalog_SKU S On SP.SKU = S.Id " +
@@ -348,21 +350,21 @@ function GetGroups(priceList, stock, screenContext) {
         		"WHERE SP.Ref = @priceList " +
         		"AND CASE WHEN @isStockEmptyRef = 0 THEN SP.SKU IN(SELECT SS.Ref FROM Catalog_SKU_Stocks SS WHERE SS.Stock = @stock AND CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE SS.StockValue > 0 END) ELSE CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE S.CommonStock > 0 END END " +
         		filterString + " ORDER BY Parent, Child");
-        
+
     	q.AddParameter("priceList", priceList);
         q.AddParameter("stock", stock);
-        
+
         isStockEmptyRef = stock.ToString() == DB.EmptyRef("Catalog_Stock").ToString() ? 1 : 0;
-        
+
         q.AddParameter("isStockEmptyRef", isStockEmptyRef);
         q.AddParameter("NoStkEnbl", $.sessionConst.NoStkEnbl);
-        
+
         return q.Execute();
-    	    
+
     }
-    
+
     if (screenContext=="Questionnaire"){
-    
+
     	var str = CreateCondition($.workflow.questionnaires, " Ref ");
         var q1 = new Query("SELECT DISTINCT G.Id AS ChildId, G.Description AS Child, USGF.Id AS ChildIsSet, GP.Id AS ParentId, GP.Description AS Parent, USPF.Id AS ParentIsSet " +
         		"FROM Catalog_SKU S " +
@@ -371,9 +373,9 @@ function GetGroups(priceList, stock, screenContext) {
         		"LEFT JOIN Catalog_SKUGroup GP ON G.Parent = GP.Id " +
         		"LEFT JOIN USR_Filters USPF ON USPF.Id = GP.Id " +
         		"WHERE S.ID IN (SELECT SKU FROM Document_Questionnaire_SKUs WHERE " + str + ") " + filterString + " ORDER BY Parent, Child");
-    
+
         return q1.Execute();
-    
+
     }
 }
 
@@ -385,131 +387,131 @@ function ShowGroup(currentGroup, parentGroup) {
 }
 
 function AssignHierarchy(rcs) {
-    
+
 	if (rcs.ParentId == null) {
-        
+
     	$.Add("parentId", rcs.ChildId);
         $.Add("parent", rcs.Child);
         $.Add("childExists", false);
-        
+
         if (rcs.ChildIsSet == null) {
         	$.Add("isSet", false);
 		} else {
 			$.Add("isSet", true);
 		}
-        
+
     } else {
-        
+
     	$.Add("parentId", rcs.ParentId);
         $.Add("parent", rcs.Parent);
         $.Add("childExists", true);
-    
+
         if (rcs.ParentIsSet == null) {
         	$.Add("isSet", false);
 		} else {
 			$.Add("isSet", true);
 		}
-        
+
     }
-    
+
 	return "dummy"
 
 }
 
-function AddFilterAndRefresh(item, filterName) { 
-    
+function AddFilterAndRefresh(item, filterName) {
+
 	var q = new Query("SELECT F.Id FROM USR_Filters F WHERE F.Id = @item");
-    		
+
 	q.AddParameter("item", item);
-	
+
 	var res = q.ExecuteScalar();
-	
+
 	var flagName = "";
-	
+
 	if (res == null) {
-		
+
 		ins = new Query("INSERT INTO USR_Filters (Id, FilterType) VALUES (@item, @filterName)");
-		
+
 		ins.AddParameter("item", item);
 		ins.AddParameter("filterName", filterName);
-		
+
 		ins.Execute();
-		
+
 		flagName = "flag" + item.ToString();
-		
+
 		if (Variables.Exists(flagName)) {
-		
+
 			Variables[flagName].Visible = true;
-			
+
 		}
-		
+
 		if (item.IsFolder) {
-            
+
 			var chld = GetChildren(item);
-			
+
 			while (chld.Next()) {
-        
+
 				ins = new Query("INSERT INTO USR_Filters (Id, FilterType) VALUES (@item, @filterName)");
-				
+
 				ins.AddParameter("item", chld.Id);
 				ins.AddParameter("filterName", filterName);
-				
+
 				ins.Execute();
-				
+
 				flagName = "flag" + chld.Id.ToString();
-				
+
 				if (Variables.Exists(flagName)) {
-				
+
 					Variables[flagName].Visible = true;
-					
+
 				}
-				
+
 			}
-			
+
 		}
-				
+
 	} else {
-		
+
 		del = new Query("DELETE FROM USR_Filters Where Id = @item");
-		
+
 		del.AddParameter("item", item);
-				
+
 		del.Execute();
-		
+
 		flagName = "flag" + item.ToString();
-		
+
 		if (Variables.Exists(flagName)) {
-			
+
 			Variables[flagName].Visible = false;
-			
+
 		}
-		
+
 		if (item.IsFolder) {
-            
+
 			var chld = GetChildren(item);
-			
+
 			while (chld.Next()) {
-        
+
 				del = new Query("DELETE FROM USR_Filters Where Id = @item");
-				
+
 				del.AddParameter("item", chld.Id);
-						
+
 				del.Execute();
-				
+
 				flagName = "flag" + chld.Id.ToString();
-				
+
 				if (Variables.Exists(flagName)) {
-				
+
 					Variables[flagName].Visible = false;
-					
+
 				}
-            
+
 			}
-			
+
 		}
-		
+
 	}
-		
+
 }
 
 function GetChildren(parent) {
@@ -520,13 +522,13 @@ function GetChildren(parent) {
 
 
 function GetBrands(priceList, stock, screenContext) {
-    
+
 	var filterString = " ";
-    
+
 	filterString += AddFilter(filterString, "group_filter", "S.Owner", " AND ");
-    
+
     if (screenContext=="Order"){
-        
+
     	var q = new Query("SELECT DISTINCT SB.Id, SB.Description, USBF.Id AS BrandIsSet  " +
         		"FROM Document_PriceList_Prices SP " +
         		"JOIN Catalog_SKU S ON SP.SKU = S.Id " +
@@ -535,31 +537,31 @@ function GetBrands(priceList, stock, screenContext) {
         		"WHERE SP.Ref = @priceList " +
         		"AND CASE WHEN @isStockEmptyRef = 0 THEN SP.SKU IN(SELECT SS.Ref FROM Catalog_SKU_Stocks SS WHERE SS.Stock = @stock AND CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE SS.StockValue > 0 END) ELSE CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE S.CommonStock > 0 END END " +
         		filterString + " ORDER BY SB.Description");
-        
+
     	q.AddParameter("priceList", priceList);
         q.AddParameter("stock", stock);
-        
+
         isStockEmptyRef = stock.ToString() == DB.EmptyRef("Catalog_Stock").ToString() ? 1 : 0;
-        
-        q.AddParameter("isStockEmptyRef", isStockEmptyRef);        
+
+        q.AddParameter("isStockEmptyRef", isStockEmptyRef);
         q.AddParameter("NoStkEnbl", $.sessionConst.NoStkEnbl);
-        
+
         return q.Execute();
-    	    	    	
+
     }
-    
+
     if (screenContext=="Questionnaire"){
-    
+
     	var str = CreateCondition($.workflow.questionnaires, " Ref ");
         var q1 = new Query("SELECT DISTINCT B.Id, B.Description, USBF.Id AS BrandIsSet " +
-        		"FROM Catalog_SKU S " + 
+        		"FROM Catalog_SKU S " +
         		"JOIN Catalog_Brands B ON S.Brand=B.Id " +
         		"JOIN Catalog_SKUGroup G ON S.Owner=G.Id " +
-        		"LEFT JOIN USR_Filters USBF ON USBF.Id = B.Id " + 
+        		"LEFT JOIN USR_Filters USBF ON USBF.Id = B.Id " +
         		"WHERE S.ID IN (SELECT SKU FROM Document_Questionnaire_SKUs WHERE " + str + ") " + filterString + " ORDER BY B.Description");
-    
+
         return q1.Execute();
-    
+
     }
 
 }
@@ -572,18 +574,18 @@ function ShowDialog(control, val) {
 function CreateCondition(list, field) {
     var str = "";
     var notEmpty = false;
-    
-    for ( var quest in list) {    
+
+    for ( var quest in list) {
         if (String.IsNullOrEmpty(str)==false){
-            str = str + ", ";        
+            str = str + ", ";
         }
-        str = str + " '" + quest.ToString() + "' ";        
+        str = str + " '" + quest.ToString() + "' ";
         notEmpty = true;
     }
     if (notEmpty){
         str = field + " IN ( " + str  + ") ";
     }
-    
+
     return str;
 }
 

@@ -14,37 +14,37 @@
 			<c:HorizontalLayout CssClass="empty_caption_grid" />
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid">
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(contact_name, 1)">
 				<c:VerticalLayout>
 					<c:TextView Text="#contactName#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$contact.ContactName" Placeholder="-" CssClass="main_row" />
+					<c:EditText Value="$contact.ContactName" Placeholder="-" CssClass="main_row" Id="contact_name" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid">
-				<c:VerticalLayout>					
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(position, 1)">
+				<c:VerticalLayout>
 					<c:TextView Text="#position#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$contact.Position" Placeholder="-" CssClass="main_row" />
+					<c:EditText Value="$contact.Position" Placeholder="-" CssClass="main_row" Id="position "/>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="grid">
+			<c:DockLayout CssClass="grid" OnClickAction="$FocusOnEditText(phone_number, 1)">
 				<c:HorizontalLayout CssClass="phone">
 					<c:VerticalLayout  OnClickAction="$SavePhoneAndCall($contact)"></c:VerticalLayout>
-				</c:HorizontalLayout>				
+				</c:HorizontalLayout>
 				<c:VerticalLayout CssClass="partialW">
 					<c:TextView Text="#phone#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$contact.PhoneNumber" Placeholder="-" Keyboard="numeric" CssClass="main_row" />
+					<c:EditText Value="$contact.PhoneNumber" Placeholder="-" Keyboard="numeric" CssClass="main_row" Id="phone_number" />
 				</c:VerticalLayout>
 			</c:DockLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid">
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(email, 1)">
 				<c:VerticalLayout>
 					<c:TextView Text="#email#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$contact.Email" Placeholder="-" CssClass="main_row" />
+					<c:EditText Value="$contact.Email" Placeholder="-" CssClass="main_row" Id="email" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

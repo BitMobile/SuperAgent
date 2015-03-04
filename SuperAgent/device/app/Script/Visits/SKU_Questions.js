@@ -85,7 +85,6 @@ function GetSKUsFromQuesionnaires(search) {
 	
 	var q = new Query();
 	q.Text="SELECT DISTINCT S.SKU, S.SKUDescription " +
-			", MAX(AMS.BaseUnitQty) AS BaseUnitQty" + 
 			", COUNT(DISTINCT S.Question) AS Total " +
 			", COUNT(S.Answer) AS Answered " +
 			", MAX(CAST (Obligatoriness AS INT)) AS Obligatoriness " +
@@ -94,14 +93,17 @@ function GetSKUsFromQuesionnaires(search) {
 				" AND U1.SKU=S.SKU AND Obligatoriness = 1 " +
 				" AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +
 				" WHERE SKU=S.SKU AND (Answer='Yes' OR Answer='Да')))) AS ObligateredLeft " +
-			"FROM USR_SKUQuestions S " + filterJoin +
-			"LEFT JOIN Catalog_AssortmentMatrix_SKUs AMS ON S.SKU=AMS.SKU " +
-			"LEFT JOIN Catalog_AssortmentMatrix_Outlets AMO ON AMS.Ref = AMO.Ref AND AMO.Outlet = @outlet " + 
+			", (SELECT MAX(AMS.BaseUnitQty) FROM Catalog_AssortmentMatrix_SKUs AMS " +
+				" JOIN Catalog_AssortmentMatrix_Outlets AMO ON AMS.Ref = AMO.Ref AND AMO.Outlet = @outlet " +
+				" WHERE S.SKU=AMS.SKU) AS BaseUnitQty " +
+				
+			"FROM USR_SKUQuestions S " + filterJoin +		
+			
 			"WHERE Single=@single AND " + searchString + filterString + 
 			" (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +
 				"WHERE (Answer='Yes' OR Answer='Да')))" +
 			"GROUP BY S.SKU, S.SKUDescription " +
-			" ORDER BY AMS.BaseUnitQty DESC, S.SKUDescription "; 
+			" ORDER BY BaseUnitQty DESC, S.SKUDescription "; 
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	q.AddParameter("single", single);	
 	q.AddParameter("snapshot", DB.Current.Constant.DataType.Snapshot);

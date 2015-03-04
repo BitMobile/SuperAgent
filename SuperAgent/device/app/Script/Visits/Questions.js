@@ -175,12 +175,12 @@ function AssignQuestionValue(control, question) {
 
 function AssignAnswer(control, question, answer) {
 	if (control != null) {
-		if (control.Text == "—")
-			answer = "";
-		else
-			answer = control.Text;
+		answer = control.Text;		
 	} else
 		answer = answer.ToString();
+	if (answer == "—")
+		answer = null;
+	
 	var q =	new Query("UPDATE USR_Questions SET Answer=@answer, AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question");
 	q.AddParameter("answer", answer);
 	q.AddParameter("question", question);

@@ -1,5 +1,4 @@
-﻿var skuOnScreen;
-var regularAnswers;
+﻿var regularAnswers;
 var parentId;
 var obligateredLeft;
 var regular_answ;
@@ -21,7 +20,6 @@ var doRefresh;
 
 function OnLoading(){
 	doRefresh = false;
-	skuOnScreen = null;
 	obligateredLeft = parseInt(0);	
 	SetListType();
 	if (String.IsNullOrEmpty(setScroll))
@@ -260,16 +258,16 @@ function GetSnapshotText(text) {
 		return Translate["#snapshotAttached#"];
 }
 
-function GoToQuestionAction(control, answerType, question, sku, editControl, currAnswer, currSKU) {	
+function GoToQuestionAction(control, answerType, question, sku, editControl, currAnswer) {	
 	
-	editControl = Variables[editControl];	
+	editControl = Variables[editControl];
+	curr_sku = sku;
 	
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.ValueList).ToString()) {
 		var q = new Query();
 		q.Text = "SELECT Value, Value FROM Catalog_Question_ValueList WHERE Ref=@ref";
 		q.AddParameter("ref", question);
-		Dialogs.DoChoose(q.Execute(), skuValue, "Answer", editControl, DialogCallBack);
-		//ValueListSelect(skuValue, "Answer", q.Execute(), editControl);
+		Dialogs.DoChoose(q.Execute(), question, null, editControl, DialogCallBack);
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.Snapshot).ToString()) {
@@ -285,28 +283,26 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {
-		Dialogs.ChooseDateTime(skuValue, "Answer", editControl, DialogCallBack);
+		Dialogs.ChooseDateTime(question, null, editControl, DialogCallBack);
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.Boolean).ToString()) {
 		bool_answer = currAnswer;
-		curr_item = skuValue;
-		curr_sku = currSKU;
-		Dialogs.ChooseBool(skuValue, "Answer", editControl, DialogCallBack);
+		curr_item = sku;
+		Dialogs.ChooseBool(question, null, editControl, DialogCallBack);
 	}
 	
 	setScroll = false;
 }
 
-function AssignAnswer(control, question, sku) {
-	var answer;
+function AssignAnswer(control, question, sku, answer) {
 	if (control != null) {
-		if (control.Text == "—")
-			answer = "";
-		else
-			answer = control.Text;
+		answer = control.Text;		
 	} else
 		answer = answer.ToString();
+	if (answer == "—")
+		answer = null;
+	
 	var q =	new Query("UPDATE USR_SKUQuestions SET Answer=@answer, AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question AND SKU=@sku");
 	q.AddParameter("answer", answer);
 	q.AddParameter("sku", sku);
@@ -368,44 +364,10 @@ function ClearIndex() {
 
 //------------------------------internal-----------------------------------
 
-function DialogCallBack(state, args){
-	
-	AssignDialogValue(state, args);
-	
-	var key = args.Result;
-	
-	if ((bool_answer=='Yes' || bool_answer=='Да') && (key=='No' || key=='Нет')){
-		GetChildQuestions();
-		var q3 = new Query("SELECT A.Id FROM Catalog_Outlet_AnsweredQuestions A " +
-				" JOIN Document_Questionnaire_Schedule SC ON A.Questionaire=SC.Ref " +
-				" WHERE A.Ref=@outlet AND A.SKU=@sku AND A.Question=@question AND DATE(A.AnswerDate)>=DATE(SC.BeginAnswerPeriod) " +
-				" AND (DATE(A.AnswerDate)<=DATE(SC.EndAnswerPeriod) OR A.AnswerDate='0001-01-01 00:00:00')");
-		q3.AddParameter("outlet", $.workflow.outlet);
-		q3.AddParameter("question", curr_item.Question);
-		q3.AddParameter("sku", curr_sku);
-		var items = q3.Execute();
-		
-		while (items.Next()){
-			var item = items.Id;
-			item = item.GetObject();
-			item.Answer = Translate["#NO#"];
-			item.Save();
-		}
-	}
-	if ((bool_answer=='Yes' || bool_answer=='Да') && key==null){
-		GetChildQuestions();
-		var q3 = new Query("SELECT A.Id FROM Catalog_Outlet_AnsweredQuestions A " +
-				" JOIN Document_Questionnaire_Schedule SC ON A.Questionaire=SC.Ref " +
-				" WHERE A.Ref=@outlet AND A.SKU=@sku AND A.Question=@question AND DATE(A.AnswerDate)>=DATE(SC.BeginAnswerPeriod) " +
-				" AND (DATE(A.AnswerDate)<=DATE(SC.EndAnswerPeriod) OR A.AnswerDate='0001-01-01 00:00:00')");
-		q3.AddParameter("outlet", $.workflow.outlet);
-		q3.AddParameter("question", curr_item.Question);
-		q3.AddParameter("sku", curr_sku);
-		var items = q3.Execute();
-		while (items.Next()){
-			DB.Delete(items.Id);
-		}
-	}
+function DialogCallBack(state, args){	
+	var entity = state[0];
+	AssignAnswer(null, entity, curr_sku, args.Result);
+
 	Workflow.Refresh([$.search]);
 }
 	

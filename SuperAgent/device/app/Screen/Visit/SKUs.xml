@@ -124,7 +124,7 @@
 									<c:HorizontalLayout CssClass="required_side_gr"></c:HorizontalLayout>
 								</s:If>
 							</s:Else>
-							<c:VerticalLayout OnClick="$GoToQuestionAction($child.AnswerType, $child.Question, $sku.SKU, control{$indexCh}, $child.AnswerOutput, $sku.SKU)">
+							<c:VerticalLayout OnClick="$GoToQuestionAction($child.AnswerType, $child.Question, $sku.SKU, control{$indexCh}, $child.AnswerOutput)">
 								<c:TextView Text="$child.Description" CssClass="description_row"></c:TextView>
 								<s:If Test="$child.IsInputField==1">
 									<c:EditText Id="control{$indexCh}" Text="$child.AnswerOutput" Placeholder="—" OnChange="$AssignAnswer($child.Question, $sku.SKU)" OnLostFocus="$RefreshScreen($search)" Keyboard="$child.KeyboardType" CssClass="answer_main_row"></c:EditText>

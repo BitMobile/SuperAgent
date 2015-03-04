@@ -6,14 +6,17 @@ caps_summary	SUMMARY
 new			New
 client		Client
 clients		Clients
+newClient	New client
 main		MAIN
 mainInfo	MAIN INFORMATION
+mainData	MAIN DATA
 additionally	ADDITIONALLY
  todo		ToDo
 stock		Stock
 schedule	Schedule
 order		Order
 visit		Visit
+newVisit	New visit
 visits		Visits
 incompletedVisits	INCOMPLETED VISITS
 completedVisits		COMPLETED VISITS
@@ -173,6 +176,7 @@ fillInVisitReason	Reason of visit should be filled
 visitReason	Visit reason
 debt	Debt
 orderInfo	ORDER INFORMATION
+orderInfoSmall	Order information
 visitTotal	Visit total
 synchronizationData	SYNCHRONIZATION OF DATA
 synchronizationPhoto	SYNCHRONIZATION OF PHOTOS
@@ -200,6 +204,8 @@ Synchronization_has_not_been_performed	Synchronization has not been performed
 delete	Delete
 details		Details
 contacts	Contacts
+contact		Contact
+newContact	New contact
 legal_name	Legal name
 legal_address	Legal address
 ownership		Ownership type
@@ -248,3 +254,6 @@ notAvailable	Snapshot isnt't available
 clearValue		Clear value
 setDate			Set date
 choose_action	Choose action:
+skuAdd			Adding SKU
+skuDetail		Detail
+skuList			LIST OF SKUs

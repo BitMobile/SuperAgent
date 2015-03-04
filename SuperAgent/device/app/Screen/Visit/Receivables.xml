@@ -62,6 +62,8 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
+			<c:HorizontalLayout CssClass="end_of_block" />
+
 			<c:HorizontalLayout CssClass="caption_grid">
 				<c:TextView Text="#byDocs#:"></c:TextView>
 			</c:HorizontalLayout>
@@ -92,6 +94,8 @@
 				<c:HorizontalLine />
 
 			</s:Iterator>
+
+			<c:HorizontalLayout CssClass="end_of_block" />
 
 			<c:HorizontalLayout CssClass="caption_grid">
 				<c:TextView Text="#mainInfo#:"></c:TextView>

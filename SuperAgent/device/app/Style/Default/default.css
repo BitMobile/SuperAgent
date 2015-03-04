@@ -79,6 +79,7 @@ MemoEdit {
 .top_navigator {
 	height: 6.7mm;
 	dock-align: top;
+	background-color: #ffffff;
 }
 
 .top_navigator Button {
@@ -100,7 +101,7 @@ MemoEdit {
 	horizontal-align: central;
 	text-align: center;
 	color: #000000;
-	font: 38% Arial;
+	font: 38% Arial-BoldMT;
 	selected-color: #D3D3D3;
 }
 
@@ -466,7 +467,7 @@ MemoEdit {
 	height: 100%;
 	width: 100%;
 	vertical-align: central;
-	font: 45% arial;
+	font: 37% arial;
 }
 
 .half_grid TextView {

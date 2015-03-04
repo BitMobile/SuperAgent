@@ -53,6 +53,8 @@
 
 			</s:Iterator>
 
+			<c:HorizontalLayout CssClass="end_of_block" />
+
 			<c:HorizontalLayout CssClass="caption_grid">
 				<c:TextView Text="#executedtask#:"></c:TextView>
 			</c:HorizontalLayout>

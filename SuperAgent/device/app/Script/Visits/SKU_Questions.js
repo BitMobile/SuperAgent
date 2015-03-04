@@ -260,9 +260,7 @@ function GetSnapshotText(text) {
 
 function GoToQuestionAction(control, answerType, question, sku, editControl, currAnswer, currSKU) {	
 	
-	editControl = Variables[editControl];
-
-	var skuValue = CreateVisitSKUValueIfNotExists(editControl, sku, question, 'false');
+	editControl = Variables[editControl];	
 	
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.ValueList).ToString()) {
 		var q = new Query();
@@ -273,6 +271,7 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.Snapshot).ToString()) {
+		var skuValue = CreateVisitSKUValueIfNotExists(editControl, sku, question, 'false');
 		skuValueGl = skuValue;
 		var listChoice = new List;
 		listChoice.Add([1, Translate["#makeSnapshot#"]]);
@@ -297,7 +296,21 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 	setScroll = false;
 }
 
-
+function AssignAnswer(control, question, sku) {
+	var answer;
+	if (control != null) {
+		if (control.Text == "—")
+			answer = "";
+		else
+			answer = control.Text;
+	} else
+		answer = answer.ToString();
+	var q =	new Query("UPDATE USR_SKUQuestions SET Answer=@answer, AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question AND SKU=@sku");
+	q.AddParameter("answer", answer);
+	q.AddParameter("sku", sku);
+	q.AddParameter("question", question);
+	q.Execute();
+}
 
 function GetCameraObject(entity) {
 	FileSystem.CreateDirectory("/private/document.visit");

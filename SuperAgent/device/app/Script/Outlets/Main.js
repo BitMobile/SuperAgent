@@ -167,7 +167,7 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 				listChoice.Add([0, Translate["#addFromGallery#"]]);
 			if (String.IsNullOrEmpty(parameterValue.Value)==false)
 				listChoice.Add([2, Translate["#clearValue#"]]);
-			Gallery.AddSnapshot(outlet, parameterValue, SaveAtOutelt, listChoice, "catalog.outlet");
+			Images.AddSnapshot(outlet, parameterValue, SaveAtOutelt, listChoice, "catalog.outlet");
 			parameterValueC = parameterValue;
 		}
 		if (typeDescription == "String" || typeDescription == "Integer" || typeDescription == "Decimal") {
@@ -242,7 +242,7 @@ function DeleteImage(state, args) {
 
 function AddSnapshot(control, outlet) {
 	if ($.sessionConst.galleryChoose)
-		Gallery.AddSnapshot(outlet, null, GalleryHandler, [[0, Translate["#addFromGallery#"]], [1, Translate["#makeSnapshot#"]]], "catalog.outlet");
+		Images.AddSnapshot(outlet, null, GalleryHandler, [[0, Translate["#addFromGallery#"]], [1, Translate["#makeSnapshot#"]]], "catalog.outlet");
 	else{
 		var pictId = GetCameraObject(outlet);
 		var path = GetPrivateImagePath("catalog.outlet", outlet, pictId, ".jpg");

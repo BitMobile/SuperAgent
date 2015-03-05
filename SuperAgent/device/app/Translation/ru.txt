@@ -257,3 +257,7 @@ choose_action	Выберите действие:
 skuAdd			Добавление номенклатуры
 skuDetail		Подробно
 skuList			СПИСОК ТОВАРОВ
+logout			Выход
+logoutQuery		При выходе будут удалены все данные
+cancel			Отменить
+logoutConfirm	Выйти

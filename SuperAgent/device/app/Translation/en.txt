@@ -257,3 +257,7 @@ choose_action	Choose action:
 skuAdd			Adding SKU
 skuDetail		Detail
 skuList			LIST OF SKUs
+logout			Logout
+logoutQuery		When you exit will delete all data
+cancel			Cancel
+logoutConfirm	Logout

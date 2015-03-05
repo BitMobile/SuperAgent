@@ -66,6 +66,14 @@
 				</c:HorizontalLayout>
 			</c:DockLayout>
 			<c:HorizontalLine />
+			
+			<c:DockLayout OnClickAction="$LogoutQuery()">
+				<c:HorizontalLayout>
+					<c:Image CssClass="btn_logout" />
+					<c:TextView Text="#logout#" />
+				</c:HorizontalLayout>
+			</c:DockLayout>
+			<c:HorizontalLine />
 
 		</c:VerticalLayout>
 		<c:VerticalLayout>

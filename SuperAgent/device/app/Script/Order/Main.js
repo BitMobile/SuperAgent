@@ -216,6 +216,7 @@ function SetDeliveryDateDialog(order, control, executedOrder) {
 //}
 
 function OrderBack() {
+	
 	if ($.workflow.name == "CreateOrder") {
 	
 		Workflow.Rollback();
@@ -244,9 +245,17 @@ function OrderBack() {
 			
 		} else {
 			
-			del = new Query("DELETE FROM USR_Filters");
+			var checkDropF = new Query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='USR_Filters'");
 			
-			del.Execute();
+			var checkDropFResult = checkDropF.ExecuteScalar();
+			
+			if (checkDropFResult == 1) {
+			
+				var dropF = new Query("DELETE FROM USR_Filters");
+				 
+				dropF.Execute();
+				
+			}
 			
 			Workflow.Back();
 		

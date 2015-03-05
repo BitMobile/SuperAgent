@@ -97,11 +97,11 @@ MemoEdit {
 	width: 100%;
 	height: 100%;
 	margin-left: 0%;
-	padding-top: 25%;
+	padding-top: 26%;
 	horizontal-align: central;
 	text-align: center;
 	color: #000000;
-	font: 38% Arial-BoldMT;
+	font: 39.5% arial;
 	selected-color: #D3D3D3;
 }
 

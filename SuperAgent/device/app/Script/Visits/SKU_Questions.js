@@ -105,8 +105,8 @@ function GetSKUsFromQuesionnaires(search) {
 			"FROM USR_SKUQuestions S " + filterJoin +		
 			
 			"WHERE Single=@single AND " + searchString + filterString + 
-			" (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +
-				"WHERE (Answer='Yes' OR Answer='Да')))" +
+			" (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions SS " +
+				"WHERE SS.SKU=S.SKU AND (SS.Answer='Yes' OR SS.Answer='Да')))" +
 			"GROUP BY S.SKU, S.SKUDescription " +
 			" ORDER BY BaseUnitQty DESC, S.SKUDescription "; 
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));

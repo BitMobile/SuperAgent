@@ -108,7 +108,7 @@
 						</s:If>
 						<c:TextView Text="{$sku.Answered} #of# {$sku.Total}" CssClass="description_row" />
 					</c:DockLayout>
-					<c:TextView Text="$sku.SKUDescription" CssClass="main_row"></c:TextView>
+					<c:TextView Text="{$sku.SKUDescription}, {$sku.Obligatoriness}, {$sku.ObligateredLeft}" CssClass="main_row"></c:TextView>
 				</c:DockLayout>
 				<c:HorizontalLine />
 				<s:If Test="$ShowChilds($index)">

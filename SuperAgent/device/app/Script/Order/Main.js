@@ -198,7 +198,7 @@ function CheckIfEmptyAndForward(order, wfName) {
 		else
 			Workflow.Action("SkipEncashment", []);
 	}
-		
+
 }
 
 function SaveOrder(order) {
@@ -216,49 +216,49 @@ function SetDeliveryDateDialog(order, control, executedOrder) {
 //}
 
 function OrderBack() {
-	
+
 	if ($.workflow.name == "CreateOrder") {
-	
+
 		Workflow.Rollback();
-	
+
 	} else {
-		
+
 		if ($.workflow.skipSKUs) {
-			
+
 			if ($.workflow.skipQuestions) {
-				
+
 				if ($.workflow.skipTasks) {
-				
+
 					Workflow.BackTo("Outlet");
-				
+
 				} else {
-					
+
 					Workflow.BackTo("Visit_Tasks");
-					
+
 				}
-				
+
 			} else {
-		
+
 				Workflow.BackTo("Questions");
-		
+
 			}
-			
+
 		} else {
-			
+
 			var checkDropF = new Query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='USR_Filters'");
-			
+
 			var checkDropFResult = checkDropF.ExecuteScalar();
-			
+
 			if (checkDropFResult == 1) {
-			
+
 				var dropF = new Query("DELETE FROM USR_Filters");
-				 
+
 				dropF.Execute();
-				
+
 			}
-			
+
 			Workflow.Back();
-		
+
 		}
 	}
 
@@ -277,9 +277,9 @@ function DeleteItem(item, executedOrder) {
 }
 
 function EditIfNew(order, param1, param2, param3) {
-	var orderItem = param3.GetObject();	
+	var orderItem = param3.GetObject();
 	if (order.IsNew()){
-		if (Variables.Exists("AlreadyAdded") == false) 
+		if (Variables.Exists("AlreadyAdded") == false)
 			Variables.AddGlobal("AlreadyAdded", true);
 		$.AddGlobal("itemFields", new Dictionary());
 		$.itemFields.Add("Qty", orderItem.Qty);
@@ -288,7 +288,7 @@ function EditIfNew(order, param1, param2, param3) {
 		$.itemFields.Add("Total", orderItem.Total);
 		$.itemFields.Add("Units", orderItem.Units);
 		$.itemFields.Add("Feature", orderItem.Feature);
-		Workflow.Action("Edit", [ param1, param2, param3 ]);	
+		Workflow.Action("Edit", [ param1, param2, param3 ]);
 	}
 }
 
@@ -325,22 +325,60 @@ function PriceListSelect(entity, attribute, table, control) {
 	return;
 }
 
-function DoPriceListCallback(state, args) {	
-	if ((state[0][state[1]]).ToString()==(args.Result).ToString()){
+function DoPriceListCallback(state, args) {
+	var order = state[0];
+	var oldPriceList = order[state[1]];
+	if ((oldPriceList.ToString()==(args.Result).ToString())){
 		return;
 	}
 
-	var entity = AssignDialogValue(state, args); 
-	
-	var control = state[2];
-	control.Text = args.Result.Description;
-	ReviseSKUs(entity, args.Result, entity.Stock);
+	var entity = AssignDialogValue(state, args);
+	var newPriceList = entity.PriceList;
+
+	if (OrderWillBeChanged(entity, newPriceList)) {
+		Dialog.Ask(Translate["#skuWillBeDeleted#"], PositiveCallback, [entity, newPriceList, state[2]]);
+	}
+	else {
+		var control = state[2];
+		control.Text = args.Result.Description;
+		ReviseSKUs(entity, args.Result, entity.Stock);
+	}
 	return;
+}
+
+function PositiveCallback(state, args) {
+	var order = state[0];
+	var priceList = state[1];
+	var control = state[2];
+	control.Text = priceList.Description;
+	ReviseSKUs(order, priceList, order.Stock);
+
+	// Dialog.Debug("0: " + state[0]);
+	// Dialog.Debug("1: " + state[1]);
+	// Dialog.Debug("2: " + state[2]);
+}
+
+function OrderWillBeChanged(order, newPriceList) {
+	var query = new Query(
+		"SELECT DISTINCT                                \
+		    O.SKU																				\
+		FROM                                            \
+		    Document_Order_SKUs O                       \
+				LEFT JOIN Document_PriceList_Prices P       \
+				    ON O.SKU = P.SKU                        \
+						AND P.Ref = @priceList                  \
+		WHERE																						\
+				O.Ref = @order                              \
+			  AND P.Ref IS NULL                           ");
+	query.AddParameter("order", order);
+	query.AddParameter("priceList", newPriceList);
+	count = query.ExecuteCount();
+	return count > 0;
 }
 
 function StockSelectHandler(state, args) {
 	var entity = AssignDialogValue(state, args);
-	
+
 	var control = state[2];
 	if (args.Result.EmptyRef())
 		control.Text = Translate["#allStocks#"];

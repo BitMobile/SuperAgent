@@ -352,10 +352,6 @@ function PositiveCallback(state, args) {
 	var control = state[2];
 	control.Text = priceList.Description;
 	ReviseSKUs(order, priceList, order.Stock);
-
-	// Dialog.Debug("0: " + state[0]);
-	// Dialog.Debug("1: " + state[1]);
-	// Dialog.Debug("2: " + state[2]);
 }
 
 function OrderWillBeChanged(order, newPriceList) {

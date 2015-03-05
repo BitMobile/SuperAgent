@@ -67,12 +67,18 @@ function GetSKUsFromQuesionnaires(search) {
 	if (regularAnswers)	
 		single = 0;
 	
-	SetIndicators();
+	SetIndicators();	
 	
-
+	//getting left obligated
+	var q = new Query("SELECT DISTINCT S.Question, S.Description, S.SKU " +
+			"FROM USR_SKUQuestions S " +
+			"WHERE (RTRIM(Answer)='' OR S.Answer IS NULL) AND S.Obligatoriness=1 " +
+			"AND (S.ParentQuestion=@emptyRef OR S.ParentQuestion IN (SELECT SS.Question FROM USR_SKUQuestions SS " +
+				"WHERE SS.SKU=S.SKU AND (SS.Answer='Yes' OR SS.Answer='Да')))");
+	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
+	obligateredLeft = q.ExecuteCount();
 	
-	obligateredLeft = 0;
-	
+	//getting SKUs list
 	var searchString = "";
 	if (String.IsNullOrEmpty(search) == false)
 		searchString = " Contains(SKUDescription, '" + search + "') AND ";
@@ -81,7 +87,7 @@ function GetSKUsFromQuesionnaires(search) {
 	var filterJoin = "";
 	filterString += AddFilter(filterString, "group_filter", "OwnerGroup", " AND ");
 	filterString += AddFilter(filterString, "brand_filter", "Brand", " AND ");
-	
+		
 	var q = new Query();
 	q.Text="SELECT DISTINCT S.SKU, S.SKUDescription " +
 			", COUNT(DISTINCT S.Question) AS Total " +
@@ -110,6 +116,7 @@ function GetSKUsFromQuesionnaires(search) {
 	q.AddParameter("outlet", $.workflow.outlet);
 	
 	return q.Execute();
+	//
 }
 
 function ObligateredAreAnswered(obligatoriness, history, current, oblTotal) {
@@ -126,14 +133,25 @@ function ObligateredAreAnswered(obligatoriness, history, current, oblTotal) {
 function SetIndicators() {
 	regular_total = CalculateTotal('0');
 	single_total = CalculateTotal('1');		
-	regular_answ = 0;//CalculateTotal(str, '0', true);
-	single_answ = 0;//CalculateTotal(str, '1', true);
+	regular_answ = CalculateQty('0');
+	single_answ = CalculateQty('1');
 }
 
 function CalculateTotal(single) {
 	var q = new Query("SELECT COUNT(U1.Question) FROM USR_SKUQuestions U1 WHERE U1.Single=@single " +
 	" AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +
 	" WHERE (Answer='Yes' OR Answer='Да')))");
+	q.AddParameter("single", single);
+	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
+	return q.ExecuteScalar();
+}
+
+function CalculateQty(single) {
+	var q = new Query("SELECT COUNT(U1.Answer) AS Answered " +
+			"FROM USR_SKUQuestions U1 " +
+			"WHERE U1.Single=@single " +
+			"AND (ParentQuestion=@emptyRef OR ParentQuestion IN " +
+				"(SELECT Question FROM USR_SKUQuestions WHERE (Answer='Yes' OR Answer='Да')))");
 	q.AddParameter("single", single);
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	return q.ExecuteScalar();

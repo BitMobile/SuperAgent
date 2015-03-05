@@ -141,7 +141,7 @@ locationSetFailed	Location set is failed.
 saveChanges	Save changes?
 map			Map
 showOnMap	Show on map
-no_visitPlans	No visits to display 
+no_visitPlans	No visits to display
 current		Current
 couldnt_be_cleaned	Field couldn't be cleaned
 priceList	Price list
@@ -257,3 +257,4 @@ choose_action	Choose action:
 skuAdd			Adding SKU
 skuDetail		Detail
 skuList			LIST OF SKUs
+skuWillBeDeleted	Part of SKUs will be removed from order. Continue?

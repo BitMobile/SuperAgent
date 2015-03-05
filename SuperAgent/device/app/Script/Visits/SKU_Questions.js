@@ -11,6 +11,7 @@ var bool_answer;
 var curr_item;
 var curr_sku;
 var skuValueGl;
+var questionValueGl;
 var doRefresh;
 
 //
@@ -220,7 +221,7 @@ function CreateItemAndShow(control, sku, index) {
 
 
 
-function CreateVisitSKUValueIfNotExists(control, sku, question, isInput) {
+function CreateVisitSKUValueIfNotExists(controlText, sku, question, isInput) {
 	
 //	if (isInput=='true' && (control.Text=="—" || TrimAll(control.Text)==""))
 //		return null;
@@ -242,7 +243,7 @@ function CreateVisitSKUValueIfNotExists(control, sku, question, isInput) {
 	}
 	else
 		skuValue = skuValue.GetObject();
-	skuValue.Answer = control.Text;
+	skuValue.Answer = controlText;
 	skuValue.AnswerDate = DateTime.Now;
 	skuValue.Save();
 	
@@ -271,15 +272,20 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.Snapshot).ToString()) {
-		var skuValue = CreateVisitSKUValueIfNotExists(editControl, sku, question, 'false');
-		skuValueGl = skuValue;
+		var controlText;
+		if (editControl.Text=="—")
+			controlText = null;
+		else
+			controlText = editControl.Text;
+		skuValueGl = sku;
+		questionValueGl = question;
 		var listChoice = new List;
 		listChoice.Add([1, Translate["#makeSnapshot#"]]);
 		if ($.sessionConst.galleryChoose)
 			listChoice.Add([0, Translate["#addFromGallery#"]]);
-		if (String.IsNullOrEmpty(skuValue.Answer)==false)
+		if (String.IsNullOrEmpty(currAnswer)==false)
 			listChoice.Add([2, Translate["#clearValue#"]]);
-		Gallery.AddSnapshot($.workflow.visit, skuValue, SaveAtVisit, listChoice, "document.visit");
+		AddSnapshot($.workflow.visit, null, GalleryCallBack, listChoice, "document.visit");
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {
@@ -296,10 +302,13 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 }
 
 function AssignAnswer(control, question, sku, answer) {
+	
 	if (control != null) {
 		answer = control.Text;		
-	} else
-		answer = answer.ToString();
+	} else{
+		if (answer!=null)
+			answer = answer.ToString();
+	}
 	if (answer == "—")
 		answer = null;
 	
@@ -370,7 +379,12 @@ function DialogCallBack(state, args){
 
 	Workflow.Refresh([$.search]);
 }
-	
+
+function GalleryCallBack(state, args) {
+	AssignAnswer(null, questionValueGl, skuValueGl, state[1]);
+	Workflow.Refresh([]);
+}
+
 function GetChildQuestions() {
 	var str = CreateCondition($.workflow.questionnaires, " Q.Ref ");
 	var q = new Query("SELECT DISTINCT V.Id, Q.ChildDescription FROM Document_Visit_SKUs V " +
@@ -398,4 +412,35 @@ function DeleteAnswers(recordset) {
 	while (recordset.Next()){
 		DB.Delete(recordset.Id);
 	}	
+}
+
+//-------------------------------Gallery handler-----------------------------------
+
+function AddSnapshot(objectRef, valueRef, func, listChoice, objectType) {
+	Dialog.Choose(Translate["#choose_action#"], listChoice, AddSnapshotHandler, [objectRef,func,valueRef,objectType]);
+}
+
+function AddSnapshotHandler(state, args) {
+	var objRef = state[0];
+	var func = state[1];
+	var valueRef = state[2];
+	var objectType = state[3];
+
+	if (parseInt(args.Result)==parseInt(0)){
+		var pictId = GenerateGuid();
+		var path = GetPrivateImagePath(objectType, objRef, pictId, ".jpg");
+		Gallery.Size = 300;
+		Gallery.Copy(path, func, [objRef, pictId]);
+	}
+
+	if (parseInt(args.Result)==parseInt(1)){
+		var pictId = GetCameraObject(objRef);
+		var path = GetPrivateImagePath(objectType, objRef, pictId, ".jpg");
+		Camera.MakeSnapshot(path, 300, func, [ objRef, pictId]);
+	}
+
+	if (parseInt(args.Result)==parseInt(2)){
+		AssignAnswer(null, questionValueGl, skuValueGl, null);
+		Workflow.Refresh([]);
+	}
 }

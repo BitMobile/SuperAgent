@@ -147,15 +147,19 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.Snapshot).ToString()) {
-		var question = CreateVisitQuestionValueIfNotExists(questionItem, Variables[control].Text, true);
-		questionGl = question;
+		var controlText;
+		if (Variables[control].Text=="—")
+			controlText = null;
+		else
+			controlText = Variables[control].Text;
+		questionGl = questionItem;
 		var listChoice = new List;
 		listChoice.Add([1, Translate["#makeSnapshot#"]]);
 		if ($.sessionConst.galleryChoose)
 			listChoice.Add([0, Translate["#addFromGallery#"]]);
-		if (String.IsNullOrEmpty(question.Answer)==false)
+		if (String.IsNullOrEmpty(currAnswer)==false)
 			listChoice.Add([2, Translate["#clearValue#"]]);
-		AddSnapshot(visit, question, GalleryCallBack, listChoice, "document.visit");
+		AddSnapshot(visit, null, GalleryCallBack, listChoice, "document.visit");
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {
@@ -174,18 +178,24 @@ function AssignQuestionValue(control, question) {
 }
 
 function AssignAnswer(control, question, answer) {
+	
+	Dialog.Debug(question);
+	Dialog.Debug(answer);
+	
 	if (control != null) {
 		answer = control.Text;		
-	} else
-		answer = answer.ToString();
+	} else{
+		if (answer!=null)
+			answer = answer.ToString();
+	}
 	if (answer == "—")
-		answer = null;
+		answer = null;		
 	
 	var q =	new Query("UPDATE USR_Questions SET Answer=@answer, AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question");
 	q.AddParameter("answer", answer);
 	q.AddParameter("question", question);
 	q.Execute();
-}
+} 
 
 function DialogCallBack(state, args) {
 	var entity = state[0];
@@ -195,8 +205,7 @@ function DialogCallBack(state, args) {
 }
 
 function GalleryCallBack(state, args) {
-	var question = questionGl;
-	AssignAnswer(null, question["Question"], state[1]);
+	AssignAnswer(null, questionGl, state[1]);
 	Workflow.Refresh([]);
 }
 
@@ -208,6 +217,7 @@ function GetCameraObject(entity) {
 	var path = String.Format("/private/document.visit/{0}/{1}.jpg", entity.Id, guid);
 	Camera.Size = 300;
 	Camera.Path = path;
+	return guid;
 }
 
 
@@ -236,7 +246,7 @@ function AddSnapshot(objectRef, valueRef, func, listChoice, objectType) {
 function AddSnapshotHandler(state, args) {
 	var objRef = state[0];
 	var func = state[1];
-	var valueRef = state[2];
+	//var valueRef = state[2];
 	var objectType = state[3];
 
 	if (parseInt(args.Result)==parseInt(0)){
@@ -249,11 +259,12 @@ function AddSnapshotHandler(state, args) {
 	if (parseInt(args.Result)==parseInt(1)){
 		var pictId = GetCameraObject(objRef);
 		var path = GetPrivateImagePath(objectType, objRef, pictId, ".jpg");
+		Dialog.Debug(path);
 		Camera.MakeSnapshot(path, 300, func, [ objRef, pictId]);
 	}
 
 	if (parseInt(args.Result)==parseInt(2)){
-		AssignAnswer(null, questionGl["Question"], "");
+		AssignAnswer(null, questionGl, null);
 		Workflow.Refresh([]);
 	}
 }

@@ -258,3 +258,8 @@ skuAdd			Добавление номенклатуры
 skuDetail		Подробно
 skuList			СПИСОК ТОВАРОВ
 skuWillBeDeleted	Часть товаров из заказа будет удалена. Продолжить?
+
+logout			Выход
+logoutQuery		При выходе будут удалены все данные
+cancel			Отменить
+logoutConfirm	Выйти

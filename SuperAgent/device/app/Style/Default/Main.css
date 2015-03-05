@@ -148,6 +148,10 @@ svl vl {
 	background-image: url(Menu_09.png);
 }
 
+.btn_logout {
+	background-image: url(Menu_10.png);
+}
+
 .grid {
 	height: 45%;
 	width: auto;

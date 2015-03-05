@@ -258,3 +258,8 @@ skuAdd			Adding SKU
 skuDetail		Detail
 skuList			LIST OF SKUs
 skuWillBeDeleted	Part of SKUs will be removed from order. Continue?
+
+logout			Logout
+logoutQuery		When you exit will delete all data
+cancel			Cancel
+logoutConfirm	Logout

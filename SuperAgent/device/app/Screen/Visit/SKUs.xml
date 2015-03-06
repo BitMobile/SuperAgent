@@ -22,7 +22,7 @@
 				</c:DockLayout>
 			</s:If>
 			<s:Else>
-				<c:DockLayout  CssClass="btn_forward" OnEvent="Forward" OnClickAction="$DoForward()">
+				<c:DockLayout  CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CountResultAndForward()">
 					<c:TextView Id="btnForward" Text="#forward#" />
 				</c:DockLayout>
 			</s:Else>

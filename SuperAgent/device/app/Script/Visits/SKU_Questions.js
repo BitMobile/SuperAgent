@@ -56,6 +56,22 @@ function SetScrollIndex() {
 	}
 }
 
+function CountResultAndForward() {	
+	
+	parentId = null;			
+	
+	var q = regular_total + single_total;	
+	$.workflow.Add("questions_qty_sku", q);
+	
+	var a = regular_answ + single_answ;	
+	$.workflow.Add("questions_answ_sku", a);
+	
+	del = new Query("DELETE FROM USR_Filters");	
+	del.Execute();	
+	
+	Workflow.Forward();
+}
+
 //
 //--------------------------------Questions list handlers--------------------------
 //

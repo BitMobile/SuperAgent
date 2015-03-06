@@ -26,7 +26,7 @@
 		<c:GlobalModules>
 			<c:Module Name="Global" File="Global\Global.js" />
 			<c:Module Name="Indicators" File="Global\Indicators.js"/>
-			<c:Module Name="Gallery" File="Global\Gallery.js" />
+			<c:Module Name="Images" File="Global\Images.js" />
 			<c:Module Name="Dialogs" File="Global\Dialogs.js" />
 		</c:GlobalModules>
 

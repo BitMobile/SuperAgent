@@ -21,7 +21,7 @@
 				</c:DockLayout>
 			</s:If>
 			<s:Else>
-				<c:DockLayout CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckEmptyQuestionsAndForward($visit)" >
+				<c:DockLayout CssClass="btn_forward" OnEvent="Forward" OnClickAction="$DoForward()" >
 					<c:TextView Id="btnForward" Text="#forward#" />
 				</c:DockLayout>
 			</s:Else>
@@ -84,11 +84,11 @@
 
 				<c:DockLayout CssClass="grid" OnClickAction="$FocusOnEditText(control{$index}, $question.IsInputField)">
 					<s:If Test="$question.Obligatoriness=='1'">
-						<s:If Test="$ObligatedAnswered($question.Answer, $question.Obligatoriness)">
-							<c:HorizontalLayout CssClass="answered_side_wh"></c:HorizontalLayout>
+						<s:If Test="$IsNullOrEmpty($question.Answer)">
+							<c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout>
 						</s:If>
 						<s:Else>
-							<c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout>
+							<c:HorizontalLayout CssClass="answered_side_wh"></c:HorizontalLayout>
 						</s:Else>
 					</s:If>
 					<c:VerticalLayout OnClickAction="$GoToQuestionAction($question.AnswerType, $visit, control{$index}, $question.Question, $question.Answer)">

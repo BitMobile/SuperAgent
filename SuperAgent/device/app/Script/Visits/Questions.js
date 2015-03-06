@@ -177,10 +177,7 @@ function AssignQuestionValue(control, question) {
 	AssignAnswer(question, control.Text);
 }
 
-function AssignAnswer(control, question, answer) {
-	
-	Dialog.Debug(question);
-	Dialog.Debug(answer);
+function AssignAnswer(control, question, answer) {	
 	
 	if (control != null) {
 		answer = control.Text;		
@@ -259,7 +256,6 @@ function AddSnapshotHandler(state, args) {
 	if (parseInt(args.Result)==parseInt(1)){
 		var pictId = GetCameraObject(objRef);
 		var path = GetPrivateImagePath(objectType, objRef, pictId, ".jpg");
-		Dialog.Debug(path);
 		Camera.MakeSnapshot(path, 300, func, [ objRef, pictId]);
 	}
 

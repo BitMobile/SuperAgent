@@ -6,14 +6,17 @@ caps_summary	СВОДНАЯ ИНФОРМАЦИЯ
 new			Новое
 client		Клиент
 clients		Клиенты
+newClient	Новый клиент
 main		ОСНОВНОЕ
 mainInfo	ОСНОВНЫЕ СВЕДЕНИЯ
+mainData	ОСНОВНЫЕ ДАННЫЕ
 additionally	ДОПОЛНИТЕЛЬНО
 todo		Задачи
 stock		Остатки
 schedule	Расписание
 order		Заказ
 visit		Визит
+newVisit	Новый визит
 visits		Визиты
 incompletedVisits	НЕВЫПОЛНЕННЫЕ ВИЗИТЫ
 completedVisits		ВЫПОЛНЕННЫЕ ВИЗИТЫ
@@ -173,6 +176,7 @@ fillInVisitReason	Причина визита должна быть заполн
 visitReason	Причина визита
 debt	Долг
 orderInfo	ИНФОРМАЦИЯ О ЗАКАЗЕ
+orderInfoSmall	Информация о заказе
 visitTotal	Итоги визита
 synchronizationData	СИНХРОНИЗАЦИЯ ДАННЫХ
 synchronizationPhoto	СИНХРОНИЗАЦИЯ ФОТОГРАФИЙ
@@ -200,6 +204,8 @@ Synchronization_has_not_been_performed	Синхронизация не была 
 delete	Удалить
 details		Реквизиты
 contacts	Контакты
+contact		Контакт
+newContact	Новый контакт
 legal_name	Юридическое лицо
 legal_address	Юридический адрес
 ownership		Тип собственности
@@ -248,3 +254,12 @@ notAvailable	Снимок прикреплен. Просмотр будет до
 clearValue		Очистить значение
 setDate			Установить дату
 choose_action	Выберите действие:
+skuAdd			Добавление номенклатуры
+skuDetail		Подробно
+skuList			СПИСОК ТОВАРОВ
+skuWillBeDeleted	Часть товаров из заказа будет удалена. Продолжить?
+
+logout			Выход
+logoutQuery		При выходе будут удалены все данные
+cancel			Отменить
+logoutConfirm	Выйти

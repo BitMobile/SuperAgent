@@ -8,15 +8,23 @@
 
 	<c:DockLayout>
 
-		<c:HorizontalLayout CssClass="margin_top" />
-		<c:HorizontalLine />
+		<c:DockLayout CssClass="top_navigator">
+			<c:HorizontalLayout>
+				<c:TextView Text="#orderInfoSmall#" />
+			</c:HorizontalLayout>
+		</c:DockLayout>
 
+		<c:HorizontalLine />
+		
 		<c:HorizontalLayout Id="btnDone" CssClass="bottom_btn" OnEvent="Back" OnClickAction="$Workflow.DoBack()">
 			<c:TextView Text="#ready#" />
 		</c:HorizontalLayout>
 		<c:HorizontalLine CssClass="b_line" />
 
 		<c:ScrollView Id="grScrollView">
+
+			<c:HorizontalLayout CssClass="margin_top" />
+			<c:HorizontalLine />
 
 			<c:DockLayout CssClass="parameter_grid">
 				<c:TextView Text="#totalamount#" />

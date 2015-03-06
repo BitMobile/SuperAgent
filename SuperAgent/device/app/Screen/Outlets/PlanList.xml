@@ -5,6 +5,14 @@
 
 	<c:DockLayout>
 
+		<c:DockLayout CssClass="top_navigator">
+			<c:HorizontalLayout>
+				<c:TextView Text="#newVisit#" />
+			</c:HorizontalLayout>
+		</c:DockLayout>
+
+		<c:HorizontalLine />
+
 		<c:HorizontalLayout Id="btnCancel" CssClass="bottom_btn">
 			<c:VerticalLayout OnEvent="Back" OnClickAction="$DoBack()">
 				<c:TextView Text="#back#" CssClass="left_tv"></c:TextView>
@@ -17,7 +25,7 @@
 
 		<c:ScrollView Id="grScrollView">
 
-			<c:HorizontalLayout CssClass="empty_caption_grid" />
+			<c:HorizontalLayout CssClass="margin_top" />
 			<c:HorizontalLine />
 
 			<s:Iterator Id="plan" Value="$GetPlans($outlet)" Status="statusCount">

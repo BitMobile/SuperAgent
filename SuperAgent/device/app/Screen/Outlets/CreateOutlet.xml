@@ -5,6 +5,14 @@
 
 	<c:DockLayout>
 
+		<c:DockLayout CssClass="top_navigator">
+			<c:HorizontalLayout>
+				<c:TextView Text="#newClient#" />
+			</c:HorizontalLayout>
+		</c:DockLayout>
+
+		<c:HorizontalLine />
+		
 		<c:HorizontalLayout Id="btnCancel" CssClass="bottom_btn">
 			<c:VerticalLayout OnEvent="Back" OnClickAction="$DeleteAndBack($outlet)">
 				<c:TextView CssClass="left_tv" Text="#cancel#" />
@@ -16,9 +24,10 @@
 		<c:HorizontalLine CssClass="b_line" />
 
 		<c:ScrollView Id="grScrollView">
-			<c:HorizontalLayout CssClass="empty_caption_grid" />
+			
+			<c:HorizontalLayout CssClass="margin_top" />
 			<c:HorizontalLine />
-
+			
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(outletName, 1)">
 				<c:VerticalLayout>
 					<c:TextView Text="#outlet_description#" CssClass="description_row"></c:TextView>

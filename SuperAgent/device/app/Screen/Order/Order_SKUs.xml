@@ -8,7 +8,11 @@
 
 	<c:DockLayout>
 
-		<c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
+		<c:DockLayout CssClass="top_navigator">
+			<c:HorizontalLayout>
+				<c:TextView Text="#skuAdd#" />
+			</c:HorizontalLayout>
+		</c:DockLayout>
 
 		<c:HorizontalLayout Id="btnDone" CssClass="bottom_btn" OnEvent="Back" OnClickAction="$DoBackTo(Order)">
 			<c:TextView Text="#ready#"></c:TextView>
@@ -32,7 +36,14 @@
 		</c:DockLayout>
 		<c:HorizontalLine />
 
-
+		<s:If Test="@doGroupping">
+		</s:If>	
+		<s:Else>
+			<c:HorizontalLayout Id="Orderadd" CssClass="caption_grid">
+				<c:TextView Text="#skuList#:"></c:TextView>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+		</s:Else>
 
 		<c:ScrollView Id="grScrollView" OnScroll="$OnScroll()">
 			<s:If Test="@doGroupping">

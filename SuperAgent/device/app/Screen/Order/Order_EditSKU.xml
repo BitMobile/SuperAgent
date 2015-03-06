@@ -16,7 +16,13 @@
 
 	<c:DockLayout>
 
-		<c:HorizontalLayout CssClass="end_of_block"></c:HorizontalLayout>
+		<c:DockLayout CssClass="top_navigator">
+			<c:HorizontalLayout>
+				<c:TextView Text="#skuDetail#" />
+			</c:HorizontalLayout>
+		</c:DockLayout>
+
+		<c:HorizontalLine />
 
 		<c:HorizontalLayout Id="btnCancel" CssClass="bottom_btn">
 			<c:VerticalLayout OnEvent="Back" OnClickAction="$DeleteAndBack($orderitem)">
@@ -58,7 +64,7 @@
 			</s:If>
 
 			<c:HorizontalLayout CssClass="caption_grid">
-				<c:TextView Text="#main#:"></c:TextView>
+				<c:TextView Text="#mainData#:"></c:TextView>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 

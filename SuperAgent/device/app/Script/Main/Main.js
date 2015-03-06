@@ -44,6 +44,27 @@ function GetCameraObject() {
 	Camera.Path = "/private/Document.Visit/1.jpg";
 }
 
+function LogoutQuery() {
+	
+	Dialog.Alert("#logoutQuery#"
+		    , LogoutCallback
+		    , null
+		    , "#cancel#"
+		    , "#logoutConfirm#"
+		    , null);
+	
+}
+
+function LogoutCallback(state, args) {
+	
+	if (args.Result == 1) {
+		
+		Application.Logout();
+	
+	}
+		
+}
+
 // --------------------------------------------------------------------------------
 
 //function SetIndicators(){

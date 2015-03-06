@@ -9,14 +9,12 @@ var single_total;
 var bool_answer;
 var curr_item;
 var questionGl;
-var doRefresh;
 
 //
 // -------------------------------Header handlers-------------------------
 //
 
 function OnLoading() {
-	doRefresh = false;
 	questionsAtScreen = null;
 	obligateredLeft = parseInt(0);
 	SetListType();

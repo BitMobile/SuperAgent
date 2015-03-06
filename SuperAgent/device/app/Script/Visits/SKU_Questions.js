@@ -12,7 +12,6 @@ var curr_item;
 var curr_sku;
 var skuValueGl;
 var questionValueGl;
-var doRefresh;
 
 //
 //-------------------------------Header handlers-------------------------
@@ -20,7 +19,6 @@ var doRefresh;
 
 
 function OnLoading(){
-	doRefresh = false;
 	obligateredLeft = parseInt(0);	
 	SetListType();
 	if (String.IsNullOrEmpty(setScroll))

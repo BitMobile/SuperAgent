@@ -332,8 +332,8 @@ function DoPriceListCallback(state, args) {
 		return;
 	}
 
-	var entity = AssignDialogValue(state, args);
-	var newPriceList = entity.PriceList;
+	var entity = order;
+	var newPriceList = args.Result;
 
 	if (OrderWillBeChanged(entity, newPriceList)) {
 		Dialog.Ask(Translate["#skuWillBeDeleted#"], PositiveCallback, [entity, newPriceList, state[2]]);
@@ -341,6 +341,7 @@ function DoPriceListCallback(state, args) {
 	else {
 		var control = state[2];
 		control.Text = args.Result.Description;
+		AssignDialogValue(state, args);
 		ReviseSKUs(entity, args.Result, entity.Stock);
 	}
 	return;
@@ -350,8 +351,13 @@ function PositiveCallback(state, args) {
 	var order = state[0];
 	var priceList = state[1];
 	var control = state[2];
+
+	order = order.GetObject();
+	order.PriceList = priceList;
+	order.Save();
+
 	control.Text = priceList.Description;
-	ReviseSKUs(order, priceList, order.Stock);
+	ReviseSKUs(order.Id, priceList, order.Stock);
 }
 
 function OrderWillBeChanged(order, newPriceList) {

@@ -119,17 +119,6 @@ function GetSKUsFromQuesionnaires(search) {
 	//
 }
 
-function ObligateredAreAnswered(obligatoriness, history, current, oblTotal) {
-	if (parseInt(obligatoriness)==parseInt(0))
-		return false;
-	else{
-		if (parseInt(obligatoriness)==parseInt(1) || (parseInt(oblTotal)==(parseInt(history)+parseInt(current))))
-			return true;
-		else
-			return false;
-	}
-}
-
 function SetIndicators() {
 	regular_total = CalculateTotal('0');
 	single_total = CalculateTotal('1');		
@@ -211,12 +200,6 @@ function GetChilds(sku) {
 	return q.Execute();
 }
 
-
-function RemovePlaceHolder(control) {
-	if (control.Text == "—")
-		control.Text = "";
-}
-
 function RefreshScreen(control, search) {
 	Workflow.Refresh([search]);
 }
@@ -235,46 +218,6 @@ function CreateItemAndShow(control, sku, index) {
 	setScroll = true;
 	
 	Workflow.Refresh([$.search]);
-}
-
-
-
-function CreateVisitSKUValueIfNotExists(controlText, sku, question, isInput) {
-	
-//	if (isInput=='true' && (control.Text=="—" || TrimAll(control.Text)==""))
-//		return null;
-	
-	doRefresh = true;
-	
-	var query = new Query();
-	query.Text = "SELECT Id FROM Document_Visit_SKUs WHERE SKU=@sku AND Question=@question AND Ref=@ref";
-	query.AddParameter("ref", $.workflow.visit);
-	query.AddParameter("question", question);
-	query.AddParameter("sku", sku);
-	var skuValue = query.ExecuteScalar();
-	
-	if (skuValue == null){		
-		skuValue = DB.Create("Document.Visit_SKUs");
-		skuValue.Ref = $.workflow.visit;
-		skuValue.SKU = sku;
-		skuValue.Question = question;
-	}
-	else
-		skuValue = skuValue.GetObject();
-	skuValue.Answer = controlText;
-	skuValue.AnswerDate = DateTime.Now;
-	skuValue.Save();
-	
-	setScroll = false;
-	
-	return skuValue.Id;
-}
-
-function GetSnapshotText(text) {
-	if (String.IsNullOrEmpty(text))
-		return Translate["#noSnapshot#"];
-	else
-		return Translate["#snapshotAttached#"];
 }
 
 function GoToQuestionAction(control, answerType, question, sku, editControl, currAnswer) {	
@@ -347,19 +290,6 @@ function GetCameraObject(entity) {
 	return guid; 
 }
 
-function SaveAtVisit(arr, args) {
-	var question = skuValueGl;
-	var path = arr[1];
-	if (args.Result) {
-		question = question.GetObject();
-		question.Answer = path;
-		question.Save();
-	}
-	else
-		question.Answer = null;
-	Workflow.Refresh([$.search]);
-}
-
 function ObligatedAnswered(answer, obligatoriness) {
 	if (parseInt(obligatoriness)==parseInt(1)){
 		if (String.IsNullOrEmpty(answer)==false & answer!="—")
@@ -401,29 +331,6 @@ function DialogCallBack(state, args){
 function GalleryCallBack(state, args) {
 	AssignAnswer(null, questionValueGl, skuValueGl, state[1]);
 	Workflow.Refresh([]);
-}
-
-function GetChildQuestions() {
-	var str = CreateCondition($.workflow.questionnaires, " Q.Ref ");
-	var q = new Query("SELECT DISTINCT V.Id, Q.ChildDescription FROM Document_Visit_SKUs V " +
-			" JOIN Document_Questionnaire_SKUQuestions Q ON V.Question=Q.ChildQuestion " +
-			" JOIN Document_Questionnaire_SKUs S ON Q.Ref=S.Ref AND S.SKU=V.SKU " +
-			" WHERE " + str + " V.Ref=@visit AND Q.ParentQuestion=@parent");			
-	q.AddParameter("visit", $.workflow.visit);
-	q.AddParameter("parent", curr_item.Question);
-	var res1 = q.Execute();
-	
-	var q2 = new Query("SELECT DISTINCT A.Id, Q.ChildDescription FROM Catalog_Outlet_AnsweredQuestions A " +
-			" JOIN Document_Questionnaire_SKUQuestions Q ON A.Question=Q.ChildQuestion " +
-			//" JOIN Document_Questionnaire_SKUs S ON Q.Ref=S.Ref AND S.SKU=A.SKU " +
-			" WHERE " + str + " A.Ref=@outlet AND Q.ParentQuestion=@parent AND A.SKU=@sku");
-	q2.AddParameter("outlet", $.workflow.outlet);
-	q2.AddParameter("parent", curr_item.Question);
-	q2.AddParameter("sku", curr_sku);
-	var res2 = q2.Execute();
-	
-	DeleteAnswers(res1);
-	DeleteAnswers(res2);
 }
 
 function DeleteAnswers(recordset) {	

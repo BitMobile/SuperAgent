@@ -390,7 +390,7 @@ function CreateQuestionsTable(outlet) {
 	var tableCommand = Global.CreateUserTableIfNotExists("USR_Questions");	
 	var query = new Query(tableCommand +
 			"SELECT MIN(D.Date) AS DocDate, Q.ChildQuestion AS Question, Q.ChildDescription AS Description" +
-			", Q.ParentQuestion AS ParentQuestion, Q.ChildType AS AnswerType" +
+			", Q.ParentQuestion AS ParentQuestion, Q.ChildType AS AnswerType " +
 			", A.Answer AS Answer, MAX(A.AnswerDate) AS AnswerDate, D.Single AS Single " +
 			", MAX(CAST (Q.Obligatoriness AS int)) AS Obligatoriness" +
 			", (SELECT Qq.QuestionOrder FROM Document_Questionnaire Dd  " +
@@ -404,8 +404,7 @@ function CreateQuestionsTable(outlet) {
 			"LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Ref = @outlet AND A.Questionaire=D.Id " +
 				"AND A.Question=Q.ChildQuestion AND (A.SKU=@emptySKU OR A.SKU IS NULL) AND DATE(A.AnswerDate)>=DATE(D.BeginAnswerPeriod) " +
 				"AND (DATE(A.AnswerDate)<=DATE(D.EndAnswerPeriod) OR A.AnswerDate='0001-01-01 00:00:00')" +
-			"GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, D.Single " + 
-			"ORDER BY DocDate, QuestionOrder ");
+			"GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, D.Single ");
 	query.AddParameter("emptySKU", DB.EmptyRef("Catalog_SKU"));
 	query.AddParameter("integer", DB.Current.Constant.DataType.Integer);
 	query.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);
@@ -441,8 +440,7 @@ function CreateSKUQuestionsTable(outlet) {
 			"LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Ref = @outlet AND A.Questionaire=D.Id " +
 				"AND A.Question=Q.ChildQuestion AND A.SKU=S.SKU AND DATE(A.AnswerDate)>=DATE(D.BeginAnswerPeriod) " +
 				"AND (DATE(A.AnswerDate)<=DATE(D.EndAnswerPeriod) OR A.AnswerDate='0001-01-01 00:00:00')" +
-			"GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, D.Single, S.SKU, S.Description, GR.Id, BR.Id " + 
-			"ORDER BY DocDate, QuestionOrder ");
+			"GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, D.Single, S.SKU, S.Description, GR.Id, BR.Id ");
 	query.AddParameter("integer", DB.Current.Constant.DataType.Integer);
 	query.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);
 	query.AddParameter("string", DB.Current.Constant.DataType.String);

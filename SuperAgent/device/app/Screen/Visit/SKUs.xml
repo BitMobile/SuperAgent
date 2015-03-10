@@ -93,7 +93,7 @@
 			<s:Iterator Id="sku" Value="$SKUs" Status="statusCount">
 				<s:Push Id="index" Value="{$statusCount.Index}"></s:Push>
 
-				<c:DockLayout CssClass="grid" OnClick="$CreateItemAndShow($sku.SKU, $index)">
+				<c:DockLayout CssClass="grid" OnClick="$CreateItemAndShow($sku.SKU, $index, $sku.ShowChild)">
 					<s:If Test="$sku.Obligatoriness=='1'">
 						<s:If Test="$ConvertToBoolean1($sku.ObligateredLeft)">
 							<c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout>
@@ -111,7 +111,8 @@
 					<c:TextView Text="$sku.SKUDescription" CssClass="main_row"></c:TextView>
 				</c:DockLayout>
 				<c:HorizontalLine />
-				<s:If Test="$ShowChilds($index)">
+				
+				<s:If Test="$sku.ShowChild">
 					<s:Push Id="childs" Value="$GetChilds($sku.SKU)"></s:Push>
 					<s:Iterator Id="child" Value="$childs" Status="statusCountCh">
 						<s:Push Id="indexCh" Value="{$statusCountCh.Index}"></s:Push>

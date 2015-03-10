@@ -2,6 +2,10 @@ var snapshotsExists;
 var singlePicture;
 var parameterValueC;
 
+function WarMupFunction() {
+
+}
+
 function GetOutlets(searchText) {
 	var search = "";
 	if (String.IsNullOrEmpty(searchText)==false)
@@ -109,7 +113,7 @@ function SelectIfNotAVisit(outlet, attribute, control) {
 }
 
 function DoSelect(outlet, attribute, control) {
-	Dialogs.DoChoose(null, outlet, attribute, control, null);
+	DoChoose(null, outlet, attribute, control, null);
 }
 
 
@@ -149,16 +153,16 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 			var q = new Query();
 			q.Text = "SELECT Value, Value FROM Catalog_OutletParameter_ValueList WHERE Ref=@ref UNION SELECT '', '—' ORDER BY Value";
 			q.AddParameter("ref", parameter);
-			Dialogs.DoChoose(q.Execute(), parameterValue, "Value", Variables[control], null);
+			DoChoose(q.Execute(), parameterValue, "Value", Variables[control], null);
 		}
 		if (typeDescription == "DateTime") {  //---------DateTime-------
 			if (String.IsNullOrEmpty(parameterValue.Value))
-				Dialogs.ChooseDateTime(parameterValue, "Value", Variables[control], DateHandler);
+				ChooseDateTime(parameterValue, "Value", Variables[control], DateHandler);
 			else
 				Dialog.Choose(Translate["#valueList#"], [[0, Translate["#clearValue#"]], [1, Translate["#setDate#"]]], DateHandler, [parameterValue, control]);
 		}
 		if (typeDescription == "Boolean") {  //----------Boolean--------
-			Dialogs.ChooseBool(parameterValue, "Value", Variables[control]);
+			ChooseBool(parameterValue, "Value", Variables[control]);
 		}
 		if (typeDescription == "Snapshot") { //----------Snapshot-------
 			var listChoice = new List;
@@ -167,7 +171,7 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 				listChoice.Add([0, Translate["#addFromGallery#"]]);
 			if (String.IsNullOrEmpty(parameterValue.Value)==false)
 				listChoice.Add([2, Translate["#clearValue#"]]);
-			Images.AddSnapshot(outlet, parameterValue, SaveAtOutelt, listChoice, "catalog.outlet");
+			AddSnapshot(outlet, parameterValue, SaveAtOutelt, listChoice, "catalog.outlet");
 			parameterValueC = parameterValue;
 		}
 		if (typeDescription == "String" || typeDescription == "Integer" || typeDescription == "Decimal") {
@@ -193,7 +197,7 @@ function DateHandler(state, args) {
 		Workflow.Refresh([]);
 	}
 	if (parseInt(args.Result)==parseInt(1)){
-		Dialogs.ChooseDateTime(parameterValue, "Value", Variables[control]);
+		ChooseDateTime(parameterValue, "Value", Variables[control]);
 	}
 }
 
@@ -242,7 +246,7 @@ function DeleteImage(state, args) {
 
 function AddSnapshot(control, outlet) {
 	if ($.sessionConst.galleryChoose)
-		Images.AddSnapshot(outlet, null, GalleryHandler, [[0, Translate["#addFromGallery#"]], [1, Translate["#makeSnapshot#"]]], "catalog.outlet");
+		AddSnapshot(outlet, null, GalleryHandler, [[0, Translate["#addFromGallery#"]], [1, Translate["#makeSnapshot#"]]], "catalog.outlet");
 	else{
 		var pictId = GetCameraObject(outlet);
 		var path = GetPrivateImagePath("catalog.outlet", outlet, pictId, ".jpg");
@@ -421,7 +425,7 @@ function SaveAtOutelt(arr, args) {
 
 function GetCameraObject(entity) {
 	FileSystem.CreateDirectory("/private/Catalog.Outlet");
-	var guid = Global.GenerateGuid();
+	var guid = GenerateGuid();
 	// Variables.Add("guid", guid);
 	var path = String.Format("/private/Catalog.Outlet/{0}/{1}.jpg", entity.Id, guid);
 	Camera.Size = 300;
@@ -453,4 +457,151 @@ function CheckIfEmpty(entity, attribute, objectType, objectName, deleteIfEmpty) 
 function CommitAndBack(){
 	DB.Commit();
 	Workflow.Rollback();
+}
+
+//------------------------------Temporary, from dialogs----------------
+
+function DoChoose(listChoice, entity, attribute, control, func) {
+	if (attribute==null)
+		var startKey = control.Text;
+	else
+		var startKey = entity[attribute];
+
+	if (listChoice==null){
+		var tableName = entity[attribute].Metadata().TableName;
+		var query = new Query();
+		query.Text = "SELECT Id, Description FROM " + tableName;
+		listChoice = query.Execute();
+	}
+
+	if (func == null)
+		func = CallBack;
+
+	Dialog.Choose("#select_answer#", listChoice, startKey, func, [entity, attribute, control]);
+}
+
+function ChooseDateTime(entity, attribute, control, func) {
+	var startKey;
+
+	if (attribute==null)
+		startKey = control.Text;
+	else
+		startKey = entity[attribute];
+
+	if (String.IsNullOrEmpty(startKey) || startKey=="—")
+		startKey = DateTime.Now;
+
+	if (func == null)
+		func = CallBack;
+	Dialog.DateTime("#enterDateTime#", startKey, func, [entity, attribute, control]);
+}
+
+function ChooseBool(entity, attribute, control, func) {
+	if (attribute==null)
+		var startKey = control.Text;
+	else
+		var startKey = entity[attribute];
+
+	var listChoice = [[ "—", "—" ], [Translate["#YES#"], Translate["#YES#"]], [Translate["#NO#"], Translate["#NO#"]]];
+	if (func == null)
+		func = CallBack;
+	Dialog.Choose("#select_answer#", listChoice, startKey, func, [entity, attribute, control]);
+}
+
+function CallBack(state, args) {
+	AssignDialogValue(state, args);
+	var control = state[2];
+	if (getType(args.Result)=="BitMobile.DbEngine.DbRef")
+		control.Text = args.Result.Description;
+	else
+		control.Text = args.Result;
+}
+
+function AssignDialogValue(state, args) {
+	var entity = state[0];
+	var attribute = state[1];
+	entity[attribute] = args.Result;
+	entity.GetObject().Save();
+	return entity;
+}
+
+//------------------------------Temporary, from global----------------
+
+function GenerateGuid() {
+
+	return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+
+}
+
+function S4() {
+
+	return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+
+}
+
+//------------------------------Temporary, from images----------------
+
+function AddSnapshot(objectRef, valueRef, func, listChoice, objectType) {
+//	if ($.sessionConst.galleryChoose)
+		Dialog.Choose(Translate["#choose_action#"], listChoice, AddSnapshotHandler, [objectRef,func,valueRef,objectType]);
+//	else{
+//		var pictId = GetCameraObject(objectRef);
+//		var path = GetPrivateImagePath("catalog.outlet", objectRef, pictId, ".jpg");
+//		Camera.MakeSnapshot(path, 300, func, [ objectRef, pictId ]);
+//	}
+}
+
+function AddSnapshotHandler(state, args) {
+	var objRef = state[0];
+	var func = state[1];
+	var valueRef = state[2];
+	var objectType = state[3];
+
+	if (parseInt(args.Result)==parseInt(0)){
+		var pictId = GenerateGuid();
+		var path = GetPrivateImagePath(objectType, objRef, pictId, ".jpg");
+		Gallery.Size = 300;
+		Gallery.Copy(path, func, [objRef, pictId]);
+	}
+
+	if (parseInt(args.Result)==parseInt(1)){
+		var pictId = GetCameraObject(objRef);
+		var path = GetPrivateImagePath(objectType, objRef, pictId, ".jpg");
+		Camera.MakeSnapshot(path, 300, func, [ objRef, pictId]);
+	}
+
+	if (parseInt(args.Result)==parseInt(2)){
+		if (valueRef.IsNew()){
+			DB.Delete(valueRef);
+			Workflow.Refresh([]);
+		}
+		else{
+			var value = valueRef.GetObject();
+			value.Value = "";
+			value.Save();
+			Workflow.Refresh([]);
+		}
+	}
+}
+
+
+function GetSharedImagePath(objectType, objectID, pictID, pictExt) {
+	var r = "/shared/" + objectType + "/" + objectID.Id.ToString() + "/"
+    + pictID + pictExt;
+	return r;
+}
+
+function GetPrivateImagePath(objectType, objectID, pictID, pictExt) {
+	var r = "/private/" + objectType + "/" + objectID.Id.ToString() + "/"
+    + pictID + pictExt;
+	return r;
+}
+
+function GetCameraObject(entity) {
+	FileSystem.CreateDirectory("/private/Catalog.Outlet");
+	var guid = GenerateGuid();
+	var path = String.Format("/private/Catalog.Outlet/{0}/{1}.jpg", entity.Id, guid);
+	Camera.Size = 300;
+	Camera.Path = path;
+	return guid;
 }

@@ -26,10 +26,10 @@ function OnWorkflowStart(name) {
 	}
 
 	if (name == "Visit") {
-		
+
 			var questionnaires = GetQuestionnairesForOutlet($.outlet);
 			$.workflow.Add("questionnaires", questionnaires);
-			
+
 			CreateQuestionnareTable($.outlet);
 			CreateQuestionsTable($.outlet);
 			CreateSKUQuestionsTable($.outlet);
@@ -44,36 +44,36 @@ function OnWorkflowStart(name) {
 			else
 				$.workflow.Add("skipQuestions", true);
 
-			if (parseInt(GetSKUQuestionsCount(questionnaires)) != parseInt(0)) 
+			if (parseInt(GetSKUQuestionsCount(questionnaires)) != parseInt(0))
 				$.workflow.Add("skipSKUs", false);
 			else
 				$.workflow.Add("skipSKUs", true);
 	}
-	
+
 	Variables["workflow"].Add("name", name);
 
 	if (name=="Visit" || name=="CreateOrder"){
-		
+
 		var checkDropF = new Query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='USR_Filters'");
-		
+
 		var checkDropFResult = checkDropF.ExecuteScalar();
-		
+
 		if (checkDropFResult == 1) {
-		
+
 			var dropF = new Query("DELETE FROM USR_Filters");
-			 
+
 			dropF.Execute();
-			
+
 		} else {
-			
+
 			var createTable = new Query("CREATE TABLE IF NOT EXISTS USR_Filters(Id Text, FilterType Text)");
-			 
+
 			createTable.Execute();
-			
+
 		}
-								
+
 	}
-	
+
 }
 
 function OnWorkflowForward(name, lastStep, nextStep, parameters) {
@@ -123,7 +123,7 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 	}
 
 	return true;
-			
+
 }
 
 //function OnWorkflowBack(name, lastStep, nextStep) {}
@@ -131,7 +131,7 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 function OnWorkflowFinish(name, reason) {
 	$.Remove("finishedWorkflow");
 	$.AddGlobal("finishedWorkflow", name);
-	
+
 	if (name == "Visit" || name == "CreateOrder" || name=="Outlets") {
 		Variables.Remove("outlet");
 
@@ -141,26 +141,26 @@ function OnWorkflowFinish(name, reason) {
 			Variables.Remove("steps");
 
 		GPS.StopTracking();
-		
+
 		Indicators.SetIndicators();
 	}
 
 	Variables.Remove("workflow");
-	
+
 	if (name=="Visit" || name=="CreateOrder"){
-		
+
 		var checkDropF = new Query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='USR_Filters'");
-		
+
 		var checkDropFResult = checkDropF.ExecuteScalar();
-		
+
 		if (checkDropFResult == 1) {
-		
+
 			var dropF = new Query("DELETE FROM USR_Filters");
-			 
+
 			dropF.Execute();
-			
+
 		}
-										
+
 	}
 }
 
@@ -170,18 +170,18 @@ function OnWorkflowPause(name) {
 
 // ------------------------ Functions ------------------------
 
-function SetSessionConstants() { 
+function SetSessionConstants() {
 	var planEnbl = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='PlanEnbl'");
 	var multStck = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='MultStck'");
 	var stckEnbl = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='NoStkEnbl'");
 	var orderCalc = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='OrderCalc'");
-	
+
 	$.AddGlobal("sessionConst", new Dictionary());
 	$.sessionConst.Add("PlanEnbl", EvaluateBoolean(planEnbl.ExecuteScalar()));
 	$.sessionConst.Add("MultStck", EvaluateBoolean(multStck.ExecuteScalar()));
 	$.sessionConst.Add("NoStkEnbl", EvaluateBoolean(stckEnbl.ExecuteScalar()));
 	$.sessionConst.Add("OrderCalc", EvaluateBoolean(orderCalc.ExecuteScalar()));
-	
+
 	var q = new Query("SELECT U.AccessRight, A.Id, A.Code FROM Catalog_MobileAppAccessRights A " +
 			" LEFT JOIN Catalog_User_UserRights U ON U.AccessRight=A.Id ");
 	var rights = q.Execute();
@@ -197,15 +197,15 @@ function SetSessionConstants() {
 				$.sessionConst.Add("galleryChoose", false);
 			else
 				$.sessionConst.Add("galleryChoose", true);
-		}			
+		}
 		if (rights.Code=='000000004'){
 			if (rights.AccessRight==null)
 				$.sessionConst.Add("encashEnabled", false);
 			else
 				$.sessionConst.Add("encashEnabled", true);
 		}
-	}				
-	
+	}
+
 }
 
 function EvaluateBoolean(res){
@@ -260,21 +260,21 @@ function GetQuestionnairesForOutlet(outlet) {
 	var list = new List;
 	var actualQuestionnaire = true;
 	var currentQuestionnaire;
-	
-	while (recordset.Next()) {		
-		
+
+	while (recordset.Next()) {
+
 		var query1 = new Query("SELECT Selector, ComparisonType, Value, AdditionalParameter, Ref " +
 				"FROM Document_Questionnaire_Selectors WHERE Ref=@ref ORDER BY Selector, ComparisonType");
 		query1.AddParameter("ref",recordset.Id);
 		var selectors = query1.Execute();
-		
+
 		var listParameter = new List;	//
 		var listChecked = true;			//stuff for
 		var currentSelector=null;		//list selector
 		var currentParam = null;				//
-		
-		while (selectors.Next() && actualQuestionnaire) {				
-				
+
+		while (selectors.Next() && actualQuestionnaire) {
+
 			if (ListSelectorIsChanged(currentSelector, selectors.Selector, selectors.AdditionalParameter, currentParam)){ //it's time to check list selector
 				actualQuestionnaire = CheckListSelector(listParameter);
 				if (actualQuestionnaire==false){
@@ -283,8 +283,8 @@ function GetQuestionnairesForOutlet(outlet) {
 				listParameter = new List;
 				listChecked = true;
 			}
-			
-			//if (selectors.ComparisonType=="In list" || selectors.ComparisonType=="В списке"){								
+
+			//if (selectors.ComparisonType=="In list" || selectors.ComparisonType=="В списке"){
 			if ((selectors.ComparisonType).ToString()==(DB.Current.Constant.ComparisonType.InList).ToString()){
 				listParameter.Add(CheckSelector(outlet, selectors.Selector, DB.Current.Constant.ComparisonType.Equal, selectors.Value, selectors.AdditionalParameter)); //real check is later, now - only an array
 				listChecked = false;
@@ -295,28 +295,28 @@ function GetQuestionnairesForOutlet(outlet) {
 				actualQuestionnaire = CheckSelector(outlet, selectors.Selector, selectors.ComparisonType, selectors.Value, selectors.AdditionalParameter);
 				currentSelector = null;
 				currentParam = null;
-			}						
-			
+			}
+
 		}
-		
+
 		if (listChecked==false){ //one more time try to check list if it's hasn't been done in loop
 			actualQuestionnaire = CheckListSelector(listParameter);
 		}
-		
+
 		if (actualQuestionnaire) //this is what it's all for
 			list.Add(recordset.Id);
-		
+
 		actualQuestionnaire = true;
 	}
-	
+
 	return list;
-			
+
 }
 
-function CreateQuestionnareTable(outlet) {			
-	
+function CreateQuestionnareTable(outlet) {
+
 	var tableCommand = Global.CreateUserTableIfNotExists("USR_Questionnaires");
-	
+
 	var query = new Query(tableCommand +
 			"SELECT DISTINCT Q.Id AS Id, Q.Number AS Number, Q.Date AS Date, Q.Single AS Single " +
 				", S.BeginAnswerPeriod AS BeginAnswerPeriod, S.EndAnswerPeriod AS EndAnswerPeriod " +
@@ -328,24 +328,24 @@ function CreateQuestionnareTable(outlet) {
 
 	var queryQ = new Query("SELECT Id FROM USR_Questionnaires");
 	var recordset = queryQ.Execute();
-		
+
 	var actualQuestionnaire = true;
 	var currentQuestionnaire;
-	
-	while (recordset.Next()) {		
-		
+
+	while (recordset.Next()) {
+
 		var query1 = new Query("SELECT Selector, ComparisonType, Value, AdditionalParameter, Ref " +
 				"FROM Document_Questionnaire_Selectors WHERE Ref=@ref ORDER BY Selector, ComparisonType");
 		query1.AddParameter("ref",recordset.Id);
 		var selectors = query1.Execute();
-		
+
 		var listParameter = new List;	//
 		var listChecked = true;			//stuff for
 		var currentSelector=null;		//list selector
 		var currentParam = null;				//
-		
-		while (selectors.Next() && actualQuestionnaire) {				
-				
+
+		while (selectors.Next() && actualQuestionnaire) {
+
 			if (ListSelectorIsChanged(currentSelector, selectors.Selector, selectors.AdditionalParameter, currentParam)){ //it's time to check list selector
 				actualQuestionnaire = CheckListSelector(listParameter);
 				if (actualQuestionnaire==false){
@@ -354,8 +354,8 @@ function CreateQuestionnareTable(outlet) {
 				listParameter = new List;
 				listChecked = true;
 			}
-			
-			//if (selectors.ComparisonType=="In list" || selectors.ComparisonType=="В списке"){								
+
+			//if (selectors.ComparisonType=="In list" || selectors.ComparisonType=="В списке"){
 			if ((selectors.ComparisonType).ToString()==(DB.Current.Constant.ComparisonType.InList).ToString()){
 				listParameter.Add(CheckSelector(outlet, selectors.Selector, DB.Current.Constant.ComparisonType.Equal, selectors.Value, selectors.AdditionalParameter)); //real check is later, now - only an array
 				listChecked = false;
@@ -366,28 +366,28 @@ function CreateQuestionnareTable(outlet) {
 				actualQuestionnaire = CheckSelector(outlet, selectors.Selector, selectors.ComparisonType, selectors.Value, selectors.AdditionalParameter);
 				currentSelector = null;
 				currentParam = null;
-			}						
-			
+			}
+
 		}
-		
+
 		if (listChecked==false){ //one more time try to check list if it's hasn't been done in loop
 			actualQuestionnaire = CheckListSelector(listParameter);
 		}
-		
+
 		if (actualQuestionnaire==false){ //this is what it's all for
 			var qDelete = new Query("DELETE FROM USR_Questionnaires WHERE Id=@id");
 			qDelete.AddParameter("id", recordset.Id);
-			qDelete.Execute();			
+			qDelete.Execute();
 		}
-		
+
 		actualQuestionnaire = true;
 	}
 
 }
 
-function CreateQuestionsTable(outlet) {			
-	
-	var tableCommand = Global.CreateUserTableIfNotExists("USR_Questions");	
+function CreateQuestionsTable(outlet) {
+
+	var tableCommand = Global.CreateUserTableIfNotExists("USR_Questions");
 	var query = new Query(tableCommand +
 			"SELECT MIN(D.Date) AS DocDate, Q.ChildQuestion AS Question, Q.ChildDescription AS Description" +
 			", Q.ParentQuestion AS ParentQuestion, Q.ChildType AS AnswerType " +
@@ -395,10 +395,10 @@ function CreateQuestionsTable(outlet) {
 			", MAX(CAST (Q.Obligatoriness AS int)) AS Obligatoriness" +
 			", (SELECT Qq.QuestionOrder FROM Document_Questionnaire Dd  " +
 			" JOIN Document_Questionnaire_Questions Qq ON Dd.Id=Qq.Ref AND Q.ChildQuestion=Qq.ChildQuestion AND Dd.Id=D.Id ORDER BY Dd.Date LIMIT 1) AS QuestionOrder" + //QuestionOrder
-			
+
 			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal OR Q.ChildType=@string THEN 1 ELSE NULL END AS IsInputField " + //IsInputField
 			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal THEN 'numeric' ELSE 'auto' END AS KeyboardType " + //KeyboardType
-			
+
 			"FROM Document_Questionnaire_Questions Q " +
 			"JOIN USR_Questionnaires D ON Q.Ref=D.Id " +
 			"LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Ref = @outlet AND A.Questionaire=D.Id " +
@@ -414,11 +414,14 @@ function CreateQuestionsTable(outlet) {
 	query.AddParameter("attached", Translate["#snapshotAttached#"]);
 	query.Execute();
 
+	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_Q ON USR_Questions(ParentQuestion)");
+	indexQuery.Execute();
+
 }
 
 function CreateSKUQuestionsTable(outlet) {
 	var tableCommand = Global.CreateUserTableIfNotExists("USR_SKUQuestions");
-	var query = new Query(tableCommand + 
+	var query = new Query(tableCommand +
 			"SELECT MIN(D.Date) AS DocDate, S.SKU AS SKU, S.Description AS SKUDescription, Q.ChildQuestion AS Question, Q.ChildDescription AS Description" +
 			", Q.ParentQuestion AS ParentQuestion, Q.ChildType AS AnswerType" +
 			", A.Answer AS Answer, MAX(A.AnswerDate) AS AnswerDate, D.Single AS Single " +
@@ -427,10 +430,10 @@ function CreateSKUQuestionsTable(outlet) {
 			", (SELECT Qq.QuestionOrder FROM Document_Questionnaire Dd  " +
 			" JOIN Document_Questionnaire_SKUQuestions Qq ON Dd.Id=Qq.Ref AND Q.ChildQuestion=Qq.ChildQuestion AND Dd.Id=D.Id" +
 			" JOIN Document_Questionnaire_SKUs Ss ON Qq.Ref=Ss.Ref AND Ss.SKU=S.SKU ORDER BY Dd.Date LIMIT 1) AS QuestionOrder" + //QuestionOrder
-			
+
 			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal OR Q.ChildType=@string THEN 1 ELSE NULL END AS IsInputField " + //IsInputField
 			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal THEN 'numeric' ELSE 'auto' END AS KeyboardType " + //KeyboardType
-			
+
 			"FROM Document_Questionnaire_SKUQuestions Q " +
 			"JOIN Document_Questionnaire_SKUs S ON Q.Ref=S.Ref " +
 			"JOIN USR_Questionnaires D ON Q.Ref=D.Id " +
@@ -448,14 +451,17 @@ function CreateSKUQuestionsTable(outlet) {
 	query.AddParameter("outlet", outlet);
 	query.AddParameter("attached", Translate["#snapshotAttached#"]);
 	query.Execute();
-	
+
+	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_SQ ON USR_SKUQuestions(SKU, ParentQuestion)");
+	indexQuery.Execute();
+
 }
 
 function ListSelectorIsChanged(currentSelector, selector, additionalParam, currentParam) {
 	if (selector=="Catalog_OutletParameter"){
 		if (currentSelector!=null && currentParam!=additionalParam)
 			return true;
-		else 
+		else
 			return false;
 	}
 	else{
@@ -486,45 +492,45 @@ function CheckSelector(outlet, selector, compType, value, additionalParameter) {
 		else
 			return Compare(compType, false);
 	}
-	
+
 	if (selector=="Catalog_Distributor"){
 		if ((outlet.Distributor).ToString()==("@ref[Catalog_Distributor]:" + value))
 			return Compare(compType, true);
 		else
 			return Compare(compType, false);
 	}
-	
+
 	if (selector=="Catalog_Outlet"){
 		if ((outlet.Id).ToString()==(value)){
 			return Compare(compType, true);
 		}
 		else{
 			return Compare(compType, false);
-		}			
+		}
 	}
-	
+
 	if (selector=="Catalog_Territory"){
 		var query = new Query("SELECT Id FROM Catalog_Territory_Outlets WHERE Outlet=@outlet AND Ref=@ref")
 		query.AddParameter("outlet", outlet);
 		query.AddParameter("ref", ("@ref[Catalog_Territory]:" + value));
-		var result = query.ExecuteScalar();		
+		var result = query.ExecuteScalar();
 		if (result!=null)
 			return Compare(compType, true);
 		else
 			return Compare(compType, false);
 	}
-	
+
 	if (selector=="Catalog_Region"){
 		var query = new Query(GetRegionQueryText());
 		query.AddParameter("outlet", outlet);
 		query.AddParameter("region", "@ref[Catalog_Region]:" + value);
-		var result = query.ExecuteScalar();		
+		var result = query.ExecuteScalar();
 		if (result!=null)
 			return Compare(compType, true);
 		else
 			return Compare(compType, false);
 	}
-	
+
 	if (selector=="Catalog_OutletParameter"){
 		var query = new Query("SELECT Id FROM Catalog_Outlet_Parameters WHERE Ref=@ref AND Parameter=@param AND Value=@value");
 		query.AddParameter("ref", outlet);
@@ -535,10 +541,10 @@ function CheckSelector(outlet, selector, compType, value, additionalParameter) {
 		else
 			return Compare(compType, false);
 	}
-	
+
 	if (selector=="Catalog_Positions"){
 		return true;
-	}	
+	}
 
 }
 
@@ -571,17 +577,17 @@ function GetRegionQueryText() {
 	var condition = "JOIN Catalog_Territory T ON T.Owner = R1.Id " +
 			"JOIN Catalog_Territory_Outlets O ON O.Ref = T.Id AND O.Outlet = @outlet ";
 	var recJoin = "";
-	
-	var text = startSelect + condition + "WHERE R1.Id=@region ";	
-	
+
+	var text = startSelect + condition + "WHERE R1.Id=@region ";
+
 	var loop = 2;
-	
+
 	while (loop < 11) {
 		recJoin = recJoin + "JOIN Catalog_Region " + "R" + loop + " ON R" + loop + ".Id=R" + (loop-1) + ".Parent ";
 		text = text + "UNION ALL " + startSelect + recJoin + condition + "WHERE R" + loop + ".Id=@region ";
 		loop = loop + 1;
-	}	
-	
+	}
+
 	return text;
 }
 
@@ -589,17 +595,17 @@ function GetRegionQueryText() {
 //-----Questions count-----------
 
 function GetQuestionsCount(questionnaires) {
-	var query = new Query("SELECT COUNT(Question) FROM USR_Questions ");					
+	var query = new Query("SELECT COUNT(Question) FROM USR_Questions ");
 	var res = query.ExecuteScalar();
 	return res;
 }
 
 function GetSKUQuestionsCount() {
-	var str = CreateCondition(questionnaires);	
+	var str = CreateCondition(questionnaires);
 	if (String.IsNullOrEmpty(str))
 		return parseInt(0);
 	else{
-		var query = new Query("SELECT COUNT(Id) FROM Document_Questionnaire_SKUQuestions " + str);					
+		var query = new Query("SELECT COUNT(Id) FROM Document_Questionnaire_SKUQuestions " + str);
 		var res = query.ExecuteScalar();
 		return res;
 	}
@@ -608,18 +614,18 @@ function GetSKUQuestionsCount() {
 function CreateCondition(list) {
 	var str = "";
 	var notEmpty = false;
-	
-	for ( var quest in questionnaires) {		
+
+	for ( var quest in questionnaires) {
 		if (String.IsNullOrEmpty(str)==false){
-			str = str + ", ";		
+			str = str + ", ";
 		}
-		str = str + " '" + quest.ToString() + "' ";		
+		str = str + " '" + quest.ToString() + "' ";
 		notEmpty = true;
 	}
 	if (notEmpty){
 		str = " WHERE Ref IN ( " + str  + ") ";
 	}
-	
+
 	return str;
 }
 

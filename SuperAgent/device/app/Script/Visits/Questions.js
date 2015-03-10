@@ -64,7 +64,7 @@ function GetQuestions(single, doCnt) {
 				"CASE WHEN (RTRIM(Answer)!='' AND Answer IS NOT NULL) THEN CASE WHEN AnswerType=@snapshot THEN @attached ELSE Answer END ELSE '—' END END AS AnswerOutput " +
 			"FROM USR_Questions " +
 			"WHERE Single=@single AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_Questions " +
-			"WHERE (Answer='Yes' OR Answer='Да'))) " + 
+			"WHERE (Answer='Yes' OR Answer='Да'))) " +
 			" ORDER BY DocDate, QuestionOrder ");
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	q.AddParameter("single", single);
@@ -142,7 +142,8 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 		q.Text = "SELECT Value, Value FROM Catalog_Question_ValueList WHERE Ref=@ref";
 		q.AddParameter("ref", questionItem);
 
-		Dialogs.DoChoose(q.Execute(), questionItem, null, Variables[control], DialogCallBack);
+		//Dialogs.DoChoose(q.Execute(), questionItem, null, Variables[control], DialogCallBack);
+		DoChoose(q.Execute(), questionItem, null, Variables[control], DialogCallBack);
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.Snapshot).ToString()) {
@@ -162,12 +163,14 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {
-		Dialogs.ChooseDateTime(questionItem, null, Variables[control], DialogCallBack); //(question, "Answer", question.Answer, Variables[control]);
+		//Dialogs.ChooseDateTime(questionItem, null, Variables[control], DialogCallBack); //(question, "Answer", question.Answer, Variables[control]);
+		ChooseDateTime(questionItem, null, Variables[control], DialogCallBack); //(question, "Answer", question.Answer, Variables[control]);
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.Boolean).ToString()) {
 		bool_answer = currAnswer;
-		Dialogs.ChooseBool(questionItem, null, Variables[control], DialogCallBack);
+		//Dialogs.ChooseBool(questionItem, null, Variables[control], DialogCallBack);
+		ChooseBool(questionItem, null, Variables[control], DialogCallBack);
 	}
 
 }
@@ -176,22 +179,22 @@ function AssignQuestionValue(control, question) {
 	AssignAnswer(question, control.Text);
 }
 
-function AssignAnswer(control, question, answer) {	
-	
+function AssignAnswer(control, question, answer) {
+
 	if (control != null) {
-		answer = control.Text;		
+		answer = control.Text;
 	} else{
 		if (answer!=null)
 			answer = answer.ToString();
 	}
 	if (answer == "—")
-		answer = null;		
-	
+		answer = null;
+
 	var q =	new Query("UPDATE USR_Questions SET Answer=@answer, AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question");
 	q.AddParameter("answer", answer);
 	q.AddParameter("question", question);
 	q.Execute();
-} 
+}
 
 function DialogCallBack(state, args) {
 	var entity = state[0];
@@ -229,7 +232,7 @@ function ObligatedAnswered(answer, obligatoriness) {
 		if (String.IsNullOrEmpty(answer)==false & answer!="—")
 			return true;
 	}
-	return false;	
+	return false;
 }
 
 
@@ -262,4 +265,84 @@ function AddSnapshotHandler(state, args) {
 		AssignAnswer(null, questionGl, null);
 		Workflow.Refresh([]);
 	}
+}
+
+//------------------------------Temporary, from dialogs----------------
+
+function DoChoose(listChoice, entity, attribute, control, func) {
+	if (attribute==null)
+		var startKey = control.Text;
+	else
+		var startKey = entity[attribute];
+
+	if (listChoice==null){
+		var tableName = entity[attribute].Metadata().TableName;
+		var query = new Query();
+		query.Text = "SELECT Id, Description FROM " + tableName;
+		listChoice = query.Execute();
+	}
+
+	if (func == null)
+		func = CallBack;
+
+	Dialog.Choose("#select_answer#", listChoice, startKey, func, [entity, attribute, control]);
+}
+
+function ChooseDateTime(entity, attribute, control, func) {
+	var startKey;
+
+	if (attribute==null)
+		startKey = control.Text;
+	else
+		startKey = entity[attribute];
+
+	if (String.IsNullOrEmpty(startKey) || startKey=="—")
+		startKey = DateTime.Now;
+
+	if (func == null)
+		func = CallBack;
+	Dialog.DateTime("#enterDateTime#", startKey, func, [entity, attribute, control]);
+}
+
+function ChooseBool(entity, attribute, control, func) {
+	if (attribute==null)
+		var startKey = control.Text;
+	else
+		var startKey = entity[attribute];
+
+	var listChoice = [[ "—", "—" ], [Translate["#YES#"], Translate["#YES#"]], [Translate["#NO#"], Translate["#NO#"]]];
+	if (func == null)
+		func = CallBack;
+	Dialog.Choose("#select_answer#", listChoice, startKey, func, [entity, attribute, control]);
+}
+
+function CallBack(state, args) {
+	AssignDialogValue(state, args);
+	var control = state[2];
+	if (getType(args.Result)=="BitMobile.DbEngine.DbRef")
+		control.Text = args.Result.Description;
+	else
+		control.Text = args.Result;
+}
+
+function AssignDialogValue(state, args) {
+	var entity = state[0];
+	var attribute = state[1];
+	entity[attribute] = args.Result;
+	entity.GetObject().Save();
+	return entity;
+}
+
+//------------------------------Temporary, from global----------------
+
+function GenerateGuid() {
+
+	return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+
+}
+
+function S4() {
+
+	return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+
 }

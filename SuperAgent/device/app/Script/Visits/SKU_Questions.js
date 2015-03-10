@@ -20,12 +20,16 @@ var questionValueGl;
 
 
 function OnLoading(){
-	obligateredLeft = parseInt(0);	
+	obligateredLeft = parseInt(0);
 	SetListType();
 	if (String.IsNullOrEmpty(setScroll))
 		setScroll = true;
-	if ($.param2==true) //works only in case of Forward from Filters 
+	if ($.param2==true) //works only in case of Forward from Filters
 		ClearIndex();
+}
+
+function WarMupFunction() {
+
 }
 
 function OnLoad() {
@@ -39,14 +43,14 @@ function SetListType(){
 }
 
 function ChangeListAndRefresh(control, param) {
-	regularAnswers	= ConvertToBoolean1(param);	
+	regularAnswers	= ConvertToBoolean1(param);
 	parentId = null;
 	parentGUID = null;
 	Workflow.Refresh([]);
 }
 
 function SetScrollIndex() {
-	
+
 	if (String.IsNullOrEmpty(scrollIndex)){
 		$.grScrollView.Index = parseInt(4);
 	}
@@ -56,19 +60,19 @@ function SetScrollIndex() {
 	}
 }
 
-function CountResultAndForward() {	
-	
-	parentId = null;			
-	
-	var q = regular_total + single_total;	
+function CountResultAndForward() {
+
+	parentId = null;
+
+	var q = regular_total + single_total;
 	$.workflow.Add("questions_qty_sku", q);
-	
-	var a = regular_answ + single_answ;	
+
+	var a = regular_answ + single_answ;
 	$.workflow.Add("questions_answ_sku", a);
-	
-	del = new Query("DELETE FROM USR_Filters");	
-	del.Execute();	
-	
+
+	del = new Query("DELETE FROM USR_Filters");
+	del.Execute();
+
 	Workflow.Forward();
 }
 
@@ -78,13 +82,13 @@ function CountResultAndForward() {
 
 
 function GetSKUsFromQuesionnaires(search) {
-	
+
 	var single = 1;
-	if (regularAnswers)	
+	if (regularAnswers)
 		single = 0;
-	
-	SetIndicators();	
-	
+
+	SetIndicators();
+
 	//getting left obligated
 	var q = new Query("SELECT DISTINCT S.Question, S.Description, S.SKU " +
 			"FROM USR_SKUQuestions S " +
@@ -93,17 +97,17 @@ function GetSKUsFromQuesionnaires(search) {
 				"WHERE SS.SKU=S.SKU AND (SS.Answer='Yes' OR SS.Answer='Да')))");
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	obligateredLeft = q.ExecuteCount();
-	
+
 	//getting SKUs list
 	var searchString = "";
 	if (String.IsNullOrEmpty(search) == false)
 		searchString = " Contains(SKUDescription, '" + search + "') AND ";
-	
+
 	var filterString = "";
 	var filterJoin = "";
 	filterString += AddFilter(filterString, "group_filter", "OwnerGroup", " AND ");
 	filterString += AddFilter(filterString, "brand_filter", "Brand", " AND ");
-		
+
 	var q = new Query();
 	q.Text="SELECT DISTINCT S.SKU, S.SKUDescription " +
 			", COUNT(DISTINCT S.Question) AS Total " +
@@ -118,28 +122,28 @@ function GetSKUsFromQuesionnaires(search) {
 				" JOIN Catalog_AssortmentMatrix_Outlets AMO ON AMS.Ref = AMO.Ref AND AMO.Outlet = @outlet " +
 				" WHERE S.SKU=AMS.SKU) AS BaseUnitQty " +
 			", CASE WHEN S.SKU=@currentSKU THEN 1 ELSE 0 END AS ShowChild " +
-				
-			"FROM USR_SKUQuestions S " + filterJoin +		
-			
-			"WHERE Single=@single AND " + searchString + filterString + 
+
+			"FROM USR_SKUQuestions S " + filterJoin +
+
+			"WHERE Single=@single AND " + searchString + filterString +
 			" (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions SS " +
 				"WHERE SS.SKU=S.SKU AND (SS.Answer='Yes' OR SS.Answer='Да')))" +
 			"GROUP BY S.SKU, S.SKUDescription " +
-			" ORDER BY BaseUnitQty DESC, S.SKUDescription "; 
+			" ORDER BY BaseUnitQty DESC, S.SKUDescription ";
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
-	q.AddParameter("single", single);	
+	q.AddParameter("single", single);
 	q.AddParameter("snapshot", DB.Current.Constant.DataType.Snapshot);
-	q.AddParameter("attached", Translate["#snapshotAttached#"]);		
+	q.AddParameter("attached", Translate["#snapshotAttached#"]);
 	q.AddParameter("outlet", $.workflow.outlet);
 	q.AddParameter("currentSKU", parentGUID);
-	
+
 	return q.Execute();
 	//
 }
 
 function SetIndicators() {
 	regular_total = CalculateTotal('0');
-	single_total = CalculateTotal('1');		
+	single_total = CalculateTotal('1');
 	regular_answ = CalculateQty('0');
 	single_answ = CalculateQty('1');
 }
@@ -167,19 +171,19 @@ function CalculateQty(single) {
 function AddFilter(filterString, filterName, condition, connector) {
 
 	var q = new Query("SELECT F.Id FROM USR_Filters F WHERE F.FilterType = @filterName");
-	
+
 	q.AddParameter("filterName", filterName);
-	
+
 	var res = q.ExecuteScalar();
-	
+
 	if (res!=null) {
-		
+
 		filterString += condition + " IN(SELECT F.Id FROM USR_Filters F WHERE F.FilterType = '" + filterName + "') " + connector;
-		
+
 	}
-		
+
 	return filterString;
-		
+
 }
 
 function ForwardIsntAllowed() {
@@ -189,20 +193,20 @@ function ForwardIsntAllowed() {
 		return false;
 }
 
-function ShowChilds(index) {	
-	var s = "p" + index; 
+function ShowChilds(index) {
+	var s = "p" + index;
 	if (s == parentId)
 		return true;
 	else
 		return false;
 }
 
-function GetChilds(sku) {	
-	
+function GetChilds(sku) {
+
 	var single = 1;
-	if (regularAnswers)	
+	if (regularAnswers)
 		single = 0;
-	
+
 	var q = new Query("SELECT *, " +
 			"CASE WHEN IsInputField='1' THEN Answer ELSE " +
 				"CASE WHEN (RTRIM(Answer)!='' AND Answer IS NOT NULL) THEN CASE WHEN AnswerType=@snapshot THEN @attached ELSE Answer END ELSE '—' END END AS AnswerOutput " +
@@ -211,10 +215,10 @@ function GetChilds(sku) {
 			"WHERE SKU=S.SKU AND (Answer='Yes' OR Answer='Да')))");
 	q.AddParameter("sku", sku);
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
-	q.AddParameter("single", single);	
+	q.AddParameter("single", single);
 	q.AddParameter("snapshot", DB.Current.Constant.DataType.Snapshot);
 	q.AddParameter("attached", Translate["#snapshotAttached#"]);
-	
+
 	return q.Execute();
 }
 
@@ -231,30 +235,31 @@ function CreateItemAndShow(control, sku, index, showChild) {
 //	}
 //	else
 //		parentId = "p" + index;
-	
+
 	if (showChild){
 		parentGUID = null;
 		scrollIndex = null;
 	}
 	else
 		parentGUID = sku;
-		
+
 	scrollIndex = index;
 	setScroll = true;
-	
+
 	Workflow.Refresh([$.search]);
 }
 
-function GoToQuestionAction(control, answerType, question, sku, editControl, currAnswer) {	
-	
+function GoToQuestionAction(control, answerType, question, sku, editControl, currAnswer) {
+
 	editControl = Variables[editControl];
 	curr_sku = sku;
-	
+
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.ValueList).ToString()) {
 		var q = new Query();
 		q.Text = "SELECT Value, Value FROM Catalog_Question_ValueList WHERE Ref=@ref";
 		q.AddParameter("ref", question);
-		Dialogs.DoChoose(q.Execute(), question, null, editControl, DialogCallBack);
+		//Dialogs.DoChoose(q.Execute(), question, null, editControl, DialogCallBack);
+		DoChoose(q.Execute(), question, null, editControl, DialogCallBack);
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.Snapshot).ToString()) {
@@ -275,29 +280,31 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {
-		Dialogs.ChooseDateTime(question, null, editControl, DialogCallBack);
+		//Dialogs.ChooseDateTime(question, null, editControl, DialogCallBack);
+		ChooseDateTime(question, null, editControl, DialogCallBack);
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.Boolean).ToString()) {
 		bool_answer = currAnswer;
 		curr_item = sku;
-		Dialogs.ChooseBool(question, null, editControl, DialogCallBack);
+		//Dialogs.ChooseBool(question, null, editControl, DialogCallBack);
+		ChooseBool(question, null, editControl, DialogCallBack);
 	}
-	
+
 	setScroll = false;
 }
 
 function AssignAnswer(control, question, sku, answer) {
-	
+
 	if (control != null) {
-		answer = control.Text;		
+		answer = control.Text;
 	} else{
 		if (answer!=null)
 			answer = answer.ToString();
 	}
 	if (answer == "—")
 		answer = null;
-	
+
 	var q =	new Query("UPDATE USR_SKUQuestions SET Answer=@answer, AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question AND SKU=@sku");
 	q.AddParameter("answer", answer);
 	q.AddParameter("sku", sku);
@@ -307,12 +314,13 @@ function AssignAnswer(control, question, sku, answer) {
 
 function GetCameraObject(entity) {
 	FileSystem.CreateDirectory("/private/document.visit");
-	var guid = Global.GenerateGuid();
+	//var guid = Global.GenerateGuid();
+	var guid = GenerateGuid();
 	//Variables.Add("guid", guid);
 	var path = String.Format("/private/document.visit/{0}/{1}.jpg", entity.Id, guid);
 	Camera.Size = 300;
 	Camera.Path = path;
-	return guid; 
+	return guid;
 }
 
 function ObligatedAnswered(answer, obligatoriness) {
@@ -320,7 +328,7 @@ function ObligatedAnswered(answer, obligatoriness) {
 		if (String.IsNullOrEmpty(answer)==false & answer!="—")
 			return true;
 	}
-	return false;	
+	return false;
 }
 
 function GetActionAndBack() {
@@ -346,7 +354,7 @@ function ClearIndex() {
 
 //------------------------------internal-----------------------------------
 
-function DialogCallBack(state, args){	
+function DialogCallBack(state, args){
 	var entity = state[0];
 	AssignAnswer(null, entity, curr_sku, args.Result);
 
@@ -358,10 +366,10 @@ function GalleryCallBack(state, args) {
 	Workflow.Refresh([]);
 }
 
-function DeleteAnswers(recordset) {	
+function DeleteAnswers(recordset) {
 	while (recordset.Next()){
 		DB.Delete(recordset.Id);
-	}	
+	}
 }
 
 //-------------------------------Gallery handler-----------------------------------
@@ -393,4 +401,84 @@ function AddSnapshotHandler(state, args) {
 		AssignAnswer(null, questionValueGl, skuValueGl, null);
 		Workflow.Refresh([]);
 	}
+}
+
+//------------------------------Temporary, from dialogs----------------
+
+function DoChoose(listChoice, entity, attribute, control, func) {
+	if (attribute==null)
+		var startKey = control.Text;
+	else
+		var startKey = entity[attribute];
+
+	if (listChoice==null){
+		var tableName = entity[attribute].Metadata().TableName;
+		var query = new Query();
+		query.Text = "SELECT Id, Description FROM " + tableName;
+		listChoice = query.Execute();
+	}
+
+	if (func == null)
+		func = CallBack;
+
+	Dialog.Choose("#select_answer#", listChoice, startKey, func, [entity, attribute, control]);
+}
+
+function ChooseDateTime(entity, attribute, control, func) {
+	var startKey;
+
+	if (attribute==null)
+		startKey = control.Text;
+	else
+		startKey = entity[attribute];
+
+	if (String.IsNullOrEmpty(startKey) || startKey=="—")
+		startKey = DateTime.Now;
+
+	if (func == null)
+		func = CallBack;
+	Dialog.DateTime("#enterDateTime#", startKey, func, [entity, attribute, control]);
+}
+
+function ChooseBool(entity, attribute, control, func) {
+	if (attribute==null)
+		var startKey = control.Text;
+	else
+		var startKey = entity[attribute];
+
+	var listChoice = [[ "—", "—" ], [Translate["#YES#"], Translate["#YES#"]], [Translate["#NO#"], Translate["#NO#"]]];
+	if (func == null)
+		func = CallBack;
+	Dialog.Choose("#select_answer#", listChoice, startKey, func, [entity, attribute, control]);
+}
+
+function CallBack(state, args) {
+	AssignDialogValue(state, args);
+	var control = state[2];
+	if (getType(args.Result)=="BitMobile.DbEngine.DbRef")
+		control.Text = args.Result.Description;
+	else
+		control.Text = args.Result;
+}
+
+function AssignDialogValue(state, args) {
+	var entity = state[0];
+	var attribute = state[1];
+	entity[attribute] = args.Result;
+	entity.GetObject().Save();
+	return entity;
+}
+
+//------------------------------Temporary, from global----------------
+
+function GenerateGuid() {
+
+	return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+
+}
+
+function S4() {
+
+	return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+
 }

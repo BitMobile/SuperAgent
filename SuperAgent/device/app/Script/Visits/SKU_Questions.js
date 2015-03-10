@@ -24,7 +24,7 @@ function OnLoading(){
 	SetListType();
 	if (String.IsNullOrEmpty(setScroll))
 		setScroll = true;
-	if ($.param2==true) //works only in case of Forward from Filters 
+	if ($.param2==true) //works only in case of Forward from Filters
 		ClearIndex();
 }
 
@@ -231,7 +231,7 @@ function CreateItemAndShow(control, sku, index, showChild) {
 //	}
 //	else
 //		parentId = "p" + index;
-	
+
 	if (showChild){
 		parentGUID = null;
 		scrollIndex = null;
@@ -288,7 +288,6 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 	if (((answerType).ToString() == (DB.Current.Constant.DataType.String).ToString()) ||
 	   ((answerType).ToString() == (DB.Current.Constant.DataType.Integer).ToString()) ||
 		 ((answerType).ToString() == (DB.Current.Constant.DataType.Decimal).ToString())) {
-		// Dialog.Debug(editControlName);
 		FocusOnEditText(editControlName, '1');
 	}
 

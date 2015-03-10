@@ -69,7 +69,7 @@ function CountResultAndForward() {
 	del = new Query("DELETE FROM USR_Filters");	
 	del.Execute();	
 	
-	Workflow.Forward();
+	Workflow.Forward([]);
 }
 
 //

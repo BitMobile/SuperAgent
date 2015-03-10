@@ -155,7 +155,6 @@ function GetPrivateImagePath(objectType, objectID, pictID, pictExt) {
 function FocusOnEditText(editFieldName, isInputField) {
   if (isInputField != null) {
     if (isInputField == '1') {
-      Console.WriteLine('hi');
       Variables[editFieldName].SetFocus();
     }
   }

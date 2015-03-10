@@ -73,7 +73,7 @@ function CountResultAndForward() {
 	del = new Query("DELETE FROM USR_Filters");
 	del.Execute();
 
-	Workflow.Forward();
+	Workflow.Forward([]);
 }
 
 //
@@ -251,6 +251,7 @@ function CreateItemAndShow(control, sku, index, showChild) {
 
 function GoToQuestionAction(control, answerType, question, sku, editControl, currAnswer) {
 
+	editControlName = editControl;
 	editControl = Variables[editControl];
 	curr_sku = sku;
 
@@ -289,6 +290,12 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 		curr_item = sku;
 		//Dialogs.ChooseBool(question, null, editControl, DialogCallBack);
 		ChooseBool(question, null, editControl, DialogCallBack);
+	}
+
+	if (((answerType).ToString() == (DB.Current.Constant.DataType.String).ToString()) ||
+	   ((answerType).ToString() == (DB.Current.Constant.DataType.Integer).ToString()) ||
+		 ((answerType).ToString() == (DB.Current.Constant.DataType.Decimal).ToString())) {
+		FocusOnEditText(editControlName, '1');
 	}
 
 	setScroll = false;

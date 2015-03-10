@@ -8,10 +8,7 @@ function WarMupFunction() {
 
 function OnLoad() {
 	if ($.search.length > parseInt(0)){
-		Dialog.Debug($.edtSearch);
-		//$.edtSearch.SetFocus();
-		var searchControl = $.edtSearch;
-		searchControl.SetFocus();
+		$.edtSearch.SetFocus();		
 	}
 }
 

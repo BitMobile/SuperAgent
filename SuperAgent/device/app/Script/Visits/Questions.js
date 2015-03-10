@@ -64,7 +64,8 @@ function GetQuestions(single, doCnt) {
 				"CASE WHEN (RTRIM(Answer)!='' AND Answer IS NOT NULL) THEN CASE WHEN AnswerType=@snapshot THEN @attached ELSE Answer END ELSE '—' END END AS AnswerOutput " +
 			"FROM USR_Questions " +
 			"WHERE Single=@single AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_Questions " +
-			"WHERE (Answer='Yes' OR Answer='Да')))");
+			"WHERE (Answer='Yes' OR Answer='Да'))) " + 
+			" ORDER BY DocDate, QuestionOrder ");
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	q.AddParameter("single", single);
 	q.AddParameter("snapshot", DB.Current.Constant.DataType.Snapshot);

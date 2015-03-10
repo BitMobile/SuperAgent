@@ -1,5 +1,6 @@
 ﻿var regularAnswers;
 var parentId;
+var parentGUID;
 var obligateredLeft;
 var regular_answ;
 var regular_total;
@@ -40,6 +41,7 @@ function SetListType(){
 function ChangeListAndRefresh(control, param) {
 	regularAnswers	= ConvertToBoolean1(param);	
 	parentId = null;
+	parentGUID = null;
 	Workflow.Refresh([]);
 }
 
@@ -115,6 +117,7 @@ function GetSKUsFromQuesionnaires(search) {
 			", (SELECT MAX(AMS.BaseUnitQty) FROM Catalog_AssortmentMatrix_SKUs AMS " +
 				" JOIN Catalog_AssortmentMatrix_Outlets AMO ON AMS.Ref = AMO.Ref AND AMO.Outlet = @outlet " +
 				" WHERE S.SKU=AMS.SKU) AS BaseUnitQty " +
+			", CASE WHEN S.SKU=@currentSKU THEN 1 ELSE 0 END AS ShowChild " +
 				
 			"FROM USR_SKUQuestions S " + filterJoin +		
 			
@@ -128,6 +131,7 @@ function GetSKUsFromQuesionnaires(search) {
 	q.AddParameter("snapshot", DB.Current.Constant.DataType.Snapshot);
 	q.AddParameter("attached", Translate["#snapshotAttached#"]);		
 	q.AddParameter("outlet", $.workflow.outlet);
+	q.AddParameter("currentSKU", parentGUID);
 	
 	return q.Execute();
 	//
@@ -220,13 +224,20 @@ function RefreshScreen(control, search) {
 
 // ------------------------SKU----------------------
 
-function CreateItemAndShow(control, sku, index) {
-	if (parentId == ("p"+index)){
-		parentId = null;
+function CreateItemAndShow(control, sku, index, showChild) {
+//	if (parentId == ("p"+index)){
+//		parentId = null;
+//		scrollIndex = null;
+//	}
+//	else
+//		parentId = "p" + index;
+	
+	if (showChild){
+		parentGUID = null;
 		scrollIndex = null;
 	}
 	else
-		parentId = "p" + index;
+		parentGUID = sku;
 		
 	scrollIndex = index;
 	setScroll = true;

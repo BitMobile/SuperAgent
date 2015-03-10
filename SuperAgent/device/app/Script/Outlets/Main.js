@@ -6,6 +6,20 @@ function WarMupFunction() {
 
 }
 
+function OnLoad() {
+	if ($.search.length > parseInt(0)){
+		Dialog.Debug($.edtSearch);
+		//$.edtSearch.SetFocus();
+		var searchControl = $.edtSearch;
+		searchControl.SetFocus();
+	}
+}
+
+function DoSearch(control) {
+	if (control.Text.Length >= parseInt(3) || control.Text.Length==parseInt(0))
+		Workflow.Refresh([control.Text]);
+}
+
 function GetOutlets(searchText) {
 	var search = "";
 	if (String.IsNullOrEmpty(searchText)==false)

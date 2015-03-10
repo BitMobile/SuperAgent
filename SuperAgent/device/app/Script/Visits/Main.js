@@ -5,6 +5,11 @@ function OnLoading(){
 	SetListType();
 }
 
+function DoSearch(control) {
+	if (control.Text.Length >= parseInt(3) || control.Text.Length==parseInt(0))
+		Workflow.Refresh([control.Text]);
+}
+
 function SetListType() {
 	if ($.Exists("visitsType") == false)		 		  
 		$.AddGlobal("visitsType", "planned");

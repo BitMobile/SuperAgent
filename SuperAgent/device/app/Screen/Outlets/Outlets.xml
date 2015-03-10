@@ -32,10 +32,9 @@
 		<c:HorizontalLine />
 
 		<c:DockLayout CssClass="search">
-			<c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoRefresh($edtSearch.Text)"></c:Button>
 			<c:DockLayout>
 				<c:Image />
-				<c:EditText Id="edtSearch" Text="$search" Placeholder="#search#"></c:EditText>
+				<c:EditText Id="edtSearch" Text="$search" Placeholder="#search#"  OnChange="$DoSearch()"></c:EditText>
 			</c:DockLayout>			
 		</c:DockLayout>
 		<c:HorizontalLine />

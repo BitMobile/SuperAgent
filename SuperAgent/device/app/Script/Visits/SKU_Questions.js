@@ -213,7 +213,8 @@ function GetChilds(sku) {
 				"CASE WHEN (RTRIM(Answer)!='' AND Answer IS NOT NULL) THEN CASE WHEN AnswerType=@snapshot THEN @attached ELSE Answer END ELSE '—' END END AS AnswerOutput " +
 			"FROM USR_SKUQuestions S " +
 			"WHERE SKU=@sku AND Single=@single AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +
-			"WHERE SKU=S.SKU AND (Answer='Yes' OR Answer='Да')))");
+			"WHERE SKU=S.SKU AND (Answer='Yes' OR Answer='Да'))) " +
+			"ORDER BY DocDate, QuestionOrder ");
 	q.AddParameter("sku", sku);
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	q.AddParameter("single", single);

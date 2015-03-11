@@ -116,6 +116,21 @@ function EmptyRef(ref) {
     return ref.EmptyRef();
 }
 
+function IsEmptyValue(value) {		
+	if (getType(value)=="System.String" || getType(value)=="System.DateTime" || getType(value)=="System.Boolean"){
+		if (String.IsNullOrEmpty(value))
+			return true;
+		else
+			return false;
+	}
+	else{
+		if (ref.EmptyRef())
+            return true;
+        else
+            return false;
+	}	   
+}
+
 function NotEmptyRef(ref) {
     if (ref.EmptyRef())
         return false;
@@ -158,6 +173,13 @@ function FocusOnEditText(editFieldName, isInputField) {
       Variables[editFieldName].SetFocus();
     }
   }
+}
+
+function FormatOutput(value) {
+	if (String.IsNullOrEmpty(value) || IsEmptyValue(value))
+		return "—";
+	else
+		return value;
 }
 
 //--------------------Clear Button part----------------------

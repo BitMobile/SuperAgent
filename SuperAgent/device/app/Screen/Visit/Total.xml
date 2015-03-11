@@ -54,7 +54,6 @@
 						<c:TextView Text="#reasonForEmptyOrder#" CssClass="description_row"></c:TextView>
 						<c:TextView Id="noOrderReason" Text="$FormatOutput($workflow.visit.ReasonForNotOfTakingOrder.Description)" CssClass="main_row"></c:TextView>
 					</c:VerticalLayout>
-					<c:Image></c:Image>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
 			</s:If>
@@ -66,7 +65,6 @@
 						<c:TextView Text="#visitReason#" CssClass="description_row"></c:TextView>
 						<c:TextView Id="visitReason" Text="$FormatOutput($workflow.visit.ReasonForVisit.Description)" CssClass="main_row"></c:TextView>
 					</c:VerticalLayout>
-					<c:Image></c:Image>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
 			</s:If>

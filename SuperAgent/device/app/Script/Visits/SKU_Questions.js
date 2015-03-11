@@ -161,6 +161,7 @@ function CalculateQty(single) {
 	var q = new Query("SELECT COUNT(U1.Answer) AS Answered " +
 			"FROM USR_SKUQuestions U1 " +
 			"WHERE U1.Single=@single " +
+			"AND RTRIM(U1.Answer)!='' " +
 			"AND (ParentQuestion=@emptyRef OR ParentQuestion IN " +
 				"(SELECT Question FROM USR_SKUQuestions WHERE (Answer='Yes' OR Answer='Да')))");
 	q.AddParameter("single", single);
@@ -309,7 +310,7 @@ function AssignAnswer(control, question, sku, answer) {
 		if (answer!=null)
 			answer = answer.ToString();
 	}
-	if (answer == "—")
+	if (answer == "—" || answer == "")
 		answer = null;
 
 	var q =	new Query("UPDATE USR_SKUQuestions SET Answer=@answer, AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question AND SKU=@sku");

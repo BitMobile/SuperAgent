@@ -277,7 +277,7 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 		listChoice.Add([1, Translate["#makeSnapshot#"]]);
 		if ($.sessionConst.galleryChoose)
 			listChoice.Add([0, Translate["#addFromGallery#"]]);
-		if (String.IsNullOrEmpty(currAnswer)==false)
+		if (currAnswer!="—")
 			listChoice.Add([2, Translate["#clearValue#"]]);
 		AddSnapshot($.workflow.visit, null, GalleryCallBack, listChoice, "document.visit");
 	}

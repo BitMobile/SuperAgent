@@ -17,7 +17,7 @@
 		<c:HorizontalLine CssClass="b_line" />
 
 		<c:ScrollView Id="grScrollView">
-			
+
 			<c:HorizontalLayout CssClass="margin_top" />
 			<c:HorizontalLine />
 
@@ -58,7 +58,7 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(KPP), 1">
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(KPP, 1)">
 				<c:VerticalLayout>
 					<c:TextView Text="#kpp#" CssClass="description_row"></c:TextView>
 					<c:EditText Value="$outlet.KPP" Placeholder="—" Keyboard="numeric" CssClass="main_row" Id="KPP" />

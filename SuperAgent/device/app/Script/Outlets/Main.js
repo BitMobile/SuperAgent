@@ -362,7 +362,7 @@ function NoLocationHandler(descriptor) {
 }
 
 function ShowCoordOptions(control, outlet) {
-	Dialog.Choose("#select_answer#", [[0,Translate["#clear_coord#"]], [1,Translate["#refresh#"]], [2,Translate["#copy#"]]], ChooseHandler, outlet);
+	Dialog.Choose("#coordinates#", [[0,Translate["#clear_coord#"]], [1,Translate["#refresh#"]], [2,Translate["#copy#"]]], ChooseHandler, outlet);
 }
 
 function ChooseHandler(state, args) {

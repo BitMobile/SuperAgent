@@ -188,7 +188,7 @@
 				<s:Push Id="valueStr" Value="$GetOutletParameterValue($outlet,$parameter.Id,$parameter.ParameterValue, $parameter.TypeDescription)" />
 				<s:Push Id="editText" Value="$UseInput($parameter.TypeDescription)" />
 				<s:Push Id="index" Value="$statusCount.Index"></s:Push>
-				<c:DockLayout CssClass="parameter_grid" OnClickAction="$GoToParameterAction($parameter.TypeDescription, $parameterValue, Value, $outlet, $parameter.Id, control{$index})">
+				<c:DockLayout CssClass="parameter_grid" OnClickAction="$GoToParameterAction($parameter.TypeDescription, $parameterValue, Value, $outlet, $parameter.Id, control{$index}, $parameter.Description)">
 					<s:If Test="$editText">
 						<s:If Test="$sessionConst.editOutletParameters">
 							<c:EditText Id="control{$index}" Text="$valueStr" OnChange="$AssignParameterValue($parameter.TypeDescription, $parameterValue, Value, $outlet, $parameter.Id)" CssClass="value" Keyboard="$keyboardType"></c:EditText>

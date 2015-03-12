@@ -143,7 +143,7 @@ function AssignParameterValue(control, typeDescription, parameterValue, value, o
 }
 
 
-function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control) {
+function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control, parameterDescription) {
 
 	if ($.sessionConst.editOutletParameters){
 
@@ -153,16 +153,16 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 			var q = new Query();
 			q.Text = "SELECT Value, Value FROM Catalog_OutletParameter_ValueList WHERE Ref=@ref UNION SELECT '', '—' ORDER BY Value";
 			q.AddParameter("ref", parameter);
-			DoChoose(q.Execute(), parameterValue, "Value", Variables[control], null);
+			DoChoose(q.Execute(), parameterValue, "Value", Variables[control], null, parameterDescription);
 		}
 		if (typeDescription == "DateTime") {  //---------DateTime-------
 			if (String.IsNullOrEmpty(parameterValue.Value))
-				ChooseDateTime(parameterValue, "Value", Variables[control], DateHandler);
+				ChooseDateTime(parameterValue, "Value", Variables[control], DateHandler, parameterDescription);
 			else
-				Dialog.Choose(Translate["#valueList#"], [[0, Translate["#clearValue#"]], [1, Translate["#setDate#"]]], DateHandler, [parameterValue, control]);
+				Dialog.Choose(parameterDescription, [[0, Translate["#clearValue#"]], [1, Translate["#setDate#"]]], DateHandler, [parameterValue, control]);
 		}
 		if (typeDescription == "Boolean") {  //----------Boolean--------
-			ChooseBool(parameterValue, "Value", Variables[control]);
+			ChooseBool(parameterValue, "Value", Variables[control], null, parameterDescription);
 		}
 		if (typeDescription == "Snapshot") { //----------Snapshot-------
 			var listChoice = new List;
@@ -461,7 +461,10 @@ function CommitAndBack(){
 
 //------------------------------Temporary, from dialogs----------------
 
-function DoChoose(listChoice, entity, attribute, control, func) {
+function DoChoose(listChoice, entity, attribute, control, func, title) {
+
+	title = typeof title !== 'undefined' ? title : "#select_answer#";
+
 	if (attribute==null)
 		var startKey = control.Text;
 	else
@@ -477,11 +480,13 @@ function DoChoose(listChoice, entity, attribute, control, func) {
 	if (func == null)
 		func = CallBack;
 
-	Dialog.Choose("#select_answer#", listChoice, startKey, func, [entity, attribute, control]);
+	Dialog.Choose(title, listChoice, startKey, func, [entity, attribute, control]);
 }
 
-function ChooseDateTime(entity, attribute, control, func) {
+function ChooseDateTime(entity, attribute, control, func, title) {
 	var startKey;
+
+	title = typeof title !== 'undefined' ? title : "#select_answer#";
 
 	if (attribute==null)
 		startKey = control.Text;
@@ -493,10 +498,13 @@ function ChooseDateTime(entity, attribute, control, func) {
 
 	if (func == null)
 		func = CallBack;
-	Dialog.DateTime("#enterDateTime#", startKey, func, [entity, attribute, control]);
+	Dialog.DateTime(title, startKey, func, [entity, attribute, control]);
 }
 
-function ChooseBool(entity, attribute, control, func) {
+function ChooseBool(entity, attribute, control, func, title) {
+
+	title = typeof title !== 'undefined' ? title : "#select_answer#";
+
 	if (attribute==null)
 		var startKey = control.Text;
 	else
@@ -505,7 +513,7 @@ function ChooseBool(entity, attribute, control, func) {
 	var listChoice = [[ "—", "—" ], [Translate["#YES#"], Translate["#YES#"]], [Translate["#NO#"], Translate["#NO#"]]];
 	if (func == null)
 		func = CallBack;
-	Dialog.Choose("#select_answer#", listChoice, startKey, func, [entity, attribute, control]);
+	Dialog.Choose(title, listChoice, startKey, func, [entity, attribute, control]);
 }
 
 function CallBack(state, args) {

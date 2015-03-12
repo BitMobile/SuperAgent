@@ -178,7 +178,7 @@ function NoTasks(skipTasks) {
 
 
 function CreateQuestionnaireAnswers() {	
-	var q = new Query("SELECT DISTINCT Q.Question, Q.SKU AS SKU, Q.Description, Q.Answer, Q.AnswerDate " +
+	var q = new Query("SELECT DISTINCT Q.Question, Q.SKU AS SKU, Q.Description, Q.Answer, Q.HistoryAnswer, Q.AnswerDate " +
 			", D.Number, D.Id AS Questionnaire, D.Single, A.Id AS AnswerId " +
 			"FROM USR_SKUQuestions Q " +
 			"JOIN Document_Questionnaire_SKUs DS ON Q.SKU=DS.SKU " +
@@ -189,7 +189,7 @@ function CreateQuestionnaireAnswers() {
 			"AND A.Ref=@outlet " +
 			"WHERE Q.Answer!='' AND RTRIM(Q.Answer) IS NOT NULL " +
 			"UNION " +
-			"SELECT DISTINCT Q.Question, NULL AS SKU, Q.Description, Q.Answer, Q.AnswerDate" +
+			"SELECT DISTINCT Q.Question, NULL AS SKU, Q.Description, Q.Answer, Q.HistoryAnswer, Q.AnswerDate" +
 			", D.Number, D.Id AS Questionnaire, D.Single, A.Id AS AnswerId " +
 			"FROM USR_Questions Q " +
 			"JOIN Document_Questionnaire_Questions DQ ON Q.Question=DQ.ChildQuestion " +
@@ -202,36 +202,38 @@ function CreateQuestionnaireAnswers() {
 	var answers = q.Execute();
 	
 	while (answers.Next()) {
-		if (answers.SKU!=null){
-			var p = DB.Create("Document.Visit_SKUs");
-			p.SKU = answers.SKU;
-		}
-		else
-			var p = DB.Create("Document.Visit_Questions");
-		p.Ref = $.workflow.visit;
-		p.Question = answers.Question;
-		p.Answer = answers.Answer;			
-		p.AnswerDate = answers.AnswerDate;
-		p.Questionnaire = answers.Questionnaire;
-		p.Save();
-		if (answers.Single==1){
-			var a;
-			if (answers.AnswerId == null){
-				a = DB.Create("Catalog.Outlet_AnsweredQuestions");
-				a.Ref = $.workflow.outlet;
-				a.Questionaire = answers.Questionnaire;
-				a.Question = answers.Question;
-				if (answers.SKU!=null)
-					a.SKU = answers.SKU;									
+		if (answers.Answer!=answers.HistoryAnswer){
+			if (answers.SKU!=null){
+				var p = DB.Create("Document.Visit_SKUs");
+				p.SKU = answers.SKU;
 			}
-			else{
-				a = answers.AnswerId;
-				a = a.GetObject();
+			else
+				var p = DB.Create("Document.Visit_Questions");
+			p.Ref = $.workflow.visit;
+			p.Question = answers.Question;
+			p.Answer = answers.Answer;			
+			p.AnswerDate = answers.AnswerDate;
+			p.Questionnaire = answers.Questionnaire;
+			p.Save();
+			if (answers.Single==1){
+				var a;
+				if (answers.AnswerId == null){
+					a = DB.Create("Catalog.Outlet_AnsweredQuestions");
+					a.Ref = $.workflow.outlet;
+					a.Questionaire = answers.Questionnaire;
+					a.Question = answers.Question;
+					if (answers.SKU!=null)
+						a.SKU = answers.SKU;									
+				}
+				else{
+					a = answers.AnswerId;
+					a = a.GetObject();
+				}
+				a.Answer = answers.Answer;
+				a.AnswerDate = answers.AnswerDate;
+				a.Save();
 			}
-			a.Answer = answers.Answer;
-			a.AnswerDate = answers.AnswerDate;
-			a.Save();
-		}
+		}		
 	}
 }
 

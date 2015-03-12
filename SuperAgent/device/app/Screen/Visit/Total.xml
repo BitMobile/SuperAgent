@@ -47,25 +47,36 @@
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
 			</s:If>
-
-			<s:If Test="$OrderCheckRequired($workflow.visit, $workflow.name)">
-				<c:HorizontalLayout CssClass="grid" OnClickAction="$DoSelect($workflow.visit,ReasonForNotOfTakingOrder,$noOrderReason)">
+			
+			<s:If Test="@checkOrderReason">
+				<c:DockLayout CssClass="grid" OnClickAction="$DoSelect($workflow.visit,ReasonForNotOfTakingOrder,$noOrderReason)">
+					<s:If Test="$IsEmptyValue($workflow.visit.ReasonForNotOfTakingOrder)">
+						<c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout>
+					</s:If>
+					<s:Else>
+						<c:HorizontalLayout CssClass="answered_side_wh"></c:HorizontalLayout>
+					</s:Else>
 					<c:VerticalLayout>
 						<c:TextView Text="#reasonForEmptyOrder#" CssClass="description_row"></c:TextView>
 						<c:TextView Id="noOrderReason" Text="$FormatOutput($workflow.visit.ReasonForNotOfTakingOrder.Description)" CssClass="main_row"></c:TextView>
 					</c:VerticalLayout>
-				</c:HorizontalLayout>
+				</c:DockLayout>
 				<c:HorizontalLine />
 			</s:If>
 
-
-			<s:If Test="$VisitReasonCheckrequired($workflow.name, $workflow.visit)">
-				<c:HorizontalLayout CssClass="grid" OnClickAction="$DoSelect($workflow.visit,ReasonForVisit,$visitReason)">
+			<s:If Test="@checkVisitReason">
+				<c:DockLayout CssClass="grid" OnClickAction="$DoSelect($workflow.visit,ReasonForVisit,$visitReason)">
+					<s:If Test="$IsEmptyValue($workflow.visit.ReasonForVisit)">
+						<c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout>
+					</s:If>
+					<s:Else>
+						<c:HorizontalLayout CssClass="answered_side_wh"></c:HorizontalLayout>
+					</s:Else>
 					<c:VerticalLayout>
 						<c:TextView Text="#visitReason#" CssClass="description_row"></c:TextView>
 						<c:TextView Id="visitReason" Text="$FormatOutput($workflow.visit.ReasonForVisit.Description)" CssClass="main_row"></c:TextView>
 					</c:VerticalLayout>
-				</c:HorizontalLayout>
+				</c:DockLayout>
 				<c:HorizontalLine />
 			</s:If>
 

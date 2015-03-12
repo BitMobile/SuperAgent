@@ -117,18 +117,20 @@ function EmptyRef(ref) {
 }
 
 function IsEmptyValue(value) {		
-	if (getType(value)=="System.String" || getType(value)=="System.DateTime" || getType(value)=="System.Boolean"){
-		if (String.IsNullOrEmpty(value))
-			return true;
-		else
-			return false;
-	}
+	//Dialog.Debug(value);
+	
+	if (String.IsNullOrEmpty(value))
+		return true;
 	else{
-		if (ref.EmptyRef())
-            return true;
-        else
-            return false;
-	}	   
+		if (getType(value)=="System.String" || getType(value)=="System.DateTime" || getType(value)=="System.Boolean")
+			return false;
+		else{
+			if (value.EmptyRef())
+	            return true;
+	        else
+	            return false;
+		}			
+	}	
 }
 
 function NotEmptyRef(ref) {

@@ -14,12 +14,15 @@ function SetSessionConstants() {
 	var multStck = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='MultStck'");
 	var stckEnbl = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='NoStkEnbl'");
 	var orderCalc = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='OrderCalc'");
-	
+	var UVR = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='UVR'");
+	var NOR = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='NOR'");
+
 	$.AddGlobal("sessionConst", new Dictionary());
 	$.sessionConst.Add("PlanEnbl", EvaluateBoolean(planEnbl.ExecuteScalar()));
 	$.sessionConst.Add("MultStck", EvaluateBoolean(multStck.ExecuteScalar()));
 	$.sessionConst.Add("NoStkEnbl", EvaluateBoolean(stckEnbl.ExecuteScalar()));
-	$.sessionConst.Add("OrderCalc", EvaluateBoolean(orderCalc.ExecuteScalar()));
+	$.sessionConst.Add("UVR", EvaluateBoolean(UVR.ExecuteScalar()));
+	$.sessionConst.Add("NOR", EvaluateBoolean(NOR.ExecuteScalar()));
 	
 	var q = new Query("SELECT U.AccessRight, A.Id, A.Code FROM Catalog_MobileAppAccessRights A " +
 		" LEFT JOIN Catalog_User_UserRights U ON U.AccessRight=A.Id ");

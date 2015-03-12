@@ -161,7 +161,7 @@ function CalculateQty(single) {
 	var q = new Query("SELECT COUNT(U1.Answer) AS Answered " +
 			"FROM USR_SKUQuestions U1 " +
 			"WHERE U1.Single=@single " +
-			"AND RTRIM(U1.Answer)!='' " +
+			"AND RTRIM(U1.Answer)!='' AND U1.Answer IS NOT NULL " +
 			"AND (ParentQuestion=@emptyRef OR ParentQuestion IN " +
 				"(SELECT Question FROM USR_SKUQuestions WHERE (Answer='Yes' OR Answer='Да')))");
 	q.AddParameter("single", single);
@@ -313,8 +313,14 @@ function AssignAnswer(control, question, sku, answer) {
 	}
 	if (answer == "—" || answer == "")
 		answer = null;
+	
+	var answerString;
+	if (String.IsNullOrEmpty(answer))
+		answerString = "HistoryAnswer ";
+	else
+		answerString = "@answer ";
 
-	var q =	new Query("UPDATE USR_SKUQuestions SET Answer=@answer, AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question AND SKU=@sku");
+	var q =	new Query("UPDATE USR_SKUQuestions SET Answer=" + answerString + ", AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question AND SKU=@sku");
 	q.AddParameter("answer", answer);
 	q.AddParameter("sku", sku);
 	q.AddParameter("question", question);

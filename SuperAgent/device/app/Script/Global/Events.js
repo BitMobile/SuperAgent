@@ -391,7 +391,8 @@ function CreateQuestionsTable(outlet) {
 	var query = new Query(tableCommand +
 			"SELECT MIN(D.Date) AS DocDate, Q.ChildQuestion AS Question, Q.ChildDescription AS Description" +
 			", Q.ParentQuestion AS ParentQuestion, Q.ChildType AS AnswerType " +
-			", A.Answer AS Answer, MAX(A.AnswerDate) AS AnswerDate, D.Single AS Single " +
+			", CASE WHEN A.Answer IS NOT NULL THEN A.Answer ELSE NULL END AS Answer " +
+			", A.Answer AS HistoryAnswer, MAX(A.AnswerDate) AS AnswerDate, D.Single AS Single " +
 			", MAX(CAST (Q.Obligatoriness AS int)) AS Obligatoriness" +
 			", (SELECT Qq.QuestionOrder FROM Document_Questionnaire Dd  " +
 			" JOIN Document_Questionnaire_Questions Qq ON Dd.Id=Qq.Ref AND Q.ChildQuestion=Qq.ChildQuestion AND Dd.Id=D.Id ORDER BY Dd.Date LIMIT 1) AS QuestionOrder" + //QuestionOrder
@@ -424,7 +425,8 @@ function CreateSKUQuestionsTable(outlet) {
 	var query = new Query(tableCommand +
 			"SELECT MIN(D.Date) AS DocDate, S.SKU AS SKU, S.Description AS SKUDescription, Q.ChildQuestion AS Question, Q.ChildDescription AS Description" +
 			", Q.ParentQuestion AS ParentQuestion, Q.ChildType AS AnswerType" +
-			", A.Answer AS Answer, MAX(A.AnswerDate) AS AnswerDate, D.Single AS Single " +
+			", CASE WHEN A.Answer IS NOT NULL THEN A.Answer ELSE NULL END AS Answer " +
+			", A.Answer AS HistoryAnswer, MAX(A.AnswerDate) AS AnswerDate, D.Single AS Single " +
 			", MAX(CAST (Q.Obligatoriness AS int)) AS Obligatoriness" +
 			", GR.Id AS OwnerGroup, BR.Id AS Brand " +
 			", (SELECT Qq.QuestionOrder FROM Document_Questionnaire Dd  " +

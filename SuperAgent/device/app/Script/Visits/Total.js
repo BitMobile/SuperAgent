@@ -178,7 +178,7 @@ function NoTasks(skipTasks) {
 
 
 function CreateQuestionnaireAnswers() {	
-	var q = new Query("SELECT DISTINCT Q.Question, Q.SKU AS SKU, Q.Description, Q.Answer, Q.HistoryAnswer, Q.AnswerDate " +
+	var q = new Query("SELECT DISTINCT Q.Question, Q.SKU AS SKU, Q.Description, Q.Answer, MAX(Q.HistoryAnswer) AS HistoryAnswer, Q.AnswerDate " +
 			", D.Number, D.Id AS Questionnaire, D.Single, A.Id AS AnswerId " +
 			"FROM USR_SKUQuestions Q " +
 			"JOIN Document_Questionnaire_SKUs DS ON Q.SKU=DS.SKU " +
@@ -188,8 +188,9 @@ function CreateQuestionnaireAnswers() {
 			"AND A.SKU=Q.SKU " +
 			"AND A.Ref=@outlet " +
 			"WHERE Q.Answer!='' AND RTRIM(Q.Answer) IS NOT NULL " +
+			"GROUP BY Q.Question, Q.SKU, Q.Description, Q.Answer, Q.AnswerDate, D.Number, D.Id, D.Single, A.Id " +
 			"UNION " +
-			"SELECT DISTINCT Q.Question, NULL AS SKU, Q.Description, Q.Answer, Q.HistoryAnswer, Q.AnswerDate" +
+			"SELECT DISTINCT Q.Question, NULL AS SKU, Q.Description, Q.Answer, MAX(Q.HistoryAnswer) AS HistoryAnswer, Q.AnswerDate" +
 			", D.Number, D.Id AS Questionnaire, D.Single, A.Id AS AnswerId " +
 			"FROM USR_Questions Q " +
 			"JOIN Document_Questionnaire_Questions DQ ON Q.Question=DQ.ChildQuestion " +
@@ -197,7 +198,8 @@ function CreateQuestionnaireAnswers() {
 			"LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Question=Q.Question AND A.Questionaire=DQ.Ref " +
 			"AND A.SKU='@ref[Catalog_SKU]:00000000-0000-0000-0000-000000000000'" +
 			"AND A.Ref=@outlet " +
-			"WHERE Q.Answer!='' AND RTRIM(Q.Answer) IS NOT NULL");
+			"WHERE Q.Answer!='' AND RTRIM(Q.Answer) IS NOT NULL " +
+			"GROUP BY Q.Question,  Q.Description, Q.Answer, Q.AnswerDate, D.Number, D.Id, D.Single, A.Id");
 	q.AddParameter("outlet", $.workflow.outlet);
 	var answers = q.Execute();
 	
@@ -211,7 +213,7 @@ function CreateQuestionnaireAnswers() {
 				var p = DB.Create("Document.Visit_Questions");
 			p.Ref = $.workflow.visit;
 			p.Question = answers.Question;
-			p.Answer = answers.Answer;			
+			p.Answer = answers.Answer;
 			p.AnswerDate = answers.AnswerDate;
 			p.Questionnaire = answers.Questionnaire;
 			p.Save();

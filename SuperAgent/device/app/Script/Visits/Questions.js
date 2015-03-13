@@ -89,8 +89,12 @@ function SetIndiactors(res, single) {
 
 
 function GetAnsweredQty(single) {
-	var q = new Query("SELECT COUNT(Question) FROM USR_Questions WHERE Single=@single AND RTRIM(Answer)!='' AND Answer IS NOT NULL");
+	var q = new Query("SELECT COUNT(Question) FROM USR_Questions " +
+			"WHERE Single=@single AND RTRIM(Answer)!='' AND Answer IS NOT NULL " +
+			"AND (ParentQuestion=@emptyRef OR ParentQuestion IN " +
+				"(SELECT Question FROM USR_Questions WHERE (Answer='Yes' OR Answer='Да')))");
 	q.AddParameter("single", single);
+	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	return q.ExecuteScalar();
 
 }
@@ -188,8 +192,14 @@ function AssignAnswer(control, question, answer) {
 	}
 	if (answer == "—")
 		answer = null;
+	
+	var answerString;
+	if (String.IsNullOrEmpty(answer))
+		answerString = "HistoryAnswer ";
+	else
+		answerString = "@answer ";
 
-	var q =	new Query("UPDATE USR_Questions SET Answer=@answer, AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question");
+	var q =	new Query("UPDATE USR_Questions SET Answer=" + answerString + ", AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question");
 	q.AddParameter("answer", answer);
 	q.AddParameter("question", question);
 	q.Execute();

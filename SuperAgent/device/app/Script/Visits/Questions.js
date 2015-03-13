@@ -193,7 +193,7 @@ function AssignAnswer(control, question, answer) {
 	}
 	if (answer == "—")
 		answer = null;
-	
+
 	var answerString;
 	if (String.IsNullOrEmpty(answer))
 		answerString = "HistoryAnswer ";
@@ -214,8 +214,10 @@ function DialogCallBack(state, args) {
 }
 
 function GalleryCallBack(state, args) {
-	AssignAnswer(null, questionGl, state[1]);
-	Workflow.Refresh([]);
+	if (args.Result) {
+		AssignAnswer(null, questionGl, state[1]);
+		Workflow.Refresh([]);
+	}
 }
 
 

@@ -313,7 +313,7 @@ function AssignAnswer(control, question, sku, answer) {
 	}
 	if (answer == "—" || answer == "")
 		answer = null;
-	
+
 	var answerString;
 	if (String.IsNullOrEmpty(answer))
 		answerString = "HistoryAnswer ";
@@ -377,8 +377,10 @@ function DialogCallBack(state, args){
 }
 
 function GalleryCallBack(state, args) {
-	AssignAnswer(null, questionValueGl, skuValueGl, state[1]);
-	Workflow.Refresh([]);
+	if (args.Result) {
+		AssignAnswer(null, questionValueGl, skuValueGl, state[1]);
+		Workflow.Refresh([]);
+	}	
 }
 
 function DeleteAnswers(recordset) {

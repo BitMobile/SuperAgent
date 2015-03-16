@@ -279,7 +279,7 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 			listChoice.Add([0, Translate["#addFromGallery#"]]);
 		if (currAnswer!="—")
 			listChoice.Add([2, Translate["#clearValue#"]]);
-		AddSnapshot($.workflow.visit, null, GalleryCallBack, listChoice, "document.visit");
+		AddSnapshot($.workflow.visit, null, GalleryCallBack, listChoice, "document.visit", title);
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {
@@ -380,7 +380,7 @@ function GalleryCallBack(state, args) {
 	if (args.Result) {
 		AssignAnswer(null, questionValueGl, skuValueGl, state[1]);
 		Workflow.Refresh([]);
-	}	
+	}
 }
 
 function DeleteAnswers(recordset) {
@@ -391,8 +391,9 @@ function DeleteAnswers(recordset) {
 
 //-------------------------------Gallery handler-----------------------------------
 
-function AddSnapshot(objectRef, valueRef, func, listChoice, objectType) {
-	Dialog.Choose(Translate["#choose_action#"], listChoice, AddSnapshotHandler, [objectRef,func,valueRef,objectType]);
+function AddSnapshot(objectRef, valueRef, func, listChoice, objectType, title) {
+	title = typeof title !== 'undefined' ? title : "#select_answer#";
+	Dialog.Choose(title, listChoice, AddSnapshotHandler, [objectRef,func,valueRef,objectType]);
 }
 
 function AddSnapshotHandler(state, args) {

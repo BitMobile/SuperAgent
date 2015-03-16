@@ -44,6 +44,15 @@ function SetDeliveryDate(order, control) {
     Dialogs.ChooseDateTime(order, "DeliveryDate", control, null, Translate["#deliveryDate#"]);
 }
 
+function FormatDate(value) {
+	if (value != null)
+		value = value.ToString();
+	if (String.IsNullOrEmpty(value) || IsEmptyValue(value))
+		return "—";
+	else
+		return value;
+}
+
 function DoSelect(outlet, attribute, control, title) {
 	Dialogs.DoChoose(null, outlet, attribute, control, SelectCallBack, title);
 }
@@ -139,7 +148,8 @@ function NextDateHandler(state, args){
 	newVistPlan.PlanDate = args.Result;
 	newVistPlan.Save();
 
-	$.deliveryDate.Text = newVistPlan.PlanDate;
+	$.nextVisitControl.Text = newVistPlan.PlanDate;
+	
 }
 
 function DialogDebug(val) {

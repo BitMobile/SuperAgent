@@ -1,4 +1,17 @@
 ﻿
+var checkOrderReason;
+var checkVisitReason;
+
+function OnLoading() {
+	checkOrderReason = false;
+	checkVisitReason = false;
+	
+	if ($.sessionConst.NOR && NotEmptyRef($.workflow.visit.Plan) && OrderExists($.workflow.visit)==false)
+		checkOrderReason = true;
+	if ($.sessionConst.UVR && IsEmptyValue($.workflow.visit.Plan))
+		checkVisitReason = true;
+}
+
 function GetNextVisit(outlet){
 	var q = new Query("SELECT Id, PlanDate FROM Document_MobileAppPlanVisit WHERE Outlet=@outlet AND DATE(PlanDate)>=DATE(@date) AND Transformed=0 LIMIT 1");
 	q.AddParameter("outlet", outlet);
@@ -32,7 +45,12 @@ function SetDeliveryDate(order, control) {
 }
 
 function DoSelect(outlet, attribute, control, title) {
-	Dialogs.DoChoose(null, outlet, attribute, control, null, title);
+	Dialogs.DoChoose(null, outlet, attribute, control, SelectCallBack);		
+}
+
+function SelectCallBack(state, args) {
+	AssignDialogValue(state, args);
+	Workflow.Refresh([]);
 }
 
 function SetnextVisitDate(nextVisit, control){
@@ -48,27 +66,6 @@ function GetOrderControlValue() {
     var q = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='NOR'");
     var uvr = q.ExecuteScalar();
 
-    if (uvr == null)
-        return false;
-    else {
-        if (parseInt(uvr) == parseInt(0))
-            return false
-        else
-            return true;
-    }
-}
-
-function VisitReasonCheckrequired(wfName, visit) {
-    if (visit.Plan.EmptyRef() && GetUVRvalue())
-        return true
-    else
-        return false;
-}
-
-function GetUVRvalue() {
-    //var uvr = DB.Current.Catalog.MobileApplicationSettings.SelectBy("Code", "UVR").First();
-    var q = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='UVR'");
-    var uvr = q.ExecuteScalar();
     if (uvr == null)
         return false;
     else {
@@ -102,7 +99,9 @@ function GetOrderSUM(order) {
 
 function CheckAndCommit(order, visit, wfName) {
 
-	if (VisitIsChecked(visit, order, wfName)) {
+	var check = VisitIsChecked(visit, order, wfName); 
+	
+	if (check==true) {
         visit = visit.GetObject();
     	visit.EndTime = DateTime.Now;
 
@@ -116,7 +115,7 @@ function CheckAndCommit(order, visit, wfName) {
         Workflow.Commit();
     }
     else
-        Dialog.Message(Translate["#messageNulls#"]);
+        Dialog.Message(check);//Translate["#messageNulls#"]);
 
 }
 
@@ -140,16 +139,19 @@ function NextDateHandler(state, args){
 	newVistPlan.PlanDate = args.Result;
 	newVistPlan.Save();
 
-	Workflow.Refresh([]);
+	$.deliveryDate.Text = newVistPlan.PlanDate; 
 }
 
+function DialogDebug(val) {
+	Dialog.Debug(val);
+}
 
 function VisitIsChecked(visit, order, wfName) {
-    if (OrderCheckRequired(visit, wfName) && visit.ReasonForNotOfTakingOrder.EmptyRef())
-        return false;
+    if (checkOrderReason && visit.ReasonForNotOfTakingOrder.EmptyRef())
+        return "no order";
     else {
-        if (VisitReasonCheckrequired(wfName, visit) && visit.ReasonForVisit.EmptyRef())
-            return false;
+        if (checkVisitReason && visit.ReasonForVisit.EmptyRef())
+            return "visit reason";
         else
             return true;
     }

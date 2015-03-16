@@ -180,28 +180,30 @@ function NoTasks(skipTasks) {
 
 
 function CreateQuestionnaireAnswers() {
-	var q = new Query("SELECT DISTINCT Q.Question, Q.SKU AS SKU, Q.Description, Q.Answer, MAX(Q.HistoryAnswer) AS HistoryAnswer, Q.AnswerDate " +
+	var q = new Query("SELECT DISTINCT Q.Question, Q.SKU AS SKU, Q.Description, Q.Answer, Q.HistoryAnswer, Q.AnswerDate " +
 			", D.Number, D.Id AS Questionnaire, D.Single, A.Id AS AnswerId " +
 			"FROM USR_SKUQuestions Q " +
 			"JOIN Document_Questionnaire_SKUs DS ON Q.SKU=DS.SKU " +
 			"JOIN Document_Questionnaire_SKUQuestions DQ ON Q.Question=DQ.ChildQuestion AND DS.Ref=DQ.Ref " +
-			"JOIN USR_Questionnaires D ON DQ.Ref=D.Id " +
+			"JOIN USR_Questionnaires D ON DQ.Ref=D.Id AND D.Single=Q.Single " +
 			"LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Question=Q.Question AND A.Questionaire=DQ.Ref " +
 			"AND A.SKU=Q.SKU " +
 			"AND A.Ref=@outlet " +
 			"WHERE Q.Answer!='' AND RTRIM(Q.Answer) IS NOT NULL " +
-			"GROUP BY Q.Question, Q.SKU, Q.Description, Q.Answer, Q.AnswerDate, D.Number, D.Id, D.Single, A.Id " +
+			"AND (Q.ParentQuestion='@ref[Catalog_Question]:00000000-0000-0000-0000-000000000000' " +
+			"OR Q.ParentQuestion IN (SELECT Question FROM USR_Questions WHERE (Answer='Yes' OR Answer='Да')))" +
 			"UNION " +
-			"SELECT DISTINCT Q.Question, NULL AS SKU, Q.Description, Q.Answer, MAX(Q.HistoryAnswer) AS HistoryAnswer, Q.AnswerDate" +
+			"SELECT DISTINCT Q.Question, NULL AS SKU, Q.Description, Q.Answer, Q.HistoryAnswer, Q.AnswerDate" +
 			", D.Number, D.Id AS Questionnaire, D.Single, A.Id AS AnswerId " +
 			"FROM USR_Questions Q " +
 			"JOIN Document_Questionnaire_Questions DQ ON Q.Question=DQ.ChildQuestion " +
-			"JOIN USR_Questionnaires D ON DQ.Ref=D.Id " +
+			"JOIN USR_Questionnaires D ON DQ.Ref=D.Id AND D.Single=Q.Single " +
 			"LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Question=Q.Question AND A.Questionaire=DQ.Ref " +
 			"AND A.SKU='@ref[Catalog_SKU]:00000000-0000-0000-0000-000000000000'" +
 			"AND A.Ref=@outlet " +
 			"WHERE Q.Answer!='' AND RTRIM(Q.Answer) IS NOT NULL " +
-			"GROUP BY Q.Question,  Q.Description, Q.Answer, Q.AnswerDate, D.Number, D.Id, D.Single, A.Id");
+			"AND (Q.ParentQuestion='@ref[Catalog_Question]:00000000-0000-0000-0000-000000000000' " +
+			"OR Q.ParentQuestion IN (SELECT Question FROM USR_Questions WHERE (Answer='Yes' OR Answer='Да')))");
 	q.AddParameter("outlet", $.workflow.outlet);
 	var answers = q.Execute();
 

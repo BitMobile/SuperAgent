@@ -5,7 +5,7 @@ var checkVisitReason;
 function OnLoading() {
 	checkOrderReason = false;
 	checkVisitReason = false;
-	
+
 	if ($.sessionConst.NOR && NotEmptyRef($.workflow.visit.Plan) && OrderExists($.workflow.visit)==false)
 		checkOrderReason = true;
 	if ($.sessionConst.UVR && IsEmptyValue($.workflow.visit.Plan))
@@ -45,7 +45,7 @@ function SetDeliveryDate(order, control) {
 }
 
 function DoSelect(outlet, attribute, control, title) {
-	Dialogs.DoChoose(null, outlet, attribute, control, SelectCallBack);		
+	Dialogs.DoChoose(null, outlet, attribute, control, SelectCallBack, title);
 }
 
 function SelectCallBack(state, args) {
@@ -99,8 +99,8 @@ function GetOrderSUM(order) {
 
 function CheckAndCommit(order, visit, wfName) {
 
-	var check = VisitIsChecked(visit, order, wfName); 
-	
+	var check = VisitIsChecked(visit, order, wfName);
+
 	if (check==true) {
         visit = visit.GetObject();
     	visit.EndTime = DateTime.Now;
@@ -139,7 +139,7 @@ function NextDateHandler(state, args){
 	newVistPlan.PlanDate = args.Result;
 	newVistPlan.Save();
 
-	$.deliveryDate.Text = newVistPlan.PlanDate; 
+	$.deliveryDate.Text = newVistPlan.PlanDate;
 }
 
 function DialogDebug(val) {

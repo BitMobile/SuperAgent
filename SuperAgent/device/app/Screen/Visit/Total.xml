@@ -47,9 +47,9 @@
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
 			</s:If>
-			
+
 			<s:If Test="@checkOrderReason">
-				<c:DockLayout CssClass="grid" OnClickAction="$DoSelect($workflow.visit,ReasonForNotOfTakingOrder,$noOrderReason)">
+				<c:DockLayout CssClass="grid" OnClickAction="$DoSelect($workflow.visit,ReasonForNotOfTakingOrder,$noOrderReason,#reasonForEmptyOrder#)">
 					<s:If Test="$IsEmptyValue($workflow.visit.ReasonForNotOfTakingOrder)">
 						<c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout>
 					</s:If>
@@ -65,7 +65,7 @@
 			</s:If>
 
 			<s:If Test="@checkVisitReason">
-				<c:DockLayout CssClass="grid" OnClickAction="$DoSelect($workflow.visit,ReasonForVisit,$visitReason)">
+				<c:DockLayout CssClass="grid" OnClickAction="$DoSelect($workflow.visit,ReasonForVisit,$visitReason,#visitReason#)">
 					<s:If Test="$IsEmptyValue($workflow.visit.ReasonForVisit)">
 						<c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout>
 					</s:If>
@@ -132,6 +132,3 @@
 	</c:VerticalLayout>
 
 </c:Screen>
-
-
-

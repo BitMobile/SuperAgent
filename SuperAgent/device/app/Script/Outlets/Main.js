@@ -171,7 +171,7 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 				listChoice.Add([0, Translate["#addFromGallery#"]]);
 			if (String.IsNullOrEmpty(parameterValue.Value)==false)
 				listChoice.Add([2, Translate["#clearValue#"]]);
-			AddSnapshotGlobal(outlet, parameterValue, SaveAtOutelt, listChoice, "catalog.outlet");
+			AddSnapshotGlobal(outlet, parameterValue, SaveAtOutelt, listChoice, "catalog.outlet", parameterDescription);
 			parameterValueC = parameterValue;
 		}
 		if (typeDescription == "String" || typeDescription == "Integer" || typeDescription == "Decimal") {
@@ -246,7 +246,7 @@ function DeleteImage(state, args) {
 
 function AddSnapshot(control, outlet) {
 	if ($.sessionConst.galleryChoose)
-		AddSnapshotGlobal(outlet, null, GalleryHandler, [[0, Translate["#addFromGallery#"]], [1, Translate["#makeSnapshot#"]]], "catalog.outlet");
+		AddSnapshotGlobal(outlet, null, GalleryHandler, [[0, Translate["#addFromGallery#"]], [1, Translate["#makeSnapshot#"]]], "catalog.outlet", Translate["#outletSnapshots#"]);
 	else{
 		var pictId = GetCameraObject(outlet);
 		var path = GetPrivateImagePath("catalog.outlet", outlet, pictId, ".jpg");
@@ -549,9 +549,10 @@ function S4() {
 
 //------------------------------Temporary, from images----------------
 
-function AddSnapshotGlobal(objectRef, valueRef, func, listChoice, objectType) {
+function AddSnapshotGlobal(objectRef, valueRef, func, listChoice, objectType, title) {
 //	if ($.sessionConst.galleryChoose)
-		Dialog.Choose(Translate["#choose_action#"], listChoice, AddSnapshotHandler, [objectRef,func,valueRef,objectType]);
+	title = typeof title !== 'undefined' ? title : "#select_answer#";
+	Dialog.Choose(Translate[title], listChoice, AddSnapshotHandler, [objectRef,func,valueRef,objectType]);
 //	else{
 //		var pictId = GetCameraObject(objectRef);
 //		var path = GetPrivateImagePath("catalog.outlet", objectRef, pictId, ".jpg");

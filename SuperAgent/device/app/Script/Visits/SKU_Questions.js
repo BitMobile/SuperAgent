@@ -161,6 +161,7 @@ function CalculateQty(single) {
 	var q = new Query("SELECT COUNT(U1.Answer) AS Answered " +
 			"FROM USR_SKUQuestions U1 " +
 			"WHERE U1.Single=@single " +
+			"AND RTRIM(U1.Answer)!='' AND U1.Answer IS NOT NULL " +
 			"AND (ParentQuestion=@emptyRef OR ParentQuestion IN " +
 				"(SELECT Question FROM USR_SKUQuestions WHERE (Answer='Yes' OR Answer='Да')))");
 	q.AddParameter("single", single);
@@ -212,7 +213,8 @@ function GetChilds(sku) {
 				"CASE WHEN (RTRIM(Answer)!='' AND Answer IS NOT NULL) THEN CASE WHEN AnswerType=@snapshot THEN @attached ELSE Answer END ELSE '—' END END AS AnswerOutput " +
 			"FROM USR_SKUQuestions S " +
 			"WHERE SKU=@sku AND Single=@single AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +
-			"WHERE SKU=S.SKU AND (Answer='Yes' OR Answer='Да')))");
+			"WHERE SKU=S.SKU AND (Answer='Yes' OR Answer='Да'))) " +
+			"ORDER BY DocDate, QuestionOrder ");
 	q.AddParameter("sku", sku);
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	q.AddParameter("single", single);
@@ -275,7 +277,7 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 		listChoice.Add([1, Translate["#makeSnapshot#"]]);
 		if ($.sessionConst.galleryChoose)
 			listChoice.Add([0, Translate["#addFromGallery#"]]);
-		if (String.IsNullOrEmpty(currAnswer)==false)
+		if (currAnswer!="—")
 			listChoice.Add([2, Translate["#clearValue#"]]);
 		AddSnapshot($.workflow.visit, null, GalleryCallBack, listChoice, "document.visit");
 	}
@@ -309,10 +311,16 @@ function AssignAnswer(control, question, sku, answer) {
 		if (answer!=null)
 			answer = answer.ToString();
 	}
-	if (answer == "—")
+	if (answer == "—" || answer == "")
 		answer = null;
 
-	var q =	new Query("UPDATE USR_SKUQuestions SET Answer=@answer, AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question AND SKU=@sku");
+	var answerString;
+	if (String.IsNullOrEmpty(answer))
+		answerString = "HistoryAnswer ";
+	else
+		answerString = "@answer ";
+
+	var q =	new Query("UPDATE USR_SKUQuestions SET Answer=" + answerString + ", AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question AND SKU=@sku");
 	q.AddParameter("answer", answer);
 	q.AddParameter("sku", sku);
 	q.AddParameter("question", question);
@@ -369,8 +377,10 @@ function DialogCallBack(state, args){
 }
 
 function GalleryCallBack(state, args) {
-	AssignAnswer(null, questionValueGl, skuValueGl, state[1]);
-	Workflow.Refresh([]);
+	if (args.Result) {
+		AssignAnswer(null, questionValueGl, skuValueGl, state[1]);
+		Workflow.Refresh([]);
+	}	
 }
 
 function DeleteAnswers(recordset) {

@@ -12,7 +12,7 @@
 			</c:DockLayout>
 			<c:DockLayout CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckAndCommit($workflow.order, $workflow.visit, $workflow.name)" >
 				<c:TextView Id="btnForward" Text="#ready#" />
-			</c:DockLayout>			
+			</c:DockLayout>
 			<c:HorizontalLayout>
 				<c:TextView Text="#visitTotal#" />
 			</c:HorizontalLayout>
@@ -49,7 +49,7 @@
 			</s:If>
 
 			<s:If Test="$OrderCheckRequired($workflow.visit, $workflow.name)">
-				<c:HorizontalLayout CssClass="grid" OnClickAction="$DoSelect($workflow.visit,ReasonForNotOfTakingOrder,$noOrderReason)">
+				<c:HorizontalLayout CssClass="grid" OnClickAction="$DoSelect($workflow.visit,ReasonForNotOfTakingOrder,$noOrderReason,#reasonForEmptyOrder#)">
 					<c:VerticalLayout>
 						<c:TextView Text="#reasonForEmptyOrder#" CssClass="description_row"></c:TextView>
 						<c:TextView Id="noOrderReason" Text="$workflow.visit.ReasonForNotOfTakingOrder.Description" CssClass="main_row"></c:TextView>
@@ -61,7 +61,7 @@
 
 
 			<s:If Test="$VisitReasonCheckrequired($workflow.name, $workflow.visit)">
-				<c:HorizontalLayout CssClass="grid" OnClickAction="$DoSelect($workflow.visit,ReasonForVisit,$visitReason)">
+				<c:HorizontalLayout CssClass="grid" OnClickAction="$DoSelect($workflow.visit,ReasonForVisit,$visitReason, #visitReason#)">
 					<c:VerticalLayout>
 						<c:TextView Text="#visitReason#" CssClass="description_row"></c:TextView>
 						<c:TextView Id="visitReason" Text="$workflow.visit.ReasonForVisit.Description" CssClass="main_row"></c:TextView>
@@ -123,6 +123,3 @@
 	</c:VerticalLayout>
 
 </c:Screen>
-
-
-

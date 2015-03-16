@@ -107,13 +107,13 @@ function ReviseParameters(outlet, save) {
 //---------------------------header parameters dialog.choose--------------------
 
 
-function SelectIfNotAVisit(outlet, attribute, control) {
+function SelectIfNotAVisit(outlet, attribute, control, title) {
 	if ($.workflow.name != "Visit")
-		DoSelect(outlet, attribute, control);
+		DoSelect(outlet, attribute, control, title);
 }
 
-function DoSelect(outlet, attribute, control) {
-	DoChoose(null, outlet, attribute, control, null);
+function DoSelect(outlet, attribute, control, title) {
+	DoChoose(null, outlet, attribute, control, null, title);
 }
 
 

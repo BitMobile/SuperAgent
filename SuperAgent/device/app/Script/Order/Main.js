@@ -147,7 +147,7 @@ function SelectStock(order, attr, control) {
 		while (res.Next()) {
 			table.push([ res.Id, res.Description ]);
 		}
-		Dialogs.DoChoose(table, order, attr, control, StockSelectHandler);
+		Dialogs.DoChoose(table, order, attr, control, StockSelectHandler, Translate["#stockPlace#"]);
 	}
 }
 
@@ -321,7 +321,7 @@ function SelectPriceList(order, priceLists, executedOrder) {
 }
 
 function PriceListSelect(entity, attribute, table, control) {
-	Dialogs.DoChoose(table, entity, attribute, control, DoPriceListCallback);
+	Dialogs.DoChoose(table, entity, attribute, control, DoPriceListCallback, Translate["#priceList#"]);
 	return;
 }
 

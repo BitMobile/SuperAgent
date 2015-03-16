@@ -4,9 +4,9 @@ function GetNextVisit(outlet){
 	q.AddParameter("outlet", outlet);
 	q.AddParameter("date", DateTime.Now.Date);
 	var res = q.Execute();
-	res.Next();	
+	res.Next();
 	return res;
-	
+
 }
 
 function OrderCheckRequired(visit, wfName) {
@@ -28,11 +28,11 @@ function OrderExists(visit) {
 }
 
 function SetDeliveryDate(order, control) {
-    Dialogs.ChooseDateTime(order, "DeliveryDate", control, null);
+    Dialogs.ChooseDateTime(order, "DeliveryDate", control, null, Translate["#deliveryDate#"]);
 }
 
-function DoSelect(outlet, attribute, control) {
-	Dialogs.DoChoose(null, outlet, attribute, control, null);
+function DoSelect(outlet, attribute, control, title) {
+	Dialogs.DoChoose(null, outlet, attribute, control, null, title);
 }
 
 function SetnextVisitDate(nextVisit, control){
@@ -40,7 +40,7 @@ function SetnextVisitDate(nextVisit, control){
 		var nextDate = DateTime.Now;
 	else
 		var nextDate = nextVisit.PlanDate;
-	Dialogs.ChooseDateTime(nextVisit, "PlanDate", control, NextDateHandler); //nextDate, NextDateHandler, [nextVisit, control]);
+	Dialogs.ChooseDateTime(nextVisit, "PlanDate", control, NextDateHandler, Translate["#nextVisitDate#"]); //nextDate, NextDateHandler, [nextVisit, control]);
 }
 
 function GetOrderControlValue() {
@@ -109,9 +109,9 @@ function CheckAndCommit(order, visit, wfName) {
         if (OrderExists(visit.Id)) {
             order.GetObject().Save();
         }
-        
+
         CreateQuestionnaireAnswers();
-        
+
         visit.Save();
         Workflow.Commit();
     }
@@ -130,7 +130,7 @@ function NextDateHandler(state, args){
 
 	if (newVistPlan.Id==null){
 		newVistPlan = DB.Create("Document.MobileAppPlanVisit");
-		newVistPlan.SR = $.common.UserRef;	
+		newVistPlan.SR = $.common.UserRef;
 		newVistPlan.Outlet = $.workflow.outlet;
 		newVistPlan.Transformed = false;
 		newVistPlan.Date = DateTime.Now;
@@ -139,7 +139,7 @@ function NextDateHandler(state, args){
 		newVistPlan = newVistPlan.Id.GetObject();
 	newVistPlan.PlanDate = args.Result;
 	newVistPlan.Save();
-	
+
 	Workflow.Refresh([]);
 }
 
@@ -177,7 +177,7 @@ function NoTasks(skipTasks) {
 //------------------------------Questionnaires handlers------------------
 
 
-function CreateQuestionnaireAnswers() {	
+function CreateQuestionnaireAnswers() {
 	var q = new Query("SELECT DISTINCT Q.Question, Q.SKU AS SKU, Q.Description, Q.Answer, MAX(Q.HistoryAnswer) AS HistoryAnswer, Q.AnswerDate " +
 			", D.Number, D.Id AS Questionnaire, D.Single, A.Id AS AnswerId " +
 			"FROM USR_SKUQuestions Q " +
@@ -202,7 +202,7 @@ function CreateQuestionnaireAnswers() {
 			"GROUP BY Q.Question,  Q.Description, Q.Answer, Q.AnswerDate, D.Number, D.Id, D.Single, A.Id");
 	q.AddParameter("outlet", $.workflow.outlet);
 	var answers = q.Execute();
-	
+
 	while (answers.Next()) {
 		if (answers.Answer!=answers.HistoryAnswer){
 			if (answers.SKU!=null){
@@ -225,7 +225,7 @@ function CreateQuestionnaireAnswers() {
 					a.Questionaire = answers.Questionnaire;
 					a.Question = answers.Question;
 					if (answers.SKU!=null)
-						a.SKU = answers.SKU;									
+						a.SKU = answers.SKU;
 				}
 				else{
 					a = answers.AnswerId;
@@ -235,8 +235,6 @@ function CreateQuestionnaireAnswers() {
 				a.AnswerDate = answers.AnswerDate;
 				a.Save();
 			}
-		}		
+		}
 	}
 }
-
-

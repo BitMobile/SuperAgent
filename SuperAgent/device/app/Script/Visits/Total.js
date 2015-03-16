@@ -45,7 +45,12 @@ function SetDeliveryDate(order, control) {
 }
 
 function DoSelect(outlet, attribute, control) {
-	Dialogs.DoChoose(null, outlet, attribute, control, null);		
+	Dialogs.DoChoose(null, outlet, attribute, control, SelectCallBack);		
+}
+
+function SelectCallBack(state, args) {
+	AssignDialogValue(state, args);
+	Workflow.Refresh([]);
 }
 
 function SetnextVisitDate(nextVisit, control){

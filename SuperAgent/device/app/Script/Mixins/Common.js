@@ -202,6 +202,8 @@ function ClearField(source, field, objectRef, attribute) {
 	source.Visible = false;
 }
 
+//-------------------------Dialogs----------------------------
+
 function AssignDialogValue(state, args) {
 	var entity = state[0];
 	var attribute = state[1];

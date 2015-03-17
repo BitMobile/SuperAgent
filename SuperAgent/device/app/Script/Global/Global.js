@@ -106,12 +106,12 @@ function FindTwinAndUnite(orderitem) {
 function CreateUserTableIfNotExists(name) {
 	var q = new Query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name=@name");
 	q.AddParameter("name", name);
-	var check = q.ExecuteScalar();
+	var check = q.ExecuteScalar();	
 	
 	if (parseInt(check) == parseInt(1)) {	
 		var dropQS = new Query("DELETE FROM " + name);		 
 		dropQS.Execute();		
-		return "INSERT INTO " + name + " ";na				
+		return "INSERT INTO " + name + " ";				
 	} 
 	else 		
 		return "CREATE TABLE " + name + " AS ";		

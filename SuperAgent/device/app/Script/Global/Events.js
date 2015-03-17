@@ -317,6 +317,62 @@ function GetQuestionnairesForOutlet(outlet) {
 }
 
 function CreateQuestionnareTable(outlet) {
+	
+	var name = "USR_OutletAttributes";
+	var q = new Query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name=@name");
+	q.AddParameter("name", name);
+	var check = q.ExecuteScalar();
+	var tableCommand;
+	if (parseInt(check) == parseInt(1)) {	
+		var dropQS = new Query("DELETE FROM " + name);		 
+		dropQS.Execute();						
+	} 
+	else{	
+		var q = new Query("CREATE TABLE " +
+				" USR_OutletAttributes (Selector, AdditionalParameter, Value)");
+		q.Execute();
+	}
+	
+	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Enum_OutletStatus', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', @value)");
+	q.AddParameter("value", outlet.OutletStatus);
+	q.Execute();
+	
+	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_OutletType', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', @value)");
+	q.AddParameter("value", outlet.Type);
+	q.Execute();
+	
+	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_OutletClass', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', @value)");
+	q.AddParameter("value", outlet.Class);
+	q.Execute();
+	
+	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_Distributor', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', @value)");
+	q.AddParameter("value", outlet.Distributor);
+	q.Execute();
+	
+	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_Outlet', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', @value)");
+	q.AddParameter("value", outlet);
+	q.Execute();
+		
+	var tableCommand = Global.CreateUserTableIfNotExists("USR_SelectedQuestionnaires");
+	var q = new Query(tableCommand +
+			"SELECT DISTINCT Q.Number, Q.Id " +			
+			", CASE WHEN S.ComparisonType IS NULL THEN 1 " +
+			"ELSE " +
+			"CASE WHEN S.ComparisonType='@ref[Enum_ComparisonType]:bc153ffb-87d9-80a8-4501-a5968081d102' THEN " +
+			"('@ref[' || O.Selector || ']:' || S.Value) = O.Value " +
+			"ELSE " +
+			"CASE WHEN S.ComparisonType='@ref[Enum_ComparisonType]:8bd77444-e556-a5f1-4591-a2407b2b1fe2' THEN " +
+			"O.Value IN (SELECT ('@ref[' || Selector || ']:' || Value) FROM Document_Questionnaire_Selectors WHERE Ref=Q.Id) " +
+			"ELSE " +
+			"('@ref[' || O.Selector || ']:' || S.Value) != O.Value END END END AS Selected " +
+			"FROM Document_Questionnaire Q " +
+			"LEFT JOIN Document_Questionnaire_Selectors S ON S.Ref=Q.Id " +
+			"LEFT JOIN USR_OutletAttributes O ON S.Selector=O.Selector " +
+			"WHERE Selected");
+	q.Execute();
+	
+	
+	//---------------------old functions------------
 
 	var tableCommand = Global.CreateUserTableIfNotExists("USR_Questionnaires");
 

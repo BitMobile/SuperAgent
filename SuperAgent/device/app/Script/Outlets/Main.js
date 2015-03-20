@@ -43,11 +43,34 @@ function CreateVisitEnable() {
 		return false;
 
 }
+function Debug(val) {
+	Dialog.Debug(val);
+}
+
 
 function GetOutletParameters(outlet) {
 	var query = new Query();
-	query.Text = "SELECT P.Id, P.Description, P.DataType, DT.Description AS TypeDescription, OP.Id AS ParameterValue, OP.Value FROM Catalog_OutletParameter P JOIN Enum_DataType DT ON DT.Id=P.DataType LEFT JOIN Catalog_Outlet_Parameters OP ON OP.Parameter = P.Id AND OP.Ref = @outlet";
+	query.Text = "SELECT P.Id, P.Description, P.DataType, DT.Description AS TypeDescription, OP.Id AS ParameterValue, OP.Value " +
+			
+			", CASE WHEN P.DataType=@integer OR P.DataType=@decimal OR P.DataType=@string THEN 1 ELSE 0 END AS IsInputField " + //IsInputField
+			", CASE WHEN P.DataType=@integer OR P.DataType=@decimal THEN 'numeric' ELSE 'auto' END AS KeyboardType " +
+			
+			", CASE WHEN P.DataType=@integer OR P.DataType=@decimal OR P.DataType=@string THEN OP.Value " +
+			"ELSE CASE " +
+			"WHEN OP.Value IS NULL OR RTRIM(OP.Value)='' THEN '—' " +
+			"WHEN OP.Value IS NOT NULL AND P.DataType=@snapshot THEN @attached " +
+			"WHEN OP.Value IS NOT NULL AND P.DataType!=@snapshot THEN OP.Value " +
+			"END END AS AnswerOutput " +
+			
+			"FROM Catalog_OutletParameter P " +
+			"JOIN Enum_DataType DT ON DT.Id=P.DataType " +
+			"LEFT JOIN Catalog_Outlet_Parameters OP ON OP.Parameter = P.Id AND OP.Ref = @outlet";
+	query.AddParameter("integer", DB.Current.Constant.DataType.Integer);
+	query.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);
+	query.AddParameter("string", DB.Current.Constant.DataType.String);
+	query.AddParameter("snapshot", DB.Current.Constant.DataType.Snapshot);
 	query.AddParameter("outlet", outlet);
+	query.AddParameter("attached", Translate["#snapshotAttached#"]);
 	return query.Execute();
 }
 

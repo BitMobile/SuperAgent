@@ -218,3 +218,7 @@
 	dock-align: right;
 	background-image: url(clear_field.png);
 }
+
+.value{
+	placeholder-color: #8e8e93;
+}

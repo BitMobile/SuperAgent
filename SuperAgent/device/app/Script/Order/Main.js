@@ -206,9 +206,9 @@ function SaveOrder(order) {
 	Workflow.Forward([]);
 }
 
-function SetDeliveryDateDialog(order, control, executedOrder) {
+function SetDeliveryDateDialog(order, control, executedOrder, title) {
 	if (IsNew(order) && NotEmptyRef(order.PriceList))
-		Dialogs.ChooseDateTime(order, "DeliveryDate", control, null);
+		Dialogs.ChooseDateTime(order, "DeliveryDate", control, null, title);
 }
 
 //function DialogCallBack(control, key) {

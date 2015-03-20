@@ -316,6 +316,30 @@ function GetQuestionnairesForOutlet(outlet) {
 
 }
 
+function GetRegionQueryText1() {
+	
+	var loop = 1;
+	
+	var startSelect = "SELECT 'Catalog_Region', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', replace(R" + loop + ".Id, ('@ref[Catalog_Region]:'), '') " +
+			"FROM Catalog_Territory T " +
+			"JOIN Catalog_Territory_Outlets O ON T.Id=O.Ref AND O.Outlet=@outlet JOIN Catalog_Region R1 ON T.Owner=R1.Id ";
+	var recJoin = "";
+
+	var text = startSelect;
+
+	loop = 2;
+
+	while (loop < 11) {
+		recJoin = recJoin + " JOIN Catalog_Region " + "R" + loop + " ON R" + (parseInt(loop) - parseInt(1)) + ".Parent=R" + loop + ".Id " ;
+		text = text + "UNION " + "SELECT 'Catalog_Region', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(R" + loop + ".Id, ('@ref[Catalog_Region]:'), '') " +
+				"FROM Catalog_Territory T " +
+		"JOIN Catalog_Territory_Outlets O ON T.Id=O.Ref AND O.Outlet=@outlet JOIN Catalog_Region R1 ON T.Owner=R1.Id " + recJoin;
+		loop = loop + 1;
+	}
+	
+	return text;
+}
+
 function CreateQuestionnareTable(outlet) {
 	
 	var name = "USR_OutletAttributes";
@@ -333,114 +357,113 @@ function CreateQuestionnareTable(outlet) {
 		q.Execute();
 	}
 	
-	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Enum_OutletStatus', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', @value)");
+	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Enum_OutletStatus', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(@value, ('@ref[Enum_OutletStatus]:'), ''))");
 	q.AddParameter("value", outlet.OutletStatus);
 	q.Execute();
 	
-	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_OutletType', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', @value)");
+	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_OutletType', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(@value, ('@ref[Catalog_OutletType]:'), ''))");
 	q.AddParameter("value", outlet.Type);
 	q.Execute();
 	
-	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_OutletClass', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', @value)");
+	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_OutletClass', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(@value, ('@ref[Catalog_OutletClass]:'), ''))");
 	q.AddParameter("value", outlet.Class);
 	q.Execute();
 	
-	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_Distributor', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', @value)");
+	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_Distributor', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(@value, ('@ref[Catalog_Distributor]:'), ''))");
 	q.AddParameter("value", outlet.Distributor);
 	q.Execute();
 	
-	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_Outlet', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', @value)");
+	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_Outlet', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(@value, ('@ref[Catalog_Outlet]:'), ''))");
 	q.AddParameter("value", outlet);
 	q.Execute();
-		
-	var tableCommand = Global.CreateUserTableIfNotExists("USR_SelectedQuestionnaires");
-	var q = new Query(tableCommand +
-			"SELECT DISTINCT Q.Number, Q.Id " +			
-			", CASE WHEN S.ComparisonType IS NULL THEN 1 " +
-			"ELSE " +
-			"CASE WHEN S.ComparisonType='@ref[Enum_ComparisonType]:bc153ffb-87d9-80a8-4501-a5968081d102' THEN " +
-			"('@ref[' || O.Selector || ']:' || S.Value) = O.Value " +
-			"ELSE " +
-			"CASE WHEN S.ComparisonType='@ref[Enum_ComparisonType]:8bd77444-e556-a5f1-4591-a2407b2b1fe2' THEN " +
-			"O.Value IN (SELECT ('@ref[' || Selector || ']:' || Value) FROM Document_Questionnaire_Selectors WHERE Ref=Q.Id) " +
-			"ELSE " +
-			"('@ref[' || O.Selector || ']:' || S.Value) != O.Value END END END AS Selected " +
-			"FROM Document_Questionnaire Q " +
-			"LEFT JOIN Document_Questionnaire_Selectors S ON S.Ref=Q.Id " +
-			"LEFT JOIN USR_OutletAttributes O ON S.Selector=O.Selector " +
-			"WHERE Selected");
+	
+	var q = new Query("INSERT INTO USR_OutletAttributes " +
+			"SELECT 'Catalog_OutletParameter', Parameter, Value FROM Catalog_Outlet_Parameters WHERE Ref=@outlet");
+	q.AddParameter("outlet", outlet);
 	q.Execute();
 	
+	var q = new Query("INSERT INTO USR_OutletAttributes " +
+			"SELECT 'Catalog_Territory', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(Ref, ('@ref[Catalog_Territory]:'), '') FROM Catalog_Territory_Outlets WHERE Outlet=@outlet");
+	q.AddParameter("outlet", outlet);
+	q.Execute();
 	
-	//---------------------old functions------------
+	var q = new Query("INSERT INTO USR_OutletAttributes " + 
+			GetRegionQueryText1());
+	q.AddParameter("outlet", outlet);
+	q.Execute();
+		
+	
+	var tableCommand = Global.CreateUserTableIfNotExists("USR_SelectedQuestionnaires");
+	var q = new Query(tableCommand +
+			"SELECT DISTINCT Q.Id AS Id" + //all the parameters that compare with 'AND'
+			", CASE " +
+			"WHEN S.ComparisonType IS NULL " +
+			"THEN 1 " +
+			
+			"WHEN O.Selector IS NULL AND (S.ComparisonType=@equal OR S.ComparisonType=@inList) " +
+			"THEN 0 " +
+			"WHEN O.Selector IS NULL AND S.ComparisonType=@notEqual " +
+			"THEN 1 " +
+			
+			"WHEN S.ComparisonType=@equal " +
+			"THEN S.Value = O.Value " +
+			"WHEN S.ComparisonType=@inList " +
+			"THEN O.Value IN (SELECT Value FROM Document_Questionnaire_Selectors WHERE Ref=Q.Id) " +
+			"WHEN S.ComparisonType=@notEqual " +
+			"THEN S.Value != O.Value " +
+			
+			"END AS Selected " +
+			
+			"FROM Document_Questionnaire Q " +
+			"LEFT JOIN Document_Questionnaire_Selectors S ON S.Ref=Q.Id " +
+			"LEFT JOIN USR_OutletAttributes O ON S.Selector=O.Selector AND S.AdditionalParameter=O.AdditionalParameter " +
+			"WHERE S.Selector IS NULL OR (S.Selector != 'Catalog_Territory' AND S.Selector != 'Catalog_Region') " +
+			
+			"UNION " +  //'Catalog_Territory' select
+			"SELECT DISTINCT S.Ref AS Id, 1 " +
+			"FROM USR_OutletAttributes O " +
+			"JOIN Document_Questionnaire_Selectors S ON O.Selector=S.Selector " +
+			"AND S.Selector = 'Catalog_Territory' " +
+			
+			"AND CASE WHEN S.ComparisonType=@equal OR S.ComparisonType=@inList " +
+			"THEN S.Value = O.Value " +
+			"WHEN S.ComparisonType=@notEqual " +
+			"THEN S.Value != O.Value " +
+			"END " +
+			
+			"UNION " + //'Catalog_Region' select
+			"SELECT DISTINCT S.Ref AS Id, 1 " +
+			"FROM USR_OutletAttributes O " +
+			"JOIN Document_Questionnaire_Selectors S ON O.Selector=S.Selector " +
+			"AND S.Selector = 'Catalog_Region' " +
+			
+			"AND CASE WHEN S.ComparisonType=@equal OR S.ComparisonType=@inList " +
+			"THEN S.Value = O.Value " +
+			"WHEN S.ComparisonType=@notEqual " +
+			"THEN S.Value NOT IN (SELECT Value FROM USR_OutletAttributes WHERE Selector='Catalog_Region') " +
+			"END");
+	q.AddParameter("equal", DB.Current.Constant.ComparisonType.Equal);
+	q.AddParameter("inList", DB.Current.Constant.ComparisonType.InList);
+	q.AddParameter("notEqual", DB.Current.Constant.ComparisonType.NotEqual);
+	q.Execute();
 
+	
 	var tableCommand = Global.CreateUserTableIfNotExists("USR_Questionnaires");
 
 	var query = new Query(tableCommand +
 			"SELECT DISTINCT Q.Id AS Id, Q.Number AS Number, Q.Date AS Date, Q.Single AS Single " +
-				", S.BeginAnswerPeriod AS BeginAnswerPeriod, S.EndAnswerPeriod AS EndAnswerPeriod " +
-			"FROM Document_Questionnaire_Schedule S " +
-			"JOIN Document_Questionnaire Q ON Q.Id=S.Ref " +
-			"WHERE date(S.Date)=date('now', 'start of day') AND Q.Status=@active ORDER BY Q.Id");
+				", S.BeginAnswerPeriod AS BeginAnswerPeriod, S.EndAnswerPeriod AS EndAnswerPeriod, MIN(CAST (SQ.Selected AS INT)) AS Selected " +
+			"FROM " +
+			"USR_SelectedQuestionnaires SQ " +
+			"JOIN Document_Questionnaire Q ON SQ.Id=Q.Id " +
+			"JOIN Document_Questionnaire_Schedule S ON SQ.Id=S.Ref " +
+			"WHERE date(S.Date)=date('now', 'start of day') AND Q.Status=@active " +
+			"GROUP BY Q.Id, Q.Number, Q.Date, Q.Single, S.BeginAnswerPeriod, S.EndAnswerPeriod");
 	query.AddParameter("active", DB.Current.Constant.QuestionnareStatus.Active);
 	query.Execute();
-
-	var queryQ = new Query("SELECT Id FROM USR_Questionnaires");
-	var recordset = queryQ.Execute();
-
-	var actualQuestionnaire = true;
-	var currentQuestionnaire;
-
-	while (recordset.Next()) {
-
-		var query1 = new Query("SELECT Selector, ComparisonType, Value, AdditionalParameter, Ref " +
-				"FROM Document_Questionnaire_Selectors WHERE Ref=@ref ORDER BY Selector, ComparisonType");
-		query1.AddParameter("ref",recordset.Id);
-		var selectors = query1.Execute();
-
-		var listParameter = new List;	//
-		var listChecked = true;			//stuff for
-		var currentSelector=null;		//list selector
-		var currentParam = null;				//
-
-		while (selectors.Next() && actualQuestionnaire) {
-
-			if (ListSelectorIsChanged(currentSelector, selectors.Selector, selectors.AdditionalParameter, currentParam)){ //it's time to check list selector
-				actualQuestionnaire = CheckListSelector(listParameter);
-				if (actualQuestionnaire==false){
-					break;
-				}
-				listParameter = new List;
-				listChecked = true;
-			}
-
-			//if (selectors.ComparisonType=="In list" || selectors.ComparisonType=="В списке"){
-			if ((selectors.ComparisonType).ToString()==(DB.Current.Constant.ComparisonType.InList).ToString()){
-				listParameter.Add(CheckSelector(outlet, selectors.Selector, DB.Current.Constant.ComparisonType.Equal, selectors.Value, selectors.AdditionalParameter)); //real check is later, now - only an array
-				listChecked = false;
-				currentSelector = selectors.Selector;			//stuff for
-				currentParam = selectors.AdditionalParameter;	//list selectors, again
-			}
-			else{
-				actualQuestionnaire = CheckSelector(outlet, selectors.Selector, selectors.ComparisonType, selectors.Value, selectors.AdditionalParameter);
-				currentSelector = null;
-				currentParam = null;
-			}
-
-		}
-
-		if (listChecked==false){ //one more time try to check list if it's hasn't been done in loop
-			actualQuestionnaire = CheckListSelector(listParameter);
-		}
-
-		if (actualQuestionnaire==false){ //this is what it's all for
-			var qDelete = new Query("DELETE FROM USR_Questionnaires WHERE Id=@id");
-			qDelete.AddParameter("id", recordset.Id);
-			qDelete.Execute();
-		}
-
-		actualQuestionnaire = true;
-	}
+	
+	var qDelete = new Query("DELETE FROM USR_Questionnaires WHERE Selected=0");
+	qDelete.Execute();
 
 }
 

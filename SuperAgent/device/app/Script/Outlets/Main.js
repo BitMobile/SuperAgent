@@ -50,18 +50,18 @@ function Debug(val) {
 
 function GetOutletParameters(outlet) {
 	var query = new Query();
-	query.Text = "SELECT P.Id, P.Description, P.DataType, DT.Description AS TypeDescription, OP.Id AS ParameterValue, OP.Value " +
-			
+	query.Text = "SELECT P.Id, P.Description, P.DataType, DT.Description AS TypeDescription, OP.Id AS ParameterValue, OP.Value, P.Visible, P.Editable " +
+
 			", CASE WHEN P.DataType=@integer OR P.DataType=@decimal OR P.DataType=@string THEN 1 ELSE 0 END AS IsInputField " + //IsInputField
 			", CASE WHEN P.DataType=@integer OR P.DataType=@decimal THEN 'numeric' ELSE 'auto' END AS KeyboardType " +
-			
+
 			", CASE WHEN P.DataType=@integer OR P.DataType=@decimal OR P.DataType=@string THEN OP.Value " +
 			"ELSE CASE " +
 			"WHEN OP.Value IS NULL OR RTRIM(OP.Value)='' THEN '—' " +
 			"WHEN OP.Value IS NOT NULL AND P.DataType=@snapshot THEN @attached " +
 			"WHEN OP.Value IS NOT NULL AND P.DataType!=@snapshot THEN OP.Value " +
 			"END END AS AnswerOutput " +
-			
+
 			"FROM Catalog_OutletParameter P " +
 			"JOIN Enum_DataType DT ON DT.Id=P.DataType " +
 			"LEFT JOIN Catalog_Outlet_Parameters OP ON OP.Parameter = P.Id AND OP.Ref = @outlet";
@@ -165,44 +165,57 @@ function AssignParameterValue(control, typeDescription, parameterValue, value, o
 	CreateOutletParameterValue(outlet, parameter, control.Text, parameterValue)
 }
 
+function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control, parameterDescription, editable) {
 
-function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control, parameterDescription) {
+	if (editable) {
 
-	if ($.sessionConst.editOutletParameters){
+		if ($.sessionConst.editOutletParameters) {
 
-		parameterValue = CreateOutletParameterValue(outlet, parameter, Variables[control].Text, parameterValue);
+			parameterValue = CreateOutletParameterValue(outlet, parameter, Variables[control].Text, parameterValue);
 
-		if (typeDescription == "ValueList") {  //--------ValueList-------
-			var q = new Query();
-			q.Text = "SELECT Value, Value FROM Catalog_OutletParameter_ValueList WHERE Ref=@ref UNION SELECT '', '—' ORDER BY Value";
-			q.AddParameter("ref", parameter);
-			DoChoose(q.Execute(), parameterValue, "Value", Variables[control], null, parameterDescription);
-		}
-		if (typeDescription == "DateTime") {  //---------DateTime-------
-			if (String.IsNullOrEmpty(parameterValue.Value))
-				ChooseDateTime(parameterValue, "Value", Variables[control], DateHandler, parameterDescription);
-			else
-				Dialog.Choose(parameterDescription, [[0, Translate["#clearValue#"]], [1, Translate["#setDate#"]]], DateHandler, [parameterValue, control]);
-		}
-		if (typeDescription == "Boolean") {  //----------Boolean--------
-			ChooseBool(parameterValue, "Value", Variables[control], null, parameterDescription);
-		}
-		if (typeDescription == "Snapshot") { //----------Snapshot-------
-			var listChoice = new List;
-			listChoice.Add([1, Translate["#makeSnapshot#"]]);
-			if ($.sessionConst.galleryChoose)
-				listChoice.Add([0, Translate["#addFromGallery#"]]);
-			if (String.IsNullOrEmpty(parameterValue.Value)==false)
-				listChoice.Add([2, Translate["#clearValue#"]]);
-			AddSnapshotGlobal(outlet, parameterValue, SaveAtOutelt, listChoice, "catalog.outlet", parameterDescription);
-			parameterValueC = parameterValue;
-		}
-		if (typeDescription == "String" || typeDescription == "Integer" || typeDescription == "Decimal") {
-			FocusOnEditText(control, '1');
+			if (typeDescription == "ValueList") {  //--------ValueList-------
+				var q = new Query();
+				q.Text = "SELECT Value, Value FROM Catalog_OutletParameter_ValueList WHERE Ref=@ref UNION SELECT '', '—' ORDER BY Value";
+				q.AddParameter("ref", parameter);
+				DoChoose(q.Execute(), parameterValue, "Value", Variables[control], null, parameterDescription);
+			}
+			if (typeDescription == "DateTime") {  //---------DateTime-------
+				if (String.IsNullOrEmpty(parameterValue.Value))
+					ChooseDateTime(parameterValue, "Value", Variables[control], DateHandler, parameterDescription);
+				else
+					Dialog.Choose(parameterDescription, [[0, Translate["#clearValue#"]], [1, Translate["#setDate#"]]], DateHandler, [parameterValue, control]);
+			}
+			if (typeDescription == "Boolean") {  //----------Boolean--------
+				ChooseBool(parameterValue, "Value", Variables[control], null, parameterDescription);
+			}
+			if (typeDescription == "Snapshot") { //----------Snapshot-------
+				var listChoice = new List;
+				listChoice.Add([1, Translate["#makeSnapshot#"]]);
+				if ($.sessionConst.galleryChoose)
+					listChoice.Add([0, Translate["#addFromGallery#"]]);
+				if (String.IsNullOrEmpty(parameterValue.Value)==false)
+					listChoice.Add([2, Translate["#clearValue#"]]);
+				AddSnapshotGlobal(outlet, parameterValue, SaveAtOutelt, listChoice, "catalog.outlet", parameterDescription);
+				parameterValueC = parameterValue;
+			}
+			if (typeDescription == "String" || typeDescription == "Integer" || typeDescription == "Decimal") {
+				FocusOnEditText(control, '1');
+			}
 		}
 	}
 }
 
+function IsEditText(editOutletParameters, isInputField, editable) {
+	// Dialog.Debug("1: editOutletParameters " + editOutletParameters);
+	// Dialog.Debug("2: isInputField " + isInputField);
+	// Dialog.Debug("3: editable " + editable);
+	// Dialog.Debug("Result: " + editOutletParameters && isInputField && editable);
+	if (editOutletParameters && isInputField && editable) {
+		return true;
+	} else {
+		return false;
+	}
+}
 
 function DateHandler(state, args) {
 	var parameterValue = state[0];

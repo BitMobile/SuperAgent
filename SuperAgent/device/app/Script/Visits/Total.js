@@ -110,7 +110,7 @@ function CheckAndCommit(order, visit, wfName) {
 
 	var check = VisitIsChecked(visit, order, wfName);
 
-	if (check==true) {
+	if (check.Checked) {
         visit = visit.GetObject();
     	visit.EndTime = DateTime.Now;
 
@@ -124,7 +124,7 @@ function CheckAndCommit(order, visit, wfName) {
         Workflow.Commit();
     }
     else
-        Dialog.Message(check);//Translate["#messageNulls#"]);
+        Dialog.Message(check.Message);//Translate["#messageNulls#"]);
 
 }
 
@@ -152,19 +152,21 @@ function NextDateHandler(state, args){
 	
 }
 
-function DialogDebug(val) {
-	Dialog.Debug(val);
-}
-
 function VisitIsChecked(visit, order, wfName) {
+	
+	var result = new Dictionary();
+	result.Add("Checked", false);
+	
     if (checkOrderReason && visit.ReasonForNotOfTakingOrder.EmptyRef())
-        return "no order";
+    	result.Add("Message", Translate["#noOrder#"]);
     else {
         if (checkVisitReason && visit.ReasonForVisit.EmptyRef())
-            return "visit reason";
+        	result.Add("Message", Translate["#visitReason#"]);
         else
-            return true;
+            result.Checked = true;
     }
+    
+    return result;
 }
 
 function DialogCallBack(control, key){

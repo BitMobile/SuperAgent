@@ -206,15 +206,24 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 }
 
 function IsEditText(editOutletParameters, isInputField, editable) {
-	// Dialog.Debug("1: editOutletParameters " + editOutletParameters);
-	// Dialog.Debug("2: isInputField " + isInputField);
-	// Dialog.Debug("3: editable " + editable);
-	// Dialog.Debug("Result: " + editOutletParameters && isInputField && editable);
 	if (editOutletParameters && isInputField && editable) {
 		return true;
 	} else {
 		return false;
 	}
+}
+
+function IsOutletPrimaryParameterEditable(editOutletParameters) {
+	query = new Query("SELECT Editable FROM Catalog_OutletsPrimaryParametersSettings WHERE Code = @Code");
+	query.AddParameter("Code", "000000008")
+	isParameterEditable = query.ExecuteScalar();
+	if (editOutletParameters && isParameterEditable) {
+		result =  true;
+	} else {
+		result = false;
+	};
+	Dialog.Debug(result);
+	return result;
 }
 
 function DateHandler(state, args) {

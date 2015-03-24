@@ -78,7 +78,7 @@
 
 			<s:If Test="@snapshotsExists">
 				<c:DockLayout CssClass="snapshot_grid">
-					<s:If Test="$sessionConst.editOutletParameters">
+					<s:If Test="$IsOutletPrimaryParameterEditable($sessionConst.editOutletParameters)">
 						<c:Button Text="#add#" OnClick="$AddSnapshot($outlet)" />
 					</s:If>
 					<c:TextView Text="#outletSnapshots#" />
@@ -114,7 +114,9 @@
 					<c:DockLayout CssClass="grid">
 						<c:VerticalLayout>
 							<c:TextView Text="#outletSnapshots#" CssClass="description_row" />
-							<c:Button OnClick="$AddSnapshot($outlet)" Text="#add#" CssClass="add_button" />
+							<s:If Test="$IsOutletPrimaryParameterEditable($sessionConst.editOutletParameters)">
+								<c:Button OnClick="$AddSnapshot($outlet)" Text="#add#" CssClass="add_button" />
+							</s:If>
 						</c:VerticalLayout>
 					</c:DockLayout>
 					<c:HorizontalLine />

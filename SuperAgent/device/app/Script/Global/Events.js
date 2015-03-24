@@ -182,6 +182,7 @@ function SetSessionConstants() {
 	$.sessionConst.Add("PlanEnbl", EvaluateBoolean(planEnbl.ExecuteScalar()));
 	$.sessionConst.Add("MultStck", EvaluateBoolean(multStck.ExecuteScalar()));
 	$.sessionConst.Add("NoStkEnbl", EvaluateBoolean(stckEnbl.ExecuteScalar()));
+	$.sessionConst.Add("OrderCalc", EvaluateBoolean(orderCalc.ExecuteScalar()));
 	$.sessionConst.Add("UVR", EvaluateBoolean(UVR.ExecuteScalar()));
 	$.sessionConst.Add("NOR", EvaluateBoolean(NOR.ExecuteScalar()));
 

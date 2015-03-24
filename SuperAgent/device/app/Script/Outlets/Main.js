@@ -424,8 +424,10 @@ function NoLocationHandler(descriptor) {
 	Dialog.Message("#locationSetFailed#");
 }
 
-function ShowCoordOptions(control, outlet) {
-	Dialog.Choose("#coordinates#", [[0,Translate["#clear_coord#"]], [1,Translate["#refresh#"]], [2,Translate["#copy#"]]], ChooseHandler, outlet);
+function ShowCoordOptions(control, outlet, editOutletParameters, primaryParameterName) {
+	if (IsOutletPrimaryParameterEditable(editOutletParameters, primaryParameterName)) {
+		Dialog.Choose("#coordinates#", [[0,Translate["#clear_coord#"]], [1,Translate["#refresh#"]], [2,Translate["#copy#"]]], ChooseHandler, outlet);
+	}
 }
 
 function ChooseHandler(state, args) {

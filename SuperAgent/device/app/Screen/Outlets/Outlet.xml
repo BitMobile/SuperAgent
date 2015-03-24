@@ -144,7 +144,7 @@
 						<c:MemoEdit Id="outletAddress" Value="$outlet.Address" OnGetFocus="$ShowClearButton($clearButton)" OnLostFocus="$HideClearButton($clearButton)" OnChange="$SaveValue($outlet)"></c:MemoEdit>
 					</s:If>
 					<s:Else>
-						<c:TextView Id="outletAddress" Text="$outlet.Address"></c:TextView>
+						<c:TextView Id="outletAddress" Text="$outlet.Address" CssClass="main_row"></c:TextView>
 					</s:Else>
 				</c:VerticalLayout>
 			</c:DockLayout>
@@ -161,7 +161,7 @@
 				<c:VerticalLayout>
 					<c:TextView Text="#coordinates#" CssClass="description_row"></c:TextView>
 					<s:If Test="$HasCoordinates($outlet)">
-						<c:HorizontalLayout OnClick="$ShowCoordOptions($outlet)">
+						<c:HorizontalLayout OnClick="$ShowCoordOptions($outlet, $sessionConst.editOutletParameters, coordinates)">
 							<c:TextView Id="outletCoord" Text="{$outlet.Lattitude}; {$outlet.Longitude}" CssClass="main_row"></c:TextView>
 						</c:HorizontalLayout>
 					</s:If>

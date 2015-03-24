@@ -6,6 +6,19 @@ function WarMupFunction() {
 
 }
 
+function OnLoading() {
+	var primaryParametersSettings = new Dictionary();
+	primaryParametersSettings.Add("description", "000000001");
+	primaryParametersSettings.Add("address", "000000002");
+	primaryParametersSettings.Add("coordinates", "000000003");
+	primaryParametersSettings.Add("type", "000000004");
+	primaryParametersSettings.Add("class", "000000005");
+	primaryParametersSettings.Add("distributor", "000000006");
+	primaryParametersSettings.Add("status", "000000007");
+	primaryParametersSettings.Add("snapshots", "000000008");
+	$.Add("primaryParametersSettings", primaryParametersSettings);
+}
+
 function GetOutlets(searchText) {
 	var search = "";
 	if (String.IsNullOrEmpty(searchText)==false)
@@ -213,17 +226,22 @@ function IsEditText(editOutletParameters, isInputField, editable) {
 	}
 }
 
-function IsOutletPrimaryParameterEditable(editOutletParameters) {
-	query = new Query("SELECT Editable FROM Catalog_OutletsPrimaryParametersSettings WHERE Code = @Code");
-	query.AddParameter("Code", "000000008")
+function IsOutletPrimaryParameterEditable(editOutletParameters, primaryParameterName) {
+	query = new Query("SELECT Editable FROM Catalog_OutletsprimaryParametersSettings WHERE Code = @Code");
+	query.AddParameter("Code", $.primaryParametersSettings[primaryParameterName]);
 	isParameterEditable = query.ExecuteScalar();
 	if (editOutletParameters && isParameterEditable) {
 		result =  true;
 	} else {
 		result = false;
 	};
-	Dialog.Debug(result);
 	return result;
+}
+
+function FocusIfHasEditText(fieldName, editOutletParameters, primaryParameterName) {
+	if (IsOutletPrimaryParameterEditable(editOutletParameters, primaryParameterName)) {
+		FocusOnEditText(fieldName, 1);
+	}
 }
 
 function DateHandler(state, args) {

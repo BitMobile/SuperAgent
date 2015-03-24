@@ -78,7 +78,7 @@
 
 			<s:If Test="@snapshotsExists">
 				<c:DockLayout CssClass="snapshot_grid">
-					<s:If Test="$IsOutletPrimaryParameterEditable($sessionConst.editOutletParameters)">
+					<s:If Test="$IsOutletPrimaryParameterEditable($sessionConst.editOutletParameters, snapshots)">
 						<c:Button Text="#add#" OnClick="$AddSnapshot($outlet)" />
 					</s:If>
 					<c:TextView Text="#outletSnapshots#" />
@@ -114,7 +114,7 @@
 					<c:DockLayout CssClass="grid">
 						<c:VerticalLayout>
 							<c:TextView Text="#outletSnapshots#" CssClass="description_row" />
-							<s:If Test="$IsOutletPrimaryParameterEditable($sessionConst.editOutletParameters)">
+							<s:If Test="$IsOutletPrimaryParameterEditable($sessionConst.editOutletParameters, snapshots)">
 								<c:Button OnClick="$AddSnapshot($outlet)" Text="#add#" CssClass="add_button" />
 							</s:If>
 						</c:VerticalLayout>
@@ -123,19 +123,29 @@
 				</s:If>
 			</s:Else>
 
-			<c:HorizontalLayout CssClass="grid">
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusIfHasEditText(outletDescr, $sessionConst.editOutletParameters, description)">
 				<c:VerticalLayout>
 					<c:TextView Text="#description#" CssClass="description_row"></c:TextView>
-					<c:TextView Id="outletDescr" Text="$outlet.Description" CssClass="main_row"></c:TextView>
+					<s:If Test="$IsOutletPrimaryParameterEditable($sessionConst.editOutletParameters, description)">
+						<c:EditText Id="outletDescr" Value="$outlet.Description" CssClass="main_row"></c:EditText>
+					</s:If>
+					<s:Else>
+						<c:TextView Id="outletDescr" Text="$outlet.Description" CssClass="main_row"></c:TextView>
+					</s:Else>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="grid" OnClickAction="$FocusOnEditText(outletAddress, 1)">
+			<c:DockLayout CssClass="grid" OnClickAction="$FocusIfHasEditText(outletAddress, $sessionConst.editOutletParameters, address)">
 				<c:Button Id="clearButton" CssClass="clear" Visible="false" OnClick="$ClearField($outletAddress, $outlet, Address)"/>
 				<c:VerticalLayout>
 					<c:TextView Text="#address#" CssClass="description_row"></c:TextView>
-					<c:MemoEdit Id="outletAddress" Value="$outlet.Address" OnGetFocus="$ShowClearButton($clearButton)" OnLostFocus="$HideClearButton($clearButton)" OnChange="$SaveValue($outlet)"></c:MemoEdit>
+					<s:If Test="$IsOutletPrimaryParameterEditable($sessionConst.editOutletParameters, address)">
+						<c:MemoEdit Id="outletAddress" Value="$outlet.Address" OnGetFocus="$ShowClearButton($clearButton)" OnLostFocus="$HideClearButton($clearButton)" OnChange="$SaveValue($outlet)"></c:MemoEdit>
+					</s:If>
+					<s:Else>
+						<c:TextView Id="outletAddress" Text="$outlet.Address"></c:TextView>
+					</s:Else>
 				</c:VerticalLayout>
 			</c:DockLayout>
 			<c:HorizontalLine />

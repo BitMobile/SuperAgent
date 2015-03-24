@@ -161,7 +161,7 @@ function VisitIsChecked(visit, order, wfName) {
     	result.Add("Message", Translate["#noOrder#"]);
     else {
         if (checkVisitReason && visit.ReasonForVisit.EmptyRef())
-        	result.Add("Message", Translate["#visitReason#"]);
+        	result.Add("Message", Translate["#visitReasonMessage#"]);
         else
             result.Checked = true;
     }

@@ -27,8 +27,8 @@ function OnWorkflowStart(name) {
 
 	if (name == "Visit") {
 
-			var questionnaires = GetQuestionnairesForOutlet($.outlet);
-			$.workflow.Add("questionnaires", questionnaires);
+//			var questionnaires = GetQuestionnairesForOutlet($.outlet);
+//			$.workflow.Add("questionnaires", questionnaires);
 
 			CreateQuestionnareTable($.outlet);
 			CreateQuestionsTable($.outlet);
@@ -39,12 +39,12 @@ function OnWorkflowStart(name) {
 			else
 				$.workflow.Add("skipTasks", true);
 
-			if (parseInt(GetQuestionsCount(questionnaires)) != parseInt(0))
+			if (parseInt(GetQuestionsCount()) != parseInt(0))
 				$.workflow.Add("skipQuestions", false);
 			else
 				$.workflow.Add("skipQuestions", true);
 
-			if (parseInt(GetSKUQuestionsCount(questionnaires)) != parseInt(0))
+			if (parseInt(GetSKUQuestionsCount()) != parseInt(0))
 				$.workflow.Add("skipSKUs", false);
 			else
 				$.workflow.Add("skipSKUs", true);
@@ -253,70 +253,6 @@ function GetTasksCount() {
 
 //-----Questionnaire selection-------
 
-function GetQuestionnairesForOutlet(outlet) {
-	var query = new Query("SELECT DISTINCT Q.Id " +
-			"FROM Document_Questionnaire_Schedule S " +
-			"JOIN Document_Questionnaire Q ON Q.Id=S.Ref " +
-			"WHERE date(S.Date)=date('now', 'start of day') AND Q.Status=@active ORDER BY Q.Id");
-	query.AddParameter("active", DB.Current.Constant.QuestionnareStatus.Active);
-	var recordset = query.Execute();
-
-	var list = new List;
-	var actualQuestionnaire = true;
-	var currentQuestionnaire;
-
-	while (recordset.Next()) {
-
-		var query1 = new Query("SELECT Selector, ComparisonType, Value, AdditionalParameter, Ref " +
-				"FROM Document_Questionnaire_Selectors WHERE Ref=@ref ORDER BY Selector, ComparisonType");
-		query1.AddParameter("ref",recordset.Id);
-		var selectors = query1.Execute();
-
-		var listParameter = new List;	//
-		var listChecked = true;			//stuff for
-		var currentSelector=null;		//list selector
-		var currentParam = null;				//
-
-		while (selectors.Next() && actualQuestionnaire) {
-
-			if (ListSelectorIsChanged(currentSelector, selectors.Selector, selectors.AdditionalParameter, currentParam)){ //it's time to check list selector
-				actualQuestionnaire = CheckListSelector(listParameter);
-				if (actualQuestionnaire==false){
-					break;
-				}
-				listParameter = new List;
-				listChecked = true;
-			}
-
-			//if (selectors.ComparisonType=="In list" || selectors.ComparisonType=="В списке"){
-			if ((selectors.ComparisonType).ToString()==(DB.Current.Constant.ComparisonType.InList).ToString()){
-				listParameter.Add(CheckSelector(outlet, selectors.Selector, DB.Current.Constant.ComparisonType.Equal, selectors.Value, selectors.AdditionalParameter)); //real check is later, now - only an array
-				listChecked = false;
-				currentSelector = selectors.Selector;			//stuff for
-				currentParam = selectors.AdditionalParameter;	//list selectors, again
-			}
-			else{
-				actualQuestionnaire = CheckSelector(outlet, selectors.Selector, selectors.ComparisonType, selectors.Value, selectors.AdditionalParameter);
-				currentSelector = null;
-				currentParam = null;
-			}
-
-		}
-
-		if (listChecked==false){ //one more time try to check list if it's hasn't been done in loop
-			actualQuestionnaire = CheckListSelector(listParameter);
-		}
-
-		if (actualQuestionnaire) //this is what it's all for
-			list.Add(recordset.Id);
-
-		actualQuestionnaire = true;
-	}
-
-	return list;
-
-}
-
 function GetRegionQueryText1() {
 	
 	var loop = 1;
@@ -504,7 +440,16 @@ function CreateQuestionsTable(outlet) {
 }
 
 function CreateSKUQuestionsTable(outlet) {
+	
 	var tableCommand = Global.CreateUserTableIfNotExists("USR_SKUQuestions");
+	
+	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_QSKU ON _Document_Questionnaire_SKUs(Ref, SKU)");
+	indexQuery.Execute();
+	
+	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_AQ " +
+				"ON _Catalog_Outlet_AnsweredQuestions(Ref, Questionaire, Question, AnswerDate)");
+	indexQuery.Execute();
+	
 	var query = new Query(tableCommand +
 			"SELECT MIN(D.Date) AS DocDate, S.SKU AS SKU, S.Description AS SKUDescription, Q.ChildQuestion AS Question, Q.ChildDescription AS Description" +
 			", Q.ParentQuestion AS ParentQuestion, Q.ChildType AS AnswerType" +
@@ -514,20 +459,20 @@ function CreateSKUQuestionsTable(outlet) {
 			", GR.Id AS OwnerGroup, BR.Id AS Brand " +
 			", (SELECT Qq.QuestionOrder FROM Document_Questionnaire Dd  " +
 			" JOIN Document_Questionnaire_SKUQuestions Qq ON Dd.Id=Qq.Ref AND Q.ChildQuestion=Qq.ChildQuestion AND Dd.Id=D.Id" +
-			" JOIN Document_Questionnaire_SKUs Ss ON Qq.Ref=Ss.Ref AND Ss.SKU=S.SKU ORDER BY Dd.Date LIMIT 1) AS QuestionOrder" + //QuestionOrder
+			" JOIN _Document_Questionnaire_SKUs Ss INDEXED BY IND_QSKU ON Qq.Ref=Ss.Ref AND Ss.SKU=S.SKU AND Ss.IsTombstone=0 ORDER BY Dd.Date LIMIT 1) AS QuestionOrder" + //QuestionOrder
 
 			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal OR Q.ChildType=@string THEN 1 ELSE NULL END AS IsInputField " + //IsInputField
 			", CASE WHEN Q.ChildType=@integer OR Q.ChildType=@decimal THEN 'numeric' ELSE 'auto' END AS KeyboardType " + //KeyboardType
 
 			"FROM Document_Questionnaire_SKUQuestions Q " +
-			"JOIN Document_Questionnaire_SKUs S ON Q.Ref=S.Ref " +
+			"JOIN _Document_Questionnaire_SKUs S INDEXED BY IND_QSKU ON Q.Ref=S.Ref AND S.IsTombstone = 0 " +
 			"JOIN USR_Questionnaires D ON Q.Ref=D.Id " +
 			" JOIN Catalog_SKU SK ON SK.Id=S.SKU " +
 			" JOIN Catalog_Brands BR ON BR.Id=SK.Brand " +
 			" JOIN Catalog_SKUGroup GR ON SK.Owner=GR.Id " +
-			"LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Ref = @outlet AND A.Questionaire=D.Id " +
+			"LEFT JOIN _Catalog_Outlet_AnsweredQuestions A INDEXED BY IND_AQ ON A.Ref = @outlet AND A.Questionaire=D.Id " +
 				"AND A.Question=Q.ChildQuestion AND A.SKU=S.SKU AND DATE(A.AnswerDate)>=DATE(D.BeginAnswerPeriod) " +
-				"AND (DATE(A.AnswerDate)<=DATE(D.EndAnswerPeriod) OR A.AnswerDate='0001-01-01 00:00:00')" +
+				"AND (DATE(A.AnswerDate)<=DATE(D.EndAnswerPeriod) OR A.AnswerDate='0001-01-01 00:00:00') AND A.IsTombstone = 0 " +
 			"GROUP BY Q.ChildQuestion, Q.ChildDescription, Q.ChildType, D.Single, S.SKU, S.Description, GR.Id, BR.Id ");
 	query.AddParameter("integer", DB.Current.Constant.DataType.Integer);
 	query.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);
@@ -679,21 +624,16 @@ function GetRegionQueryText() {
 
 //-----Questions count-----------
 
-function GetQuestionsCount(questionnaires) {
-	var query = new Query("SELECT COUNT(Question) FROM USR_Questions ");
+function GetQuestionsCount() {
+	var query = new Query("SELECT COUNT(Question) FROM USR_Questions LIMIT 1");
 	var res = query.ExecuteScalar();
 	return res;
 }
 
 function GetSKUQuestionsCount() {
-	var str = CreateCondition(questionnaires);
-	if (String.IsNullOrEmpty(str))
-		return parseInt(0);
-	else{
-		var query = new Query("SELECT COUNT(Id) FROM Document_Questionnaire_SKUQuestions " + str);
-		var res = query.ExecuteScalar();
-		return res;
-	}
+	var query = new Query("SELECT COUNT(SKU) FROM USR_SKUQuestions LIMIT 1");
+	var res = query.ExecuteScalar();
+	return res;
 }
 
 function CreateCondition(list) {

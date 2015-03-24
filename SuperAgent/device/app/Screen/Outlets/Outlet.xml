@@ -177,19 +177,19 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectIfNotAVisit($outlet,Class,$outletClass,#outlet_class#)">
+			<c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectIfNotAVisit($outlet,Class,$outletClass,#outlet_class#, $sessionConst.editOutletParameters, class)">
 				<c:TextView Text="#outlet_class#"></c:TextView>
 				<c:TextView Id="outletClass" Text="$outlet.Class.Description" CssClass="value"></c:TextView>
 			</c:DockLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectIfNotAVisit($outlet,Type,$outletType,#outlet_type#)">
+			<c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectIfNotAVisit($outlet,Type,$outletType,#outlet_type#, $sessionConst.editOutletParameters, type)">
 				<c:TextView Text="#outlet_type#"></c:TextView>
 				<c:TextView Id="outletType" Text="$outlet.Type.Description" CssClass="value"></c:TextView>
 			</c:DockLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoSelect($outlet,Distributor,$outletDistr,#distributor#)">
+			<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoSelect($outlet,Distributor,$outletDistr,#distributor#, $sessionConst.editOutletParameters, distributor)">
 				<c:TextView Text="#distributor#"></c:TextView>
 				<c:TextView Id="outletDistr" Text="$outlet.Distributor.Description" CssClass="value"></c:TextView>
 			</c:DockLayout>

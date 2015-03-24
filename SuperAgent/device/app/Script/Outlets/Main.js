@@ -143,13 +143,16 @@ function ReviseParameters(outlet, save) {
 //---------------------------header parameters dialog.choose--------------------
 
 
-function SelectIfNotAVisit(outlet, attribute, control, title) {
-	if ($.workflow.name != "Visit")
-		DoSelect(outlet, attribute, control, title);
+function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParameters, primaryParameterName) {
+	if ($.workflow.name != "Visit") {
+		DoSelect(outlet, attribute, control, title, editOutletParameters, primaryParameterName);
+	}
 }
 
-function DoSelect(outlet, attribute, control, title) {
-	DoChoose(null, outlet, attribute, control, null, title);
+function DoSelect(outlet, attribute, control, title, editOutletParameters, primaryParameterName) {
+	if (IsOutletPrimaryParameterEditable(editOutletParameters, primaryParameterName)) {
+		DoChoose(null, outlet, attribute, control, null, title);
+	}
 }
 
 

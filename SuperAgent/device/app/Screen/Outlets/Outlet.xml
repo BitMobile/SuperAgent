@@ -166,7 +166,9 @@
 						</c:HorizontalLayout>
 					</s:If>
 					<s:Else>
-						<c:Button OnClick="$SetLocation($outlet)" Text="#set#" CssClass="coordButton" />
+						<s:If Test="$IsOutletPrimaryParameterEditable($sessionConst.editOutletParameters, coordinates)">
+							<c:Button OnClick="$SetLocation($outlet)" Text="#set#" CssClass="coordButton" />
+						</s:If>
 					</s:Else>
 				</c:VerticalLayout>
 			</c:DockLayout>

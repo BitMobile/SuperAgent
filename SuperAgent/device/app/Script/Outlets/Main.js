@@ -296,8 +296,9 @@ function GetImagePath(objectType, objectID, pictID, pictExt) {
 
 
 function ImageActions(control, id) {
-	if ($.sessionConst.editOutletParameters)
+	if (IsOutletPrimaryParameterEditable($.sessionConst.editOutletParameters, "snapshots")) {
 		Dialog.Ask(Translate["#deleteImage#"], DeleteImage, id); //Translate["#deleteImage#"]
+	}
 }
 
 

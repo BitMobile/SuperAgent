@@ -186,8 +186,11 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 	if (editable) {
 
 		if ($.sessionConst.editOutletParameters) {
-
-			parameterValue = CreateOutletParameterValue(outlet, parameter, Variables[control].Text, parameterValue);
+			if (typeDescription == "Snapshot") {
+				parameterValue = CreateOutletParameterValue(outlet, parameter, value, parameterValue);
+			} else {
+				parameterValue = CreateOutletParameterValue(outlet, parameter, Variables[control].Text, parameterValue);
+			}
 
 			if (typeDescription == "ValueList") {  //--------ValueList-------
 				var q = new Query();
@@ -291,7 +294,7 @@ function NoSnapshots() {
 
 function GetImagePath(objectType, objectID, pictID, pictExt) {
 	var s = GetSharedImagePath(objectType, objectID, pictID, pictExt);
-    return s;
+  return s;
 }
 
 

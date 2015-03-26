@@ -30,7 +30,11 @@ function GetSKUAndGroups(searchText, priceList, stock) {
         groupFields = " G.Description AS GroupDescription, G.Id AS GroupId, G.Parent AS GroupParent, P.Description AS ParentDescription, ";
         groupJoin = "JOIN Catalog_SKUGroup G ON G.Id = S.Owner ";
         groupParentJoin = "LEFT JOIN Catalog_SKUGroup P ON G.Parent=P.Id ";
-        groupSort = " G.Description, ";
+        if ($.workflow.order.Stock.EmptyRef()==true){
+          groupSort = " G.Description, ";
+        } else {
+          groupSort = " GroupDescription, ";
+        }
     }
 
     var query = new Query();
@@ -103,7 +107,7 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 	            groupParentJoin +
 	            recOrderStr +
 	            " WHERE PL.Ref = @Ref " + searchString + filterString +
-	            " ORDER BY " + groupSort + recOrderSort + " S.Description) INQ ON SS.Ref = INQ.Id WHERE " + stockCondition + " SS.Stock=@stock LIMIT 100";
+	            ") INQ ON SS.Ref = INQ.Id WHERE " + stockCondition + " SS.Stock=@stock ORDER BY " + groupSort + recOrderSort + " INQ.Description LIMIT 100";
 
     	query.AddParameter("stock", stock);
 

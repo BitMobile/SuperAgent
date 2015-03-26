@@ -264,4 +264,4 @@ cancel			Cancel
 logoutConfirm	Logout
 visitReason		"Visit reason" field should be filled
 noOrder			"No order reason" field should be filled
-notAvailableShort	Not available
+notAvailableShort	N/A

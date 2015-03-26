@@ -220,6 +220,22 @@
 	dock-align: right;
 }
 
+.not_available {
+	height: 100%;
+	color: #8e8e93;
+	text-align: center;
+	horizontal-align: central;
+	dock-align: right;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #000000;
+	margin-top: 1.5%;
+	margin-bottom: 1.5%;
+	margin-right:2.4mm;
+	padding-left: 1mm;
+	padding-right: 1mm;
+	font: 36% arial
+}
 
 .clear{
 	height: 2.2mm;

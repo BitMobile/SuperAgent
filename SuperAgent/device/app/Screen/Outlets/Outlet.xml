@@ -214,7 +214,7 @@
 								</s:If>
 								<s:Else>
 									<s:If Test="$IsUnavailable($parameter.Unavailable)">
-										<c:TextView Text="#notAvailableShort#" CssClass="value" />
+										<c:TextView Text="#notAvailableShort#" CssClass="not_available" />
 									</s:If>
 									<s:Else>
 										<c:Image Source="$GetImagePath(catalog.outlet, $outlet, $parameter.Value, .jpg)" CssClass="parameter_image" />

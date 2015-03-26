@@ -264,4 +264,4 @@ cancel			Отменить
 logoutConfirm	Выйти
 visitReasonMessage		Поле "Причина визита" должно быть заполнено
 noOrder			Поле "Причина не взятия заказа" должно быть заполнено
-notAvailableShort	Не доступно
+notAvailableShort	Н/Д

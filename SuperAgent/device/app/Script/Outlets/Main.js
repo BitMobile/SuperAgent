@@ -58,12 +58,13 @@ function CreateVisitEnable() {
 }
 function Debug(val) {
 	Dialog.Debug(val);
+	return true;
 }
 
 
 function GetOutletParameters(outlet) {
 	var query = new Query();
-	query.Text = "SELECT P.Id, P.Description, P.DataType, DT.Description AS TypeDescription, OP.Id AS ParameterValue, OP.Value, P.Visible, P.Editable " +
+	query.Text = "SELECT P.Id, P.Description, P.DataType, DT.Description AS TypeDescription, OP.Id AS ParameterValue, OP.Value, P.Visible, P.Editable, OP.Unavailable " +
 
 			", CASE WHEN P.DataType=@integer OR P.DataType=@decimal OR P.DataType=@string THEN 1 ELSE 0 END AS IsInputField " + //IsInputField
 			", CASE WHEN P.DataType=@integer OR P.DataType=@decimal THEN 'numeric' ELSE 'auto' END AS KeyboardType " +
@@ -186,11 +187,7 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 	if (editable) {
 
 		if ($.sessionConst.editOutletParameters) {
-			if (typeDescription == "Snapshot") {
-				parameterValue = CreateOutletParameterValue(outlet, parameter, value, parameterValue);
-			} else {
-				parameterValue = CreateOutletParameterValue(outlet, parameter, Variables[control].Text, parameterValue);
-			}
+			parameterValue = CreateOutletParameterValue(outlet, parameter, parameterValue, parameterValue);
 
 			if (typeDescription == "ValueList") {  //--------ValueList-------
 				var q = new Query();
@@ -222,6 +219,19 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 			}
 		}
 	}
+}
+
+function IsEmptyString(value) {
+	return String.IsNullOrEmpty(value);
+}
+
+function IsUnavailable(value) {
+	if (value == 1 || value == null) {
+		result = true;
+	} else {
+		result = false;
+	}
+	return result;
 }
 
 function IsEditText(editOutletParameters, isInputField, editable) {
@@ -490,6 +500,7 @@ function SaveAtOutelt(arr, args) {
 		var path = arr[1];
 		var question = paramValue.GetObject();
 		question.Value = path;
+		question.Unavailable = 1;
 		question.Save();
 		Workflow.Refresh([]);
 	}

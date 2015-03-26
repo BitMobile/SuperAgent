@@ -209,11 +209,11 @@
 						</s:If>
 						<s:Else>
 							<s:If Test="$parameter.TypeDescription == 'Snapshot'">
-								<s:If Test="$parameter.Value==''">
+								<s:If Test="$IsEmptyString($parameter.Value)">
 									<c:TextView Text="#noSnapshot#" CssClass="value"></c:TextView>
 								</s:If>
 								<s:Else>
-									<s:If Test="$parameter.Unavailable">
+									<s:If Test="$IsUnavailable($parameter.Unavailable)">
 										<c:TextView Text="#notAvailableShort#" CssClass="value" />
 									</s:If>
 									<s:Else>

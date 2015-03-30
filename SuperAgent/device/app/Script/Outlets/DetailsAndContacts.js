@@ -128,7 +128,7 @@ function ValidEntity(entity) {
 }
 
 function ValidateContactName(entity) {
-	if (String.IsNullOrEmpty(entity.ContactName)) {
+	if (String.IsNullOrWhiteSpace(entity.ContactName)) {
 		Dialog.Message(String.Format("{0} {1}", Translate["#incorrect#"], Translate["#contactName#"]));
 		return false;
 	} else

@@ -21,8 +21,10 @@ function OnLoading() {
 
 function GetOutlets(searchText) {
 	var search = "";
-	if (String.IsNullOrEmpty(searchText)==false)
+	if (String.IsNullOrEmpty(searchText)==false) {
+		searchText = StrReplace(searchText, "'", "''");
 		search = "WHERE Contains(O.Description, '" + searchText + "') ";
+	}
 	var q = new Query("SELECT O.Id, O.Description, O.Address," +
 			"(SELECT CASE WHEN COUNT(DISTINCT D.Overdue) = 2 THEN 2	WHEN COUNT(DISTINCT D.Overdue) = 0 THEN 3 " +
 			"ELSE (SELECT D1.Overdue FROM Document_AccountReceivable_ReceivableDocuments D1 " +

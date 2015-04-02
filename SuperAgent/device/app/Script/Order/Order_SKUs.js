@@ -42,6 +42,7 @@ function GetSKUAndGroups(searchText, priceList, stock) {
     var searchString = "";
 
     if (String.IsNullOrEmpty(searchText) == false) {
+        searchText = StrReplace(searchText, "'", "''");
         searchString = " AND Contains(S.Description, '" + searchText + "') ";
     }
 

@@ -100,8 +100,10 @@ function GetSKUsFromQuesionnaires(search) {
 
 	//getting SKUs list
 	var searchString = "";
-	if (String.IsNullOrEmpty(search) == false)
+	if (String.IsNullOrEmpty(search) == false) {
+		search = StrReplace(search, "'", "''");
 		searchString = " Contains(SKUDescription, '" + search + "') AND ";
+	}
 
 	var filterString = "";
 	var filterJoin = "";

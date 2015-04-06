@@ -355,13 +355,13 @@ function ChangeFilterAndRefresh(type) {
 
 function GetGroups(priceList, stock, screenContext) {
 
-    var filterString = " ";
+  var filterString = " ";
 
-    filterString += AddFilter(filterString, "brand_filter", "S.Brand", " AND ");
+  filterString += AddFilter(filterString, "brand_filter", "S.Brand", " AND ");
 
-    if (screenContext=="Order"){
+  if (screenContext=="Order"){
 
-    	var q = new Query("SELECT DISTINCT SG.Id AS ChildId, USGF.Id AS ChildIsSet, SG.Description As Child, SGP.Id AS ParentId, SGP.Description AS Parent, USPF.Id AS ParentIsSet " +
+    var q = new Query("SELECT DISTINCT SG.Id AS ChildId, USGF.Id AS ChildIsSet, SG.Description As Child, SGP.Id AS ParentId, SGP.Description AS Parent, USPF.Id AS ParentIsSet " +
         		"FROM Document_PriceList_Prices SP " +
         		"JOIN Catalog_SKU S On SP.SKU = S.Id " +
         		"JOIN Catalog_SKUGroup SG ON S.Owner = SG.Id " +
@@ -372,32 +372,31 @@ function GetGroups(priceList, stock, screenContext) {
         		"AND CASE WHEN @isStockEmptyRef = 0 THEN SP.SKU IN(SELECT SS.Ref FROM Catalog_SKU_Stocks SS WHERE SS.Stock = @stock AND CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE SS.StockValue > 0 END) ELSE CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE S.CommonStock > 0 END END " +
         		filterString + " ORDER BY Parent, Child");
 
-    	q.AddParameter("priceList", priceList);
-        q.AddParameter("stock", stock);
+    q.AddParameter("priceList", priceList);
+    q.AddParameter("stock", stock);
 
-        isStockEmptyRef = stock.ToString() == DB.EmptyRef("Catalog_Stock").ToString() ? 1 : 0;
+    isStockEmptyRef = stock.ToString() == DB.EmptyRef("Catalog_Stock").ToString() ? 1 : 0;
 
-        q.AddParameter("isStockEmptyRef", isStockEmptyRef);
-        q.AddParameter("NoStkEnbl", $.sessionConst.NoStkEnbl);
+    q.AddParameter("isStockEmptyRef", isStockEmptyRef);
+    q.AddParameter("NoStkEnbl", $.sessionConst.NoStkEnbl);
 
-        return q.Execute();
+    return q.Execute();
 
-    }
+  }
 
-    if (screenContext=="Questionnaire"){
+  if (screenContext=="Questionnaire"){
 
-    	var str = CreateCondition($.workflow.questionnaires, " Ref ");
-        var q1 = new Query("SELECT DISTINCT G.Id AS ChildId, G.Description AS Child, USGF.Id AS ChildIsSet, GP.Id AS ParentId, GP.Description AS Parent, USPF.Id AS ParentIsSet " +
+    var q1 = new Query("SELECT DISTINCT G.Id AS ChildId, G.Description AS Child, USGF.Id AS ChildIsSet, GP.Id AS ParentId, GP.Description AS Parent, USPF.Id AS ParentIsSet " +
         		"FROM Catalog_SKU S " +
         		"JOIN Catalog_SKUGroup G ON S.Owner = G.Id " +
         		"LEFT JOIN USR_Filters USGF ON USGF.Id = G.Id " +
         		"LEFT JOIN Catalog_SKUGroup GP ON G.Parent = GP.Id " +
         		"LEFT JOIN USR_Filters USPF ON USPF.Id = GP.Id " +
-        		"WHERE S.ID IN (SELECT SKU FROM Document_Questionnaire_SKUs WHERE " + str + ") " + filterString + " ORDER BY Parent, Child");
+        		"WHERE S.ID IN (SELECT DISTINCT SKU FROM USR_SKUQuestions) " + filterString + " ORDER BY Parent, Child");
 
-        return q1.Execute();
+    return q1.Execute();
 
-    }
+  }
 }
 
 function ShowGroup(currentGroup, parentGroup) {
@@ -544,46 +543,45 @@ function GetChildren(parent) {
 
 function GetBrands(priceList, stock, screenContext) {
 
-	var filterString = " ";
+  var filterString = " ";
 
 	filterString += AddFilter(filterString, "group_filter", "S.Owner", " AND ");
 
-    if (screenContext=="Order"){
+  if (screenContext=="Order"){
 
-    	var q = new Query("SELECT DISTINCT SB.Id, SB.Description, USBF.Id AS BrandIsSet  " +
-        		"FROM Document_PriceList_Prices SP " +
-        		"JOIN Catalog_SKU S ON SP.SKU = S.Id " +
-        		"JOIN Catalog_Brands SB ON S.Brand = SB.Id " +
-        		"LEFT JOIN USR_Filters USBF ON USBF.Id = SB.Id " +
-        		"WHERE SP.Ref = @priceList " +
-        		"AND CASE WHEN @isStockEmptyRef = 0 THEN SP.SKU IN(SELECT SS.Ref FROM Catalog_SKU_Stocks SS WHERE SS.Stock = @stock AND CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE SS.StockValue > 0 END) ELSE CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE S.CommonStock > 0 END END " +
-        		filterString + " ORDER BY SB.Description");
+  	var q = new Query("SELECT DISTINCT SB.Id, SB.Description, USBF.Id AS BrandIsSet  " +
+      		"FROM Document_PriceList_Prices SP " +
+      		"JOIN Catalog_SKU S ON SP.SKU = S.Id " +
+      		"JOIN Catalog_Brands SB ON S.Brand = SB.Id " +
+      		"LEFT JOIN USR_Filters USBF ON USBF.Id = SB.Id " +
+      		"WHERE SP.Ref = @priceList " +
+      		"AND CASE WHEN @isStockEmptyRef = 0 THEN SP.SKU IN(SELECT SS.Ref FROM Catalog_SKU_Stocks SS WHERE SS.Stock = @stock AND CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE SS.StockValue > 0 END) ELSE CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE S.CommonStock > 0 END END " +
+      		filterString + " ORDER BY SB.Description");
 
-    	q.AddParameter("priceList", priceList);
-        q.AddParameter("stock", stock);
+  	q.AddParameter("priceList", priceList);
+    q.AddParameter("stock", stock);
 
-        isStockEmptyRef = stock.ToString() == DB.EmptyRef("Catalog_Stock").ToString() ? 1 : 0;
+    isStockEmptyRef = stock.ToString() == DB.EmptyRef("Catalog_Stock").ToString() ? 1 : 0;
 
-        q.AddParameter("isStockEmptyRef", isStockEmptyRef);
-        q.AddParameter("NoStkEnbl", $.sessionConst.NoStkEnbl);
+    q.AddParameter("isStockEmptyRef", isStockEmptyRef);
+    q.AddParameter("NoStkEnbl", $.sessionConst.NoStkEnbl);
 
-        return q.Execute();
+    return q.Execute();
 
-    }
+  }
 
-    if (screenContext=="Questionnaire"){
+  if (screenContext=="Questionnaire"){
 
-    	var str = CreateCondition($.workflow.questionnaires, " Ref ");
-        var q1 = new Query("SELECT DISTINCT B.Id, B.Description, USBF.Id AS BrandIsSet " +
-        		"FROM Catalog_SKU S " +
-        		"JOIN Catalog_Brands B ON S.Brand=B.Id " +
-        		"JOIN Catalog_SKUGroup G ON S.Owner=G.Id " +
-        		"LEFT JOIN USR_Filters USBF ON USBF.Id = B.Id " +
-        		"WHERE S.ID IN (SELECT SKU FROM Document_Questionnaire_SKUs WHERE " + str + ") " + filterString + " ORDER BY B.Description");
+  	  var q1 = new Query("SELECT DISTINCT B.Id, B.Description, USBF.Id AS BrandIsSet " +
+      		"FROM Catalog_SKU S " +
+      		"JOIN Catalog_Brands B ON S.Brand=B.Id " +
+      		"JOIN Catalog_SKUGroup G ON S.Owner=G.Id " +
+      		"LEFT JOIN USR_Filters USBF ON USBF.Id = B.Id " +
+      		"WHERE S.ID IN (SELECT DISTINCT SKU FROM USR_SKUQuestions) " + filterString + " ORDER BY B.Description");
 
-        return q1.Execute();
+      return q1.Execute();
 
-    }
+  }
 
 }
 

@@ -411,7 +411,7 @@ function CreateQuestionsTable(outlet) {
 	var query = new Query(tableCommand +
 			"SELECT MIN(D.Date) AS DocDate, Q.ChildQuestion AS Question, Q.ChildDescription AS Description" +
 			", Q.ParentQuestion AS ParentQuestion, Q.ChildType AS AnswerType " +
-			", CASE WHEN A.Answer IS NOT NULL THEN A.Answer ELSE NULL END AS Answer " +
+			", A.Answer AS Answer " +
 			", A.Answer AS HistoryAnswer, MAX(A.AnswerDate) AS AnswerDate, D.Single AS Single " +
 			", MAX(CAST (Q.Obligatoriness AS int)) AS Obligatoriness" +
 			", Q.QuestionOrder AS QuestionOrder" + //QuestionOrder

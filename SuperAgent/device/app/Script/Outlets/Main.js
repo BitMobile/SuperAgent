@@ -21,17 +21,32 @@ function OnLoading() {
 
 function GetOutlets(searchText) {
 	var search = "";
-	if (String.IsNullOrEmpty(searchText)==false) {
+	var showOutlet = "";
+	var createOrder ="";	
+	var q = new Query();
+	
+	if (String.IsNullOrEmpty(searchText)==false) { //search processing
 		searchText = StrReplace(searchText, "'", "''");
 		search = "WHERE Contains(O.Description, '" + searchText + "') ";
+	}	
+	
+	if ($.workflow.name=="Outlets") {  //ShowOutletInMA for Outlets.xml at Outlets workflow 
+		showOutlet = " JOIN Catalog_OutletsStatusesSettings OS ON OS.Status=O.OutletStatus AND ShowOutletInMA=1 ";
 	}
-	var q = new Query("SELECT O.Id, O.Description, O.Address," +
-			"(SELECT CASE WHEN COUNT(DISTINCT D.Overdue) = 2 THEN 2	WHEN COUNT(DISTINCT D.Overdue) = 0 THEN 3 " +
-			"ELSE (SELECT D1.Overdue FROM Document_AccountReceivable_ReceivableDocuments D1 " +
-			"JOIN Document_AccountReceivable A1 ON D1.Ref=A1.Id WHERE A1.Outlet = O.Id LIMIT 1) END AS st " +
-			"FROM Document_AccountReceivable_ReceivableDocuments D JOIN Document_AccountReceivable A ON D.Ref=A.Id " +
-			"WHERE A.Outlet=O.Id) AS OutletStatus"+
-			" FROM Catalog_Outlet O " + search + " ORDER BY O.Description LIMIT 500");
+
+	if ($.workflow.name=="Order") {  //CreateOrderInMA for Outlets.xml at Order workflow 
+		createOrder = " JOIN Catalog_OutletsStatusesSettings OS ON OS.Status=O.OutletStatus AND CreateOrderInMA=1 ";
+	}
+	
+	q.Text = "SELECT O.Id, O.Description, O.Address," +
+		"(SELECT CASE WHEN COUNT(DISTINCT D.Overdue) = 2 THEN 2	WHEN COUNT(DISTINCT D.Overdue) = 0 THEN 3 " +
+		"ELSE (SELECT D1.Overdue FROM Document_AccountReceivable_ReceivableDocuments D1 " +
+		"JOIN Document_AccountReceivable A1 ON D1.Ref=A1.Id WHERE A1.Outlet = O.Id LIMIT 1) END AS st " +
+		"FROM Document_AccountReceivable_ReceivableDocuments D JOIN Document_AccountReceivable A ON D.Ref=A.Id " +
+		"WHERE A.Outlet=O.Id) AS OutletStatus"+
+		" FROM Catalog_Outlet O " + 
+		showOutlet + createOrder + search + " ORDER BY O.Description LIMIT 500";	
+	
 	return q.Execute();
 }
 

@@ -79,10 +79,35 @@
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
 
-				<c:HorizontalLayout CssClass="caption_grid">
-					<c:TextView Text="HELLO WORLD"></c:TextView>
-				</c:HorizontalLayout>
-				<c:HorizontalLine />
+				<s:If Test="$HasOrderParameters()">
+
+					<c:HorizontalLayout CssClass="caption_grid">
+						<c:TextView Text="#orderParameters#"></c:TextView>
+					</c:HorizontalLayout>
+					<c:HorizontalLine />
+
+					<s:Iterator Id="parameter" Value="$GetOrderParameters($order)" Status="statusCount">
+
+						<s:Push Id="index" Value="$statusCount.Index" />
+
+						<s:If Test="$parameter.Visible">
+
+							<c:DockLayout CssClass="parameter_grid">
+								<s:If Test="$IsEditText($parameter.IsInputField, $parameter.Editable)">
+									<c:EditText Id="control{$index}" Text="$parameter.Value" Placeholder="—" Keyboard="$parameter.KeyboardType" CssClass="value" />
+								</s:If>
+								<s:Else>
+									<c:TextView Id="control{$index}" Text="$parameter.AnswerOutput" CssClass="value" />
+								</s:Else>
+								<c:TextView Id="control{$index}" Text="$parameter.Description" />
+							</c:DockLayout>
+							<c:HorizontalLine />
+
+						</s:If>
+
+					</s:Iterator>
+
+				</s:If>
 
 		</c:ScrollView>
 

@@ -27,27 +27,11 @@ function OnWorkflowStart(name) {
 
 	if (name == "Visit") {
 
-//			var questionnaires = GetQuestionnairesForOutlet($.outlet);
-//			$.workflow.Add("questionnaires", questionnaires);
-
 			CreateQuestionnareTable($.outlet);
 			CreateQuestionsTable($.outlet);
 			CreateSKUQuestionsTable($.outlet);
 
-			if (parseInt(GetTasksCount()) != parseInt(0))
-				$.workflow.Add("skipTasks", false); // нельзя просто взять и присвоить значение переменной!
-			else
-				$.workflow.Add("skipTasks", true);
-
-			if (parseInt(GetQuestionsCount()) != parseInt(0))
-				$.workflow.Add("skipQuestions", false);
-			else
-				$.workflow.Add("skipQuestions", true);
-
-			if (parseInt(GetSKUQuestionsCount()) != parseInt(0))
-				$.workflow.Add("skipSKUs", false);
-			else
-				$.workflow.Add("skipSKUs", true);
+			SetSkips($.outlet);			
 	}
 
 	Variables["workflow"].Add("name", name);
@@ -85,11 +69,19 @@ function OnWorkflowForward(name, lastStep, nextStep, parameters) {
 function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 
 	if (workflowName == "Visit") {
-
-		if (nextStep == "Visit_Tasks") {
+		
+		if (nextStep == "Visit_Tasks") {			
 			if ($.workflow.skipTasks) {
 				if ($.workflow.skipQuestions) {
 					if ($.workflow.skipSKUs) {
+						if ($.workflow.skipOrder) {
+							if ($.workflow.skipEncashment) {
+								Workflow.Action("SkipEncashment", []);
+								return false;					
+							}
+							Workflow.Action("SkipOrder", []);
+							return false;							
+						}
 						Workflow.Action("Skip3", [ outlet ]);
 						return false;
 					}
@@ -104,6 +96,14 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 		if (nextStep == "Questions") {
 			if ($.workflow.skipQuestions) {
 				if ($.workflow.skipSKUs) {
+					if ($.workflow.skipOrder) {
+						if ($.workflow.skipEncashment) {
+							Workflow.Action("SkipEncashment", []);
+							return false;					
+						}
+						Workflow.Action("SkipOrder", []);
+						return false;							
+					}
 					Workflow.Action("Skip3", [ outlet ]);
 					return false;
 				}
@@ -115,10 +115,40 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 
 		if (nextStep == "SKUs") {
 			if ($.workflow.skipSKUs) {
+				if ($.workflow.skipOrder) {
+					if ($.workflow.skipEncashment) {
+						Workflow.Action("SkipEncashment", []);
+						return false;					
+					}
+					Workflow.Action("SkipOrder", []);
+					return false;							
+				}
 				Workflow.Action("Skip3", [ outlet ]);
 				return false;
 			} else
 				Workflow.Action("Skip2", []);
+		}
+		
+		if (nextStep == "Order") {
+			if ($.workflow.skipOrder) {
+				if ($.workflow.skipEncashment) {
+					Workflow.Action("SkipEncashment", []);
+					return false;					
+				}
+				Workflow.Action("SkipOrder", []);
+				return false;							
+			}
+			Workflow.Action("Skip3", [ outlet ]);
+			return false;
+		}
+		
+		if (nextStep == "Receivables") {
+			if ($.workflow.skipEncashment) {
+				Workflow.Action("SkipEncashment", []);
+				return false;					
+			}
+			Workflow.Action("SkipOrder", []);
+			return false;							
 		}
 	}
 
@@ -210,6 +240,45 @@ function SetSessionConstants() {
 		}
 	}
 
+}
+
+function SetSkips(outlet) {
+	
+	var skipQuest = false;
+	
+	var q = new Query("SELECT CreateOrderInMA, FillQuestionnaireInMA, DoEncashmentInMA FROM Catalog_OutletsStatusesSettings WHERE Status=@status");
+	q.AddParameter("status", outlet.OutletStatus);
+	var statusValues = q.Execute();
+	while (statusValues.Next()) {
+		if (EvaluateBoolean(statusValues.CreateOrderInMA)) 
+			$.workflow.Add("skipOrder", false);
+		else
+			$.workflow.Add("skipOrder", true);
+		if (EvaluateBoolean(statusValues.DoEncashmentInMA)) 
+			$.workflow.Add("skipEncashment", false);
+		else
+			$.workflow.Add("skipEncashment", true);
+		if (EvaluateBoolean(statusValues.FillQuestionnaireInMA)) 
+			skipQuest = false;
+		else
+			skipQuest = true;
+	}
+	
+	if (parseInt(GetTasksCount()) != parseInt(0))
+		$.workflow.Add("skipTasks", false); // нельзя просто взять и присвоить значение переменной!
+	else
+		$.workflow.Add("skipTasks", true);
+
+	if (parseInt(GetQuestionsCount())==parseInt(0) || skipQuest)
+		$.workflow.Add("skipQuestions", true);
+	else
+		$.workflow.Add("skipQuestions", false);
+
+	if (parseInt(GetSKUQuestionsCount()) == parseInt(0) || skipQuest)
+		$.workflow.Add("skipSKUs", true);
+	else
+		$.workflow.Add("skipSKUs", false);	
+	
 }
 
 function EvaluateBoolean(res){

@@ -60,10 +60,9 @@ function GetSKUAndGroups(searchText, priceList, stock) {
                                     " JOIN Catalog_AssortmentMatrix_Outlets OO ON SS.Ref=OO.Ref    " +
                                     " WHERE Outlet=@outlet AND SS.SKU=MS.SKU LIMIT 1) " +
                            "LEFT JOIN Catalog_UnitsOfMeasure U ON MS.Unit=U.Id " +
-                           "LEFT JOIN Document_Visit_SKUs V ON MS.SKU=V.SKU AND V.Ref=@visit AND V.Question IN (SELECT Id FROM Catalog_Question CQ WHERE CQ.Assignment=@assignment)";
+                           "LEFT JOIN USR_SKUQuestions V ON MS.SKU=V.SKU AND V.Question IN (SELECT Id FROM Catalog_Question CQ WHERE CQ.Assignment=@assignment)";
 
         query.AddParameter("outlet", $.workflow.outlet);
-        query.AddParameter("visit", $.workflow.visit);
         query.AddParameter("assignment", DB.Current.Constant.SKUQuestions.Stock);
 
         var recOrderSort = " OrderRecOrder DESC, ";

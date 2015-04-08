@@ -265,4 +265,4 @@ logoutConfirm	Выйти
 visitReasonMessage		Поле "Причина визита" должно быть заполнено
 noOrder			Поле "Причина отсутствия заказа" должно быть заполнено
 notAvailableShort	Н/Д
-orderParameters	ПАРАМЕТРЫ ЗАКАЗА
+orderParameters	ПАРАМЕТРЫ ЗАКАЗА:

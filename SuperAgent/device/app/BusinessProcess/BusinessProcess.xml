@@ -34,9 +34,9 @@
 
 		<bp:Step Name="Outlet" Screen="Outlets\Outlet.xml" Controller="Outlets\Main.js">
 			<bp:Action Name="Forward" NextStep="Visit_Tasks"></bp:Action>
-			<bp:Action Name="Skip1" NextStep="Questions"></bp:Action>
-			<bp:Action Name="Skip2" NextStep="SKUs"></bp:Action>
-			<bp:Action Name="Skip3" NextStep="Order"></bp:Action>
+			<bp:Action Name="SkipTask" NextStep="Questions"></bp:Action>
+			<bp:Action Name="SkipQuestions" NextStep="SKUs"></bp:Action>
+			<bp:Action Name="SkipSKUs" NextStep="Order"></bp:Action>
 			<bp:Action Name="SkipOrder" NextStep="Receivables"></bp:Action>
 			<bp:Action Name="SkipEncashment" NextStep="Total"></bp:Action>
 			<bp:Action Name="EditParameter" NextStep="EditOutletParameter"></bp:Action>
@@ -50,8 +50,8 @@
 			<bp:Action Name="Forward" NextStep="Questions"></bp:Action>
 			<bp:Action Name="Outlet" NextStep="Outlet"></bp:Action>
 			<bp:Action Name="Select" NextStep="Visit_Task" />
-			<bp:Action Name="Skip2" NextStep="SKUs"></bp:Action>
-			<bp:Action Name="Skip3" NextStep="Order"></bp:Action>
+			<bp:Action Name="SkipQuestions" NextStep="SKUs"></bp:Action>
+			<bp:Action Name="SkipSKUs" NextStep="Order"></bp:Action>
 			<bp:Action Name="SkipOrder" NextStep="Receivables"></bp:Action>
 			<bp:Action Name="SkipEncashment" NextStep="Total"></bp:Action>
 		</bp:Step>
@@ -62,7 +62,7 @@
 
 		<bp:Step Name="Questions" Screen="Visit\Questions.xml" Controller="Visits\Questions.js">
 			<bp:Action Name="Forward" NextStep="SKUs"></bp:Action>
-			<bp:Action Name="Skip3" NextStep="Order"></bp:Action>
+			<bp:Action Name="SkipSKUs" NextStep="Order"></bp:Action>
 			<bp:Action Name="SkipOrder" NextStep="Receivables"></bp:Action>
 			<bp:Action Name="SkipEncashment" NextStep="Total"></bp:Action>
 		</bp:Step>

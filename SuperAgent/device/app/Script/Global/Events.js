@@ -31,7 +31,7 @@ function OnWorkflowStart(name) {
 			CreateQuestionsTable($.outlet);
 			CreateSKUQuestionsTable($.outlet);
 
-			SetSkips($.outlet);			
+			SetSteps($.outlet);			
 	}
 
 	Variables["workflow"].Add("name", name);
@@ -70,89 +70,35 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 
 	if (workflowName == "Visit") {
 		
+		//Dialog.Debug("next step " + nextStep);
+		
+		var action;
+		
 		if (nextStep == "Visit_Tasks") {			
-			if ($.workflow.skipTasks) {
-				if ($.workflow.skipQuestions) {
-					if ($.workflow.skipSKUs) {
-						if ($.workflow.skipOrder) {
-							if ($.workflow.skipEncashment) {
-								Workflow.Action("SkipEncashment", []);
-								return false;					
-							}
-							Workflow.Action("SkipOrder", []);
-							return false;							
-						}
-						Workflow.Action("Skip3", [ outlet ]);
-						return false;
-					}
-					Workflow.Action("Skip2", []);
-					return false;
-				}
-				Workflow.Action("Skip1", []);
-				return false;
-			}
+			action = GetAction("1");
 		}
 
 		if (nextStep == "Questions") {
-			if ($.workflow.skipQuestions) {
-				if ($.workflow.skipSKUs) {
-					if ($.workflow.skipOrder) {
-						if ($.workflow.skipEncashment) {
-							Workflow.Action("SkipEncashment", []);
-							return false;					
-						}
-						Workflow.Action("SkipOrder", []);
-						return false;							
-					}
-					Workflow.Action("Skip3", [ outlet ]);
-					return false;
-				}
-				Workflow.Action("Skip2", []);
-				return false;
-			} else
-				Workflow.Action("Skip1", []);
+			action = GetAction("2");
 		}
 
 		if (nextStep == "SKUs") {
-			if ($.workflow.skipSKUs) {
-				if ($.workflow.skipOrder) {
-					if ($.workflow.skipEncashment) {
-						Workflow.Action("SkipEncashment", []);
-						return false;					
-					}
-					Workflow.Action("SkipOrder", []);
-					return false;							
-				}
-				Workflow.Action("Skip3", [ outlet ]);
-				return false;
-			} else
-				Workflow.Action("Skip2", []);
+			action = GetAction("3");
 		}
 		
 		if (nextStep == "Order") {
-			if ($.workflow.skipOrder) {
-				if ($.workflow.skipEncashment) {
-					Workflow.Action("SkipEncashment", []);
-					return false;					
-				}
-				Workflow.Action("SkipOrder", []);
-				return false;							
-			}
-			Workflow.Action("Skip3", [ outlet ]);
-			return false;
+			action = GetAction("4");			
 		}
 		
 		if (nextStep == "Receivables") {
-			if ($.workflow.skipEncashment) {
-				Workflow.Action("SkipEncashment", []);
-				return false;					
-			}
-			Workflow.Action("SkipOrder", []);
-			return false;							
+			action = GetAction("5");
 		}
+		
+		Dialog.Debug(action);
+		
+		Workflow.Action(action, []);
+		
 	}
-
-	return true;
 
 }
 
@@ -242,8 +188,23 @@ function SetSessionConstants() {
 
 }
 
-function SetSkips(outlet) {
+function SetSteps(outlet) {
 	
+	var q = new Query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='USR_WorkflowSteps'");
+	var check = q.ExecuteScalar();
+
+	Dialog.Debug(check);
+	
+	if (parseInt(check) == parseInt(1)) {	
+		var dropQS = new Query("DELETE FROM USR_WorkflowSteps");		 
+		dropQS.Execute();						
+	} 
+	else{	
+		var q = new Query("CREATE TABLE " +
+				" USR_WorkflowSteps (StepOrder, Skip, Value, Action)");
+		q.Execute();
+	}
+		
 	var skipQuest = false;
 	
 	var q = new Query("SELECT CreateOrderInMA, FillQuestionnaireInMA, DoEncashmentInMA FROM Catalog_OutletsStatusesSettings WHERE Status=@status");
@@ -251,13 +212,13 @@ function SetSkips(outlet) {
 	var statusValues = q.Execute();
 	while (statusValues.Next()) {
 		if (EvaluateBoolean(statusValues.CreateOrderInMA)) 
-			$.workflow.Add("skipOrder", false);
+			InsertIntoSteps("4", "SkipOrder", false, "Receivables");
 		else
-			$.workflow.Add("skipOrder", true);
+			InsertIntoSteps("4", "SkipOrder", true, "Receivables");
 		if (EvaluateBoolean(statusValues.DoEncashmentInMA)) 
-			$.workflow.Add("skipEncashment", false);
+			InsertIntoSteps("5", "SkipEncashment", false, "Total");
 		else
-			$.workflow.Add("skipEncashment", true);
+			InsertIntoSteps("5", "SkipEncashment", true, "Total");
 		if (EvaluateBoolean(statusValues.FillQuestionnaireInMA)) 
 			skipQuest = false;
 		else
@@ -265,20 +226,35 @@ function SetSkips(outlet) {
 	}
 	
 	if (parseInt(GetTasksCount()) != parseInt(0))
-		$.workflow.Add("skipTasks", false); // нельзя просто взять и присвоить значение переменной!
+		InsertIntoSteps("1", "SkipTask", false, "Questions");
 	else
-		$.workflow.Add("skipTasks", true);
+		InsertIntoSteps("1", "SkipTask", true, "Questions");
 
 	if (parseInt(GetQuestionsCount())==parseInt(0) || skipQuest)
-		$.workflow.Add("skipQuestions", true);
+		InsertIntoSteps("2", "SkipQuestions", true, "SKUs");
 	else
-		$.workflow.Add("skipQuestions", false);
+		InsertIntoSteps("2", "SkipQuestions", false, "SKUs");
 
 	if (parseInt(GetSKUQuestionsCount()) == parseInt(0) || skipQuest)
-		$.workflow.Add("skipSKUs", true);
+		InsertIntoSteps("3", "SkipSKUs", true, "Order");
 	else
-		$.workflow.Add("skipSKUs", false);	
+		InsertIntoSteps("3", "SkipSKUs", false, "Order");	
 	
+}
+
+
+function InsertIntoSteps(stepOrder, skip, value, action) {
+	var q = new Query("INSERT INTO USR_WorkflowSteps VALUES (@stepOrder, @skip, @value, @action)");
+	q.AddParameter("stepOrder", stepOrder);
+	q.AddParameter("skip", skip);
+	q.AddParameter("value", value);
+	q.AddParameter("action", action);
+	q.Execute();
+}
+
+function GetAction(begStep) {
+	var q = new Query("SELECT Skip FROM USR_WorkflowSteps WHERE StepOrder>=@begStep AND Value=1 ORDER BY StepOrder LIMIT 1");
+	return q.ExecuteScalar();
 }
 
 function EvaluateBoolean(res){

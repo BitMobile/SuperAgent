@@ -193,12 +193,8 @@ function CheckIfEmptyAndForward(order, wfName) {
 			DB.Commit();
 		}
 		DoBackTo("OrderList");
-	} else{
-		if ($.sessionConst.encashEnabled)
-			Workflow.Action("Forward", []);
-		else
-			Workflow.Action("SkipEncashment", []);
-	}
+	} else		
+		Workflow.Forward([]);			
 
 }
 

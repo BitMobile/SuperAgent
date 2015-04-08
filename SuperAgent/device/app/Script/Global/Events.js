@@ -257,7 +257,7 @@ function GetRegionQueryText1() {
 
 	var loop = 1;
 
-	var startSelect = "SELECT 'Catalog_Region', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', replace(R" + loop + ".Id, ('@ref[Catalog_Region]:'), '') " +
+	var startSelect = "SELECT 'Catalog_Region', NULL, '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', replace(R" + loop + ".Id, ('@ref[Catalog_Region]:'), '') " +
 			"FROM Catalog_Territory T " +
 			"JOIN Catalog_Territory_Outlets O ON T.Id=O.Ref AND O.Outlet=@outlet JOIN Catalog_Region R1 ON T.Owner=R1.Id ";
 	var recJoin = "";
@@ -268,7 +268,7 @@ function GetRegionQueryText1() {
 
 	while (loop < 11) {
 		recJoin = recJoin + " JOIN Catalog_Region " + "R" + loop + " ON R" + (parseInt(loop) - parseInt(1)) + ".Parent=R" + loop + ".Id " ;
-		text = text + "UNION " + "SELECT 'Catalog_Region', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(R" + loop + ".Id, ('@ref[Catalog_Region]:'), '') " +
+		text = text + "UNION " + "SELECT 'Catalog_Region', NULL, '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(R" + loop + ".Id, ('@ref[Catalog_Region]:'), '') " +
 				"FROM Catalog_Territory T " +
 		"JOIN Catalog_Territory_Outlets O ON T.Id=O.Ref AND O.Outlet=@outlet JOIN Catalog_Region R1 ON T.Owner=R1.Id " + recJoin;
 		loop = loop + 1;
@@ -290,43 +290,43 @@ function CreateQuestionnareTable(outlet) {
 	}
 	else{
 		var q = new Query("CREATE TABLE " +
-				" USR_OutletAttributes (Selector, AdditionalParameter, Value)");
+				" USR_OutletAttributes (Selector, DataType, AdditionalParameter, Value)");
 		q.Execute();
 	}
 
-	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Enum_OutletStatus', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(@value, ('@ref[Enum_OutletStatus]:'), ''))");
+	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Enum_OutletStatus', NULL, '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(@value, ('@ref[Enum_OutletStatus]:'), ''))");
 	q.AddParameter("value", outlet.OutletStatus);
 	q.Execute();
 
-	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_OutletType', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(@value, ('@ref[Catalog_OutletType]:'), ''))");
+	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_OutletType', NULL, '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(@value, ('@ref[Catalog_OutletType]:'), ''))");
 	q.AddParameter("value", outlet.Type);
 	q.Execute();
 
-	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_OutletClass', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(@value, ('@ref[Catalog_OutletClass]:'), ''))");
+	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_OutletClass', NULL, '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(@value, ('@ref[Catalog_OutletClass]:'), ''))");
 	q.AddParameter("value", outlet.Class);
 	q.Execute();
 
-	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_Distributor', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(@value, ('@ref[Catalog_Distributor]:'), ''))");
+	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_Distributor', NULL, '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(@value, ('@ref[Catalog_Distributor]:'), ''))");
 	q.AddParameter("value", outlet.Distributor);
 	q.Execute();
 
 	var qUser = new Query("SELECT Position FROM Catalog_User LIMIT 1");
 
-	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_Positions', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(@value, ('@ref[Catalog_Positions]:'), ''))");
+	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_Positions', NULL, '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(@value, ('@ref[Catalog_Positions]:'), ''))");
 	q.AddParameter("value", qUser.ExecuteScalar());
 	q.Execute();
 
-	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_Outlet', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(@value, ('@ref[Catalog_Outlet]:'), ''))");
+	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_Outlet', NULL, '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(@value, ('@ref[Catalog_Outlet]:'), ''))");
 	q.AddParameter("value", outlet);
 	q.Execute();
 
 	var q = new Query("INSERT INTO USR_OutletAttributes " +
-			"SELECT 'Catalog_OutletParameter', Parameter, Value FROM Catalog_Outlet_Parameters WHERE Ref=@outlet");
+			"SELECT 'Catalog_OutletParameter', COP.DataType, OP.Parameter, OP.Value FROM Catalog_Outlet_Parameters OP LEFT JOIN Catalog_OutletParameter COP ON OP.Parameter=COP.Id WHERE Ref=@outlet");
 	q.AddParameter("outlet", outlet);
 	q.Execute();
 
 	var q = new Query("INSERT INTO USR_OutletAttributes " +
-			"SELECT 'Catalog_Territory', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(Ref, ('@ref[Catalog_Territory]:'), '') FROM Catalog_Territory_Outlets WHERE Outlet=@outlet");
+			"SELECT 'Catalog_Territory', NULL, '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(Ref, ('@ref[Catalog_Territory]:'), '') FROM Catalog_Territory_Outlets WHERE Outlet=@outlet");
 	q.AddParameter("outlet", outlet);
 	q.Execute();
 
@@ -349,11 +349,11 @@ function CreateQuestionnareTable(outlet) {
 			"THEN 1 " +
 
 			"WHEN S.ComparisonType=@equal " +
-			"THEN S.Value = O.Value " +
+			"THEN CASE WHEN O.DataType = @decimal THEN REPLACE(S.Value, ',', '.') = REPLACE(O.Value, ',', '.') ELSE S.Value = O.Value END " +
 			"WHEN S.ComparisonType=@inList " +
-			"THEN O.Value IN (SELECT Value FROM Document_Questionnaire_Selectors WHERE Ref=Q.Id) " +
+			"THEN CASE WHEN O.DataType = @decimal THEN REPLACE(O.Value, ',', '.') IN (SELECT REPLACE(Value, ',', '.') FROM Document_Questionnaire_Selectors WHERE Ref=Q.Id) ELSE O.Value IN (SELECT Value FROM Document_Questionnaire_Selectors WHERE Ref=Q.Id) END " +
 			"WHEN S.ComparisonType=@notEqual " +
-			"THEN S.Value != O.Value " +
+			"THEN CASE WHEN O.DataType = @decimal THEN REPLACE(S.Value, ',', '.') != REPLACE(O.Value, ',', '.') ELSE S.Value != O.Value END " +
 
 			"END AS Selected " +
 
@@ -388,6 +388,7 @@ function CreateQuestionnareTable(outlet) {
 	q.AddParameter("equal", DB.Current.Constant.ComparisonType.Equal);
 	q.AddParameter("inList", DB.Current.Constant.ComparisonType.InList);
 	q.AddParameter("notEqual", DB.Current.Constant.ComparisonType.NotEqual);
+	q.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);
 	q.Execute();
 
 

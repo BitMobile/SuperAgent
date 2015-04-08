@@ -55,7 +55,7 @@ function GetPriceListQty(outlet) {
 
 function HasOrderParameters() {
 
-	var query = new Query("SELECT DISTINCT Id From Catalog_OrderParameters");
+	var query = new Query("SELECT DISTINCT Id From Catalog_OrderParameters WHERE Visible = 1");
 	orderParametersCount = query.ExecuteCount();
 	return orderParametersCount > 0;
 

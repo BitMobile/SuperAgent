@@ -310,6 +310,12 @@ function CreateQuestionnareTable(outlet) {
 	q.AddParameter("value", outlet.Distributor);
 	q.Execute();
 
+	var qUser = new Query("SELECT Position FROM Catalog_User LIMIT 1");
+
+	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_Positions', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(@value, ('@ref[Catalog_Positions]:'), ''))");
+	q.AddParameter("value", qUser.ExecuteScalar());
+	q.Execute();
+
 	var q = new Query("INSERT INTO USR_OutletAttributes VALUES ('Catalog_Outlet', '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(@value, ('@ref[Catalog_Outlet]:'), ''))");
 	q.AddParameter("value", outlet);
 	q.Execute();
@@ -491,82 +497,6 @@ function ListSelectorIsChanged(currentSelector, selector, additionalParam, curre
 	}
 }
 
-function CheckSelector(outlet, selector, compType, value, additionalParameter) {
-	if (selector=="Catalog_OutletType"){
-		if ((outlet.Type).ToString()==("@ref[Catalog_OutletType]:" + value))
-			return Compare(compType, true);
-		else
-			return Compare(compType, false);
-	}
-	if (selector=="Catalog_OutletClass"){
-		if ((outlet.Class).ToString()==("@ref[Catalog_OutletClass]:" + value))
-			return Compare(compType, true);
-		else
-			return Compare(compType, false);
-	}
-
-	if (selector=="Enum_OutletStatus"){
-		if ((outlet.OutletStatus).ToString()==("@ref[Enum_OutletStatus]:" + value))
-			return Compare(compType, true);
-		else
-			return Compare(compType, false);
-	}
-
-	if (selector=="Catalog_Distributor"){
-		if ((outlet.Distributor).ToString()==("@ref[Catalog_Distributor]:" + value))
-			return Compare(compType, true);
-		else
-			return Compare(compType, false);
-	}
-
-	if (selector=="Catalog_Outlet"){
-		if ((outlet.Id).ToString()==(value)){
-			return Compare(compType, true);
-		}
-		else{
-			return Compare(compType, false);
-		}
-	}
-
-	if (selector=="Catalog_Territory"){
-		var query = new Query("SELECT Id FROM Catalog_Territory_Outlets WHERE Outlet=@outlet AND Ref=@ref")
-		query.AddParameter("outlet", outlet);
-		query.AddParameter("ref", ("@ref[Catalog_Territory]:" + value));
-		var result = query.ExecuteScalar();
-		if (result!=null)
-			return Compare(compType, true);
-		else
-			return Compare(compType, false);
-	}
-
-	if (selector=="Catalog_Region"){
-		var query = new Query(GetRegionQueryText());
-		query.AddParameter("outlet", outlet);
-		query.AddParameter("region", "@ref[Catalog_Region]:" + value);
-		var result = query.ExecuteScalar();
-		if (result!=null)
-			return Compare(compType, true);
-		else
-			return Compare(compType, false);
-	}
-
-	if (selector=="Catalog_OutletParameter"){
-		var query = new Query("SELECT Id FROM Catalog_Outlet_Parameters WHERE Ref=@ref AND Parameter=@param AND Value=@value");
-		query.AddParameter("ref", outlet);
-		query.AddParameter("value", value);
-		query.AddParameter("param", additionalParameter);
-		if (query.ExecuteScalar()!=null)
-			return Compare(compType, true);
-		else
-			return Compare(compType, false);
-	}
-
-	if (selector=="Catalog_Positions"){
-		return true;
-	}
-
-}
-
 function CheckListSelector(list) {
 	for (var item in list) {
 		if (item){
@@ -574,21 +504,6 @@ function CheckListSelector(list) {
 		}
 	}
 	return false;
-}
-
-function Compare(compType, equal) {
-	if ((compType).ToString()==(DB.Current.Constant.ComparisonType.NotEqual).ToString()){
-		if (equal)
-			return false;
-		else
-			return true;
-	}
-	else{
-		if (equal)
-			return true;
-		else
-			return false;
-	}
 }
 
 function GetRegionQueryText() {

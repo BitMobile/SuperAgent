@@ -107,6 +107,73 @@ function GetOrderParameters(outlet) {
 	return result;
 }
 
+function GoToParameterAction(typeDescription, parameterValue, value, order, parameter, control, parameterDescription, editable) {
+	if (editable) {
+
+		parameterValue = CreateOrderParameterValue(order, parameter, parameterValue, parameterValue);
+
+		if (typeDescription == "ValueList") {  //--------ValueList-------
+			var q = new Query();
+			q.Text = "SELECT Value, Value FROM Catalog_OrderParameters_ValueList WHERE Ref=@ref UNION SELECT '', '—' ORDER BY Value";
+			q.AddParameter("ref", parameter);
+			Dialogs.DoChoose(q.Execute(), parameterValue, "Value", Variables[control], null, parameterDescription);
+		}
+		if (typeDescription == "DateTime") {  //---------DateTime-------
+			if (String.IsNullOrEmpty(parameterValue.Value))
+				Dialogs.ChooseDateTime(parameterValue, "Value", Variables[control], DateHandler, parameterDescription);
+			else
+				Dialog.Choose(parameterDescription, [[0, Translate["#clearValue#"]], [1, Translate["#setDate#"]]], DateHandler, [parameterValue, control]);
+		}
+		if (typeDescription == "Boolean") {  //----------Boolean--------
+			Dialogs.ChooseBool(parameterValue, "Value", Variables[control], null, parameterDescription);
+		}
+		if (typeDescription == "String" || typeDescription == "Integer" || typeDescription == "Decimal") {
+			FocusOnEditText(control, '1');
+		}
+	}
+}
+
+function CreateOrderParameterValue(order, parameter, value, parameterValue) {
+	var q = new Query("SELECT Id FROM Document_Order_Parameters WHERE Ref=@ref AND Parameter = @parameter");
+	q.AddParameter("ref", order);
+	q.AddParameter("parameter", parameter);
+	parameterValue = q.ExecuteScalar();
+	if (parameterValue == null) {
+		parameterValue = DB.Create("Document.Order_Parameters");
+		parameterValue.Ref = order;
+		parameterValue.Parameter = parameter;
+	} else
+		parameterValue = parameterValue.GetObject();
+	parameterValue.Value = value;
+	parameterValue.Save();
+	return parameterValue.Id;
+}
+
+function AssignParameterValue(control, typeDescription, parameterValue, value, order, parameter) {
+	CreateOrderParameterValue(order, parameter, control.Text, parameterValue)
+}
+
+
+function DateHandler(state, args) {
+	var parameterValue = state[0];
+	var control = state[1];
+	if(getType(args.Result)=="System.DateTime"){
+		parameterValue = parameterValue.GetObject();
+		parameterValue.Value = args.Result;
+		parameterValue.Save();
+		Workflow.Refresh([]);
+	}
+	if (parseInt(args.Result)==parseInt(0)){
+		parameterValue = parameterValue.GetObject();
+		parameterValue.Value = "";
+		parameterValue.Save();
+		Workflow.Refresh([]);
+	}
+	if (parseInt(args.Result)==parseInt(1)){
+		ChooseDateTime(parameterValue, "Value", Variables[control]);
+	}
+}
+
 function IsEditText(isInputField, editable) {
 	if (isInputField && editable) {
 		return true;

@@ -92,14 +92,14 @@
 
 						<s:If Test="$parameter.Visible">
 
-							<c:DockLayout CssClass="parameter_grid">
+							<c:DockLayout CssClass="parameter_grid" OnClickAction="$GoToParameterAction($parameter.TypeDescription, $parameter.Value, Value, $order, $parameter.Id, control{$index}, $parameter.Description, $parameter.Editable)">
 								<s:If Test="$IsEditText($parameter.IsInputField, $parameter.Editable)">
-									<c:EditText Id="control{$index}" Text="$parameter.Value" Placeholder="—" Keyboard="$parameter.KeyboardType" CssClass="value" />
+									<c:EditText Id="control{$index}" Text="$parameter.Value" Placeholder="—" Keyboard="$parameter.KeyboardType" CssClass="value" OnChange="$AssignParameterValue($parameter.TypeDescription, $parameter.Value, Value, $order, $parameter.Id)"/>
 								</s:If>
 								<s:Else>
 									<c:TextView Id="control{$index}" Text="$parameter.AnswerOutput" CssClass="value" />
 								</s:Else>
-								<c:TextView Id="control{$index}" Text="$parameter.Description" />
+								<c:TextView Text="$parameter.Description" />
 							</c:DockLayout>
 							<c:HorizontalLine />
 

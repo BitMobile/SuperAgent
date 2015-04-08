@@ -93,7 +93,7 @@
 						<s:If Test="$parameter.Visible">
 
 							<c:DockLayout CssClass="parameter_grid" OnClickAction="$GoToParameterAction($parameter.TypeDescription, $parameter.Value, Value, $order, $parameter.Id, control{$index}, $parameter.Description, $parameter.Editable)">
-								<s:If Test="$IsEditText($parameter.IsInputField, $parameter.Editable)">
+								<s:If Test="$IsEditText($parameter.IsInputField, $parameter.Editable, $order)">
 									<c:EditText Id="control{$index}" Text="$parameter.Value" Placeholder="—" Keyboard="$parameter.KeyboardType" CssClass="value" OnChange="$AssignParameterValue($parameter.TypeDescription, $parameter.Value, Value, $order, $parameter.Id)"/>
 								</s:If>
 								<s:Else>

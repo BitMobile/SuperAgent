@@ -108,27 +108,29 @@ function GetOrderParameters(outlet) {
 }
 
 function GoToParameterAction(typeDescription, parameterValue, value, order, parameter, control, parameterDescription, editable) {
-	if (editable) {
+	if (IsNew(order)) {
+		if (editable) {
 
-		parameterValue = CreateOrderParameterValue(order, parameter, parameterValue, parameterValue);
+			parameterValue = CreateOrderParameterValue(order, parameter, parameterValue, parameterValue);
 
-		if (typeDescription == "ValueList") {  //--------ValueList-------
-			var q = new Query();
-			q.Text = "SELECT Value, Value FROM Catalog_OrderParameters_ValueList WHERE Ref=@ref UNION SELECT '', '—' ORDER BY Value";
-			q.AddParameter("ref", parameter);
-			Dialogs.DoChoose(q.Execute(), parameterValue, "Value", Variables[control], null, parameterDescription);
-		}
-		if (typeDescription == "DateTime") {  //---------DateTime-------
-			if (String.IsNullOrEmpty(parameterValue.Value))
-				Dialogs.ChooseDateTime(parameterValue, "Value", Variables[control], DateHandler, parameterDescription);
-			else
-				Dialog.Choose(parameterDescription, [[0, Translate["#clearValue#"]], [1, Translate["#setDate#"]]], DateHandler, [parameterValue, control]);
-		}
-		if (typeDescription == "Boolean") {  //----------Boolean--------
-			Dialogs.ChooseBool(parameterValue, "Value", Variables[control], null, parameterDescription);
-		}
-		if (typeDescription == "String" || typeDescription == "Integer" || typeDescription == "Decimal") {
-			FocusOnEditText(control, '1');
+			if (typeDescription == "ValueList") {  //--------ValueList-------
+				var q = new Query();
+				q.Text = "SELECT Value, Value FROM Catalog_OrderParameters_ValueList WHERE Ref=@ref UNION SELECT '', '—' ORDER BY Value";
+				q.AddParameter("ref", parameter);
+				Dialogs.DoChoose(q.Execute(), parameterValue, "Value", Variables[control], null, parameterDescription);
+			}
+			if (typeDescription == "DateTime") {  //---------DateTime-------
+				if (String.IsNullOrEmpty(parameterValue.Value))
+					Dialogs.ChooseDateTime(parameterValue, "Value", Variables[control], DateHandler, parameterDescription);
+				else
+					Dialog.Choose(parameterDescription, [[0, Translate["#clearValue#"]], [1, Translate["#setDate#"]]], DateHandler, [parameterValue, control]);
+			}
+			if (typeDescription == "Boolean") {  //----------Boolean--------
+				Dialogs.ChooseBool(parameterValue, "Value", Variables[control], null, parameterDescription);
+			}
+			if (typeDescription == "String" || typeDescription == "Integer" || typeDescription == "Decimal") {
+				FocusOnEditText(control, '1');
+			}
 		}
 	}
 }
@@ -174,8 +176,8 @@ function DateHandler(state, args) {
 	}
 }
 
-function IsEditText(isInputField, editable) {
-	if (isInputField && editable) {
+function IsEditText(isInputField, editable, order) {
+	if (isInputField && editable && IsNew(order)) {
 		return true;
 	} else {
 		return false;

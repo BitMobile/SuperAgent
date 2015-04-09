@@ -111,6 +111,16 @@ function ValidEntity(entity) {
 
 	// Validate Contact
 	if (getType(entity.GetObject()) == "DefaultScope.Catalog.Outlet_Contacts") {
+		if (EmptyContact(entity) && entity.IsNew()) {
+			DB.Delete(entity);
+			DB.Commit();
+			return true;
+		}
+		if (ValidateContactName(entity)) {
+			return true;
+		}else {
+			return false;
+		}
 		if (Global.ValidatePhoneNr(entity.PhoneNumber) && Global.ValidateEmail(entity.Email) && ValidateContactName(entity))
 			return true;
 		else
@@ -126,8 +136,9 @@ function ValidateContactName(entity) {
 	if (String.IsNullOrWhiteSpace(entity.ContactName)) {
 		Dialog.Message(String.Format("{0} {1}", Translate["#incorrect#"], Translate["#contactName#"]));
 		return false;
-	} else
+	} else {
 		return true;
+	}
 }
 
 function ValidateOutlet(entity) {

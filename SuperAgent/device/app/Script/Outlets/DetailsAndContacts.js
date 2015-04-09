@@ -111,11 +111,6 @@ function ValidEntity(entity) {
 
 	// Validate Contact
 	if (getType(entity.GetObject()) == "DefaultScope.Catalog.Outlet_Contacts") {
-		if (EmptyContact(entity) && entity.IsNew()) {
-			DB.Delete(entity);
-			DB.Commit();
-			return true;
-		}
 		if (Global.ValidatePhoneNr(entity.PhoneNumber) && Global.ValidateEmail(entity.Email) && ValidateContactName(entity))
 			return true;
 		else

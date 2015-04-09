@@ -310,6 +310,12 @@ function CheckIfEmptyAndForward(order, wfName) {
 	var save = true;
 	if (parseInt(itemsQty) == parseInt(0)) {
 		DB.Delete(order);
+		var query = new Query("SELECT * FROM Document_Order_Parameters WHERE Ref = @order")
+		query.AddParameter("order", order);
+		queryResult = query.Execute();
+		while (queryResult.Next()) {
+			DB.Delete(queryResult.Id);
+		}
 		$.workflow.Remove("order");
 		save = false;
 	}

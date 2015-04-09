@@ -218,47 +218,34 @@ function OrderBack() {
 
 		Workflow.Rollback();
 
-	} else {
-
-		if ($.workflow.skipSKUs) {
-
-			if ($.workflow.skipQuestions) {
-
-				if ($.workflow.skipTasks) {
-
-					Workflow.BackTo("Outlet");
-
-				} else {
-
-					Workflow.BackTo("Visit_Tasks");
-
-				}
-
-			} else {
-
-				Workflow.BackTo("Questions");
-
-			}
-
-		} else {
-
-			var checkDropF = new Query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='USR_Filters'");
-
-			var checkDropFResult = checkDropF.ExecuteScalar();
-
-			if (checkDropFResult == 1) {
-
-				var dropF = new Query("DELETE FROM USR_Filters");
-
-				dropF.Execute();
-
-			}
-
-			Workflow.Back();
-
+	} else {		
+		
+		ClearFilters();
+		
+		var q = new Query("SELECT LastStep FROM USR_WorkflowSteps WHERE StepOrder<='4' AND Value=0 ORDER BY StepOrder DESC");
+		var step = q.ExecuteScalar();		
+		if (step==null) {
+			Workflow.BackTo("Outlet");
 		}
+		else
+			Workflow.BackTo(step);		
 	}
 
+}
+
+function ClearFilters() {
+	
+	var checkDropF = new Query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='USR_Filters'");
+
+	var checkDropFResult = checkDropF.ExecuteScalar();
+
+	if (checkDropFResult == 1) {
+
+		var dropF = new Query("DELETE FROM USR_Filters");
+
+		dropF.Execute();
+
+	}
 }
 
 function ShowInfoIfIsNew() {

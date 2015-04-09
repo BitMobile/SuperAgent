@@ -259,6 +259,14 @@ function IsEditText(editOutletParameters, isInputField, editable) {
 	}
 }
 
+function GetStatusDescription(outlet) {
+	var query = new Query("SELECT Description FROM Enum_OutletStatus WHERE Id = @status");
+	query.AddParameter("status", outlet.OutletStatus);
+	queryResult = query.ExecuteScalar();
+	result = Translate[String.Format("#{0}#", queryResult)]
+	return result;
+}
+
 function IsOutletPrimaryParameterEditable(editOutletParameters, primaryParameterName) {
 	query = new Query("SELECT Editable FROM Catalog_OutletsprimaryParametersSettings WHERE Code = @Code");
 	query.AddParameter("Code", $.primaryParametersSettings[primaryParameterName]);
@@ -580,6 +588,14 @@ function DoChoose(listChoice, entity, attribute, control, func, title) {
 	if (func == null)
 		func = CallBack;
 
+	if (title == Translate["#status#"]) {
+		table = [];
+		while (listChoice.Next()) {
+			table.push([listChoice["Id"], Translate[String.Format("#{0}#", listChoice.Description)]]);
+		}
+		listChoice = table;
+	}
+
 	Dialog.Choose(title, listChoice, startKey, func, [entity, attribute, control]);
 }
 
@@ -619,10 +635,16 @@ function ChooseBool(entity, attribute, control, func, title) {
 function CallBack(state, args) {
 	AssignDialogValue(state, args);
 	var control = state[2];
-	if (getType(args.Result)=="BitMobile.DbEngine.DbRef")
-		control.Text = args.Result.Description;
-	else
+	var attribute = state[1];
+	if (getType(args.Result)=="BitMobile.DbEngine.DbRef") {
+		if (attribute = "OutletStatus") {
+			control.Text = Translate[String.Format("#{0}#", args.Result.Description)]
+		} else {
+			control.Text = args.Result.Description;
+		}
+	} else {
 		control.Text = args.Result;
+	}
 }
 
 function AssignDialogValue(state, args) {

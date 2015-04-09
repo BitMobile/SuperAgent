@@ -203,7 +203,7 @@ function CreateQuestionnaireAnswers() {
 			"AND A.Ref=@outlet " +
 			"WHERE Q.Answer!='' AND RTRIM(Q.Answer) IS NOT NULL " +
 			"AND (Q.ParentQuestion='@ref[Catalog_Question]:00000000-0000-0000-0000-000000000000' " +
-			"OR Q.ParentQuestion IN (SELECT Question FROM USR_Questions WHERE (Answer='Yes' OR Answer='Да')))" +
+			"OR Q.ParentQuestion IN (SELECT Question FROM USR_SKUQuestions WHERE (Answer='Yes' OR Answer='Да')))" +
 			"UNION " +
 			"SELECT DISTINCT Q.Question, NULL AS SKU, Q.Description, Q.Answer, Q.HistoryAnswer, Q.AnswerDate" +
 			", D.Number, D.Id AS Questionnaire, D.Single, A.Id AS AnswerId " +

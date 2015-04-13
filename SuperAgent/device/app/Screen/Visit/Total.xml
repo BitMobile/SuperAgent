@@ -113,13 +113,15 @@
 				<c:HorizontalLine />
 			</s:If>
 
-			<c:DockLayout CssClass="parameter_grid">
-				<c:TextView Text="#orderSum#"></c:TextView>
-				<c:TextView Text="{$GetOrderSUM($workflow.order)}" CssClass="value"></c:TextView>
-			</c:DockLayout>
-			<c:HorizontalLine />
+			<s:If Test="@orderEnabled">
+				<c:DockLayout CssClass="parameter_grid">
+					<c:TextView Text="#orderSum#"></c:TextView>
+					<c:TextView Text="{$GetOrderSUM($workflow.order)}" CssClass="value"></c:TextView>
+				</c:DockLayout>
+				<c:HorizontalLine />
+			</s:If>
 
-			<s:If Test="$sessionConst.encashEnabled">
+			<s:If Test="@encashmentEnabled">
 				<c:DockLayout CssClass="parameter_grid">
 					<c:TextView Text="#encashmentSum#"></c:TextView>
 					<c:TextView Text="{$FormatValue($workflow.encashment.EncashmentAmount)}" CssClass="value"></c:TextView>

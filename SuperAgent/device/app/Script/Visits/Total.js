@@ -1,12 +1,17 @@
 ﻿
 var checkOrderReason;
 var checkVisitReason;
+var orderEnabled;
+var encashmentEnabled;
 
 function OnLoading() {
 	checkOrderReason = false;
-	checkVisitReason = false;
-
-	if ($.sessionConst.NOR && NotEmptyRef($.workflow.visit.Plan) && OrderExists($.workflow.visit)==false)
+	checkVisitReason = false;	
+	
+	orderEnabled = OptionAvailable("SkipOrder");
+	encashmentEnabled = OptionAvailable("SkipEncashment") && $.sessionConst.encashEnabled;
+	
+	if ($.sessionConst.NOR && NotEmptyRef($.workflow.visit.Plan) && OrderExists($.workflow.visit)==false && orderEnabled)
 		checkOrderReason = true;
 	if ($.sessionConst.UVR && IsEmptyValue($.workflow.visit.Plan))
 		checkVisitReason = true;
@@ -38,6 +43,15 @@ function OrderExists(visit) {
         return false;
     else
         return true;
+}
+
+function OptionAvailable(option) {
+	var q = new Query("SELECT Value FROM USR_WorkflowSteps WHERE Value=0 AND Skip=@skip");
+	q.AddParameter("skip", option);
+	if (q.ExecuteScalar() == null)
+		return false;
+	else
+		return true;
 }
 
 function SetDeliveryDate(order, control) {

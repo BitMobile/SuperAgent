@@ -359,7 +359,7 @@ function OrderBack() {
 		
 		ClearFilters();
 		
-		var q = new Query("SELECT LastStep FROM USR_WorkflowSteps WHERE StepOrder<='4' AND Value=0 ORDER BY StepOrder DESC");
+		var q = new Query("SELECT NextStep FROM USR_WorkflowSteps WHERE StepOrder<'4' AND Value=0 ORDER BY StepOrder DESC");
 		var step = q.ExecuteScalar();		
 		if (step==null) {
 			Workflow.BackTo("Outlet");

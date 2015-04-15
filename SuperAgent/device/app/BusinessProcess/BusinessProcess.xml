@@ -44,6 +44,7 @@
 			<bp:Action Name="ShowMap" NextStep="ShowMap"></bp:Action>
 			<bp:Action Name="ShowDetails" NextStep="Details" />
 			<bp:Action Name="ShowContacts" NextStep="Contacts" />
+			<bp:Action Name="ShowImage" NextStep="Image" />
 		</bp:Step>
 
 		<bp:Step Name="Visit_Tasks" Screen="Visit\Tasks.xml" Controller="Tasks\Main.js">
@@ -129,6 +130,8 @@
 		<bp:Step Name="Contact" Screen="Contact.xml" Controller="Outlets\DetailsAndContacts.js">
 
 		</bp:Step>
+		
+		<bp:Step Name="Image" Screen="Image.xml" Controller="Outlets\Image.js"></bp:Step>
 
 	</bp:Workflow>
 

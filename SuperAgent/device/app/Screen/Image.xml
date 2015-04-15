@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Image.css">
+
+	<s:Push Id="source" Value="$param1"></s:Push>
+
+	<c:DockLayout>
+
+		<c:HorizontalLayout Id="btnDone" CssClass="bottom_btn" OnEvent="Back" OnClickAction="$DoBack()">
+			<c:TextView Text="#ready#"></c:TextView>
+		</c:HorizontalLayout>
+		<c:HorizontalLine CssClass="b_line" />
+
+		<s:If Test="$source != null">
+			<c:ScrollView CssClass="image_output" >
+				<c:Image Source="$source"/>
+			</c:ScrollView>
+		</s:If>
+		<s:Else>
+			<s:Push Id="fake" Value="$Debug(noImage)" />
+			<c:TextView Text="#noImage#" />
+		</s:Else>
+
+	</c:DockLayout>
+
+</c:Screen>

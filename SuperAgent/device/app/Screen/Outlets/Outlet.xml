@@ -84,7 +84,7 @@
 					<c:TextView Text="#outletSnapshots#" />
 				</c:DockLayout>
 				<s:If Test="@singlePicture">
-					<c:VerticalLayout CssClass="single_picture" OnClick="$ImageActions($snapshots.Id)">
+					<c:VerticalLayout CssClass="single_picture" OnClick="$ImageActions($snapshots.Id, image{$index})">
 						<s:If Test="$snapshots.Unavailable">
 							<c:TextView Text="#notAvailable#"/>
 						</s:If>
@@ -95,13 +95,14 @@
 				</s:If>
 				<s:Else>
 					<c:SwipeHorizontalLayout Id="snapshotLayout" CssClass="carousel" Alignment="Center">
-						<s:Iterator Id="snapshot" Value="$snapshots">
-							<c:VerticalLayout OnClick="$ImageActions($snapshot.Id)">
+						<s:Iterator Id="snapshot" Value="$snapshots" Status="statusCount">
+							<s:Push Id="index" Value="$statusCount.Index" />
+							<c:VerticalLayout OnClick="$ImageActions($snapshot.Id, image{$index})">
 								<s:If Test="$snapshot.Unavailable">
 									<c:TextView Text="#notAvailable#"/>
 								</s:If>
 								<s:Else>
-									<c:Image Source="$GetImagePath(catalog.outlet, $outlet, $snapshot.FileName, .jpg)" />
+									<c:Image Id="image{$index}" Source="$GetImagePath(catalog.outlet, $outlet, $snapshot.FileName, .jpg)" />
 								</s:Else>
 							</c:VerticalLayout>
 						</s:Iterator>

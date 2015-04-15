@@ -270,3 +270,5 @@ status	Статус
 Active	Активная
 Potential	Потенциальная
 Closed	Закрытая
+show			Просмотреть
+photo			Фото

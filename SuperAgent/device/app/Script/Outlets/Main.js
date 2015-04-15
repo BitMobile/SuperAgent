@@ -163,16 +163,26 @@ function ReviseParameters(outlet, save) {
 
 function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParameters, primaryParameterName) {
 	if ($.workflow.name != "Visit") {
-		DoSelect(outlet, attribute, control, title, editOutletParameters, primaryParameterName);
+		if (IsOutletPrimaryParameterEditable(editOutletParameters, primaryParameterName)) {
+			
+			var listChoice = null;
+			var func = null;
+			
+			if (title == Translate["#status#"]) {			
+				var query = new Query("SELECT Id, Description FROM Enum_OutletStatus");
+				listChoice = query.Execute();
+				var table = [];
+				while (listChoice.Next()) {
+					table.push([listChoice["Id"], Translate[String.Format("#{0}#", listChoice.Description)]]);
+				}
+				listChoice = table;
+				func = CallBack;
+			}
+			
+			Dialogs.DoChoose(listChoice, outlet, attribute, control, func, title);
+		}
 	}
 }
-
-function DoSelect(outlet, attribute, control, title, editOutletParameters, primaryParameterName) {
-	if (IsOutletPrimaryParameterEditable(editOutletParameters, primaryParameterName)) {
-		DoChoose(null, outlet, attribute, control, null, title);
-	}
-}
-
 
 //--------------------------editing additional parameters handlers-----------------------------
 
@@ -210,7 +220,7 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 				var q = new Query();
 				q.Text = "SELECT Value, Value FROM Catalog_OutletParameter_ValueList WHERE Ref=@ref UNION SELECT '', '—' ORDER BY Value";
 				q.AddParameter("ref", parameter);
-				DoChoose(q.Execute(), parameterValue, "Value", Variables[control], null, parameterDescription);
+				Dialogs.DoChoose(q.Execute(), parameterValue, "Value", Variables[control], null, parameterDescription);
 			}
 			if (typeDescription == "DateTime") {  //---------DateTime-------
 				if (String.IsNullOrEmpty(parameterValue.Value))
@@ -333,12 +343,27 @@ function GetImagePath(objectType, objectID, pictID, pictExt) {
 }
 
 
-function ImageActions(control, id) {
-	if (IsOutletPrimaryParameterEditable($.sessionConst.editOutletParameters, "snapshots")) {
-		Dialog.Ask(Translate["#deleteImage#"], DeleteImage, id); //Translate["#deleteImage#"]
+function ImageActions(control, id, imageControl) {
+	if (IsOutletPrimaryParameterEditable($.sessionConst.editOutletParameters, "snapshots")) {	
+		var list = [["show", Translate["#show#"]], ["delete", Translate["#delete#"]]];
+		Dialog.Choose(Translate["#photo#"], list, null, ImageCallBack, [id, Variables[imageControl].Source]);
+//		Dialog.Ask(Translate["#deleteImage#"], DeleteImage, id); //Translate["#deleteImage#"]
 	}
+	
 }
 
+function ImageCallBack(state, args) {
+	var answer = args.Result;
+	var id = state[0];
+	var fileName = state[1]; 
+	if (answer=="delete"){
+		Dialog.Ask(Translate["#deleteImage#"], DeleteImage, id); //Translate["#deleteImage#"]
+	}
+	if (answer=="show"){
+		var path = fileName;
+		Workflow.Action("ShowImage", [path]);
+	}
+}
 
 function DeleteImage(state, args) {
 	state = state.GetObject();
@@ -569,35 +594,29 @@ function CommitAndBack(){
 
 //------------------------------Temporary, from dialogs----------------
 
-function DoChoose(listChoice, entity, attribute, control, func, title) {
-
-	title = typeof title !== 'undefined' ? title : "#select_answer#";
-
-	if (attribute==null)
-		var startKey = control.Text;
-	else
-		var startKey = entity[attribute];
-
-	if (listChoice==null){
-		var tableName = entity[attribute].Metadata().TableName;
-		var query = new Query();
-		query.Text = "SELECT Id, Description FROM " + tableName;
-		listChoice = query.Execute();
-	}
-
-	if (func == null)
-		func = CallBack;
-
-	if (title == Translate["#status#"]) {
-		table = [];
-		while (listChoice.Next()) {
-			table.push([listChoice["Id"], Translate[String.Format("#{0}#", listChoice.Description)]]);
-		}
-		listChoice = table;
-	}
-
-	Dialog.Choose(title, listChoice, startKey, func, [entity, attribute, control]);
-}
+//function DoChoose(listChoice, entity, attribute, control, func, title) {
+//
+//	title = typeof title !== 'undefined' ? title : "#select_answer#";
+//
+//	if (attribute==null)
+//		var startKey = control.Text;
+//	else
+//		var startKey = entity[attribute];
+//
+//	if (listChoice==null){
+//		var tableName = entity[attribute].Metadata().TableName;
+//		var query = new Query();
+//		query.Text = "SELECT Id, Description FROM " + tableName;
+//		listChoice = query.Execute();
+//	}
+//
+//	if (func == null)
+//		func = CallBack;
+//
+//
+//
+//	Dialog.Choose(title, listChoice, startKey, func, [entity, attribute, control]);
+//}
 
 function ChooseDateTime(entity, attribute, control, func, title) {
 	var startKey;
@@ -632,7 +651,7 @@ function ChooseBool(entity, attribute, control, func, title) {
 	Dialog.Choose(title, listChoice, startKey, func, [entity, attribute, control]);
 }
 
-function CallBack(state, args) {
+function CallBack(state, args) {	
 	AssignDialogValue(state, args);
 	var control = state[2];
 	var attribute = state[1];

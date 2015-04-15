@@ -270,3 +270,5 @@ status	Статус
 Active	Active
 Potential	Potential
 Closed	Closed
+show			Show image
+photo			Фото

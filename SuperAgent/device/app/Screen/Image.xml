@@ -18,7 +18,7 @@
 			</c:HorizontalLayout>
 		</c:DockLayout>
 
-		<c:DockLayout Id="btnDone" CssClass="bottom_btn" OnClickAction="$DoBack()">
+		<c:DockLayout Id="btnDone" CssClass="bottom_btn" OnClick="$Reshoot($entity, $attribute)">
 			<c:Image/>
 			<c:TextView Text="#reshot#"></c:TextView>
 		</c:DockLayout>

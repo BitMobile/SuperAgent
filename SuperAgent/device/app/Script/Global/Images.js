@@ -22,9 +22,7 @@ function AddSnapshotHandler(state, args) {
 	}
 	
 	if (parseInt(args.Result)==parseInt(1)){
-		var pictId = GetCameraObject(objRef);
-		var path = GetPrivateImagePath(objectType, objRef, pictId, ".jpg");
-		Camera.MakeSnapshot(path, 300, func, [ objRef, pictId]);
+		MakeSnapshot(objRef, objectType, func);
 	}
 	
 	if (parseInt(args.Result)==parseInt(2)){
@@ -43,21 +41,46 @@ function AddSnapshotHandler(state, args) {
 
 
 function GetSharedImagePath(objectType, objectID, pictID, pictExt) {
+	if (String.IsNullOrEmpty(objectType)==false){
+		objectType = GetParentFilderName(objectID);
+	}
 	var r = "/shared/" + objectType + "/" + objectID.Id.ToString() + "/"
     + pictID + pictExt;
 	return r;
 }
 
 function GetPrivateImagePath(objectType, objectID, pictID, pictExt) {
+	if (String.IsNullOrEmpty(objectType)==false){
+		objectType = GetParentFolderName(objectID);
+	}
 	var r = "/private/" + objectType + "/" + objectID.Id.ToString() + "/"
     + pictID + pictExt;
 	return r;
 }
 
+function GetParentFolderName(objectID) {
+	var folder;
+	
+	if (getType(objectID.Ref) == "System.String")
+		folder = objectID.Metadata().TableName;
+	else{
+		folder = objectID.Ref.Metadata().TableName;
+	}
+	folder = StrReplace(objectType, "_", ".");
+	
+	return folder;
+}
+
+function MakeSnapshot(objRef, objectType, func) {
+	var pictId = GetCameraObject(objRef);
+	var path = GetPrivateImagePath(objectType, objRef, pictId, ".jpg");
+	Camera.MakeSnapshot(path, 300, func, [ objRef, pictId, path]);
+}
+
 function GetCameraObject(entity) {
-	FileSystem.CreateDirectory("/private/Catalog.Outlet");
+	FileSystem.CreateDirectory("/private/catalog.outlet");
 	var guid = Global.GenerateGuid();
-	var path = String.Format("/private/Catalog.Outlet/{0}/{1}.jpg", entity.Id, guid);
+	var path = String.Format("/private/catalog.outlet/{0}/{1}.jpg", entity.Id, guid);
 	Camera.Size = 300;
 	Camera.Path = path;
 	return guid;

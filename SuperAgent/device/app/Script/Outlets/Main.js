@@ -361,7 +361,7 @@ function ImageCallBack(state, args) {
 	}
 	if (answer=="show"){
 		var path = fileName;
-		Workflow.Action("ShowImage", [path]);
+		Workflow.Action("ShowImage", [path, id, "FileName"]);
 	}
 }
 

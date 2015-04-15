@@ -39,10 +39,17 @@ function AddSnapshotHandler(state, args) {
 	}
 }
 
+function FindImage(objectID, pictID, pictExt) {
+	var sh = GetSharedImagePath(null, objectID, pictID, pictExt)
+	if (FileSystem.Exists(sh))
+		return sh;
+	else
+		return GetPrivateImagePath(null, objectID, pictID, pictExt);
+}
 
 function GetSharedImagePath(objectType, objectID, pictID, pictExt) {
-	if (String.IsNullOrEmpty(objectType)==false){
-		objectType = GetParentFilderName(objectID);
+	if (String.IsNullOrEmpty(objectType)){
+		objectType = GetParentFolderName(objectID);
 	}
 	var r = "/shared/" + objectType + "/" + objectID.Id.ToString() + "/"
     + pictID + pictExt;
@@ -50,7 +57,7 @@ function GetSharedImagePath(objectType, objectID, pictID, pictExt) {
 }
 
 function GetPrivateImagePath(objectType, objectID, pictID, pictExt) {
-	if (String.IsNullOrEmpty(objectType)==false){
+	if (String.IsNullOrEmpty(objectType)){
 		objectType = GetParentFolderName(objectID);
 	}
 	var r = "/private/" + objectType + "/" + objectID.Id.ToString() + "/"
@@ -66,7 +73,7 @@ function GetParentFolderName(objectID) {
 	else{
 		folder = objectID.Ref.Metadata().TableName;
 	}
-	folder = StrReplace(objectType, "_", ".");
+	folder = StrReplace(folder, "_", ".");
 	
 	return folder;
 }

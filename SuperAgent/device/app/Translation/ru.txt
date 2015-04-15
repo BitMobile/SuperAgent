@@ -271,4 +271,5 @@ Active	Активная
 Potential	Потенциальная
 Closed	Закрытая
 show			Просмотреть
-photo			Фото
+snapsot			Фотография
+reshot			Переснять

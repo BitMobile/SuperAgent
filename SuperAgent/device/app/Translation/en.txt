@@ -271,4 +271,5 @@ Active	Active
 Potential	Potential
 Closed	Closed
 show			Show image
-photo			Фото
+snapsot			Snapshot
+reshot			Make another snapsot

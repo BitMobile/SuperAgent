@@ -3,10 +3,26 @@
 	height: 100%;
 	width: 100%;
 	dock-align: top;
+	background-color: #ff7700;
 }
 
 .image_output img {
 	width: 100%;
-	background-color: #dd8811;
+	margin-top: 2.5mm;
+	margin-bottom: 2.5mm;
 	vertical-align: central;
+}
+
+.bottom_btn img{
+	background-image: url(trashbox_blue.png);
+	margin-left: 2.4mm;
+	margin-top: 1.4mm;
+	margin-bottom: 1.4mm;
+	height: 100%;
+	dock-align: right;
+} 
+
+.bottom_btn TextView{
+	dock-align:	right;
+	margin-left: 6mm;
 }

@@ -2,12 +2,26 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Image.css">
 
 	<s:Push Id="source" Value="$param1"></s:Push>
+	<s:Push Id="entity" Value="$param2"/>
+	<s:Push Id="attribute" Value="$param3"/>
 
 	<c:DockLayout>
 
-		<c:HorizontalLayout Id="btnDone" CssClass="bottom_btn" OnEvent="Back" OnClickAction="$DoBack()">
-			<c:TextView Text="#ready#"></c:TextView>
-		</c:HorizontalLayout>
+		<c:DockLayout CssClass="top_navigator">
+			<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoBack()">
+				<c:Image />
+				<c:TextView Text="#back#" />
+			</c:DockLayout>
+			<c:DockLayout CssClass="btn_forward"></c:DockLayout>
+			<c:HorizontalLayout>
+				<c:TextView Text="#snapsot#" />
+			</c:HorizontalLayout>
+		</c:DockLayout>
+
+		<c:DockLayout Id="btnDone" CssClass="bottom_btn" OnClickAction="$DoBack()">
+			<c:Image/>
+			<c:TextView Text="#reshot#"></c:TextView>
+		</c:DockLayout>
 		<c:HorizontalLine CssClass="b_line" />
 
 		<s:If Test="$source != null">

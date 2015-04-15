@@ -337,9 +337,8 @@ function NoSnapshots() {
 }
 
 
-function GetImagePath(objectType, objectID, pictID, pictExt) {
-	var s = GetSharedImagePath(objectType, objectID, pictID, pictExt);
-  return s;
+function GetImagePath(objectID, pictID, pictExt) {	
+	return Images.FindImage(objectID, pictID, pictExt); 
 }
 
 

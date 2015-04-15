@@ -6,7 +6,7 @@ function OnLoad() {
 	c_entity = $.entity;
 }
 
-function Reshoot(control, entity, attribute) {
+function Reshoot(control) {
 	Images.MakeSnapshot($.outlet, "catalog.outlet", SaveSnapshot);
 }
 
@@ -24,3 +24,13 @@ function SaveSnapshot(state, args) {
 	}	
 }
 
+function Delete() {
+	var object = c_entity.GetObject();
+	object[c_attribute] = null;
+	
+	if (getType(object)=="DefaultScope.Catalog.Outlet_Snapshots")
+		object.Deleted = true; 
+	
+	object.Save();
+	Workflow.Back();
+}

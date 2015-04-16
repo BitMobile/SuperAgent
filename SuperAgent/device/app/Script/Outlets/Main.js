@@ -375,11 +375,9 @@ function DeleteImage(state, args) {
 
 function AddSnapshot(control, outlet) {
 	if ($.sessionConst.galleryChoose)
-		AddSnapshotGlobal(outlet, null, GalleryHandler, [[0, Translate["#addFromGallery#"]], [1, Translate["#makeSnapshot#"]]], "catalog.outlet", Translate["#outletSnapshots#"]);
-	else{
-		var pictId = GetCameraObject(outlet);
-		var path = GetPrivateImagePath("catalog.outlet", outlet, pictId, ".jpg");
-		Camera.MakeSnapshot(path, 300, GalleryHandler, [ outlet, pictId ]);
+		Images.AddSnapshot(outlet, null, GalleryHandler, [[0, Translate["#addFromGallery#"]], [1, Translate["#makeSnapshot#"]]], "catalog.outlet", Translate["#outletSnapshots#"]);
+	else{		
+		Images.MakeSnapshot($.outlet, "catalog.outlet", GalleryHandler);
 	}
 }
 

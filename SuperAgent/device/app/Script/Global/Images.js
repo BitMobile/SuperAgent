@@ -1,6 +1,6 @@
-﻿function AddSnapshot(objectRef, valueRef, func, listChoice, title) {
+﻿function AddSnapshot(objectRef, valueRef, func, listChoice, title, path) {
 	title = String.IsNullOrEmpty(title) ? Translate["#snapshot#"] : title; 
-	Dialog.Choose(title, listChoice, AddSnapshotHandler, [objectRef,func,valueRef]);	
+	Dialog.Choose(title, listChoice, AddSnapshotHandler, [objectRef,func,valueRef, path]);	
 }
 
 function AddSnapshotHandler(state, args) {	
@@ -27,6 +27,13 @@ function AddSnapshotHandler(state, args) {
 			value.Save();
 			Workflow.Refresh([]);
 		}
+	}
+	
+	if (parseInt(args.Result)==parseInt(3)){
+		var path = state[3];
+		var attr = valueRef.Metadata().TableName=="Catalog_Outlet_Parameters" ? "Value": "FileName";
+//		attr = valueRef.Metadata().TableName=="Catalog_Outlet_Snapshots" ? "FileName": ;
+		Workflow.Action("ShowImage", [path, valueRef, attr]);
 	}
 }
 

@@ -209,7 +209,7 @@ function AssignParameterValue(control, typeDescription, parameterValue, value, o
 	CreateOutletParameterValue(outlet, parameter, control.Text, parameterValue)
 }
 
-function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control, parameterDescription, editable) {
+function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control, parameterDescription, editable, index) {
 
 	if (editable) {
 
@@ -236,9 +236,12 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 				listChoice.Add([1, Translate["#makeSnapshot#"]]);
 				if ($.sessionConst.galleryChoose)
 					listChoice.Add([0, Translate["#addFromGallery#"]]);
-				if (String.IsNullOrEmpty(parameterValue.Value)==false)
+				if (String.IsNullOrEmpty(parameterValue.Value)==false){
+					listChoice.Add([3, Translate["#show#"]]);
 					listChoice.Add([2, Translate["#clearValue#"]]);
-				AddSnapshotGlobal(outlet, parameterValue, SaveAtOutelt, listChoice, "catalog.outlet", parameterDescription);
+				}
+				//AddSnapshotGlobal(outlet, parameterValue, SaveAtOutelt, listChoice, "catalog.outlet", parameterDescription);
+				Images.AddSnapshot(outlet, parameterValue, SaveAtOutelt, listChoice, parameterDescription, Variables[("image"+index)].Source);
 				parameterValueC = parameterValue;
 			}
 			if (typeDescription == "String" || typeDescription == "Integer" || typeDescription == "Decimal") {

@@ -21,9 +21,9 @@ function SaveSnapshot(state, args) {
 		var pictId = state[1];
 		var source = state[2];
 		
-		var object = c_entity.GetObject();
-		object[c_attribute] = pictId;
-		object.Save();		
+		var entityObj = c_entity.GetObject();
+		entityObj[c_attribute] = pictId;
+		entityObj.Save();		
 		
 		Workflow.Refresh([source, c_entity, c_attribute]);
 	}	

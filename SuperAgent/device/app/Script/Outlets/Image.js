@@ -4,10 +4,15 @@ var c_attribute;
 function OnLoad() {
 	c_attribute = $.attribute;
 	c_entity = $.entity;
+	if ($.sessionConst.galleryChoose)
+		$.reshoot.Text = Translate["#editChange#"];
 }
 
 function Reshoot(control) {
-	Images.MakeSnapshot($.outlet, "catalog.outlet", SaveSnapshot);
+	if ($.sessionConst.galleryChoose) 
+		Images.AddSnapshot($.outlet, c_entity, SaveSnapshot, [[0, Translate["#addFromGallery#"]], [1, Translate["#makeSnapshot#"]]]);
+	else
+		Images.MakeSnapshot($.outlet, SaveSnapshot);
 }
 
 function SaveSnapshot(state, args) {

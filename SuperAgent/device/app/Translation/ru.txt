@@ -272,3 +272,4 @@ Closed	Закрытая
 show			Просмотреть
 snapsot			Фотография
 reshot			Переснять
+editChange		Изменить

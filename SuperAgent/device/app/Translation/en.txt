@@ -272,3 +272,4 @@ Closed	Closed
 show			Show image
 snapsot			Snapshot
 reshot			Make another snapsot
+editChange		Edit

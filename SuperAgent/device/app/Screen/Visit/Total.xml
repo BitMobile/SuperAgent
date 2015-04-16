@@ -30,6 +30,7 @@
 
 			<s:If Test="$OrderExists($workflow.visit)">
 				<c:HorizontalLayout CssClass="grid" OnClickAction="$SetDeliveryDate($workflow.order, $deliveryDate)">
+					<c:HorizontalLayout CssClass="empty_side_wh"></c:HorizontalLayout>
 					<c:VerticalLayout>
 						<c:TextView Text="#deliveryDate#" CssClass="description_row"></c:TextView>
 						<c:TextView Id="deliveryDate" Text="$FormatDate($workflow.order.DeliveryDate)" CssClass="main_row"></c:TextView>
@@ -40,6 +41,7 @@
 
 			<s:If Test="$sessionConst.PlanEnbl">
 				<c:HorizontalLayout CssClass="grid" OnClickAction="$SetnextVisitDate($nextVisit, $nextVisitControl)">
+					<c:HorizontalLayout CssClass="empty_side_wh"></c:HorizontalLayout>
 					<c:VerticalLayout>
 						<c:TextView Text="#nextVisitDate#" CssClass="description_row"></c:TextView>
 						<c:TextView Id="nextVisitControl" Text="$FormatOutput($nextVisit.PlanDate)" CssClass="main_row"></c:TextView>
@@ -81,6 +83,7 @@
 			</s:If>
 
 			<c:HorizontalLayout CssClass="memo_block">
+				<c:HorizontalLayout CssClass="empty_side_wh"></c:HorizontalLayout>
 				<c:VerticalLayout>
 					<c:TextView Text="#commentary#" CssClass="description_row"></c:TextView>
 					<c:MemoEdit Value="$workflow.visit.Commentary" CssClass="main_row" Placeholder="—"></c:MemoEdit>

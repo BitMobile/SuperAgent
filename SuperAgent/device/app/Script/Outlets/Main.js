@@ -81,7 +81,7 @@ function Debug(val) {
 
 function GetOutletParameters(outlet) {
 	var query = new Query();
-	query.Text = "SELECT P.Id, P.Description, P.DataType, DT.Description AS TypeDescription, OP.Id AS ParameterValue, OP.Value, P.Visible, P.Editable, OP.Unavailable " +
+	query.Text = "SELECT P.Id, P.Description, P.DataType, DT.Description AS TypeDescription, OP.Id AS ParameterValue, OP.Value, P.Visible, P.Editable " +
 
 			", CASE WHEN P.DataType=@integer OR P.DataType=@decimal OR P.DataType=@string THEN 1 ELSE 0 END AS IsInputField " + //IsInputField
 			", CASE WHEN P.DataType=@integer OR P.DataType=@decimal THEN 'numeric' ELSE 'auto' END AS KeyboardType " +
@@ -260,15 +260,6 @@ function IsEmptyString(value) {
 	return String.IsNullOrEmpty(value);
 }
 
-function IsUnavailable(value) {
-	if (value == 1 || value == null) {
-		result = true;
-	} else {
-		result = false;
-	}
-	return result;
-}
-
 function IsEditText(editOutletParameters, isInputField, editable) {
 	if (editOutletParameters && isInputField && editable) {
 		return true;
@@ -325,7 +316,7 @@ function DateHandler(state, args) {
 
 
 function GetSnapshots(outlet) {
-	var q = new Query("SELECT Id, FileName, LineNumber, Unavailable FROM Catalog_Outlet_Snapshots WHERE Ref=@ref AND (Deleted!='1' OR Deleted IS NULL) ORDER BY LineNumber");
+	var q = new Query("SELECT Id, FileName, LineNumber FROM Catalog_Outlet_Snapshots WHERE Ref=@ref AND (Deleted!='1' OR Deleted IS NULL) ORDER BY LineNumber");
 	q.AddParameter("ref", outlet);
 	snapshotsExists = true;
 	if (parseInt(q.ExecuteCount())==parseInt(0))
@@ -376,7 +367,6 @@ function OutletSnapshotHandler(state, args) {
 			newPicture = parameterValueC.GetObject();		
 		newPicture.Ref = outlet;
 		newPicture.FileName = fileName;
-		newPicture.Unavailable = true;
 		newPicture.Save();
 
 		Workflow.Refresh([]);
@@ -534,7 +524,6 @@ function SaveAtOutelt(arr, args) {
 		var path = arr[1];
 		var question = paramValue.GetObject();
 		question.Value = path;
-		question.Unavailable = 1;
 		question.Save();
 		Workflow.Refresh([]);
 	}

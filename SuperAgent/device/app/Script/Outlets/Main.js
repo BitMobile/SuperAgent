@@ -184,6 +184,10 @@ function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParamete
 	}
 }
 
+function DoSelect() {
+	Dialogs.DoChoose(null, $.outlet, 'Distributor', $.outletDistr, null, Translate["#distributor#"]);
+}
+
 //--------------------------editing additional parameters handlers-----------------------------
 
 

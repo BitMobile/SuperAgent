@@ -190,7 +190,7 @@
 			</c:DockLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoSelect($outlet,Distributor,$outletDistr,#distributor#, $sessionConst.editOutletParameters, distributor)">
+			<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoSelect()">
 				<c:TextView Text="#distributor#"></c:TextView>
 				<c:TextView Id="outletDistr" Text="$outlet.Distributor.Description" CssClass="value"></c:TextView>
 			</c:DockLayout>

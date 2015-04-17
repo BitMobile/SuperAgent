@@ -1,4 +1,4 @@
-function DoChoose(listChoice, entity, attribute, control, func, title) {
+function DoChoose(listChoice, entity, attribute, control, func, title) { //optional": func, title; listChice - nullable
 
 	title = typeof title !== 'undefined' ? title : "#select_answer#";
 

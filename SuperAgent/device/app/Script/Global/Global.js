@@ -10,12 +10,13 @@ function S4() {
 }
 
 function SetSessionConstants() {
-	var planEnbl = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='PlanEnbl'");
-	var multStck = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='MultStck'");
-	var stckEnbl = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='NoStkEnbl'");
-	var orderCalc = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='OrderCalc'");
-	var UVR = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='UVR'");
-	var NOR = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='NOR'");
+	var planEnbl = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='PlanVisitEnabled'");
+	var multStck = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='MultistockEnabled'");
+	var stckEnbl = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='EmptyStockEnabled'");
+	var orderCalc = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='RecOrderEnabled'");
+	var UVR = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='ControlVisitReasonEnabled'");
+	var NOR = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='ControlOrderReasonEnabled'");
+	var SnapshotSize = new Query("SELECT NumericValue FROM Catalog_MobileApplicationSettings WHERE Description='SnapshotSize'");
 
 	$.AddGlobal("sessionConst", new Dictionary());
 	$.sessionConst.Add("PlanEnbl", EvaluateBoolean(planEnbl.ExecuteScalar()));
@@ -24,6 +25,7 @@ function SetSessionConstants() {
 	$.sessionConst.Add("OrderCalc", EvaluateBoolean(orderCalc.ExecuteScalar()));
 	$.sessionConst.Add("UVR", EvaluateBoolean(UVR.ExecuteScalar()));
 	$.sessionConst.Add("NOR", EvaluateBoolean(NOR.ExecuteScalar()));
+	$.sessionConst.Add("SnapshotSize", SnapshotSize.ExecuteScalar());
 
 	var q = new Query("SELECT U.AccessRight, A.Id, A.Code FROM Catalog_MobileAppAccessRights A " +
 		" LEFT JOIN Catalog_User_UserRights U ON U.AccessRight=A.Id ");

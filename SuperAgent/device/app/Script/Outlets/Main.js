@@ -232,15 +232,17 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 				ChooseBool(parameterValue, "Value", Variables[control], null, parameterDescription);
 			}
 			if (typeDescription == "Snapshot") { //----------Snapshot-------
-				var listChoice = new List;
-				listChoice.Add([1, Translate["#makeSnapshot#"]]);
-				if ($.sessionConst.galleryChoose)
-					listChoice.Add([0, Translate["#addFromGallery#"]]);
-				if (String.IsNullOrEmpty(parameterValue.Value)==false){
-					listChoice.Add([3, Translate["#show#"]]);
-					listChoice.Add([2, Translate["#clearValue#"]]);
-				}
-				Images.AddSnapshot(outlet, parameterValue, SaveAtOutelt, listChoice, parameterDescription, Variables[("image"+index)].Source);
+//				var listChoice = new List;
+//				listChoice.Add([1, Translate["#makeSnapshot#"]]);
+//				if ($.sessionConst.galleryChoose)
+//					listChoice.Add([0, Translate["#addFromGallery#"]]);
+//				if (String.IsNullOrEmpty(parameterValue.Value)==false){
+//					listChoice.Add([3, Translate["#show#"]]);
+//					listChoice.Add([2, Translate["#clearValue#"]]);
+//				}
+
+				var source = ($.Exists("image"+index)) ? Variables[("image"+index)].Source : null; 
+				Images.AddSnapshot(outlet, parameterValue, SaveAtOutelt, parameterDescription, source);
 				parameterValueC = parameterValue;
 			}
 			if (typeDescription == "String" || typeDescription == "Integer" || typeDescription == "Decimal") {
@@ -344,51 +346,30 @@ function GetImagePath(objectID, pictID, pictExt) {
 }
 
 
-function ImageActions(control, id, imageControl) {
+function ImageActions(control, valueRef, imageControl) {
 	if (IsOutletPrimaryParameterEditable($.sessionConst.editOutletParameters, "snapshots")) {	
-		var list = [["show", Translate["#show#"]], ["delete", Translate["#delete#"]]];
-		Dialog.Choose(Translate["#snapsot#"], list, null, ImageCallBack, [id, Variables[imageControl].Source]);
-//		Dialog.Ask(Translate["#deleteImage#"], DeleteImage, id); //Translate["#deleteImage#"]
+		parameterValueC = valueRef;
+		Images.AddSnapshot($.outlet, valueRef, OutletSnapshotHandler, Translate["#snapsot#"], Variables[imageControl].Source);
 	}
 	
 }
 
-function ImageCallBack(state, args) {
-	var answer = args.Result;
-	var id = state[0];
-	var fileName = state[1]; 
-	if (answer=="delete"){
-		Dialog.Ask(Translate["#deleteImage#"], DeleteImage, id); //Translate["#deleteImage#"]
-	}
-	if (answer=="show"){
-		var path = fileName;
-		Workflow.Action("ShowImage", [path, id, "FileName"]);
-	}
-}
-
-function DeleteImage(state, args) {
-	state = state.GetObject();
-	//state.FileName="";
-	state.Deleted = true;
-	state.Save();
-	Workflow.Refresh([]);
-}
-
-
 function AddSnapshot(control, outlet) {
-	if ($.sessionConst.galleryChoose)
-		Images.AddSnapshot(outlet, null, GalleryHandler, [[0, Translate["#addFromGallery#"]], [1, Translate["#makeSnapshot#"]]], Translate["#outletSnapshots#"]);
-	else{		
-		Images.MakeSnapshot($.outlet, "catalog.outlet", GalleryHandler);
-	}
+		parameterValueC = null;
+		Images.AddSnapshot(outlet, null, OutletSnapshotHandler, Translate["#outletSnapshots#"]);
 }
 
 
-function GalleryHandler(state, args) {
+function OutletSnapshotHandler(state, args) {
 	if (args.Result){
 		var outlet = state[0];
 		var fileName = state[1];
-		var newPicture = DB.Create("Catalog.Outlet_Snapshots");
+		var newPicture;
+		
+		if (String.IsNullOrEmpty(parameterValueC)) 
+			newPicture = DB.Create("Catalog.Outlet_Snapshots");			
+		else
+			newPicture = parameterValueC.GetObject();		
 		newPicture.Ref = outlet;
 		newPicture.FileName = fileName;
 		newPicture.Unavailable = true;

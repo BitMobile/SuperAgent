@@ -10,7 +10,7 @@ function OnLoad() {
 
 function Reshoot(control) {
 	if ($.sessionConst.galleryChoose) 
-		Images.AddSnapshot($.outlet, c_entity, SaveSnapshot, [[0, Translate["#addFromGallery#"]], [1, Translate["#makeSnapshot#"]]]);
+		Images.AddSnapshot($.outlet, c_entity, SaveSnapshot);
 	else
 		Images.MakeSnapshot($.outlet, SaveSnapshot);
 }

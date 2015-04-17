@@ -1,6 +1,30 @@
-﻿function AddSnapshot(objectRef, valueRef, func, listChoice, title, path) {
+﻿var parameters;
+
+function AddSnapshot(objectRef, valueRef, func, title, path) { // optional: title, path
+	SetParameters();
 	title = String.IsNullOrEmpty(title) ? Translate["#snapshot#"] : title; 
-	Dialog.Choose(title, listChoice, AddSnapshotHandler, [objectRef,func,valueRef, path]);	
+	
+	var isEmpty = true;
+	if (String.IsNullOrEmpty(valueRef)==false){ //if not empty value
+		if (String.IsNullOrEmpty(valueRef[parameters[valueRef.Metadata().TableName]])==false)
+			isEmpty = false;
+	}
+	
+	if (isEmpty && !$.sessionConst.galleryChoose)
+		MakeSnapshot(objectRef, func);
+	else{
+		var listChoice = new List;
+		if ($.sessionConst.galleryChoose) //if Gallery is allowed 
+			listChoice.Add([0, Translate["#addFromGallery#"]]);
+		listChoice.Add([1, Translate["#makeSnapshot#"]]);
+		if (String.IsNullOrEmpty(path)==false) //if not an Image.xml screen
+			listChoice.Add([3, Translate["#show#"]]);
+		if (!isEmpty)
+			listChoice.Add([2, Translate["#clearValue#"]]);
+		
+		
+		Dialog.Choose(title, listChoice, AddSnapshotHandler, [objectRef,func,valueRef, path]);
+	}
 }
 
 function AddSnapshotHandler(state, args) {	
@@ -17,22 +41,12 @@ function AddSnapshotHandler(state, args) {
 	}
 	
 	if (parseInt(args.Result)==parseInt(2)){
-		if (valueRef.IsNew()){
-			DB.Delete(valueRef);
-			Workflow.Refresh([]);
-		}
-		else{
-			var value = valueRef.GetObject();
-			value.Value = "";
-			value.Save();
-			Workflow.Refresh([]);
-		}
+		DeleteImage(valueRef);
 	}
 	
 	if (parseInt(args.Result)==parseInt(3)){
 		var path = state[3];
-		var attr = valueRef.Metadata().TableName=="Catalog_Outlet_Parameters" ? "Value": "FileName";
-//		attr = valueRef.Metadata().TableName=="Catalog_Outlet_Snapshots" ? "FileName": ;
+		var attr = parameters[valueRef.Metadata().TableName];
 		Workflow.Action("ShowImage", [path, valueRef, attr]);
 	}
 }
@@ -65,6 +79,23 @@ function MakeSnapshot(objRef, func) {
 	Camera.MakeSnapshot(path, 300, func, [ objRef, pictId, path]);
 }
 
+function DeleteImage(valueRef) {
+	if (valueRef.IsNew()){
+		DB.Delete(valueRef);
+		Workflow.Refresh([]);
+	}
+	else{
+		var value = valueRef.GetObject();
+		value[valueRef.Metadata().TableName] = "";
+		
+		if (valueRef.Metadata().TableName == "Catalog_Outlet_Snapshots")
+			value.Deleted = true;
+		
+		value.Save();
+		Workflow.Refresh([]);
+	}
+}
+
 function GetSharedImagePath(objectID, pictID, pictExt) {
 	var objectType = GetParentFolderName(objectID);
 	var r = "/shared/" + objectType + "/" + objectID.Id.ToString() + "/"
@@ -92,3 +123,8 @@ function GetParentFolderName(entityRef) {
 	return folder;
 }
 
+function SetParameters() {
+	parameters = new Dictionary();
+	parameters.Add("Catalog_Outlet_Parameters", "Value");
+	parameters.Add("Catalog_Outlet_Snapshots", "FileName");
+}

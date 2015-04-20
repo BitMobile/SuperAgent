@@ -268,20 +268,14 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.Snapshot).ToString()) {
-		var controlText;
-		if (editControl.Text=="—")
-			controlText = null;
-		else
-			controlText = editControl.Text;
 		skuValueGl = sku;
 		questionValueGl = question;
-		var listChoice = new List;
-		listChoice.Add([1, Translate["#makeSnapshot#"]]);
-		if ($.sessionConst.galleryChoose)
-			listChoice.Add([0, Translate["#addFromGallery#"]]);
-		if (currAnswer!="—")
-			listChoice.Add([2, Translate["#clearValue#"]]);
-		AddSnapshot($.workflow.visit, null, GalleryCallBack, listChoice, "document.visit", title);
+
+		//AddSnapshot($.workflow.visit, null, GalleryCallBack, listChoice, "document.visit", title);
+		var path = null;
+		if (String.IsNullOrEmpty(currAnswer)==false)
+			path = Images.FindImage($.visit, currAnswer, ".jpg");
+		Images.AddSnapshot($.visit, null, GalleryCallBack, title, path);
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {

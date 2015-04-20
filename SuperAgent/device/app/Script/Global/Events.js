@@ -1,7 +1,7 @@
 ﻿// ------------------------ Application -------------------
 
 function OnApplicationInit() {
-	SetSessionConstants();
+	Global.SetSessionConstants();
 	Indicators.SetIndicators();
 }
 
@@ -31,7 +31,7 @@ function OnWorkflowStart(name) {
 			CreateQuestionsTable($.outlet);
 			CreateSKUQuestionsTable($.outlet);
 
-			SetSteps($.outlet);			
+			SetSteps($.outlet);
 	}
 
 	Variables["workflow"].Add("name", name);
@@ -67,11 +67,11 @@ function OnWorkflowForward(name, lastStep, nextStep, parameters) {
 }
 
 function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
-	
+
 	if (workflowName == "Visit" && nextStep != "Outlet" && nextStep != "Total") {
 
 		var action;
-		action = GetAction(nextStep);		
+		action = GetAction(nextStep);
 
 //		if (nextStep == "Visit_Tasks") {
 //			action = GetAction("1");
@@ -146,48 +146,6 @@ function OnWorkflowPause(name) {
 }
 
 // ------------------------ Functions ------------------------
-
-function SetSessionConstants() {
-	var planEnbl = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='PlanEnbl'");
-	var multStck = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='MultStck'");
-	var stckEnbl = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='NoStkEnbl'");
-	var orderCalc = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='OrderCalc'");
-	var UVR = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='UVR'");
-	var NOR = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='NOR'");
-
-	$.AddGlobal("sessionConst", new Dictionary());
-	$.sessionConst.Add("PlanEnbl", EvaluateBoolean(planEnbl.ExecuteScalar()));
-	$.sessionConst.Add("MultStck", EvaluateBoolean(multStck.ExecuteScalar()));
-	$.sessionConst.Add("NoStkEnbl", EvaluateBoolean(stckEnbl.ExecuteScalar()));
-	$.sessionConst.Add("OrderCalc", EvaluateBoolean(orderCalc.ExecuteScalar()));
-	$.sessionConst.Add("UVR", EvaluateBoolean(UVR.ExecuteScalar()));
-	$.sessionConst.Add("NOR", EvaluateBoolean(NOR.ExecuteScalar()));
-
-	var q = new Query("SELECT U.AccessRight, A.Id, A.Code FROM Catalog_MobileAppAccessRights A " +
-			" LEFT JOIN Catalog_User_UserRights U ON U.AccessRight=A.Id ");
-	var rights = q.Execute();
-	while (rights.Next()) {
-		if (rights.Code=='000000002'){
-			if (rights.AccessRight==null)
-				$.sessionConst.Add("editOutletParameters", false);
-			else
-				$.sessionConst.Add("editOutletParameters", true);
-		}
-		if (rights.Code=='000000003'){
-			if (rights.AccessRight==null)
-				$.sessionConst.Add("galleryChoose", false);
-			else
-				$.sessionConst.Add("galleryChoose", true);
-		}
-		if (rights.Code=='000000004'){
-			if (rights.AccessRight==null)
-				$.sessionConst.Add("encashEnabled", false);
-			else
-				$.sessionConst.Add("encashEnabled", true);
-		}
-	}
-
-}
 
 function SetSteps(outlet) {
 

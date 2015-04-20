@@ -23,7 +23,7 @@ function SetIndicators() {
 
 
 function SetOutletsCount() {
-	var q = new Query("SELECT COUNT(*) FROM Catalog_Outlet");
+	var q = new Query("SELECT COUNT(*) FROM Catalog_Outlet O JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus=OSS.Status AND OSS.ShowOutletInMA=1");
 	var cnt = q.ExecuteScalar();
 	if (cnt == null)
 		outletsCount = 0;
@@ -63,7 +63,7 @@ function GetUnscheduledVisits() {
 
 
 function SetPlannedVisits() {
-	var q = new Query("SELECT COUNT(*) FROM Document_VisitPlan_Outlets WHERE DATE(Date)=DATE(@date)");
+	var q = new Query("SELECT COUNT(*) FROM Document_VisitPlan_Outlets VPO JOIN Catalog_Outlet O ON VPO.Outlet=O.Id JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus=OSS.Status AND OSS.ShowOutletInMA=1 AND OSS.DoVisitInMA=1 WHERE DATE(Date)=DATE(@date) AND NOT OSS.Status IS NULL");
 	q.AddParameter("date", DateTime.Now.Date);
 	plannedVisits = q.ExecuteScalar();
 }
@@ -143,4 +143,3 @@ function SetReceivablesSumm() {
 function GetReceivablesSumm() {
 	return receivablesSumm;
 }
-

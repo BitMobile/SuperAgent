@@ -73,7 +73,7 @@ function SelectOwnership(control) {
 // --------------------internal--------------
 
 function EmptyContact(contact) {
-	if (String.IsNullOrEmpty(contact.ContactName) && String.IsNullOrEmpty(contact.PhoneNumber) && String.IsNullOrEmpty(contact.Email) && String.IsNullOrEmpty(contact.Position))
+	if (String.IsNullOrWhiteSpace(contact.ContactName) && String.IsNullOrEmpty(contact.PhoneNumber) && String.IsNullOrEmpty(contact.Email) && String.IsNullOrEmpty(contact.Position))
 		return true;
 	else
 		return false;

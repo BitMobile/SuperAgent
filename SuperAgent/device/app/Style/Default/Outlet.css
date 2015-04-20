@@ -212,12 +212,7 @@
 }
 
 .parameter_image{
-	height: 100%;
-	width: 0%;
-	margin-right: 2.4mm;
-	margin-top: 1.5%;
-	margin-bottom: 1.5%;
-	dock-align: right;
+	width: 0%;	
 }
 
 .not_available {

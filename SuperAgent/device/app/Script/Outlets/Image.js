@@ -2,15 +2,15 @@ var c_entity;
 var c_attribute;
 
 function OnLoad() {
-	c_attribute = $.attribute;
 	c_entity = $.entity;
+	c_attribute = $.attribute;
 	if ($.sessionConst.galleryChoose)
 		$.reshoot.Text = Translate["#editChange#"];
 }
 
 function Reshoot(control) {
 	if ($.sessionConst.galleryChoose) 
-		Images.AddSnapshot($.outlet, c_entity, SaveSnapshot);
+		Images.AddSnapshot($.outlet, c_entity, SaveSnapshot, null, null, true);
 	else
 		Images.MakeSnapshot($.outlet, SaveSnapshot);
 }
@@ -38,4 +38,29 @@ function Delete() {
 	
 	object.Save();
 	Workflow.Back();
+}
+
+
+//---------------------------------Special handlers-------------------------------
+
+
+function AssignQuestionAnswer() {
+//	var answerString;
+//	if (String.IsNullOrEmpty(answer))
+//		answerString = "HistoryAnswer ";
+//	else
+//		answerString = "@answer ";
+//
+//	var q =	new Query("UPDATE USR_Questions SET Answer=" + answerString + ", AnswerDate=DATETIME('now', 'localtime') " +
+//			"WHERE Question=@question");
+//	q.AddParameter("answer", answer);
+//	q.AddParameter("question", question);
+//	q.Execute();
+	
+//	var q =	new Query("UPDATE USR_SKUQuestions SET Answer=" + answerString + ", AnswerDate=DATETIME('now', 'localtime') " +
+//			"WHERE Question=@question AND SKU=@sku");
+//	q.AddParameter("answer", answer);
+//	q.AddParameter("sku", sku);
+//	q.AddParameter("question", question);
+//	q.Execute();
 }

@@ -150,19 +150,11 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.Snapshot).ToString()) {
-		var controlText;
-		if (Variables[control].Text=="—")
-			controlText = null;
-		else
-			controlText = Variables[control].Text;
 		questionGl = questionItem;
-		var listChoice = new List;
-		listChoice.Add([1, Translate["#makeSnapshot#"]]);
-		if ($.sessionConst.galleryChoose)
-			listChoice.Add([0, Translate["#addFromGallery#"]]);
+		var path = null;
 		if (String.IsNullOrEmpty(currAnswer)==false)
-			listChoice.Add([2, Translate["#clearValue#"]]);
-		AddSnapshot(visit, null, GalleryCallBack, listChoice, "document.visit", questionDescription);
+			path = Images.FindImage(visit, currAnswer, ".jpg");
+		Images.AddSnapshot(visit, null, GalleryCallBack, questionDescription, path);
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {
@@ -249,10 +241,10 @@ function ObligatedAnswered(answer, obligatoriness) {
 
 //--------------------------------Gallery handlers----------------
 
-function AddSnapshot(objectRef, valueRef, func, listChoice, objectType, title) {
-	title = typeof title !== 'undefined' ? title : "#select_answer#";
-	Dialog.Choose(title, listChoice, AddSnapshotHandler, [objectRef,func,valueRef,objectType]);
-}
+//function AddSnapshot(objectRef, valueRef, func, listChoice, objectType, title) {
+//	title = typeof title !== 'undefined' ? title : "#select_answer#";
+//	Dialog.Choose(title, listChoice, AddSnapshotHandler, [objectRef,func,valueRef,objectType]);
+//}
 
 function AddSnapshotHandler(state, args) {
 	var objRef = state[0];

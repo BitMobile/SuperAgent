@@ -66,6 +66,7 @@
 			<bp:Action Name="SkipSKUs" NextStep="Order"></bp:Action>
 			<bp:Action Name="SkipOrder" NextStep="Receivables"></bp:Action>
 			<bp:Action Name="SkipEncashment" NextStep="Total"></bp:Action>
+			<bp:Action Name="ShowImage" NextStep="Image" />
 		</bp:Step>
 
 		<bp:Step Name="SKUs" Screen="Visit\SKUs.xml" Controller="Visits\SKU_Questions.js">
@@ -73,6 +74,7 @@
 			<bp:Action Name="Forward" NextStep="Order"></bp:Action>			
 			<bp:Action Name="SkipOrder" NextStep="Receivables"></bp:Action>
 			<bp:Action Name="SkipEncashment" NextStep="Total"></bp:Action>
+			<bp:Action Name="ShowImage" NextStep="Image" />
 		</bp:Step>						
 
 		<bp:Step Name="Order" Screen="Order\Order.xml" Controller="Order\Main.js">

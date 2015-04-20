@@ -351,7 +351,7 @@ function ImageActions(control, valueRef, imageControl) {
 
 function AddSnapshot(control, outlet) {
 		parameterValueC = null;
-		Images.AddSnapshot(outlet, null, OutletSnapshotHandler, Translate["#outletSnapshots#"]);
+		Images.AddSnapshot(outlet, null, OutletSnapshotHandler, Translate["#outletSnapshots#"], null);
 }
 
 

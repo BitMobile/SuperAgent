@@ -1,6 +1,6 @@
 ﻿var parameters;
 
-function AddSnapshot(objectRef, valueRef, func, title, path) { // optional: title, path
+function AddSnapshot(objectRef, valueRef, func, title, path, noPreview) { // optional: title, path
 	SetParameters();
 	title = String.IsNullOrEmpty(title) ? Translate["#snapshot#"] : title; 
 	
@@ -9,6 +9,8 @@ function AddSnapshot(objectRef, valueRef, func, title, path) { // optional: titl
 		if (String.IsNullOrEmpty(valueRef[parameters[valueRef.Metadata().TableName]])==false)
 			isEmpty = false;
 	}
+	if (path!=null)
+		isEmpty = false;
 	
 	if (isEmpty && !$.sessionConst.galleryChoose)
 		MakeSnapshot(objectRef, func);
@@ -17,7 +19,7 @@ function AddSnapshot(objectRef, valueRef, func, title, path) { // optional: titl
 		if ($.sessionConst.galleryChoose) //if Gallery is allowed 
 			listChoice.Add([0, Translate["#addFromGallery#"]]);
 		listChoice.Add([1, Translate["#makeSnapshot#"]]);
-		if (String.IsNullOrEmpty(path)==false) //if not an Image.xml screen
+		if (String.IsNullOrEmpty(path)==false && (noPreview==false || noPreview==null)) //if not an Image.xml screen
 			listChoice.Add([3, Translate["#show#"]]);
 		if (!isEmpty)
 			listChoice.Add([2, Translate["#clearValue#"]]);
@@ -46,7 +48,9 @@ function AddSnapshotHandler(state, args) {
 	
 	if (parseInt(args.Result)==parseInt(3)){
 		var path = state[3];
-		var attr = parameters[valueRef.Metadata().TableName];
+		var attr;
+		if (valueRef!=null)
+			attr = parameters[valueRef.Metadata().TableName];
 		Workflow.Action("ShowImage", [path, valueRef, attr]);
 	}
 }
@@ -128,3 +132,7 @@ function SetParameters() {
 	parameters.Add("Catalog_Outlet_Parameters", "Value");
 	parameters.Add("Catalog_Outlet_Snapshots", "FileName");
 }
+
+
+//--------------------------Alternative handlers----------------------
+

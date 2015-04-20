@@ -35,7 +35,8 @@ function GetUncommitedScheduledVisits(searchText) {
 			" FROM Catalog_Outlet O " +
 			" JOIN Document_VisitPlan_Outlets VP ON O.Id = VP.Outlet AND DATE(VP.Date)=DATE(@date) " +
 			" LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet AND V.Date >= @today AND V.Date < @tomorrow AND V.Plan<>@emptyRef " +
-			" WHERE V.Id IS NULL " + search + " ORDER BY O.Description LIMIT 100");
+			" LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA=1 " +
+			" WHERE V.Id IS NULL AND NOT OSS.Status IS NULL" + search + " ORDER BY O.Description LIMIT 100");
 	q.AddParameter("date", DateTime.Now.Date);
 	q.AddParameter("today", DateTime.Now.Date);
 	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
@@ -54,8 +55,8 @@ function GetUncommitedScheduledVisitsCount(searchText) {
 	}
 	q.Text = ("SELECT COUNT(DISTINCT VP.Outlet) " +
 			" FROM Catalog_Outlet O JOIN Document_VisitPlan_Outlets VP ON O.Id = VP.Outlet AND DATE(VP.Date)=DATE(@date) " +
-			" LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet AND V.Date >= @today AND V.Date < @tomorrow AND V.Plan<>@emptyRef " +
-			" WHERE V.Id IS NULL " + search + " ORDER BY O.Description LIMIT 100");
+			" LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet AND V.Date >= @today AND V.Date < @tomorrow AND V.Plan<>@emptyRef LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA=1 " +
+			" WHERE V.Id IS NULL AND NOT OSS.Status IS NULL " + search + " ORDER BY O.Description LIMIT 100");
 	q.AddParameter("date", DateTime.Now.Date);
 	q.AddParameter("today", DateTime.Now.Date);
 	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
@@ -65,7 +66,7 @@ function GetUncommitedScheduledVisitsCount(searchText) {
 }
 
 function GetScheduledVisitsCount() {
-	var q = new Query("SELECT COUNT(Id) FROM Document_VisitPlan_Outlets WHERE Date >= @today AND Date < @tomorrow");
+	var q = new Query("SELECT COUNT(VPO.Id) FROM Document_VisitPlan_Outlets VPO LEFT JOIN Catalog_Outlet O ON VPO.Outlet = O.Id LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA = 1 WHERE Date >= @today AND Date < @tomorrow AND NOT OSS.Status IS NULL");
 	q.AddParameter("today", DateTime.Now.Date);
 	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
 	var cnt = q.ExecuteScalar();
@@ -121,21 +122,21 @@ function GetOutlets(searchText) {
 	var q = new Query();
 	var showOutlet = "";
 	var doVisit = "";
-	
+
 	if (String.IsNullOrEmpty(searchText)==false) {
 		searchText = StrReplace(searchText, "'", "''");
 		search = "WHERE Contains(O.Description, '" + searchText + "') ";
-	}	
-	
+	}
+
 	q.Text = "SELECT O.Id AS Outlet, O.Description, O.Address," +
 			"(SELECT CASE WHEN COUNT(DISTINCT D.Overdue) = 2 THEN 2	WHEN COUNT(DISTINCT D.Overdue) = 0 THEN 3 " +
 			"ELSE MAX(D.Overdue) END AS st " +
 			"FROM Document_AccountReceivable_ReceivableDocuments D JOIN Document_AccountReceivable A ON D.Ref=A.Id " +
 			"WHERE A.Outlet=O.Id) AS OutletStatus "+
 			"FROM Catalog_Outlet O " +
-			"JOIN Catalog_OutletsStatusesSettings OS ON OS.Status=O.OutletStatus AND OS.DoVisitInMA=1 AND OS.ShowOutletInMA=1 " + 
+			"JOIN Catalog_OutletsStatusesSettings OS ON OS.Status=O.OutletStatus AND OS.DoVisitInMA=1 AND OS.ShowOutletInMA=1 " +
 			search + " ORDER BY O.Description LIMIT 500";
-	
+
 	return q.Execute();
 
 }

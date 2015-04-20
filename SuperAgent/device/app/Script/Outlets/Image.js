@@ -1,18 +1,36 @@
 var c_entity;
 var c_attribute;
+var c_questionnaire;
+var c_tableName;
 
-function OnLoad() {
+function OnLoad() {	
 	c_entity = $.entity;
 	c_attribute = $.attribute;
+	c_questionnaire = (getType(c_entity.GetObject())=="DefaultScope.Catalog.Question") ? true : false;
+	
+	if (getType(c_entity.GetObject())=="DefaultScope.Catalog.Question") 
+		c_tableName = "USR_Questions";
+	if (c_attribute!=null){
+		if (getType(c_attribute.GetObject())=="DefaultScope.Catalog.SKU")
+			c_tableName = "USR_SKUQuestions";
+	}
+	
 	if ($.sessionConst.galleryChoose)
 		$.reshoot.Text = Translate["#editChange#"];
 }
 
-function Reshoot(control) {
-	if ($.sessionConst.galleryChoose) 
-		Images.AddSnapshot($.outlet, c_entity, SaveSnapshot, null, null, true);
-	else
-		Images.MakeSnapshot($.outlet, SaveSnapshot);
+function Reshoot(control) {	
+	var callback = c_questionnaire ? QuestionCallBack : SaveSnapshot;
+	if ($.sessionConst.galleryChoose) {
+		if (c_questionnaire)
+			Images.AddQuestionSnapshot(c_tableName, c_entity, c_attribute, $.path, false, null, QuestionCallBack);
+		else
+			Images.AddSnapshot($.outlet, c_entity, SaveSnapshot, null, null, true);
+	}
+	else{
+		var obj = c_questionnaire ? $.workflow.visit : $.outlet;
+		Images.MakeSnapshot(obj, callback);
+	}		
 }
 
 function SaveSnapshot(state, args) {
@@ -30,37 +48,53 @@ function SaveSnapshot(state, args) {
 }
 
 function Delete() {
-	var object = c_entity.GetObject();
-	object[c_attribute] = null;
-	
-	if (getType(object)=="DefaultScope.Catalog.Outlet_Snapshots")
-		object.Deleted = true; 
-	
-	object.Save();
-	Workflow.Back();
+	if (c_questionnaire){
+		AssignQuestionAnswer(null, null);
+	}
+	else{
+		var object = c_entity.GetObject();
+		object[c_attribute] = null;
+		
+		if (getType(object)=="DefaultScope.Catalog.Outlet_Snapshots")
+			object.Deleted = true; 
+		
+		object.Save();
+		Workflow.Back();
+	}
 }
 
 
 //---------------------------------Special handlers-------------------------------
 
 
-function AssignQuestionAnswer() {
-//	var answerString;
-//	if (String.IsNullOrEmpty(answer))
-//		answerString = "HistoryAnswer ";
-//	else
-//		answerString = "@answer ";
-//
-//	var q =	new Query("UPDATE USR_Questions SET Answer=" + answerString + ", AnswerDate=DATETIME('now', 'localtime') " +
-//			"WHERE Question=@question");
-//	q.AddParameter("answer", answer);
-//	q.AddParameter("question", question);
-//	q.Execute();
+function QuestionCallBack(state, args) {
+	if (args.Result) 
+		AssignQuestionAnswer(state[1], state[2]);
+}
+
+function AssignQuestionAnswer(answer, source) {
+	var answerString;
+	if (String.IsNullOrEmpty(answer))
+		answerString = "HistoryAnswer ";
+	else
+		answerString = "@answer ";
 	
-//	var q =	new Query("UPDATE USR_SKUQuestions SET Answer=" + answerString + ", AnswerDate=DATETIME('now', 'localtime') " +
-//			"WHERE Question=@question AND SKU=@sku");
-//	q.AddParameter("answer", answer);
-//	q.AddParameter("sku", sku);
-//	q.AddParameter("question", question);
-//	q.Execute();
+	var q = new Query();
+	
+	var cond = "";
+	if (c_tableName == "USR_SKUQuestions"){
+		cond = " AND SKU=@sku";
+		q.AddParameter("sku", c_attribute);
+	}
+
+	q.Text = "UPDATE " + c_tableName + " SET Answer=" + answerString + ", AnswerDate=DATETIME('now', 'localtime') " + 
+		"WHERE Question=@question " + cond;
+	q.AddParameter("answer", answer);
+	q.AddParameter("question", c_entity);
+	q.Execute();
+	
+	if (source == null)
+		Workflow.Back();
+	else
+		Workflow.Refresh([source, c_entity, c_attribute]);
 }

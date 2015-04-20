@@ -273,9 +273,9 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 
 		//AddSnapshot($.workflow.visit, null, GalleryCallBack, listChoice, "document.visit", title);
 		var path = null;
-		if (String.IsNullOrEmpty(currAnswer)==false)
-			path = Images.FindImage($.visit, currAnswer, ".jpg");
-		Images.AddSnapshot($.visit, null, GalleryCallBack, title, path);
+//		if (String.IsNullOrEmpty(currAnswer)==false)
+//			path = Images.FindImage($.visit, currAnswer, ".jpg");
+		Images.AddQuestionSnapshot("USR_SKUQuestions", question, sku, currAnswer, true, title, GalleryCallBack);
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {

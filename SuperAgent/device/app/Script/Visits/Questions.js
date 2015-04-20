@@ -152,9 +152,9 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.Snapshot).ToString()) {
 		questionGl = questionItem;
 		var path = null;
-		if (String.IsNullOrEmpty(currAnswer)==false)
-			path = Images.FindImage(visit, currAnswer, ".jpg");
-		Images.AddSnapshot(visit, null, GalleryCallBack, questionDescription, path);
+//		if (String.IsNullOrEmpty(currAnswer)==false)
+//			path = Images.FindImage(visit, currAnswer, ".jpg");
+		Images.AddQuestionSnapshot("USR_Questions", questionItem, null, currAnswer, true, questionDescription, GalleryCallBack);
 	}
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {

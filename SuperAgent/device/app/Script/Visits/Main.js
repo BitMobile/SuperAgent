@@ -142,7 +142,7 @@ function GetOutlets(searchText) {
 }
 
 function GetOutletsCount() {
-	var q = new Query("SELECT COUNT(Id) FROM Catalog_Outlet ORDER BY Description LIMIT 100");
+	var q = new Query("SELECT COUNT(O.Id) FROM Catalog_Outlet O LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA = 1 WHERE NOT OSS.Status IS NULL ORDER BY O.Description LIMIT 100");
 	var cnt = q.ExecuteScalar();
 	if (cnt == null)
 		return 0;

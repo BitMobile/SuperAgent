@@ -73,11 +73,6 @@ function CreateVisitEnable() {
 		return false;
 
 }
-function Debug(val) {
-	Dialog.Debug(val);
-	return true;
-}
-
 
 function GetOutletParameters(outlet) {
 	var query = new Query();

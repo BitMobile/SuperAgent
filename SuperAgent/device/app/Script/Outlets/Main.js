@@ -22,31 +22,31 @@ function OnLoading() {
 function GetOutlets(searchText) {
 	var search = "";
 	var showOutlet = "";
-	var createOrder ="";	
+	var createOrder ="";
 	var q = new Query();
-	
+
 	if (String.IsNullOrEmpty(searchText)==false) { //search processing
 		searchText = StrReplace(searchText, "'", "''");
 		search = "WHERE Contains(O.Description, '" + searchText + "') ";
-	}	
-	
-	if ($.workflow.name=="Outlets") {  //ShowOutletInMA for Outlets.xml at Outlets workflow 
+	}
+
+	if ($.workflow.name=="Outlets") {  //ShowOutletInMA for Outlets.xml at Outlets workflow
 		showOutlet = " JOIN Catalog_OutletsStatusesSettings OS ON OS.Status=O.OutletStatus AND ShowOutletInMA=1 ";
 	}
 
-	if ($.workflow.name=="Order") {  //CreateOrderInMA for Outlets.xml at Order workflow 
+	if ($.workflow.name=="Order") {  //CreateOrderInMA for Outlets.xml at Order workflow
 		createOrder = " JOIN Catalog_OutletsStatusesSettings OS ON OS.Status=O.OutletStatus AND CreateOrderInMA=1 ";
 	}
-	
+
 	q.Text = "SELECT O.Id, O.Description, O.Address," +
 		"(SELECT CASE WHEN COUNT(DISTINCT D.Overdue) = 2 THEN 2	WHEN COUNT(DISTINCT D.Overdue) = 0 THEN 3 " +
 		"ELSE (SELECT D1.Overdue FROM Document_AccountReceivable_ReceivableDocuments D1 " +
 		"JOIN Document_AccountReceivable A1 ON D1.Ref=A1.Id WHERE A1.Outlet = O.Id LIMIT 1) END AS st " +
 		"FROM Document_AccountReceivable_ReceivableDocuments D JOIN Document_AccountReceivable A ON D.Ref=A.Id " +
 		"WHERE A.Outlet=O.Id) AS OutletStatus"+
-		" FROM Catalog_Outlet O " + 
-		showOutlet + createOrder + search + " ORDER BY O.Description LIMIT 500";	
-	
+		" FROM Catalog_Outlet O " +
+		showOutlet + createOrder + search + " ORDER BY O.Description LIMIT 500";
+
 	return q.Execute();
 }
 
@@ -164,11 +164,11 @@ function ReviseParameters(outlet, save) {
 function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParameters, primaryParameterName) {
 	if ($.workflow.name != "Visit") {
 		if (IsOutletPrimaryParameterEditable(editOutletParameters, primaryParameterName)) {
-			
+
 			var listChoice = null;
 			var func = null;
-			
-			if (title == Translate["#status#"]) {			
+
+			if (title == Translate["#status#"]) {
 				var query = new Query("SELECT Id, Description FROM Enum_OutletStatus");
 				listChoice = query.Execute();
 				var table = [];
@@ -178,14 +178,16 @@ function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParamete
 				listChoice = table;
 				func = CallBack;
 			}
-			
+
 			Dialogs.DoChoose(listChoice, outlet, attribute, control, func, title);
 		}
 	}
 }
 
-function DoSelect() {
-	Dialogs.DoChoose(null, $.outlet, 'Distributor', $.outletDistr, null, Translate["#distributor#"]);
+function DoSelect(editOutletParameters, primaryParameterName) {
+	if (IsOutletPrimaryParameterEditable(editOutletParameters, primaryParameterName)) {
+		Dialogs.DoChoose(null, $.outlet, 'Distributor', $.outletDistr, null, Translate["#distributor#"]);
+	}
 }
 
 //--------------------------editing additional parameters handlers-----------------------------
@@ -245,7 +247,7 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 //					listChoice.Add([2, Translate["#clearValue#"]]);
 //				}
 
-				var source = ($.Exists("image"+index)) ? Variables[("image"+index)].Source : null; 
+				var source = ($.Exists("image"+index)) ? Variables[("image"+index)].Source : null;
 				Images.AddSnapshot(outlet, parameterValue, SaveAtOutelt, parameterDescription, source);
 				parameterValueC = parameterValue;
 			}
@@ -336,17 +338,17 @@ function NoSnapshots() {
 }
 
 
-function GetImagePath(objectID, pictID, pictExt) {	
-	return Images.FindImage(objectID, pictID, pictExt); 
+function GetImagePath(objectID, pictID, pictExt) {
+	return Images.FindImage(objectID, pictID, pictExt);
 }
 
 
 function ImageActions(control, valueRef, imageControl) {
-	if (IsOutletPrimaryParameterEditable($.sessionConst.editOutletParameters, "snapshots")) {	
+	if (IsOutletPrimaryParameterEditable($.sessionConst.editOutletParameters, "snapshots")) {
 		parameterValueC = valueRef;
 		Images.AddSnapshot($.outlet, valueRef, OutletSnapshotHandler, Translate["#snapsot#"], Variables[imageControl].Source);
 	}
-	
+
 }
 
 function AddSnapshot(control, outlet) {
@@ -360,11 +362,11 @@ function OutletSnapshotHandler(state, args) {
 		var outlet = state[0];
 		var fileName = state[1];
 		var newPicture;
-		
-		if (String.IsNullOrEmpty(parameterValueC)) 
-			newPicture = DB.Create("Catalog.Outlet_Snapshots");			
+
+		if (String.IsNullOrEmpty(parameterValueC))
+			newPicture = DB.Create("Catalog.Outlet_Snapshots");
 		else
-			newPicture = parameterValueC.GetObject();		
+			newPicture = parameterValueC.GetObject();
 		newPicture.Ref = outlet;
 		newPicture.FileName = fileName;
 		newPicture.Save();
@@ -614,7 +616,7 @@ function ChooseBool(entity, attribute, control, func, title) {
 	Dialog.Choose(title, listChoice, startKey, func, [entity, attribute, control]);
 }
 
-function CallBack(state, args) {	
+function CallBack(state, args) {
 	AssignDialogValue(state, args);
 	var control = state[2];
 	var attribute = state[1];

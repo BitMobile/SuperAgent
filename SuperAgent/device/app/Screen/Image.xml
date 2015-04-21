@@ -14,7 +14,7 @@
 			</c:DockLayout>
 			<c:DockLayout CssClass="btn_forward"></c:DockLayout>
 			<c:HorizontalLayout>
-				<c:TextView Text="#snapsot#" />
+				<c:TextView Text="#snapshot#" />
 			</c:HorizontalLayout>
 		</c:DockLayout>
 
@@ -30,7 +30,6 @@
 			</c:ScrollView>
 		</s:If>
 		<s:Else>
-			<s:Push Id="fake" Value="$Debug(noImage)" />
 			<c:TextView Text="#noImage#" />
 		</s:Else>
 

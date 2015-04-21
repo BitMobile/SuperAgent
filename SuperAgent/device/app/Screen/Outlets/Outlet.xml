@@ -84,8 +84,8 @@
 					<c:TextView Text="#outletSnapshots#" />
 				</c:DockLayout>
 				<s:If Test="@singlePicture">
-					<c:VerticalLayout CssClass="single_picture" OnClick="$ImageActions($snapshots.Id, image{$index})">
-						<c:Image Source="$GetImagePath($outlet, $snapshots.FileName, .jpg)" />
+					<c:VerticalLayout CssClass="single_picture" OnClick="$ImageActions($snapshots.Id, singleImage)">
+						<c:Image Id="singleImage" Source="$GetImagePath($outlet, $snapshots.FileName, .jpg)" />
 					</c:VerticalLayout>
 				</s:If>
 				<s:Else>

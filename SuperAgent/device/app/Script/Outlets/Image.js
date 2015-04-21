@@ -10,7 +10,7 @@ function OnLoad() {
 	
 	if (getType(c_entity.GetObject())=="DefaultScope.Catalog.Question") 
 		c_tableName = "USR_Questions";
-	if (c_attribute!=null){
+	if (c_attribute!=null && getType(c_attribute)!="System.String"){
 		if (getType(c_attribute.GetObject())=="DefaultScope.Catalog.SKU")
 			c_tableName = "USR_SKUQuestions";
 	}

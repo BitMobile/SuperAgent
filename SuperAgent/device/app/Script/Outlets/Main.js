@@ -346,7 +346,7 @@ function GetImagePath(objectID, pictID, pictExt) {
 function ImageActions(control, valueRef, imageControl) {
 	if (IsOutletPrimaryParameterEditable($.sessionConst.editOutletParameters, "snapshots")) {
 		parameterValueC = valueRef;
-		Images.AddSnapshot($.outlet, valueRef, OutletSnapshotHandler, Translate["#snapsot#"], Variables[imageControl].Source);
+		Images.AddSnapshot($.outlet, valueRef, OutletSnapshotHandler, Translate["#snapshot#"], Variables[imageControl].Source);
 	}
 
 }

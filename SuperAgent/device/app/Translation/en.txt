@@ -270,6 +270,6 @@ Active	Active
 Potential	Potential
 Closed	Closed
 show			Show image
-snapsot			Snapshot
-reshot			Make another snapsot
+snapshot			Snapshot
+reshot			Make another snapshot
 editChange		Edit

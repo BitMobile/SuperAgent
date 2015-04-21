@@ -14,7 +14,7 @@
 			</c:DockLayout>
 			<c:DockLayout CssClass="btn_forward"></c:DockLayout>
 			<c:HorizontalLayout>
-				<c:TextView Text="#snapsot#" />
+				<c:TextView Text="#snapshot#" />
 			</c:HorizontalLayout>
 		</c:DockLayout>
 

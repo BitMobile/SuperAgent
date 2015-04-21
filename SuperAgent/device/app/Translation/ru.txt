@@ -270,6 +270,6 @@ Active	Активная
 Potential	Потенциальная
 Closed	Закрытая
 show			Просмотреть
-snapsot			Фотография
+snapshot			Фотография
 reshot			Переснять
 editChange		Изменить

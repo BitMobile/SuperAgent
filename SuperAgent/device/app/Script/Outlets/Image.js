@@ -6,6 +6,7 @@ var c_tableName;
 function OnLoad() {	
 	c_entity = $.entity;
 	c_attribute = $.attribute;
+	c_object = (getType(c_entity.Ref) == "System.String") ? c_entity : c_entity.Ref;
 	c_questionnaire = (getType(c_entity.GetObject())=="DefaultScope.Catalog.Question") ? true : false;
 	
 	if (getType(c_entity.GetObject())=="DefaultScope.Catalog.Question") 
@@ -25,7 +26,7 @@ function Reshoot(control) {
 		if (c_questionnaire)
 			Images.AddQuestionSnapshot(c_tableName, c_entity, c_attribute, $.path, false, null, QuestionCallBack);
 		else
-			Images.AddSnapshot($.outlet, c_entity, SaveSnapshot, null, null, true);
+			Images.AddSnapshot(c_object, c_entity, SaveSnapshot, null, null, true);
 	}
 	else{
 		var obj = c_questionnaire ? $.workflow.visit : $.outlet;
@@ -41,7 +42,7 @@ function SaveSnapshot(state, args) {
 		
 		var entityObj = c_entity.GetObject();
 		entityObj[c_attribute] = pictId;
-		entityObj.Save();		
+		entityObj.Save();				
 		
 		Workflow.Refresh([source, c_entity, c_attribute]);
 	}	

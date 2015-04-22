@@ -152,8 +152,25 @@ function RefreshEditSKU(orderItem, sku, price, discountEdit, showimage) {
     Workflow.Refresh(arr);
 }
 
-function GetImagePath(objectType, objectID, pictID, pictExt) {
-    return GetSharedImagePath(objectType, objectID, pictID, pictExt);
+function GetImagePath(objectID, pictID, pictExt) {
+    return Images.FindImage(objectID, pictID, pictExt);
+}
+
+function ImageActions(imageControl, sku) {
+	Images.AddSnapshot(sku, sku, GalleryCallBack, sku.Description, imageControl.Source, false);
+}
+
+function GalleryCallBack(state, args) {
+	if (args.Result){
+		var sku = state[0];
+		var fileName = state[1];
+
+		sku = sku.GetObject();
+		sku.DefaultPicture = fileName;
+		sku.Save();
+
+		Workflow.Refresh([sku.Id, $.price, $.orderitem, $.param4, $.showimage, $.param6, $param7]);
+	}
 }
 
 function CountPrice(orderitem) {

@@ -9,7 +9,8 @@ function AddSnapshot(objectRef, valueRef, func, title, path, noPreview) { // opt
 
 	var isEmpty = true;
 	if (String.IsNullOrEmpty(valueRef)==false){ //if not empty value
-		if (String.IsNullOrEmpty(valueRef[parameters[valueRef.Metadata().TableName]])==false)
+		
+		if (String.IsNullOrEmpty((valueRef[parameters[valueRef.Metadata().TableName]]).ToString())==false)
 			isEmpty = false;
 	}
 	if (path!=null)
@@ -24,9 +25,16 @@ function AddSnapshot(objectRef, valueRef, func, title, path, noPreview) { // opt
 		listChoice.Add([1, Translate["#makeSnapshot#"]]);
 		if (String.IsNullOrEmpty(path)==false && (noPreview==false || noPreview==null)) //if not an Image.xml screen
 			listChoice.Add([3, Translate["#show#"]]);
-		if (!isEmpty)
+		if (!isEmpty && noPreview)
 			listChoice.Add([2, Translate["#clearValue#"]]);
-
+		
+		//temporary, while functionality at SKU isn't full
+		if (valueRef != null){
+			if (valueRef.Metadata().TableName=="Catalog_SKU" && noPreview==false){
+				listChoice = new List;
+				listChoice.Add([3, Translate["#show#"]]);
+			}
+		}
 
 		Dialog.Choose(title, listChoice, AddSnapshotHandler, [objectRef,func,valueRef, path]);
 	}
@@ -129,14 +137,15 @@ function GetPrivateImagePath(objectID, pictID, pictExt) {
 
 function GetParentFolderName(entityRef) {
 	var folder;
-
+	
 	if (getType(entityRef.Ref) == "System.String")
 		folder = entityRef.Metadata().TableName;
 	else{
 		folder = entityRef.Ref.Metadata().TableName;
 	}
 	folder = StrReplace(folder, "_", ".");
-
+	folder = Lower(folder);
+	
 	return folder;
 }
 
@@ -144,6 +153,7 @@ function SetParameters() {
 	parameters = new Dictionary();
 	parameters.Add("Catalog_Outlet_Parameters", "Value");
 	parameters.Add("Catalog_Outlet_Snapshots", "FileName");
+	parameters.Add("Catalog_SKU", "DefaultPicture");
 }
 
 

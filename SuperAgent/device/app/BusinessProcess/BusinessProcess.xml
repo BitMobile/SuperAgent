@@ -82,7 +82,7 @@
 			<bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
 			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
 			<bp:Action Name="Forward" NextStep="Receivables"></bp:Action>
-			<bp:Action Name="SkipEncashment" NextStep="Total"/>
+			<bp:Action Name="SkipEncashment" NextStep="Total"/>			
 		</bp:Step>
 
 		<bp:Step Name="Receivables" Screen="Receivables.xml" Controller="Receivables\Main.js">
@@ -115,6 +115,7 @@
 
 		<bp:Step Name="EditSKU" Screen="Order_EditSKU.xml" Controller="Order\Order_EditSKU.js">
 			<bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>
+			<bp:Action Name="ShowImage" NextStep="Image" />
 		</bp:Step>
 
 		<bp:Step Name="EditOutletAddParameter" Screen="OutletParameter.xml">
@@ -159,6 +160,7 @@
 
 		<bp:Step Name="EditSKU" Screen="Order_EditSKU.xml" Controller="Order\Order_EditSKU.js">
 			<bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>
+			<bp:Action Name="ShowImage" NextStep="Image" />
 		</bp:Step>
 
 		<bp:Step Name="AddSKU" Screen="Order_SKUs.xml" Controller="Order\Order_SKUs.js">
@@ -170,6 +172,8 @@
 		<bp:Step Name="Filters" Screen="Filters.xml" Controller="Order\Order_SKUs.js">
 			<bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>
 		</bp:Step>
+		
+		<bp:Step Name="Image" Screen="Image.xml" Controller="Outlets\Image.js"></bp:Step>
 
 	</bp:Workflow>
 
@@ -193,10 +197,13 @@
 
 		<bp:Step Name="EditSKU" Screen="Order_EditSKU.xml" Controller="Order\Order_EditSKU.js">
 			<bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>
+			<bp:Action Name="ShowImage" NextStep="Image" />
 		</bp:Step>
 
 		<bp:Step Name="OrderInfo" Screen="Order_Info.xml" Controller="Order\Main.js">
 		</bp:Step>
+		
+		<bp:Step Name="Image" Screen="Image.xml" Controller="Outlets\Image.js"></bp:Step>
 
 	</bp:Workflow>
 

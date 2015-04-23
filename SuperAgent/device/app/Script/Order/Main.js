@@ -330,8 +330,8 @@ function CheckIfEmptyAndForward(order, wfName) {
 			DB.Commit();
 		}
 		DoBackTo("OrderList");
-	} else		
-		Workflow.Forward([]);			
+	} else
+		Workflow.Forward([]);
 
 }
 
@@ -350,28 +350,28 @@ function SetDeliveryDateDialog(order, control, executedOrder, title) {
 //}
 
 function OrderBack() {
-
-	if ($.workflow.name == "CreateOrder") {
+	
+	if ($.workflow.name == "CreateOrder" || $.workflow.name == "Order") {
 
 		Workflow.Rollback();
 
-	} else {		
-		
+	} else {
+
 		ClearFilters();
-		
+
 		var q = new Query("SELECT NextStep FROM USR_WorkflowSteps WHERE StepOrder<'4' AND Value=0 ORDER BY StepOrder DESC");
-		var step = q.ExecuteScalar();		
+		var step = q.ExecuteScalar();
 		if (step==null) {
 			Workflow.BackTo("Outlet");
 		}
 		else
-			Workflow.BackTo(step);		
+			Workflow.BackTo(step);
 	}
 
 }
 
 function ClearFilters() {
-	
+
 	var checkDropF = new Query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='USR_Filters'");
 
 	var checkDropFResult = checkDropF.ExecuteScalar();

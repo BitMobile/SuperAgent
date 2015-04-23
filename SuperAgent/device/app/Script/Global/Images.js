@@ -25,7 +25,7 @@ function AddSnapshot(objectRef, valueRef, func, title, path, noPreview) { // opt
 		listChoice.Add([1, Translate["#makeSnapshot#"]]);
 		if (String.IsNullOrEmpty(path)==false && (noPreview==false || noPreview==null)) //if not an Image.xml screen
 			listChoice.Add([3, Translate["#show#"]]);
-		if (!isEmpty && noPreview)
+		if (!isEmpty && (noPreview==false || noPreview==null))
 			listChoice.Add([2, Translate["#clearValue#"]]);
 		
 		//temporary, while functionality at SKU isn't full

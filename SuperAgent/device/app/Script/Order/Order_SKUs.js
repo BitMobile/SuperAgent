@@ -225,7 +225,7 @@ function CreateOrderItem(control, editFieldName, textFieldName, packField, sku, 
 }
 
 function EmptyStockAllowed() {
-    var q = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='NoStkEnbl'");
+    var q = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Code='EmptyStockEnabled'");
     var res = q.ExecuteScalar();
 
     if (res == null)

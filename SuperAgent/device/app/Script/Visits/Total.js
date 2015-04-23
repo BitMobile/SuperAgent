@@ -86,7 +86,7 @@ function SetnextVisitDate(nextVisit, control){
 
 function GetOrderControlValue() {
     //var orderFillCheck = DB.Current.Catalog.MobileApplicationSettings.SelectBy("Code", "NOR").First();
-    var q = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='NOR'");
+    var q = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Code='ControlOrderReasonEnabled'");
     var uvr = q.ExecuteScalar();
 
     if (uvr == null)

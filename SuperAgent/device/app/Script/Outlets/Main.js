@@ -425,7 +425,7 @@ function HasCoordinates(outlet) {
 
 function CoordsChecked(visit) {
 	if (Variables["workflow"]["name"] == "Visit" && NotEmptyRef(visit.Plan)) {
-		var query = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='CoordCtrl'");
+		var query = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='CoordinateControlEnabled'");
 		var coordControl = query.ExecuteScalar();
 		if (coordControl == null)
 			var s = false;

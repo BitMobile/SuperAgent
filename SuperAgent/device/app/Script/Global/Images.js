@@ -162,7 +162,7 @@ function SetParameters() {
 function AddQuestionSnapshot(tableName, question, sku, answer, previewAllowed, title, func) {
 	title = String.IsNullOrEmpty(title) ? Translate["#snapshot#"] : title;
 	if (String.IsNullOrEmpty(answer) && !$.sessionConst.galleryChoose)
-		MakeSnapshot(objectRef, AssignQuestionAnswer);
+		MakeSnapshot($.workflow.visit, func);
 	else{
 		var listChoice = new List;
 		if ($.sessionConst.galleryChoose) //if Gallery is allowed

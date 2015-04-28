@@ -233,15 +233,6 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 				ChooseBool(parameterValue, "Value", Variables[control], null, parameterDescription);
 			}
 			if (typeDescription == "Snapshot") { //----------Snapshot-------
-//				var listChoice = new List;
-//				listChoice.Add([1, Translate["#makeSnapshot#"]]);
-//				if ($.sessionConst.galleryChoose)
-//					listChoice.Add([0, Translate["#addFromGallery#"]]);
-//				if (String.IsNullOrEmpty(parameterValue.Value)==false){
-//					listChoice.Add([3, Translate["#show#"]]);
-//					listChoice.Add([2, Translate["#clearValue#"]]);
-//				}
-
 				var source = ($.Exists("image"+index)) ? Variables[("image"+index)].Source : null;
 				Images.AddSnapshot(outlet, parameterValue, SaveAtOutelt, parameterDescription, source);
 				parameterValueC = parameterValue;
@@ -249,6 +240,11 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 			if (typeDescription == "String" || typeDescription == "Integer" || typeDescription == "Decimal") {
 				FocusOnEditText(control, '1');
 			}
+		}
+	}
+	if ($.Exists("image"+index)){
+		if (typeDescription == "Snapshot" && (parseInt(editable)==parseInt(0) || !$.sessionConst.editOutletParameters)){
+			Workflow.Action("ShowImage", [Variables[("image"+index)].Source, parameter, "Value", true])
 		}
 	}
 }

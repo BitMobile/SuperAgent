@@ -18,11 +18,13 @@
 			</c:HorizontalLayout>
 		</c:DockLayout>
 
-		<c:DockLayout Id="btnDone" CssClass="bottom_btn">
-			<c:Button Id="delete"  OnClick="$Delete()" CssClass="delete"/>
-			<c:Button Id="reshoot" Text="#reshot#" CssClass="reshoot" OnClick="$Reshoot()"></c:Button>
-		</c:DockLayout>
-		<c:HorizontalLine CssClass="b_line" />
+		<s:If Test="@c_editable">
+			<c:DockLayout Id="btnDone" CssClass="bottom_btn">
+				<c:Button Id="delete"  OnClick="$Delete()" CssClass="delete"/>
+				<c:Button Id="reshoot" Text="#reshot#" CssClass="reshoot" OnClick="$Reshoot()"></c:Button>
+			</c:DockLayout>
+			<c:HorizontalLine CssClass="b_line" />
+		</s:If>		
 
 		<s:If Test="$source != null">
 			<c:ScrollView CssClass="image_output" >

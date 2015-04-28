@@ -2,6 +2,11 @@ var c_entity;
 var c_attribute;
 var c_questionnaire;
 var c_tableName;
+var c_editable;
+
+function OnLoading() {
+	c_editable = ($.param4==null || $.param4) ? false : true;
+}
 
 function OnLoad() {	
 	c_entity = $.entity;

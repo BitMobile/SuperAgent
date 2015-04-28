@@ -24,6 +24,10 @@ function GetLastSyncTime() {
 		return Translate["#error#"];
 }
 
+function GetMainVersion(ver) {
+	return Left(ver, 3);
+}
+
 function CloseMenu() {
 	var sl = Variables["swipe_layout"];
 	if (sl.Index == 1) {

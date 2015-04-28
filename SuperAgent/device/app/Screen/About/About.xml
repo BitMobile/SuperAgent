@@ -22,7 +22,7 @@
 			<c:HorizontalLayout CssClass="image_block">
 				<c:Image CssClass="super_agent"/>
 			</c:HorizontalLayout>
-			<c:TextView	Text="#version#" CssClass="main_row" />
+			<c:TextView	Text="#version# {$sessionConst.solVersion}" CssClass="main_row" />
 			<c:TextView	Text="#superDescription#" CssClass="description_row" />
 			<!-- <c:HorizontalLayout CssClass="end_of_block" />
 			<c:HorizontalLine/>

@@ -10,6 +10,8 @@ function S4() {
 }
 
 function SetSessionConstants() {
+	
+	var solVersion = new Query("SELECT Value FROM ___SolutionInfo WHERE key='version'");
 	var planEnbl = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='PlanVisitEnabled'");
 	var multStck = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='MultistockEnabled'");
 	var stckEnbl = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='EmptyStockEnabled'");
@@ -19,6 +21,7 @@ function SetSessionConstants() {
 	var SnapshotSize = new Query("SELECT CASE WHEN NumericValue = 0 THEN 2000 WHEN NumericValue > 2000 THEN 2000 ELSE NumericValue END FROM Catalog_MobileApplicationSettings WHERE Description='SnapshotSize'");
 
 	$.AddGlobal("sessionConst", new Dictionary());
+	$.sessionConst.Add("solVersion", solVersion.ExecuteScalar());
 	$.sessionConst.Add("PlanEnbl", EvaluateBoolean(planEnbl.ExecuteScalar()));
 	$.sessionConst.Add("MultStck", EvaluateBoolean(multStck.ExecuteScalar()));
 	$.sessionConst.Add("NoStkEnbl", EvaluateBoolean(stckEnbl.ExecuteScalar()));

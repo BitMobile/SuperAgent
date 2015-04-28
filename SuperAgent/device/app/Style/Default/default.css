@@ -400,6 +400,7 @@ MemoEdit {
 	height: 40%;
 	width: 90%;
 	font: 45% Arial;
+	placeholder-color: #2d89cf;
 }
 
 .grid vl EditText {

@@ -25,6 +25,8 @@ function GetLastSyncTime() {
 }
 
 function GetMainVersion(ver) {
+	if (ver==null)
+		ver = "";
 	return Left(ver, 3);
 }
 

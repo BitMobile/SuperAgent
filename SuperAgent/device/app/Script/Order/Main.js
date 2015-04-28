@@ -107,7 +107,7 @@ function GetOrderedSKUs(order) {
 	query.Text = "SELECT Id, SKU, Feature, Qty, Discount, Total, Units, ROUND(Qty*Total, 2) AS Amount FROM Document_Order_SKUs WHERE Ref = @Ref";
 	query.AddParameter("Ref", order);
 	var r = query.Execute();
-	itemsQty = q.ExecuteCount();
+	itemsQty = query.ExecuteCount();
 	return r;
 }
 

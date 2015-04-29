@@ -18,7 +18,7 @@ function SetSessionConstants() {
 	var orderCalc = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='RecOrderEnabled'");
 	var UVR = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='ControlVisitReasonEnabled'");
 	var NOR = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='ControlOrderReasonEnabled'");
-	var SnapshotSize = new Query("SELECT CASE WHEN NumericValue = 0 THEN 2000 WHEN NumericValue > 2000 THEN 2000 ELSE NumericValue END FROM Catalog_MobileApplicationSettings WHERE Description='SnapshotSize'");
+	var SnapshotSize = new Query("SELECT NumericValue FROM Catalog_MobileApplicationSettings WHERE Description='SnapshotSize'");
 
 	$.AddGlobal("sessionConst", new Dictionary());
 	$.sessionConst.Add("solVersion", solVersion.ExecuteScalar());

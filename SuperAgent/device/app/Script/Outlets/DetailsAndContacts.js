@@ -117,14 +117,15 @@ function ValidEntity(entity) {
 			return true;
 		}
 		if (ValidateContactName(entity)) {
-			return true;
+			result = true;
 		}else {
-			return false;
+			result = false;
 		}
 		if (Global.ValidatePhoneNr(entity.PhoneNumber) && Global.ValidateEmail(entity.Email) && ValidateContactName(entity))
-			return true;
+			result = true;
 		else
-			return false;
+			result = false;
+		return result;
 	}
 
 	// Validate Details

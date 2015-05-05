@@ -10,7 +10,7 @@ function S4() {
 }
 
 function SetSessionConstants() {
-	
+
 	var solVersion = new Query("SELECT Value FROM ___SolutionInfo WHERE key='version'");
 	var planEnbl = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='PlanVisitEnabled'");
 	var multStck = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='MultistockEnabled'");
@@ -71,7 +71,7 @@ function ValidateEmail(string){
 }
 
 function ValidatePhoneNr(string){
-	return ValidateField(string, "([0-9()-+\s]{1,20})?", Translate["#phone#"]);
+	return true; // ValidateField(string, "([0-9()-+\s]{1,20})?", Translate["#phone#"]);
 }
 
 function ValidateField(string, regExp, fieldName){

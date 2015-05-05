@@ -92,7 +92,7 @@
 					<c:SwipeHorizontalLayout Id="snapshotLayout" CssClass="carousel" Alignment="Center">
 						<s:Iterator Id="snapshot" Value="$snapshots" Status="statusCount">
 							<s:Push Id="index" Value="$statusCount.Index" />
-							<c:VerticalLayout OnClick="$ImageActions($snapshot.Id, image{$index})">
+							<c:VerticalLayout OnClick="$ImageActions($snapshot.Id, image{$index}, $outlet, $snapshot.FileName)">
 								<c:Image Id="image{$index}" Source="$GetImagePath($outlet, $snapshot.FileName, .jpg)" />
 							</c:VerticalLayout>
 						</s:Iterator>

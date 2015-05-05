@@ -334,10 +334,12 @@ function GetImagePath(objectID, pictID, pictExt) {
 }
 
 
-function ImageActions(control, valueRef, imageControl) {
+function ImageActions(control, valueRef, imageControl, outlet, filename) {
 	if (IsOutletPrimaryParameterEditable($.sessionConst.editOutletParameters, "snapshots")) {
 		parameterValueC = valueRef;
 		Images.AddSnapshot($.outlet, valueRef, OutletSnapshotHandler, Translate["#snapshot#"], Variables[imageControl].Source);
+	} else {
+		Workflow.Action("ShowImage", [GetImagePath(outlet, filename, ".jpg"), valueRef, "Value", true])
 	}
 
 }

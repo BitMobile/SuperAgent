@@ -116,11 +116,6 @@ function ValidEntity(entity) {
 			DB.Commit();
 			return true;
 		}
-		if (ValidateContactName(entity)) {
-			result = true;
-		}else {
-			result = false;
-		}
 		if (Global.ValidatePhoneNr(entity.PhoneNumber) && Global.ValidateEmail(entity.Email) && ValidateContactName(entity))
 			result = true;
 		else

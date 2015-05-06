@@ -350,7 +350,7 @@ function SetDeliveryDateDialog(order, control, executedOrder, title) {
 //}
 
 function OrderBack() {
-	
+
 	if ($.workflow.name == "CreateOrder" || $.workflow.name == "Order") {
 
 		Workflow.Rollback();

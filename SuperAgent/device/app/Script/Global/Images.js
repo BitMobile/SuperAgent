@@ -110,8 +110,13 @@ function DeleteImage(valueRef) {
 		Workflow.Refresh([]);
 	}
 	else{
+		if (valueRef.Metadata().TableName == "Catalog_Outlet_Snapshots") {
+			var index = valueRef.Metadata().TableName;
+		} else {
+			var index = "Value";
+		}
 		var value = valueRef.GetObject();
-		value[valueRef.Metadata().TableName] = "";
+		value[index] = "";
 
 		if (valueRef.Metadata().TableName == "Catalog_Outlet_Snapshots")
 			value.Deleted = true;

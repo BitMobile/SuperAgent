@@ -9,7 +9,6 @@ function AddSnapshot(objectRef, valueRef, func, title, path, noPreview) { // opt
 
 	var isEmpty = true;
 	if (String.IsNullOrEmpty(valueRef)==false){ //if not empty value
-
 		if ((valueRef[parameters[valueRef.Metadata().TableName]])!=null)
 			isEmpty = false;
 	}
@@ -110,11 +109,7 @@ function DeleteImage(valueRef) {
 		Workflow.Refresh([]);
 	}
 	else{
-		if (valueRef.Metadata().TableName == "Catalog_Outlet_Snapshots") {
-			var index = valueRef.Metadata().TableName;
-		} else {
-			var index = "Value";
-		}
+		var index = parameters[valueRef.Metadata().TableName];
 		var value = valueRef.GetObject();
 		value[index] = "";
 

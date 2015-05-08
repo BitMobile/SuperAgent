@@ -233,7 +233,12 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 				ChooseBool(parameterValue, "Value", Variables[control], null, parameterDescription);
 			}
 			if (typeDescription == "Snapshot") { //----------Snapshot-------
-				var source = ($.Exists("image"+index)) ? Variables[("image"+index)].Source : null;
+				query = new Query("SELECT Value FROM Catalog_Outlet_Parameters WHERE Parameter = @parameter AND Ref = @outlet")
+				query.AddParameter("parameter", parameter);
+				query.AddParameter("outlet", outlet);
+				var snapshotId = query.ExecuteScalar();
+				var snapshotIdIsEmpty = snapshotId == null || String.IsNullOrWhiteSpace(snapshotId);
+				var source = (!snapshotIdIsEmpty ? Variables[("image"+index)].Source : null);
 				Images.AddSnapshot(outlet, parameterValue, SaveAtOutelt, parameterDescription, source);
 				parameterValueC = parameterValue;
 			}

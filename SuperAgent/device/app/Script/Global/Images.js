@@ -9,7 +9,7 @@ function AddSnapshot(objectRef, valueRef, func, title, path, noPreview) { // opt
 
 	var isEmpty = true;
 	if (String.IsNullOrEmpty(valueRef)==false){ //if not empty value
-		if ((valueRef[parameters[valueRef.Metadata().TableName]])!=null)
+		if ((valueRef[parameters[valueRef.Metadata().TableName]])!=null && !String.IsNullOrEmpty((valueRef[parameters[valueRef.Metadata().TableName]])))
 			isEmpty = false;
 	}
 	if (path!=null)

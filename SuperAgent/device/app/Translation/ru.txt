@@ -273,3 +273,4 @@ show			Просмотреть
 snapshot			Фотография
 reshot			Переснять
 editChange		Изменить
+returns			Возвраты

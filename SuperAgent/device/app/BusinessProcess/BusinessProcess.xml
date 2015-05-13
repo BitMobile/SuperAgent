@@ -7,6 +7,7 @@
 			<bp:Action Name="Visits" NextWorkflow="Visits"></bp:Action>
 			<bp:Action Name="Summary" NextStep="Summary"></bp:Action>
 			<bp:Action Name="Order" NextWorkflow="Order"></bp:Action>
+			<bp:Action Name="Return" NextWorkflow="Return"></bp:Action>
 			<bp:Action Name="Outlets" NextWorkflow="Outlets"></bp:Action>
 			<bp:Action Name="Stocks" NextWorkflow="Stocks"></bp:Action>
 			<bp:Action Name="ToDo" NextWorkflow="ToDo"></bp:Action>
@@ -174,6 +175,12 @@
 		</bp:Step>
 		
 		<bp:Step Name="Image" Screen="Image.xml" Controller="Outlets\Image.js"></bp:Step>
+
+	</bp:Workflow>
+
+	<bp:Workflow Name="Return" Controller="Returns\Main.js">
+
+		<bp:Step Name="ReturnList" Screen="Order\OrderList.xml"></bp:Step>
 
 	</bp:Workflow>
 

@@ -1,4 +1,4 @@
-﻿var parameters;
+var parameters;
 var tableName;
 var question;
 var sku;
@@ -76,11 +76,25 @@ function AddSnapshotHandler(state, args) {
 }
 
 function FindImage(objectID, pictID, pictExt) {
-	var sh = GetSharedImagePath(objectID, pictID, pictExt)
-	if (FileSystem.Exists(sh))
-		return sh;
-	else
-		return GetPrivateImagePath(objectID, pictID, pictExt);
+	var imageExtensions = [".jpg",  ".png", ".gif"];
+	var result = "";
+	for (var i = 0; i < 3; i++) {
+		var extension = imageExtensions[i];
+		var sh = GetSharedImagePath(objectID, pictID, extension);
+		if (FileSystem.Exists(sh)) {
+			result = sh;
+		}
+	}
+	if (result == "") {
+		for (var j = 0; j < 3; j++) {
+			extension = imageExtensions[i];
+			result = GetPrivateImagePath(objectID, pictID, extension);
+		}
+	}
+	if (result == "") {
+		result = GetPrivateImagePath(objectID, pictID, ".jpg")
+	}
+	return result;
 }
 
 

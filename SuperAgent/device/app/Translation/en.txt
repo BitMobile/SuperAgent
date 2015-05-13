@@ -273,3 +273,4 @@ show			Show image
 snapshot			Snapshot
 reshot			Make another snapshot
 editChange		Edit
+returns			Returns

@@ -1,8 +1,14 @@
 var itemsQty;
+var title;
+
+function OnLoading(){
+	title = Translate["#orders#"];
+}
+
 
 //---------------------------UI calls----------------
 
-function GetOrderList() {
+function GetItems() {
 
 	var q = new Query("SELECT DO.Id, DO.Outlet, strftime('%d/%m/%Y', DO.Date) AS Date, DO.Number, CO.Description AS OutletDescription, DO.Status FROM Document_Order DO JOIN Catalog_Outlet CO ON DO.Outlet=CO.Id ORDER BY DO.Date DESC LIMIT 100");
 	return q.Execute();

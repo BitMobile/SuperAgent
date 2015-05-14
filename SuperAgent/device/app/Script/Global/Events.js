@@ -68,30 +68,14 @@ function OnWorkflowForward(name, lastStep, nextStep, parameters) {
 
 function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 
+	if ($.workflow.HasValue("step"))
+		$.workflow.Remove("step");
+	$.workflow.Add("step", nextStep);
+
 	if (workflowName == "Visit" && nextStep != "Outlet" && nextStep != "Total") {
 
 		var action;
 		action = GetAction(nextStep);
-
-//		if (nextStep == "Visit_Tasks") {
-//			action = GetAction("1");
-//		}
-//
-//		if (nextStep == "Questions") {
-//			action = GetAction("2");
-//		}
-//
-//		if (nextStep == "SKUs") {
-//			action = GetAction("3");
-//		}
-//
-//		if (nextStep == "Order") {
-//			action = GetAction("4");
-//		}
-//
-//		if (nextStep == "Receivables") {
-//			action = GetAction("5");
-//		}
 
 		if (action != null) {
 			Workflow.Action(action, []);

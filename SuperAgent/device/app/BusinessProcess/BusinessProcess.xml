@@ -178,9 +178,23 @@
 
 	</bp:Workflow>
 
-	<bp:Workflow Name="Return" Controller="Returns\Main.js">
+	<bp:Workflow Name="Return" Controller="Return\Main.js">
 
-		<bp:Step Name="ReturnList" Screen="Order\OrderList.xml"></bp:Step>
+		<bp:Step Name="ReturnList" Screen="Order\OrderList.xml">
+			<bp:Action Name="Create" NextStep="Outlets"></bp:Action>
+			<bp:Action Name="Select" NextStep="Order"></bp:Action>
+		</bp:Step>
+
+		<bp:Step Name="Outlets" Screen="Outlets\Outlets.xml" Controller="Outlets\Main.js">
+			<bp:Action Name="Select" NextWorkflow="CreateReturn"></bp:Action>
+		</bp:Step>
+
+	</bp:Workflow>
+
+	<bp:Workflow Name="CreateReturn" Controller="Order\Main.js">
+
+		<bp:Step Name="CreateReturn" Screen="Order\Order.xml">
+		</bp:Step>  
 
 	</bp:Workflow>
 

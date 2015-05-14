@@ -2,7 +2,10 @@ var itemsQty;
 var title;
 
 function OnLoading(){
-	title = Translate["#orders#"];
+	if ($.workflow.step=='OrderList')
+		title = Translate["#orders#"];
+	else
+		title = Translate["#returns#"];
 }
 
 
@@ -10,7 +13,20 @@ function OnLoading(){
 
 function GetItems() {
 
-	var q = new Query("SELECT DO.Id, DO.Outlet, strftime('%d/%m/%Y', DO.Date) AS Date, DO.Number, CO.Description AS OutletDescription, DO.Status FROM Document_Order DO JOIN Catalog_Outlet CO ON DO.Outlet=CO.Id ORDER BY DO.Date DESC LIMIT 100");
+	var q = new Query();
+
+	if ($.workflow.step=='OrderList') {
+		q.Text = "SELECT DO.Id, DO.Outlet, strftime('%d/%m/%Y', DO.Date) AS Date, DO.Number, " + 
+		" CO.Description AS OutletDescription, DO.Status " +
+		" FROM Document_Order DO JOIN Catalog_Outlet CO ON DO.Outlet=CO.Id ORDER BY DO.Date DESC LIMIT 100";
+	}
+	else{
+		q.Text = "SELECT DO.Id, DO.Outlet, strftime('%d/%m/%Y', DO.Date) AS Date, DO.Number, " +
+		" CO.Description AS OutletDescription, NULL AS Status " +
+		" FROM Document_Return DO " +
+		" JOIN Catalog_Outlet CO ON DO.Outlet=CO.Id ORDER BY DO.Date DESC LIMIT 100";
+	}
+
 	return q.Execute();
 }
 

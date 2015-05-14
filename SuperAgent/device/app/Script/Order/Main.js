@@ -1,11 +1,30 @@
 var itemsQty;
-var title;
+var listTitle;
+var mainTitle;
+var infoTitle;
+var sumTitle;
+var skuTitle;
 
 function OnLoading(){
+	// Dialog.Debug($.workflow.step);
+
 	if ($.workflow.step=='OrderList')
-		title = Translate["#orders#"];
+		listTitle = Translate["#orders#"];
 	else
-		title = Translate["#returns#"];
+		listTitle = Translate["#returns#"];
+
+	if ($.workflow.step=='Order'){
+		mainTitle = Translate["#order#"];
+		infoTitle = Translate["#orderInfo#"];
+		sumTitle = Translate["#orderSum#"];
+		skuTitle = Translate["#skuInOrder#"];
+	}
+	else{
+		mainTitle = Translate["#return#"];		
+		infoTitle = Translate["#returnInfo#"];
+		sumTitle = Translate["#returnSum#"];
+		skuTitle = Translate["#skuInReturn#"];
+	}
 }
 
 
@@ -213,7 +232,15 @@ function CreateOrderIfNotExists(order, outlet, userRef, visitId, executedOrder) 
 		return executedOrder;
 	} else {
 		if (order == null) {
-			var order = DB.Create("Document.Order");
+			var order;
+			if ($.workflow.name=="Order") {  
+				order = DB.Create("Document.Order");
+				order.Status = DB.Current.Constant.OrderSatus.New;
+			}
+			else
+				order = DB.Create("Document.Return");
+
+			
 			order.Date = DateTime.Now;
 			if (outlet == null)
 				outlet = $.outlet;
@@ -226,7 +253,6 @@ function CreateOrderIfNotExists(order, outlet, userRef, visitId, executedOrder) 
 				order.Lattitude = location.Latitude;
 				order.Longitude = location.Longitude;
 			}
-			order.Status = DB.Current.Constant.OrderSatus.New;
 			if (visitId != null)
 				order.Visit = visitId;
 
@@ -373,7 +399,7 @@ function SetDeliveryDateDialog(order, control, executedOrder, title) {
 
 function OrderBack() {
 
-	if ($.workflow.name == "CreateOrder" || $.workflow.name == "Order") {
+	if ($.workflow.name == "CreateOrder" || $.workflow.name == "Order" || $.workflow.name == "CreateReturn") {
 
 		Workflow.Rollback();
 

@@ -178,7 +178,7 @@
 
 	</bp:Workflow>
 
-	<bp:Workflow Name="Return" Controller="Return\Main.js">
+	<bp:Workflow Name="Return" Controller="Order\Main.js">
 
 		<bp:Step Name="ReturnList" Screen="Order\OrderList.xml">
 			<bp:Action Name="Create" NextStep="Outlets"></bp:Action>

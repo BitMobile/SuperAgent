@@ -15,7 +15,7 @@
 				<c:TextView Id="btnForward" Text="" />
 			</c:DockLayout>			
 			<c:HorizontalLayout>
-				<c:TextView Text="@title" />
+				<c:TextView Text="@listTitle" />
 			</c:HorizontalLayout>
 		</c:DockLayout>
 		<c:HorizontalLine />
@@ -29,7 +29,6 @@
 
 		<c:ScrollView Id="grScrollView">
 			<c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
-			<c:HorizontalLine />
 
 			<s:Iterator Id="order" Value="$orders">
 

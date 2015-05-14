@@ -20,7 +20,7 @@
 				<c:TextView Id="btnForward" Text="#forward#" />
 			</c:DockLayout>
 			<c:HorizontalLayout>
-				<c:TextView Text="#order#" />
+				<c:TextView Text="@mainTitle" />
 			</c:HorizontalLayout>
 		</c:DockLayout>
 
@@ -39,7 +39,7 @@
 		<c:ScrollView Id="grScrollView">
 
 			<c:HorizontalLayout Id="Orderadd" CssClass="caption_grid">
-				<c:TextView Text="#orderInfo#:"></c:TextView>
+				<c:TextView Text="{@infoTitle}:"></c:TextView>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
@@ -47,7 +47,7 @@
 				<c:Image />
 				<c:VerticalLayout>
 					<c:TextView Text="$GetDescription($workflow.order.PriceList)" CssClass="description_row"></c:TextView>
-					<c:TextView Text="#orderSum#:" CssClass="description_row"></c:TextView>
+					<c:TextView Text="{@sumTitle}:" CssClass="description_row"></c:TextView>
 					<c:TextView Text="$FormatValue($sum)" CssClass="main_row"></c:TextView>
 				</c:VerticalLayout>
 			</c:DockLayout>
@@ -56,7 +56,7 @@
 			<c:HorizontalLayout CssClass="end_of_block" />
 
 			<c:HorizontalLayout CssClass="caption_grid">
-				<c:TextView Text="#skuInOrder#:"></c:TextView>
+				<c:TextView Text="{@skuTitle}:"></c:TextView>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 

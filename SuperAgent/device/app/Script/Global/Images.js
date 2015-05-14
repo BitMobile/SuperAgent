@@ -76,11 +76,13 @@ function AddSnapshotHandler(state, args) {
 }
 
 function FindImage(objectID, pictID, pictExt) {
-	var sh = GetSharedImagePath(objectID, pictID, pictExt)
-	if (FileSystem.Exists(sh))
+	var q = new Query("SELECT FullFileName FROM Catalog_Outlet_Files WHERE Ref = @Ref AND FileName = @FileName");
+	q.AddParameter("Ref", objectID);
+	q.AddParameter("FileName", pictID);
+	var result = q.ExecuteScalar();
+	var sh = (String.IsNullOrEmpty(result) ? "/shared/result.jpg" : Lower(result));
+	if (!(String.IsNullOrEmpty(sh)) && FileSystem.Exists(sh))
 		return sh;
-	else
-		return GetPrivateImagePath(objectID, pictID, pictExt);
 }
 
 

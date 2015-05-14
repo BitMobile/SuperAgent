@@ -61,7 +61,8 @@ function GetQuestionsByQuestionnaires(outlet) {
 function GetQuestions(single, doCnt) {
 	var q = new Query("SELECT *, " +
 			"CASE WHEN IsInputField='1' THEN Answer ELSE " +
-				"CASE WHEN (RTRIM(Answer)!='' AND Answer IS NOT NULL) THEN CASE WHEN AnswerType=@snapshot THEN @attached ELSE Answer END ELSE '—' END END AS AnswerOutput " +
+				"CASE WHEN (RTRIM(Answer)!='' AND Answer IS NOT NULL) THEN CASE WHEN AnswerType=@snapshot THEN @attached ELSE Answer END ELSE '—' END END AS AnswerOutput, " +
+				"CASE WHEN AnswerType=@snapshot THEN '1' ELSE '0' END AS IsSnapshot " + 
 			"FROM USR_Questions " +
 			"WHERE Single=@single AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_Questions " +
 			"WHERE (Answer='Yes' OR Answer='Да'))) " +

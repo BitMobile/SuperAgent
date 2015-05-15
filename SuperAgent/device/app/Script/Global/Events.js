@@ -7,16 +7,6 @@ function OnApplicationInit() {
 
 // ------------------------ Events ------------------------
 
-function OnLoad(screenName) {
-	if (screenName == "Outlet_Map.xml") {
-		var outlet = Variables["outlet"];
-		Variables["map"].AddMarker(outlet.Description, outlet.Lattitude,
-				outlet.Longitude, "red");
-	} else if (screenName == "ScheduledVisits_Map.xml") {
-		PrepareScheduledVisits_Map();
-	}
-}
-
 function OnWorkflowStart(name) {
 	if ($.Exists("workflow"))
 		$.Remove("workflow");
@@ -61,16 +51,9 @@ function OnWorkflowStart(name) {
 }
 
 function OnWorkflowForward(name, lastStep, nextStep, parameters) {
-//	if (lastStep == "Order" && nextStep == "EditSKU" && Variables.Exists("AlreadyAdded") == false) {
-//		Variables.AddGlobal("AlreadyAdded", true);
-//	}
 }
 
 function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
-
-	if ($.workflow.HasValue("step"))
-		$.workflow.Remove("step");
-	$.workflow.Add("step", nextStep);
 
 	if (workflowName == "Visit" && nextStep != "Outlet" && nextStep != "Total") {
 
@@ -83,6 +66,8 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 		}
 
 	}
+
+	WriteScreenName(nextStep);
 
 	return true;
 }
@@ -125,11 +110,21 @@ function OnWorkflowFinish(name, reason) {
 	}
 }
 
+function OnWorkflowBack(workflow, lastStep, nextStep){
+	WriteScreenName(nextStep);
+}
+
 function OnWorkflowPause(name) {
 	Variables.Remove("workflow");
 }
 
 // ------------------------ Functions ------------------------
+
+function WriteScreenName(stepName){
+	if ($.workflow.HasValue("step"))
+		$.workflow.Remove("step");
+	$.workflow.Add("step", stepName);
+}
 
 function SetSteps(outlet) {
 

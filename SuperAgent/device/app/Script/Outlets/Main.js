@@ -550,6 +550,13 @@ function CheckIfEmpty(entity, attribute, objectType, objectName, deleteIfEmpty) 
 		return true;
 }
 
+function BackMenu(){
+	if ($.workflow.name=='Order' || $.workflow.name=='Return')
+		return true;
+	else
+		return false;	
+}
+
 function CommitAndBack(){
 	DB.Commit();
 	Workflow.Rollback();

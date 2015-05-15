@@ -225,15 +225,21 @@ function IsEditText(isInputField, editable, order) {
 	}
 }
 
-function CreateOrderIfNotExists(order, outlet, userRef, visitId, executedOrder) {
+function CreateDocumentIfNotExists(executedOrder, visitId) {
+	var outlet = $.outlet;
+	var userRef = $.common.UserRef;
+
+	var order = $.workflow.HasValue("order")==true ? $.workflow.order : null;
+	order = $.workflow.HasValue("Return")==true ? $.workflow.Return : null;
+
 	var priceLists = GetPriceListQty(outlet);
 
 	if (executedOrder != null) {
-		return executedOrder;
+		order = executedOrder;
 	} else {
 		if (order == null) {
 			var order;
-			if ($.workflow.name=="Order") {  
+			if ($.workflow.step=="Order") {  
 				order = DB.Create("Document.Order");
 				order.Status = DB.Current.Constant.OrderSatus.New;
 			}
@@ -261,12 +267,20 @@ function CreateOrderIfNotExists(order, outlet, userRef, visitId, executedOrder) 
 			if (pl != null)
 				order.PriceList = pl;
 			order.Save();
-			return order.Id;
+			order = order.Id;
 			// }
 		}
-
-		return order;
 	}
+
+	if ($.workflow.step=='Order')
+		$.workflow.Add("order", order);
+	else
+		$.workflow.Add("Return", order);
+
+	Dialog.Debug(order);
+
+	return order;
+
 }
 
 function GetPriceListRef(outlet) {

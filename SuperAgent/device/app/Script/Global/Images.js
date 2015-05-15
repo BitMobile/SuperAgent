@@ -75,8 +75,8 @@ function AddSnapshotHandler(state, args) {
 	}
 }
 
-function FindImage(objectID, pictID, pictExt) {
-	var q = new Query("SELECT FullFileName FROM Catalog_Outlet_Files WHERE Ref = @Ref AND FileName = @FileName");
+function FindImage(objectID, pictID, pictExt, filesTableName) {
+	var q = new Query("SELECT FullFileName FROM " + filesTableName + " WHERE Ref = @Ref AND FileName = @FileName");
 	q.AddParameter("Ref", objectID);
 	q.AddParameter("FileName", pictID);
 	var result = q.ExecuteScalar();

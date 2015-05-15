@@ -153,7 +153,7 @@ function RefreshEditSKU(orderItem, sku, price, discountEdit, showimage) {
 }
 
 function GetImagePath(objectID, pictID, pictExt) {
-    return Images.FindImage(objectID, pictID, pictExt);
+  return Images.FindImage(objectID, pictID, pictExt, "Catalog_SKU_Files");
 }
 
 function ImageActions(imageControl, sku) {
@@ -273,7 +273,7 @@ function CalculateSKUAndForward(outlet, orderitem) {
     	$.Remove("itemFields");
     if ($.Exists("AlreadyAdded"))
     	$.Remove("AlreadyAdded");
-    
+
     Workflow.Forward([]);
 }
 

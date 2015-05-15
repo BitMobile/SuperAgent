@@ -335,7 +335,7 @@ function NoSnapshots() {
 
 
 function GetImagePath(objectID, pictID, pictExt) {
-	return Images.FindImage(objectID, pictID, pictExt);
+	return Images.FindImage(objectID, pictID, pictExt, "Catalog_Outlet_Files");
 }
 
 
@@ -532,7 +532,7 @@ function SaveAtOutelt(arr, args) {
 		var question = paramValue.GetObject();
 		question.Value = path;
 		question.Save();
-		
+
 		newFile = DB.Create("Catalog.Outlet_Files");
 		newFile.Ref = arr[0];
 		newFile.FileName = arr[1];

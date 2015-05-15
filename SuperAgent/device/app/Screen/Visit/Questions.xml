@@ -100,7 +100,12 @@
 							<c:MemoEdit Id="control{$index}" Text="$question.Answer" Placeholder="—" OnChange="$AssignAnswer($question.Question)" OnLostFocus="$Workflow.DoRefresh()" Keyboard="$question.KeyboardType" CssClass="answer_main_row"></c:MemoEdit>
 						</s:If>
 						<s:Else>
-							<c:TextView Id="control{$index}" Text="$question.AnswerOutput" CssClass="answer_main_row"></c:TextView>
+							<s:If Test="$question.IsSnapshot==1">
+								<c:TextView Id="control{$index}" Text="Hi" CssClass="answer_main_row"></c:TextView>
+							</s:If>
+							<s:Else>
+								<c:TextView Id="control{$index}" Text="$question.AnswerOutput" CssClass="answer_main_row"></c:TextView>
+							</s:Else>
 						</s:Else>
 					</c:VerticalLayout>
 				</c:DockLayout>

@@ -81,8 +81,7 @@ function FindImage(objectID, pictID, pictExt, filesTableName) {
 	q.AddParameter("FileName", pictID);
 	var result = q.ExecuteScalar();
 	var sh = (String.IsNullOrEmpty(result) ? "/shared/result.jpg" : Lower(result));
-	if (!(String.IsNullOrEmpty(sh)) && FileSystem.Exists(sh))
-		return sh;
+	return sh;
 }
 
 
@@ -176,7 +175,7 @@ function AddQuestionSnapshot(tableName, question, sku, answer, previewAllowed, t
 			listChoice.Add([2, Translate["#clearValue#"]]);
 
 		if (String.IsNullOrEmpty(answer)==false)
-			path = FindImage($.workflow.visit, answer, ".jpg");
+			path = FindImage($.workflow.visit, answer, ".jpg", "Document_Visit_Files");
 
 		Dialog.Choose(title, listChoice, AddSnapshotHandler, [$.workflow.visit, func, tableName, path, question, sku]);
 	}

@@ -97,7 +97,7 @@
 					<s:If Test="$question.IsSnapshot==1">
 						<c:HorizontalLayout OnClickAction="$GoToQuestionAction($question.AnswerType, $visit, control{$index}, $question.Question, $question.Answer, $question.Description)">
 							<c:TextView Text="$question.Description" CssClass="description_row"></c:TextView>
-							<c:Image Id="control{$index}" CssClass="answer_snapshot"></c:Image>
+							<c:Image Id="control{$index}" CssClass="answer_snapshot" Source="$GetImagePath($visit.Id, $question.Answer)"></c:Image>
 						</c:HorizontalLayout>
 					</s:If>
 					<s:Else>

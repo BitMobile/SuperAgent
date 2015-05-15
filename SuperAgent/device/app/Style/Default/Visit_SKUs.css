@@ -9,6 +9,11 @@
 	padding-left: 2.4mm;
 }
 
+.grid hl {
+	padding-top: 11%;
+	padding-left: 2.4mm;
+}
+
 .parameter_grid TextView {
 	width: 74%;
 }
@@ -105,6 +110,15 @@
 	font: 42% Arial;
 	color: #2D89CF;
 	placeholder-color: #2D89CF;
+}
+
+.answer_snapshot {
+	width: 11mm;
+	height: 98%;
+	margin-bottom: 11%;
+	margin-left: 8%;
+	background-color: #336699;
+	background-image: url(answered_side_gr.png);
 }
 
 .required_grid {

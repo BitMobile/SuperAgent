@@ -9,7 +9,7 @@ function AddSnapshot(objectRef, valueRef, func, title, path, noPreview) { // opt
 
 	var isEmpty = true;
 	if (String.IsNullOrEmpty(valueRef)==false){ //if not empty value
-		if ((valueRef[parameters[valueRef.Metadata().TableName]])!=null && !String.IsNullOrEmpty((valueRef[parameters[valueRef.Metadata().TableName]])))
+		if ((valueRef[parameters[valueRef.Metadata().TableName]])!=null && !String.IsNullOrEmpty(ToString((valueRef[parameters[valueRef.Metadata().TableName]]))))
 			isEmpty = false;
 	}
 	if (path!=null)
@@ -75,26 +75,14 @@ function AddSnapshotHandler(state, args) {
 	}
 }
 
-function FindImage(objectID, pictID, pictExt) {
-	var imageExtensions = [".jpg",  ".png", ".gif"];
-	var result = "";
-	for (var i = 0; i < 3; i++) {
-		var extension = imageExtensions[i];
-		var sh = GetSharedImagePath(objectID, pictID, extension);
-		if (FileSystem.Exists(sh)) {
-			result = sh;
-		}
-	}
-	if (result == "") {
-		for (var j = 0; j < 3; j++) {
-			extension = imageExtensions[i];
-			result = GetPrivateImagePath(objectID, pictID, extension);
-		}
-	}
-	if (result == "") {
-		result = GetPrivateImagePath(objectID, pictID, ".jpg")
-	}
-	return result;
+function FindImage(objectID, pictID, pictExt, filesTableName) {
+	var q = new Query("SELECT FullFileName FROM " + filesTableName + " WHERE Ref = @Ref AND FileName = @FileName");
+	q.AddParameter("Ref", objectID);
+	q.AddParameter("FileName", pictID);
+	var result = q.ExecuteScalar();
+	var sh = (String.IsNullOrEmpty(result) ? "/shared/result.jpg" : Lower(result));
+	if (!(String.IsNullOrEmpty(sh)) && FileSystem.Exists(sh))
+		return sh;
 }
 
 

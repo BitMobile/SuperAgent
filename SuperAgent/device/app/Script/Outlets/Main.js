@@ -335,7 +335,7 @@ function NoSnapshots() {
 
 
 function GetImagePath(objectID, pictID, pictExt) {
-	return Images.FindImage(objectID, pictID, pictExt);
+	return Images.FindImage(objectID, pictID, pictExt, "Catalog_Outlet_Files");
 }
 
 
@@ -359,6 +359,7 @@ function OutletSnapshotHandler(state, args) {
 	if (args.Result){
 		var outlet = state[0];
 		var fileName = state[1];
+		var fullFileName = state[2];
 		var newPicture;
 
 		if (String.IsNullOrEmpty(parameterValueC))
@@ -368,6 +369,12 @@ function OutletSnapshotHandler(state, args) {
 		newPicture.Ref = outlet;
 		newPicture.FileName = fileName;
 		newPicture.Save();
+
+		newFile = DB.Create("Catalog.Outlet_Files");
+		newFile.Ref = outlet;
+		newFile.FileName = fileName;
+		newFile.FullFileName = fullFileName;
+		newFile.Save();
 
 		Workflow.Refresh([]);
 	}
@@ -525,6 +532,13 @@ function SaveAtOutelt(arr, args) {
 		var question = paramValue.GetObject();
 		question.Value = path;
 		question.Save();
+
+		newFile = DB.Create("Catalog.Outlet_Files");
+		newFile.Ref = arr[0];
+		newFile.FileName = arr[1];
+		newFile.FullFileName = arr[2];
+		newFile.Save();
+
 		Workflow.Refresh([]);
 	}
 }

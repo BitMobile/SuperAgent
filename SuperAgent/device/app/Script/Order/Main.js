@@ -6,7 +6,6 @@ var sumTitle;
 var skuTitle;
 
 function OnLoading(){
-	// Dialog.Debug($.workflow.step);
 
 	if ($.workflow.step=='OrderList')
 		listTitle = Translate["#orders#"];
@@ -229,8 +228,12 @@ function CreateDocumentIfNotExists(executedOrder, visitId) {
 	var outlet = $.outlet;
 	var userRef = $.common.UserRef;
 
+
 	var order = $.workflow.HasValue("order")==true ? $.workflow.order : null;
-	order = $.workflow.HasValue("Return")==true ? $.workflow.Return : null;
+
+	if (order==null && $.workflow.HasValue("Return")==true)
+		order = $.workflow.Return;
+
 
 	var priceLists = GetPriceListQty(outlet);
 
@@ -238,7 +241,6 @@ function CreateDocumentIfNotExists(executedOrder, visitId) {
 		order = executedOrder;
 	} else {
 		if (order == null) {
-			var order;
 			if ($.workflow.step=="Order") {  
 				order = DB.Create("Document.Order");
 				order.Status = DB.Current.Constant.OrderSatus.New;
@@ -276,8 +278,6 @@ function CreateDocumentIfNotExists(executedOrder, visitId) {
 		$.workflow.Add("order", order);
 	else
 		$.workflow.Add("Return", order);
-
-	Dialog.Debug(order);
 
 	return order;
 

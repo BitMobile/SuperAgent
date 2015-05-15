@@ -194,7 +194,11 @@
 	<bp:Workflow Name="CreateReturn" Controller="Order\Main.js">
 
 		<bp:Step Name="CreateReturn" Screen="Order\Order.xml">
+			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
 		</bp:Step>  
+
+		<bp:Step Name="OrderInfo" Screen="Order_Info.xml" Controller="Order\Main.js">
+		</bp:Step>
 
 	</bp:Workflow>
 

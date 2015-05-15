@@ -44,7 +44,7 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="grid" OnClickAction="$DoAction(ShowInfo,$sum,null)">
+			<c:DockLayout CssClass="grid" OnClickAction="$DoAction(ShowInfo,$sum,null,$thisDoc)">
 				<c:Image />
 				<c:VerticalLayout>
 					<c:TextView Text="$GetDescription($thisDoc.PriceList)" CssClass="description_row"></c:TextView>

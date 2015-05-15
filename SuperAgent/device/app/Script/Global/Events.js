@@ -11,7 +11,7 @@ function OnWorkflowStart(name) {
 	if ($.Exists("workflow"))
 		$.Remove("workflow");
 	Variables.AddGlobal("workflow", new Dictionary());
-	if (name == "Visits" || name == "Outlets" || name=="Order") {
+	if (name == "Visits" || name == "Outlets" || name=="Order" || name=="Return") {
 		GPS.StartTracking();
 	}
 

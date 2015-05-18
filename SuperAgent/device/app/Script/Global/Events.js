@@ -166,7 +166,7 @@ function SetSteps(outlet) {
 	q.AddParameter("status", outlet.OutletStatus);
 	var statusValues = q.Execute();
 	while (statusValues.Next()) {
-		if (EvaluateBoolean(statusValues.CreateOrderInMA))
+		if (EvaluateBoolean(statusValues.CreateOrderInMA) && $.sessionConst.orderEnabled)
 			InsertIntoSteps("4", "SkipOrder", false, "Order", "SKUs");
 		else
 			InsertIntoSteps("4", "SkipOrder", true, "Order", "SKUs");

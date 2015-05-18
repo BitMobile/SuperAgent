@@ -132,15 +132,16 @@
 
 				</c:DockLayout>
 
-
-				<c:DockLayout CssClass="short_panel">
-					<c:DockLayout CssClass="grid">
-						<c:VerticalLayout>
-							<c:TextView Text="{$FormatValue($orderSum)} #currency#" CssClass="main_row"></c:TextView>
-							<c:TextView Text="#amountOfOrdersForToday#" CssClass="description_row" />
-						</c:VerticalLayout>
+				<s:If Test="$sessionConst.orderEnabled">
+					<c:DockLayout CssClass="short_panel">
+						<c:DockLayout CssClass="grid">
+							<c:VerticalLayout>
+								<c:TextView Text="{$FormatValue($orderSum)} #currency#" CssClass="main_row"></c:TextView>
+								<c:TextView Text="#amountOfOrdersForToday#" CssClass="description_row" />
+							</c:VerticalLayout>
+						</c:DockLayout>
 					</c:DockLayout>
-				</c:DockLayout>
+				</s:If>
 
 				<s:If Test="$sessionConst.encashEnabled">
 					<c:DockLayout>

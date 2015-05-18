@@ -212,7 +212,8 @@ function GetChilds(sku) {
 
 	var q = new Query("SELECT *, " +
 			"CASE WHEN IsInputField='1' THEN Answer ELSE " +
-				"CASE WHEN (RTRIM(Answer)!='' AND Answer IS NOT NULL) THEN CASE WHEN AnswerType=@snapshot THEN @attached ELSE Answer END ELSE '—' END END AS AnswerOutput " +
+				"CASE WHEN (RTRIM(Answer)!='' AND Answer IS NOT NULL) THEN CASE WHEN AnswerType=@snapshot THEN @attached ELSE Answer END ELSE '—' END END AS AnswerOutput, " +
+				"CASE WHEN S.AnswerType=@snapshot THEN 1 END AS IsSnapshot " +
 			"FROM USR_SKUQuestions S " +
 			"WHERE SKU=@sku AND Single=@single AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +
 			"WHERE SKU=S.SKU AND (Answer='Yes' OR Answer='Да'))) " +
@@ -224,6 +225,13 @@ function GetChilds(sku) {
 	q.AddParameter("attached", Translate["#snapshotAttached#"]);
 
 	return q.Execute();
+}
+
+function GetImagePath(objectID, pictID, pictExt) {
+	Dialog.Debug("objectID: " + objectID);
+	Dialog.Debug("pictID: " + pictID);
+	Dialog.Debug("pictExt: " + pictExt);
+	return Images.FindImage(objectID, pictID, pictExt, "Document_Visit_Files");
 }
 
 function RefreshScreen(control, search) {
@@ -375,6 +383,13 @@ function DialogCallBack(state, args){
 function GalleryCallBack(state, args) {
 	if (args.Result) {
 		AssignAnswer(null, questionValueGl, skuValueGl, state[1]);
+
+		newFile = DB.Create("Document.Visit_Files");
+		newFile.Ref = state[0];
+		newFile.FileName = state[1];
+		newFile.FullFileName = state[2];
+		newFile.Save();
+
 		Workflow.Refresh([]);
 	}
 }

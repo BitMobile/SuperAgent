@@ -153,7 +153,7 @@ function RefreshEditSKU(orderItem, sku, price, discountEdit, showimage) {
 }
 
 function GetImagePath(objectID, pictID, pictExt) {
-  return Images.FindImage(objectID, pictID, pictExt, "Catalog_SKU_Files");
+  return Images.FindImage(objectID, ToString(pictID), pictExt, "Catalog_SKU_Files");
 }
 
 function ImageActions(imageControl, sku) {

@@ -228,10 +228,7 @@ function GetChilds(sku) {
 }
 
 function GetImagePath(objectID, pictID, pictExt) {
-	Dialog.Debug("objectID: " + objectID);
-	Dialog.Debug("pictID: " + pictID);
-	Dialog.Debug("pictExt: " + pictExt);
-	return Images.FindImage(objectID, pictID, pictExt, "Document_Visit_Files");
+		return Images.FindImage(objectID, pictID, pictExt, "Document_Visit_Files");
 }
 
 function RefreshScreen(control, search) {

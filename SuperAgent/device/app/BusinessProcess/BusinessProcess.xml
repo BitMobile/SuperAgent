@@ -193,11 +193,23 @@
 
 	<bp:Workflow Name="CreateReturn" Controller="Order\Main.js">
 
-		<bp:Step Name="CreateReturn" Screen="Order\Order.xml">
+		<bp:Step Name="Return" Screen="Order\Order.xml">
 			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
+			<bp:Action Name="Add" NextStep="AddReturnSKU"></bp:Action>
 		</bp:Step>  
 
 		<bp:Step Name="OrderInfo" Screen="Order_Info.xml" Controller="Order\Main.js">
+		</bp:Step>
+
+		<bp:Step Name="AddReturnSKU" Screen="Order_SKUs.xml" Controller="Order\Order_SKUs.js">
+			<bp:Action Name="SetFilter" NextStep="Filters"></bp:Action>
+			<bp:Action Name="SelectSKU" NextStep="EditReturnSKU"></bp:Action>
+			<bp:Action Name="Order" NextStep="Order"></bp:Action>
+		</bp:Step>
+
+		<bp:Step Name="EditReturnSKU" Screen="Order_EditSKU.xml" Controller="Order\Order_EditSKU.js">
+			<bp:Action Name="Forward" NextStep="AddReturnSKUSKU"></bp:Action>
+			<bp:Action Name="ShowImage" NextStep="Image" />
 		</bp:Step>
 
 	</bp:Workflow>

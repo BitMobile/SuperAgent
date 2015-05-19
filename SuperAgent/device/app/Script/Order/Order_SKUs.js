@@ -16,7 +16,19 @@ function WarMupFunction() {
 
 }
 
-function GetSKUAndGroups(searchText, priceList, stock) {
+function GetCurrentDoc(){
+    var d;
+    if ($.workflow.step=='AddSKU') 
+        d =  $.workflow.order;
+    else
+        d =  $.workflow.Return;
+    return d;
+}
+
+function GetSKUAndGroups(searchText, thisDoc) {
+
+     var priceList = thisDoc.PriceList;
+     var stock = thisDoc.Stock;
 
     var filterString = "";
     filterString += AddFilter(filterString, "group_filter", "G.Id", " AND ");
@@ -84,7 +96,7 @@ function GetSKUAndGroups(searchText, priceList, stock) {
 
     }
 
-    if ($.workflow.order.Stock.EmptyRef()==true){
+    if (stock.EmptyRef()==true){
 
     	if ($.sessionConst.NoStkEnbl) {
             var stockCondition = "";
@@ -303,6 +315,13 @@ function ShowRecommendedQty(order, recOrder) {
         if (recOrder>0)
             return true;
     return false;
+}
+
+function GoBackTo(){
+    if ($.workflow.step == "AddSKU")
+        Workflow.BackTo('Order');
+    else
+        Workflow.BackTo('Return');
 }
 
 // --------------------------Filters------------------

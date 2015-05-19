@@ -19,7 +19,7 @@ function OnLoading(){
 		skuTitle = Translate["#skuInOrder#"];
 	}
 	else{
-		mainTitle = Translate["#return#"];		
+		mainTitle = Translate["#return#"];
 		infoTitle = Translate["#returnInfo#"];
 		sumTitle = Translate["#returnSum#"];
 		skuTitle = Translate["#skuInReturn#"];
@@ -34,7 +34,7 @@ function GetItems() {
 	var q = new Query();
 
 	if ($.workflow.step=='OrderList') {
-		q.Text = "SELECT DO.Id, DO.Outlet, strftime('%d/%m/%Y', DO.Date) AS Date, DO.Number, " + 
+		q.Text = "SELECT DO.Id, DO.Outlet, strftime('%d/%m/%Y', DO.Date) AS Date, DO.Number, " +
 		" CO.Description AS OutletDescription, DO.Status " +
 		" FROM Document_Order DO JOIN Catalog_Outlet CO ON DO.Outlet=CO.Id ORDER BY DO.Date DESC LIMIT 100";
 	}
@@ -49,8 +49,10 @@ function GetItems() {
 }
 
 function OrderCanceled(status) {
-	if (status.ToString() == (DB.Current.Constant.OrderSatus.Canceled).ToString())
-		return true;
+	if ($.workflow.step == "OrderList") {
+		if (status.ToString() == (DB.Current.Constant.OrderSatus.Canceled).ToString())
+			return true;
+	}
 	return false;
 }
 
@@ -241,14 +243,14 @@ function CreateDocumentIfNotExists(executedOrder, visitId) {
 		order = executedOrder;
 	} else {
 		if (order == null) {
-			if ($.workflow.step=="Order") {  
+			if ($.workflow.step=="Order") {
 				order = DB.Create("Document.Order");
 				order.Status = DB.Current.Constant.OrderSatus.New;
 			}
 			else
 				order = DB.Create("Document.Return");
 
-			
+
 			order.Date = DateTime.Now;
 			if (outlet == null)
 				outlet = $.outlet;

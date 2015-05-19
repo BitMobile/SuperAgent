@@ -51,14 +51,16 @@
 				<c:HorizontalLine />
 			</s:If>
 
-			<c:DockLayout OnClickAction="$DoAction(Return)">
-				<c:TextView CssClass="menu_text" Text="{$GetReturnQty()} | {$GetReturnSum()}"></c:TextView>
-				<c:HorizontalLayout>
-					<c:Image CssClass="btn_returns" />
-					<c:TextView Text="#returns#"></c:TextView>
-				</c:HorizontalLayout>
-			</c:DockLayout>
-			<c:HorizontalLine />
+			<s:If Test="$sessionConst.returnEnabled">
+				<c:DockLayout OnClickAction="$DoAction(Return)">
+					<c:TextView CssClass="menu_text" Text="{$GetReturnQty()} | {$GetReturnSum()}"></c:TextView>
+					<c:HorizontalLayout>
+						<c:Image CssClass="btn_returns" />
+						<c:TextView Text="#returns#"></c:TextView>
+					</c:HorizontalLayout>
+				</c:DockLayout>
+				<c:HorizontalLine />
+			</s:If>
 
 			<c:DockLayout OnClickAction="$DoAction(Sync)">
 				<c:TextView Id="syncTitle" CssClass="menu_text" Text="$GetLastSyncTime()"></c:TextView>

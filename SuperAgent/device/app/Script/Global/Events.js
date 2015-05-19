@@ -141,7 +141,7 @@ function SetSteps(outlet) {
 
 	var skipQuest = false;
 
-	var q = new Query("SELECT CreateOrderInMA, FillQuestionnaireInMA, DoEncashmentInMA FROM Catalog_OutletsStatusesSettings WHERE Status=@status");
+	var q = new Query("SELECT CreateOrderInMA, FillQuestionnaireInMA, DoEncashmentInMA, CreateReturnInMA FROM Catalog_OutletsStatusesSettings WHERE Status=@status");
 	q.AddParameter("status", outlet.OutletStatus);
 	var statusValues = q.Execute();
 	while (statusValues.Next()) {

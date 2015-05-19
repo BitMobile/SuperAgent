@@ -149,10 +149,15 @@ function SetSteps(outlet) {
 			InsertIntoSteps("4", "SkipOrder", false, "Order", "SKUs");
 		else
 			InsertIntoSteps("4", "SkipOrder", true, "Order", "SKUs");
-		if (EvaluateBoolean(statusValues.DoEncashmentInMA))
-			InsertIntoSteps("5", "SkipEncashment", false, "Receivables", "Order");
+		if (EvaluateBoolean(statusValues.CreateReturnInMA) && $.sessionConst.returnEnabled) {
+			InsertIntoSteps("5", "SkipReturn", false, "Return", "Order");
+		}
 		else
-			InsertIntoSteps("5", "SkipEncashment", true, "Receivables", "Order");
+			InsertIntoSteps("5", "SkipReturn", true, "Return", "Order");
+		if (EvaluateBoolean(statusValues.DoEncashmentInMA))
+			InsertIntoSteps("6", "SkipEncashment", false, "Receivables", "Return");
+		else
+			InsertIntoSteps("6", "SkipEncashment", true, "Receivables", "Return");
 		if (EvaluateBoolean(statusValues.FillQuestionnaireInMA))
 			skipQuest = false;
 		else

@@ -65,25 +65,37 @@
 		<bp:Step Name="Questions" Screen="Visit\Questions.xml" Controller="Visits\Questions.js">
 			<bp:Action Name="Forward" NextStep="SKUs"></bp:Action>
 			<bp:Action Name="SkipSKUs" NextStep="Order"></bp:Action>
-			<bp:Action Name="SkipOrder" NextStep="Receivables"></bp:Action>
+			<bp:Action Name="SkipOrder" NextStep="Return"></bp:Action>
+			<bp:Action Name="SkipReturn" NextStep="Receivables"></bp:Action>
 			<bp:Action Name="SkipEncashment" NextStep="Total"></bp:Action>
 			<bp:Action Name="ShowImage" NextStep="Image" />
+			<bp:Action Name="Sk" NextStep="Image" />
 		</bp:Step>
 
 		<bp:Step Name="SKUs" Screen="Visit\SKUs.xml" Controller="Visits\SKU_Questions.js">
 			<bp:Action Name="ShowFilters1" NextStep="Filters1"/>
-			<bp:Action Name="Forward" NextStep="Order"></bp:Action>			
-			<bp:Action Name="SkipOrder" NextStep="Receivables"></bp:Action>
+			<bp:Action Name="Forward" NextStep="Order"></bp:Action>
+			<bp:Action Name="SkipOrder" NextStep="Return"></bp:Action>
+			<bp:Action Name="SkipReturn" NextStep="Receivables"></bp:Action>
 			<bp:Action Name="SkipEncashment" NextStep="Total"></bp:Action>
 			<bp:Action Name="ShowImage" NextStep="Image" />
-		</bp:Step>						
+		</bp:Step>
 
 		<bp:Step Name="Order" Screen="Order\Order.xml" Controller="Order\Main.js">
 			<bp:Action Name="Add" NextStep="AddSKU"></bp:Action>
 			<bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
 			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
+			<bp:Action Name="Forward" NextStep="Return"></bp:Action>
+			<bp:Action Name="SkipReturn" NextStep="Receivables"/>
+			<bp:Action Name="SkipEncashment" NextStep="Total"/>
+		</bp:Step>
+
+		<bp:Step Name="Return" Screen="Order\Order.xml" Controller="Order\Main.js">
+			<bp:Action Name="Add" NextStep="AddSKU"></bp:Action>
+			<bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
+			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
 			<bp:Action Name="Forward" NextStep="Receivables"></bp:Action>
-			<bp:Action Name="SkipEncashment" NextStep="Total"/>			
+			<bp:Action Name="SkipEncashment" NextStep="Total"/>
 		</bp:Step>
 
 		<bp:Step Name="Receivables" Screen="Receivables.xml" Controller="Receivables\Main.js">
@@ -96,7 +108,7 @@
 		<bp:Step Name="Filters1" Screen="Filters.xml" Controller="Order\Order_SKUs.js">
 			<bp:Action Name="Forward" NextStep="SKUs"></bp:Action>
 		</bp:Step>
-		
+
 		<bp:Step Name="Commentary" Screen="Order_Commentary.xml" Controller="Order\Main.js">
 			<bp:Action Name="Forward" NextStep="Receivables"></bp:Action>
 		</bp:Step>
@@ -134,7 +146,7 @@
 		<bp:Step Name="Contact" Screen="Contact.xml" Controller="Outlets\DetailsAndContacts.js">
 
 		</bp:Step>
-		
+
 		<bp:Step Name="Image" Screen="Image.xml" Controller="Outlets\Image.js"></bp:Step>
 
 	</bp:Workflow>
@@ -173,7 +185,7 @@
 		<bp:Step Name="Filters" Screen="Filters.xml" Controller="Order\Order_SKUs.js">
 			<bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>
 		</bp:Step>
-		
+
 		<bp:Step Name="Image" Screen="Image.xml" Controller="Outlets\Image.js"></bp:Step>
 
 	</bp:Workflow>
@@ -195,7 +207,7 @@
 
 		<bp:Step Name="CreateReturn" Screen="Order\Order.xml">
 			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
-		</bp:Step>  
+		</bp:Step>
 
 		<bp:Step Name="OrderInfo" Screen="Order_Info.xml" Controller="Order\Main.js">
 		</bp:Step>
@@ -227,7 +239,7 @@
 
 		<bp:Step Name="OrderInfo" Screen="Order_Info.xml" Controller="Order\Main.js">
 		</bp:Step>
-		
+
 		<bp:Step Name="Image" Screen="Image.xml" Controller="Outlets\Image.js"></bp:Step>
 
 	</bp:Workflow>
@@ -271,7 +283,7 @@
 		<bp:Step Name="Plans" Screen="PlanList.xml" Controller="Outlets\DetailsAndContacts.js"></bp:Step>
 
 		<bp:Step Name="Contact" Screen="Contact.xml" Controller="Outlets\DetailsAndContacts.js"></bp:Step>
-		
+
 		<bp:Step Name="Image" Screen="Image.xml" Controller="Outlets\Image.js"></bp:Step>
 
 	</bp:Workflow>

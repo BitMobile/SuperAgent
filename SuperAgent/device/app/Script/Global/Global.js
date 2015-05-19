@@ -59,6 +59,13 @@ function SetSessionConstants() {
 				$.sessionConst.Add("orderEnabled", true);
 			}
 		}
+		if (rights.Code=='000000006') {
+			if (rights.AccessRight==null) {
+				$.sessionConst.Add("returnEnabled", false);
+			} else {
+				$.sessionConst.Add("returnEnabled", true);
+			}
+		}
 	}
 }
 

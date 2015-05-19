@@ -7,21 +7,11 @@ function OnApplicationInit() {
 
 // ------------------------ Events ------------------------
 
-function OnLoad(screenName) {
-	if (screenName == "Outlet_Map.xml") {
-		var outlet = Variables["outlet"];
-		Variables["map"].AddMarker(outlet.Description, outlet.Lattitude,
-				outlet.Longitude, "red");
-	} else if (screenName == "ScheduledVisits_Map.xml") {
-		PrepareScheduledVisits_Map();
-	}
-}
-
 function OnWorkflowStart(name) {
 	if ($.Exists("workflow"))
 		$.Remove("workflow");
 	Variables.AddGlobal("workflow", new Dictionary());
-	if (name == "Visits" || name == "Outlets" || name=="Order") {
+	if (name == "Visits" || name == "Outlets" || name=="Order" || name=="Return") {
 		GPS.StartTracking();
 	}
 
@@ -61,9 +51,6 @@ function OnWorkflowStart(name) {
 }
 
 function OnWorkflowForward(name, lastStep, nextStep, parameters) {
-//	if (lastStep == "Order" && nextStep == "EditSKU" && Variables.Exists("AlreadyAdded") == false) {
-//		Variables.AddGlobal("AlreadyAdded", true);
-//	}
 }
 
 function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
@@ -73,32 +60,14 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 		var action;
 		action = GetAction(nextStep);
 
-//		if (nextStep == "Visit_Tasks") {
-//			action = GetAction("1");
-//		}
-//
-//		if (nextStep == "Questions") {
-//			action = GetAction("2");
-//		}
-//
-//		if (nextStep == "SKUs") {
-//			action = GetAction("3");
-//		}
-//
-//		if (nextStep == "Order") {
-//			action = GetAction("4");
-//		}
-//
-//		if (nextStep == "Receivables") {
-//			action = GetAction("5");
-//		}
-
 		if (action != null) {
 			Workflow.Action(action, []);
 			return false;
 		}
 
 	}
+
+	WriteScreenName(nextStep);
 
 	return true;
 }
@@ -141,11 +110,21 @@ function OnWorkflowFinish(name, reason) {
 	}
 }
 
+function OnWorkflowBack(workflow, lastStep, nextStep){
+	WriteScreenName(nextStep);
+}
+
 function OnWorkflowPause(name) {
 	Variables.Remove("workflow");
 }
 
 // ------------------------ Functions ------------------------
+
+function WriteScreenName(stepName){
+	if ($.workflow.HasValue("step"))
+		$.workflow.Remove("step");
+	$.workflow.Add("step", stepName);
+}
 
 function SetSteps(outlet) {
 

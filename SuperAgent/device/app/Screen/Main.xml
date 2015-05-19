@@ -51,6 +51,15 @@
 				<c:HorizontalLine />
 			</s:If>
 
+			<c:DockLayout OnClickAction="$DoAction(Return)">
+				<c:TextView CssClass="menu_text" Text="\/\/\/\"></c:TextView>
+				<c:HorizontalLayout>
+					<c:Image CssClass="btn_returns" />
+					<c:TextView Text="#returns#"></c:TextView>
+				</c:HorizontalLayout>
+			</c:DockLayout>
+			<c:HorizontalLine />
+
 			<c:DockLayout OnClickAction="$DoAction(Sync)">
 				<c:TextView Id="syncTitle" CssClass="menu_text" Text="$GetLastSyncTime()"></c:TextView>
 				<c:HorizontalLayout>

@@ -2,7 +2,7 @@
 
 function OnLoad() {
 
-	if ($.Exists("finishedWorkflow") && ($.finishedWorkflow == "Sync" || $.finishedWorkflow == "Visits" || $.finishedWorkflow == "Order" || $.finishedWorkflow == "Outlets")) {
+	if ($.Exists("finishedWorkflow") && ($.finishedWorkflow == "Sync" || $.finishedWorkflow == "Visits" || $.finishedWorkflow == "Order" || $.finishedWorkflow == "Outlets" || $.finishedWorkflow == "Return")) {
 		$.swipe_layout.Index = 0;
 	} else {
 		$.swipe_layout.Index = 1;

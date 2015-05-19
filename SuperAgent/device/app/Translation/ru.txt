@@ -273,3 +273,8 @@ show			Просмотреть
 snapshot			Фотография
 reshot			Переснять
 editChange		Изменить
+returns			Возвраты
+return			Возврат
+returnInfo		ИНФОРМАЦИЯ О ВОЗВРАТЕ
+returnSum		Сумма возврата
+skuInReturn		ВОЗВРАЩАЕМЫЕ ТОВАРЫ

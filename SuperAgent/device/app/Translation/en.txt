@@ -273,3 +273,8 @@ show			Show image
 snapshot			Snapshot
 reshot			Make another snapshot
 editChange		Edit
+returns			Returns
+return			Return
+returnInfo		RETURN INFORMATION
+returnSum		Return sum
+skuInReturn		Returning SKUs

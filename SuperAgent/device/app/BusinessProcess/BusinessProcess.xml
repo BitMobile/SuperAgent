@@ -7,6 +7,7 @@
 			<bp:Action Name="Visits" NextWorkflow="Visits"></bp:Action>
 			<bp:Action Name="Summary" NextStep="Summary"></bp:Action>
 			<bp:Action Name="Order" NextWorkflow="Order"></bp:Action>
+			<bp:Action Name="Return" NextWorkflow="Return"></bp:Action>
 			<bp:Action Name="Outlets" NextWorkflow="Outlets"></bp:Action>
 			<bp:Action Name="Stocks" NextWorkflow="Stocks"></bp:Action>
 			<bp:Action Name="ToDo" NextWorkflow="ToDo"></bp:Action>
@@ -174,6 +175,30 @@
 		</bp:Step>
 		
 		<bp:Step Name="Image" Screen="Image.xml" Controller="Outlets\Image.js"></bp:Step>
+
+	</bp:Workflow>
+
+	<bp:Workflow Name="Return" Controller="Order\Main.js">
+
+		<bp:Step Name="ReturnList" Screen="Order\OrderList.xml">
+			<bp:Action Name="Create" NextStep="Outlets"></bp:Action>
+			<bp:Action Name="Select" NextStep="Order"></bp:Action>
+		</bp:Step>
+
+		<bp:Step Name="Outlets" Screen="Outlets\Outlets.xml" Controller="Outlets\Main.js">
+			<bp:Action Name="Select" NextWorkflow="CreateReturn"></bp:Action>
+		</bp:Step>
+
+	</bp:Workflow>
+
+	<bp:Workflow Name="CreateReturn" Controller="Order\Main.js">
+
+		<bp:Step Name="CreateReturn" Screen="Order\Order.xml">
+			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
+		</bp:Step>  
+
+		<bp:Step Name="OrderInfo" Screen="Order_Info.xml" Controller="Order\Main.js">
+		</bp:Step>
 
 	</bp:Workflow>
 

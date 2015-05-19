@@ -1,10 +1,50 @@
 var itemsQty;
+var listTitle;
+var mainTitle;
+var infoTitle;
+var sumTitle;
+var skuTitle;
+
+function OnLoading(){
+
+	if ($.workflow.step=='OrderList')
+		listTitle = Translate["#orders#"];
+	else
+		listTitle = Translate["#returns#"];
+
+	if ($.workflow.step=='Order'){
+		mainTitle = Translate["#order#"];
+		infoTitle = Translate["#orderInfo#"];
+		sumTitle = Translate["#orderSum#"];
+		skuTitle = Translate["#skuInOrder#"];
+	}
+	else{
+		mainTitle = Translate["#return#"];		
+		infoTitle = Translate["#returnInfo#"];
+		sumTitle = Translate["#returnSum#"];
+		skuTitle = Translate["#skuInReturn#"];
+	}
+}
+
 
 //---------------------------UI calls----------------
 
-function GetOrderList() {
+function GetItems() {
 
-	var q = new Query("SELECT DO.Id, DO.Outlet, strftime('%d/%m/%Y', DO.Date) AS Date, DO.Number, CO.Description AS OutletDescription, DO.Status FROM Document_Order DO JOIN Catalog_Outlet CO ON DO.Outlet=CO.Id ORDER BY DO.Date DESC LIMIT 100");
+	var q = new Query();
+
+	if ($.workflow.step=='OrderList') {
+		q.Text = "SELECT DO.Id, DO.Outlet, strftime('%d/%m/%Y', DO.Date) AS Date, DO.Number, " + 
+		" CO.Description AS OutletDescription, DO.Status " +
+		" FROM Document_Order DO JOIN Catalog_Outlet CO ON DO.Outlet=CO.Id ORDER BY DO.Date DESC LIMIT 100";
+	}
+	else{
+		q.Text = "SELECT DO.Id, DO.Outlet, strftime('%d/%m/%Y', DO.Date) AS Date, DO.Number, " +
+		" CO.Description AS OutletDescription, NULL AS Status " +
+		" FROM Document_Return DO " +
+		" JOIN Catalog_Outlet CO ON DO.Outlet=CO.Id ORDER BY DO.Date DESC LIMIT 100";
+	}
+
 	return q.Execute();
 }
 
@@ -184,14 +224,31 @@ function IsEditText(isInputField, editable, order) {
 	}
 }
 
-function CreateOrderIfNotExists(order, outlet, userRef, visitId, executedOrder) {
+function CreateDocumentIfNotExists(executedOrder, visitId) {
+	var outlet = $.outlet;
+	var userRef = $.common.UserRef;
+
+
+	var order = $.workflow.HasValue("order")==true ? $.workflow.order : null;
+
+	if (order==null && $.workflow.HasValue("Return")==true)
+		order = $.workflow.Return;
+
+
 	var priceLists = GetPriceListQty(outlet);
 
 	if (executedOrder != null) {
-		return executedOrder;
+		order = executedOrder;
 	} else {
 		if (order == null) {
-			var order = DB.Create("Document.Order");
+			if ($.workflow.step=="Order") {  
+				order = DB.Create("Document.Order");
+				order.Status = DB.Current.Constant.OrderSatus.New;
+			}
+			else
+				order = DB.Create("Document.Return");
+
+			
 			order.Date = DateTime.Now;
 			if (outlet == null)
 				outlet = $.outlet;
@@ -204,7 +261,6 @@ function CreateOrderIfNotExists(order, outlet, userRef, visitId, executedOrder) 
 				order.Lattitude = location.Latitude;
 				order.Longitude = location.Longitude;
 			}
-			order.Status = DB.Current.Constant.OrderSatus.New;
 			if (visitId != null)
 				order.Visit = visitId;
 
@@ -213,12 +269,18 @@ function CreateOrderIfNotExists(order, outlet, userRef, visitId, executedOrder) 
 			if (pl != null)
 				order.PriceList = pl;
 			order.Save();
-			return order.Id;
+			order = order.Id;
 			// }
 		}
-
-		return order;
 	}
+
+	if ($.workflow.step=='Order')
+		$.workflow.Add("order", order);
+	else
+		$.workflow.Add("Return", order);
+
+	return order;
+
 }
 
 function GetPriceListRef(outlet) {
@@ -351,7 +413,7 @@ function SetDeliveryDateDialog(order, control, executedOrder, title) {
 
 function OrderBack() {
 
-	if ($.workflow.name == "CreateOrder" || $.workflow.name == "Order") {
+	if ($.workflow.name == "CreateOrder" || $.workflow.name == "Order" || $.workflow.name == "CreateReturn") {
 
 		Workflow.Rollback();
 

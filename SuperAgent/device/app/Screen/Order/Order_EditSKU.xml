@@ -1,13 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope" StyleSheet="Order_EditSKU.css">
 
-	<s:Push Id="order" Value="$workflow.order"></s:Push>
+	<s:Push Id="thisDoc" Value="$GetCurrentDoc()"></s:Push>
 	<s:Push Id="sku" Value="$param1"></s:Push>
 	<s:Push Id="price" Value="$param2"></s:Push>
-	<s:Push Id="orderitem" Value="$param3"></s:Push>
-	<s:Push Id="showimage" Value="$param5"></s:Push>
+	<s:Push Id="orderitem" Value="$param3"></s:Push> <s:Push Id="showimage" Value="$param5"></s:Push>
 	<s:Push Id="features" Value="$GetFeatures($sku.Id)"></s:Push>
-	<s:Push Id="orderitem" Value="$CreateOrderItemIfNotExist($order.Id,$sku,$orderitem,$price,$features, $param6, $param7)"></s:Push>
+	<s:Push Id="orderitem" Value="$CreateOrderItemIfNotExist($thisDoc,$sku,$orderitem,$price,$features, $param6, $param7)"></s:Push>
 	<s:Push Id="featureDescr" Value="$GetFeatureDescr($orderitem.Feature)"></s:Push>
 
 	<s:If Test="$showimage == null">
@@ -28,7 +27,7 @@
 			<c:VerticalLayout OnEvent="Back" OnClickAction="$DeleteAndBack($orderitem)">
 				<c:TextView Text="#cancel#" CssClass="left_tv"></c:TextView>
 			</c:VerticalLayout>
-			<c:VerticalLayout Id="btnAdd" OnEvent="Forward" OnClickAction="$CalculateSKUAndForward($order.Outlet, $orderitem)">
+			<c:VerticalLayout Id="btnAdd" OnEvent="Forward" OnClickAction="$CalculateSKUAndForward($thisDoc.Outlet, $orderitem)">
 				<c:TextView Text="#add#" CssClass="right_tv"></c:TextView>
 			</c:VerticalLayout>
 		</c:HorizontalLayout>

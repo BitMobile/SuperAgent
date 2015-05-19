@@ -194,11 +194,30 @@
 
 		<bp:Step Name="ReturnList" Screen="Order\OrderList.xml">
 			<bp:Action Name="Create" NextStep="Outlets"></bp:Action>
-			<bp:Action Name="Select" NextStep="Order"></bp:Action>
+			<bp:Action Name="Select" NextStep="Return"></bp:Action>
 		</bp:Step>
 
 		<bp:Step Name="Outlets" Screen="Outlets\Outlets.xml" Controller="Outlets\Main.js">
 			<bp:Action Name="Select" NextWorkflow="CreateReturn"></bp:Action>
+		</bp:Step>
+
+		<bp:Step Name="Return" Screen="Order\Order.xml">
+			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
+			<bp:Action Name="Add" NextStep="AddReturnSKU"></bp:Action>
+			<bp:Action Name="Edit" NextStep="EditReturnSKU"></bp:Action>
+		</bp:Step>
+
+		<bp:Step Name="OrderInfo" Screen="Order_Info.xml" Controller="Order\Main.js">
+		</bp:Step>
+
+		<bp:Step Name="AddReturnSKU" Screen="Order_SKUs.xml" Controller="Order\Order_SKUs.js">
+			<bp:Action Name="SetFilter" NextStep="Filters"></bp:Action>
+			<bp:Action Name="SelectSKU" NextStep="EditReturnSKU"></bp:Action>
+		</bp:Step>
+
+		<bp:Step Name="EditReturnSKU" Screen="Order_EditSKU.xml" Controller="Order\Order_EditSKU.js">
+			<bp:Action Name="Forward" NextStep="AddReturnSKU"></bp:Action>
+			<bp:Action Name="ShowImage" NextStep="Image" />
 		</bp:Step>
 
 	</bp:Workflow>
@@ -208,6 +227,7 @@
 		<bp:Step Name="Return" Screen="Order\Order.xml">
 			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
 			<bp:Action Name="Add" NextStep="AddReturnSKU"></bp:Action>
+			<bp:Action Name="Edit" NextStep="EditReturnSKU"></bp:Action>
 		</bp:Step>
 
 		<bp:Step Name="OrderInfo" Screen="Order_Info.xml" Controller="Order\Main.js">
@@ -216,11 +236,10 @@
 		<bp:Step Name="AddReturnSKU" Screen="Order_SKUs.xml" Controller="Order\Order_SKUs.js">
 			<bp:Action Name="SetFilter" NextStep="Filters"></bp:Action>
 			<bp:Action Name="SelectSKU" NextStep="EditReturnSKU"></bp:Action>
-			<bp:Action Name="Order" NextStep="Order"></bp:Action>
 		</bp:Step>
 
 		<bp:Step Name="EditReturnSKU" Screen="Order_EditSKU.xml" Controller="Order\Order_EditSKU.js">
-			<bp:Action Name="Forward" NextStep="AddReturnSKUSKU"></bp:Action>
+			<bp:Action Name="Forward" NextStep="AddReturnSKU"></bp:Action>
 			<bp:Action Name="ShowImage" NextStep="Image" />
 		</bp:Step>
 
@@ -237,7 +256,6 @@
 		<bp:Step Name="AddSKU" Screen="Order_SKUs.xml" Controller="Order\Order_SKUs.js">
 			<bp:Action Name="SetFilter" NextStep="Filters"></bp:Action>
 			<bp:Action Name="SelectSKU" NextStep="EditSKU"></bp:Action>
-			<bp:Action Name="Order" NextStep="Order"></bp:Action>
 		</bp:Step>
 
 		<bp:Step Name="Filters" Screen="Filters.xml" Controller="Order\Order_SKUs.js">

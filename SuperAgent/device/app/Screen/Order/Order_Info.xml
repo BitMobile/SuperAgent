@@ -10,7 +10,7 @@
 
 		<c:DockLayout CssClass="top_navigator">
 			<c:HorizontalLayout>
-				<c:TextView Text="#orderInfoSmall#" />
+				<c:TextView Text="@infoTitleSmall" />
 			</c:HorizontalLayout>
 		</c:DockLayout>
 

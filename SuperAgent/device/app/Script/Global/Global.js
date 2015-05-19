@@ -101,8 +101,14 @@ function ValidateField(string, regExp, fieldName){
 //--------------------------------Order functionality----------------------------
 
 function FindTwinAndUnite(orderitem) {
+	var o = orderitem.Ref.GetObject();
+	if (o.GetType == "DefaultScope.Document_Order")
+		var doc = "Document_Order_SKUs";
+	else
+		var doc = "Document_Return_SKUs";
+	
 	var q = new Query(
-			"SELECT Id FROM Document_Order_SKUs WHERE Ref=@ref AND SKU=@sku AND Discount=@discount AND Units=@units AND Feature=@feature AND Id<>@id LIMIT 1"); // AND
+			"SELECT Id FROM " + doc + " WHERE Ref=@ref AND SKU=@sku AND Discount=@discount AND Units=@units AND Feature=@feature AND Id<>@id LIMIT 1"); // AND
 																																								// Id<>@id
 	q.AddParameter("ref", orderitem.Ref);
 	q.AddParameter("sku", orderitem.SKU);

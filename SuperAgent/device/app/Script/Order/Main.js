@@ -4,6 +4,7 @@ var mainTitle;
 var infoTitle;
 var sumTitle;
 var skuTitle;
+var infoTitleSmall;
 
 function OnLoading(){
 
@@ -17,12 +18,14 @@ function OnLoading(){
 		infoTitle = Translate["#orderInfo#"];
 		sumTitle = Translate["#orderSum#"];
 		skuTitle = Translate["#skuInOrder#"];
+		infoTitleSmall = Translate["#orderInfoSmall#"];
 	}
 	else{
 		mainTitle = Translate["#return#"];
 		infoTitle = Translate["#returnInfo#"];
 		sumTitle = Translate["#returnSum#"];
 		skuTitle = Translate["#skuInReturn#"];
+		infoTitleSmall = Translate["#returnInfoSmall#"];
 	}
 }
 
@@ -298,8 +301,14 @@ function GetPriceListRef(outlet) {
 
 function GetOrderedSKUs(order) {
 
+	var doc;
+	if ($.workflow.step=="Order")
+		doc = "Order";
+	else
+		doc = "Return";
+
 	var query = new Query();
-	query.Text = "SELECT Id, SKU, Feature, Qty, Discount, Total, Units, ROUND(Qty*Total, 2) AS Amount FROM Document_Order_SKUs WHERE Ref = @Ref";
+	query.Text = "SELECT Id, SKU, Feature, Qty, Discount, Total, Units, ROUND(Qty*Total, 2) AS Amount FROM Document_" + doc + "_SKUs WHERE Ref = @Ref";
 	query.AddParameter("Ref", order);
 	var r = query.Execute().Unload();
 	itemsQty = r.Count();
@@ -307,7 +316,14 @@ function GetOrderedSKUs(order) {
 }
 
 function GetOrderSUM(order) {
-	var query = new Query("SELECT SUM(Qty*Total) FROM Document_Order_SKUs WHERE Ref = @Ref");
+
+	var doc;
+	if ($.workflow.step=="Order")
+		doc = "Order";
+	else
+		doc = "Return";
+
+	var query = new Query("SELECT SUM(Qty*Total) FROM Document_" + doc + "_SKUs WHERE Ref = @Ref");
 	query.AddParameter("Ref", order);
 	var sum = query.ExecuteScalar();
 	if (sum == null)
@@ -384,7 +400,7 @@ function CheckIfEmptyAndForward(order, wfName) {
 		save = false;
 	}
 
-	if (wfName == "CreateOrder") {
+	if (wfName == "CreateOrder" || wfName == "CreateReturn") {
 		if (save)
 			order.GetObject().Save();
 		Workflow.Commit();
@@ -415,7 +431,7 @@ function SetDeliveryDateDialog(order, control, executedOrder, title) {
 
 function OrderBack() {
 
-	if ($.workflow.name == "CreateOrder" || $.workflow.name == "Order" || $.workflow.name == "CreateReturn") {
+	if ($.workflow.name == "CreateOrder" || $.workflow.name == "Order" || $.workflow.name == "CreateReturn" || $.workflow.name == "Return") {
 
 		Workflow.Rollback();
 

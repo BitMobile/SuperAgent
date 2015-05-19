@@ -52,7 +52,7 @@
 			</s:If>
 
 			<c:DockLayout OnClickAction="$DoAction(Return)">
-				<c:TextView CssClass="menu_text" Text="\/\/\/\"></c:TextView>
+				<c:TextView CssClass="menu_text" Text="{$GetReturnQty()} | {$GetReturnSum()}"></c:TextView>
 				<c:HorizontalLayout>
 					<c:Image CssClass="btn_returns" />
 					<c:TextView Text="#returns#"></c:TextView>

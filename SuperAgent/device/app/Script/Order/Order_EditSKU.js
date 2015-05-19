@@ -1,5 +1,14 @@
 var swipedRow;
 
+function GetCurrentDoc(){
+    var d;
+    if ($.workflow.step=='EditSKU') 
+        d =  $.workflow.order;
+    else
+        d =  $.workflow.Return;
+    return d;
+}
+
 function GetMultiplier(sku, orderitem) {
 
     if (orderitem != null) {
@@ -78,7 +87,12 @@ function CreateOrderItemIfNotExist(order, sku, orderitem, price, features, recOr
                 var defaultUnit = q.Execute();
             }
 
-            var p = DB.Create("Document.Order_SKUs");
+            var p;
+            if ($.workflow.step=='EditSKU') 
+                p = DB.Create("Document.Order_SKUs");
+            else
+                p = DB.Create("Document.Return_SKUs");
+            
             p.Ref = order;
             p.SKU = sku;
             p.Feature = feature;

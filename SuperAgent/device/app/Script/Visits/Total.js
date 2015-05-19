@@ -6,11 +6,11 @@ var encashmentEnabled;
 
 function OnLoading() {
 	checkOrderReason = false;
-	checkVisitReason = false;	
-	
+	checkVisitReason = false;
+
 	orderEnabled = OptionAvailable("SkipOrder");
 	encashmentEnabled = OptionAvailable("SkipEncashment") && $.sessionConst.encashEnabled;
-	
+
 	if ($.sessionConst.NOR && NotEmptyRef($.workflow.visit.Plan) && OrderExists($.workflow.visit)==false && orderEnabled)
 		checkOrderReason = true;
 	if ($.sessionConst.UVR && IsEmptyValue($.workflow.visit.Plan))
@@ -163,14 +163,14 @@ function NextDateHandler(state, args){
 	newVistPlan.Save();
 
 	$.nextVisitControl.Text = newVistPlan.PlanDate;
-	
+
 }
 
 function VisitIsChecked(visit, order, wfName) {
-	
+
 	var result = new Dictionary();
 	result.Add("Checked", false);
-	
+
     if (checkOrderReason && visit.ReasonForNotOfTakingOrder.EmptyRef())
     	result.Add("Message", Translate["#noOrder#"]);
     else {
@@ -179,7 +179,7 @@ function VisitIsChecked(visit, order, wfName) {
         else
             result.Checked = true;
     }
-    
+
     return result;
 }
 
@@ -187,8 +187,16 @@ function DialogCallBack(control, key){
 	control.Text = key;
 }
 
-function NoQuestionnaires(noQuest, noSKUQuest) {
-	if ((noQuest && noSKUQuest) || (noQuest==null && noSKUQuest==null))
+function NoQuestionnaires() {
+	var noQuestQuery = new Query("SELECT Value FROM USR_WorkflowSteps WHERE Skip = @SkipQuestions");
+	noQuestQuery.AddParameter("SkipQuestions", "SkipQuestions");
+	var noQuest = noQuestQuery.ExecuteScalar();
+
+	var noSKUQuestQuery = new Query("SELECT Value FROM USR_WorkflowSteps WHERE Skip = @SkipSKUs");
+	noSKUQuestQuery.AddParameter("SkipSKUs", "SkipSKUs");
+	var noSKUQuest = noSKUQuestQuery.ExecuteScalar();
+
+	if ((noQuest || noSKUQuest))
 		return false;
 	else
 		return true;

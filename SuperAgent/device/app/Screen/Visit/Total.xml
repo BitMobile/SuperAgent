@@ -124,6 +124,14 @@
 				<c:HorizontalLine />
 			</s:If>
 
+			<s:If Test="@returnEnabled">
+				<c:DockLayout CssClass="parameter_grid">
+					<c:TextView Text="#returnSum#"></c:TextView>
+					<c:TextView Text="{$GetReturnSum($workflow.Return)}" CssClass="value"></c:TextView>
+				</c:DockLayout>
+				<c:HorizontalLine />
+			</s:If>
+
 			<s:If Test="@encashmentEnabled">
 				<c:DockLayout CssClass="parameter_grid">
 					<c:TextView Text="#encashmentSum#"></c:TextView>

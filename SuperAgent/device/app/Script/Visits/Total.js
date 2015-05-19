@@ -2,15 +2,17 @@
 var checkOrderReason;
 var checkVisitReason;
 var orderEnabled;
+var returnEnabled;
 var encashmentEnabled;
 
 function OnLoading() {
 	checkOrderReason = false;
-	checkVisitReason = false;	
-	
+	checkVisitReason = false;
+
 	orderEnabled = OptionAvailable("SkipOrder");
+	returnEnabled = OptionAvailable("SkipReturn");
 	encashmentEnabled = OptionAvailable("SkipEncashment") && $.sessionConst.encashEnabled;
-	
+
 	if ($.sessionConst.NOR && NotEmptyRef($.workflow.visit.Plan) && OrderExists($.workflow.visit)==false && orderEnabled)
 		checkOrderReason = true;
 	if ($.sessionConst.UVR && IsEmptyValue($.workflow.visit.Plan))
@@ -120,6 +122,13 @@ function GetOrderSUM(order) {
     return FormatValue(sum);
 }
 
+function GetReturnSum(returnDoc) {
+	var query = new Query("SELECT SUM(Qty*Total) FROM Document_Return_SKUs WHERE Ref = @Ref");
+	query.AddParameter("Ref", returnDoc);
+	var sum = query.ExecuteScalar();
+	return FormatValue(sum);
+}
+
 function CheckAndCommit(order, visit, wfName) {
 
 	var check = VisitIsChecked(visit, order, wfName);
@@ -163,14 +172,14 @@ function NextDateHandler(state, args){
 	newVistPlan.Save();
 
 	$.nextVisitControl.Text = newVistPlan.PlanDate;
-	
+
 }
 
 function VisitIsChecked(visit, order, wfName) {
-	
+
 	var result = new Dictionary();
 	result.Add("Checked", false);
-	
+
     if (checkOrderReason && visit.ReasonForNotOfTakingOrder.EmptyRef())
     	result.Add("Message", Translate["#noOrder#"]);
     else {
@@ -179,7 +188,7 @@ function VisitIsChecked(visit, order, wfName) {
         else
             result.Checked = true;
     }
-    
+
     return result;
 }
 

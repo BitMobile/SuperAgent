@@ -1,4 +1,4 @@
-﻿var parameters;
+var parameters;
 var tableName;
 var question;
 var sku;
@@ -9,7 +9,7 @@ function AddSnapshot(objectRef, valueRef, func, title, path, noPreview) { // opt
 
 	var isEmpty = true;
 	if (String.IsNullOrEmpty(valueRef)==false){ //if not empty value
-		if ((valueRef[parameters[valueRef.Metadata().TableName]])!=null && !String.IsNullOrEmpty((valueRef[parameters[valueRef.Metadata().TableName]])))
+		if ((valueRef[parameters[valueRef.Metadata().TableName]])!=null && !String.IsNullOrEmpty(ToString((valueRef[parameters[valueRef.Metadata().TableName]]))))
 			isEmpty = false;
 	}
 	if (path!=null)
@@ -75,12 +75,13 @@ function AddSnapshotHandler(state, args) {
 	}
 }
 
-function FindImage(objectID, pictID, pictExt) {
-	var sh = GetSharedImagePath(objectID, pictID, pictExt)
-	if (FileSystem.Exists(sh))
-		return sh;
-	else
-		return GetPrivateImagePath(objectID, pictID, pictExt);
+function FindImage(objectID, pictID, pictExt, filesTableName) {
+	var q = new Query("SELECT FullFileName FROM " + filesTableName + " WHERE Ref = @Ref AND FileName = @FileName");
+	q.AddParameter("Ref", objectID);
+	q.AddParameter("FileName", pictID);
+	var result = q.ExecuteScalar();
+	var sh = (String.IsNullOrEmpty(result) ? "/shared/result.jpg" : Lower(result));
+	return sh;
 }
 
 
@@ -111,10 +112,12 @@ function DeleteImage(valueRef) {
 	else{
 		var index = parameters[valueRef.Metadata().TableName];
 		var value = valueRef.GetObject();
-		value[index] = "";
 
-		if (valueRef.Metadata().TableName == "Catalog_Outlet_Snapshots")
+		if (valueRef.Metadata().TableName == "Catalog_Outlet_Snapshots") {
 			value.Deleted = true;
+		} else {
+			value[index] = "";
+		}
 
 		value.Save();
 		Workflow.Refresh([]);
@@ -174,7 +177,7 @@ function AddQuestionSnapshot(tableName, question, sku, answer, previewAllowed, t
 			listChoice.Add([2, Translate["#clearValue#"]]);
 
 		if (String.IsNullOrEmpty(answer)==false)
-			path = FindImage($.workflow.visit, answer, ".jpg");
+			path = FindImage($.workflow.visit, answer, ".jpg", "Document_Visit_Files");
 
 		Dialog.Choose(title, listChoice, AddSnapshotHandler, [$.workflow.visit, func, tableName, path, question, sku]);
 	}

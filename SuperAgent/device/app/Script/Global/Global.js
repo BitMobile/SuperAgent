@@ -52,6 +52,20 @@ function SetSessionConstants() {
 			else
 				$.sessionConst.Add("encashEnabled", true);
 		}
+		if (rights.Code=='000000005') {
+			if (rights.AccessRight==null) {
+				$.sessionConst.Add("orderEnabled", false);
+			} else {
+				$.sessionConst.Add("orderEnabled", true);
+			}
+		}
+		if (rights.Code=='000000006') {
+			if (rights.AccessRight==null) {
+				$.sessionConst.Add("returnEnabled", false);
+			} else {
+				$.sessionConst.Add("returnEnabled", true);
+			}
+		}
 	}
 }
 

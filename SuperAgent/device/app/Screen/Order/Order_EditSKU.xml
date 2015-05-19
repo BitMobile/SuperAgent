@@ -59,7 +59,7 @@
 					<c:HorizontalLine />
 					<c:VerticalLayout CssClass="60" OnClickAction="$ImageActions($image, $sku)">
 						<c:Image Id="image" Source="$GetImagePath($sku.Id, $sku.DefaultPicture, $sku.DefaultPictureExtension)" />
-					</c:VerticalLayout>					
+					</c:VerticalLayout>
 					<c:HorizontalLine />
 					<c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
 				</s:If>

@@ -61,7 +61,8 @@ function GetQuestionsByQuestionnaires(outlet) {
 function GetQuestions(single, doCnt) {
 	var q = new Query("SELECT *, " +
 			"CASE WHEN IsInputField='1' THEN Answer ELSE " +
-				"CASE WHEN (RTRIM(Answer)!='' AND Answer IS NOT NULL) THEN CASE WHEN AnswerType=@snapshot THEN @attached ELSE Answer END ELSE '—' END END AS AnswerOutput " +
+				"CASE WHEN (RTRIM(Answer)!='' AND Answer IS NOT NULL) THEN CASE WHEN AnswerType=@snapshot THEN @attached ELSE Answer END ELSE '—' END END AS AnswerOutput, " +
+				"CASE WHEN AnswerType=@snapshot THEN '1' ELSE '0' END AS IsSnapshot " +
 			"FROM USR_Questions " +
 			"WHERE Single=@single AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_Questions " +
 			"WHERE (Answer='Yes' OR Answer='Да'))) " +
@@ -207,10 +208,20 @@ function DialogCallBack(state, args) {
 function GalleryCallBack(state, args) {
 	if (args.Result) {
 		AssignAnswer(null, questionGl, state[1]);
+
+		newFile = DB.Create("Document.Visit_Files");
+		newFile.Ref = state[0];
+		newFile.FileName = state[1];
+		newFile.FullFileName = state[2];
+		newFile.Save();
+
 		Workflow.Refresh([]);
 	}
 }
 
+function GetImagePath(objectID, pictID, pictExt) {
+	return Images.FindImage(objectID, pictID, pictExt, "Document_Visit_Files");
+}
 
 function GetCameraObject(entity) {
 	FileSystem.CreateDirectory("/private/document.visit");

@@ -166,11 +166,11 @@ function SetSteps(outlet) {
 	q.AddParameter("status", outlet.OutletStatus);
 	var statusValues = q.Execute();
 	while (statusValues.Next()) {
-		if (EvaluateBoolean(statusValues.CreateOrderInMA))
+		if (EvaluateBoolean(statusValues.CreateOrderInMA) && $.sessionConst.orderEnabled)
 			InsertIntoSteps("4", "SkipOrder", false, "Order", "SKUs");
 		else
 			InsertIntoSteps("4", "SkipOrder", true, "Order", "SKUs");
-		if (EvaluateBoolean(statusValues.DoEncashmentInMA))
+		if (EvaluateBoolean(statusValues.DoEncashmentInMA) && $.sessionConst.encashEnabled)
 			InsertIntoSteps("5", "SkipEncashment", false, "Receivables", "Order");
 		else
 			InsertIntoSteps("5", "SkipEncashment", true, "Receivables", "Order");

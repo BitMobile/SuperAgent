@@ -121,7 +121,7 @@ function SetReturnSum(){
 	if (cnt == null)
 		returnSum = 0;
 	else
-		returnSum = cnt;
+		returnSum = String.Format("{0:F2}", cnt || 0);
 }
 
 function GetReturnSum(){ return returnSum };
@@ -134,7 +134,7 @@ function SetReturnQty() {
 	if (cnt == null)
 		returnQty = 0;
 	else
-		returnQty = String.Format("{0:F2}", cnt || 0);
+		returnQty = cnt;
 }
 
 function GetReturnQty(){ return returnQty; }

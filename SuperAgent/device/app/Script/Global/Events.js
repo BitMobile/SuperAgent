@@ -170,7 +170,7 @@ function SetSteps(outlet) {
 			InsertIntoSteps("4", "SkipOrder", false, "Order", "SKUs");
 		else
 			InsertIntoSteps("4", "SkipOrder", true, "Order", "SKUs");
-		if (EvaluateBoolean(statusValues.DoEncashmentInMA))
+		if (EvaluateBoolean(statusValues.DoEncashmentInMA) && $.sessionConst.encashEnabled)
 			InsertIntoSteps("5", "SkipEncashment", false, "Receivables", "Order");
 		else
 			InsertIntoSteps("5", "SkipEncashment", true, "Receivables", "Order");

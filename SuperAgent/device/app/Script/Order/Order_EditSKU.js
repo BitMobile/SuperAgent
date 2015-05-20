@@ -2,7 +2,7 @@ var swipedRow;
 
 function GetCurrentDoc(){
     var d;
-    if ($.workflow.step=='EditSKU') 
+    if ($.workflow.currentDoc=='Order') 
         d =  $.workflow.order;
     else
         d =  $.workflow.Return;
@@ -87,12 +87,7 @@ function CreateOrderItemIfNotExist(order, sku, orderitem, price, features, recOr
                 var defaultUnit = q.Execute();
             }
 
-            var p;
-            if ($.workflow.step=='EditSKU') 
-                p = DB.Create("Document.Order_SKUs");
-            else
-                p = DB.Create("Document.Return_SKUs");
-            
+            var p = DB.Create("Document." + $.workflow.currentDoc + "_SKUs");            
             p.Ref = order;
             p.SKU = sku;
             p.Feature = feature;

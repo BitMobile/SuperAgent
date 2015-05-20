@@ -18,7 +18,7 @@ function WarMupFunction() {
 
 function GetCurrentDoc(){
     var d;
-    if ($.workflow.step=='AddSKU') 
+    if ($.workflow.currentDoc=='Order') 
         d =  $.workflow.order;
     else
         d =  $.workflow.Return;
@@ -318,10 +318,7 @@ function ShowRecommendedQty(order, recOrder) {
 }
 
 function GoBackTo(){
-    if ($.workflow.step == "AddSKU")
-        Workflow.BackTo('Order');
-    else
-        Workflow.BackTo('Return');
+    Workflow.BackTo($.workflow.currentDoc);
 }
 
 // --------------------------Filters------------------

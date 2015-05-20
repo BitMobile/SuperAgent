@@ -78,7 +78,7 @@ function OnWorkflowFinish(name, reason) {
 	$.Remove("finishedWorkflow");
 	$.AddGlobal("finishedWorkflow", name);
 
-	if (name == "Visit" || name == "CreateOrder" || name=="Outlets") {
+	if (name == "Visit" || name == "CreateOrder" || name=="Outlets" || name=="CreateReturn") {
 		Variables.Remove("outlet");
 
 		if (Variables.Exists("planVisit"))
@@ -121,9 +121,17 @@ function OnWorkflowPause(name) {
 // ------------------------ Functions ------------------------
 
 function WriteScreenName(stepName){
-	if ($.workflow.HasValue("step"))
-		$.workflow.Remove("step");
-	$.workflow.Add("step", stepName);
+	if (stepName=="Order" || stepName=="Return" || stepName=="SKUs"){
+		if ($.workflow.HasValue("currentDoc"))
+			$.workflow.Remove("currentDoc");
+		$.workflow.Add("currentDoc", stepName);
+	}
+
+	if (stepName=="OrderList" || stepName=="ReturnList"){
+		if ($.workflow.HasValue("step"))
+			$.workflow.Remove("step");
+		$.workflow.Add("step", stepName);
+	}
 }
 
 function SetSteps(outlet) {

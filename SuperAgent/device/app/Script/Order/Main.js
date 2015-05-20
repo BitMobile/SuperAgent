@@ -13,7 +13,7 @@ function OnLoading(){
 	else
 		listTitle = Translate["#returns#"];
 
-	if ($.workflow.step=='Order'){
+	if ($.workflow.currentDoc=='Order'){
 		mainTitle = Translate["#order#"];
 		infoTitle = Translate["#orderInfo#"];
 		sumTitle = Translate["#orderSum#"];
@@ -246,7 +246,7 @@ function CreateDocumentIfNotExists(executedOrder, visitId) {
 		order = executedOrder;
 	} else {
 		if (order == null) {
-			if ($.workflow.step=="Order") {
+			if ($.workflow.currentDoc=="Order") {
 				order = DB.Create("Document.Order");
 				order.Status = DB.Current.Constant.OrderSatus.New;
 			}
@@ -279,7 +279,7 @@ function CreateDocumentIfNotExists(executedOrder, visitId) {
 		}
 	}
 
-	if ($.workflow.step=='Order')
+	if ($.workflow.currentDoc=='Order')
 		$.workflow.Add("order", order);
 	else
 		$.workflow.Add("Return", order);
@@ -302,7 +302,7 @@ function GetPriceListRef(outlet) {
 function GetOrderedSKUs(order) {
 
 	var doc;
-	if ($.workflow.step=="Order")
+	if ($.workflow.currentDoc=="Order")
 		doc = "Order";
 	else
 		doc = "Return";
@@ -318,7 +318,7 @@ function GetOrderedSKUs(order) {
 function GetOrderSUM(order) {
 
 	var doc;
-	if ($.workflow.step=="Order")
+	if ($.workflow.currentDoc=="Order")
 		doc = "Order";
 	else
 		doc = "Return";
@@ -440,7 +440,7 @@ function OrderBack() {
 		ClearFilters();
 
 		var stepNumber;
-		if ($.workflow.step=="Order")
+		if ($.workflow.currentDoc=="Order")
 			stepNumber = '4';
 		else
 			stepNumber = '5';

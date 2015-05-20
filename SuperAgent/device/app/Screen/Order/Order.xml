@@ -30,7 +30,7 @@
 
 		<s:If Test="$IsNew($thisDoc)">
 			<s:If Test="$NotEmptyRef($thisDoc.PriceList)">
-				<c:HorizontalLayout Id="btnAdd" CssClass="bottom_btn" OnEvent="Back" OnClickAction="$DoAction(Add)">
+				<c:HorizontalLayout Id="btnAdd" CssClass="bottom_btn" OnEvent="Back" OnClickAction="$DoAction(Add, null, $thisDoc)">
 					<c:TextView Text="#add#"></c:TextView>
 				</c:HorizontalLayout>
 				<c:HorizontalLine CssClass="b_line" />

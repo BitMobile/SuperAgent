@@ -404,12 +404,12 @@ function CheckIfEmptyAndForward(order, wfName) {
 		if (save)
 			order.GetObject().Save();
 		Workflow.Commit();
-	} else if (wfName == "Order") {
+	} else if (wfName == "Order" || wfName == "Return") {
 		if (IsNew(order)) {
 			order.GetObject().Save();
 			DB.Commit();
 		}
-		DoBackTo("OrderList");
+		DoBackTo($.workflow.currentDoc + "List");
 	} else
 		Workflow.Forward([]);
 

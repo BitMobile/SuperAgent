@@ -196,8 +196,16 @@ function DialogCallBack(control, key){
 	control.Text = key;
 }
 
-function NoQuestionnaires(noQuest, noSKUQuest) {
-	if ((noQuest && noSKUQuest) || (noQuest==null && noSKUQuest==null))
+function NoQuestionnaires() {
+	var noQuestQuery = new Query("SELECT Value FROM USR_WorkflowSteps WHERE Skip = @SkipQuestions");
+	noQuestQuery.AddParameter("SkipQuestions", "SkipQuestions");
+	var noQuest = noQuestQuery.ExecuteScalar();
+
+	var noSKUQuestQuery = new Query("SELECT Value FROM USR_WorkflowSteps WHERE Skip = @SkipSKUs");
+	noSKUQuestQuery.AddParameter("SkipSKUs", "SkipSKUs");
+	var noSKUQuest = noSKUQuestQuery.ExecuteScalar();
+
+	if ((noQuest || noSKUQuest))
 		return false;
 	else
 		return true;

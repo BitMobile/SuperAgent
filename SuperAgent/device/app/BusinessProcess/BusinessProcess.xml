@@ -190,6 +190,12 @@
 
 	</bp:Workflow>
 
+	<bp:Workflow Name="Return" Controller="Returns\Main.js">
+
+		<bp:Step Name="ReturnList" Screen="Order\OrderList.xml"></bp:Step>
+
+	</bp:Workflow>
+
 	<bp:Workflow Name="Return" Controller="Order\Main.js">
 
 		<bp:Step Name="ReturnList" Screen="Order\OrderList.xml">

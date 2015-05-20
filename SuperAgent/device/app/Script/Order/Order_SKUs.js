@@ -42,7 +42,7 @@ function GetSKUAndGroups(searchText, thisDoc) {
         groupFields = " G.Description AS GroupDescription, G.Id AS GroupId, G.Parent AS GroupParent, P.Description AS ParentDescription, ";
         groupJoin = "JOIN Catalog_SKUGroup G ON G.Id = S.Owner ";
         groupParentJoin = "LEFT JOIN Catalog_SKUGroup P ON G.Parent=P.Id ";
-        if ($.workflow.order.Stock.EmptyRef()==true){
+        if (thisDoc.Stock.EmptyRef()==true){
           groupSort = " G.Description, ";
         } else {
           groupSort = " GroupDescription, ";

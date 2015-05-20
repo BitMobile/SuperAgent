@@ -93,7 +93,7 @@ function OnWorkflowFinish(name, reason) {
 
 	Variables.Remove("workflow");
 
-	if (name=="Visit" || name=="CreateOrder"){
+	if (name=="Visit" || name=="CreateOrder" || name=="CreateReturn"){
 
 		var checkDropF = new Query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='USR_Filters'");
 

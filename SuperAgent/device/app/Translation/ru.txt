@@ -279,3 +279,4 @@ returnInfo		ИНФОРМАЦИЯ О ВОЗВРАТЕ
 returnSum		Сумма возврата
 skuInReturn		ВОЗВРАЩАЕМЫЕ ТОВАРЫ
 returnInfoSmall	Информация о возврате
+alreadyReturned	уже в возврате

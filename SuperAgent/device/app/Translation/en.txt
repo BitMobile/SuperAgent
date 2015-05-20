@@ -279,3 +279,4 @@ returnInfo		RETURN INFORMATION
 returnSum		Return sum
 skuInReturn		Returning SKUs
 returnInfoSmall	Информация о заказе
+alreadyReturned	already in return

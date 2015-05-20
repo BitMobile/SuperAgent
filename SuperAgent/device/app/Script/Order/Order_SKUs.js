@@ -5,11 +5,16 @@ var swipedRow;
 var rec_order;
 var doRecommend;
 var doGroupping;
+var alreadyOrdered;
 
 function OnLoading() {
     rec_order = "<font size=''>1576 шт.</font>";
     doGroupping = DoGroupping();
     doRecommend = DoRecommend();
+    if ($.workflow.currentDoc=="Order")
+        alreadyOrdered = Translate["#alreadyOrdered#"];
+    else
+        alreadyOrdered = Translate["#alreadyReturned#"]
 }
 
 function WarMupFunction() {
@@ -186,7 +191,7 @@ function GetQuickOrder(control, skuId, itemPrice, packField, editField, textView
         }
 
         Variables[packField].Text = packDescription;
-        Variables[textViewField].Text = quickOrderItem.Qty + " " + packDescription + " " + Translate["#alreadyOrdered#"];
+        Variables[textViewField].Text = quickOrderItem.Qty + " " + packDescription + " " + alreadyOrdered;
         multiplier = quickOrderItem.Multiplier;
 
     }
@@ -209,8 +214,11 @@ function CreateOrderItem(control, editFieldName, textFieldName, packField, sku, 
     if (String.IsNullOrEmpty(Variables[editFieldName].Text) == false) {
         if (Converter.ToDecimal(Variables[editFieldName].Text) != Converter.ToDecimal(0)) {
 
-            var p = DB.Create("Document.Order_SKUs");
-            p.Ref = $.workflow.order;
+            var p = DB.Create("Document." + $.workflow.currentDoc + "_SKUs");
+            if ($.workflow.currentDoc=="Order")
+                p.Ref = $.workflow.order;
+            else
+                p.Ref = $.workflow.Return;
             p.SKU = sku;
             p.Feature = defFeature;
             p.Price = price;
@@ -221,9 +229,9 @@ function CreateOrderItem(control, editFieldName, textFieldName, packField, sku, 
             p.Discount = 0;
             p.Save();
 
-            FindTwinAndUnite(p);
+            Global.FindTwinAndUnite(p);
 
-            var query = new Query("SELECT Qty FROM Document_Order_SKUs WHERE Ref=@ref AND SKU=@sku AND Feature=@feature AND Units=@units");
+            var query = new Query("SELECT Qty FROM Document_" + $.workflow.currentDoc + "_SKUs WHERE Ref=@ref AND SKU=@sku AND Feature=@feature AND Units=@units");
             query.AddParameter("ref", p.Ref);
             query.AddParameter("sku", p.SKU);
             query.AddParameter("feature", p.Feature);
@@ -231,7 +239,7 @@ function CreateOrderItem(control, editFieldName, textFieldName, packField, sku, 
             var qty = query.ExecuteScalar();
 
             Variables[editFieldName].Text = 0;
-            Variables[textFieldName].Text = qty + " " + packDescription + " " + Translate["#alreadyOrdered#"];
+            Variables[textFieldName].Text = qty + " " + packDescription + " " + alreadyOrdered;
         }
     }
 }
@@ -623,23 +631,3 @@ function CreateCondition(list, field) {
     return str;
 }
 
-function FindTwinAndUnite(orderitem) { // DELETE AFTER WARMUP FIXED
-	var q = new Query(
-			"SELECT Id FROM Document_Order_SKUs WHERE Ref=@ref AND SKU=@sku AND Discount=@discount AND Units=@units AND Feature=@feature AND Id<>@id LIMIT 1"); // AND
-																																								// Id<>@id
-	q.AddParameter("ref", orderitem.Ref);
-	q.AddParameter("sku", orderitem.SKU);
-	q.AddParameter("discount", orderitem.Discount);
-	q.AddParameter("units", orderitem.Units);
-	q.AddParameter("feature", orderitem.Feature);
-	q.AddParameter("id", orderitem.Id);
-	var rst = q.ExecuteCount();
-	if (parseInt(rst) != parseInt(0)) {
-		var twin = q.ExecuteScalar();
-		twin = twin.GetObject();
-		twin.Qty += orderitem.Qty;
-		twin.Save();
-		DB.Delete(orderitem.Id);
-	} else
-		orderitem.Save();
-}

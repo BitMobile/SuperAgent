@@ -238,7 +238,7 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 				query.AddParameter("outlet", outlet);
 				var snapshotId = query.ExecuteScalar();
 				var snapshotIdIsEmpty = snapshotId == null || String.IsNullOrWhiteSpace(snapshotId);
-				var source = (!snapshotIdIsEmpty ? Variables[("image"+index)].Source : null);
+				var source = (!snapshotIdIsEmpty ? Variables[("parameterImage"+index)].Source : null);
 				Images.AddSnapshot(outlet, parameterValue, SaveAtOutelt, parameterDescription, source);
 				parameterValueC = parameterValue;
 			}
@@ -247,9 +247,9 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 			}
 		}
 	}
-	if ($.Exists("image"+index)){
+	if ($.Exists("parameterImage"+index)){
 		if (typeDescription == "Snapshot" && (parseInt(editable)==parseInt(0) || !$.sessionConst.editOutletParameters)){
-			Workflow.Action("ShowImage", [Variables[("image"+index)].Source, parameter, "Value", true])
+			Workflow.Action("ShowImage", [Variables[("parameterImage"+index)].Source, parameter, "Value", true])
 		}
 	}
 }

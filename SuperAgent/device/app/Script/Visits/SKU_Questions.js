@@ -70,9 +70,6 @@ function CountResultAndForward() {
 	var a = regular_answ + single_answ;
 	$.workflow.Add("questions_answ_sku", a);
 
-	del = new Query("DELETE FROM USR_Filters");
-	del.Execute();
-
 	Workflow.Forward([]);
 }
 

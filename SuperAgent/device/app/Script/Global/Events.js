@@ -67,6 +67,9 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 
 	}
 
+	if (NextDoc(lastStep, nextStep))
+		Global.ClearFilter();
+
 	WriteScreenName(nextStep);
 
 	return true;
@@ -94,24 +97,14 @@ function OnWorkflowFinish(name, reason) {
 	Variables.Remove("workflow");
 
 	if (name=="Visit" || name=="CreateOrder" || name=="CreateReturn"){
-
-		var checkDropF = new Query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='USR_Filters'");
-
-		var checkDropFResult = checkDropF.ExecuteScalar();
-
-		if (checkDropFResult == 1) {
-
-			var dropF = new Query("DELETE FROM USR_Filters");
-
-			dropF.Execute();
-
-		}
-
+		Global.ClearFilter();
 	}
 }
 
 function OnWorkflowBack(workflow, lastStep, nextStep){
 	WriteScreenName(nextStep);
+	if (NextDoc(lastStep, nextStep))
+		Global.ClearFilter();
 }
 
 function OnWorkflowPause(name) {
@@ -119,6 +112,17 @@ function OnWorkflowPause(name) {
 }
 
 // ------------------------ Functions ------------------------
+
+function NextDoc(lastStep, nextStep){
+	next = false;
+	
+	if ((lastStep=="SKUs" && nextStep=="Order") || (nextStep=="SKUs" && lastStep=="Order"))
+		next = true;
+	if ((lastStep=="Order" && nextStep=="Return") || (nextStep=="Order" && lastStep=="Return"))
+		next = true;
+
+	return next;
+}
 
 function WriteScreenName(stepName){
 	if (stepName=="Order" || stepName=="Return" || stepName=="SKUs"){

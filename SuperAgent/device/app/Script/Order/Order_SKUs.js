@@ -17,10 +17,10 @@ function WarMupFunction() {
 }
 
 function GetCurrentDoc(){
-    var d;
+    var d = DB.EmptyRef("Document_Order");
     if ($.workflow.currentDoc=='Order') 
         d =  $.workflow.order;
-    else
+    if ($.workflow.currentDoc=='Return')
         d =  $.workflow.Return;
     return d;
 }

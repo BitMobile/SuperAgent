@@ -127,6 +127,16 @@ function FindTwinAndUnite(orderitem) {
 		orderitem.Save();
 }
 
+function ClearFilter(){
+	var checkDropF = new Query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='USR_Filters'");
+	var checkDropFResult = checkDropF.ExecuteScalar();
+	
+	if (checkDropFResult == 1) {
+		var dropF = new Query("DELETE FROM USR_Filters");
+		dropF.Execute();
+	}
+}
+
 //------------------------Queries common functions------------------------------
 
 function CreateUserTableIfNotExists(name) {

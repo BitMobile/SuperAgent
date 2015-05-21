@@ -544,7 +544,7 @@ function DoPriceListCallback(state, args) {
 	var newPriceList = args.Result;
 
 	if (OrderWillBeChanged(entity, newPriceList)) {
-		Dialog.Ask(Translate["#skuWillBeDeleted#"], PositiveCallback, [entity, newPriceList, state[2]]);
+		Dialog.Ask(Translate["#" + $.workflow.currentDoc + "skuWillBeDeleted#"], PositiveCallback, [entity, newPriceList, state[2]]);
 	}
 	else {
 		var control = state[2];
@@ -603,7 +603,7 @@ function ReviseSKUs(order, priceList, stock) {
 	var q = new Query("SELECT Id FROM Document_" + $.workflow.currentDoc + "_SKUs WHERE Ref=@ref");
 	q.AddParameter("ref", entity);
 	if (parseInt(q.ExecuteCount()) != parseInt(0))
-		Dialog.Message(Translate["#SKUWillRevised#"]);
+		Dialog.Message(Translate["#" + $.workflow.currentDoc + "SKUWillRevised#"]);
 
 	var query = new Query();
 	query.Text = "SELECT O.Id, O.Qty, O.Discount, O.Price, O.Total, " + 

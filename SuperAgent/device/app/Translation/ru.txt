@@ -146,7 +146,7 @@ current		Текущие
 couldnt_be_cleaned	Поле не может быть очищено
 priceList	Прайс-лист
 isntSelected	Не выбран
-SKUWillRevised	Заказ пересчитан
+OrderSKUWillRevised	Заказ пересчитан
 features	ХАРАКТЕРИСТИКИ
 noPriceLists	Нет прайс-листов
 emptyList	Список пуст
@@ -256,7 +256,7 @@ choose_action	Выберите действие:
 skuAdd			Добавление номенклатуры
 skuDetail		Подробно
 skuList			СПИСОК ТОВАРОВ
-skuWillBeDeleted	Часть товаров из заказа будет удалена. Продолжить?
+OrderskuWillBeDeleted	Часть товаров из заказа будет удалена. Продолжить?
 logout			Выход
 logoutQuery		При выходе будут удалены все данные
 cancel			Отменить
@@ -280,3 +280,5 @@ returnSum		Сумма возврата
 skuInReturn		ВОЗВРАЩАЕМЫЕ ТОВАРЫ
 returnInfoSmall	Информация о возврате
 alreadyReturned	уже в возврате
+ReturnskuWillBeDeleted	Часть товаров из возврата будет удалена. Продолжить?
+ReturnSKUWillRevised	Возврат пересчитан

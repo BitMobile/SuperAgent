@@ -23,6 +23,7 @@ function GetOutlets(searchText) {
 	var search = "";
 	var showOutlet = "";
 	var createOrder ="";
+	var createReturn = "";
 	var q = new Query();
 
 	if (String.IsNullOrEmpty(searchText)==false) { //search processing
@@ -38,6 +39,10 @@ function GetOutlets(searchText) {
 		createOrder = " JOIN Catalog_OutletsStatusesSettings OS ON OS.Status=O.OutletStatus AND CreateOrderInMA=1 ";
 	}
 
+	if ($.workflow.name=="Return"){
+		createReturn = " JOIN Catalog_OutletsStatusesSettings OS ON OS.Status=O.OutletStatus AND CreateReturnInMA=1 ";
+	}
+
 	q.Text = "SELECT O.Id, O.Description, O.Address," +
 		"(SELECT CASE WHEN COUNT(DISTINCT D.Overdue) = 2 THEN 2	WHEN COUNT(DISTINCT D.Overdue) = 0 THEN 3 " +
 		"ELSE (SELECT D1.Overdue FROM Document_AccountReceivable_ReceivableDocuments D1 " +
@@ -45,7 +50,7 @@ function GetOutlets(searchText) {
 		"FROM Document_AccountReceivable_ReceivableDocuments D JOIN Document_AccountReceivable A ON D.Ref=A.Id " +
 		"WHERE A.Outlet=O.Id) AS OutletStatus"+
 		" FROM Catalog_Outlet O " +
-		showOutlet + createOrder + search + " ORDER BY O.Description LIMIT 500";
+		showOutlet + createOrder + createReturn + search + " ORDER BY O.Description LIMIT 500";
 
 	return q.Execute();
 }

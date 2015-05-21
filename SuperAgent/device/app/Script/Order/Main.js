@@ -573,7 +573,7 @@ function OrderWillBeChanged(order, newPriceList) {
 		"SELECT DISTINCT                                \
 		    O.SKU																				\
 		FROM                                            \
-		    Document_Order_SKUs O                       \
+		    Document_" + $.workflow.currentDoc + "_SKUs O                       \
 				LEFT JOIN Document_PriceList_Prices P       \
 				    ON O.SKU = P.SKU                        \
 						AND P.Ref = @priceList                  \
@@ -600,20 +600,26 @@ function StockSelectHandler(state, args) {
 
 function ReviseSKUs(order, priceList, stock) {
 
-	var q = new Query("SELECT Id FROM Document_Order_SKUs WHERE Ref=@ref");
+	var q = new Query("SELECT Id FROM Document_" + $.workflow.currentDoc + "_SKUs WHERE Ref=@ref");
 	q.AddParameter("ref", entity);
 	if (parseInt(q.ExecuteCount()) != parseInt(0))
 		Dialog.Message(Translate["#SKUWillRevised#"]);
 
 	var query = new Query();
-	query.Text = "SELECT O.Id, O.Qty, O.Discount, O.Price, O.Total, " + " O.Amount, P.Price AS NewPrice, SS.StockValue AS NewStock, SP.Multiplier " + " FROM Document_Order_SKUs O " + " LEFT JOIN Document_PriceList_Prices P ON O.SKU=P.SKU AND P.Ref = @priceList " + " LEFT JOIN Catalog_SKU_Stocks SS ON SS.Ref=O.SKU AND SS.Stock = @stock " + " JOIN Catalog_SKU_Packing SP ON O.Units=SP.Pack AND SP.Ref=O.SKU " + " WHERE O.Ref=@order";
+	query.Text = "SELECT O.Id, O.Qty, O.Discount, O.Price, O.Total, " + 
+	" O.Amount, P.Price AS NewPrice, SS.StockValue AS NewStock, SP.Multiplier " + 
+	" FROM Document_" + $.workflow.currentDoc + "_SKUs O " + 
+	" LEFT JOIN Document_PriceList_Prices P ON O.SKU=P.SKU AND P.Ref = @priceList " + 
+	" LEFT JOIN Catalog_SKU_Stocks SS ON SS.Ref=O.SKU AND SS.Stock = @stock " + 
+	" JOIN Catalog_SKU_Packing SP ON O.Units=SP.Pack AND SP.Ref=O.SKU " + 
+	" WHERE O.Ref=@order";
 	query.AddParameter("order", order);
 	query.AddParameter("priceList", priceList);
 	query.AddParameter("stock", stock);
 	var SKUs = query.Execute();
 
 	while (SKUs.Next()) {
-		if (SKUs.NewStock == null && $.workflow.order.Stock.EmptyRef() == false)
+		if (SKUs.NewStock == null && order.Stock.EmptyRef() == false)
 			DB.Delete(SKUs.Id);
 		else {
 			if (SKUs.NewPrice == null)

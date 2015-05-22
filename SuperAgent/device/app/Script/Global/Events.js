@@ -115,7 +115,7 @@ function OnWorkflowPause(name) {
 
 function NextDoc(lastStep, nextStep){
 	next = false;
-	
+
 	if ((lastStep=="SKUs" && nextStep=="Order") || (nextStep=="SKUs" && lastStep=="Order"))
 		next = true;
 	if ((lastStep=="Order" && nextStep=="Return") || (nextStep=="Order" && lastStep=="Return"))
@@ -166,7 +166,7 @@ function SetSteps(outlet) {
 		}
 		else
 			InsertIntoSteps("5", "SkipReturn", true, "Return", "Order");
-		if (EvaluateBoolean(statusValues.DoEncashmentInMA))
+		if (EvaluateBoolean(statusValues.DoEncashmentInMA) && $.sessionConst.encashEnabled)
 			InsertIntoSteps("6", "SkipEncashment", false, "Receivables", "Return");
 		else
 			InsertIntoSteps("6", "SkipEncashment", true, "Receivables", "Return");

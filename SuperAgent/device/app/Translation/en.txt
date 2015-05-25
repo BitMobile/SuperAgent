@@ -282,3 +282,4 @@ returnInfoSmall	Информация о заказе
 alreadyReturned	already in return
 ReturnskuWillBeDeleted	Part of SKUs will be removed from return. Continue?
 ReturnSKUWillRevised	SKU list has been revised
+imageNotAvailable	Image not available now

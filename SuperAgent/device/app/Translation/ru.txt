@@ -282,3 +282,4 @@ returnInfoSmall	Информация о возврате
 alreadyReturned	уже в возврате
 ReturnskuWillBeDeleted	Часть товаров из возврата будет удалена. Продолжить?
 ReturnSKUWillRevised	Возврат пересчитан
+imageNotAvailable	В данный момент изображение недоступно

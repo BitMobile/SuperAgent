@@ -97,7 +97,9 @@
 									<c:Image Id="image{$index}" Source="$GetImagePath($outlet, $snapshot.FileName, .jpg)" />
 								</s:If>
 								<s:Else>
-									<c:TextView CssClass="main_row" Text="Hi"></c:TextView>
+									<c:VerticalLayout CssClass="no_image">
+										
+									</c:VerticalLayout>
 								</s:Else>
 							</c:VerticalLayout>
 						</s:Iterator>

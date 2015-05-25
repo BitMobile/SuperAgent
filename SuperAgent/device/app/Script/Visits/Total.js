@@ -212,7 +212,10 @@ function NoQuestionnaires() {
 }
 
 function NoTasks(skipTasks) {
-	if (skipTasks)
+	var noTaskQuery = new Query("SELECT Value FROM USR_WorkflowSteps WHERE Skip = @SkipTask");
+	noTaskQuery.AddParameter("SkipTask", "SkipTask");
+	var noTask = noTaskQuery.ExecuteScalar();
+	if (noTask)
 		return false;
 	else
 		return true;

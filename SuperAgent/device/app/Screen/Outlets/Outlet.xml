@@ -98,7 +98,8 @@
 								</s:If>
 								<s:Else>
 									<c:VerticalLayout CssClass="no_image">
-										
+										<c:Image />
+										<c:TextView Text="#imageNotAvailable#" CssClass="text"></c:TextView>
 									</c:VerticalLayout>
 								</s:Else>
 							</c:VerticalLayout>

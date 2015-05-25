@@ -106,7 +106,7 @@
 				<c:HorizontalLine />
 			</s:If>
 
-			<s:If Test="$NoTasks($workflow.skipTasks)">
+			<s:If Test="$NoTasks()">
 				<c:DockLayout CssClass="parameter_grid">
 					<s:Push Id="todoDone" Value="$CountDoneTasks($workflow.visit)"></s:Push>
 					<s:Push Id="todo" Value="$CountTasks($workflow.outlet)"></s:Push>

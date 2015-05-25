@@ -234,11 +234,16 @@ function CreateDocumentIfNotExists(executedOrder, visitId) {
 	var userRef = $.common.UserRef;
 
 
-	var order = $.workflow.HasValue("order")==true ? $.workflow.order : null;
+	// var order = $.workflow.HasValue("order")==true ? $.workflow.order : null;
 
-	if (order==null && $.workflow.HasValue("Return")==true)
-		order = $.workflow.Return;
-
+	// if (order==null && $.workflow.HasValue("Return")==true)
+	// 	order = $.workflow.Return;
+	
+	var order;
+	if ($.workflow.currentDoc=="Order")
+		order = $.workflow.HasValue("order")==true ? $.workflow.order : null;
+	if ($.workflow.currentDoc=="Return")
+		order = $.workflow.HasValue("Return")==true ? $.workflow.Return : null;
 
 	var priceLists = GetPriceListQty(outlet);
 

@@ -13,7 +13,7 @@
 			</c:DockLayout>
 			<c:DockLayout CssClass="btn_space" >
 				<c:TextView Id="btnForward" Text="" />
-			</c:DockLayout>			
+			</c:DockLayout>
 			<c:HorizontalLayout>
 				<c:TextView Text="@listTitle" />
 			</c:HorizontalLayout>

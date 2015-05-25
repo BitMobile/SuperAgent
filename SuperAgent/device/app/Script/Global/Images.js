@@ -84,6 +84,15 @@ function FindImage(objectID, pictID, pictExt, filesTableName) {
 	return sh;
 }
 
+function SnapshotExists(objectID, pictID, filesTableName) {
+	var q = new Query("SELECT FullFileName FROM " + filesTableName + " WHERE Ref = @Ref AND FileName = @FileName");
+	q.AddParameter("Ref", objectID);
+	q.AddParameter("FileName", pictID);
+	var path = q.ExecuteScalar();
+	var pathFound = !String.IsNullOrEmpty(path);
+	var fileByPathExists = (pathFound ? FileSystem.Exists(path) : false);
+	return pathFound && fileByPathExists;
+}
 
 function ChooseFromGallery(objRef, func) {
 	FileSystem.CreateDirectory(String.Format("/private/{0}", GetParentFolderName(objRef)));

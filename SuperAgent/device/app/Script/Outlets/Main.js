@@ -573,7 +573,7 @@ function BackMenu(){
 	if ($.workflow.name=='Order' || $.workflow.name=='Return')
 		return true;
 	else
-		return false;	
+		return false;
 }
 
 function CommitAndBack(){
@@ -661,6 +661,10 @@ function AssignDialogValue(state, args) {
 	entity[attribute] = args.Result;
 	entity.GetObject().Save();
 	return entity;
+}
+
+function SnapshotExists(outlet, filename, filesTableName) {
+	return Images.SnapshotExists(outlet, filename, filesTableName);
 }
 
 //------------------------------Temporary, from global----------------

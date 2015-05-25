@@ -93,7 +93,12 @@
 						<s:Iterator Id="snapshot" Value="$snapshots" Status="statusCount">
 							<s:Push Id="index" Value="$statusCount.Index" />
 							<c:VerticalLayout OnClick="$ImageActions($snapshot.Id, image{$index}, $outlet, $snapshot.FileName)">
-								<c:Image Id="image{$index}" Source="$GetImagePath($outlet, $snapshot.FileName, .jpg)" />
+								<s:If Test="$SnapshotExists($outlet, $snapshot.FileName, Catalog_Outlet_Files)">
+									<c:Image Id="image{$index}" Source="$GetImagePath($outlet, $snapshot.FileName, .jpg)" />
+								</s:If>
+								<s:Else>
+									<c:TextView CssClass="main_row" Text="Hi"></c:TextView>
+								</s:Else>
 							</c:VerticalLayout>
 						</s:Iterator>
 					</c:SwipeHorizontalLayout>

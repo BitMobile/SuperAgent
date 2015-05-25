@@ -510,6 +510,11 @@ function EditIfNew(order, param1, param2, param3) {
 	}
 }
 
+function FormatDate(datetime) {
+	return Format("{g}", Date(datetime));
+}
+
+
 // ----------------------------------Functions---------------------------
 
 function GetStock(userRef) {

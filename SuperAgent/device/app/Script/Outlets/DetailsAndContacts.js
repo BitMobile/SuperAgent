@@ -161,3 +161,7 @@ function CreateOwnershipDictionary() {
 	d.Add("TSJ", "ТСЖ");
 	return d;
 }
+
+function FormatDate(datetime) {
+	return Format("{g}", Date(datetime));
+}

@@ -7,7 +7,7 @@
 }
 
 function GetNotExecutedTasks(visit) {
-	var q = new Query("SELECT DT.Id, STRFTIME('%d/%m/%Y', DT.PlanDate) AS PlanDate, DT.TextTask, DT.Target FROM Document_Task DT LEFT JOIN Document_Visit_Task VT ON DT.Id = VT.TaskRef AND VT.Ref = @ref AND VT.Result=@result WHERE DT.PlanDate >= @planDate AND DT.Outlet = @outlet AND VT.Id IS NULL ORDER BY DT.PlanDate");
+	var q = new Query("SELECT DT.Id, DT.PlanDate, DT.TextTask, DT.Target FROM Document_Task DT LEFT JOIN Document_Visit_Task VT ON DT.Id = VT.TaskRef AND VT.Ref = @ref AND VT.Result=@result WHERE DT.PlanDate >= @planDate AND DT.Outlet = @outlet AND VT.Id IS NULL ORDER BY DT.PlanDate");
 	q.AddParameter("planDate", DateTime.Now.Date);
 	q.AddParameter("outlet", visit.Outlet);
 	q.AddParameter("ref", visit);
@@ -55,8 +55,8 @@ function RetrieveTask(executedTask) {
 		Workflow.Refresh([]);
 }
 
-function GetDate(datetime) {
-	return (datetime.Date).ToString("dd/MM/yyyy");
+function FormatDate(datetime) {
+	return Format("{g}", Date(datetime));
 }
 
 function GetTargetText(text) {

@@ -23,7 +23,7 @@ function WarMupFunction() {
 
 function GetCurrentDoc(){
     var d = DB.EmptyRef("Document_Order");
-    if ($.workflow.currentDoc=='Order') 
+    if ($.workflow.currentDoc=='Order')
         d =  $.workflow.order;
     if ($.workflow.currentDoc=='Return')
         d =  $.workflow.Return;
@@ -165,10 +165,10 @@ function GetQuickOrder(control, skuId, itemPrice, packField, editField, textView
                 "JOIN Catalog_SKU_Packing SP ON S.Id=SP.Ref " +
                 "JOIN Catalog_SKU_Stocks BF ON BF.Ref=S.Id AND BF.LineNumber=1 " +
                 "JOIN Catalog_UnitsOfMeasure U ON SP.Pack=U.Id " +
-                "LEFT JOIN Document_Order_SKUs O ON O.Ref=@order AND O.SKU = S.Id " +
+                "LEFT JOIN Document_" + $.workflow.currentDoc + "_SKUs O ON O.Ref=@order AND O.SKU = S.Id " +
                     "AND O.Feature=BF.Feature AND O.Units=SP.Pack " +
                 "WHERE S.Id=@sku AND SP.Pack=@pack"
-        query.AddParameter("order", $.workflow.order);
+        query.AddParameter("order", ($.workflow.currentDoc == "Order" ? $.workflow.order : $.workflow.Return));
         query.AddParameter("sku", skuId);
         if (recUnit==null){
             var q = new Query("SELECT Pack FROM Catalog_SKU_Packing WHERE Ref=@ref AND LineNumber=1");
@@ -630,4 +630,3 @@ function CreateCondition(list, field) {
 
     return str;
 }
-

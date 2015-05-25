@@ -401,7 +401,12 @@ function CheckIfEmptyAndForward(order, wfName) {
 		while (queryResult.Next()) {
 			DB.Delete(queryResult.Id);
 		}
-		$.workflow.Remove("order");
+
+		if ($.workflow.currentDoc=="Order")
+			$.workflow.Remove("order");
+		if ($.workflow.currentDoc=="Return")
+			$.workflow.Remove("Return");
+
 		save = false;
 	}
 

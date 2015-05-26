@@ -801,3 +801,34 @@ MemoEdit {
 	margin-left: 0%;
 	font: 15% Arial;
 }
+
+.no_image{
+	background-color: #eeeeee;
+	height: 100%;
+	width: 45.7mm;
+	margin-top: 0.5mm;
+	margin-bottom: 2.3mm;
+	margin-left: 3mm;
+	margin-right: 3mm;
+}
+
+.no_image TextView {
+	height: 100%;
+	width: 25mm;
+	color: #8e8e93;
+	text-align: center;
+	horizontal-align: central;
+	padding-top: 1mm;
+	padding-left: 2mm;
+	padding-right: 2mm;
+	white-space: normal;
+	font: 20px arial;
+}
+
+.no_image img {
+	height: 120px;
+	width: 120px;
+	background-image: url(no_image_big.png);
+	margin-top: 3mm;
+	horizontal-align: center;
+}

@@ -72,3 +72,11 @@
 .black_text{
 	color: #000000;
 }
+
+.no_image {
+	margin-top: 2mm;
+}
+
+.no_image img {
+	margin-top: 4mm;
+}

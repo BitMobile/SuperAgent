@@ -220,7 +220,14 @@
 									<c:TextView Text="#noSnapshot#" CssClass="value"></c:TextView>
 								</s:If>
 								<s:Else>
-									<c:Image Id="parameterImage{$index}" Source="$GetImagePath($outlet, $parameter.Value, .jpg)" CssClass="parameter_image" />
+									<s:If Test="$SnapshotExists($outlet, $parameter.Value, Catalog_Outlet_Files)">
+										<c:Image Id="parameterImage{$index}" Source="$GetImagePath($outlet, $parameter.Value, .jpg)" CssClass="parameter_image" />
+									</s:If>
+									<s:Else>
+										<c:VerticalLayout CssClass="no_image_small">
+											<c:Image Id="parameterImage{$index}" />
+										</c:VerticalLayout>
+									</s:Else>
 								</s:Else>
 							</s:If>
 							<s:Else>

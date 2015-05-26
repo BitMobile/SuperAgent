@@ -432,7 +432,7 @@ function SaveOrder(order) {
 
 function SetDeliveryDateDialog(order, control, executedOrder, title) {
 	if (IsNew(order) && NotEmptyRef(order.PriceList))
-		Dialogs.ChooseDateTime(order, "DeliveryDate", control, null, title);
+		Dialogs.ChooseDateTime(order, "DeliveryDate", control, DeliveryDateCallBack, title);
 }
 
 //function DialogCallBack(control, key) {
@@ -511,7 +511,7 @@ function EditIfNew(order, param1, param2, param3) {
 }
 
 function FormatDate(datetime) {
-	return Format("{g}", Date(datetime));
+	return Format("{0:g}", Date(datetime));
 }
 
 
@@ -581,6 +581,11 @@ function PositiveCallback(state, args) {
 
 	control.Text = priceList.Description;
 	ReviseSKUs(order.Id, priceList, order.Stock);
+}
+
+function DeliveryDateCallBack(state, args){
+	AssignDialogValue(state, args);
+	$.deliveryDate.Text = Format("{0:g}", Date(args.Result));
 }
 
 function OrderWillBeChanged(order, newPriceList) {

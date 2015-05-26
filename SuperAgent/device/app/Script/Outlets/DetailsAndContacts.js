@@ -163,5 +163,5 @@ function CreateOwnershipDictionary() {
 }
 
 function FormatDate(datetime) {
-	return Format("{g}", Date(datetime));
+	return Format("{0:g}", Date(datetime));
 }

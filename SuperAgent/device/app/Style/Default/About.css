@@ -50,3 +50,21 @@
 	width: 74%;
 	color: #000000;
 }
+
+.grid{
+	background-color: #efeff4;
+}
+
+.add_button{
+	width: 13.5mm;
+	height: 4.1mm;
+	vertical-align: central;
+	margin-top: 10%;
+	border-style : solid;
+	border-width: 1px;
+	border-color: #43acfd;
+	border-radius: 5px;
+	color: #2d89cf;
+	text-align: center;
+	font: 60% arial;
+}

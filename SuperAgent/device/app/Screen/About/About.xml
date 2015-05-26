@@ -67,6 +67,12 @@
 			<c:HorizontalLine/>
 			
 			<c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout> -->
+
+			<c:DockLayout CssClass="grid">
+				<c:VerticalLayout>
+					<c:Button OnClick="$SendLog()" Text="#send#" CssClass="add_button" />
+				</c:VerticalLayout>
+			</c:DockLayout>
 			
 		</c:ScrollView>
 

@@ -282,3 +282,6 @@ returnInfoSmall	Информация о заказе
 alreadyReturned	already in return
 ReturnskuWillBeDeleted	Part of SKUs will be removed from return. Continue?
 ReturnSKUWillRevised	SKU list has been revised
+send			Send log
+success			Данные успешно отправлены
+noSuccess		Произошла ошибка во время отправки. Данные не отправлены

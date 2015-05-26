@@ -249,6 +249,9 @@ function ObligatedAnswered(answer, obligatoriness) {
 	return false;
 }
 
+function SnapshotExists(visit, filename, filesTableName) {
+	return Images.SnapshotExists(visit, filename, filesTableName);
+}
 
 //--------------------------------Gallery handlers----------------
 

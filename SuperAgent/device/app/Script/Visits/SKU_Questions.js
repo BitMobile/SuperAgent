@@ -225,13 +225,16 @@ function GetChilds(sku) {
 }
 
 function GetImagePath(objectID, pictID, pictExt) {
-		return Images.FindImage(objectID, pictID, pictExt, "Document_Visit_Files");
+	return Images.FindImage(objectID, pictID, pictExt, "Document_Visit_Files");
 }
 
 function RefreshScreen(control, search) {
 	Workflow.Refresh([search]);
 }
 
+function SnapshotExists(visit, filename, filesTableName) {
+	return Images.SnapshotExists(visit, filename, filesTableName);
+}
 // ------------------------SKU----------------------
 
 function CreateItemAndShow(control, sku, index, showChild) {

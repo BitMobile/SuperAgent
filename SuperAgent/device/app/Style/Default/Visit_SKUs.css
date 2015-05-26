@@ -86,6 +86,7 @@
 	width: 100%;
 	background-color: #efeff4;
 	selected-color: #bacdce;
+	padding-bottom: 2.4mm;
 }
 
 .child_grid vl{
@@ -94,6 +95,7 @@
 	padding-top: 2.4mm;
 	padding-left: 2.4mm;
 	background-color: #efeff4;
+	horizontal-align: right;
 	padding-left: 10%;
 }
 
@@ -254,5 +256,40 @@
 	width: 50px;
 	background-image: url(no_image_small.png);
 	margin-top: 3mm;
+	horizontal-align: center;
+}
+
+.no_child_answer {
+	height: 100%;
+	width: 10mm;
+	horizontal-align: right;
+	margin-right: 0px;
+	background-color: #dddddd;
+}
+
+.no_child_answer img {
+	background-image: url(small_camera.png);
+	width: 50px;
+	height: 50px;
+	horizontal-align: center;
+	margin-top: 2.5mm;
+}
+
+.no_child_image{
+	background-color: #dddddd;
+	height: 100%;
+	width: 12mm;
+	horizontal-align: right;
+	margin-top: 0mm;
+	margin-bottom: 0mm;
+	margin-left: 0mm;
+	margin-right: 0mm;
+}
+
+.no_child_image img {
+	height: 50px;
+	width: 50px;
+	background-image: url(no_image_small.png);
+	margin-top: 2mm;
 	horizontal-align: center;
 }

@@ -97,10 +97,10 @@
 					<s:If Test="$question.IsSnapshot==1">
 						<c:HorizontalLayout OnClickAction="$GoToQuestionAction($question.AnswerType, $visit, control{$index}, $question.Question, $question.Answer, $question.Description)">
 							<c:TextView Text="$question.Description" CssClass="description_row"></c:TextView>
-							<s:If Test="$String.IsNullOrEmpty($question.Answer)">
+							<s:If Test="$IsNullOrEmpty($question.Answer)">
 								<c:VerticalLayout>
 									<c:VerticalLayout CssClass="no_answer">
-										<c:Image />
+										<c:Image Id="control{$index}" />
 									</c:VerticalLayout>
 								</c:VerticalLayout>
 							</s:If>

@@ -42,7 +42,6 @@ function HideSwiped()
 }
 
 function GetFeatures(sku) {
-    Dialog.Debug($.sessionConst.SKUFeaturesRegistration);
     var query = new Query(
             "SELECT DISTINCT Feature FROM Catalog_SKU_Stocks WHERE Ref=@Ref ORDER BY LineNumber");
     query.AddParameter("Ref", sku);

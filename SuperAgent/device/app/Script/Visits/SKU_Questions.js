@@ -224,16 +224,24 @@ function GetChilds(sku) {
 	return q.Execute();
 }
 
-function GetImagePath(objectID, pictID, pictExt) {
-	return Images.FindImage(objectID, pictID, pictExt, "Document_Visit_Files");
+function GetImagePath(visitID, outletID, pictID, pictExt) {
+	Dialog.Debug("visitID: " + visitID);
+	Dialog.Debug("outletID: " + outletID);
+	Dialog.Debug("pictID: " + pictID);
+	var pathFromVisit = Images.FindImage(visitID, pictID, pictExt, "Document_Visit_Files");
+	var pathFromOutlet = Images.FindImage(outletID, pictID, pictExt, "Catalog_Outlet_Files");
+	Dialog.Debug(pathFromVisit == "/shared/result.jpg" ? pathFromOutlet : pathFromVisit)
+	return (pathFromVisit == "/shared/result.jpg" ? pathFromOutlet : pathFromVisit);
 }
 
 function RefreshScreen(control, search) {
 	Workflow.Refresh([search]);
 }
 
-function SnapshotExists(visit, filename, filesTableName) {
-	return Images.SnapshotExists(visit, filename, filesTableName);
+function SnapshotExists(visit, outlet, filename) {
+	existsInVisit = Images.SnapshotExists(visit, filename, "Document_Visit_Files");
+	existsInOutlet = Images.SnapshotExists(outlet, filename, "Catalog_Outlet_Files");
+	return existsInVisit || existsInOutlet;
 }
 // ------------------------SKU----------------------
 

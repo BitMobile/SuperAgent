@@ -105,9 +105,9 @@
 								</c:VerticalLayout>
 							</s:If>
 							<s:Else>
-								<s:If Test="$SnapshotExists($visit, $question.Answer, Document_Visit_Files)">
+								<s:If Test="$SnapshotExists($visit, $outlet, $question.Answer)">
 									<c:VerticalLayout>
-										<c:Image Id="control{$index}" CssClass="answer_snapshot" Source="$GetImagePath($visit.Id, $question.Answer)"></c:Image>
+										<c:Image Id="control{$index}" CssClass="answer_snapshot" Source="$GetImagePath($visit.Id, $outlet.Id, $question.Answer)"></c:Image>
 									</c:VerticalLayout>
 								</s:If>
 								<s:Else>

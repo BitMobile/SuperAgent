@@ -219,8 +219,10 @@ function GalleryCallBack(state, args) {
 	}
 }
 
-function GetImagePath(objectID, pictID, pictExt) {
-	return Images.FindImage(objectID, pictID, pictExt, "Document_Visit_Files");
+function GetImagePath(visitID, outletID, pictID, pictExt) {
+	var pathFromVisit = Images.FindImage(visitID, pictID, pictExt, "Document_Visit_Files");
+	var pathFromOutlet = Images.FindImage(outletID, pictID, pictExt, "Catalog_Outlet_Files");
+	return (pathFromVisit == "/shared/result.jpg" ? pathFromOutlet : pathFromVisit);
 }
 
 function GetCameraObject(entity) {
@@ -249,8 +251,10 @@ function ObligatedAnswered(answer, obligatoriness) {
 	return false;
 }
 
-function SnapshotExists(visit, filename, filesTableName) {
-	return Images.SnapshotExists(visit, filename, filesTableName);
+function SnapshotExists(visit, outlet, filename) {
+	existsInVisit = Images.SnapshotExists(visit, filename, "Document_Visit_Files");
+	existsInOutlet = Images.SnapshotExists(outlet, filename, "Catalog_Outlet_Files");
+	return existsInVisit || existsInOutlet;
 }
 
 //--------------------------------Gallery handlers----------------

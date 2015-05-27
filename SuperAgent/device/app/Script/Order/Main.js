@@ -234,11 +234,16 @@ function CreateDocumentIfNotExists(executedOrder, visitId) {
 	var userRef = $.common.UserRef;
 
 
-	var order = $.workflow.HasValue("order")==true ? $.workflow.order : null;
+	// var order = $.workflow.HasValue("order")==true ? $.workflow.order : null;
 
-	if (order==null && $.workflow.HasValue("Return")==true)
-		order = $.workflow.Return;
-
+	// if (order==null && $.workflow.HasValue("Return")==true)
+	// 	order = $.workflow.Return;
+	
+	var order;
+	if ($.workflow.currentDoc=="Order")
+		order = $.workflow.HasValue("order")==true ? $.workflow.order : null;
+	if ($.workflow.currentDoc=="Return")
+		order = $.workflow.HasValue("Return")==true ? $.workflow.Return : null;
 
 	var priceLists = GetPriceListQty(outlet);
 
@@ -396,7 +401,12 @@ function CheckIfEmptyAndForward(order, wfName) {
 		while (queryResult.Next()) {
 			DB.Delete(queryResult.Id);
 		}
-		$.workflow.Remove("order");
+
+		if ($.workflow.currentDoc=="Order")
+			$.workflow.Remove("order");
+		if ($.workflow.currentDoc=="Return")
+			$.workflow.Remove("Return");
+
 		save = false;
 	}
 
@@ -422,7 +432,7 @@ function SaveOrder(order) {
 
 function SetDeliveryDateDialog(order, control, executedOrder, title) {
 	if (IsNew(order) && NotEmptyRef(order.PriceList))
-		Dialogs.ChooseDateTime(order, "DeliveryDate", control, null, title);
+		Dialogs.ChooseDateTime(order, "DeliveryDate", control, DeliveryDateCallBack, title);
 }
 
 //function DialogCallBack(control, key) {
@@ -500,6 +510,11 @@ function EditIfNew(order, param1, param2, param3) {
 	}
 }
 
+function FormatDate(datetime) {
+	return Format("{0:g}", Date(datetime));
+}
+
+
 // ----------------------------------Functions---------------------------
 
 function GetStock(userRef) {
@@ -566,6 +581,11 @@ function PositiveCallback(state, args) {
 
 	control.Text = priceList.Description;
 	ReviseSKUs(order.Id, priceList, order.Stock);
+}
+
+function DeliveryDateCallBack(state, args){
+	AssignDialogValue(state, args);
+	$.deliveryDate.Text = Format("{0:g}", Date(args.Result));
 }
 
 function OrderWillBeChanged(order, newPriceList) {

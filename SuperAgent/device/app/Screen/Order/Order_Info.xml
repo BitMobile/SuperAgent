@@ -35,7 +35,7 @@
 			<s:If Test="$workflow.name!='Visit'">
 				<c:DockLayout CssClass="parameter_grid" OnClickAction="$SetDeliveryDateDialog($thisDoc, $deliveryDate, $executedOrder, #deliveryDate#)">
 					<c:TextView Text="#deliveryDate#" />
-					<c:TextView Id="deliveryDate" Text="$thisDoc.DeliveryDate" CssClass="value" />
+					<c:TextView Id="deliveryDate" Text="$FormatDate($thisDoc.DeliveryDate)" CssClass="value" />
 				</c:DockLayout>
 				<c:HorizontalLine />
 			</s:If>

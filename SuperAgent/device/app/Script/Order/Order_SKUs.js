@@ -63,7 +63,7 @@ function GetSKUAndGroups(searchText, thisDoc) {
         searchString = " AND Contains(S.Description, '" + searchText + "') ";
     }
 
-    if (doRecommend){
+    if (doRecommend && $.workflow.currentDoc=="Order"){
 
         var recOrderFields = ", CASE WHEN V.Answer IS NULL THEN U.Description ELSE UB.Description END AS RecUnit " +
                              ", CASE WHEN V.Answer IS NULL THEN U.Id ELSE UB.Id END AS UnitId " +

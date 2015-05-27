@@ -42,6 +42,7 @@ function HideSwiped()
 }
 
 function GetFeatures(sku) {
+    Dialog.Debug($.sessionConst.SKUFeaturesRegistration);
     var query = new Query(
             "SELECT DISTINCT Feature FROM Catalog_SKU_Stocks WHERE Ref=@Ref ORDER BY LineNumber");
     query.AddParameter("Ref", sku);
@@ -52,10 +53,15 @@ function CreateOrderItemIfNotExist(order, sku, orderitem, price, features, recOr
 
     if (orderitem == null) {
 
-        var query = new Query(
-                "SELECT Feature FROM Catalog_SKU_Stocks WHERE Ref = @Ref ORDER BY LineNumber LIMIT 1");
-        query.AddParameter("Ref", sku);
-        var feature = query.ExecuteScalar();
+        var feature;
+        if ($.sessionConst.SKUFeaturesRegistration){
+            var query = new Query(
+                    "SELECT Feature FROM Catalog_SKU_Stocks WHERE Ref = @Ref ORDER BY LineNumber LIMIT 1");
+            query.AddParameter("Ref", sku);
+            feature = query.ExecuteScalar();
+        }
+        else
+            feature = null;
 
 //        var query = new Query(
 //                "SELECT Id FROM Document_Order_SKUs WHERE Ref = @Ref AND SKU=@sku AND Feature = @Feature");
@@ -152,7 +158,7 @@ function ChandeDiscount(orderitem) {
 }
 
 function GetFeatureDescr(feature) {
-    if (feature.Code == "000000001")
+    if (feature.Code == "000000001" || $.sessionConst.SKUFeaturesRegistration==false)
         return "";
     else
         return (", " + feature.Description);

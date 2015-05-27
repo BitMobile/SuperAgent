@@ -225,12 +225,8 @@ function GetChilds(sku) {
 }
 
 function GetImagePath(visitID, outletID, pictID, pictExt) {
-	Dialog.Debug("visitID: " + visitID);
-	Dialog.Debug("outletID: " + outletID);
-	Dialog.Debug("pictID: " + pictID);
 	var pathFromVisit = Images.FindImage(visitID, pictID, pictExt, "Document_Visit_Files");
 	var pathFromOutlet = Images.FindImage(outletID, pictID, pictExt, "Catalog_Outlet_Files");
-	Dialog.Debug(pathFromVisit == "/shared/result.jpg" ? pathFromOutlet : pathFromVisit)
 	return (pathFromVisit == "/shared/result.jpg" ? pathFromOutlet : pathFromVisit);
 }
 

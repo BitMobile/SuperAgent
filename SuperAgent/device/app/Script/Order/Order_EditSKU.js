@@ -265,12 +265,19 @@ function ChangeUnit(sku, orderitem, price) {
 }
 
 function GetItemHistory(sku, order) {
-    var q = new Query("SELECT strftime('%d.%m.%Y', D.Date) AS Date, S.Qty*P.Multiplier AS Qty, S.Total/P.Multiplier AS Total, S.Discount, S.Price FROM Document_Order_SKUs S JOIN Document_Order D ON S.Ref=D.Id JOIN Catalog_SKU_Packing P ON S.SKU=P.Ref AND P.Pack=S.Units WHERE D.Outlet=@outlet AND S.SKU=@sku AND S.Ref<>@ref ORDER BY D.Date DESC LIMIT 4");
+    var q = new Query("SELECT D.Date AS Date, S.Qty*P.Multiplier AS Qty, " +
+        "S.Total/P.Multiplier AS Total, S.Discount, S.Price " +
+        "FROM Document_" + $.workflow.currentDoc + "_SKUs S " +
+        "JOIN Document_" + $.workflow.currentDoc + " D ON S.Ref=D.Id " +
+        "JOIN Catalog_SKU_Packing P ON S.SKU=P.Ref AND P.Pack=S.Units " +
+        "WHERE D.Outlet=@outlet AND S.SKU=@sku AND S.Ref<>@ref " +
+        "ORDER BY D.Date DESC LIMIT 4");
     q.AddParameter("outlet", order.Outlet);
     q.AddParameter("sku", sku);
     q.AddParameter("ref", order);
 
     $.Add("historyCount", q.ExecuteCount());
+    // Dialog.Debug($.historyCount);
 
     return q.Execute();
 }
@@ -322,4 +329,8 @@ function RepeatOrder(orderitem, qty, total, price, discount, baseUnit, baseUnitD
     orderitem.Units = baseUnit;
     $.itemUnits.Text = baseUnitDescr;
     orderitem.Save();
+}
+
+function FormatDate(datetime) {
+    return Format("{0:d}", Date(datetime));
 }

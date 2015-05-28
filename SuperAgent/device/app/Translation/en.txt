@@ -285,3 +285,5 @@ ReturnSKUWillRevised	SKU list has been revised
 send			Send log
 success			Данные успешно отправлены
 noSuccess		Произошла ошибка во время отправки. Данные не отправлены
+errorMessage	Error message
+sending			Sending..

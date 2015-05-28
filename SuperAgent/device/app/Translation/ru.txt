@@ -282,6 +282,8 @@ returnInfoSmall	Информация о возврате
 alreadyReturned	уже в возврате
 ReturnskuWillBeDeleted	Часть товаров из возврата будет удалена. Продолжить?
 ReturnSKUWillRevised	Возврат пересчитан
-send			Отправить лог
+send			Отправить логи
 success			Данные успешно отправлены
 noSuccess		Произошла ошибка во время отправки. Данные не отправлены
+errorMessage	Сообщить об ошибке
+sending			Отправка..

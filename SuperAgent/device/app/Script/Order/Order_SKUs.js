@@ -162,9 +162,9 @@ function GetQuickOrder(control, skuId, itemPrice, packField, editField, textView
         query.Text = "SELECT S.Id, S.Description, BF.Feature AS DefaultFeature, " +
                 "SP.Pack AS DefaultUnit, IfNull(O.Qty, 0) AS Qty, U.Description AS Pack, SP.Multiplier AS Multiplier " +
                 "FROM Catalog_SKU S " +
-                "JOIN Catalog_SKU_Packing SP ON S.Id=SP.Ref " +
-                "JOIN Catalog_SKU_Stocks BF ON BF.Ref=S.Id AND BF.LineNumber=1 " +
+                "JOIN Catalog_SKU_Packing SP ON S.Id=SP.Ref " +                
                 "JOIN Catalog_UnitsOfMeasure U ON SP.Pack=U.Id " +
+                "LEFT JOIN Catalog_SKU_Stocks BF ON BF.Ref=S.Id AND BF.LineNumber=1 " +
                 "LEFT JOIN Document_" + $.workflow.currentDoc + "_SKUs O ON O.Ref=@order AND O.SKU = S.Id " +
                     "AND O.Feature=BF.Feature AND O.Units=SP.Pack " +
                 "WHERE S.Id=@sku AND SP.Pack=@pack"

@@ -117,7 +117,6 @@ function EmptyRef(ref) {
 }
 
 function IsEmptyValue(value) {		
-	//Dialog.Debug(value);
 	
 	if (String.IsNullOrEmpty(value))
 		return true;

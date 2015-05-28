@@ -1,5 +1,5 @@
 ﻿function GetExecutedTasks(visit) {
-	var query = new Query("SELECT VT.Id, STRFTIME('%d/%m/%Y', DT.PlanDate) AS PlanDate, DT.TextTask, DT.Target FROM Document_Visit_Task VT JOIN Document_Task DT ON VT.TaskRef=DT.Id WHERE VT.Ref=@ref AND VT.Result=@result ORDER BY DT.PlanDate");
+	var query = new Query("SELECT VT.Id, DT.PlanDate, DT.TextTask, DT.Target FROM Document_Visit_Task VT JOIN Document_Task DT ON VT.TaskRef=DT.Id WHERE VT.Ref=@ref AND VT.Result=@result ORDER BY DT.PlanDate");
 	query.AddParameter("ref", visit);
 	query.AddParameter("result", true);
 

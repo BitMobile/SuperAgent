@@ -116,25 +116,26 @@
 				</s:Iterator>
 			</s:If>
 
-			<c:HorizontalLayout CssClass="end_of_block"></c:HorizontalLayout>
-			<c:HorizontalLayout CssClass="caption_grid">
-				<c:TextView Text="#features#:"></c:TextView>
-			</c:HorizontalLayout>
-			<c:HorizontalLine />
-
-			<s:Iterator Id="feature" Value="$features">
-				<c:DockLayout CssClass="parameter_grid" OnClickAction="$ChangeFeatureAndRefresh($orderitem, $feature.Feature, $sku, $price, $discountEdit.Text, $showimage)">
-					<s:If Test="$AreEqual($orderitem.Feature, $feature.Feature);">
-						<c:Image CssClass="tick" />
-					</s:If>
-					<s:Else>
-						<c:VerticalLayout CssClass="empty_tick"></c:VerticalLayout>
-					</s:Else>
-					<c:TextView Text="$feature.Feature.Description"></c:TextView>
-				</c:DockLayout>
+			<s:If Test="$sessionConst.SKUFeaturesRegistration">
+				<c:HorizontalLayout CssClass="end_of_block"></c:HorizontalLayout>
+				<c:HorizontalLayout CssClass="caption_grid">
+					<c:TextView Text="#features#:"></c:TextView>
+				</c:HorizontalLayout>
 				<c:HorizontalLine />
-
-			</s:Iterator>
+			
+				<s:Iterator Id="feature" Value="$features">
+					<c:DockLayout CssClass="parameter_grid" OnClickAction="$ChangeFeatureAndRefresh($orderitem, $feature.Feature, $sku, $price, $discountEdit.Text, $showimage)">
+						<s:If Test="$AreEqual($orderitem.Feature, $feature.Feature);">
+							<c:Image CssClass="tick" />
+						</s:If>
+						<s:Else>
+							<c:VerticalLayout CssClass="empty_tick"></c:VerticalLayout>
+						</s:Else>
+						<c:TextView Text="$feature.Feature.Description"></c:TextView>
+					</c:DockLayout>
+					<c:HorizontalLine />
+				</s:Iterator>
+			</s:If>
 
 		</c:ScrollView>
 

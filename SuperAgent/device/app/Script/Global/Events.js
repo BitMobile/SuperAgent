@@ -242,7 +242,7 @@ function PrepareScheduledVisits_Map() {
 }
 
 function GetTasksCount() {
-	var taskQuery = new Query("SELECT COUNT(Id) FROM Document_Task WHERE PlanDate >= date('now','start of day') AND Outlet=@outlet");
+	var taskQuery = new Query("SELECT COUNT(Id) FROM Document_Task WHERE PlanDate >= date('now','start of day', 'localtime') AND Outlet=@outlet");
 	taskQuery.AddParameter("outlet", $.outlet);
 	return taskQuery.ExecuteScalar();
 }

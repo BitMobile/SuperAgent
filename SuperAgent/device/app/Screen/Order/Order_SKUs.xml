@@ -83,17 +83,19 @@
 						<c:Image />
 						<c:VerticalLayout>
 							<c:DockLayout>
-								<s:If Test="$ShowRecommendedQty($item.OrderRecOrder, $item.RecOrder)">
-									<c:VerticalLayout>
-										<c:TextView Text="{$item.RecOrder} {$item.RecUnit}" CssClass="rec_order" />
-										<c:TextView Text="#recommended#" CssClass="rec_comment" />
-									</c:VerticalLayout>
-								</s:If>
-								<s:Else>
-									<s:If Test="$item.OrderRecOrder>0">
-										<c:TextView Text="#recommended#" CssClass="single_rec" />
+								<s:If Test="$workflow.currentDoc=='Order'">
+									<s:If Test="$ShowRecommendedQty($item.OrderRecOrder, $item.RecOrder)">
+										<c:VerticalLayout>
+											<c:TextView Text="{$item.RecOrder} {$item.RecUnit}" CssClass="rec_order" />
+											<c:TextView Text="#recommended#" CssClass="rec_comment" />
+										</c:VerticalLayout>
 									</s:If>
-								</s:Else>
+									<s:Else>
+										<s:If Test="$item.OrderRecOrder>0">
+											<c:TextView Text="#recommended#" CssClass="single_rec" />
+										</s:If>
+									</s:Else>
+								</s:If>
 								<c:TextView Text="$item.Description" CssClass="main_row"></c:TextView>
 							</c:DockLayout>
 							<c:TextView Text="#price2# {$FormatValue($item.Price)}  #stock#: {$item.CommonStock} #brand#: {$item.Brand}" CssClass="description_row"></c:TextView>

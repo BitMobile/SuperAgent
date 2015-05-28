@@ -376,7 +376,7 @@ function GetStockDescription(stock) {
 }
 
 function GetFeatureDescr(feature) {
-	if (feature.Code == "000000001")
+	if (feature.Code == "000000001" || $.sessionConst.SKUFeaturesRegistration==false)
 		return "";
 	else
 		return (", " + feature.Description);

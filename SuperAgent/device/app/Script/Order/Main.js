@@ -441,28 +441,32 @@ function SetDeliveryDateDialog(order, control, executedOrder, title) {
 
 function OrderBack() {
 
-	if ($.workflow.name == "CreateOrder" || $.workflow.name == "Order" || $.workflow.name == "CreateReturn" || $.workflow.name == "Return") {
-
+	if ($.workflow.name == "CreateOrder" || $.workflow.name == "CreateReturn") 
 		Workflow.Rollback();
+	 else {
 
-	} else {
+		if ($.workflow.name == "Order" || $.workflow.name == "Return") 
+			DoBackTo($.workflow.currentDoc + "List");
 
-		ClearFilters();
+		else{
 
-		var stepNumber;
-		if ($.workflow.currentDoc=="Order")
-			stepNumber = '4';
-		else
-			stepNumber = '5';
+			ClearFilters();
 
-		var q = new Query("SELECT NextStep FROM USR_WorkflowSteps WHERE StepOrder<@stepNumber AND Value=0 ORDER BY StepOrder DESC");
-		q.AddParameter("stepNumber", stepNumber);
-		var step = q.ExecuteScalar();
-		if (step==null) {
-			Workflow.BackTo("Outlet");
+			var stepNumber;
+			if ($.workflow.currentDoc=="Order")
+				stepNumber = '4';
+			else
+				stepNumber = '5';
+
+			var q = new Query("SELECT NextStep FROM USR_WorkflowSteps WHERE StepOrder<@stepNumber AND Value=0 ORDER BY StepOrder DESC");
+			q.AddParameter("stepNumber", stepNumber);
+			var step = q.ExecuteScalar();
+			if (step==null) {
+				Workflow.BackTo("Outlet");
+			}
+			else
+				Workflow.BackTo(step);
 		}
-		else
-			Workflow.BackTo(step);
 	}
 
 }

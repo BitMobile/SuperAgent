@@ -134,7 +134,27 @@
 							<s:If Test="$child.IsSnapshot==1">
 								<c:HorizontalLayout OnClick="$GoToQuestionAction($child.AnswerType, $child.Question, $sku.SKU, control{$indexCh}, $child.Answer, $child.Description)">
 									<c:TextView Text="$child.Description" CssClass="description_row"></c:TextView>
-									<c:Image Id="control{$indexCh}" CssClass="answer_snapshot" Source="$GetImagePath($visit.Id, $child.Answer)"></c:Image>
+									<s:If Test="$IsNullOrEmpty($child.Answer)">
+										<c:VerticalLayout>
+											<c:VerticalLayout CssClass="no_child_answer">
+												<c:Image Id="control{$indexCh}" />
+											</c:VerticalLayout>
+										</c:VerticalLayout>
+									</s:If>
+									<s:Else>
+										<s:If Test="$SnapshotExists($visit, $outlet, $child.Answer)">
+											<c:VerticalLayout>
+												<c:Image Id="control{$indexCh}" CssClass="answer_snapshot" Source="$GetImagePath($visit.Id, $outlet, $child.Answer)"></c:Image>
+											</c:VerticalLayout>
+										</s:If>
+										<s:Else>
+											<c:VerticalLayout>
+												<c:VerticalLayout CssClass="no_child_image">
+													<c:Image Id="control{$indexCh}" />
+												</c:VerticalLayout>
+											</c:VerticalLayout>
+										</s:Else>
+									</s:Else>
 								</c:HorizontalLayout>
 							</s:If>
 							<s:Else>

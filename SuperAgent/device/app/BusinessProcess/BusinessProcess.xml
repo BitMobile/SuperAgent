@@ -220,6 +220,8 @@
 			<bp:Action Name="ShowImage" NextStep="Image" />
 		</bp:Step>
 
+		<bp:Step Name="Image" Screen="Image.xml" Controller="Outlets\Image.js"></bp:Step>
+
 	</bp:Workflow>
 
 	<bp:Workflow Name="CreateReturn" Controller="Order\Main.js">
@@ -246,6 +248,8 @@
 		<bp:Step Name="Filters" Screen="Filters.xml" Controller="Order\Order_SKUs.js">
 			<bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>
 		</bp:Step>
+
+		<bp:Step Name="Image" Screen="Image.xml" Controller="Outlets\Image.js"></bp:Step>
 
 	</bp:Workflow>
 

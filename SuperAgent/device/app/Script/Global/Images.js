@@ -44,29 +44,29 @@ function AddSnapshotHandler(state, args) {
 	var func = state[1];
 	var valueRef = state[2];
 
-	if (parseInt(args.Result)==parseInt(0)){
+	if (parseInt(args.Result)==parseInt(0)){ 	//Gallery answer
 		ChooseFromGallery(objRef, func);
 	}
 
-	if (parseInt(args.Result)==parseInt(1)){
+	if (parseInt(args.Result)==parseInt(1)){ 	//SnapshotAnswer
 		MakeSnapshot(objRef, func);
 	}
 
-	if (parseInt(args.Result)==parseInt(2)){
-		if (getType(valueRef)=="System.String")
+	if (parseInt(args.Result)==parseInt(2)){ 	//Delete answer
+		if (getType(valueRef)=="System.String") 	//for Questions, SKUQuestions
 			DeleteFromTable(state[4], state[5]);
 		else
-			DeleteImage(valueRef);
+			DeleteImage(valueRef); 		//common delete handler
 	}
 
-	if (parseInt(args.Result)==parseInt(3)){
+	if (parseInt(args.Result)==parseInt(3)){ 	//Show answer
 		var path = state[3];
 		var attr;
-		if (getType(valueRef)=="System.String"){
+		if (getType(valueRef)=="System.String"){ 	//for Questions/SKUQuestions, callback from AddQuestionSnapshot()
 			valueRef = state[4];
 			attr = state[5];
 		}
-		else{
+		else{ 		//common handler
 			if (valueRef!=null)
 				attr = parameters[valueRef.Metadata().TableName];
 		}

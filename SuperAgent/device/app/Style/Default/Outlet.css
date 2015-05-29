@@ -159,9 +159,9 @@
 }
 
 .no_image_small img {
-	height: 50px;
-	width: 50px;
-	margin-top: 1.1mm;
+	height: 5mm;
+	width: 5mm;
+	margin-top: 10%;
 	background-image: url(no_image_small.png);
 	horizontal-align: center;
 }

@@ -2,7 +2,7 @@ var swipedRow;
 
 function GetCurrentDoc(){
     var d;
-    if ($.workflow.currentDoc=='Order') 
+    if ($.workflow.currentDoc=='Order')
         d =  $.workflow.order;
     else
         d =  $.workflow.Return;
@@ -92,7 +92,7 @@ function CreateOrderItemIfNotExist(order, sku, orderitem, price, features, recOr
                 var defaultUnit = q.Execute();
             }
 
-            var p = DB.Create("Document." + $.workflow.currentDoc + "_SKUs");            
+            var p = DB.Create("Document." + $.workflow.currentDoc + "_SKUs");
             p.Ref = order;
             p.SKU = sku;
             p.Feature = feature;
@@ -110,6 +110,10 @@ function CreateOrderItemIfNotExist(order, sku, orderitem, price, features, recOr
         return orderitem;
     }
 
+}
+
+function SnapshotExists(sku, filename, filesTableName) {
+	return Images.SnapshotExists(sku, ToString(filename), filesTableName);
 }
 
 function GetDiscountDescription(orderitem) {

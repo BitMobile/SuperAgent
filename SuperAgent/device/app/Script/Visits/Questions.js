@@ -340,7 +340,7 @@ function ChooseBool(entity, attribute, control, func, title) {
 	else
 		var startKey = entity[attribute];
 
-	var listChoice = [[ "—", "-" ], [Translate["#YES#"], Translate["#YES#"]], [Translate["#NO#"], Translate["#NO#"]]];
+	var listChoice = [[ "—", "-" ], [Translate["#YES#"], Translate["#YES#"]], [Translate["#NO#"], Translate["#NO#"]]];
 	if (func == null)
 		func = CallBack;
 	Dialog.Choose(title, listChoice, startKey, func, [entity, attribute, control]);

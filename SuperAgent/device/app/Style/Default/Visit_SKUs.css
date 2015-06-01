@@ -125,6 +125,16 @@
 	placeholder-color: #2D89CF;
 }
 
+.child_main_row {
+	width: 100%;
+	height: 40%;
+	margin-top: 5%;
+	white-space: normal;
+	font: 60% Arial;
+	color: #2D89CF;
+	placeholder-color: #2D89CF;
+}
+
 .answer_snapshot {
 	width: 0%;
 	height: 98%;
@@ -234,10 +244,10 @@
 
 .no_answer img {
 	background-image: url(small_camera.png);
-	width: 50px;
-	height: 50px;
+	width: 5mm;
+	height: 5mm;
 	horizontal-align: center;
-	margin-top: 3mm;
+	margin-top: 26%;
 }
 
 .no_image{
@@ -252,10 +262,10 @@
 }
 
 .no_image img {
-	height: 50px;
-	width: 50px;
+	height: 5mm;
+	width: 5mm;
 	background-image: url(no_image_small.png);
-	margin-top: 3mm;
+	margin-top: 27.5%;
 	horizontal-align: center;
 }
 
@@ -269,10 +279,10 @@
 
 .no_child_answer img {
 	background-image: url(small_camera.png);
-	width: 50px;
-	height: 50px;
+	width: 5mm;
+	height: 5mm;
 	horizontal-align: center;
-	margin-top: 2.5mm;
+	margin-top: 20%;
 }
 
 .no_child_image{
@@ -287,9 +297,9 @@
 }
 
 .no_child_image img {
-	height: 50px;
-	width: 50px;
+	height: 5mm;
+	width: 5mm;
 	background-image: url(no_image_small.png);
-	margin-top: 2mm;
+	margin-top: 22%;
 	horizontal-align: center;
 }

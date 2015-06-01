@@ -818,17 +818,17 @@ MemoEdit {
 	color: #8e8e93;
 	text-align: center;
 	horizontal-align: central;
-	padding-top: 1mm;
+	padding-top: 0mm;
 	padding-left: 2mm;
 	padding-right: 2mm;
 	white-space: normal;
-	font: 20px arial;
+	font: 25% arial;
 }
 
 .no_image img {
-	height: 120px;
-	width: 120px;
+	height: 12mm;
+	width: 12mm;
 	background-image: url(no_image_big.png);
-	margin-top: 3mm;
+	margin-top: 10%;
 	horizontal-align: center;
 }

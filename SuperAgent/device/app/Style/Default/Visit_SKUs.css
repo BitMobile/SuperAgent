@@ -86,7 +86,6 @@
 	width: 100%;
 	background-color: #efeff4;
 	selected-color: #bacdce;
-	padding-bottom: 2.4mm;
 }
 
 .child_grid vl{
@@ -113,6 +112,7 @@
 	padding-left: 2.4mm;
 	background-color: #efeff4;
 	padding-left: 10%;
+	padding-bottom: 2.4mm;
 }
 
 .answer_main_row {
@@ -130,7 +130,7 @@
 	height: 40%;
 	margin-top: 5%;
 	white-space: normal;
-	font: 60% Arial;
+	font: 42% Arial;
 	color: #2D89CF;
 	placeholder-color: #2D89CF;
 }

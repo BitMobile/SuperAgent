@@ -15,6 +15,18 @@ function OnLoad() {
 				"ON _Catalog_Outlet_AnsweredQuestions(IsTombstone, Ref, Questionaire, Question, AnswerDate)");
 	indexQuery.Execute();
 
+	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_SKUSSTOCK ON _Catalog_SKU_Stocks(Ref, Stock, IsTombstone)");
+	indexQuery.Execute();
+
+	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_PLREFSKU ON _Document_PriceList_Prices(Ref, SKU, IsTombstone)");
+	indexQuery.Execute();
+
+	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_SKUOWNERBRAND ON _Catalog_SKU(Id, Brand, Owner, IsTombstone)");
+	indexQuery.Execute();
+
+	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_SKUGROUPPARENT ON _Catalog_SKUGroup(Id, Parent, IsTombstone)");
+	indexQuery.Execute();
+
 }
 
 function GetLastSyncTime() {

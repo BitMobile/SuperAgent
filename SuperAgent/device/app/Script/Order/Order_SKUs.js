@@ -36,17 +36,20 @@ function GetSKUAndGroups(searchText, thisDoc) {
      var stock = thisDoc.Stock;
 
     var filterString = "";
-    filterString += AddFilter(filterString, "group_filter", "G.Id", " AND ");
-    filterString += AddFilter(filterString, "brand_filter", "CB.Id", " AND ");
+
+    filterString = AddFilter(filterString, "group_filter", "G.Id", " AND ");
+    filterString = AddFilter(filterString, "brand_filter", "CB.Id", " AND ");
 
     var groupFields = "";
     var groupJoin = "";
     var groupParentJoin = "";
     var groupSort = "";
+    var groupWhere = "";
     if (doGroupping){
         groupFields = " G.Description AS GroupDescription, G.Id AS GroupId, G.Parent AS GroupParent, P.Description AS ParentDescription, ";
-        groupJoin = "JOIN Catalog_SKUGroup G ON G.Id = S.Owner ";
-        groupParentJoin = "LEFT JOIN Catalog_SKUGroup P ON G.Parent=P.Id ";
+        groupJoin = "JOIN _Catalog_SKUGroup G INDEXED BY IND_SKUGROUPPARENT ON G.Id = S.Owner ";
+        groupParentJoin = "LEFT JOIN _Catalog_SKUGroup P INDEXED BY IND_SKUGROUPPARENT ON G.Parent=P.Id ";
+        groupWhere = " AND G.IsTombstone = 0 ";
         if (thisDoc.Stock.EmptyRef()==true){
           groupSort = " G.Description, ";
         } else {
@@ -113,13 +116,13 @@ function GetSKUAndGroups(searchText, thisDoc) {
 	            groupFields +
 	            "CB.Description AS Brand " +
 	            recOrderFields +
-	            "FROM Document_PriceList_Prices PL " +
-	            "JOIN Catalog_SKU S ON PL.SKU = S.Id " +
-	            groupJoin +
+	            "FROM _Document_PriceList_Prices PL INDEXED BY IND_PLREFSKU " +
+	            "JOIN _Catalog_SKU S INDEXED BY IND_SKUOWNERBRAND ON PL.SKU = S.Id " +
+	            groupJoin + groupWhere + filterString +
 	            "JOIN Catalog_Brands CB ON CB.Id=S.Brand " +
 	            groupParentJoin +
 	            recOrderStr +
-	            " WHERE " + stockCondition + " PL.Ref = @Ref " + searchString + filterString +
+	            " WHERE " + stockCondition + " PL.Ref = @Ref AND PL.IsTombstone = 0 AND S.IsTombstone = 0 " + searchString +
 	            " ORDER BY " + groupSort + recOrderSort + " S.Description LIMIT 100";
 
     } else {
@@ -130,18 +133,18 @@ function GetSKUAndGroups(searchText, thisDoc) {
             var stockCondition = " SS.StockValue > 0 AND ";
     	}
 
-    	query.Text = "SELECT INQ.*, SS.StockValue AS CommonStock FROM Catalog_SKU_Stocks SS JOIN (SELECT DISTINCT S.Id, S.Description, PL.Price, " +
+    	query.Text = "SELECT INQ.*, SS.StockValue AS CommonStock FROM _Catalog_SKU_Stocks SS INDEXED BY IND_SKUSSTOCK JOIN (SELECT DISTINCT S.Id, S.Description, PL.Price, " +
 	            groupFields +
 	            "CB.Description AS Brand " +
 	            recOrderFields +
-	            "FROM Document_PriceList_Prices PL " +
-	            "JOIN Catalog_SKU S ON PL.SKU = S.Id " +
-	            groupJoin +
+	            "FROM _Document_PriceList_Prices PL INDEXED BY IND_PLREFSKU " +
+	            "JOIN _Catalog_SKU S INDEXED BY IND_SKUOWNERBRAND ON PL.SKU = S.Id " +
+	            groupJoin + filterString +
 	            "JOIN Catalog_Brands CB ON CB.Id=S.Brand " +
 	            groupParentJoin +
 	            recOrderStr +
-	            " WHERE PL.Ref = @Ref " + searchString + filterString +
-	            ") INQ ON SS.Ref = INQ.Id WHERE " + stockCondition + " SS.Stock=@stock ORDER BY " + groupSort + recOrderSort + " INQ.Description LIMIT 100";
+	            " WHERE PL.Ref = @Ref AND PL.IsTombstone = 0 AND S.IsTombstone = 0 " + groupWhere + searchString +
+	            ") INQ ON SS.Ref = INQ.Id WHERE " + stockCondition + " SS.Stock=@stock AND SS.IsTombstone = 0 ORDER BY " + groupSort + recOrderSort + " INQ.Description LIMIT 100";
 
     	query.AddParameter("stock", stock);
 
@@ -162,7 +165,7 @@ function GetQuickOrder(control, skuId, itemPrice, packField, editField, textView
         query.Text = "SELECT S.Id, S.Description, BF.Feature AS DefaultFeature, " +
                 "SP.Pack AS DefaultUnit, IfNull(O.Qty, 0) AS Qty, U.Description AS Pack, SP.Multiplier AS Multiplier " +
                 "FROM Catalog_SKU S " +
-                "JOIN Catalog_SKU_Packing SP ON S.Id=SP.Ref " +                
+                "JOIN Catalog_SKU_Packing SP ON S.Id=SP.Ref " +
                 "JOIN Catalog_UnitsOfMeasure U ON SP.Pack=U.Id " +
                 "LEFT JOIN Catalog_SKU_Stocks BF ON BF.Ref=S.Id AND BF.LineNumber=1 " +
                 "LEFT JOIN Document_" + $.workflow.currentDoc + "_SKUs O ON O.Ref=@order AND O.SKU = S.Id " +

@@ -1,4 +1,11 @@
 var swipedRow;
+var alreadyAdded;
+var forwardText;
+
+function OnLoading(){
+    alreadyAdded = $.Exists("AlreadyAdded");
+    forwardText = alreadyAdded ? Translate["#editSKU#"] : Translate["#add#"];
+}
 
 function GetCurrentDoc(){
     var d;
@@ -299,7 +306,10 @@ function CalculateSKUAndForward(outlet, orderitem) {
     if ($.Exists("AlreadyAdded"))
     	$.Remove("AlreadyAdded");
 
-    Workflow.Forward([]);
+    if (alreadyAdded)
+        DoAction('Show' + $.workflow.currentDoc);
+    else
+        DoForward();
 }
 
 function DeleteAndBack(orderitem) {

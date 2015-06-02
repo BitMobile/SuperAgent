@@ -128,6 +128,8 @@
 
 		<bp:Step Name="EditSKU" Screen="Order_EditSKU.xml" Controller="Order\Order_EditSKU.js">
 			<bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>
+			<bp:Action Name="ShowOrder" NextStep="Order"></bp:Action>
+			<bp:Action Name="ShowReturn" NextStep="Return"></bp:Action>
 			<bp:Action Name="ShowImage" NextStep="Image" />
 		</bp:Step>
 
@@ -173,6 +175,7 @@
 
 		<bp:Step Name="EditSKU" Screen="Order_EditSKU.xml" Controller="Order\Order_EditSKU.js">
 			<bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>
+			<bp:Action Name="ShowOrder" NextStep="Order"></bp:Action>
 			<bp:Action Name="ShowImage" NextStep="Image" />
 		</bp:Step>
 
@@ -217,6 +220,7 @@
 
 		<bp:Step Name="EditReturnSKU" Screen="Order_EditSKU.xml" Controller="Order\Order_EditSKU.js">
 			<bp:Action Name="Forward" NextStep="AddReturnSKU"></bp:Action>
+			<bp:Action Name="ShowReturn" NextStep="Return"></bp:Action>
 			<bp:Action Name="ShowImage" NextStep="Image" />
 		</bp:Step>
 
@@ -242,6 +246,7 @@
 
 		<bp:Step Name="EditSKU" Screen="Order_EditSKU.xml" Controller="Order\Order_EditSKU.js">
 			<bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>
+			<bp:Action Name="ShowReturn" NextStep="Return"></bp:Action>
 			<bp:Action Name="ShowImage" NextStep="Image" />
 		</bp:Step>
 
@@ -272,6 +277,7 @@
 
 		<bp:Step Name="EditSKU" Screen="Order_EditSKU.xml" Controller="Order\Order_EditSKU.js">
 			<bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>
+			<bp:Action Name="ShowOrder" NextStep="Order"></bp:Action>
 			<bp:Action Name="ShowImage" NextStep="Image" />
 		</bp:Step>
 

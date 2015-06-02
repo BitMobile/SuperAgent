@@ -289,3 +289,4 @@ imageNotAvailable	Image not available now
 noSuccess		Произошла ошибка во время отправки. Данные не отправлены
 errorMessage	Error message
 sending			Sending..
+editSKU			Edit

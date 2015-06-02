@@ -28,7 +28,7 @@
 				<c:TextView Text="#cancel#" CssClass="left_tv"></c:TextView>
 			</c:VerticalLayout>
 			<c:VerticalLayout Id="btnAdd" OnEvent="Forward" OnClickAction="$CalculateSKUAndForward($thisDoc.Outlet, $orderitem)">
-				<c:TextView Text="#add#" CssClass="right_tv"></c:TextView>
+				<c:TextView Text="@forwardText" CssClass="right_tv"></c:TextView>
 			</c:VerticalLayout>
 		</c:HorizontalLayout>
 

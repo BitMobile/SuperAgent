@@ -85,7 +85,17 @@
 				</c:DockLayout>
 				<s:If Test="@singlePicture">
 					<c:VerticalLayout CssClass="single_picture" OnClick="$ImageActions($snapshots.Id, singleImage)">
-						<c:Image Id="singleImage" Source="$GetImagePath($outlet, $snapshots.FileName, .jpg)" />
+						<s:If Test="$SnapshotExists($outlet, $snapshot.FileName, Catalog_Outlet_Files)">
+							<c:Image Id="singleImage" Source="$GetImagePath($outlet, $snapshots.FileName, .jpg)" />
+						</s:If>
+						<s:Else>
+							<c:VerticalLayout CssClass="no_single_image">
+								<c:VerticalLayout CssClass="no_image">
+									<c:Image Id="image{$index}" />
+									<c:TextView Text="#imageNotAvailable#" CssClass="text"></c:TextView>
+								</c:VerticalLayout>
+							</c:VerticalLayout>
+						</s:Else>
 					</c:VerticalLayout>
 				</s:If>
 				<s:Else>

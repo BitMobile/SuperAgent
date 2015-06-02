@@ -832,3 +832,12 @@ MemoEdit {
 	margin-top: 10%;
 	horizontal-align: center;
 }
+
+.no_single_image {
+	height: 25.6mm;
+	background-color: #ffffff;
+	width: 45.7mm;
+	margin-top: 0.5mm;
+	margin-bottom: 2.3mm;
+	horizontal-align: center;
+}

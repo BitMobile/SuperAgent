@@ -413,7 +413,7 @@ function CreateQuestionsTable(outlet) {
 	var tableCommand = Global.CreateUserTableIfNotExists("USR_Questions");
 
 	var query = new Query(tableCommand +
-			"SELECT MIN(D.Date) AS DocDate, Q.ChildQuestion AS Question, Q.ChildDescription AS Description" +
+			"SELECT D.Date AS DocDate, Q.ChildQuestion AS Question, Q.ChildDescription AS Description" +
 			", Q.ParentQuestion AS ParentQuestion, Q.ChildType AS AnswerType " +
 			", A.Answer AS Answer " +
 			", A.Answer AS HistoryAnswer, MAX(A.AnswerDate) AS AnswerDate, D.Single AS Single " +
@@ -448,7 +448,7 @@ function CreateSKUQuestionsTable(outlet) {
 	var tableCommand = Global.CreateUserTableIfNotExists("USR_SKUQuestions");
 
 	var query = new Query(tableCommand +
-			"SELECT MIN(D.Date) AS DocDate, S.SKU AS SKU, S.Description AS SKUDescription, Q.ChildQuestion AS Question, Q.ChildDescription AS Description" +
+			"SELECT D.Date AS DocDate, S.SKU AS SKU, S.Description AS SKUDescription, Q.ChildQuestion AS Question, Q.ChildDescription AS Description" +
 			", Q.ParentQuestion AS ParentQuestion, Q.ChildType AS AnswerType" +
 			", A.Answer AS Answer " +
 			", A.Answer AS HistoryAnswer, MAX(A.AnswerDate) AS AnswerDate, D.Single AS Single " +

@@ -27,6 +27,9 @@ function OnLoad() {
 	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_SKUGROUPPARENT ON _Catalog_SKUGroup(Id, Parent, IsTombstone)");
 	indexQuery.Execute();
 
+	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_AMREFOUTLET ON _Catalog_AssortmentMatrix_Outlets(Outlet, IsTombstone)");
+	indexQuery.Execute();
+
 }
 
 function GetLastSyncTime() {

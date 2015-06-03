@@ -71,14 +71,13 @@ function GetSKUAndGroups(searchText, thisDoc) {
         var recOrderFields = ", CASE WHEN V.Answer IS NULL THEN U.Description ELSE UB.Description END AS RecUnit " +
                              ", CASE WHEN V.Answer IS NULL THEN U.Id ELSE UB.Id END AS UnitId " +
                              ", CASE WHEN V.Answer IS NULL THEN MS.Qty ELSE (MS.BaseUnitQty-V.Answer) END AS RecOrder " +
-                             ", CASE WHEN MS.Qty IS NULL THEN 0 ELSE CASE WHEN (MS.Qty-V.Answer)>0 OR (V.Answer IS NULL AND MS.Qty>0) THEN 2 ELSE 1 END END AS OrderRecOrder "
+                             ", CASE WHEN MS.Qty IS NULL THEN 0 ELSE CASE WHEN (MS.BaseUnitQty-V.Answer)>0 OR (V.Answer IS NULL AND MS.Qty>0) THEN 2 ELSE 1 END END AS OrderRecOrder ";
 
         var recOrderStr =  "JOIN Catalog_UnitsOfMeasure UB ON S.BaseUnit=UB.Id " +
-                           "LEFT JOIN Catalog_AssortmentMatrix_Outlets O ON O.Outlet=@outlet " +
-                           "LEFT JOIN Catalog_AssortmentMatrix_SKUs MS ON S.Id=MS.SKU AND MS.BaseUnitQty IN " +
-                                    " (SELECT MAX(SS.BaseUnitQty) FROM Catalog_AssortmentMatrix_SKUs SS " +
-                                    " JOIN Catalog_AssortmentMatrix_Outlets OO ON SS.Ref=OO.Ref    " +
-                                    " WHERE Outlet=@outlet AND SS.SKU=MS.SKU LIMIT 1) " +
+                           "LEFT JOIN (SELECT SS.Ref, SS.SKU, SS.Qty, SS.Unit, SS.BaseUnitQty FROM Catalog_AssortmentMatrix_SKUs SS " +
+                                     " JOIN _Catalog_AssortmentMatrix_Outlets OO INDEXED BY IND_AMREFOUTLET ON SS.Ref=OO.Ref " +
+                                     " WHERE OO.Outlet=@outlet AND OO.IsTombstone = 0 " +
+                                     " GROUP BY SS.Ref, SS.SKU, SS.Qty, SS.Unit HAVING MAX(SS.BaseUnitQty)) MS ON S.Id=MS.SKU " +
                            "LEFT JOIN Catalog_UnitsOfMeasure U ON MS.Unit=U.Id " +
                            "LEFT JOIN USR_SKUQuestions V ON MS.SKU=V.SKU AND V.Question IN (SELECT Id FROM Catalog_Question CQ WHERE CQ.Assignment=@assignment)";
 
@@ -94,8 +93,9 @@ function GetSKUAndGroups(searchText, thisDoc) {
                              ", 0 AS RecOrder " +
                              ", CASE WHEN MS.Qty IS NULL THEN 0 ELSE 1 END AS OrderRecOrder "
 
-        var recOrderStr =  "LEFT JOIN Catalog_AssortmentMatrix_Outlets O ON O.Outlet=@outlet " +
-                           "LEFT JOIN Catalog_AssortmentMatrix_SKUs MS ON S.Id=MS.SKU ";
+        var recOrderStr =  "LEFT JOIN (SELECT SS.Ref, SS.SKU, SS.Qty, SS.Unit, SS.BaseUnitQty FROM Catalog_AssortmentMatrix_SKUs SS " +
+                                     " JOIN _Catalog_AssortmentMatrix_Outlets OO INDEXED BY IND_AMREFOUTLET ON SS.Ref=OO.Ref " +
+                                     " WHERE OO.Outlet=@outlet AND OO.IsTombstone = 0) MS ON S.Id=MS.SKU ";
 
         query.AddParameter("outlet", $.workflow.outlet);
         query.AddParameter("visit", $.workflow.visit);
@@ -112,7 +112,7 @@ function GetSKUAndGroups(searchText, thisDoc) {
             var stockCondition = " S.CommonStock > 0 AND ";
     	}
 
-	    query.Text = "SELECT DISTINCT S.Id, S.Description, PL.Price, S.CommonStock AS CommonStock, " +
+	    query.Text = "SELECT DISTINCT S.Id, S.Description, PL.Price AS Price, S.CommonStock AS CommonStock, " +
 	            groupFields +
 	            "CB.Description AS Brand " +
 	            recOrderFields +
@@ -133,7 +133,8 @@ function GetSKUAndGroups(searchText, thisDoc) {
             var stockCondition = " SS.StockValue > 0 AND ";
     	}
 
-    	query.Text = "SELECT INQ.*, SS.StockValue AS CommonStock FROM _Catalog_SKU_Stocks SS INDEXED BY IND_SKUSSTOCK JOIN (SELECT DISTINCT S.Id, S.Description, PL.Price, " +
+    	query.Text = "SELECT INQ.*, SS.StockValue AS CommonStock FROM _Catalog_SKU_Stocks SS INDEXED BY IND_SKUSSTOCK " +
+              "JOIN (SELECT DISTINCT S.Id, S.Description, PL.Price AS Price, " +
 	            groupFields +
 	            "CB.Description AS Brand " +
 	            recOrderFields +
@@ -319,13 +320,6 @@ function DoRecommend() {
         return true;
     else
         return false;
-}
-
-function ShowRecommendedQty(order, recOrder) {
-    if (order>0)
-        if (recOrder>0)
-            return true;
-    return false;
 }
 
 function GoBackTo(){

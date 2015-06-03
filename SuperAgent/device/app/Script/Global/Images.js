@@ -71,7 +71,13 @@ function AddSnapshotHandler(state, args) {
 				attr = parameters[valueRef.Metadata().TableName];
 		}
 
-		Workflow.Action("ShowImage", [path, valueRef, attr]);
+		var arr = [path, valueRef, attr];
+		if (valueRef != null){
+			if (valueRef.Metadata().TableName=="Catalog_SKU")
+				arr = [path, valueRef, attr, true];
+		}
+
+		Workflow.Action("ShowImage", arr);
 	}
 }
 

@@ -21,7 +21,13 @@ function OnLoad() {
 	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_PLREFSKU ON _Document_PriceList_Prices(Ref, SKU, IsTombstone)");
 	indexQuery.Execute();
 
-	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_SKUOWNERBRAND ON _Catalog_SKU(Id, Brand, Owner, IsTombstone)");
+	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_SKUOWNERBRAND ON _Catalog_SKU(Id, Owner, Brand, IsTombstone)");
+	indexQuery.Execute();
+
+	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_SKUBRAND ON _Catalog_SKU(Id, Brand, IsTombstone)");
+	indexQuery.Execute();
+
+	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_SKUOWNER ON _Catalog_SKU(Id, Owner, IsTombstone)");
 	indexQuery.Execute();
 
 	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_SKUGROUPPARENT ON _Catalog_SKUGroup(Id, Parent, IsTombstone)");

@@ -41,14 +41,14 @@ function GetSKUAndGroups(searchText, thisDoc) {
     filterString = AddFilter(filterString, "brand_filter", "CB.Id", " AND ");
 
     var groupFields = "";
-    var groupJoin = "";
+    var groupJoin = " INDEXED BY IND_SKUBRAND ON PL.SKU = S.Id ";
     var groupParentJoin = "";
     var groupSort = "";
     var groupWhere = "";
     if (doGroupping){
         groupFields = " G.Description AS GroupDescription, G.Id AS GroupId, G.Parent AS GroupParent, P.Description AS ParentDescription, ";
-        groupJoin = "JOIN _Catalog_SKUGroup G INDEXED BY IND_SKUGROUPPARENT ON G.Id = S.Owner ";
-        groupParentJoin = "LEFT JOIN _Catalog_SKUGroup P INDEXED BY IND_SKUGROUPPARENT ON G.Parent=P.Id ";
+        groupJoin = " INDEXED BY IND_SKUOWNERBRAND ON PL.SKU = S.Id JOIN _Catalog_SKUGroup G INDEXED BY IND_SKUGROUPPARENT ON G.Id = S.Owner ";
+        groupParentJoin = "LEFT JOIN Catalog_SKUGroup P ON G.Parent=P.Id ";
         groupWhere = " AND G.IsTombstone = 0 ";
         if (thisDoc.Stock.EmptyRef()==true){
           groupSort = " G.Description, ";
@@ -117,7 +117,7 @@ function GetSKUAndGroups(searchText, thisDoc) {
 	            "CB.Description AS Brand " +
 	            recOrderFields +
 	            "FROM _Document_PriceList_Prices PL INDEXED BY IND_PLREFSKU " +
-	            "JOIN _Catalog_SKU S INDEXED BY IND_SKUOWNERBRAND ON PL.SKU = S.Id " +
+	            "JOIN _Catalog_SKU S " +
 	            groupJoin + groupWhere + filterString +
 	            "JOIN Catalog_Brands CB ON CB.Id=S.Brand " +
 	            groupParentJoin +
@@ -139,7 +139,7 @@ function GetSKUAndGroups(searchText, thisDoc) {
 	            "CB.Description AS Brand " +
 	            recOrderFields +
 	            "FROM _Document_PriceList_Prices PL INDEXED BY IND_PLREFSKU " +
-	            "JOIN _Catalog_SKU S INDEXED BY IND_SKUOWNERBRAND ON PL.SKU = S.Id " +
+	            "JOIN _Catalog_SKU S " +
 	            groupJoin + filterString +
 	            "JOIN Catalog_Brands CB ON CB.Id=S.Brand " +
 	            groupParentJoin +
@@ -382,13 +382,13 @@ function GetGroups(priceList, stock, screenContext) {
   if (screenContext=="Order"){
 
     var q = new Query("SELECT DISTINCT SG.Id AS ChildId, USGF.Id AS ChildIsSet, SG.Description As Child, SGP.Id AS ParentId, SGP.Description AS Parent, USPF.Id AS ParentIsSet " +
-        		"FROM Document_PriceList_Prices SP " +
-        		"JOIN Catalog_SKU S On SP.SKU = S.Id " +
-        		"JOIN Catalog_SKUGroup SG ON S.Owner = SG.Id " +
+        		"FROM _Document_PriceList_Prices SP INDEXED BY IND_PLREFSKU " +
+        		"JOIN _Catalog_SKU S INDEXED BY IND_SKUOWNER On SP.SKU = S.Id " +
+        		"JOIN _Catalog_SKUGroup SG INDEXED BY IND_SKUGROUPPARENT ON S.Owner = SG.Id " +
         		"LEFT JOIN USR_Filters USGF ON USGF.Id = SG.Id " +
         		"LEFT JOIN Catalog_SKUGroup SGP ON SG.Parent = SGP.Id " +
         		"LEFT JOIN USR_Filters USPF ON USPF.Id = SGP.Id " +
-        		"WHERE SP.Ref = @priceList " +
+        		"WHERE SP.Ref = @priceList AND SP.IsTombstone = 0 AND S.IsTombstone = 0 AND SG.IsTombstone = 0 " +
         		"AND CASE WHEN @isStockEmptyRef = 0 THEN SP.SKU IN(SELECT SS.Ref FROM Catalog_SKU_Stocks SS WHERE SS.Stock = @stock AND CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE SS.StockValue > 0 END) ELSE CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE S.CommonStock > 0 END END " +
         		filterString + " ORDER BY Parent, Child");
 

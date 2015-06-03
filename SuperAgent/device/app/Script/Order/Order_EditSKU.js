@@ -1,6 +1,7 @@
 var swipedRow;
 var alreadyAdded;
 var forwardText;
+var c_orderItem;
 
 function OnLoading(){
     alreadyAdded = $.Exists("AlreadyAdded");
@@ -57,6 +58,11 @@ function GetFeatures(sku) {
 
 function CreateOrderItemIfNotExist(order, sku, orderitem, price, features, recOrder, unit) {
 
+    if ($.Exists("orderitemAlt")){  //Dirty hack, see Events.js line 109
+        orderitem = c_orderItem;
+        $.Remove("orderitemAlt");
+    }   
+
     if (orderitem == null) {
 
         var feature;
@@ -109,11 +115,13 @@ function CreateOrderItemIfNotExist(order, sku, orderitem, price, features, recOr
             p.Discount = 0;
             p.Qty = recOrder;
             p.Save();
+            c_orderItem = p.Id;
             return p.Id;
 //        }
     } else {
         if (parseInt(orderitem.Discount) != parseInt(0))
             Variables["param4"] = orderitem.Discount;
+        c_orderItem = orderitem;
         return orderitem;
     }
 

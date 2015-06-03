@@ -105,6 +105,11 @@ function OnWorkflowBack(workflow, lastStep, nextStep){
 	WriteScreenName(nextStep);
 	if (NextDoc(lastStep, nextStep))
 		Global.ClearFilter();
+
+	if (lastStep=="Image" && nextStep=="EditSKU"){  //Diarty hack, if remove, will be created new orderItem
+		// Dialog.Debug($.entity);
+		$.AddGlobal("orderitemAlt", $.entity);
+	}
 }
 
 function OnWorkflowPause(name) {

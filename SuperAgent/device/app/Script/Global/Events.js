@@ -44,6 +44,10 @@ function OnWorkflowStart(name) {
 
 			createTable.Execute();
 
+			var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_FILTERS ON USR_Filters(FilterType)");
+
+			indexQuery.Execute();
+
 		}
 
 	}

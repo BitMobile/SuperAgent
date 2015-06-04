@@ -37,8 +37,8 @@ function GetSKUAndGroups(searchText, thisDoc) {
 
     var filterString = "";
 
-    filterString = AddFilter(filterString, "group_filter", "G.Id", " AND ");
-    filterString = AddFilter(filterString, "brand_filter", "CB.Id", " AND ");
+    filterString = AddFilter(filterString, "group_filter", "S.Owner", "OF");
+    filterString = AddFilter(filterString, "brand_filter", "S.Brand", "BF");
 
     var groupFields = "";
     var groupJoin = " INDEXED BY IND_SKUBRAND ON PL.SKU = S.Id ";
@@ -109,7 +109,7 @@ function GetSKUAndGroups(searchText, thisDoc) {
     	if ($.sessionConst.NoStkEnbl) {
             var stockCondition = "";
         } else {
-            var stockCondition = " S.CommonStock > 0 AND ";
+            var stockCondition = " AND S.CommonStock > 0 ";
     	}
 
 	    query.Text = "SELECT DISTINCT S.Id, S.Description, PL.Price AS Price, S.CommonStock AS CommonStock, " +
@@ -118,11 +118,11 @@ function GetSKUAndGroups(searchText, thisDoc) {
 	            recOrderFields +
 	            "FROM _Document_PriceList_Prices PL INDEXED BY IND_PLREFSKU " +
 	            "JOIN _Catalog_SKU S " +
-	            groupJoin + groupWhere + filterString +
+	            groupJoin + groupWhere +
 	            "JOIN Catalog_Brands CB ON CB.Id=S.Brand " +
 	            groupParentJoin +
-	            recOrderStr +
-	            " WHERE " + stockCondition + " PL.Ref = @Ref AND PL.IsTombstone = 0 AND S.IsTombstone = 0 " + searchString +
+	            recOrderStr + filterString +
+	            " WHERE PL.Ref = @Ref AND PL.IsTombstone = 0 AND S.IsTombstone = 0 " + stockCondition + searchString +
 	            " ORDER BY " + groupSort + recOrderSort + " S.Description LIMIT 100";
 
     } else {
@@ -130,7 +130,7 @@ function GetSKUAndGroups(searchText, thisDoc) {
     	if ($.sessionConst.NoStkEnbl) {
             var stockCondition = "";
         } else {
-            var stockCondition = " SS.StockValue > 0 AND ";
+            var stockCondition = " AND SS.StockValue > 0 ";
     	}
 
     	query.Text = "SELECT INQ.*, SS.StockValue AS CommonStock FROM _Catalog_SKU_Stocks SS INDEXED BY IND_SKUSSTOCK " +
@@ -140,12 +140,12 @@ function GetSKUAndGroups(searchText, thisDoc) {
 	            recOrderFields +
 	            "FROM _Document_PriceList_Prices PL INDEXED BY IND_PLREFSKU " +
 	            "JOIN _Catalog_SKU S " +
-	            groupJoin + filterString +
+	            groupJoin +
 	            "JOIN Catalog_Brands CB ON CB.Id=S.Brand " +
 	            groupParentJoin +
-	            recOrderStr +
+	            recOrderStr + filterString +
 	            " WHERE PL.Ref = @Ref AND PL.IsTombstone = 0 AND S.IsTombstone = 0 " + groupWhere + searchString +
-	            ") INQ ON SS.Ref = INQ.Id WHERE " + stockCondition + " SS.Stock=@stock AND SS.IsTombstone = 0 ORDER BY " + groupSort + recOrderSort + " INQ.Description LIMIT 100";
+	            ") INQ ON SS.Ref = INQ.Id WHERE SS.Stock=@stock AND SS.IsTombstone = 0 " + stockCondition + " ORDER BY " + groupSort + recOrderSort + " INQ.Description LIMIT 100";
 
     	query.AddParameter("stock", stock);
 
@@ -270,9 +270,9 @@ function GetGroupPath(group, parent, parentDescription) {
     return string;
 }
 
-function AddFilter(filterString, filterName, condition, connector) {
+function AddFilter(filterString, filterName, condition, tableName) {
 
-	var q = new Query("SELECT F.Id FROM USR_Filters F WHERE F.FilterType = @filterName");
+	var q = new Query("SELECT F.Id FROM USR_Filters F INDEXED BY IND_FILTERS WHERE F.FilterType = @filterName");
 
 	q.AddParameter("filterName", filterName);
 
@@ -280,7 +280,7 @@ function AddFilter(filterString, filterName, condition, connector) {
 
 	if (res!=null) {
 
-		filterString += connector + condition + " IN(SELECT F.Id FROM USR_Filters F WHERE F.FilterType = '" + filterName + "') ";
+    filterString += String.Format(" JOIN USR_Filters {0} INDEXED BY IND_FILTERS ON {0}.FilterType = '{1}' AND {0}.Id = {2} ", tableName, filterName, condition);
 
 	}
 
@@ -288,16 +288,18 @@ function AddFilter(filterString, filterName, condition, connector) {
 
 }
 
-function OnScroll(sender)
-{
+function OnScroll(sender) {
+
     if($.grScrollView.ScrollIndex > 0 && swipedRow != $.grScrollView.Controls[$.grScrollView.ScrollIndex])
         HideSwiped();
+
 }
 
-function HideSwiped()
-{
+function HideSwiped() {
+
     if(swipedRow != null)
-        swipedRow.Index = 1;
+      swipedRow.Index = 1;
+
 }
 
 function DoGroupping() {
@@ -351,7 +353,6 @@ function CheckFilterAndForward() {
 
 }
 
-
 function GetLeftFilterStyle(val) {
     if (Variables["filterType"] == val)
         return "mode_left_button_on";
@@ -377,20 +378,20 @@ function GetGroups(priceList, stock, screenContext) {
 
   var filterString = " ";
 
-  filterString += AddFilter(filterString, "brand_filter", "S.Brand", " AND ");
+  filterString = AddFilter(filterString, "brand_filter", "S.Brand", "BF");
 
   if (screenContext=="Order"){
 
     var q = new Query("SELECT DISTINCT SG.Id AS ChildId, USGF.Id AS ChildIsSet, SG.Description As Child, SGP.Id AS ParentId, SGP.Description AS Parent, USPF.Id AS ParentIsSet " +
         		"FROM _Document_PriceList_Prices SP INDEXED BY IND_PLREFSKU " +
-        		"JOIN _Catalog_SKU S INDEXED BY IND_SKUOWNER On SP.SKU = S.Id " +
+        		"JOIN _Catalog_SKU S INDEXED BY IND_SKUOWNERBRAND ON SP.SKU = S.Id " + filterString +
         		"JOIN _Catalog_SKUGroup SG INDEXED BY IND_SKUGROUPPARENT ON S.Owner = SG.Id " +
         		"LEFT JOIN USR_Filters USGF ON USGF.Id = SG.Id " +
         		"LEFT JOIN Catalog_SKUGroup SGP ON SG.Parent = SGP.Id " +
         		"LEFT JOIN USR_Filters USPF ON USPF.Id = SGP.Id " +
         		"WHERE SP.Ref = @priceList AND SP.IsTombstone = 0 AND S.IsTombstone = 0 AND SG.IsTombstone = 0 " +
-        		"AND CASE WHEN @isStockEmptyRef = 0 THEN SP.SKU IN(SELECT SS.Ref FROM Catalog_SKU_Stocks SS WHERE SS.Stock = @stock AND CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE SS.StockValue > 0 END) ELSE CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE S.CommonStock > 0 END END " +
-        		filterString + " ORDER BY Parent, Child");
+        		"AND CASE WHEN @isStockEmptyRef = 0 THEN SP.SKU IN(SELECT SS.Ref FROM _Catalog_SKU_Stocks SS INDEXED BY IND_SKUSSTOCK WHERE SS.IsTombstone = 0 AND SS.Stock = @stock AND CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE SS.StockValue > 0 END ORDER BY SS.Ref, SS.Stock, SS.IsTombstone) ELSE CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE S.CommonStock > 0 END END " +
+        		"ORDER BY Parent, Child");
 
     q.AddParameter("priceList", priceList);
     q.AddParameter("stock", stock);
@@ -407,12 +408,12 @@ function GetGroups(priceList, stock, screenContext) {
   if (screenContext=="Questionnaire"){
 
     var q1 = new Query("SELECT DISTINCT G.Id AS ChildId, G.Description AS Child, USGF.Id AS ChildIsSet, GP.Id AS ParentId, GP.Description AS Parent, USPF.Id AS ParentIsSet " +
-        		"FROM Catalog_SKU S " +
-        		"JOIN Catalog_SKUGroup G ON S.Owner = G.Id " +
+        		"FROM _Catalog_SKU S INDEXED BY IND_SKUOWNERBRAND" + filterString +
+        		"JOIN _Catalog_SKUGroup G INDEXED BY IND_SKUGROUPPARENT ON S.Owner = G.Id " +
         		"LEFT JOIN USR_Filters USGF ON USGF.Id = G.Id " +
         		"LEFT JOIN Catalog_SKUGroup GP ON G.Parent = GP.Id " +
         		"LEFT JOIN USR_Filters USPF ON USPF.Id = GP.Id " +
-        		"WHERE S.ID IN (SELECT DISTINCT SKU FROM USR_SKUQuestions) " + filterString + " ORDER BY Parent, Child");
+        		"WHERE S.IsTombstone = 0 AND G.IsTombstone = 0 AND S.Id IN (SELECT DISTINCT SKU FROM USR_SKUQuestions) ORDER BY Parent, Child");
 
     return q1.Execute();
 
@@ -560,23 +561,22 @@ function GetChildren(parent) {
     return q.Execute();
 }
 
-
 function GetBrands(priceList, stock, screenContext) {
 
   var filterString = " ";
 
-	filterString += AddFilter(filterString, "group_filter", "S.Owner", " AND ");
+	filterString = AddFilter(filterString, "group_filter", "S.Owner", "OF");
 
   if (screenContext=="Order"){
 
   	var q = new Query("SELECT DISTINCT SB.Id, SB.Description, USBF.Id AS BrandIsSet  " +
-      		"FROM Document_PriceList_Prices SP " +
-      		"JOIN Catalog_SKU S ON SP.SKU = S.Id " +
+      		"FROM _Document_PriceList_Prices SP INDEXED BY IND_PLREFSKU " +
+      		"JOIN _Catalog_SKU S INDEXED BY IND_SKUOWNERBRAND ON SP.SKU = S.Id " + filterString +
       		"JOIN Catalog_Brands SB ON S.Brand = SB.Id " +
       		"LEFT JOIN USR_Filters USBF ON USBF.Id = SB.Id " +
-      		"WHERE SP.Ref = @priceList " +
-      		"AND CASE WHEN @isStockEmptyRef = 0 THEN SP.SKU IN(SELECT SS.Ref FROM Catalog_SKU_Stocks SS WHERE SS.Stock = @stock AND CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE SS.StockValue > 0 END) ELSE CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE S.CommonStock > 0 END END " +
-      		filterString + " ORDER BY SB.Description");
+      		"WHERE SP.Ref = @priceList AND SP.IsTombstone = 0 AND S.IsTombstone = 0 " +
+      		"AND CASE WHEN @isStockEmptyRef = 0 THEN SP.SKU IN(SELECT SS.Ref FROM _Catalog_SKU_Stocks SS INDEXED BY IND_SKUSSTOCK WHERE SS.IsTombstone = 0 AND SS.Stock = @stock AND CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE SS.StockValue > 0 END ORDER BY SS.Ref, SS.Stock, SS.IsTombstone) ELSE CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE S.CommonStock > 0 END END " +
+      		"ORDER BY SB.Description");
 
   	q.AddParameter("priceList", priceList);
     q.AddParameter("stock", stock);
@@ -593,11 +593,10 @@ function GetBrands(priceList, stock, screenContext) {
   if (screenContext=="Questionnaire"){
 
   	  var q1 = new Query("SELECT DISTINCT B.Id, B.Description, USBF.Id AS BrandIsSet " +
-      		"FROM Catalog_SKU S " +
+      		"FROM _Catalog_SKU S INDEXED BY IND_SKUOWNERBRAND " + filterString +
       		"JOIN Catalog_Brands B ON S.Brand=B.Id " +
-      		"JOIN Catalog_SKUGroup G ON S.Owner=G.Id " +
       		"LEFT JOIN USR_Filters USBF ON USBF.Id = B.Id " +
-      		"WHERE S.ID IN (SELECT DISTINCT SKU FROM USR_SKUQuestions) " + filterString + " ORDER BY B.Description");
+      		"WHERE S.IsTombstone = 0 AND S.Id IN (SELECT DISTINCT SKU FROM USR_SKUQuestions) ORDER BY B.Description");
 
       return q1.Execute();
 

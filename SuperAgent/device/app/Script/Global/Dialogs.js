@@ -61,9 +61,14 @@ function ChooseBool(entity, attribute, control, func, title) {
 function CallBack(state, args) {
 	AssignDialogValue(state, args);
 	var control = state[2];
-	if (getType(args.Result)=="BitMobile.DbEngine.DbRef")
-		control.Text = args.Result.Description;
-	else
+	var attribute = state[1];
+	if (getType(args.Result)=="BitMobile.DbEngine.DbRef") {
+		if (attribute = "OutletStatus") 
+			control.Text = Translate[String.Format("#{0}#", args.Result.Description)];
+		else 
+			control.Text = args.Result.Description;
+	} 
+	else 
 		control.Text = args.Result;
 }
 

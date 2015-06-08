@@ -220,7 +220,7 @@
 				<s:Push Id="visible" Value="$parameter.Visible"></s:Push>
 				<s:Push Id="editable" Value="$parameter.Editable"></s:Push>
 				<s:If Test="$visible">
-					<c:DockLayout CssClass="parameter_grid" OnClickAction="$GoToParameterAction($parameter.TypeDescription, $parameter.Value, Value, $outlet, $parameter.Id, control{$index}, $parameter.Description, $editable, $index)">
+					<c:DockLayout CssClass="parameter_grid" OnClickAction="$GoToParameterAction($parameter.TypeDescription, $parameter.Value, Value, $outlet, $parameter.Id, control{$index}, $parameter.Description, $editable, $index, $parameter.IsInputField)">
 						<s:If Test="$IsEditText($sessionConst.editOutletParameters, $parameter.IsInputField, $editable)">
 							<c:EditText Id="control{$index}" Text="$parameter.Value" Placeholder="—" OnChange="$AssignParameterValue($parameter.TypeDescription, $parameterValue, Value, $outlet, $parameter.Id)" CssClass="value" Keyboard="$parameter.KeyboardType"></c:EditText>
 						</s:If>

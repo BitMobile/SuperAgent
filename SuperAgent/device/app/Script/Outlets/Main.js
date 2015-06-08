@@ -182,7 +182,6 @@ function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParamete
 					table.push([listChoice["Id"], Translate[String.Format("#{0}#", listChoice.Description)]]);
 				}
 				listChoice = table;
-				func = CallBack;
 			}
 
 			Dialogs.DoChoose(listChoice, outlet, attribute, control, func, title);
@@ -199,34 +198,44 @@ function DoSelect(editOutletParameters, primaryParameterName) {
 //--------------------------editing additional parameters handlers-----------------------------
 
 
-function CreateOutletParameterValue(outlet, parameter, value, parameterValue) {
+function CreateOutletParameterValue(outlet, parameter, value, parameterValue, isInputField) {
 	var q = new Query("SELECT Id FROM Catalog_Outlet_Parameters WHERE Ref=@ref AND Parameter = @parameter");
 	q.AddParameter("ref", outlet);
 	q.AddParameter("parameter", parameter);
 	parameterValue = q.ExecuteScalar();
-	if (parameterValue == null) {
-		parameterValue = DB.Create("Catalog.Outlet_Parameters");
-		parameterValue.Ref = outlet;
-		parameterValue.Parameter = parameter;
-	} else
-		parameterValue = parameterValue.GetObject();
-	if ((parameter.DataType).ToString() != (DB.Current.Constant.DataType.Snapshot).ToString())
-		parameterValue.Value = value;
-	parameterValue.Save();
-	return parameterValue.Id;
+
+	if (parameterValue==null || isInputField){
+
+		if (parameterValue == null) {
+			parameterValue = DB.Create("Catalog.Outlet_Parameters");
+			parameterValue.Ref = outlet;
+			parameterValue.Parameter = parameter;
+		} else{
+			parameterValue = parameterValue.GetObject();
+			parameterValue.Value = value;
+		}		
+		parameterValue.Save();
+		parameterValue = parameterValue.Id;
+	}
+
+	return parameterValue;
 }
 
 
 function AssignParameterValue(control, typeDescription, parameterValue, value, outlet, parameter){
-	CreateOutletParameterValue(outlet, parameter, control.Text, parameterValue)
+	CreateOutletParameterValue(outlet, parameter, control.Text, parameterValue, true)
 }
 
-function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control, parameterDescription, editable, index) {
+function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control, 
+	parameterDescription, editable, index, isInputField) {
 
-	if (editable) {
+	if (isInputField)
+		FocusOnEditText(control, '1');
 
+	if (editable && !isInputField) {
 		if ($.sessionConst.editOutletParameters) {
-			parameterValue = CreateOutletParameterValue(outlet, parameter, parameterValue, parameterValue);
+			parameterValue = CreateOutletParameterValue(outlet, parameter, parameterValue, parameterValue, false);
+			// Dialog.Debug(parameterValue);
 
 			if (typeDescription == "ValueList") {  //--------ValueList-------
 				var q = new Query();
@@ -236,12 +245,12 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 			}
 			if (typeDescription == "DateTime") {  //---------DateTime-------
 				if (String.IsNullOrEmpty(parameterValue.Value))
-					ChooseDateTime(parameterValue, "Value", Variables[control], DateHandler, parameterDescription);
+					Dialogs.ChooseDateTime(parameterValue, "Value", Variables[control], DateHandler, parameterDescription);
 				else
 					Dialog.Choose(parameterDescription, [[0, Translate["#clearValue#"]], [1, Translate["#setDate#"]]], DateHandler, [parameterValue, control]);
 			}
 			if (typeDescription == "Boolean") {  //----------Boolean--------
-				ChooseBool(parameterValue, "Value", Variables[control], null, parameterDescription);
+				Dialogs.ChooseBool(parameterValue, "Value", Variables[control], null, parameterDescription);
 			}
 			if (typeDescription == "Snapshot") { //----------Snapshot-------
 				query = new Query("SELECT Value FROM Catalog_Outlet_Parameters WHERE Parameter = @parameter AND Ref = @outlet")
@@ -252,9 +261,6 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 				var source = (!snapshotIdIsEmpty ? Variables[("parameterImage"+index)].Source : null);
 				Images.AddSnapshot(outlet, parameterValue, SaveAtOutelt, parameterDescription, source);
 				parameterValueC = parameterValue;
-			}
-			if (typeDescription == "String" || typeDescription == "Integer" || typeDescription == "Decimal") {
-				FocusOnEditText(control, '1');
 			}
 		}
 	}
@@ -319,7 +325,7 @@ function DateHandler(state, args) {
 		Workflow.Refresh([]);
 	}
 	if (parseInt(args.Result)==parseInt(1)){
-		ChooseDateTime(parameterValue, "Value", Variables[control]);
+		Dialogs.ChooseDateTime(parameterValue, "Value", Variables[control]);
 	}
 }
 
@@ -587,100 +593,6 @@ function CommitAndBack(){
 	Workflow.Rollback();
 }
 
-//------------------------------Temporary, from dialogs----------------
-
-//function DoChoose(listChoice, entity, attribute, control, func, title) {
-//
-//	title = typeof title !== 'undefined' ? title : "#select_answer#";
-//
-//	if (attribute==null)
-//		var startKey = control.Text;
-//	else
-//		var startKey = entity[attribute];
-//
-//	if (listChoice==null){
-//		var tableName = entity[attribute].Metadata().TableName;
-//		var query = new Query();
-//		query.Text = "SELECT Id, Description FROM " + tableName;
-//		listChoice = query.Execute();
-//	}
-//
-//	if (func == null)
-//		func = CallBack;
-//
-//
-//
-//	Dialog.Choose(title, listChoice, startKey, func, [entity, attribute, control]);
-//}
-
-function ChooseDateTime(entity, attribute, control, func, title) {
-	var startKey;
-
-	title = typeof title !== 'undefined' ? title : "#select_answer#";
-
-	if (attribute==null)
-		startKey = control.Text;
-	else
-		startKey = entity[attribute];
-
-	if (String.IsNullOrEmpty(startKey) || startKey=="—")
-		startKey = DateTime.Now;
-
-	if (func == null)
-		func = CallBack;
-	Dialog.DateTime(title, startKey, func, [entity, attribute, control]);
-}
-
-function ChooseBool(entity, attribute, control, func, title) {
-
-	title = typeof title !== 'undefined' ? title : "#select_answer#";
-
-	var startKey = control.Text;
-
-	var listChoice = [[ "—", "-" ], [Translate["#YES#"], Translate["#YES#"]], [Translate["#NO#"], Translate["#NO#"]]];
-	if (func == null)
-		func = CallBack;
-
-	Dialog.Choose(title, listChoice, startKey, func, [entity, attribute, control]);
-}
-
-function CallBack(state, args) {
-	AssignDialogValue(state, args);
-	var control = state[2];
-	var attribute = state[1];
-	if (getType(args.Result)=="BitMobile.DbEngine.DbRef") {
-		if (attribute = "OutletStatus") {
-			control.Text = Translate[String.Format("#{0}#", args.Result.Description)]
-		} else {
-			control.Text = args.Result.Description;
-		}
-	} else {
-		control.Text = args.Result;
-	}
-}
-
-function AssignDialogValue(state, args) {
-	var entity = state[0];
-	var attribute = state[1];
-	entity[attribute] = args.Result;
-	entity.GetObject().Save();
-	return entity;
-}
-
 function SnapshotExists(outlet, filename, filesTableName) {
 	return Images.SnapshotExists(outlet, filename, filesTableName);
-}
-
-//------------------------------Temporary, from global----------------
-
-function GenerateGuid() {
-
-	return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
-
-}
-
-function S4() {
-
-	return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-
 }

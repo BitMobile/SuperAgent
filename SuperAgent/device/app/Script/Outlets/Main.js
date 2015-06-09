@@ -229,11 +229,14 @@ function AssignParameterValue(control, typeDescription, parameterValue, value, o
 function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control, 
 	parameterDescription, editable, index, isInputField) {
 
-	if (isInputField)
-		FocusOnEditText(control, '1');
-
 	if (editable && !isInputField) {
 		if ($.sessionConst.editOutletParameters) {
+
+			if (isInputField){
+				FocusOnEditText(control, '1');
+				return true;
+			}
+
 			parameterValue = CreateOutletParameterValue(outlet, parameter, parameterValue, parameterValue, false);
 			// Dialog.Debug(parameterValue);
 

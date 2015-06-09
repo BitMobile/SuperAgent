@@ -69,7 +69,7 @@ function CallBack(state, args) {
 			control.Text = args.Result.Description;
 	} 
 	else 
-		control.Text = args.Result;
+		control.Text = String.IsNullOrEmpty(args.Result) ? "—" : args.Result;
 }
 
 function AssignDialogValue(state, args) {

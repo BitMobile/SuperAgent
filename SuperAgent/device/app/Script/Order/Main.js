@@ -152,11 +152,18 @@ function GetOrderParameters(outlet) {
 	return result;
 }
 
-function GoToParameterAction(typeDescription, parameterValue, value, order, parameter, control, parameterDescription, editable) {
+function GoToParameterAction(typeDescription, parameterValue, value, order, parameter, control, parameterDescription, 
+	editable, isInputField) {
+	
 	if (IsNew(order)) {
 		if (editable) {
 
-			parameterValue = CreateOrderParameterValue(order, parameter, parameterValue, parameterValue);
+			if (isInputField){
+				FocusOnEditText(control, '1');
+				return true;
+			}
+
+			parameterValue = CreateOrderParameterValue(order, parameter, parameterValue, parameterValue, false);
 
 			if (typeDescription == "ValueList") {  //--------ValueList-------
 				var q = new Query();
@@ -173,31 +180,35 @@ function GoToParameterAction(typeDescription, parameterValue, value, order, para
 			if (typeDescription == "Boolean") {  //----------Boolean--------
 				Dialogs.ChooseBool(parameterValue, "Value", Variables[control], null, parameterDescription);
 			}
-			if (typeDescription == "String" || typeDescription == "Integer" || typeDescription == "Decimal") {
-				FocusOnEditText(control, '1');
-			}
 		}
 	}
 }
 
-function CreateOrderParameterValue(order, parameter, value, parameterValue) {
+function CreateOrderParameterValue(order, parameter, value, parameterValue, isInputField) {
 	var q = new Query("SELECT Id FROM Document_Order_Parameters WHERE Ref=@ref AND Parameter = @parameter");
 	q.AddParameter("ref", order);
 	q.AddParameter("parameter", parameter);
 	parameterValue = q.ExecuteScalar();
-	if (parameterValue == null) {
-		parameterValue = DB.Create("Document.Order_Parameters");
-		parameterValue.Ref = order;
-		parameterValue.Parameter = parameter;
-	} else
-		parameterValue = parameterValue.GetObject();
-	parameterValue.Value = value;
-	parameterValue.Save();
-	return parameterValue.Id;
+
+	if (parameterValue==null || isInputField){
+
+		if (parameterValue == null) {
+			parameterValue = DB.Create("Document.Order_Parameters");
+			parameterValue.Ref = order;
+			parameterValue.Parameter = parameter;
+		} else{
+			parameterValue = parameterValue.GetObject();
+			parameterValue.Value = value;
+		}
+		parameterValue.Save();
+		parameterValue = parameterValue.Id;
+	}
+
+	return parameterValue;
 }
 
 function AssignParameterValue(control, typeDescription, parameterValue, value, order, parameter) {
-	CreateOrderParameterValue(order, parameter, control.Text, parameterValue)
+	CreateOrderParameterValue(order, parameter, control.Text, parameterValue, true)
 }
 
 

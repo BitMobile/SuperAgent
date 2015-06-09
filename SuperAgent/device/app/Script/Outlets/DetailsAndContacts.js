@@ -23,17 +23,6 @@ function SaveAndBack(entity, validateOutlet) {
 	}
 }
 
-function GetString(ref) {
-	if (ref.EmptyRef()) {
-		$.Add("style", "comment_row");
-		return Translate["#select_answer_low#"];
-	} else {
-		$.Add("style", "main_row");
-		var ownDictionary = CreateOwnershipDictionary();
-		return ownDictionary[ref.Description];
-	}
-}
-
 function GetContacts(outlet) {
 	var q = new Query("SELECT C.Id, C.ContactName, P.Description AS Position, PhoneNumber, Email FROM Catalog_Outlet_Contacts C LEFT JOIN Catalog_Positions P ON C.Position=P.Id WHERE C.Ref=@ref AND C.NotActual=0 ORDER BY C.ContactName");
 	q.AddParameter("ref", outlet);
@@ -59,13 +48,22 @@ function DeleteContact(ref) {
 	Workflow.Refresh([ $.outlet ]);
 }
 
-function SelectOwnership(control) {
-	var ownDictionary = CreateOwnershipDictionary();
+function SelectOwnership(control) {	
 	var q = new Query();
-	q.Text = "SELECT Id, Description FROM Enum_OwnershipType";// UNION SELECT NULL, '—' ORDER BY Description";
-	var res = q.Execute().Unload();
+	// q.Text = "SELECT Id, Description FROM Enum_OwnershipType UNION SELECT @emptyRef, '—' ORDER BY Description desc";// UNION SELECT NULL, '—' ORDER BY Description";
+	// q.AddParameter("emptyRef",  DB.EmptyRef("Enum_OwnershipType"));
+	// var res = q.Execute().Unload();
 
-	Dialogs.DoChoose(q.Execute().Unload(), $.outlet, "OwnershipType", control, null, Translate["#ownership#"]);
+	q.Text = "SELECT Id, Description FROM Enum_OwnershipType";
+	var res = q.Execute().Unload();
+	var arr = [];	
+	
+	arr.push([DB.EmptyRef("Enum_OwnershipType"), "-"]);
+	while (res.Next()) {
+		arr.push([res.Id, Translate["#" + res.Description + "#"]]);
+	}
+
+	Dialogs.DoChoose(arr, $.outlet, "OwnershipType", control, OwnTypeCallBack, Translate["#ownership#"]);
 
 }
 
@@ -150,16 +148,13 @@ function ValidateOutlet(entity) {
 	return false;
 }
 
-function CreateOwnershipDictionary() {
-	var d = new Dictionary();
-	d.Add("ZAO", "ЗАО");
-	d.Add("OOO", "OOO");
-	d.Add("IP", "ИП");
-	d.Add("NKO", "НКО");
-	d.Add("OAO", "OAO");
-	d.Add("OP", "ОП");
-	d.Add("TSJ", "ТСЖ");
-	return d;
+function OwnTypeCallBack(state, args){
+	AssignDialogValue(state, args);
+	var control = state[2];
+	if (args.Result != DB.EmptyRef("Enum_OwnershipType"))
+		control.Text = Translate["#" + args.Result.Description + "#"];
+	else
+		control.Text = "—";
 }
 
 function FormatDate(datetime) {

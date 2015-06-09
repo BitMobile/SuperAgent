@@ -290,3 +290,10 @@ noSuccess		Произошла ошибка во время отправки. Д�
 errorMessage	Error message
 sending			Sending..
 editSKU			Edit
+ZAO				ZAO
+OOO				OOO
+IP				IP
+NKO				NKO
+OAO				OAO
+OP				OP
+TSJ				TSJ

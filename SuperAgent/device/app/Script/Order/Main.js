@@ -161,10 +161,6 @@ function GoToParameterAction(typeDescription, parameterValue, value, order, para
 
 			c_parameterDescription = parameterDescription;
 			parameterValue = CreateOrderParameterValue(order, parameter, parameterValue, parameterValue, isInputField);
-				return true;
-			}
-
-			parameterValue = CreateOrderParameterValue(order, parameter, parameterValue, parameterValue, false);
 
 			if (typeDescription == "ValueList") {  //--------ValueList-------
 				var q = new Query();

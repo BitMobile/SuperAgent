@@ -143,7 +143,7 @@ function CreateVisitQuestionValueIfNotExists(question, answer, dialogInput) {
 function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer, questionDescription) {
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.ValueList).ToString()) {
 		var q = new Query();
-		q.Text = "SELECT Value, Value FROM Catalog_Question_ValueList WHERE Ref=@ref";
+		q.Text = "SELECT Value, Value FROM Catalog_Question_ValueList WHERE Ref=@ref UNION SELECT '', '—' ORDER BY Value";
 		q.AddParameter("ref", questionItem);
 
 		//Dialogs.DoChoose(q.Execute(), questionItem, null, Variables[control], DialogCallBack);

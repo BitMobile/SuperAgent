@@ -270,7 +270,7 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 
 	if ((answerType).ToString() == (DB.Current.Constant.DataType.ValueList).ToString()) {
 		var q = new Query();
-		q.Text = "SELECT Value, Value FROM Catalog_Question_ValueList WHERE Ref=@ref";
+		q.Text = "SELECT Value, Value FROM Catalog_Question_ValueList WHERE Ref=@ref UNION SELECT '', '—' ORDER BY Value";
 		q.AddParameter("ref", question);
 		//Dialogs.DoChoose(q.Execute(), question, null, editControl, DialogCallBack);
 		DoChoose(q.Execute(), question, null, editControl, DialogCallBack, title);

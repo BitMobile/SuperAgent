@@ -5,6 +5,7 @@ var infoTitle;
 var sumTitle;
 var skuTitle;
 var infoTitleSmall;
+var c_parameterDescription;
 
 function OnLoading(){
 
@@ -152,11 +153,12 @@ function GetOrderParameters(outlet) {
 	return result;
 }
 
-function GoToParameterAction(typeDescription, parameterValue, value, order, parameter, control, parameterDescription, editable) {
+function GoToParameterAction(typeDescription, parameterValue, value, order, parameter, control, parameterDescription, editable, isInputField) {
 	if (IsNew(order)) {
 		if (editable) {
 
-			parameterValue = CreateOrderParameterValue(order, parameter, parameterValue, parameterValue);
+			c_parameterDescription = parameterDescription;
+			parameterValue = CreateOrderParameterValue(order, parameter, parameterValue, parameterValue, isInputField);
 
 			if (typeDescription == "ValueList") {  //--------ValueList-------
 				var q = new Query();
@@ -180,7 +182,7 @@ function GoToParameterAction(typeDescription, parameterValue, value, order, para
 	}
 }
 
-function CreateOrderParameterValue(order, parameter, value, parameterValue) {
+function CreateOrderParameterValue(order, parameter, value, parameterValue, isInputField) {
 	var q = new Query("SELECT Id FROM Document_Order_Parameters WHERE Ref=@ref AND Parameter = @parameter");
 	q.AddParameter("ref", order);
 	q.AddParameter("parameter", parameter);
@@ -189,15 +191,17 @@ function CreateOrderParameterValue(order, parameter, value, parameterValue) {
 		parameterValue = DB.Create("Document.Order_Parameters");
 		parameterValue.Ref = order;
 		parameterValue.Parameter = parameter;
-	} else
+	} else{
 		parameterValue = parameterValue.GetObject();
-	parameterValue.Value = value;
+		if (isInputField)
+			parameterValue.Value = value;		
+	}		
 	parameterValue.Save();
 	return parameterValue.Id;
 }
 
 function AssignParameterValue(control, typeDescription, parameterValue, value, order, parameter) {
-	CreateOrderParameterValue(order, parameter, control.Text, parameterValue)
+	CreateOrderParameterValue(order, parameter, control.Text, parameterValue, true)
 }
 
 
@@ -208,16 +212,16 @@ function DateHandler(state, args) {
 		parameterValue = parameterValue.GetObject();
 		parameterValue.Value = args.Result;
 		parameterValue.Save();
-		Workflow.Refresh([]);
+		Workflow.Refresh([$.sum, $.executedOrder, $.thisDoc]);
 	}
 	if (parseInt(args.Result)==parseInt(0)){
 		parameterValue = parameterValue.GetObject();
 		parameterValue.Value = "";
 		parameterValue.Save();
-		Workflow.Refresh([]);
+		Workflow.Refresh([$.sum, $.executedOrder, $.thisDoc]);
 	}
 	if (parseInt(args.Result)==parseInt(1)){
-		ChooseDateTime(parameterValue, "Value", Variables[control]);
+		Dialogs.ChooseDateTime(parameterValue, "Value", Variables[control], DateHandler, c_parameterDescription);
 	}
 }
 

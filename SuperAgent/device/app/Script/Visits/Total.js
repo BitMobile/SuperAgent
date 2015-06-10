@@ -157,7 +157,7 @@ function CheckAndCommit(order, visit, wfName) {
 
 function NextDateHandler(state, args){
 
-	var newVistPlan = state[0];
+	var newVistPlan = state[0]; 
 
 	if (newVistPlan.Id==null){
 		newVistPlan = DB.Create("Document.MobileAppPlanVisit");
@@ -171,8 +171,7 @@ function NextDateHandler(state, args){
 	newVistPlan.PlanDate = args.Result;
 	newVistPlan.Save();
 
-	$.nextVisitControl.Text = Format("{0:f}", Date(newVistPlan.PlanDate));
-
+	Workflow.Refresh([]);
 }
 
 function DeliveryDateCallBack(state, args){

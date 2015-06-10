@@ -618,10 +618,10 @@ function ChooseDateTime(entity, attribute, control, func, title) {
 
 	title = typeof title !== 'undefined' ? title : "#select_answer#";
 
-	if (attribute==null)
+	// if (attribute==null)
 		startKey = control.Text;
-	else
-		startKey = entity[attribute];
+	// else
+	// 	startKey = entity[attribute];
 
 	if (String.IsNullOrEmpty(startKey) || startKey=="—")
 		startKey = DateTime.Now;

@@ -5,6 +5,11 @@ function OnApplicationInit() {
 	Indicators.SetIndicators();
 }
 
+function OnApplicationRestore(){
+	Dialog.Debug("restore");
+	Indicators.SetIndicators();	
+}
+
 // ------------------------ Events ------------------------
 
 function OnWorkflowStart(name) {
@@ -85,7 +90,8 @@ function OnWorkflowFinish(name, reason) {
 	$.Remove("finishedWorkflow");
 	$.AddGlobal("finishedWorkflow", name);
 
-	if (name == "Visit" || name == "CreateOrder" || name=="Outlets" || name=="CreateReturn") {
+	if (name == "Visit" || name == "CreateOrder" || name=="Outlets" || name=="CreateReturn" 
+		|| name=="Order" || name=="Return") {
 		Variables.Remove("outlet");
 
 		if (Variables.Exists("planVisit"))
@@ -95,13 +101,20 @@ function OnWorkflowFinish(name, reason) {
 
 		GPS.StopTracking();
 
-		Indicators.SetIndicators();
+		// Indicators.SetIndicators();
 	}
 
 	Variables.Remove("workflow");
 
 	if (name=="Visit" || name=="CreateOrder" || name=="CreateReturn"){
 		Global.ClearFilter();
+	}
+}
+
+function OnWorkflowFinished(name, reason){
+	if (name == "Visit" || name == "CreateOrder" || name=="Outlets" || name=="CreateReturn" 
+		|| name=="Order" || name=="Return"){
+		Indicators.SetIndicators();
 	}
 }
 

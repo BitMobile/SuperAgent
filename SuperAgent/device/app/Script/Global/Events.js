@@ -6,7 +6,6 @@ function OnApplicationInit() {
 }
 
 function OnApplicationRestore(){
-	Dialog.Debug("restore");
 	Indicators.SetIndicators();	
 }
 

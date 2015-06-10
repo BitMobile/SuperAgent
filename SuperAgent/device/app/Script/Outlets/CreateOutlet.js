@@ -6,6 +6,12 @@ function CreateOutlet() {
 	return outlet.Id;
 }
 
+function GetTerritory() {
+	var q = new Query("SELECT Id From Catalog_Territory LIMIT 1");
+	var territory = q.ExecuteScalar();
+	return territory;
+}
+
 function DeleteAndBack(entity) {
 	DB.Delete(entity);
 	Workflow.Back();

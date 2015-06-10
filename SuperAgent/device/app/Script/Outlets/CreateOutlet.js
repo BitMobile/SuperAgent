@@ -9,7 +9,13 @@ function CreateOutlet() {
 function GetTerritory() {
 	var q = new Query("SELECT Id From Catalog_Territory LIMIT 1");
 	var territory = q.ExecuteScalar();
-	return territory;
+	if (territory == null) {
+		return  territoryEmptyRef;
+	}
+	else {
+		return territory;
+	}
+	return territory || territoryEmptyRef;
 }
 
 function DeleteAndBack(entity) {
@@ -23,13 +29,10 @@ function SaveNewOutlet(outlet) {
 
 	if (outlet.Description != null && outlet.Address != null){
 		if (TrimAll(outlet.Description) != "" && TrimAll(outlet.Address) != "" && outlet.Class!=DB.EmptyRef("Catalog_OutletClass")
-				&& outlet.Type!=DB.EmptyRef("Catalog_OutletType") && outlet.Distributor!=DB.EmptyRef("Catalog_Distributor")) {
-			var q = new Query("SELECT Ref FROM Catalog_Territory_SRs WHERE SR = @userRef LIMIT 1");+
-			q.AddParameter("userRef", $.common.UserRef);
-			var territory = q.ExecuteScalar();
+				&& outlet.Type!=DB.EmptyRef("Catalog_OutletType") && outlet.Distributor!=DB.EmptyRef("Catalog_Distributor") && $.territory!=null) {
 
 			var to = DB.Create("Catalog.Territory_Outlets");
-			to.Ref = territory;
+			to.Ref = $.territory;
 			to.Outlet = outlet.Id;
 			to.Save();
 
@@ -52,7 +55,9 @@ function DoSelect(source, outlet, attribute, control, title) {
 	}
 	else
 	{
-		Dialogs.DoChoose(null, outlet, attribute, control, TerritoryCallBack, title);
+		if ($.territory != DB.EmptyRef("Catalog_Territory")) {
+			Dialogs.DoChoose(null, outlet, attribute, control, TerritoryCallBack, title);
+		}
 	}
 }
 
@@ -64,7 +69,7 @@ function TerritoryCallBack(state, args) {
 		control.Text = args.Result.Description;
 	}
 	else {
-		$.territory = null;
+		$.territory = DB.EmptyRef("Catalog_Territory");
 		control.Text = String.IsNullOrEmpty(args.Result) ? "—" : args.Result;
 	}
 }

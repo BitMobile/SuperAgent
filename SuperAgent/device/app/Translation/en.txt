@@ -290,3 +290,5 @@ noSuccess		Произошла ошибка во время отправки. Д�
 errorMessage	Error message
 sending			Sending..
 editSKU			Edit
+returnParameters	RETURN PARAMETERS
+returnHistory	RETURN HISTORY

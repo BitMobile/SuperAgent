@@ -47,5 +47,24 @@ function SaveNewOutlet(outlet) {
 }
 
 function DoSelect(source, outlet, attribute, control, title) {
-	Dialogs.DoChoose(null, outlet, attribute, control, null, title);
+	if (control.Id != "outletTerritory") {
+		Dialogs.DoChoose(null, outlet, attribute, control, null, title);
+	}
+	else
+	{
+		Dialogs.DoChoose(null, outlet, attribute, control, TerritoryCallBack, title);
+	}
+}
+
+function TerritoryCallBack(state, args) {
+	var control = state[2];
+	var attribute = state[1];
+	if (getType(args.Result)=="BitMobile.DbEngine.DbRef") {
+		$.territory = args.Result;
+		control.Text = args.Result.Description;
+	}
+	else {
+		$.territory = null;
+		control.Text = String.IsNullOrEmpty(args.Result) ? "—" : args.Result;
+	}
 }

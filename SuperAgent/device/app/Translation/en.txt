@@ -285,7 +285,6 @@ ReturnSKUWillRevised	SKU list has been revised
 send			Send log
 success			Данные успешно отправлены
 imageNotAvailable	Image not available now
-
 noSuccess		Произошла ошибка во время отправки. Данные не отправлены
 errorMessage	Error message
 sending			Sending..
@@ -297,3 +296,4 @@ NKO				NKO
 OAO				OAO
 OP				OP
 TSJ				TSJ
+outlet_territory Territory

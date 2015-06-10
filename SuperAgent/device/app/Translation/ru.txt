@@ -297,3 +297,4 @@ NKO				НКО
 OAO				OAO
 OP				ОП
 TSJ				ТСЖ
+outlet_territory	Территория

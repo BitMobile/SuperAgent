@@ -201,7 +201,7 @@ function DialogCallBack(control, key){
 	control.Text = key;
 }
 
-function NoQuestionnaires() {
+function ShowQuestionnaires() {
 	var noQuestQuery = new Query("SELECT Value FROM USR_WorkflowSteps WHERE Skip = @SkipQuestions");
 	noQuestQuery.AddParameter("SkipQuestions", "SkipQuestions");
 	var noQuest = noQuestQuery.ExecuteScalar();
@@ -210,7 +210,7 @@ function NoQuestionnaires() {
 	noSKUQuestQuery.AddParameter("SkipSKUs", "SkipSKUs");
 	var noSKUQuest = noSKUQuestQuery.ExecuteScalar();
 
-	if ((noQuest || noSKUQuest))
+	if ((noQuest && noSKUQuest))
 		return false;
 	else
 		return true;

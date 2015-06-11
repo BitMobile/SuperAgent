@@ -143,14 +143,12 @@ function SpreadEncasmentAndRefresh(encashment, outlet, receivables) {
 }
 
 function SaveAndForward(encashment) {
-	if (ValidateAmount($.encAmount) && ValidateEncashments()) {
-		ClearEmptyRecDocs(encashment);
-		if (parseFloat(encashment.EncashmentAmount) != parseFloat(0))
-			encashment.GetObject().Save();
-		else
-			DB.Delete(encashment);
-		Workflow.Forward([]);
-	}
+	ClearEmptyRecDocs(encashment);
+	if (parseFloat(encashment.EncashmentAmount) != parseFloat(0))
+		encashment.GetObject().Save();
+	else
+		DB.Delete(encashment);
+	Workflow.Forward([]);
 }
 
 function ClearEmptyRecDocs(encashment) {
@@ -190,9 +188,14 @@ function FormatAmount(control) {
 
 function SaveSum(control) {
 	var enc = $.workflow.encashment.GetObject();
-	enc.EncashmentAmount = ToDecimal($.encAmount.Text);
-	enc.Save();
-	DoRefresh();
+	if ($.encAmount.Text == '.') {
+		$.encAmount.Text = '';
+	}
+	else {
+		enc.EncashmentAmount = ToDecimal($.encAmount.Text);
+		enc.Save();
+		DoRefresh();
+	}
 }
 
 //------------------------------Temporary, from global----------------

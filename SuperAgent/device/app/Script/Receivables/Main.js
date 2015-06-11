@@ -32,7 +32,7 @@ function GetReceivables(outlet) {
 
 function ValidateAmount(control) {
 	var valid = ValidateField(control.Text, "[0-9\\.,]*", Translate["#encashmentAmount#"]);
-	if (valid){
+	if (valid && !String.IsNullOrWhiteSpace(control.Text)){
 		var enc = $.workflow.encashment.GetObject();
 		enc.EncashmentAmount = ToDecimal(control.Text);
 		enc.Save();
@@ -197,6 +197,13 @@ function FormatAmount(control) {
 		control.Text = "";
 	else
 		control.Text = String.Format("{0:F2}", control.Text);
+}
+
+function SaveSum(control) {
+	var enc = $.workflow.encashment.GetObject();
+	enc.EncashmentAmount = ToDecimal($.encAmount.Text);
+	enc.Save();
+	DoRefresh();
 }
 
 //------------------------------Temporary, from global----------------

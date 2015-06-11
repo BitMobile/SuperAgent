@@ -30,17 +30,6 @@ function GetReceivables(outlet) {
 	return r;
 }
 
-function ValidateAmount(control) {
-	var valid = ValidateField(control.Text, "[0-9\\.,]*", Translate["#encashmentAmount#"]);
-	if (valid && !String.IsNullOrWhiteSpace(control.Text)){
-		var enc = $.workflow.encashment.GetObject();
-		enc.EncashmentAmount = ToDecimal(control.Text);
-		enc.Save();
-		//control.Text = FormatSum(null, control.Text);
-	}
-	return valid;
-}
-
 function ValidateEncashments() {
 	var i = 0;
 	while ($.Exists(("control" + i))) {

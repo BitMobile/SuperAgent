@@ -352,13 +352,14 @@ function ObligatedAnswered(answer, obligatoriness) {
 }
 
 function GetActionAndBack() {
-	if ($.workflow.skipQuestions) {
-		if ($.workflow.skipTasks) {
-			Workflow.BackTo("Outlet");
-		} else
-			Workflow.BackTo("Visit_Tasks");
-	} else
-		Workflow.BackTo("Questions");
+	var q = new Query("SELECT NextStep " +
+		" FROM USR_WorkflowSteps" + 
+		" WHERE Value=0 AND StepOrder<'3' ORDER BY StepOrder DESC");
+	var step = q.ExecuteScalar();
+	if (step==null)
+		Workflow.BackTo("Outlet");
+	else
+		Workflow.BackTo(step);
 }
 
 function DoSearch(searcText) {

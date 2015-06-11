@@ -30,17 +30,6 @@ function GetReceivables(outlet) {
 	return r;
 }
 
-function ValidateAmount(control) {
-	var valid = ValidateField(control.Text, "[0-9\\.,]*", Translate["#encashmentAmount#"]);
-	if (valid){
-		var enc = $.workflow.encashment.GetObject();
-		enc.EncashmentAmount = ToDecimal(control.Text);
-		enc.Save();
-		//control.Text = FormatSum(null, control.Text);
-	}
-	return valid;
-}
-
 function ValidateEncashments() {
 	var i = 0;
 	while ($.Exists(("control" + i))) {
@@ -154,14 +143,12 @@ function SpreadEncasmentAndRefresh(encashment, outlet, receivables) {
 }
 
 function SaveAndForward(encashment) {
-	if (ValidateAmount($.encAmount) && ValidateEncashments()) {
-		ClearEmptyRecDocs(encashment);
-		if (parseFloat(encashment.EncashmentAmount) != parseFloat(0))
-			encashment.GetObject().Save();
-		else
-			DB.Delete(encashment);
-		Workflow.Forward([]);
-	}
+	ClearEmptyRecDocs(encashment);
+	if (parseFloat(encashment.EncashmentAmount) != parseFloat(0))
+		encashment.GetObject().Save();
+	else
+		DB.Delete(encashment);
+	Workflow.Forward([]);
 }
 
 function ClearEmptyRecDocs(encashment) {
@@ -197,6 +184,18 @@ function FormatAmount(control) {
 		control.Text = "";
 	else
 		control.Text = String.Format("{0:F2}", control.Text);
+}
+
+function SaveSum(control) {
+	var enc = $.workflow.encashment.GetObject();
+	if ($.encAmount.Text == '.') {
+		$.encAmount.Text = '';
+	}
+	else {
+		enc.EncashmentAmount = ToDecimal($.encAmount.Text);
+		enc.Save();
+		DoRefresh();
+	}
 }
 
 //------------------------------Temporary, from global----------------

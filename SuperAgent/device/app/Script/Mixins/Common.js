@@ -116,8 +116,8 @@ function EmptyRef(ref) {
     return ref.EmptyRef();
 }
 
-function IsEmptyValue(value) {		
-	
+function IsEmptyValue(value) {
+
 	if (String.IsNullOrEmpty(value))
 		return true;
 	else{
@@ -128,8 +128,8 @@ function IsEmptyValue(value) {
 	            return true;
 	        else
 	            return false;
-		}			
-	}	
+		}
+	}
 }
 
 function NotEmptyRef(ref) {

@@ -199,7 +199,7 @@ function DoSelect(editOutletParameters, primaryParameterName) {
 //--------------------------editing additional parameters handlers-----------------------------
 
 
-function CreateOutletParameterValue(outlet, parameter, value, parameterValue) {
+function CreateOutletParameterValue(outlet, parameter, value, parameterValue, isEditText) {
 	var q = new Query("SELECT Id FROM Catalog_Outlet_Parameters WHERE Ref=@ref AND Parameter = @parameter");
 	q.AddParameter("ref", outlet);
 	q.AddParameter("parameter", parameter);
@@ -208,25 +208,29 @@ function CreateOutletParameterValue(outlet, parameter, value, parameterValue) {
 		parameterValue = DB.Create("Catalog.Outlet_Parameters");
 		parameterValue.Ref = outlet;
 		parameterValue.Parameter = parameter;
-	} else
+		parameterValue.Save();
+	} else{
 		parameterValue = parameterValue.GetObject();
-	if ((parameter.DataType).ToString() != (DB.Current.Constant.DataType.Snapshot).ToString())
-		parameterValue.Value = value;
-	parameterValue.Save();
+		if (isEditText){			
+			if ((parameter.DataType).ToString() != (DB.Current.Constant.DataType.Snapshot).ToString())
+			parameterValue.Value = value;
+			parameterValue.Save();
+		}
+	}		
 	return parameterValue.Id;
 }
 
 
 function AssignParameterValue(control, typeDescription, parameterValue, value, outlet, parameter){
-	CreateOutletParameterValue(outlet, parameter, control.Text, parameterValue)
+	CreateOutletParameterValue(outlet, parameter, control.Text, parameterValue, true)
 }
 
-function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control, parameterDescription, editable, index) {
+function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control, parameterDescription, editable, index, isEditText) {
 
 	if (editable) {
 
 		if ($.sessionConst.editOutletParameters) {
-			parameterValue = CreateOutletParameterValue(outlet, parameter, parameterValue, parameterValue);
+			parameterValue = CreateOutletParameterValue(outlet, parameter, parameterValue, parameterValue, isEditText);
 
 			if (typeDescription == "ValueList") {  //--------ValueList-------
 				var q = new Query();

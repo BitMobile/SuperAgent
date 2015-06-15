@@ -127,7 +127,7 @@ function CreateOrderItemIfNotExist(order, sku, orderitem, price, features, recOr
             p.SKU = sku;
             p.Feature = feature;
             p.Price = price * defaultUnit.Multiplier;
-            p.Total = price * defaultUnit.Multiplier;
+            p.Total = price * (defaultUnit.Multiplier ? defaultUnit.Multiplier : 1);
             p.Units = defaultUnit.Pack;
             p.Discount = 0;
             p.Qty = recOrder;

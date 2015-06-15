@@ -6,6 +6,7 @@ var sumTitle;
 var skuTitle;
 var infoTitleSmall;
 var c_parameterDescription;
+var c_docParams;
 
 function OnLoading(){
 
@@ -20,6 +21,7 @@ function OnLoading(){
 		sumTitle = Translate["#orderSum#"];
 		skuTitle = Translate["#skuInOrder#"];
 		infoTitleSmall = Translate["#orderInfoSmall#"];
+		c_docParams = Translate["#orderParameters#"];
 	}
 	else{
 		mainTitle = Translate["#return#"];
@@ -27,6 +29,7 @@ function OnLoading(){
 		sumTitle = Translate["#returnSum#"];
 		skuTitle = Translate["#skuInReturn#"];
 		infoTitleSmall = Translate["#returnInfoSmall#"];
+		c_docParams = Translate["#returnParameters#"];
 	}
 }
 

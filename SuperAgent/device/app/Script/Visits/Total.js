@@ -157,7 +157,7 @@ function CheckAndCommit(order, visit, wfName) {
 
 function NextDateHandler(state, args){
 
-	var newVistPlan = state[0];
+	var newVistPlan = state[0]; 
 
 	if (newVistPlan.Id==null){
 		newVistPlan = DB.Create("Document.MobileAppPlanVisit");
@@ -171,8 +171,7 @@ function NextDateHandler(state, args){
 	newVistPlan.PlanDate = args.Result;
 	newVistPlan.Save();
 
-	$.nextVisitControl.Text = Format("{0:f}", Date(newVistPlan.PlanDate));
-
+	Workflow.Refresh([]);
 }
 
 function DeliveryDateCallBack(state, args){
@@ -202,7 +201,7 @@ function DialogCallBack(control, key){
 	control.Text = key;
 }
 
-function NoQuestionnaires() {
+function ShowQuestionnaires() {
 	var noQuestQuery = new Query("SELECT Value FROM USR_WorkflowSteps WHERE Skip = @SkipQuestions");
 	noQuestQuery.AddParameter("SkipQuestions", "SkipQuestions");
 	var noQuest = noQuestQuery.ExecuteScalar();
@@ -211,7 +210,7 @@ function NoQuestionnaires() {
 	noSKUQuestQuery.AddParameter("SkipSKUs", "SkipSKUs");
 	var noSKUQuest = noSKUQuestQuery.ExecuteScalar();
 
-	if ((noQuest || noSKUQuest))
+	if ((noQuest && noSKUQuest))
 		return false;
 	else
 		return true;

@@ -100,14 +100,15 @@
 				<c:HorizontalLayout CssClass="clickable" OnClickAction="$ChandeDiscount($orderitem)">
 					<c:TextView Id="discountDescr" Text="$discountDescrText" />
 				</c:HorizontalLayout>
-				<c:EditText Id="discountEdit" Text="$param4" CssClass="value" Keyboard="numeric" OnChange="$ApplyDiscount($orderitem)" OnGetFocus="$HideSwiped()"></c:EditText>
+				<!-- <s:Push Id="dummy" Value="$ShowDialog($param4)"></s:Push> -->
+				<c:EditText Id="discountEdit" Text="$DiscountOutput($param4)" CssClass="value" Keyboard="numeric" OnChange="$ApplyDiscount($orderitem)" OnGetFocus="$HideSwiped()"></c:EditText>
 			</c:DockLayout>
 			<c:HorizontalLine />
 
 			<s:Push Id="historyItems" Value="$GetItemHistory($sku, $thisDoc)"></s:Push>
 			<s:If Test="$historyCount != 0">
 				<c:HorizontalLayout CssClass="caption_grid">
-					<c:TextView Text="#orderHistory#:"></c:TextView>
+					<c:TextView Text="{@c_itemsHistory}:"></c:TextView>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
 				<s:Iterator Id="historyItem" Value="$historyItems">

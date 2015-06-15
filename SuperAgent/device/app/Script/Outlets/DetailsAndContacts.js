@@ -23,6 +23,13 @@ function SaveAndBack(entity, validateOutlet) {
 	}
 }
 
+function HasContacts(outlet) {
+	var q = new Query("SELECT COUNT(Id) FROM Catalog_Outlet_Contacts WHERE ref = @outlet")
+	q.AddParameter("outlet", outlet);
+	var contactsCount = q.ExecuteScalar();
+	return contactsCount > 0;
+}
+
 function GetContacts(outlet) {
 	var q = new Query("SELECT C.Id, C.ContactName, P.Description AS Position, PhoneNumber, Email FROM Catalog_Outlet_Contacts C LEFT JOIN Catalog_Positions P ON C.Position=P.Id WHERE C.Ref=@ref AND C.NotActual=0 ORDER BY C.ContactName");
 	q.AddParameter("ref", outlet);
@@ -48,7 +55,7 @@ function DeleteContact(ref) {
 	Workflow.Refresh([ $.outlet ]);
 }
 
-function SelectOwnership(control) {	
+function SelectOwnership(control) {
 	var q = new Query();
 	// q.Text = "SELECT Id, Description FROM Enum_OwnershipType UNION SELECT @emptyRef, '—' ORDER BY Description desc";// UNION SELECT NULL, '—' ORDER BY Description";
 	// q.AddParameter("emptyRef",  DB.EmptyRef("Enum_OwnershipType"));
@@ -56,8 +63,8 @@ function SelectOwnership(control) {
 
 	q.Text = "SELECT Id, Description FROM Enum_OwnershipType";
 	var res = q.Execute().Unload();
-	var arr = [];	
-	
+	var arr = [];
+
 	arr.push([DB.EmptyRef("Enum_OwnershipType"), "-"]);
 	while (res.Next()) {
 		arr.push([res.Id, Translate["#" + res.Description + "#"]]);

@@ -303,3 +303,12 @@
 	margin-top: 22%;
 	horizontal-align: center;
 }
+
+.no_contacts {
+	height: 10mm;
+	width: 100%;
+	margin-top: 2mm;
+	text-align: center;
+	font: 2.2mm Arial;
+	color: #000;
+}

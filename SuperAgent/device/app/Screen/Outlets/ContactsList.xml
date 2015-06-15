@@ -24,24 +24,27 @@
 		<c:HorizontalLine CssClass="b_line" />
 
 		<c:ScrollView Id="grScrollView">
-
+			
 			<c:HorizontalLayout CssClass="margin_top" />
-			<c:HorizontalLine />
-
-			<s:Iterator Id="contact" Value="$GetContacts($outlet)" Status="statusCount">
-
-				<c:SwipeHorizontalLayout CssClass="swipe_layout">
-					<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoAction(Select, $contact.Id, $outlet)">
-						<c:Image />
-						<c:TextView Text="$contact.ContactName"></c:TextView>						
-					</c:DockLayout>
-					<c:HorizontalLayout CssClass="red_swipe" OnClickAction="$DeleteContact($contact.Id)">
-						<c:TextView Text="#delete#"></c:TextView>
-					</c:HorizontalLayout>
-				</c:SwipeHorizontalLayout>
+			<s:If Test="$HasContacts($outlet)">
 				<c:HorizontalLine />
+				<s:Iterator Id="contact" Value="$GetContacts($outlet)" Status="statusCount">
 
-			</s:Iterator>
+					<c:SwipeHorizontalLayout CssClass="swipe_layout">
+						<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoAction(Select, $contact.Id, $outlet)">
+							<c:Image />
+							<c:TextView Text="$contact.ContactName"></c:TextView>
+						</c:DockLayout>
+						<c:HorizontalLayout CssClass="red_swipe" OnClickAction="$DeleteContact($contact.Id)">
+							<c:TextView Text="#delete#"></c:TextView>
+						</c:HorizontalLayout>
+					</c:SwipeHorizontalLayout>
+					<c:HorizontalLine />
+				</s:Iterator>
+			</s:If>
+			<s:Else>
+				<c:TextView Text="#no_contacts#" CssClass="no_contacts" />
+			</s:Else>
 
 		</c:ScrollView>
 

@@ -61,7 +61,7 @@ function CreateOrderItemIfNotExist(order, sku, orderitem, price, features, recOr
     if ($.Exists("orderitemAlt")){  //Dirty hack, see Events.js line 109
         orderitem = c_orderItem;
         $.Remove("orderitemAlt");
-    }   
+    }
 
     if (orderitem == null) {
 
@@ -343,13 +343,18 @@ function RepeatOrder(orderitem, qty, total, price, discount, baseUnit, baseUnitD
     orderitem = orderitem.GetObject();
     orderitem.Qty = qty;
     $.orderItemQty.Text = qty;
-    orderitem.Total = total;
-    $.orderItemTotalId.Text = total;
-    orderitem.Price = price;
-    orderitem.Discount = discount;
-    $.discountEdit.Text = discount;
+
     orderitem.Units = baseUnit;
     $.itemUnits.Text = baseUnitDescr;
+    var multiplier = GetMultiplier(orderitem.SKU, orderitem)
+
+    discount = orderitem.Discount == null ? 0 : orderitem.Discount;
+    orderitem.Total = (price * (discount / 100 + 1)) * multiplier;
+    $.orderItemTotalId.Text = orderitem.Total;
+    orderitem.Price = price;
+    Dialog.Debug("orderItem.Qty: " + orderitem.Qty)
+    Dialog.Debug("orderItem.Total: " + orderitem.Total)
+    Dialog.Debug("orderItem.Price: " + orderitem.Price)
     orderitem.Save();
 }
 

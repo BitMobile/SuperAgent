@@ -166,14 +166,14 @@ function ApplyDiscount(sender, orderitem) {
         else {
             if ($.discountDescr.Text == Translate["#discount#"]
                 && parseFloat(sender.Text) > parseFloat(0))
-            $.discountEdit.Text = -1 * $.discountEdit.Text;     
-            }   
+            $.discountEdit.Text = -1 * $.discountEdit.Text;
+            }
         orderitem = orderitem.GetObject();
         orderitem.Discount = parseFloat($.discountEdit.Text);
         orderitem.Save();
 
         CountPrice(orderitem.Id);
-    }    
+    }
 }
 
 function ChandeDiscount(orderitem) {
@@ -245,7 +245,7 @@ function CountPrice(orderitem) {
 }
 
 function CalculatePrice(price, discount, multiplier) {
-    
+
     var total = (price * (discount / 100 + 1)) * multiplier;
     return FormatValue(total);
 
@@ -373,9 +373,6 @@ function RepeatOrder(orderitem, qty, total, price, discount, baseUnit, baseUnitD
     orderitem.Total = (price * (discount / 100 + 1)) * multiplier;
     $.orderItemTotalId.Text = orderitem.Total;
     orderitem.Price = price;
-    Dialog.Debug("orderItem.Qty: " + orderitem.Qty)
-    Dialog.Debug("orderItem.Total: " + orderitem.Total)
-    Dialog.Debug("orderItem.Price: " + orderitem.Price)
     orderitem.Save();
 }
 

@@ -8,6 +8,17 @@ function OnLoading(){
     forwardText = alreadyAdded ? Translate["#editSKU#"] : Translate["#add#"];
 }
 
+function ShowDialog(val){
+    Dialog.Debug(val);
+}
+
+function DiscountOutput(discount){
+    if (String.IsNullOrEmpty(discount))
+        return '0';
+    else
+        return discount.ToString();
+}
+
 function GetCurrentDoc(){
     var d;
     if ($.workflow.currentDoc=='Order')
@@ -140,19 +151,23 @@ function GetDiscountDescription(orderitem) {
 }
 
 function ApplyDiscount(sender, orderitem) {
-    if (IsNullOrEmpty(sender.Text))
-        sender.Text = parseFloat(0);
-    else {
-        if ($.discountDescr.Text == Translate["#discount#"]
-                && parseFloat(sender.Text) > parseFloat(0))
-            $.discountEdit.Text = -1 * $.discountEdit.Text;
+    if (TrimAll(sender.Text) == '.' || TrimAll(sender.Text) == ','){
+        sender.Text = '0,';
     }
+    else{
+        if (IsNullOrEmpty(sender.Text))
+            sender.Text = parseFloat(0);
+        else {
+            if ($.discountDescr.Text == Translate["#discount#"]
+                && parseFloat(sender.Text) > parseFloat(0))
+            $.discountEdit.Text = -1 * $.discountEdit.Text;     
+            }   
+        orderitem = orderitem.GetObject();
+        orderitem.Discount = parseFloat($.discountEdit.Text);
+        orderitem.Save();
 
-    orderitem = orderitem.GetObject();
-    orderitem.Discount = parseFloat($.discountEdit.Text);
-    orderitem.Save();
-
-    CountPrice(orderitem.Id);
+        CountPrice(orderitem.Id);
+    }    
 }
 
 function ChandeDiscount(orderitem) {
@@ -224,7 +239,7 @@ function CountPrice(orderitem) {
 }
 
 function CalculatePrice(price, discount, multiplier) {
-
+    
     var total = (price * (discount / 100 + 1)) * multiplier;
     return FormatValue(total);
 

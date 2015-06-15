@@ -194,27 +194,25 @@ function DoSelect(editOutletParameters, primaryParameterName) {
 //--------------------------editing additional parameters handlers-----------------------------
 
 
-function CreateOutletParameterValue(outlet, parameter, value, parameterValue, isInputField) {
+function CreateOutletParameterValue(outlet, parameter, value, parameterValue, isEditText) {
 	var q = new Query("SELECT Id FROM Catalog_Outlet_Parameters WHERE Ref=@ref AND Parameter = @parameter");
 	q.AddParameter("ref", outlet);
 	q.AddParameter("parameter", parameter);
 	parameterValue = q.ExecuteScalar();
-
-	if (parameterValue==null || isInputField){
-
-		if (parameterValue == null) {
-			parameterValue = DB.Create("Catalog.Outlet_Parameters");
-			parameterValue.Ref = outlet;
-			parameterValue.Parameter = parameter;
-		} else{
-			parameterValue = parameterValue.GetObject();
-			parameterValue.Value = value;
-		}
+	if (parameterValue == null) {
+		parameterValue = DB.Create("Catalog.Outlet_Parameters");
+		parameterValue.Ref = outlet;
+		parameterValue.Parameter = parameter;
 		parameterValue.Save();
-		parameterValue = parameterValue.Id;
-	}
-
-	return parameterValue;
+	} else{
+		parameterValue = parameterValue.GetObject();
+		if (isEditText){			
+			if ((parameter.DataType).ToString() != (DB.Current.Constant.DataType.Snapshot).ToString())
+			parameterValue.Value = value;
+			parameterValue.Save();
+		}
+	}		
+	return parameterValue.Id;
 }
 
 
@@ -222,19 +220,12 @@ function AssignParameterValue(control, typeDescription, parameterValue, value, o
 	CreateOutletParameterValue(outlet, parameter, control.Text, parameterValue, true)
 }
 
-function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control,
-	parameterDescription, editable, index, isInputField) {
+function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control, parameterDescription, editable, index, isEditText) {
 
-	if (editable && !isInputField) {
+	if (editable) {
+
 		if ($.sessionConst.editOutletParameters) {
-
-			if (isInputField){
-				FocusOnEditText(control, '1');
-				return true;
-			}
-
-			parameterValue = CreateOutletParameterValue(outlet, parameter, parameterValue, parameterValue, false);
-			// Dialog.Debug(parameterValue);
+			parameterValue = CreateOutletParameterValue(outlet, parameter, parameterValue, parameterValue, isEditText);
 
 			if (typeDescription == "ValueList") {  //--------ValueList-------
 				var q = new Query();
@@ -260,6 +251,9 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 				var source = (!snapshotIdIsEmpty ? Variables[("parameterImage"+index)].Source : null);
 				Images.AddSnapshot(outlet, parameterValue, SaveAtOutelt, parameterDescription, source);
 				parameterValueC = parameterValue;
+			}
+			if (typeDescription == "String" || typeDescription == "Integer" || typeDescription == "Decimal") {
+				FocusOnEditText(control, '1');
 			}
 		}
 	}

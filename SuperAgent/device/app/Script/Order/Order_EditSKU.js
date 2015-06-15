@@ -2,10 +2,16 @@ var swipedRow;
 var alreadyAdded;
 var forwardText;
 var c_orderItem;
+var c_itemsHistory;
 
 function OnLoading(){
     alreadyAdded = $.Exists("AlreadyAdded");
     forwardText = alreadyAdded ? Translate["#editSKU#"] : Translate["#add#"];
+    //#orderHistory#
+    if ($.workflow.currentDoc=='Order')
+        c_itemsHistory = Translate["#orderHistory#"];
+    else
+        c_itemsHistory = Translate["#returnHistory#"];
 }
 
 function ShowDialog(val){

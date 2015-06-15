@@ -95,8 +95,10 @@ function SetIndiactors() {
 			"SUM(CASE WHEN Single = 1 THEN 1 ELSE 0 END) AS SingleTotal, " +
 			"SUM(CASE WHEN Single = 0 AND TRIM(IFNULL(Answer, '')) != '' THEN 1 ELSE 0 END) AS RegularAnsw, " +
 			"SUM(CASE WHEN Single = 1 AND TRIM(IFNULL(Answer, '')) != '' THEN 1 ELSE 0 END) AS SingleAnsw " +
-			"FROM USR_Questions " +
-			"WHERE ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_Questions WHERE (Answer='Yes' OR Answer='Да'))");
+			"FROM (SELECT DISTINCT Question, Single, Answer " +
+				"FROM USR_Questions " +
+				"WHERE ParentQuestion=@emptyRef OR ParentQuestion IN " +
+					"(SELECT Question FROM USR_Questions WHERE (Answer='Yes' OR Answer='Да')))");
 
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 

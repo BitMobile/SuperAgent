@@ -104,7 +104,7 @@ function GetSKUsFromQuesionnaires(search) {
 	var q = new Query();
 	q.Text="SELECT DISTINCT S.SKU, S.SKUDescription " +
 			", COUNT(DISTINCT S.Question) AS Total " +
-			", COUNT(S.Answer) AS Answered " +
+			", COUNT(DISTINCT S.Answer) AS Answered " +
 			", MAX(CAST (Obligatoriness AS INT)) AS Obligatoriness " +
 			", (SELECT COUNT(DISTINCT U1.Question) FROM USR_SKUQuestions U1 " +
 				" WHERE U1.Single=@single AND (Answer='' OR Answer IS NULL) " +
@@ -135,31 +135,24 @@ function GetSKUsFromQuesionnaires(search) {
 }
 
 function SetIndicators() {
-	regular_total = CalculateTotal('0');
-	single_total = CalculateTotal('1');
-	regular_answ = CalculateQty('0');
-	single_answ = CalculateQty('1');
-}
+	var q = new Query("SELECT " +
+		"SUM(CASE WHEN Single = 0 THEN 1 ELSE 0 END) AS RegularTotal, " +
+		"SUM(CASE WHEN Single = 1 THEN 1 ELSE 0 END) AS SingleTotal, " +
+		"SUM(CASE WHEN Single = 0 AND TRIM(IFNULL(Answer, '')) != '' THEN 1 ELSE 0 END) AS RegularAnsw, " +
+		"SUM(CASE WHEN Single = 1 AND TRIM(IFNULL(Answer, '')) != '' THEN 1 ELSE 0 END) AS SingleAnsw " +
 
-function CalculateTotal(single) {
-	var q = new Query("SELECT COUNT(U1.Question) FROM USR_SKUQuestions U1 WHERE U1.Single=@single " +
-	" AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions U2 " +
-	" WHERE (Answer='Yes' OR Answer='Да') AND U1.SKU=U2.SKU))");
-	q.AddParameter("single", single);
-	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
-	return q.ExecuteScalar();
-}
-
-function CalculateQty(single) {
-	var q = new Query("SELECT COUNT(U1.Answer) AS Answered " +
+		"FROM (SELECT DISTINCT Question, SKU, Single, Answer " +
 			"FROM USR_SKUQuestions U1 " +
-			"WHERE U1.Single=@single " +
-			"AND RTRIM(U1.Answer)!='' AND U1.Answer IS NOT NULL " +
-			"AND (ParentQuestion=@emptyRef OR ParentQuestion IN " +
-				"(SELECT Question FROM USR_SKUQuestions U2 WHERE (Answer='Yes' OR Answer='Да') AND U2.SKU = U1.SKU))");
-	q.AddParameter("single", single);
+			"WHERE ParentQuestion=@emptyRef OR ParentQuestion IN " +
+				"(SELECT Question FROM USR_SKUQuestions U2 WHERE (Answer='Yes' OR Answer='Да') AND U1.SKU=U2.SKU))");
+
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
-	return q.ExecuteScalar();
+	var result = q.Execute();
+
+	regular_total = result.RegularTotal;
+	single_total = result.SingleTotal;
+	regular_answ = result.RegularAnsw;
+	single_answ = result.SingleAnsw;
 }
 
 function AddFilter(filterString, filterName, condition, connector) {

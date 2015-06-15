@@ -4,9 +4,9 @@
 	<s:Push Id="thisDoc" Value="$GetCurrentDoc()"></s:Push>
 	<s:Push Id="sku" Value="$param1"></s:Push>
 	<s:Push Id="price" Value="$param2"></s:Push>
-	<s:Push Id="showimage" Value="$param5"></s:Push>
+	<s:Push Id="orderitem" Value="$param3"></s:Push> <s:Push Id="showimage" Value="$param5"></s:Push>
 	<s:Push Id="features" Value="$GetFeatures($sku.Id)"></s:Push>
-	<s:Push Id="orderitem" Value="$CreateOrderItemIfNotExist($thisDoc,$sku,$param3,$price,$features, $param6, $param7)"></s:Push>
+	<s:Push Id="orderitem" Value="$CreateOrderItemIfNotExist($thisDoc,$sku,$orderitem,$price,$features, $param6, $param7)"></s:Push>
 	<s:Push Id="featureDescr" Value="$GetFeatureDescr($orderitem.Feature)"></s:Push>
 
 	<s:If Test="$showimage == null">
@@ -113,7 +113,7 @@
 				<c:HorizontalLine />
 				<s:Iterator Id="historyItem" Value="$historyItems">
 					<c:SwipeHorizontalLayout CssClass="swipe_history" Index="1" OnSwipe="$WriteSwipedRow()">
-						<c:HorizontalLayout CssClass="repeat" OnClickAction="$RepeatOrder($orderitem, $historyItem.Qty, $historyItem.Total, $price, $discountEdit.Text, $sku.BaseUnit, $sku.BaseUnit.Description)">
+						<c:HorizontalLayout CssClass="repeat" OnClickAction="$RepeatOrder($orderitem, $historyItem.Qty, $historyItem.Total, $historyItem.Price, $historyItem.Discount, $sku.BaseUnit, $sku.BaseUnit.Description)">
 							<c:TextView Text="#repeat#" />
 						</c:HorizontalLayout>
 						<c:DockLayout CssClass="parameter_grid">
@@ -131,7 +131,7 @@
 					<c:TextView Text="#features#:"></c:TextView>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
-
+			
 				<s:Iterator Id="feature" Value="$features">
 					<c:DockLayout CssClass="parameter_grid" OnClickAction="$ChangeFeatureAndRefresh($orderitem, $feature.Feature, $sku, $price, $discountEdit.Text, $showimage)">
 						<s:If Test="$AreEqual($orderitem.Feature, $feature.Feature);">

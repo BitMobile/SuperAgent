@@ -78,7 +78,7 @@ function CreateOrderItemIfNotExist(order, sku, orderitem, price, features, recOr
     if ($.Exists("orderitemAlt")){  //Dirty hack, see Events.js line 109
         orderitem = c_orderItem;
         $.Remove("orderitemAlt");
-    }
+    }   
 
     if (orderitem == null) {
 
@@ -127,7 +127,7 @@ function CreateOrderItemIfNotExist(order, sku, orderitem, price, features, recOr
             p.SKU = sku;
             p.Feature = feature;
             p.Price = price * defaultUnit.Multiplier;
-            p.Total = price * (defaultUnit.Multiplier ? defaultUnit.Multiplier : 1);
+            p.Total = price * defaultUnit.Multiplier;
             p.Units = defaultUnit.Pack;
             p.Discount = 0;
             p.Qty = recOrder;
@@ -166,14 +166,14 @@ function ApplyDiscount(sender, orderitem) {
         else {
             if ($.discountDescr.Text == Translate["#discount#"]
                 && parseFloat(sender.Text) > parseFloat(0))
-            $.discountEdit.Text = -1 * $.discountEdit.Text;
-            }
+            $.discountEdit.Text = -1 * $.discountEdit.Text;     
+            }   
         orderitem = orderitem.GetObject();
         orderitem.Discount = parseFloat($.discountEdit.Text);
         orderitem.Save();
 
         CountPrice(orderitem.Id);
-    }
+    }    
 }
 
 function ChandeDiscount(orderitem) {
@@ -245,7 +245,7 @@ function CountPrice(orderitem) {
 }
 
 function CalculatePrice(price, discount, multiplier) {
-
+    
     var total = (price * (discount / 100 + 1)) * multiplier;
     return FormatValue(total);
 
@@ -364,15 +364,13 @@ function RepeatOrder(orderitem, qty, total, price, discount, baseUnit, baseUnitD
     orderitem = orderitem.GetObject();
     orderitem.Qty = qty;
     $.orderItemQty.Text = qty;
-
+    orderitem.Total = total;
+    $.orderItemTotalId.Text = total;
+    orderitem.Price = price;
+    orderitem.Discount = discount;
+    $.discountEdit.Text = discount;
     orderitem.Units = baseUnit;
     $.itemUnits.Text = baseUnitDescr;
-    var multiplier = GetMultiplier(orderitem.SKU, orderitem)
-
-    discount = orderitem.Discount == null ? 0 : orderitem.Discount;
-    orderitem.Total = (price * (discount / 100 + 1)) * multiplier;
-    $.orderItemTotalId.Text = orderitem.Total;
-    orderitem.Price = price;
     orderitem.Save();
 }
 

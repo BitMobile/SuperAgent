@@ -435,44 +435,37 @@ function CreateQuestionsTable(outlet) {
 
 	var query = new Query(tableCommand +
 		"SELECT " +
-		"INQ.DocDate AS DocDate, " +
-		"INQ.Question AS Question, " +
-		"INQ.Description AS Description, " +
-		"INQ.AnswerType AS AnswerType, " +
-		"INQ.IsInputField AS IsInputField, " +
-		"INQ.KeyboardType AS KeyboardType, " +
-		"INQ.Single AS Single, " +
-		"INQ.Obligatoriness AS Obligatoriness, " +
-		"A.Answer AS Answer, " +
-		"A.Answer AS HistoryAnswer, " +
-		"A.AnswerDate AS AnswerDate, " +
-		"Q.ParentQuestion AS ParentQuestion, " +
-		"Q.QuestionOrder AS QuestionOrder " +
-		"FROM " +
-		"(SELECT " +
-			"MIN(D.Date) AS DocDate, " +
+			"D.Date AS DocDate, " +
 			"Q.ChildQuestion AS Question, " +
 			"Q.ChildDescription AS Description, " +
 			"Q.ChildType AS AnswerType, " +
+			"Q.ParentQuestion AS ParentQuestion, " +
+			"Q.QuestionOrder AS QuestionOrder, " +
 			"CASE WHEN Q.ChildType = @integer OR Q.ChildType = @decimal OR Q.ChildType = @string THEN 1 ELSE NULL END AS IsInputField, " +
 			"CASE WHEN Q.ChildType = @integer OR Q.ChildType = @decimal THEN 'numeric' ELSE 'auto' END AS KeyboardType, " +
 			"D.Single AS Single, " +
-			"MAX(CAST(Q.Obligatoriness AS int)) AS Obligatoriness " +
-			"FROM Document_Questionnaire_Questions Q " +
-			"JOIN USR_Questionnaires D ON Q.Ref=D.Id " +
-			"GROUP BY Q.ChildQuestion, " +
+			"MAX(CAST(Q.Obligatoriness AS int)) AS Obligatoriness, " +
+			"A.Answer AS Answer, " +
+			"A.Answer AS HistoryAnswer, " +
+			"A.AnswerDate AS AnswerDate " +
+
+		"FROM Document_Questionnaire_Questions Q " +
+		"JOIN USR_Questionnaires D ON Q.Ref=D.Id " +
+		"LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Ref = @outlet AND A.Questionaire = D.Id " +
+																						"AND A.Question = Q.ChildQuestion AND IFNULL(A.SKU, @emptySKU) = @emptySKU " +
+																						"AND DATE(A.AnswerDate) >= DATE(D.BeginAnswerPeriod) " +
+																						"AND (DATE(A.AnswerDate) <= DATE(D.EndAnswerPeriod) OR A.AnswerDate = '0001-01-01 00:00:00') " +
+		"GROUP BY Q.ChildQuestion, " +
+			"D.Date, " +
+			"Q.ParentQuestion, " +
 			"Q.ChildDescription, " +
 			"Q.ChildType, " +
 			"D.Single, " +
+			"A.Answer, " +
+			"A.AnswerDate, " +
 			"CASE WHEN Q.ChildType = @integer OR Q.ChildType = @decimal OR Q.ChildType = @string THEN 1 ELSE NULL END, " +
-			"CASE WHEN Q.ChildType = @integer OR Q.ChildType = @decimal THEN 'numeric' ELSE 'auto' END) INQ " +
-		"JOIN Document_Questionnaire_Questions Q ON Q.ChildQuestion=INQ.Question " +
-		"JOIN USR_Questionnaires D ON Q.Ref = D.Id AND D.Date = INQ.DocDate AND D.Single = INQ.Single " +
-		"LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Ref = @outlet AND A.Questionaire = D.Id " +
-																								"AND A.Question = INQ.Question AND IFNULL(A.SKU, @emptySKU) = @emptySKU " +
-																								"AND DATE(A.AnswerDate) >= DATE(D.BeginAnswerPeriod) " +
-																								"AND (DATE(A.AnswerDate) <= DATE(D.EndAnswerPeriod) OR A.AnswerDate = '0001-01-01 00:00:00') ");
-
+			"CASE WHEN Q.ChildType = @integer OR Q.ChildType = @decimal THEN 'numeric' ELSE 'auto' END ");
+		
 	query.AddParameter("emptySKU", DB.EmptyRef("Catalog_SKU"));
 	query.AddParameter("integer", DB.Current.Constant.DataType.Integer);
 	query.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);
@@ -491,57 +484,48 @@ function CreateSKUQuestionsTable(outlet) {
 
 	var query = new Query(tableCommand +
 		"SELECT " +
-		"INQ.DocDate AS DocDate, " +
-		"INQ.SKU AS SKU, " +
-		"INQ.SKUDescription AS SKUDescription, " +
-		"INQ.Question AS Question, " +
-		"INQ.Description AS Description, " +
-		"INQ.AnswerType AS AnswerType, " +
-		"INQ.IsInputField AS IsInputField, " +
-		"INQ.KeyboardType AS KeyboardType, " +
-		"INQ.Single AS Single, " +
-		"INQ.Obligatoriness AS Obligatoriness, " +
-		"INQ.OwnerGroup AS OwnerGroup, " +
-		"INQ.Brand AS Brand, " +
-		"Q.ParentQuestion AS ParentQuestion, " +
-		"Q.QuestionOrder AS QuestionOrder, " +
-		"A.Answer AS Answer, " +
-		"A.Answer AS HistoryAnswer, " +
-		"A.AnswerDate AS AnswerDate " +
-		"FROM " +
-		"(SELECT " +
-			"MIN(D.Date) AS DocDate, " +
+			"D.Date AS DocDate, " +
 			"S.SKU AS SKU, " +
 			"S.Description AS SKUDescription, " +
 			"Q.ChildQuestion AS Question, " +
 			"Q.ChildDescription AS Description, " +
 			"Q.ChildType AS AnswerType, " +
+			"Q.ParentQuestion AS ParentQuestion, " +
+			"Q.QuestionOrder AS QuestionOrder, " +
 			"CASE WHEN Q.ChildType = @integer OR Q.ChildType = @decimal OR Q.ChildType = @string THEN 1 ELSE NULL END AS IsInputField, " +
 			"CASE WHEN Q.ChildType = @integer OR Q.ChildType = @decimal THEN 'numeric' ELSE 'auto' END AS KeyboardType, " +
 			"D.Single AS Single, " +
 			"MAX(CAST (Q.Obligatoriness AS int)) AS Obligatoriness, " +
 			"SK.Owner AS OwnerGroup, " +
-			"SK.Brand AS Brand " +
-			"FROM Document_Questionnaire_SKUQuestions Q " +
-			"JOIN _Document_Questionnaire_SKUs S INDEXED BY IND_QSKU ON S.IsTombstone = 0 AND Q.Ref=S.Ref " +
-			"JOIN USR_Questionnaires D ON Q.Ref=D.Id " +
-			"JOIN Catalog_SKU SK ON SK.Id=S.SKU " +
-			"GROUP BY Q.ChildQuestion, " +
+			"SK.Brand AS Brand, " +
+			"A.Answer AS Answer, " +
+			"A.Answer AS HistoryAnswer, " +
+			"A.AnswerDate AS AnswerDate " +
+			
+		"FROM Document_Questionnaire_SKUQuestions Q " +
+		"JOIN _Document_Questionnaire_SKUs S INDEXED BY IND_QSKU ON S.IsTombstone = 0 AND Q.Ref=S.Ref " +
+		"JOIN USR_Questionnaires D ON Q.Ref=D.Id " +
+		"JOIN Catalog_SKU SK ON SK.Id=S.SKU " +
+		"LEFT JOIN _Catalog_Outlet_AnsweredQuestions A INDEXED BY IND_AQ ON A.IsTombstone = 0 AND A.Ref = @outlet AND A.Questionaire = D.Id " +
+																"AND A.Question = Q.ChildQuestion AND A.SKU = S.SKU " +
+																"AND DATE(A.AnswerDate) >= DATE(D.BeginAnswerPeriod) " +
+																"AND (DATE(A.AnswerDate) <= DATE(D.EndAnswerPeriod) OR A.AnswerDate = '0001-01-01 00:00:00')" +
+		"GROUP BY Q.ChildQuestion, " +
 			"Q.ChildDescription, " +
 			"Q.ChildType, " +
+			"Q.ParentQuestion, " +
+			"Q.QuestionOrder, " +
 			"D.Single, " +
 			"S.SKU, " +
 			"S.Description, " +
 			"SK.Owner, " +
 			"SK.Brand, " +
+			"A.Answer, " +
+			"A.AnswerDate, " +
 			"CASE WHEN Q.ChildType = @integer OR Q.ChildType = @decimal OR Q.ChildType = @string THEN 1 ELSE NULL END, " +
-			"CASE WHEN Q.ChildType = @integer OR Q.ChildType = @decimal THEN 'numeric' ELSE 'auto' END) INQ " +
-		"JOIN Document_Questionnaire_SKUQuestions Q ON Q.ChildQuestion = INQ.Question " +
-		"JOIN USR_Questionnaires D ON Q.Ref = D.Id AND D.Date = INQ.DocDate AND D.Single = INQ.Single " +
-		"LEFT JOIN _Catalog_Outlet_AnsweredQuestions A INDEXED BY IND_AQ ON A.IsTombstone = 0 AND A.Ref = @outlet AND A.Questionaire = D.Id " +
-																																		"AND A.Question = INQ.Question AND A.SKU = INQ.SKU " +
-																																		"AND DATE(A.AnswerDate) >= DATE(D.BeginAnswerPeriod) " +
-																																		"AND (DATE(A.AnswerDate) <= DATE(D.EndAnswerPeriod) OR A.AnswerDate = '0001-01-01 00:00:00')");
+			"CASE WHEN Q.ChildType = @integer OR Q.ChildType = @decimal THEN 'numeric' ELSE 'auto' END ");
+		
+		
 
 	query.AddParameter("integer", DB.Current.Constant.DataType.Integer);
 	query.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);

@@ -149,8 +149,8 @@ function SetIndicators() {
 
 function CalculateTotal(single) {
 	var q = new Query("SELECT COUNT(U1.Question) FROM USR_SKUQuestions U1 WHERE U1.Single=@single " +
-	" AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +
-	" WHERE (Answer='Yes' OR Answer='Да')))");
+	" AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions U2 " +
+	" WHERE (Answer='Yes' OR Answer='Да') AND U1.SKU=U2.SKU))");
 	q.AddParameter("single", single);
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	return q.ExecuteScalar();
@@ -162,7 +162,7 @@ function CalculateQty(single) {
 			"WHERE U1.Single=@single " +
 			"AND RTRIM(U1.Answer)!='' AND U1.Answer IS NOT NULL " +
 			"AND (ParentQuestion=@emptyRef OR ParentQuestion IN " +
-				"(SELECT Question FROM USR_SKUQuestions WHERE (Answer='Yes' OR Answer='Да')))");
+				"(SELECT Question FROM USR_SKUQuestions U2 WHERE (Answer='Yes' OR Answer='Да') AND U2.SKU = U1.SKU))");
 	q.AddParameter("single", single);
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	return q.ExecuteScalar();

@@ -12,10 +12,10 @@
 				<c:Image />
 				<c:TextView Text="#back#" />
 			</c:DockLayout>
-			<s:If Test="$ForwardIsntAllowed()">
+			<s:If Test="@forwardIsntAllowed">
 				<c:DockLayout Id="btnForward" CssClass="forward">
 					<c:VerticalLayout></c:VerticalLayout>
-					<c:TextView Id="obligateredButton" Text="{$ToString(@obligateredLeft)})" />
+					<c:TextView Id="obligateredButton" Text="{@obligateNumber})" />
 					<c:Image />
 					<c:TextView Text="#forward# (" />
 				</c:DockLayout>
@@ -65,11 +65,11 @@
 
 		<c:ScrollView Id="grScrollView">
 
-			<s:If Test="$ForwardIsntAllowed()">
+			<s:If Test="@forwardIsntAllowed">
 				<c:HorizontalLayout CssClass="required_grid">
 					<c:TextView Text="#requiredLeft# "></c:TextView>
 					<c:Image />
-					<c:TextView Id="obligateredInfo" Text="$ToString(@obligateredLeft)"></c:TextView>
+					<c:TextView Id="obligateredInfo" Text="@obligateNumber"></c:TextView>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
 			</s:If>
@@ -84,7 +84,7 @@
 
 				<c:DockLayout CssClass="grid" OnClickAction="$FocusOnEditText(control{$index}, $question.IsInputField)">
 					<s:If Test="$question.Obligatoriness=='1'">
-						<s:If Test="$IsNullOrEmpty($question.Answer)">
+						<s:If Test="$question.Answer == null || $question.Answer == ''">
 							<c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout>
 						</s:If>
 						<s:Else>
@@ -94,10 +94,10 @@
 					<s:Else>
 						<c:HorizontalLayout CssClass="empty_side_wh"></c:HorizontalLayout>
 					</s:Else>
-					<s:If Test="$question.IsSnapshot==1">
+					<s:If Test="$question.FullFileName != null">
 						<c:HorizontalLayout OnClickAction="$GoToQuestionAction($question.AnswerType, $visit, control{$index}, $question.Question, $question.Answer, $question.Description)">
 							<c:TextView Text="$question.Description" CssClass="description_row"></c:TextView>
-							<s:If Test="$IsNullOrEmpty($question.Answer)">
+							<s:If Test="$question.Answer == null || $question.Answer == ''">
 								<c:VerticalLayout>
 									<c:VerticalLayout CssClass="no_answer">
 										<c:Image Id="control{$index}" />
@@ -105,10 +105,19 @@
 								</c:VerticalLayout>
 							</s:If>
 							<s:Else>
-								<s:If Test="$SnapshotExists($visit, $outlet, $question.Answer)">
-									<c:VerticalLayout>
-										<c:Image Id="control{$index}" CssClass="answer_snapshot" Source="$GetImagePath($visit.Id, $outlet.Id, $question.Answer)"></c:Image>
-									</c:VerticalLayout>
+								<s:If Test="$question.FullFileName != '/shared/result.jpg'">
+									<s:If Test="$SnapshotExists($question.FullFileName)">
+										<c:VerticalLayout>
+											<c:Image Id="control{$index}" CssClass="answer_snapshot" Source="$question.FullFileName"></c:Image>
+										</c:VerticalLayout>
+									</s:If>
+									<s:Else>
+										<c:VerticalLayout>
+											<c:VerticalLayout CssClass="no_image">
+												<c:Image Id="control{$index}" />
+											</c:VerticalLayout>
+										</c:VerticalLayout>
+									</s:Else>
 								</s:If>
 								<s:Else>
 									<c:VerticalLayout>

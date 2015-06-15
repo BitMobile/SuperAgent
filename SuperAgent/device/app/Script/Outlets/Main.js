@@ -2,10 +2,6 @@ var snapshotsExists;
 var singlePicture;
 var parameterValueC;
 
-function WarMupFunction() {
-
-}
-
 function OnLoading() {
 	var primaryParametersSettings = new Dictionary();
 	primaryParametersSettings.Add("description", "000000001");
@@ -213,7 +209,7 @@ function CreateOutletParameterValue(outlet, parameter, value, parameterValue, is
 		} else{
 			parameterValue = parameterValue.GetObject();
 			parameterValue.Value = value;
-		}		
+		}
 		parameterValue.Save();
 		parameterValue = parameterValue.Id;
 	}
@@ -226,7 +222,7 @@ function AssignParameterValue(control, typeDescription, parameterValue, value, o
 	CreateOutletParameterValue(outlet, parameter, control.Text, parameterValue, true)
 }
 
-function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control, 
+function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control,
 	parameterDescription, editable, index, isInputField) {
 
 	if (editable && !isInputField) {

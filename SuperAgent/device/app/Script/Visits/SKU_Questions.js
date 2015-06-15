@@ -18,7 +18,6 @@ var questionValueGl;
 //-------------------------------Header handlers-------------------------
 //
 
-
 function OnLoading(){
 	obligateredLeft = parseInt(0);
 	SetListType();
@@ -26,10 +25,6 @@ function OnLoading(){
 		setScroll = true;
 	if ($.param2==true) //works only in case of Forward from Filters
 		ClearIndex();
-}
-
-function WarMupFunction() {
-
 }
 
 function OnLoad() {
@@ -76,7 +71,6 @@ function CountResultAndForward() {
 //
 //--------------------------------Questions list handlers--------------------------
 //
-
 
 function GetSKUsFromQuesionnaires(search) {
 

@@ -1,7 +1,9 @@
 var questionsAtScreen;
 var regularAnswers;
 var answerText;
-var obligateredLeft;
+var obligateNumber;
+var forwardIsntAllowed;
+var obligateBool;
 var regular_answ;
 var regular_total;
 var single_answ;
@@ -16,12 +18,9 @@ var questionGl;
 
 function OnLoading() {
 	questionsAtScreen = null;
-	obligateredLeft = parseInt(0);
+	obligateNumber = '0';
+	forwardIsntAllowed = false;
 	SetListType();
-}
-
-function WarMupFunction() {
-
 }
 
 function SetListType() {
@@ -34,139 +33,168 @@ function ChangeListAndRefresh(control, param) {
 	Workflow.Refresh([]);
 }
 
-
 //
 // --------------------------------Questions list handlers--------------------------
 //
 
 function GetQuestionsByQuestionnaires(outlet) {
 
-	var oblQuest = new Query("SELECT COUNT(DISTINCT Question) FROM USR_Questions WHERE (RTRIM(Answer)='' OR Answer IS NULL) AND Obligatoriness=1 " +
+	var oblQuest = new Query("SELECT COUNT(DISTINCT Question) FROM USR_Questions WHERE Obligatoriness=1 AND TRIM(IFNULL(Answer, '')) = '' " +
 			"AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_Questions " +
 			"WHERE (Answer='Yes' OR Answer='Да')))");
 	oblQuest.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 
-	obligateredLeft = oblQuest.ExecuteScalar();
+	obligateNumber = oblQuest.ExecuteScalar().ToString();
+
+	if (obligateNumber!='0') {
+		forwardIsntAllowed = true;
+	}	else {
+		forwardIsntAllowed = false;
+	}
 
 	var single = 1;
-	if (regularAnswers)
+
+	if (regularAnswers) {
 		single = 0;
+	}
 
-	SetIndiactors(single);
+	SetIndiactors();
 
-	return GetQuestions(single, false);
+	return GetQuestions(single);
 
 }
 
-function GetQuestions(single, doCnt) {
-	var q = new Query("SELECT *, " +
-			"CASE WHEN IsInputField='1' THEN Answer ELSE " +
-				"CASE WHEN (RTRIM(Answer)!='' AND Answer IS NOT NULL) THEN CASE WHEN AnswerType=@snapshot THEN @attached ELSE Answer END ELSE '—' END END AS AnswerOutput, " +
-				"CASE WHEN AnswerType=@snapshot THEN '1' ELSE '0' END AS IsSnapshot " +
-			"FROM USR_Questions " +
-			"WHERE Single=@single AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_Questions " +
+function GetQuestions(single) {
+
+	var q = new Query("SELECT UQ.Answer, UQ.AnswerType , UQ.Question, UQ.Description, UQ.Obligatoriness, UQ.IsInputField, UQ.KeyboardType, " +
+			"CASE WHEN UQ.IsInputField='1' THEN UQ.Answer ELSE " +
+				"CASE WHEN TRIM(IFNULL(UQ.Answer, '')) != '' THEN UQ.Answer ELSE '—' END END AS AnswerOutput, " +
+			"CASE WHEN UQ.AnswerType=@snapshot THEN " +
+				"CASE WHEN TRIM(IFNULL(VFILES.FullFileName, '')) != '' THEN LOWER(VFILES.FullFileName) ELSE " +
+					"CASE WHEN TRIM(IFNULL(OFILES.FullFileName, '')) != '' THEN LOWER(OFILES.FullFileName) ELSE '/shared/result.jpg' END END ELSE NULL END AS FullFileName " +
+			"FROM USR_Questions UQ " +
+			"LEFT JOIN Document_Visit_Files VFILES ON VFILES.FileName = UQ.Answer AND VFILES.Ref = @visit " +
+			"LEFT JOIN Catalog_Outlet_Files OFILES ON OFILES.FileName = UQ.Answer AND OFILES.Ref = @outlet " +
+			"WHERE UQ.Single=@single AND (UQ.ParentQuestion=@emptyRef OR UQ.ParentQuestion IN (SELECT Question FROM USR_Questions " +
 			"WHERE (Answer='Yes' OR Answer='Да'))) " +
-			" ORDER BY DocDate, QuestionOrder ");
+			"ORDER BY UQ.DocDate, UQ.QuestionOrder ");
+
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	q.AddParameter("single", single);
 	q.AddParameter("snapshot", DB.Current.Constant.DataType.Snapshot);
-	q.AddParameter("attached", Translate["#snapshotAttached#"]);
+	q.AddParameter("visit", $.workflow.visit);
+	q.AddParameter("outlet", $.workflow.outlet);
 
-	if (doCnt)
-		return q.ExecuteCount();
-	else
-		return q.Execute();
+	return q.Execute();
+
 }
 
-function SetIndiactors(res, single) {
-	regular_total = GetQuestions(0, true);
-	single_total = GetQuestions(1, true);
-	regular_answ = GetAnsweredQty(0);
-	single_answ = GetAnsweredQty(1);
+function SetIndiactors() {
+
+	var q = new Query("SELECT SUM(CASE WHEN Single = 0 THEN 1 ELSE 0 END) AS RegularTotal, " +
+			"SUM(CASE WHEN Single = 1 THEN 1 ELSE 0 END) AS SingleTotal, " +
+			"SUM(CASE WHEN Single = 0 AND TRIM(IFNULL(Answer, '')) != '' THEN 1 ELSE 0 END) AS RegularAnsw, " +
+			"SUM(CASE WHEN Single = 1 AND TRIM(IFNULL(Answer, '')) != '' THEN 1 ELSE 0 END) AS SingleAnsw " +
+			"FROM USR_Questions " +
+			"WHERE ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_Questions WHERE (Answer='Yes' OR Answer='Да'))");
+
+	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
+
+	res = q.Execute();
+
+	res.Next();
+
+	regular_total = res.RegularTotal;
+	single_total = res.SingleTotal;
+	regular_answ = res.RegularAnsw;
+	single_answ = res.SingleAnsw;
 
 	Variables.Add("workflow.questions_qty", (regular_total + single_total));
 	Variables.Add("workflow.questions_answ", (regular_answ + single_answ));
-}
 
-
-function GetAnsweredQty(single) {
-	var q = new Query("SELECT COUNT(Question) FROM USR_Questions " +
-			"WHERE Single=@single AND RTRIM(Answer)!='' AND Answer IS NOT NULL " +
-			"AND (ParentQuestion=@emptyRef OR ParentQuestion IN " +
-				"(SELECT Question FROM USR_Questions WHERE (Answer='Yes' OR Answer='Да')))");
-	q.AddParameter("single", single);
-	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
-	return q.ExecuteScalar();
-
-}
-
-function ForwardIsntAllowed() {
-	if (parseInt(obligateredLeft)!=parseInt(0))
-		return true;
-	else
-		return false;
 }
 
 function CreateVisitQuestionValueIfNotExists(question, answer, dialogInput) {
 
 	var query = new Query("SELECT Id FROM Document_Visit_Questions WHERE Ref == @Visit AND Question == @Question");
+
 	query.AddParameter("Visit", $.workflow.visit);
 	query.AddParameter("Question", question);
+
 	var result = query.ExecuteScalar();
+
 	if (result == null) {
+
 		if (dialogInput || (answer!="—" && TrimAll(answer)!="")) {
+
 			var p = DB.Create("Document.Visit_Questions");
+
 			p.Ref = $.workflow.visit;
 			p.Question = question;
 			p.AnswerDate = DateTime.Now;
 			p.Answer = answer;
+
 			p.Save();
+
 			result = p.Id;
+
 			return result;
+
 		}
-	}
-	else{
-		if ((answer=="—" || TrimAll(answer)=="") && dialogInput==false)
+
+	}	else {
+
+		if ((answer=="—" || TrimAll(answer)=="") && dialogInput==false) {
+
 			DB.Delete(result);
-		else{
+			
+		} else{
+
 			var p = result.GetObject();
+
 			p.AnswerDate = DateTime.Now;
 			p.Answer = answer;
+
 			p.Save();
+
 			result = p.Id;
+
 			return result;
+
 		}
+
 	}
 
 }
 
 function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer, questionDescription) {
-	if ((answerType).ToString() == (DB.Current.Constant.DataType.ValueList).ToString()) {
+
+	if (answerType == DB.Current.Constant.DataType.ValueList) {
+
 		var q = new Query();
 		q.Text = "SELECT Value, Value FROM Catalog_Question_ValueList WHERE Ref=@ref UNION SELECT '', '—' ORDER BY Value";
 		q.AddParameter("ref", questionItem);
 
-		//Dialogs.DoChoose(q.Execute(), questionItem, null, Variables[control], DialogCallBack);
 		DoChoose(q.Execute(), questionItem, null, Variables[control], DialogCallBack, questionDescription);
-	}
 
-	if ((answerType).ToString() == (DB.Current.Constant.DataType.Snapshot).ToString()) {
-		questionGl = questionItem;
-		var path = null;
-//		if (String.IsNullOrEmpty(currAnswer)==false)
-//			path = Images.FindImage(visit, currAnswer, ".jpg");
-		Images.AddQuestionSnapshot("USR_Questions", questionItem, null, currAnswer, true, questionDescription, GalleryCallBack);
-	}
+	} else if (answerType == DB.Current.Constant.DataType.Snapshot) {
 
-	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {
-		//Dialogs.ChooseDateTime(questionItem, null, Variables[control], DialogCallBack); //(question, "Answer", question.Answer, Variables[control]);
-		ChooseDateTime(questionItem, null, Variables[control], DialogCallBack, questionDescription); //(question, "Answer", question.Answer, Variables[control]);
-	}
+			questionGl = questionItem;
 
-	if ((answerType).ToString() == (DB.Current.Constant.DataType.Boolean).ToString()) {
+			var path = null;
+
+			Images.AddQuestionSnapshot("USR_Questions", questionItem, null, currAnswer, true, questionDescription, GalleryCallBack);
+
+	} else if (answerType == DB.Current.Constant.DataType.DateTime) {
+
+		ChooseDateTime(questionItem, null, Variables[control], DialogCallBack, questionDescription);
+
+	} else if (answerType == DB.Current.Constant.DataType.Boolean) {
+
 		bool_answer = currAnswer;
-		//Dialogs.ChooseBool(questionItem, null, Variables[control], DialogCallBack);
+
 		ChooseBool(questionItem, null, Variables[control], DialogCallBack, questionDescription);
+
 	}
 
 }
@@ -219,12 +247,6 @@ function GalleryCallBack(state, args) {
 	}
 }
 
-function GetImagePath(visitID, outletID, pictID, pictExt) {
-	var pathFromVisit = Images.FindImage(visitID, pictID, pictExt, "Document_Visit_Files");
-	var pathFromOutlet = Images.FindImage(outletID, pictID, pictExt, "Catalog_Outlet_Files");
-	return (pathFromVisit == "/shared/result.jpg" ? pathFromOutlet : pathFromVisit);
-}
-
 function GetCameraObject(entity) {
 	FileSystem.CreateDirectory("/private/document.visit");
 	var guid = GenerateGuid();
@@ -234,7 +256,6 @@ function GetCameraObject(entity) {
 	Camera.Path = path;
 	return guid;
 }
-
 
 function GetActionAndBack() {
 	if ($.workflow.skipTasks) {
@@ -251,10 +272,10 @@ function ObligatedAnswered(answer, obligatoriness) {
 	return false;
 }
 
-function SnapshotExists(visit, outlet, filename) {
-	existsInVisit = Images.SnapshotExists(visit, filename, "Document_Visit_Files");
-	existsInOutlet = Images.SnapshotExists(outlet, filename, "Catalog_Outlet_Files");
-	return existsInVisit || existsInOutlet;
+function SnapshotExists(filename) {
+
+	return FileSystem.Exists(filename);
+
 }
 
 //--------------------------------Gallery handlers----------------

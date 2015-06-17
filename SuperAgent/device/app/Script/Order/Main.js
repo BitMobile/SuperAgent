@@ -145,7 +145,7 @@ function GetOrderParameters(outlet) {
 		FROM 																																			 \
 			Catalog_OrderParameters P 																						   \
 				JOIN Enum_DataType DT On DT.Id=P.DataType 														 \
-				LEFT JOIN Document_Order_Parameters OP ON OP.Parameter = P.Id AND OP.Ref = @outlet WHERE NOT P.DataType=@snapshot");
+				LEFT JOIN Document_"+$.workflow.currentDoc+"_Parameters OP ON OP.Parameter = P.Id AND OP.Ref = @outlet WHERE NOT P.DataType=@snapshot");
 	query.AddParameter("integer", DB.Current.Constant.DataType.Integer);
 	query.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);
 	query.AddParameter("string", DB.Current.Constant.DataType.String);
@@ -156,7 +156,9 @@ function GetOrderParameters(outlet) {
 	return result;
 }
 
-function GoToParameterAction(typeDescription, parameterValue, value, order, parameter, control, parameterDescription, editable, isInputField) {
+function GoToParameterAction(typeDescription, parameterValue, value, order, parameter, control, parameterDescription, 
+	editable, isInputField) {
+	
 	if (IsNew(order)) {
 		if (editable) {
 
@@ -186,12 +188,12 @@ function GoToParameterAction(typeDescription, parameterValue, value, order, para
 }
 
 function CreateOrderParameterValue(order, parameter, value, parameterValue, isInputField) {
-	var q = new Query("SELECT Id FROM Document_Order_Parameters WHERE Ref=@ref AND Parameter = @parameter");
+	var q = new Query("SELECT Id FROM Document_"+ $.workflow.currentDoc +"_Parameters WHERE Ref=@ref AND Parameter = @parameter");
 	q.AddParameter("ref", order);
 	q.AddParameter("parameter", parameter);
 	parameterValue = q.ExecuteScalar();
 	if (parameterValue == null) {
-		parameterValue = DB.Create("Document.Order_Parameters");
+		parameterValue = DB.Create("Document."+$.workflow.currentDoc+"_Parameters");
 		parameterValue.Ref = order;
 		parameterValue.Parameter = parameter;
 	} else{

@@ -6,4 +6,7 @@
 	<client>
 		<supportedCore version="2.4.0.126" />
 	</client>
+	<server>
+    <filterShared value="yes" />
+  </server>
 </configuration>

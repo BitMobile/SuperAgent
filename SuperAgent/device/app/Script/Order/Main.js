@@ -55,6 +55,26 @@ function GetItems() {
 	return q.Execute();
 }
 
+function SelectOrder(order, outlet){
+	order = order.GetObject();		
+	if (IsNew(order)){		
+		$.AddGlobal("outlet", outlet);
+		$.AddGlobal("executedOrder", order.Id);
+		DoAction('Edit', null, null, order.Id);
+	}
+	else
+		DoAction('Review', outlet, null, order.Id);
+}
+
+function FindExecutedOrder(executedOrder){
+	if (executedOrder!=null)
+		return executedOrder;
+	else if ($.Exists('executedOrder'))
+		return $.executedOrder;
+	else
+		return null;
+}
+
 function OrderCanceled(status) {
 	if ($.workflow.step == "OrderList") {
 		if (status.ToString() == (DB.Current.Constant.OrderSatus.Canceled).ToString())

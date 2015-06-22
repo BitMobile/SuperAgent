@@ -97,6 +97,8 @@ function OnWorkflowFinish(name, reason) {
 			Variables.Remove("planVisit");
 		if (Variables.Exists("steps"))
 			Variables.Remove("steps");
+		if (Variables.Exists("executedOrder"))
+			Variables.Remove("executedOrder");
 
 		GPS.StopTracking();
 

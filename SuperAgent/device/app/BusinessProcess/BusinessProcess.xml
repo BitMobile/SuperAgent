@@ -109,10 +109,6 @@
 			<bp:Action Name="Forward" NextStep="SKUs"></bp:Action>
 		</bp:Step>
 
-		<bp:Step Name="Commentary" Screen="Order_Commentary.xml" Controller="Order\Main.js">
-			<bp:Action Name="Forward" NextStep="Receivables"></bp:Action>
-		</bp:Step>
-
 		<bp:Step Name="OrderInfo" Screen="Order_Info.xml" Controller="Order\Main.js">
 		</bp:Step>
 
@@ -157,7 +153,8 @@
 
 		<bp:Step Name="OrderList" Screen="Order\OrderList.xml" Controller="Order\Main.js">
 			<bp:Action Name="Create" NextStep="Outlets"></bp:Action>
-			<bp:Action Name="Select" NextStep="Order"></bp:Action>
+			<bp:Action Name="Review" NextStep="Order"></bp:Action>
+			<bp:Action Name="Edit" NextWorkflow="CreateOrder"></bp:Action>
 		</bp:Step>
 
 		<bp:Step Name="Outlets" Screen="Outlets\Outlets.xml" Controller="Outlets\Main.js">
@@ -197,7 +194,8 @@
 
 		<bp:Step Name="ReturnList" Screen="Order\OrderList.xml">
 			<bp:Action Name="Create" NextStep="Outlets"></bp:Action>
-			<bp:Action Name="Select" NextStep="Return"></bp:Action>
+			<bp:Action Name="Review" NextStep="Return"></bp:Action>
+			<bp:Action Name="Edit" NextWorkflow="CreateReturn"></bp:Action>
 		</bp:Step>
 
 		<bp:Step Name="Outlets" Screen="Outlets\Outlets.xml" Controller="Outlets\Main.js">

@@ -75,7 +75,28 @@ function SelectOwnership(control) {
 }
 
 
-// --------------------internal--------------
+
+//---------------------Contractors--------------
+
+
+function GetOutlets(searchText){
+	var search = "";
+	if (String.IsNullOrEmpty(searchText)==false) { //search processing
+		searchText = StrReplace(searchText, "'", "''");
+		search = " AND Contains(O.Description, '" + searchText + "') ";
+	}
+
+	var q = new Query("SELECT C.Id, C.Description, C.LegalAddress, '3' AS OutletStatus " +
+		"FROM Catalog_Outlet_Contractors O " +
+		"JOIN Catalog_Contractors C ON O.Contractor=C.Id " +
+		"WHERE O.Id=@outlet ");
+	q.AddParameter("outlet", $.workflow.outlet);
+	var result = q.Execute();
+}
+
+
+
+// --------------------internal-----------------
 
 function EmptyContact(contact) {
 	if (String.IsNullOrWhiteSpace(contact.ContactName) && String.IsNullOrEmpty(contact.PhoneNumber) && String.IsNullOrEmpty(contact.Email) && String.IsNullOrEmpty(contact.Position))

@@ -302,3 +302,4 @@ OP				ОП
 TSJ				ТСЖ
 outlet_territory	Территория
 no_contacts	НЕТ КОНТАКТОВ
+contractors		Контрагенты

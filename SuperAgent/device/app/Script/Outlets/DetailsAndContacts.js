@@ -86,15 +86,26 @@ function GetOutlets(searchText){
 		search = " AND Contains(O.Description, '" + searchText + "') ";
 	}
 
-	var q = new Query("SELECT C.Id, C.Description, C.LegalAddress, '3' AS OutletStatus " +
+	var q = new Query("SELECT C.Id, C.Description, C.LegalAddress AS Address, '3' AS OutletStatus " +
 		"FROM Catalog_Outlet_Contractors O " +
 		"JOIN Catalog_Contractors C ON O.Contractor=C.Id " +
-		"WHERE O.Id=@outlet ");
-	q.AddParameter("outlet", $.workflow.outlet);
+		"WHERE O.Ref=@outlet " + search + "ORDER BY C.Description");
+	q.AddParameter("outlet", $.outlet);
 	var result = q.Execute();
+	return q.Execute();
 }
 
+function BackMenu(){
+	return true;
+}
 
+function CreateOutletEnabled(){	
+	return false;
+}
+
+function AddGlobalAndAction(name, contractor, actionName){
+	DoAction(actionName, contractor);
+}
 
 // --------------------internal-----------------
 

@@ -40,7 +40,7 @@
 		</c:DockLayout>
 		<c:HorizontalLine />
 
-		<s:If Test="$workflow.name=='Outlets'">
+		<s:If Test="$CreateOutletEnabled()">
 			<c:HorizontalLayout Id="btnAdd" CssClass="bottom_btn" OnClickAction="$DoAction(Create)">
 				<c:TextView Text="#add#"></c:TextView>
 			</c:HorizontalLayout>

@@ -81,6 +81,15 @@ function CreateVisitEnable() {
 
 }
 
+
+function CreateOutletEnabled(){
+	if ($.workflow.name == 'Outlets')
+		return true;
+	else
+		return false;
+
+}
+
 function GetOutletParameters(outlet) {
 	var query = new Query();
 	query.Text = "SELECT P.Id, P.Description, P.DataType, DT.Description AS TypeDescription, OP.Id AS ParameterValue, OP.Value, P.Visible, P.Editable " +

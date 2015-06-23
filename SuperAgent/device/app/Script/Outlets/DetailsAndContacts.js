@@ -90,13 +90,25 @@ function GetOutlets(searchText){
 		search = " AND Contains(C.Description, '" + searchText + "') ";
 	}
 
-	var q = new Query("SELECT C.Id, C.Description, C.LegalAddress AS Address, '3' AS OutletStatus " +
-		"FROM Catalog_Outlet_Contractors O " +
-		"JOIN Catalog_Contractors C ON O.Contractor=C.Id " +
-		"WHERE O.Ref=@outlet " + search + "ORDER BY C.Description");
-	q.AddParameter("outlet", $.outlet);
-	var result = q.Execute();
-	return q.Execute();
+	var outletObj = $.outlet.GetObject();
+	if (outletObj.Distributor==DB.EmptyRef("Catalog_Distributor")){
+		var q = new Query("SELECT C.Id, C.Description, C.LegalAddress AS Address, '3' AS OutletStatus " +
+			"FROM Catalog_Outlet_Contractors O " +
+			"JOIN Catalog_Contractors C ON O.Contractor=C.Id " +
+			"WHERE O.Ref=@outlet " + search + "ORDER BY C.Description");
+		q.AddParameter("outlet", $.outlet);
+		var result = q.Execute();
+	}
+	else{
+		var q = new Query("SELECT  C.Id, C.Description, C.LegalAddress AS Address, '3' AS OutletStatus " +
+			"FROM Catalog_Distributor_Contractors D " +
+			"JOIN Catalog_Contractors C ON D.Contractor=C.Id " +
+			"WHERE Ref=@distr " + search + "ORDER BY C.Description");
+		q.AddParameter("distr", outletObj.Distributor);
+		var result = q.Execute();
+	}
+	
+	return result;
 }
 
 function BackMenu(){

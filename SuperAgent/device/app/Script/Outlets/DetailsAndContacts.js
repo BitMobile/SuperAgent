@@ -1,4 +1,9 @@
 var outlet;
+var title;
+
+function OnLoading(){
+	title = Translate["#contractors#"];
+}
 
 function OnLoad() {
 	outlet = $.param1;
@@ -78,12 +83,11 @@ function SelectOwnership(control) {
 
 //---------------------Contractors--------------
 
-
 function GetOutlets(searchText){
 	var search = "";
 	if (String.IsNullOrEmpty(searchText)==false) { //search processing
 		searchText = StrReplace(searchText, "'", "''");
-		search = " AND Contains(O.Description, '" + searchText + "') ";
+		search = " AND Contains(C.Description, '" + searchText + "') ";
 	}
 
 	var q = new Query("SELECT C.Id, C.Description, C.LegalAddress AS Address, '3' AS OutletStatus " +

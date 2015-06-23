@@ -1,6 +1,7 @@
 var snapshotsExists;
 var singlePicture;
 var parameterValueC;
+var title;
 
 function OnLoading() {
 	var primaryParametersSettings = new Dictionary();
@@ -13,6 +14,8 @@ function OnLoading() {
 	primaryParametersSettings.Add("status", "000000007");
 	primaryParametersSettings.Add("snapshots", "000000008");
 	$.Add("primaryParametersSettings", primaryParametersSettings);
+
+	title = Translate["#outlet#"];
 }
 
 function GetOutlets(searchText) {

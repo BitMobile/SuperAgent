@@ -26,7 +26,7 @@
 		</s:If>
 		<s:Else>
 			<c:HorizontalLayout Id="btnDetails" CssClass="bottom_btn">
-				<c:VerticalLayout OnClickAction="$DoAction(ShowContractors, $outlet)">
+				<c:VerticalLayout OnClickAction="$DoAction(ShowContractors)">
 					<c:TextView Text="#contractors#" CssClass="left_tv"></c:TextView>
 				</c:VerticalLayout>
 				<c:VerticalLayout Id="btnContacts" OnEvent="Forward" OnClickAction="$DoAction(ShowContacts, $outlet)">

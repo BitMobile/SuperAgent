@@ -37,14 +37,14 @@ function HasContacts(outlet){
 }
 
 function HasOutletContacts(outlet) {
-	var q = new Query("SELECT COUNT(Id) FROM Catalog_Outlet_Contacts WHERE ref = @outlet")
+	var q = new Query("SELECT COUNT(Id) FROM Catalog_Outlet_Contacts WHERE ref = @outlet AND NotActual=0")
 	q.AddParameter("outlet", outlet);
 	var contactsCount = q.ExecuteScalar();
 	return contactsCount > 0;
 }
 
 function GetOutletContacts(outlet) {
-	var q = new Query("SELECT P.Id, P.Description AS ContactName " +
+	var q = new Query("SELECT P.Id, P.Description AS ContactName, C.Id AS OutletContact " +
 		" FROM Catalog_Outlet_Contacts C " +
 		" LEFT JOIN Catalog_ContactPersons P ON C.ContactPerson = P.Id " +
 		" WHERE C.Ref=@outlet AND C.NotActual=0 ORDER BY P.Description");
@@ -64,7 +64,7 @@ function HasPartnerContacts(outlet){
 
 function GetPartnerContacts(outlet){
 	var outletObj = outlet.GetObject();
-	var q = new Query("SELECT P.Id, P.Description AS ContactName " +
+	var q = new Query("SELECT P.Id, P.Description AS ContactName, C.Id AS PartnerContact " +
 		" FROM Catalog_Distributor_Contacts C " +
 		" JOIN Catalog_ContactPersons P ON C.ContactPerson = P.Id " +
 		" WHERE C.Ref=@distr AND C.NotActual=0 ORDER BY P.Description ");

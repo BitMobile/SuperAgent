@@ -40,7 +40,7 @@
 								<c:Image />
 								<c:TextView Text="$contact.ContactName"></c:TextView>
 							</c:DockLayout>
-							<c:HorizontalLayout CssClass="red_swipe" OnClickAction="$DeleteContact($contact.Id)">
+							<c:HorizontalLayout CssClass="red_swipe" OnClickAction="$DeleteContact($contact.OutletContact)">
 								<c:TextView Text="#delete#"></c:TextView>
 							</c:HorizontalLayout>
 						</c:SwipeHorizontalLayout>
@@ -62,7 +62,7 @@
 								<c:Image />
 								<c:TextView Text="$contact.ContactName"></c:TextView>
 							</c:DockLayout>
-							<c:HorizontalLayout CssClass="red_swipe" OnClickAction="$DeleteContact($contact.Id)">
+							<c:HorizontalLayout CssClass="red_swipe" OnClickAction="$DeleteContact($contact.PartnerContact)">
 								<c:TextView Text="#delete#"></c:TextView>
 							</c:HorizontalLayout>
 						</c:SwipeHorizontalLayout>

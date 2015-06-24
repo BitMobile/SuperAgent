@@ -303,3 +303,5 @@ outlet_territory Territory
 no_contacts	NO CONTACTS
 contractors		Contarctors
 contractor		Contarctor
+outletContacts	OUTLET CINTACTS
+partnerContacts	PARTNER CONTACTS

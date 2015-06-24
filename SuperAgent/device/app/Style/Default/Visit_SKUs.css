@@ -305,10 +305,11 @@
 }
 
 .no_contacts {
-	height: 10mm;
+	height: 5.5mm;
 	width: 100%;
 	margin-top: 2mm;
 	text-align: center;
 	font: 2.2mm Arial;
 	color: #000;
+	
 }

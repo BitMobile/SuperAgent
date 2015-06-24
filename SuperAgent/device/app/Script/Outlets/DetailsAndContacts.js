@@ -1,5 +1,7 @@
 var outlet;
 var title;
+var hasPartnerContacts;
+var hasOutletContacts;
 
 function OnLoading(){
 	title = Translate["#contractors#"];
@@ -28,16 +30,45 @@ function SaveAndBack(entity, validateOutlet) {
 	}
 }
 
-function HasContacts(outlet) {
+function HasContacts(outlet){
+	hasOutletContacts = HasOutletContacts(outlet);
+	hasPartnerContacts = HasPartnerContacts(outlet);
+	return hasOutletContacts || hasPartnerContacts;
+}
+
+function HasOutletContacts(outlet) {
 	var q = new Query("SELECT COUNT(Id) FROM Catalog_Outlet_Contacts WHERE ref = @outlet")
 	q.AddParameter("outlet", outlet);
 	var contactsCount = q.ExecuteScalar();
 	return contactsCount > 0;
 }
 
-function GetContacts(outlet) {
-	var q = new Query("SELECT C.Id, C.ContactName, P.Description AS Position, PhoneNumber, Email FROM Catalog_Outlet_Contacts C LEFT JOIN Catalog_Positions P ON C.Position=P.Id WHERE C.Ref=@ref AND C.NotActual=0 ORDER BY C.ContactName");
-	q.AddParameter("ref", outlet);
+function GetOutletContacts(outlet) {
+	var q = new Query("SELECT P.Id, P.Description AS ContactName " +
+		" FROM Catalog_Outlet_Contacts C " +
+		" LEFT JOIN Catalog_ContactPersons P ON C.ContactPerson = P.Id " +
+		" WHERE C.Ref=@outlet AND C.NotActual=0 ORDER BY P.Description");
+	q.AddParameter("outlet", outlet);
+	return q.Execute();
+}
+
+function HasPartnerContacts(outlet){
+	var outletObj = outlet.GetObject();
+	var q = new Query("SELECT COUNT(Id) " +
+		" FROM Catalog_Distributor_Contacts C " +		
+		" WHERE C.Ref=@distr AND C.NotActual=0 ");
+	q.AddParameter("distr", outletObj.Distributor);
+	var c = q.ExecuteScalar();
+	return c > 0;
+}
+
+function GetPartnerContacts(outlet){
+	var outletObj = outlet.GetObject();
+	var q = new Query("SELECT P.Id, P.Description AS ContactName " +
+		" FROM Catalog_Distributor_Contacts C " +
+		" JOIN Catalog_ContactPersons P ON C.ContactPerson = P.Id " +
+		" WHERE C.Ref=@distr AND C.NotActual=0 ORDER BY P.Description ");
+	q.AddParameter("distr", outletObj.Distributor);
 	return q.Execute();
 }
 

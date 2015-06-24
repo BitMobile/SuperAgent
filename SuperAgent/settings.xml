@@ -4,7 +4,7 @@
 		<version version="2.6.0.187"></version>
 	</resource>
 	<client>
-		<supportedCore version="2.4.0.126" />
+		<supportedCore version="2.3.4.92" />
 	</client>
 	<server>
     <filterShared value="yes" />

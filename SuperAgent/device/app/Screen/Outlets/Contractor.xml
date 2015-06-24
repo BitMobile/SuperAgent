@@ -6,17 +6,17 @@
 	<c:DockLayout>
 
 		<c:DockLayout CssClass="top_navigator">
+			<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$SaveAndBack($contractor)">
+				<c:Image />
+				<c:TextView Text="#list#" />
+			</c:DockLayout>
+			<c:DockLayout Id="btnForward" CssClass="btn_forward" />
 			<c:HorizontalLayout>
-				<c:TextView Text="#details#" />
+				<c:TextView Text="#contractor#" />
 			</c:HorizontalLayout>
 		</c:DockLayout>
 
 		<c:HorizontalLine />
-
-		<c:HorizontalLayout Id="btnDone" CssClass="bottom_btn" OnEvent="Back" OnClickAction="$SaveAndBack($contractor)">
-			<c:TextView Text="#client#"></c:TextView>
-		</c:HorizontalLayout>
-		<c:HorizontalLine CssClass="b_line" />
 
 		<c:ScrollView Id="grScrollView">
 

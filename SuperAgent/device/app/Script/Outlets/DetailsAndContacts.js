@@ -2,6 +2,7 @@ var outlet;
 var title;
 var hasPartnerContacts;
 var hasOutletContacts;
+var newContact;
 
 function OnLoading(){
 	title = Translate["#contractors#"];
@@ -11,23 +12,97 @@ function OnLoad() {
 	outlet = $.param1;
 }
 
-function CreateContactIfNotExist(contact, outlet) {
+
+//----------------------Contacts-------------------
+
+
+function CreateContactIfNotExist(contact, owner) {
 
 	if (contact == null) {
-		contact = DB.Create("Catalog.Outlet_Contacts");
-		contact.Ref = outlet;
-		contact.NotActual = false;
+		newContact = true;
+		contact = DB.Create("Catalog.ContactPersons");
 		contact.Save();
 		return contact.Id;
-	} else
+	} else{
+		newContact = false;
+		contact.LoadObject();
 		return contact;
+	}
 }
 
-function SaveAndBack(entity, validateOutlet) {
-	if (ValidEntity(entity)) {
+function GetOwnerType(owner){	
+	var ownerObj = owner == null ? null : owner.GetObject();
+	if (ownerObj.Ref==DB.EmptyRef("Catalog_Outlet_Contacts") 
+		|| ownerObj.Ref==DB.EmptyRef("Catalog_Distributor_Contacts")
+		|| ownerObj == null){
+		if (newContact && $.outlet.Distributor==DB.EmptyRef("Catalog_Distributor_Contacts"))
+			return Translate["#outlet#"];
+		else
+			return "—";
+	}
+	else if (getType(ownerObj)=="DefaultScope.Catalog.Outlet_Contacts") {
+		return Translate["#outlet#"];
+	}
+	else if (getType(ownerObj)=="DefaultScope.Catalog.Distributor_Contacts"){
+		return Translate["#partner#"];
+	}
+}
+
+function SelectOwner(owner){
+	if ($.outlet.Distributor != DB.EmptyRef("Catalog_Distributor_Contacts"))
+		Dialog.Choose(Translate["#owner#"], [[0, Translate["#partner#"]], [1, Translate["#outlet#"]]], OwnerCallBack);
+}
+
+function OwnerCallBack(state, args){
+	$.owner.Text = args.Value;
+}
+
+function SaveAndBack(entity, owner) {	
+
+	if (ValidEntity(entity) && ValidOwner()) {
+		EditOwner(entity, owner);
 		entity.GetObject().Save();
 		Workflow.Back();
 	}
+}
+
+function ValidOwner(){
+	if ($.owner.Text == "—"){
+		Dialog.Message(Translate["#emptyContactOwner#"]);
+		return false;
+	}
+	else
+		return true;
+}
+
+function EditOwner(contact, owner){
+
+	var ownerObj = owner == null ? null : owner.GetObject();
+	var ownerType = GetOwnerType(owner);
+	var ownerInput = $.owner.Text;
+
+	if (ownerType == ownerInput){
+		ownerObj.Save();
+	}
+	else{
+		DB.Delete(owner);
+		var newOwner;		
+		
+		if (ownerInput==Translate["#partner#"]){
+			newOwner = DB.Create("Catalog.Distributor_Contacts");
+			Dialog.Debug($.outlet.Distributor);
+			newOwner.Ref = $.outlet.Distributor;			
+		}
+		else{
+			newOwner = DB.Create("Catalog.Outlet_Contacts");
+			newOwner.Ref = $.outlet;
+		}
+
+		newOwner.NotActual = false;
+		newOwner.ContactPerson = contact;	
+		newOwner.Save();	
+	}
+
 }
 
 function HasContacts(outlet){
@@ -44,7 +119,7 @@ function HasOutletContacts(outlet) {
 }
 
 function GetOutletContacts(outlet) {
-	var q = new Query("SELECT P.Id, P.Description AS ContactName, C.Id AS OutletContact " +
+	var q = new Query("SELECT P.Id, P.Description AS ContactName, C.Id AS OutletContact, C.Ref AS Owner " +
 		" FROM Catalog_Outlet_Contacts C " +
 		" LEFT JOIN Catalog_ContactPersons P ON C.ContactPerson = P.Id " +
 		" WHERE C.Ref=@outlet AND C.NotActual=0 ORDER BY P.Description");
@@ -64,23 +139,12 @@ function HasPartnerContacts(outlet){
 
 function GetPartnerContacts(outlet){
 	var outletObj = outlet.GetObject();
-	var q = new Query("SELECT P.Id, P.Description AS ContactName, C.Id AS PartnerContact " +
+	var q = new Query("SELECT P.Id, P.Description AS ContactName, C.Id AS PartnerContact, C.Ref AS Owner " +
 		" FROM Catalog_Distributor_Contacts C " +
 		" JOIN Catalog_ContactPersons P ON C.ContactPerson = P.Id " +
 		" WHERE C.Ref=@distr AND C.NotActual=0 ORDER BY P.Description ");
 	q.AddParameter("distr", outletObj.Distributor);
 	return q.Execute();
-}
-
-function GetPlans(outlet, sr) {
-	var q = new Query("SELECT Id, strftime('%Y-%m-%d %H:%M', PlanDate) AS PlanDate FROM Document_MobileAppPlanVisit WHERE Outlet=@outlet AND SR=@sr AND Transformed = 0");
-	q.AddParameter("outlet", outlet);
-	q.AddParameter("sr", $.common.UserRef);
-	return q.Execute();
-}
-
-function CreatePlan(outlet, plan, planDate) {
-	Dialogs.ChooseDateTime(plan, "PlanDate", null, PlanHandler); //(header, planDate, PlanHandler, [ outlet, plan ]);
 }
 
 function DeleteContact(ref) {
@@ -110,6 +174,20 @@ function SelectOwnership(control) {
 
 }
 
+
+//----------------------Planning--------------
+
+
+function GetPlans(outlet, sr) {
+	var q = new Query("SELECT Id, strftime('%Y-%m-%d %H:%M', PlanDate) AS PlanDate FROM Document_MobileAppPlanVisit WHERE Outlet=@outlet AND SR=@sr AND Transformed = 0");
+	q.AddParameter("outlet", outlet);
+	q.AddParameter("sr", $.common.UserRef);
+	return q.Execute();
+}
+
+function CreatePlan(outlet, plan, planDate) {
+	Dialogs.ChooseDateTime(plan, "PlanDate", null, PlanHandler); //(header, planDate, PlanHandler, [ outlet, plan ]);
+}
 
 
 //---------------------Contractors--------------
@@ -178,7 +256,7 @@ function PlanHandler(state, args) {
 	Workflow.Refresh([ outlet ]);
 }
 
-function SavePhoneAndCall(contact) {
+function GetPhoneAndCall(contact) {
 	contact = contact.GetObject();
 	DoCall(contact.PhoneNumber);
 }
@@ -194,7 +272,7 @@ function DialogCallBack(control, key) {
 function ValidEntity(entity) {
 
 	// Validate Contact
-	if (getType(entity.GetObject()) == "DefaultScope.Catalog.Outlet_Contacts") {
+	if (getType(entity.GetObject()) == "DefaultScope.Catalog.ContactPersons") {
 		if (EmptyContact(entity) && entity.IsNew()) {
 			DB.Delete(entity);
 			DB.Commit();

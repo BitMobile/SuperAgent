@@ -18,7 +18,7 @@
 
 		<c:HorizontalLine />
 
-		<c:HorizontalLayout Id="btnAdd" CssClass="bottom_btn" OnClickAction="$DoAction(Select, null, $outlet)">
+		<c:HorizontalLayout Id="btnAdd" CssClass="bottom_btn" OnClickAction="$DoAction(Select, null, null)">
 			<c:TextView Text="#add#"></c:TextView>			
 		</c:HorizontalLayout>
 		<c:HorizontalLine CssClass="b_line" />
@@ -36,7 +36,7 @@
 
 					<s:Iterator Id="contact" Value="$GetOutletContacts($outlet)" Status="statusCount">
 						<c:SwipeHorizontalLayout CssClass="swipe_layout">
-							<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoAction(Select, $contact.Id, $outlet)">
+							<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoAction(Select, $contact.Id, $contact.OutletContact)">
 								<c:Image />
 								<c:TextView Text="$contact.ContactName"></c:TextView>
 							</c:DockLayout>
@@ -58,7 +58,7 @@
 
 					<s:Iterator Id="contact" Value="$GetPartnerContacts($outlet)" Status="statusCount">
 						<c:SwipeHorizontalLayout CssClass="swipe_layout">
-							<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoAction(Select, $contact.Id, $outlet)">
+							<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoAction(Select, $contact.Id, $contact.PartnerContact)">
 								<c:Image />
 								<c:TextView Text="$contact.ContactName"></c:TextView>
 							</c:DockLayout>

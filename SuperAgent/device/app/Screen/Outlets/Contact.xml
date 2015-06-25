@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="CreateOutlet.css">
 
-	<s:Push Id="contact" Value="$CreateContactIfNotExist($param1, $param2)" />
+	<s:Push Id="contactOwner" Value="$param2"></s:Push>
+	<s:Push Id="contact" Value="$CreateContactIfNotExist($param1, $contactOwner)" />
 
 	<c:DockLayout>
 
@@ -18,8 +19,14 @@
 
 		<c:HorizontalLine />
 
-		<c:HorizontalLayout Id="btnDone" CssClass="bottom_btn" OnEvent="Back" OnClickAction="$SaveAndBack($contact)">
-			<c:TextView Text="#ready#"></c:TextView>
+		<c:HorizontalLayout Id="btnDone" CssClass="bottom_btn">
+			<!-- <c:TextView Text="#ready#"></c:TextView> -->
+			<c:VerticalLayout OnClickAction="$DoBack()">
+				<c:TextView Text="#cancel#" CssClass="left_tv"></c:TextView>
+			</c:VerticalLayout>
+			<c:VerticalLayout OnClickAction="$SaveAndBack($contact, $contactOwner)">
+				<c:TextView Text="#save#" CssClass="right_tv"></c:TextView>
+			</c:VerticalLayout>
 		</c:HorizontalLayout>
 		<c:HorizontalLine CssClass="b_line" />
 
@@ -28,10 +35,18 @@
 			<c:HorizontalLayout CssClass="margin_top" />
 			<c:HorizontalLine />
 
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$SelectOwner($contactOwner)">
+				<c:VerticalLayout>
+					<c:TextView Text="#owner#" CssClass="description_row"></c:TextView>
+					<c:TextView Text="$GetOwnerType($contactOwner)" CssClass="main_row" Id="owner" />
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(contact_name, 1)">
 				<c:VerticalLayout>
 					<c:TextView Text="#contactName#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$contact.ContactName" Placeholder="—" CssClass="main_row" Id="contact_name" />
+					<c:EditText Value="$contact.Description" Placeholder="—" CssClass="main_row" Id="contact_name" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -46,7 +61,7 @@
 
 			<c:DockLayout CssClass="grid" OnClickAction="$FocusOnEditText(phone_number, 1)">
 				<c:HorizontalLayout CssClass="phone">
-					<c:VerticalLayout  OnClickAction="$SavePhoneAndCall($contact)"></c:VerticalLayout>
+					<c:VerticalLayout  OnClickAction="$GetPhoneAndCall($contact)"></c:VerticalLayout>
 				</c:HorizontalLayout>
 				<c:VerticalLayout CssClass="partialW">
 					<c:TextView Text="#phone#" CssClass="description_row"></c:TextView>

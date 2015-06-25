@@ -305,3 +305,6 @@ contractors		Contarctors
 contractor		Contarctor
 outletContacts	OUTLET CINTACTS
 partnerContacts	PARTNER CONTACTS
+partner			Partner
+owner			Contact owner
+emptyContactOwner	Contact owner field is empty

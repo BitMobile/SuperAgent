@@ -306,3 +306,6 @@ contractors		Контрагенты
 contractor		Контрагент
 outletContacts	КОНТАКТЫ ТОРГ. ТОЧКИ
 partnerContacts	КОНТАКТЫ ПАРТНЕРА
+partner			Партнер
+owner			Принадлежность контакта
+emptyContactOwner	Поле Принадлежность контакта не заполнено

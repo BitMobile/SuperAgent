@@ -132,7 +132,8 @@ function SetEnabledToContactScope(value){
 
 function SaveAndBack(entity, owner) {	
 
-	if (ValidEntity(entity) && ValidOwner()) {
+	if (ValidEntity(entity) && ValidOwner()) 
+	{
 		EditOwner(entity, owner);
 		entity.GetObject().Save();
 		Workflow.Back();
@@ -291,6 +292,14 @@ function GetOutlets(searchText){
 	}
 	
 	return result;
+}
+
+function SaveContractorAndBack(entity){
+	if (ValidEntity(entity)) 
+	{
+		entity.GetObject().Save();
+		Workflow.Back();
+	}
 }
 
 function SetEnabledToContractorScope(value){

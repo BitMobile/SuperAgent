@@ -261,12 +261,6 @@ function IsEditText(isInputField, editable, order) {
 function CreateDocumentIfNotExists(executedOrder, visitId) {
 	var outlet = $.outlet;
 	var userRef = $.common.UserRef;
-
-
-	// var order = $.workflow.HasValue("order")==true ? $.workflow.order : null;
-
-	// if (order==null && $.workflow.HasValue("Return")==true)
-	// 	order = $.workflow.Return;
 	
 	var order;
 	if ($.workflow.currentDoc=="Order")
@@ -295,6 +289,7 @@ function CreateDocumentIfNotExists(executedOrder, visitId) {
 			order.SR = userRef;
 			order.DeliveryDate = DateTime.Now.AddDays(1);
 			order.Stock = GetStock(userRef);
+			order.Contractor = GetContractors(true, outlet);
 			var location = GPS.CurrentLocation;
 			if (location.NotEmpty) {
 				order.Lattitude = location.Latitude;
@@ -397,11 +392,59 @@ function SelectStock(order, attr, control) {
 	}
 }
 
+function SelectContractor(thisDoc)
+{
+	var listChoice = GetContractors(false, thisDoc.Outlet);
+		
+	Dialogs.DoChoose(listChoice, thisDoc, "Contractor", $.contractor, null, Translate["#contractor#"]);
+}
+
+function GetContractors(chooseDefault, outletRef)
+{
+	var outlet = outletRef.GetObject();
+	var defStr = "";	
+	var result;
+	if (chooseDefault)
+		defStr = " AND Isdefault=1 ";
+
+	if (outlet.Distributor==DB.EmptyRef("Catalog.Distributor"))
+	{
+		var q = new Query("SELECT C.Id, C.Description " +
+			"FROM Catalog_Outlet_Contractors O " +
+			"JOIN Catalog_Contractors C ON O.Contractor=C.Id " +
+			"WHERE O.Ref=@outlet " + defStr + " ORDER BY C.Description");
+		q.AddParameter("outlet", outlet.Id);
+		result = q.Execute();
+	}
+	else
+	{
+		var q = new Query("SELECT  C.Id, C.Description " +
+			"FROM Catalog_Distributor_Contractors D " +
+			"JOIN Catalog_Contractors C ON D.Contractor=C.Id " +
+			"WHERE Ref=@distr " + defStr + " ORDER BY C.Description");
+		q.AddParameter("distr", outlet.Distributor);
+		result = q.Execute();
+	}
+
+	if (chooseDefault)
+		return result.Id;
+	else
+		return result;
+}
+
 function GetStockDescription(stock) {
 	if (stock.EmptyRef())
 		return Translate["#allStocks#"];
 	else
 		return stock.Description;
+}
+
+function RefOutput(value)
+{
+	if (value == DB.EmptyRef("Catalog.Contractors"))
+		return "—";
+	else
+		return value.Description;
 }
 
 function GetFeatureDescr(feature) {

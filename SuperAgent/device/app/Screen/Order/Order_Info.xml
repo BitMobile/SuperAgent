@@ -66,6 +66,12 @@
 				<c:HorizontalLine />
 			</s:If>
 
+			<c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectContractor($thisDoc)">
+				<c:TextView Text="#contractor#" />
+				<c:TextView Text="$RefOutput($thisDoc.Contractor)" CssClass="value" Id="contractor"/>
+			</c:DockLayout>
+			<c:HorizontalLine />
+
 				<c:HorizontalLayout CssClass="memo_block">
 					<c:VerticalLayout>
 						<c:TextView Text="#commentary#" CssClass="description_row" />

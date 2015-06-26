@@ -18,10 +18,12 @@
 
 		<c:HorizontalLine />
 
-		<c:HorizontalLayout Id="btnAdd" CssClass="bottom_btn" OnClickAction="$DoAction(Select, null, null)">
-			<c:TextView Text="#add#"></c:TextView>			
-		</c:HorizontalLayout>
-		<c:HorizontalLine CssClass="b_line" />
+		<s:If Test="$AddEnabled()">
+			<c:HorizontalLayout Id="btnAdd" CssClass="bottom_btn" OnClickAction="$DoAction(Select, null, null)">
+				<c:TextView Text="#add#"></c:TextView>			
+			</c:HorizontalLayout>
+			<c:HorizontalLine CssClass="b_line" />
+		</s:If>
 
 		<c:ScrollView Id="grScrollView">
 

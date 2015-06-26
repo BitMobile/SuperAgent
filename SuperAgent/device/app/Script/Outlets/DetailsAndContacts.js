@@ -8,13 +8,28 @@ function OnLoading(){
 	title = Translate["#contractors#"];
 }
 
-function OnLoad() {
+function OnLoad() 
+{
 	outlet = $.param1;
+	if ($.Exists("contactOwner")) 
+	{
+		var isEditableContact = IsEditableContact($.contactOwner);
+		if ($.owner.Text == "—" || !isEditableContact)
+		{
+			SetEnabledToContactScope(false);
+		}
+	} 	
 }
 
 
 //----------------------Contacts-------------------
 
+function AddEnabled(){
+	if ($.sessionConst.outletContactEditable || $.sessionConst.partnerContactEditable)
+		return true;
+	else
+		return false;
+}
 
 function CreateContactIfNotExist(contact, owner) {
 
@@ -30,31 +45,81 @@ function CreateContactIfNotExist(contact, owner) {
 	}
 }
 
-function GetOwnerType(owner){	
+function IsEditableContact(owner){	
+	var ownerObj = owner == null ? null : owner.GetObject();
+	if (getType(ownerObj)=="DefaultScope.Catalog.Outlet_Contacts"){
+		return $.sessionConst.outletContactEditable;
+	}
+	else if (getType(ownerObj)=="DefaultScope.Catalog.Distributor_Contacts"){
+		return $.sessionConst.partnerContactEditable;
+	}
+	else{
+		return false;
+	}
+}
+
+function GetOwnerType(owner)
+{	
 	var ownerObj = owner == null ? null : owner.GetObject();
 	if (ownerObj.Ref==DB.EmptyRef("Catalog_Outlet_Contacts") 
 		|| ownerObj.Ref==DB.EmptyRef("Catalog_Distributor_Contacts")
-		|| ownerObj == null){
-		if (newContact && $.outlet.Distributor==DB.EmptyRef("Catalog_Distributor_Contacts"))
+		|| ownerObj == null)
+	{
+		if (newContact 
+			&& $.outlet.Distributor!=DB.EmptyRef("Catalog_Distributor_Contacts"))
+		{
+			if ($.sessionConst.outletContactEditable 
+				&& $.sessionConst.partnerContactEditable)
+			{
+				return "—";
+			}				
+			else if ($.sessionConst.outletContactEditable)				
+			{
+				return Translate["#outlet#"];
+			}
+			else if ($.sessionConst.partnerContactEditable)
+			{
+				return Translate["#partner#"];
+			}
+		}
+		else if(newContact 
+			&& $.outlet.Distributor==DB.EmptyRef("Catalog_Distributor_Contacts"))
+		{
 			return Translate["#outlet#"];
-		else
-			return "—";
+		}
 	}
-	else if (getType(ownerObj)=="DefaultScope.Catalog.Outlet_Contacts") {
+	else if (getType(ownerObj)=="DefaultScope.Catalog.Outlet_Contacts") 
+	{
 		return Translate["#outlet#"];
 	}
-	else if (getType(ownerObj)=="DefaultScope.Catalog.Distributor_Contacts"){
+	else if (getType(ownerObj)=="DefaultScope.Catalog.Distributor_Contacts")
+	{
 		return Translate["#partner#"];
 	}
 }
 
-function SelectOwner(owner){
-	if ($.outlet.Distributor != DB.EmptyRef("Catalog_Distributor_Contacts"))
+function SelectOwner(owner)
+{
+	if ($.sessionConst.outletContactEditable && $.sessionConst.partnerContactEditable 
+		&& $.outlet.Distributor != DB.EmptyRef("Catalog_Distributor_Contacts"))
+	{
 		Dialog.Choose(Translate["#owner#"], [[0, Translate["#partner#"]], [1, Translate["#outlet#"]]], OwnerCallBack);
+	}	
 }
 
-function OwnerCallBack(state, args){
+function OwnerCallBack(state, args){	
+	if ($.owner.Text == "—")
+	{
+		SetEnabledToContactScope(true);
+	}
 	$.owner.Text = args.Value;
+}
+
+function SetEnabledToContactScope(value){
+	$.contact_name.Enabled = value;
+	$.position.Enabled = value;
+	$.phone_number.Enabled = value;
+	$.email.Enabled = value;
 }
 
 function SaveAndBack(entity, owner) {	

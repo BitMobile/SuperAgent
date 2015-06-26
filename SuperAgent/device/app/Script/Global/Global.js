@@ -68,6 +68,27 @@ function SetSessionConstants() {
 				$.sessionConst.Add("returnEnabled", true);
 			}
 		}
+		if (rights.Code=='000000007') {
+			if (rights.AccessRight==null) {
+				$.sessionConst.Add("contractorEditable", false);
+			} else {
+				$.sessionConst.Add("contractorEditable", true);
+			}
+		}
+		if (rights.Code=='000000008') {
+			if (rights.AccessRight==null) {
+				$.sessionConst.Add("outletContactEditable", false);
+			} else {
+				$.sessionConst.Add("outletContactEditable", true);
+			}
+		}		
+		if (rights.Code=='000000009') {
+			if (rights.AccessRight==null) {
+				$.sessionConst.Add("partnerContactEditable", false);
+			} else {
+				$.sessionConst.Add("partnerContactEditable", true);
+			}
+		}
 	}
 }
 

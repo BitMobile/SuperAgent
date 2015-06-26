@@ -18,7 +18,15 @@ function OnLoad()
 		{
 			SetEnabledToContactScope(false);
 		}
-	} 	
+	}
+
+	if ($.Exists("contractor"))
+	{
+		if (!$.sessionConst.contractorEditable)
+		{
+			SetEnabledToContractorScope(false);
+		}			
+	}
 }
 
 
@@ -284,6 +292,20 @@ function GetOutlets(searchText){
 	
 	return result;
 }
+
+function SetEnabledToContractorScope(value){
+	$.legal_name.Enabled = value;
+	$.legal_address.Enabled = value;
+	if (!value)
+		$.ownership_vl.OnClickAction = EmptyHandler();
+	$.INN.Enabled = value;
+	$.KPP.Enabled = value;
+	$.phone_number.Enabled = value;
+	$.email.Enabled = value;
+	$.website.Enabled = value;
+}
+
+function EmptyHandler(){}
 
 function BackMenu(){
 	return true;

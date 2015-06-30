@@ -2,7 +2,8 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="CreateOutlet.css">
 
 	<s:Push Id="contactOwner" Value="$param2"></s:Push>
-	<s:Push Id="contact" Value="$CreateContactIfNotExist($param1, $contactOwner)" />		
+	<s:Push Id="contact" Value="$CreateContactIfNotExist($param1, $contactOwner)" />	
+	<s:Push Id="ownerType" Value="$GetOwnerType($contactOwner)"></s:Push>
 
 	<c:DockLayout>
 
@@ -13,7 +14,7 @@
 				<c:VerticalLayout OnClickAction="$DoBack()">
 					<c:TextView Text="#cancel#" CssClass="left_tv"></c:TextView>
 				</c:VerticalLayout>
-				<c:VerticalLayout OnClickAction="$SaveAndBack($contact, $contactOwner)">
+				<c:VerticalLayout OnClickAction="$SaveAndBack($contact, $contactOwner)" SubmitScope="contact_name">
 					<c:TextView Text="#save#" CssClass="right_tv"></c:TextView>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
@@ -48,7 +49,7 @@
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$SelectOwner($contactOwner)">
 				<c:VerticalLayout>
 					<c:TextView Text="#owner#" CssClass="description_row"></c:TextView>
-					<c:TextView Text="$GetOwnerType($contactOwner)" CssClass="main_row" Id="owner" />
+					<c:TextView Text="$ownerType" CssClass="main_row" Id="owner" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -56,7 +57,7 @@
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(contact_name, 1)">
 				<c:VerticalLayout>
 					<c:TextView Text="#contactName#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$contact.Description" Placeholder="—" CssClass="main_row" Id="contact_name"/>
+					<c:EditText Value="$contact.Description" Placeholder="—" CssClass="main_row" Id="contact_name" Required="true"/>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

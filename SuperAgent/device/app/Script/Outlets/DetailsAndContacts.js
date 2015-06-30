@@ -3,6 +3,7 @@ var title;
 var hasPartnerContacts;
 var hasOutletContacts;
 var newContact;
+var c_ownerType;
 
 function OnLoading(){
 	title = Translate["#contractors#"];
@@ -13,7 +14,7 @@ function OnLoad()
 	outlet = $.param1;
 	if ($.Exists("contactOwner")) 
 	{
-		var isEditableContact = IsEditableContact($.contactOwner);
+		var isEditableContact = IsEditableContact($.ownerType);
 		if ($.owner.Text == "—" || !isEditableContact)
 		{
 			SetEnabledToContactScope(false);
@@ -54,11 +55,11 @@ function CreateContactIfNotExist(contact, owner) {
 }
 
 function IsEditableContact(owner){	
-	var ownerObj = owner == null ? null : owner.GetObject();
-	if (getType(ownerObj)=="DefaultScope.Catalog.Outlet_Contacts"){
+	// var ownerObj = owner == null ? null : owner.GetObject();
+	if (owner == Translate["#outlet#"]){	//(getType(ownerObj)=="DefaultScope.Catalog.Outlet_Contacts"){
 		return $.sessionConst.outletContactEditable;
 	}
-	else if (getType(ownerObj)=="DefaultScope.Catalog.Distributor_Contacts"){
+	else if (owner == Translate["#partner#"]){	//(getType(ownerObj)=="DefaultScope.Catalog.Distributor_Contacts"){
 		return $.sessionConst.partnerContactEditable;
 	}
 	else{
@@ -164,7 +165,6 @@ function EditOwner(contact, owner){
 		
 		if (ownerInput==Translate["#partner#"]){
 			newOwner = DB.Create("Catalog.Distributor_Contacts");
-			Dialog.Debug($.outlet.Distributor);
 			newOwner.Ref = $.outlet.Distributor;			
 		}
 		else{

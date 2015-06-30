@@ -153,10 +153,10 @@ function ValidOwner(){
 function EditOwner(contact, owner){
 
 	var ownerObj = owner == null ? null : owner.GetObject();
-	var ownerType = GetOwnerType(owner);
+	var ownerType = ownerType == null ? null : GetOwnerType(owner);
 	var ownerInput = $.owner.Text;
 
-	if (ownerType == ownerInput){
+	if (ownerType == ownerInput || ownerType!=null){
 		ownerObj.Save();
 	}
 	else{

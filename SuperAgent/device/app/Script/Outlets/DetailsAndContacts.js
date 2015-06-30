@@ -133,7 +133,7 @@ function SetEnabledToContactScope(value){
 
 function SaveAndBack(entity, owner) {	
 
-	if (ValidEntity(entity) && ValidOwner()) 
+	if (ValidOwner()) // if (ValidEntity(entity) && ValidOwner()) 
 	{
 		EditOwner(entity, owner);
 		entity.GetObject().Save();
@@ -368,17 +368,20 @@ function DialogCallBack(control, key) {
 function ValidEntity(entity) {
 
 	// Validate Contact
-	if (getType(entity.GetObject()) == "DefaultScope.Catalog.ContactPersons") {
+	if (getType(entity.GetObject()) == "DefaultScope.Catalog.ContactPersons") 
+	{
 		if (EmptyContact(entity) && entity.IsNew()) {
 			DB.Delete(entity);
 			DB.Commit();
 			return true;
 		}
-		if (Global.ValidatePhoneNr(entity.PhoneNumber) && Global.ValidateEmail(entity.Email) && ValidateContactName(entity))
-			result = true;
-		else
-			result = false;
-		return result;
+		// if (Global.ValidatePhoneNr(entity.PhoneNumber) && Global.ValidateEmail(entity.Email) && ValidateContactName(entity))
+		// 	result = true;
+		// else
+		// 	result = false;
+		// return result;
+
+		return true;
 	}
 
 	// Validate Details

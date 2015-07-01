@@ -47,7 +47,7 @@
 			<c:DockLayout CssClass="grid" OnClickAction="$DoAction(ShowInfo,$sum,null,$thisDoc)">
 				<c:Image />
 				<c:VerticalLayout>
-					<c:TextView Text="$GetDescription($thisDoc.PriceList)" CssClass="description_row"></c:TextView>
+					<c:TextView Text="$GetDescription($thisDoc.PriceList)" CssClass="main_row_price_list"></c:TextView>
 					<c:TextView Text="{@sumTitle}:" CssClass="description_row"></c:TextView>
 					<c:TextView Text="$FormatValue($sum)" CssClass="main_row"></c:TextView>
 				</c:VerticalLayout>

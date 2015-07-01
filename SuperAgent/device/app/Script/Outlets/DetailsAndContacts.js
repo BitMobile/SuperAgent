@@ -479,6 +479,9 @@ function ValidateINN(inn)
 			return false;
 		}			
 	}
+
+	if (inn.length == 0)
+		return true;
 }
 
 function OwnTypeCallBack(state, args){

@@ -518,6 +518,68 @@ function ChooseHandler(state, args) {
 }
 
 
+//---------------------------------Contractors--------------------------
+
+
+function ShowContractorsIfExists(outlet)
+{
+	var con = parseInt(HasContractors(outlet));
+
+	if (con == parseInt(0))
+		Dialog.Message(Translate["#noContractors#"]);
+
+	else if (con == parseInt(1))
+	{
+		var outletObj = outlet.LoadObject();
+
+		var contractor;
+		if (outletObj.Distributor==DB.EmptyRef("Catalog_Distributor"))
+		{
+			var q = new Query("SELECT Contractor FROM Catalog_Outlet_Contractors WHERE Ref=@ref");
+			q.AddParameter("ref", outlet);
+			contractor = q.ExecuteScalar();
+		}			
+		else
+		{
+			var q = new Query("SELECT Contractor FROM Catalog_Distributor_Contractors WHERE Ref=@ref");
+			q.AddParameter("ref", outletObj.Distributor);
+			contractor = q.ExecuteScalar();
+		}			
+		DoAction('Contractor', contractor);
+	}
+	
+	else if (con > parseInt(1))
+		DoAction('ShowContractors');
+}
+
+function HasContractors(outlet){
+
+	var res;
+	
+	var outletObj = $.outlet.GetObject();
+	if (outletObj.Distributor==DB.EmptyRef("Catalog_Distributor"))
+		res = HasOutletContractors(outlet);
+	else
+		res = HasPartnerContractors(outlet);
+
+	return res;
+}
+
+function HasOutletContractors(outlet) {
+	var q = new Query("SELECT COUNT(Id) FROM Catalog_Outlet_Contractors WHERE ref = @outlet")
+	q.AddParameter("outlet", outlet);
+	return q.ExecuteScalar();
+}
+
+function HasPartnerContractors(outlet){
+	var outletObj = outlet.GetObject();
+	var q = new Query("SELECT COUNT(Id) FROM Catalog_Distributor_Contractors C WHERE C.Ref=@distr");
+	q.AddParameter("distr", outletObj.Distributor);
+	return q.ExecuteScalar();	
+}
+
+
+
 // --------------------------- Outlets ---------------------------
 
 function Back(outlet) {

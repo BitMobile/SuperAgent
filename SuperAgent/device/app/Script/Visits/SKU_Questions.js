@@ -13,6 +13,7 @@ var curr_item;
 var curr_sku;
 var skuValueGl;
 var questionValueGl;
+var forwardAllowed;
 
 //
 //-------------------------------Header handlers-------------------------
@@ -25,6 +26,7 @@ function OnLoading(){
 		setScroll = true;
 	if ($.param2==true) //works only in case of Forward from Filters
 		ClearIndex();
+	forwardAllowed = true;
 }
 
 function OnLoad() {
@@ -88,6 +90,7 @@ function GetSKUsFromQuesionnaires(search) {
 				"WHERE SS.SKU=S.SKU AND (SS.Answer='Yes' OR SS.Answer='Да')))");
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	obligateredLeft = q.ExecuteCount();
+	forwardAllowed = obligateredLeft == 0;
 
 	//getting SKUs list
 	var searchString = "";
@@ -340,7 +343,7 @@ function ObligatedAnswered(answer, obligatoriness) {
 
 function GetActionAndBack() {
 	var q = new Query("SELECT NextStep " +
-		" FROM USR_WorkflowSteps" + 
+		" FROM USR_WorkflowSteps" +
 		" WHERE Value=0 AND StepOrder<'3' ORDER BY StepOrder DESC");
 	var step = q.ExecuteScalar();
 	if (step==null)

@@ -14,6 +14,7 @@ var curr_sku;
 var skuValueGl;
 var questionValueGl;
 var forwardAllowed;
+var nullvar
 
 //
 //-------------------------------Header handlers-------------------------
@@ -27,6 +28,7 @@ function OnLoading(){
 	if ($.param2==true) //works only in case of Forward from Filters
 		ClearIndex();
 	forwardAllowed = true;
+	nullvar = null;
 }
 
 function OnLoad() {

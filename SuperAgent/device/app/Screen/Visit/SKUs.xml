@@ -121,7 +121,7 @@
 						<s:Push Id="indexCh" Value="{$statusCountCh.Index}"></s:Push>
 						<c:DockLayout CssClass="child_grid">
 							<s:If Test="$child.Obligatoriness=='1'">
-								<s:If Test="$IsNullOrEmpty($child.Answer)">
+								<s:If Test="$child.Answer == null || $child.Answer == ''">
 									<c:HorizontalLayout CssClass="required_side_gr"></c:HorizontalLayout>
 								</s:If>
 								<s:Else>
@@ -134,7 +134,7 @@
 							<s:If Test="$child.IsSnapshot==1">
 								<c:HorizontalLayout OnClick="$GoToQuestionAction($child.AnswerType, $child.Question, $sku.SKU, control{$indexCh}, $child.Answer, $child.Description)">
 									<c:TextView Text="$child.Description" CssClass="description_row"></c:TextView>
-									<s:If Test="$IsNullOrEmpty($child.Answer)">
+									<s:If Test="$child.Answer == null || $child.Answer == ''">
 										<c:VerticalLayout>
 											<c:VerticalLayout CssClass="no_child_answer">
 												<c:Image Id="control{$indexCh}" />

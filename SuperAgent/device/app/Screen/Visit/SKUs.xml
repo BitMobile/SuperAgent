@@ -121,7 +121,7 @@
 						<s:Push Id="indexCh" Value="{$statusCountCh.Index}"></s:Push>
 						<c:DockLayout CssClass="child_grid">
 							<s:If Test="$child.Obligatoriness=='1'">
-								<s:If Test="$child.Answer == null || $child.Answer == ''">
+								<s:If Test="$child.Answer == null || $child.Answer">
 									<c:HorizontalLayout CssClass="required_side_gr"></c:HorizontalLayout>
 								</s:If>
 								<s:Else>
@@ -142,10 +142,14 @@
 										</c:VerticalLayout>
 									</s:If>
 									<s:Else>
-										<s:If Test="$SnapshotExists($visit, $outlet, $child.Answer)">
-											<c:VerticalLayout>
-												<c:Image Id="control{$indexCh}" CssClass="answer_snapshot" Source="$GetImagePath($visit.Id, $outlet, $child.Answer)"></c:Image>
-											</c:VerticalLayout>
+										<s:If Test="$child.FullFileName != '/shared/result.jpg'">
+											<s:If Test="$SnapshotExists($child.FullFileName)">
+												<c:VerticalLayout>
+													<c:Image Id="control{$indexCh}" CssClass="answer_snapshot" Source="$GetImagePath($visit.Id, $outlet, $child.Answer)"></c:Image>
+												</c:VerticalLayout>
+											</s:If>
+											<s:Else>
+											</s:Else>
 										</s:If>
 										<s:Else>
 											<c:VerticalLayout>
@@ -156,7 +160,7 @@
 										</s:Else>
 									</s:Else>
 								</c:HorizontalLayout>
-							</s:If>
+								</s:If>
 							<s:Else>
 								<c:VerticalLayout OnClick="$GoToQuestionAction($child.AnswerType, $child.Question, $sku.SKU, control{$indexCh}, $child.Answer, $child.Description)">
 									<c:TextView Text="$child.Description" CssClass="description_row"></c:TextView>

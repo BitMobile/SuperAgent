@@ -21,7 +21,7 @@
 			<s:Else>
 				<c:DockLayout Id="btnForward" CssClass="forward">
 					<c:VerticalLayout></c:VerticalLayout>
-					<c:TextView Id="obligateredButton" Text="{$ToString(@obligateredLeft)})" />
+					<c:TextView Id="obligateredButton" Text="{@obligateredLeft}" />
 					<c:Image />
 					<c:TextView Text="#forward# (" />
 				</c:DockLayout>
@@ -78,15 +78,15 @@
 			</c:DockLayout>
 			<c:HorizontalLine />
 
-			<s:If Test="$ForwardIsntAllowed()">
+			<s:If Test="@forwardAllowed">
+				<c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
+			</s:If>
+			<s:Else>
 				<c:HorizontalLayout CssClass="required_grid">
 					<c:TextView Text="#requiredLeft# "></c:TextView>
 					<c:Image />
 					<c:TextView Id="obligateredInfo" Text="$ToString(@obligateredLeft)"></c:TextView>
-				</c:HorizontalLayout>
-			</s:If>
-			<s:Else>
-				<c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
+				</c:HorizontalLayout>				
 			</s:Else>
 			<c:HorizontalLine />
 

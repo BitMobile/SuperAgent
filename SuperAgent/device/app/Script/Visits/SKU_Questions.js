@@ -20,7 +20,7 @@ var forwardAllowed;
 //
 
 function OnLoading(){
-	obligateredLeft = parseInt(0);
+	obligateredLeft = '0';
 	SetListType();
 	if (String.IsNullOrEmpty(setScroll))
 		setScroll = true;
@@ -89,8 +89,8 @@ function GetSKUsFromQuesionnaires(search) {
 			"AND (S.ParentQuestion=@emptyRef OR S.ParentQuestion IN (SELECT SS.Question FROM USR_SKUQuestions SS " +
 				"WHERE SS.SKU=S.SKU AND (SS.Answer='Yes' OR SS.Answer='Да')))");
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
-	obligateredLeft = q.ExecuteCount();
-	forwardAllowed = obligateredLeft == 0;
+	obligateredLeft = q.ExecuteCount().ToString();
+	forwardAllowed = obligateredLeft == '0';
 
 	//getting SKUs list
 	var searchString = "";
@@ -174,13 +174,6 @@ function AddFilter(filterString, filterName, condition, connector) {
 
 	return filterString;
 
-}
-
-function ForwardIsntAllowed() {
-	if (parseInt(obligateredLeft)!=parseInt(0))
-		return true;
-	else
-		return false;
 }
 
 function ShowChilds(index) {

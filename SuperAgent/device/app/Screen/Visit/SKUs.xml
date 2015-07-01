@@ -121,7 +121,7 @@
 						<s:Push Id="indexCh" Value="{$statusCountCh.Index}"></s:Push>
 						<c:DockLayout CssClass="child_grid">
 							<s:If Test="$child.Obligatoriness=='1'">
-								<s:If Test="$child.Answer == null || $child.Answer">
+								<s:If Test="$child.Answer == null || $child.Answer == ''">
 									<c:HorizontalLayout CssClass="required_side_gr"></c:HorizontalLayout>
 								</s:If>
 								<s:Else>

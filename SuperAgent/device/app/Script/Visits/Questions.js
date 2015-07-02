@@ -20,12 +20,18 @@ function OnLoading() {
 	questionsAtScreen = null;
 	obligateNumber = '0';
 	forwardIsntAllowed = false;
+	SetIndiactors();
 	SetListType();
 }
 
 function SetListType() {
 	if (regularAnswers == null)
-		regularAnswers = true;
+	{
+		if (parseInt(regular_total) == parseInt(0))
+			regularAnswers = false;
+		else
+			regularAnswers = true;
+	}		
 }
 
 function ChangeListAndRefresh(control, param) {
@@ -58,7 +64,7 @@ function GetQuestionsByQuestionnaires(outlet) {
 		single = 0;
 	}
 
-	SetIndiactors();
+	// SetIndiactors();
 
 	return GetQuestions(single);
 

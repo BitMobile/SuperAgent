@@ -1,9 +1,22 @@
 
-function CreateOutlet() {
-	var outlet = DB.Create("Catalog.Outlet");
-	outlet.OutletStatus = DB.Current.Constant.OutletStatus.Potential;
-	outlet.Save();
-	return outlet.Id;
+var requiredLeft;
+
+function CreateOutlet(outlet) {
+
+
+
+	if (String.IsNullOrEmpty(outlet))
+	{
+		outlet = DB.Create("Catalog.Outlet");
+		outlet.OutletStatus = DB.Current.Constant.OutletStatus.Potential;
+		outlet.Save();
+		return outlet.Id;
+	}
+	else
+	{
+		outlet = outlet.GetObject();
+		return outlet.Id;
+	}
 }
 
 function GetTerritory() {
@@ -16,6 +29,39 @@ function GetTerritory() {
 		return territory;
 	}
 	return territory || territoryEmptyRef;
+}
+
+function SetSideStyles(outlet){
+	var sideStyle = new Dictionary();
+	// var r = outlet.Description == "" ? "required_side_wh" : "answered_side_wh";
+	outlet = outlet.GetObject();
+
+	Dialog.Debug(outlet);
+
+	requiredLeft = parseInt(0);
+	sideStyle.Add("outletName", ClassValue(outlet.Description));
+	sideStyle.Add("outletAddress", ClassValue(outlet.Address));
+	sideStyle.Add("outletClass", ClassValue(outlet.Class));
+	sideStyle.Add("outletType", ClassValue(outlet.Type));
+	return sideStyle;
+}
+
+function ClassValue(value)
+{
+	requiredLeft = typeof requiredLeft == "undefined" ? parseInt(0) : requiredLeft;
+
+	if (value == "" || value=="—" || value == DB.EmptyRef("Catalog.OutletType") || value == DB.EmptyRef("Catalog.OutletClass"))
+	{
+		requiredLeft = requiredLeft + 1;
+		return "required_side_wh";
+	}
+	else
+		return "answered_side_wh";
+}
+
+function NoRequired()
+{
+	return parseInt(requiredLeft) == parseInt(0);
 }
 
 function DeleteAndBack(entity) {
@@ -51,7 +97,7 @@ function SaveNewOutlet(outlet) {
 
 function DoSelect(source, outlet, attribute, control, title) {
 	if (control.Id != "outletTerritory") {
-		Dialogs.DoChoose(null, outlet, attribute, control, null, title);
+		Dialogs.DoChoose(null, outlet, attribute, control, CallBack, title);
 	}
 	else
 	{
@@ -59,6 +105,12 @@ function DoSelect(source, outlet, attribute, control, title) {
 			Dialogs.DoChoose(null, outlet, attribute, control, TerritoryCallBack, title);
 		}
 	}
+}
+
+function CallBack(state, args) {
+	AssignDialogValue(state, args);
+	var outlet = state[0];
+	DoRefresh(null, outlet);
 }
 
 function TerritoryCallBack(state, args) {

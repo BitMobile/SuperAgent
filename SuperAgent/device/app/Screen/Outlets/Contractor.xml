@@ -6,7 +6,7 @@
 	<c:DockLayout>
 
 		<c:DockLayout CssClass="top_navigator">
-			<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$SaveContractorAndBack($contractor)">
+			<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$SaveContractorAndBack($contractor)" SubmitScope="INN;KPP">
 				<c:Image />
 				<c:TextView Text="#list#" />
 			</c:DockLayout>
@@ -55,7 +55,7 @@
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(INN, 1)">
 				<c:VerticalLayout>
 					<c:TextView Text="#inn#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$contractor.INN" Placeholder="—" Keyboard="numeric" CssClass="main_row" Id="INN" />
+					<c:EditText Value="$contractor.INN" Placeholder="—" Keyboard="numeric" CssClass="main_row" Id="INN" Mask="#inn_regexp#"/>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -63,7 +63,7 @@
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(KPP, 1)">
 				<c:VerticalLayout>
 					<c:TextView Text="#kpp#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$contractor.KPP" Placeholder="—" Keyboard="numeric" CssClass="main_row" Id="KPP" />
+					<c:EditText Value="$contractor.KPP" Placeholder="—" Keyboard="numeric" CssClass="main_row" Id="KPP" Length="9" Mask="#kpp_regexp#"/>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

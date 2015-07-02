@@ -176,15 +176,17 @@ function SetSteps(outlet) {
 
 	var skipQuest = false;
 
+	var hasContractors = HasContractors(outlet);
+
 	var q = new Query("SELECT CreateOrderInMA, FillQuestionnaireInMA, DoEncashmentInMA, CreateReturnInMA FROM Catalog_OutletsStatusesSettings WHERE Status=@status");
 	q.AddParameter("status", outlet.OutletStatus);
 	var statusValues = q.Execute();
 	while (statusValues.Next()) {
-		if (EvaluateBoolean(statusValues.CreateOrderInMA) && $.sessionConst.orderEnabled)
+		if (EvaluateBoolean(statusValues.CreateOrderInMA) && $.sessionConst.orderEnabled && hasContractors)
 			InsertIntoSteps("4", "SkipOrder", false, "Order", "SKUs");
 		else
 			InsertIntoSteps("4", "SkipOrder", true, "Order", "SKUs");
-		if (EvaluateBoolean(statusValues.CreateReturnInMA) && $.sessionConst.returnEnabled) {
+		if (EvaluateBoolean(statusValues.CreateReturnInMA) && $.sessionConst.returnEnabled && hasContractors) {
 			InsertIntoSteps("5", "SkipReturn", false, "Return", "Order");
 		}
 		else
@@ -224,6 +226,32 @@ function InsertIntoSteps(stepOrder, skip, value, action, previousStep) {
 	q.AddParameter("action", action);
 	q.AddParameter("previousStep", previousStep);
 	q.Execute();
+}
+
+function HasContractors(outlet){
+
+	var res;
+	
+	var outletObj = $.outlet.GetObject();
+	if (outletObj.Distributor==DB.EmptyRef("Catalog_Distributor"))
+		res = HasOutletContractors(outlet);
+	else
+		res = HasPartnerContractors(outlet);
+
+	return res;
+}
+
+function HasOutletContractors(outlet) {
+	var q = new Query("SELECT COUNT(Id) FROM Catalog_Outlet_Contractors WHERE ref = @outlet")
+	q.AddParameter("outlet", outlet);
+	return q.ExecuteScalar();
+}
+
+function HasPartnerContractors(outlet){
+	var outletObj = outlet.GetObject();
+	var q = new Query("SELECT COUNT(Id) FROM Catalog_Distributor_Contractors C WHERE C.Ref=@distr");
+	q.AddParameter("distr", outletObj.Distributor);
+	return q.ExecuteScalar();	
 }
 
 function GetAction(nextStep) {

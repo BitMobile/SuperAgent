@@ -29,7 +29,7 @@ function SaveNewOutlet(outlet) {
 
 	if (outlet.Description != null && outlet.Address != null){
 		if (TrimAll(outlet.Description) != "" && TrimAll(outlet.Address) != "" && outlet.Class!=DB.EmptyRef("Catalog_OutletClass")
-				&& outlet.Type!=DB.EmptyRef("Catalog_OutletType") && outlet.Distributor!=DB.EmptyRef("Catalog_Distributor") && $.territory!=null) {
+				&& outlet.Type!=DB.EmptyRef("Catalog_OutletType") && $.territory!=null) {
 
 			var to = DB.Create("Catalog.Territory_Outlets");
 			to.Ref = $.territory;

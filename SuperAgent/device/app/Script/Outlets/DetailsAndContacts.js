@@ -133,7 +133,7 @@ function SetEnabledToContactScope(value){
 
 function SaveAndBack(entity, owner) {	
 
-	if (ValidEntity(entity) && ValidOwner()) 
+	if (ValidOwner()) // if (ValidEntity(entity) && ValidOwner()) 
 	{
 		EditOwner(entity, owner);
 		entity.GetObject().Save();
@@ -153,10 +153,10 @@ function ValidOwner(){
 function EditOwner(contact, owner){
 
 	var ownerObj = owner == null ? null : owner.GetObject();
-	var ownerType = GetOwnerType(owner);
+	var ownerType = ownerType == null ? null : GetOwnerType(owner);
 	var ownerInput = $.owner.Text;
 
-	if (ownerType == ownerInput){
+	if (ownerType == ownerInput || ownerType!=null){
 		ownerObj.Save();
 	}
 	else{
@@ -286,7 +286,7 @@ function GetOutlets(searchText){
 		var q = new Query("SELECT  C.Id, C.Description, C.LegalAddress AS Address, '3' AS OutletStatus " +
 			"FROM Catalog_Distributor_Contractors D " +
 			"JOIN Catalog_Contractors C ON D.Contractor=C.Id " +
-			"WHERE Ref=@distr " + search + "ORDER BY C.Description");
+			"WHERE D.Ref=@distr " + search + "ORDER BY C.Description");
 		q.AddParameter("distr", outletObj.Distributor);
 		var result = q.Execute();
 	}
@@ -295,7 +295,7 @@ function GetOutlets(searchText){
 }
 
 function SaveContractorAndBack(entity){
-	if (ValidEntity(entity)) 
+	if (ValidateINN(entity.INN)) 
 	{
 		entity.GetObject().Save();
 		Workflow.Back();
@@ -368,22 +368,20 @@ function DialogCallBack(control, key) {
 function ValidEntity(entity) {
 
 	// Validate Contact
-	if (getType(entity.GetObject()) == "DefaultScope.Catalog.ContactPersons") {
+	if (getType(entity.GetObject()) == "DefaultScope.Catalog.ContactPersons") 
+	{
 		if (EmptyContact(entity) && entity.IsNew()) {
 			DB.Delete(entity);
 			DB.Commit();
 			return true;
 		}
-		if (Global.ValidatePhoneNr(entity.PhoneNumber) && Global.ValidateEmail(entity.Email) && ValidateContactName(entity))
-			result = true;
-		else
-			result = false;
-		return result;
+
+		return true;
 	}
 
 	// Validate Details
 	if (getType(entity.GetObject()) == "DefaultScope.Catalog.Outlet")
-		return ValidateOutlet(entity);
+		return ValidateINN(entity.INN);
 }
 
 function ValidateContactName(entity) {
@@ -395,17 +393,95 @@ function ValidateContactName(entity) {
 	}
 }
 
-function ValidateOutlet(entity) {
+function ValidateINN(inn)
+{
+	if (inn.length == 10)
+	{
+		var multipliers = new Dictionary();
+		multipliers.Add(1, 2);
+		multipliers.Add(2, 4);
+		multipliers.Add(3, 10);
+		multipliers.Add(4, 3);
+		multipliers.Add(5, 5);
+		multipliers.Add(6, 9);
+		multipliers.Add(7, 4);
+		multipliers.Add(8, 6);
+		multipliers.Add(9, 8);
 
-	var emailValid = Global.ValidateEmail(entity.Email);
-	var phoneNumValid = Global.ValidatePhoneNr(entity.PhoneNumber);
-	var innValid = Global.ValidateField(entity.INN, "([0-9]{10}|[0-9]{12})?", Translate["#inn#"]);
-	var kppValid = Global.ValidateField(entity.KPP, "([0-9]{9})?", Translate["#kpp#"]);
+		var i = 1;
+		var sum = 0;
+		while (i < StrLen(inn))
+		{		
+			sum = sum + Mid(inn, i, 1) * multipliers[i];
+			i = i + 1;
+		}
 
-	if (emailValid && phoneNumValid && innValid && kppValid) {
-		return true;
+		if ((sum % 11) % 10 == Mid(inn, 10, 1))
+			return true;
+		else
+		{
+			Dialog.Message(String.Format("{0} {1}", Translate["#incorrect#"], Translate["#inn#"]));
+			return false;
+		}			
 	}
-	return false;
+	
+	if (inn.length == 12)
+	{
+		//for 11th digit
+		var multipliers11 = new Dictionary();
+		multipliers11.Add(1, 7);
+		multipliers11.Add(2, 2);
+		multipliers11.Add(3, 4);
+		multipliers11.Add(4, 10);
+		multipliers11.Add(5, 3);
+		multipliers11.Add(6, 5);
+		multipliers11.Add(7, 9);
+		multipliers11.Add(8, 4);
+		multipliers11.Add(9, 6);
+		multipliers11.Add(10, 8);
+
+		var i = 1;
+		var sum11 = 0;
+		while (i < 11)
+		{		
+			sum11 = sum11 + Mid(inn, i, 1) * multipliers11[i];
+			i = i + 1;
+		}
+
+		//for 12th digit
+		var multipliers12 = new Dictionary();
+		multipliers12.Add(1, 3);
+		multipliers12.Add(2, 7);
+		multipliers12.Add(3, 2);
+		multipliers12.Add(4, 4);
+		multipliers12.Add(5, 10);
+		multipliers12.Add(6, 3);
+		multipliers12.Add(7, 5);
+		multipliers12.Add(8, 9);
+		multipliers12.Add(9, 4);
+		multipliers12.Add(10, 6);
+		multipliers12.Add(11, 8);
+
+		var i = 1;
+		var sum12 = 0;
+		while (i < 12)
+		{		
+			sum12 = sum12 + Mid(inn, i, 1) * multipliers12[i];
+			i = i + 1;
+		}
+
+		//compareing
+		if ((sum11 % 11) % 10 == Mid(inn, 11, 1) && (sum12 % 11) % 10 == Mid(inn, 12, 1))
+			return true;
+		else
+		{
+			Dialog.Message(String.Format("{0} {1}", Translate["#incorrect#"], Translate["#inn#"]));
+			return false;
+		}			
+	}
+
+	if (inn.length == 0)
+		return true;
 }
 
 function OwnTypeCallBack(state, args){

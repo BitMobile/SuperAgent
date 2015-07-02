@@ -71,7 +71,7 @@
 
 			<c:HorizontalLayout CssClass="grid" OnClick="$DoSelect($outlet,Distributor,$outletDistr,#distributor#)">
 				<c:VerticalLayout>
-					<c:TextView Text="#distributor#" CssClass="description_row"></c:TextView>
+					<c:TextView Text="#partner#" CssClass="description_row"></c:TextView>
 					<c:TextView Id="outletDistr" Text="$outlet.Distributor.Description" CssClass="main_row" />
 				</c:VerticalLayout>
 			</c:HorizontalLayout>

@@ -26,23 +26,35 @@
 				</c:VerticalLayout>
 			</s:If>
 			<s:Else>
-				<c:VerticalLayout Id="btnSave" OnClickAction="$SaveNewOutlet($outlet)">
-					<c:TextView CssClass="right_tv" Text="#save# {@requiredLeft}" />
-				</c:VerticalLayout>
+				<c:DockLayout Id="btnSave">
+					<c:VerticalLayout CssClass="gr_right_tv_mrg"></c:VerticalLayout>
+					<c:TextView Text="{@requiredLeft})" CssClass="gr_right_tv"/>
+					<c:Image CssClass="gr_right_tv_img"/>
+					<c:TextView Text="#forward# (" CssClass="gr_right_tv"/>
+				</c:DockLayout>
 			</s:Else>
 		</c:HorizontalLayout>
 		<c:HorizontalLine CssClass="b_line" />
 
 		<c:ScrollView Id="grScrollView">
 
-			<c:HorizontalLayout CssClass="margin_top" />
+			<s:If Test="$NoRequired()">
+				<c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
+			</s:If>
+			<s:Else>
+				<c:HorizontalLayout CssClass="required_grid">
+					<c:TextView Text="#requiredLeft# "></c:TextView>
+					<c:Image />
+					<c:TextView Id="obligateredInfo" Text="{@requiredLeft}"></c:TextView>
+				</c:HorizontalLayout>
+			</s:Else>
 			<c:HorizontalLine />
 
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(outletName, 1)">
 				<c:HorizontalLayout CssClass="$sideStyle.outletName"></c:HorizontalLayout>
 				<c:VerticalLayout>
 					<c:TextView Text="#outlet_description#" CssClass="description_row"></c:TextView>
-					<c:MemoEdit Id="outletName" Value="$outlet.Description" Placeholder="—" CssClass="main_row" OnLostFocus="$DoRefresh($outlet)"/>
+					<c:MemoEdit Id="outletName" Value="$outlet.Description" Placeholder="—" AutoFocus="True" CssClass="main_row" OnLostFocus="$DoRefresh($outlet)"/>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

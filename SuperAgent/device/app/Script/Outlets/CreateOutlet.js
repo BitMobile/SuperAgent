@@ -33,10 +33,8 @@ function GetTerritory() {
 
 function SetSideStyles(outlet){
 	var sideStyle = new Dictionary();
-	// var r = outlet.Description == "" ? "required_side_wh" : "answered_side_wh";
-	outlet = outlet.GetObject();
 
-	Dialog.Debug(outlet);
+	outlet = outlet.GetObject();
 
 	requiredLeft = parseInt(0);
 	sideStyle.Add("outletName", ClassValue(outlet.Description));

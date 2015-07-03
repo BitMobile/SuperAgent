@@ -226,7 +226,7 @@
 			<c:HorizontalLine />
 
 			<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoSelect($sessionConst.editOutletParameters, 000000006)">
-				<c:TextView Text="#distributor#"></c:TextView>
+				<c:TextView Text="#partner#"></c:TextView>
 				<c:TextView Id="outletDistr" Text="$outlet.Distributor.Description" CssClass="value"></c:TextView>
 			</c:DockLayout>
 			<c:HorizontalLine />

@@ -29,7 +29,9 @@ function CreateIndexes() {
 														 "CREATE INDEX IF NOT EXISTS IND_SKUGROUPPARENT ON _Catalog_SKUGroup(Id, Parent, IsTombstone); " +
 														 "CREATE INDEX IF NOT EXISTS IND_QSKUQ ON _Document_Questionnaire_SKUQuestions(Ref, IsTombstone); " +
 														 "CREATE INDEX IF NOT EXISTS IND_AMREFOUTLET ON _Catalog_AssortmentMatrix_Outlets(Ref, Outlet, IsTombstone); " +
-														 "CREATE INDEX IF NOT EXISTS IND_QSCHEDULE ON _Document_Questionnaire_Schedule(Ref, IsTombstone)");
+														 "CREATE INDEX IF NOT EXISTS IND_QSCHEDULE ON _Document_Questionnaire_Schedule(Ref, IsTombstone);" +
+														 "CREATE INDEX IF NOT EXISTS IND_AMO ON _Catalog_AssortmentMatrix_Outlets(Ref, IsTombstone);" +
+														 "CREATE INDEX IF NOT EXISTS IND_AMS ON _Catalog_AssortmentMatrix_SKUs(Ref, IsTombstone)");
 	indexQuery.Execute();
 
 }
@@ -546,7 +548,7 @@ function CreateSKUQuestionsTable(outlet) {
 			"A.AnswerDate, " +
 			"CASE WHEN Q.ChildType = @integer OR Q.ChildType = @decimal OR Q.ChildType = @string THEN 1 ELSE NULL END, " +
 			"CASE WHEN Q.ChildType = @integer OR Q.ChildType = @decimal THEN 'numeric' ELSE 'auto' END; " +
-			"CREATE INDEX IF NOT EXISTS IND_SQ ON USR_SKUQuestions(SKU, ParentQuestion) ");
+			"CREATE INDEX IF NOT EXISTS IND_SQ ON USR_SKUQuestions(SKU, ParentQuestion); ");
 
 	query.AddParameter("integer", DB.Current.Constant.DataType.Integer);
 	query.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);

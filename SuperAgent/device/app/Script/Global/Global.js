@@ -81,7 +81,7 @@ function SetSessionConstants() {
 			} else {
 				$.sessionConst.Add("outletContactEditable", true);
 			}
-		}		
+		}
 		if (rights.Code=='000000009') {
 			if (rights.AccessRight==null) {
 				$.sessionConst.Add("partnerContactEditable", false);
@@ -148,7 +148,7 @@ function FindTwinAndUnite(orderitem) {
 function ClearFilter(){
 	var checkDropF = new Query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='USR_Filters'");
 	var checkDropFResult = checkDropF.ExecuteScalar();
-	
+
 	if (checkDropFResult == 1) {
 		var dropF = new Query("DELETE FROM USR_Filters");
 		dropF.Execute();
@@ -163,9 +163,7 @@ function CreateUserTableIfNotExists(name) {
 	var check = q.ExecuteScalar();
 
 	if (parseInt(check) == parseInt(1)) {
-		var dropQS = new Query("DELETE FROM " + name);
-		dropQS.Execute();
-		return "INSERT INTO " + name + " ";
+		return "DELETE FROM " + name + "; INSERT INTO " + name + " ";
 	}
 	else
 		return "CREATE TABLE " + name + " AS ";

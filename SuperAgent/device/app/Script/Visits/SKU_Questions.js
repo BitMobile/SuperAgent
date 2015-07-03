@@ -22,6 +22,7 @@ var forwardAllowed;
 
 function OnLoading(){
 	obligateredLeft = '0';
+	SetIndicators();
 	SetListType();
 	if (String.IsNullOrEmpty(setScroll))
 		setScroll = true;
@@ -38,7 +39,12 @@ function OnLoad() {
 
 function SetListType(){
 	if (regularAnswers==null)
-		regularAnswers = true;
+	{
+		if (parseInt(regular_total) == parseInt(0))
+			regularAnswers = false;
+		else
+			regularAnswers = true;
+	}
 }
 
 function ChangeListAndRefresh(control, param) {
@@ -82,7 +88,7 @@ function GetSKUsFromQuesionnaires(search) {
 	if (regularAnswers)
 		single = 0;
 
-	SetIndicators();
+	// SetIndicators();
 
 	//getting left obligated
 	var q = new Query("SELECT DISTINCT S.Question, S.Description, S.SKU " +

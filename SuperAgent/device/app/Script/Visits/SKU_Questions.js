@@ -103,12 +103,12 @@ function GetSKUsFromQuesionnaires(search) {
 	}
 
 	var filterString = "";
-	var filterJoin = "";
+
 	filterString += AddFilter(filterString, "group_filter", "OwnerGroup", " AND ");
 	filterString += AddFilter(filterString, "brand_filter", "Brand", " AND ");
 
 	var q = new Query();
-	q.Text="SELECT DISTINCT S.SKU, S.SKUDescription " +
+	q.Text="SELECT S.SKU, S.SKUDescription " +
 			", COUNT(DISTINCT S.Question) AS Total " +
 			", COUNT(DISTINCT S.Answer) AS Answered " +
 			", MAX(CAST (Obligatoriness AS INT)) AS Obligatoriness " +
@@ -122,10 +122,10 @@ function GetSKUsFromQuesionnaires(search) {
 				" WHERE S.SKU=AMS.SKU) AS BaseUnitQty " +
 			", CASE WHEN S.SKU=@currentSKU THEN 1 ELSE 0 END AS ShowChild " +
 
-			"FROM USR_SKUQuestions S " + filterJoin +
+			"FROM USR_SKUQuestions S " +
 
-			"WHERE Single=@single AND " + searchString + filterString +
-			" (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions SS " +
+			"WHERE S.Single=@single AND " + searchString + filterString +
+			" (S.ParentQuestion=@emptyRef OR S.ParentQuestion IN (SELECT Question FROM USR_SKUQuestions SS " +
 				"WHERE SS.SKU=S.SKU AND (SS.Answer='Yes' OR SS.Answer='Да')))" +
 			"GROUP BY S.SKU, S.SKUDescription " +
 			" ORDER BY BaseUnitQty DESC, S.SKUDescription ";
@@ -346,7 +346,7 @@ function ObligatedAnswered(answer, obligatoriness) {
 
 function GetActionAndBack() {
 	var q = new Query("SELECT NextStep " +
-		" FROM USR_WorkflowSteps" + 
+		" FROM USR_WorkflowSteps" +
 		" WHERE Value=0 AND StepOrder<'3' ORDER BY StepOrder DESC");
 	var step = q.ExecuteScalar();
 	if (step==null)

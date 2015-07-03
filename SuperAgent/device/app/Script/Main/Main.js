@@ -8,34 +8,6 @@ function OnLoad() {
 		$.swipe_layout.Index = 1;
 	}
 
-	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_QSKU ON _Document_Questionnaire_SKUs(IsTombstone, Ref, SKU)");
-	indexQuery.Execute();
-
-	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_AQ " +
-				"ON _Catalog_Outlet_AnsweredQuestions(IsTombstone, Ref, Questionaire, Question, AnswerDate)");
-	indexQuery.Execute();
-
-	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_SKUSSTOCK ON _Catalog_SKU_Stocks(Ref, Stock, IsTombstone)");
-	indexQuery.Execute();
-
-	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_PLREFSKU ON _Document_PriceList_Prices(Ref, SKU, IsTombstone)");
-	indexQuery.Execute();
-
-	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_SKUOWNERBRAND ON _Catalog_SKU(Id, Owner, Brand, IsTombstone)");
-	indexQuery.Execute();
-
-	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_SKUBRAND ON _Catalog_SKU(Id, Brand, IsTombstone)");
-	indexQuery.Execute();
-
-	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_SKUOWNER ON _Catalog_SKU(Id, Owner, IsTombstone)");
-	indexQuery.Execute();
-
-	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_SKUGROUPPARENT ON _Catalog_SKUGroup(Id, Parent, IsTombstone)");
-	indexQuery.Execute();
-
-	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_AMREFOUTLET ON _Catalog_AssortmentMatrix_Outlets(Ref, Outlet, IsTombstone)");
-	indexQuery.Execute();
-
 }
 
 function GetLastSyncTime() {

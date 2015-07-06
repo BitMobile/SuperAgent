@@ -27,9 +27,12 @@ function CreateIndexes() {
 														 "CREATE INDEX IF NOT EXISTS IND_SKUBRAND ON _Catalog_SKU(Id, Brand, IsTombstone); " +
 														 "CREATE INDEX IF NOT EXISTS IND_SKUOWNER ON _Catalog_SKU(Id, Owner, IsTombstone); " +
 														 "CREATE INDEX IF NOT EXISTS IND_SKUGROUPPARENT ON _Catalog_SKUGroup(Id, Parent, IsTombstone); " +
-														 "CREATE INDEX IF NOT EXISTS IND_QSKUQ ON _Document_Questionnaire_SKUQuestions(Ref, IsTombstone); " +
+														 "CREATE INDEX IF NOT EXISTS IND_QSKUQ ON _Document_Questionnaire_Questions(Ref, ChildQuestion, IsTombstone); " +
+														 "CREATE INDEX IF NOT EXISTS IND_QSKUSQ ON _Document_Questionnaire_SKUQuestions(Ref, ChildQuestion, IsTombstone); " +
 														 "CREATE INDEX IF NOT EXISTS IND_AMREFOUTLET ON _Catalog_AssortmentMatrix_Outlets(Ref, Outlet, IsTombstone); " +
-														 "CREATE INDEX IF NOT EXISTS IND_QSCHEDULE ON _Document_Questionnaire_Schedule(Ref, IsTombstone)");
+														 "CREATE INDEX IF NOT EXISTS IND_QSCHEDULE ON _Document_Questionnaire_Schedule(Ref, IsTombstone);" +
+														 "CREATE INDEX IF NOT EXISTS IND_AMO ON _Catalog_AssortmentMatrix_Outlets(Ref, IsTombstone);" +
+														 "CREATE INDEX IF NOT EXISTS IND_AMS ON _Catalog_AssortmentMatrix_SKUs(Ref, IsTombstone)");
 	indexQuery.Execute();
 
 }
@@ -433,7 +436,7 @@ function CreateQuestionnareTable(outlet) {
 			"JOIN _Document_Questionnaire_Schedule S INDEXED BY IND_QSCHEDULE ON SQ.Id=S.Ref AND S.IsTombstone=0 " +
 			"WHERE Q.Status=@active AND date(S.Date)=date('now', 'start of day') " +
 			"GROUP BY Q.Id, Q.Number, Q.Date, Q.Single, S.BeginAnswerPeriod, S.EndAnswerPeriod; " +
-			"DELETE FROM USR_Questionnaires WHERE Selected=0; ";
+			"DELETE FROM USR_Questionnaires WHERE Selected=0";
 
 	var query = new Query(OutletAttributesText + SelectedQuestionnairesText + QuestionnairesText);
 
@@ -471,12 +474,13 @@ function CreateQuestionsTable(outlet) {
 			"A.Answer AS HistoryAnswer, " +
 			"A.AnswerDate AS AnswerDate " +
 
-		"FROM Document_Questionnaire_Questions Q " +
+		"FROM _Document_Questionnaire_Questions Q INDEXED BY IND_QSKUQ " +
 		"JOIN USR_Questionnaires D ON Q.Ref=D.Id " +
-		"LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Ref = @outlet AND A.Questionaire = D.Id " +
+		"LEFT JOIN _Catalog_Outlet_AnsweredQuestions A INDEXED BY IND_AQ ON A.IsTombstone = 0 AND A.Ref = @outlet AND A.Questionaire = D.Id " +
 																						"AND A.Question = Q.ChildQuestion AND IFNULL(A.SKU, @emptySKU) = @emptySKU " +
 																						"AND DATE(A.AnswerDate) >= DATE(D.BeginAnswerPeriod) " +
 																						"AND (DATE(A.AnswerDate) <= DATE(D.EndAnswerPeriod) OR A.AnswerDate = '0001-01-01 00:00:00') " +
+		"WHERE Q.IsTombstone = 0 " +
 		"GROUP BY Q.ChildQuestion, " +
 			"D.Date, " +
 			"Q.ParentQuestion, " +
@@ -522,7 +526,7 @@ function CreateSKUQuestionsTable(outlet) {
 			"A.Answer AS HistoryAnswer, " +
 			"A.AnswerDate AS AnswerDate " +
 
-		"FROM _Document_Questionnaire_SKUQuestions Q INDEXED BY IND_QSKUQ " +
+		"FROM _Document_Questionnaire_SKUQuestions Q INDEXED BY IND_QSKUSQ " +
 		"JOIN _Document_Questionnaire_SKUs S INDEXED BY IND_QSKU ON S.IsTombstone = 0 AND Q.Ref=S.Ref " +
 		"JOIN USR_Questionnaires D ON Q.Ref=D.Id " +
 		"JOIN Catalog_SKU SK ON SK.Id=S.SKU " +
@@ -546,7 +550,7 @@ function CreateSKUQuestionsTable(outlet) {
 			"A.AnswerDate, " +
 			"CASE WHEN Q.ChildType = @integer OR Q.ChildType = @decimal OR Q.ChildType = @string THEN 1 ELSE NULL END, " +
 			"CASE WHEN Q.ChildType = @integer OR Q.ChildType = @decimal THEN 'numeric' ELSE 'auto' END; " +
-			"CREATE INDEX IF NOT EXISTS IND_SQ ON USR_SKUQuestions(SKU, ParentQuestion) ");
+			"CREATE INDEX IF NOT EXISTS IND_SQ ON USR_SKUQuestions(SKU, ParentQuestion); ");
 
 	query.AddParameter("integer", DB.Current.Constant.DataType.Integer);
 	query.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);

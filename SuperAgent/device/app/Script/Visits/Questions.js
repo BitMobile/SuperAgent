@@ -219,7 +219,7 @@ function AssignAnswer(control, question, answer) {
 		if (answer!=null)
 			answer = answer.ToString();
 	}
-	if (answer == "—")
+	if (answer == "—" || answer == "-")
 		answer = null;
 
 	var answerString;

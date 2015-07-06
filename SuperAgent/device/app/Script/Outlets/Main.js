@@ -213,15 +213,30 @@ function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParamete
 
 function DoSelect(editOutletParameters, primaryParameterName) {
 	if (editOutletParameters && $.primaryParametersSettings[primaryParameterName]) {
-		Dialogs.DoChoose(null, $.outlet, 'Distributor', $.outletDistr, null, Translate["#distributor#"]);
+		Dialogs.DoChoose(null, $.outlet, 'Distributor', $.outletDistr, null, Translate["#partner#"]);
 	}
+}
+
+function GetDescr(description){
+	
+	return String.IsNullOrEmpty(description) ? "—" : description;
 }
 
 function SelectDistr(editOutletParameters, primaryParameterName){
 	if (editOutletParameters && $.primaryParametersSettings[primaryParameterName]) {
-		var q = new Query("SELECT Id, Description FROM Catalog_Distributor UNION SELECT '', '—' ORDER BY Description DESC");
-		Dialogs.DoChoose(q.Execute(), $.outlet, 'Distributor', $.outletDistr, null, Translate["#distributor#"]);
+		var q = new Query("SELECT Id, Description FROM Catalog_Distributor UNION SELECT @emptyDistr, '—' ORDER BY Description DESC");
+		q.AddParameter("emptyDistr", DB.EmptyRef("Catalog.Distributor"))
+		Dialogs.DoChoose(q.Execute(), $.outlet, 'Distributor', $.outletDistr, DistrCallBack, Translate["#distributor#"]);
 	}	
+}
+
+function DistrCallBack(state, args){
+	AssignDialogValue(state, args);
+	var control = state[2];
+	if (args.Result==DB.EmptyRef("Catalog.Distributor"))
+		control.Text = "—";
+	else
+		control.Text = args.Result.Description;
 }
 
 //--------------------------editing additional parameters handlers-----------------------------

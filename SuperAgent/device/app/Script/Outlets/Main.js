@@ -217,6 +217,13 @@ function DoSelect(editOutletParameters, primaryParameterName) {
 	}
 }
 
+function SelectDistr(editOutletParameters, primaryParameterName){
+	if (editOutletParameters && $.primaryParametersSettings[primaryParameterName]) {
+		var q = new Query("SELECT Id, Description FROM Catalog_Distributor UNION SELECT '', '—' ORDER BY Description DESC");
+		Dialogs.DoChoose(q.Execute(), $.outlet, 'Distributor', $.outletDistr, null, Translate["#distributor#"]);
+	}	
+}
+
 //--------------------------editing additional parameters handlers-----------------------------
 
 function CreateOutletParameterValue(outlet, parameter, value, parameterValue, isEditText) {

@@ -54,7 +54,7 @@
 				<c:HorizontalLayout CssClass="$sideStyle.outletName"></c:HorizontalLayout>
 				<c:VerticalLayout>
 					<c:TextView Text="#outlet_description#" CssClass="description_row"></c:TextView>
-					<c:MemoEdit Id="outletName" Value="$outlet.Description" Placeholder="—" AutoFocus="True" CssClass="main_row" OnLostFocus="$DoRefresh($outlet)"/>
+					<c:MemoEdit Id="outletName" Value="$outlet.Description" Placeholder="—" CssClass="main_row" OnLostFocus="$DoRefresh($outlet)"/>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

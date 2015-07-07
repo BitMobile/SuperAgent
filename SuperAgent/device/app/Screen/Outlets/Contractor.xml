@@ -6,7 +6,7 @@
 	<c:DockLayout>
 
 		<c:DockLayout CssClass="top_navigator">
-			<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$SaveContractorAndBack($contractor)" SubmitScope="INN;KPP">
+			<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$SaveContractorAndBack($contractor)" SubmitScope="INN;KPP;phone_number;email">
 				<c:Image />
 				<c:TextView Text="#list#" />
 			</c:DockLayout>
@@ -71,7 +71,7 @@
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(phone_number, 1)">
 				<c:VerticalLayout>
 					<c:TextView Text="#phone#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$contractor.PhoneNumber" Placeholder="—" Keyboard="numeric" CssClass="main_row" Id="phone_number" />
+					<c:EditText Value="$contractor.PhoneNumber" Placeholder="—" Keyboard="numeric" CssClass="main_row" Id="phone_number" Mask="#phone_regexp#"/>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -79,7 +79,7 @@
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(email, 1)">
 				<c:VerticalLayout>
 					<c:TextView Text="#email#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$contractor.Email" Placeholder="—" CssClass="main_row" Id="email" />
+					<c:EditText Value="$contractor.Email" Placeholder="—" CssClass="main_row" Id="email" Mask="#email_regexp#"/>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

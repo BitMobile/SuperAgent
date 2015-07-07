@@ -275,18 +275,20 @@ function GetOutlets(searchText){
 
 	var outletObj = $.outlet.GetObject();
 	if (outletObj.Distributor==DB.EmptyRef("Catalog_Distributor")){
-		var q = new Query("SELECT C.Id, C.Description, C.LegalAddress AS Address, '3' AS OutletStatus " +
+		var q = new Query("SELECT C.Id, C.Description, C.LegalAddress AS Address, '3' AS OutletStatus, " +
+			"CASE WHEN IsDefault=1 THEN 'main_row_bold' ELSE 'main_row' END AS Style " +
 			"FROM Catalog_Outlet_Contractors O " +
 			"JOIN Catalog_Contractors C ON O.Contractor=C.Id " +
-			"WHERE O.Ref=@outlet " + search + "ORDER BY C.Description");
+			"WHERE O.Ref=@outlet " + search + "ORDER BY IsDefault desc, C.Description");
 		q.AddParameter("outlet", $.outlet);
 		var result = q.Execute();
 	}
 	else{
-		var q = new Query("SELECT  C.Id, C.Description, C.LegalAddress AS Address, '3' AS OutletStatus " +
+		var q = new Query("SELECT  C.Id, C.Description, C.LegalAddress AS Address, '3' AS OutletStatus, " +
+			"CASE WHEN IsDefault=1 THEN 'main_row_bold' ELSE 'main_row' END AS Style " +
 			"FROM Catalog_Distributor_Contractors D " +
 			"JOIN Catalog_Contractors C ON D.Contractor=C.Id " +
-			"WHERE D.Ref=@distr " + search + "ORDER BY C.Description");
+			"WHERE D.Ref=@distr " + search + "ORDER BY IsDefault desc, C.Description");
 		q.AddParameter("distr", outletObj.Distributor);
 		var result = q.Execute();
 	}

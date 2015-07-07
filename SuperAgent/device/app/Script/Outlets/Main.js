@@ -67,7 +67,7 @@ function GetOutlets(searchText) {
 	else
 		outletStatus = " 3 AS OutletStatus";
 
-	q.Text = "SELECT O.Id, O.Description, O.Address," + outletStatus +
+	q.Text = "SELECT O.Id, O.Description, O.Address, 'main_row' AS Style, " + outletStatus +
 		" FROM Catalog_Outlet O " +
 		showOutlet + createOrder + createReturn + search + " ORDER BY O.Description LIMIT 500";
 

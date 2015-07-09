@@ -245,10 +245,10 @@ MemoEdit {
 }
 
 .small_grid hl select_zone {
-	width: 90%;
+	width: 100%;
 	height: 90%;
 	margin-top: 5%;
-	margin-left: 5%;
+	/*margin-left: 5%;*/
 }
 
 .small_grid hl select_zone TextView {

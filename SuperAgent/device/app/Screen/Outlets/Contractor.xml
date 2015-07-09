@@ -79,7 +79,7 @@
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(email, 1)">
 				<c:VerticalLayout>
 					<c:TextView Text="#email#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$contractor.Email" Placeholder="—" CssClass="main_row" Id="email" Mask="#email_regexp#"/>
+					<c:EditText Value="$contractor.Email" Placeholder="—" CssClass="main_row" Keyboard="email" Id="email" Mask="#email_regexp#"/>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

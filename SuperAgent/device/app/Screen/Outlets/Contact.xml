@@ -76,7 +76,7 @@
 				</c:HorizontalLayout>
 				<c:VerticalLayout CssClass="partialW">
 					<c:TextView Text="#phone#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$contact.PhoneNumber" Placeholder="—" Keyboard="numeric" CssClass="main_row" Id="phone_number" Mask="#phone_regexp#"/>
+					<c:EditText Value="$contact.PhoneNumber" Placeholder="—" Keyboard="phone" CssClass="main_row" Id="phone_number" Mask="#phone_regexp#"/>
 				</c:VerticalLayout>
 			</c:DockLayout>
 			<c:HorizontalLine />
@@ -84,7 +84,7 @@
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(email, 1)">
 				<c:VerticalLayout>
 					<c:TextView Text="#email#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$contact.Email" Placeholder="—" CssClass="main_row" Id="email" Mask="#email_regexp#"/>
+					<c:EditText Value="$contact.Email" Placeholder="—" CssClass="main_row" Keyboard="email" Id="email" Mask="#email_regexp#"/>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

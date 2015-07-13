@@ -216,13 +216,6 @@ function GetDescr(description){
 	return String.IsNullOrEmpty(description) ? "—" : description;
 }
 
-function SelectDistr(editOutletParameters, primaryParameterName){
-	if (editOutletParameters && $.primaryParametersSettings[primaryParameterName]) {
-		var q = new Query("SELECT Id, Description FROM Catalog_Distributor UNION SELECT @emptyDistr, '—' ORDER BY Description DESC");
-		q.AddParameter("emptyDistr", DB.EmptyRef("Catalog.Distributor"))
-		Dialogs.DoChoose(q.Execute(), $.outlet, 'Distributor', $.outletDistr, DistrCallBack, Translate["#partner#"]);
-	}	
-}
 
 function DistrCallBack(state, args){
 	AssignDialogValue(state, args);

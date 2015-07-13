@@ -29,7 +29,7 @@ function SetOutletsCount() {
 	if (cnt == null)
 		outletsCount = 0;
 	else
-		outletsCount = cnt;
+		outletsCount = cnt.ToString();
 }
 
 function GetOutletsCount(){

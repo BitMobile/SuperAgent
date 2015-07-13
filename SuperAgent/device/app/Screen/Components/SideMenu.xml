@@ -3,7 +3,7 @@
 
 	<c:VerticalLayout CssClass="menu">
 
-		<c:DockLayout CssClass="header" OnEvent="Forward" OnClickAction="$CloseMenu()">
+		<c:DockLayout CssClass="header" OnEvent="Forward" OnClickAction="$OpenMenu()">
 			<c:HorizontalLayout>
 				<c:Image CssClass="btn_summary" />
 				<c:TextView Text="#summary#" />
@@ -11,7 +11,7 @@
 		</c:DockLayout>
 
 		<c:DockLayout OnClickAction="$DoAction(Visits)">
-			<c:TextView CssClass="menu_text" Text="{$scheduledVisits} | {$plannedVisits}" />
+			<c:TextView CssClass="menu_text" Text="{$GetCommitedScheduledVisits()} | {$GetPlannedVisits()}" />
 			<c:HorizontalLayout>
 				<c:Image CssClass="btn_visits" />
 				<c:TextView Text="#visits#" />
@@ -20,7 +20,7 @@
 		<c:HorizontalLine />
 
 		<c:DockLayout OnClickAction="$DoAction(Outlets)">
-			<c:TextView CssClass="menu_text" Text="$outletsCount" />
+			<c:TextView CssClass="menu_text" Text="$GetOutletsCount()" />
 			<c:HorizontalLayout>
 				<c:Image CssClass="btn_clients" />
 				<c:TextView Text="#clients#" />
@@ -30,7 +30,7 @@
 
 		<s:If Test="$sessionConst.orderEnabled">
 			<c:DockLayout OnClickAction="$DoAction(Order)">
-				<c:TextView CssClass="menu_text" Text="{$orderQty} | {$FormatValue($orderSum)}"></c:TextView>
+				<c:TextView CssClass="menu_text" Text="{$GetOrderQty()} | {$GetOrderSumm()}"></c:TextView>
 				<c:HorizontalLayout>
 					<c:Image CssClass="btn_orders" />
 					<c:TextView Text="#orders#"></c:TextView>

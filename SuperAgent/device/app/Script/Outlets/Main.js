@@ -99,7 +99,7 @@ function CreateVisitEnable() {
 }
 
 function CreateOutletEnabled(){
-	if ($.workflow.name == 'Outlets')
+	if (GlobalWorkflow.GetMenuItem() == "Outlets")
 		return true;
 	else
 		return false;
@@ -647,10 +647,10 @@ function CheckIfEmpty(entity, attribute, objectType, objectName, deleteIfEmpty) 
 }
 
 function BackMenu(){
-	if ($.workflow.name=='Order' || $.workflow.name=='Return')
-		return true;
-	else
+	if (GlobalWorkflow.GetMenuItem() == "Outlets")
 		return false;
+	else
+		return true;
 }
 
 function CommitAndBack(){

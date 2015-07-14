@@ -8,7 +8,7 @@
 		<c:VerticalLayout Id="VLayout">
 
 			<c:DockLayout CssClass="top_navigator">
-				<c:DockLayout Id="btnMenu" CssClass="btn_menu" OnEvent="Back" OnClick="$DoRollback()">
+				<c:DockLayout Id="btnMenu" CssClass="btn_menu" OnEvent="Back" OnClickAction="$OpenMenu($swipe_layout)">
 					<c:Image CssClass="menuIcon" />
 				</c:DockLayout>
 				<c:DockLayout CssClass="btn_space" />

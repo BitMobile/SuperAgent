@@ -31,7 +31,7 @@
 		</c:GlobalModules>
 
 		<c:Mixins>
-			<c:Mixin File="Mixins\SideMenu.js" Target="Main\Main.js|Order\Main.js" />
+			<c:Mixin File="Mixins\SideMenu.js" Target="Main\Main.js|Order\Main.js|" />
 			<c:Mixin File="Mixins\Common.js" Target="*.js" />
 			<c:Mixin File="Mixins\Workflow.js" Target="*.js" />
 			<c:Mixin File="Mixins\DB.js" Target="*.js" />

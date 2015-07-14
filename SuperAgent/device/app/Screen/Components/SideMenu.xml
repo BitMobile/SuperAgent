@@ -3,7 +3,7 @@
 
 	<c:VerticalLayout CssClass="menu">
 
-		<c:DockLayout CssClass="header" OnEvent="Forward" OnClickAction="$OpenMenu()">
+		<c:DockLayout CssClass="header" OnClickAction="$DoAction(Summary)">
 			<c:HorizontalLayout>
 				<c:Image CssClass="btn_summary" />
 				<c:TextView Text="#summary#" />
@@ -29,7 +29,7 @@
 		<c:HorizontalLine />
 
 		<s:If Test="$sessionConst.orderEnabled">
-			<c:DockLayout OnClickAction="$DoAction(Order)">
+			<c:DockLayout OnClickAction="$DoAction(Orders)">
 				<c:TextView CssClass="menu_text" Text="{$GetOrderQty()} | {$GetOrderSumm()}"></c:TextView>
 				<c:HorizontalLayout>
 					<c:Image CssClass="btn_orders" />
@@ -40,7 +40,7 @@
 		</s:If>
 
 		<s:If Test="$sessionConst.returnEnabled">
-			<c:DockLayout OnClickAction="$DoAction(Return)">
+			<c:DockLayout OnClickAction="$DoAction(Returns)">
 				<c:TextView CssClass="menu_text" Text="{$GetReturnQty()} | {$GetReturnSum()}"></c:TextView>
 				<c:HorizontalLayout>
 					<c:Image CssClass="btn_returns" />

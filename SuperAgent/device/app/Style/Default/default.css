@@ -853,6 +853,7 @@ MemoEdit {
 /*-----------side menu-------------*/
 
 .menu {
+	padding-top: 2%;
 	background-color: #2d89cf;
 	width: 43.4mm;
 }
@@ -900,7 +901,6 @@ MemoEdit {
 }
 
 .header {
-	margin-top: 2%;
 	background-color: #43acfd;
 	margin-left: 0mm;
 }

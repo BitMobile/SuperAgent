@@ -1,5 +1,27 @@
 //-------------Side menu---------------
 
+function GetItemsStyles(){
+	var styles = new Dictionary();
+	styles.Add("Summary", IsCurrent("Summary"));
+	styles.Add("Visits", IsCurrent("Visits"));
+	styles.Add("Outlets", IsCurrent("Outlets"));
+	styles.Add("Orders", IsCurrent("Orders"));
+	styles.Add("Returns", IsCurrent("Returns"));
+	styles.Add("Sync", IsCurrent("Sync"));
+	styles.Add("About", IsCurrent("About"));
+
+	return styles;
+}
+
+function ShowDialog(val){
+	Dialog.Debug(val);
+}
+
+function IsCurrent(name){	
+	var c = GlobalWorkflow.GetMenuItem() == null ? "Summary" : GlobalWorkflow.GetMenuItem();
+	return name == c ? "header" : "common";
+}
+
 function OpenMenu(sl) {
 	if (sl.Index == 1) {
 		sl.Index = 0;
@@ -68,4 +90,9 @@ function LogoutCallback(state, args) {
 
 	}
 
+}
+
+function SwitchScreen(actionName){
+	GlobalWorkflow.SetMenuItem(actionName);
+	DoAction(actionName);
 }

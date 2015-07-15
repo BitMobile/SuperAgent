@@ -75,10 +75,7 @@ function GetOutlets(searchText) {
 }
 
 function AddGlobalAndAction(outlet) {
-	GlobalWorkflow.SetOulet(value);
-	if (Variables.Exists("outlet"))
-		$.Remove("outlet");
-	$.AddGlobal("outlet", outlet);
+	GlobalWorkflow.SetOutlet(outlet);
 
 	var actionName;
 	var curr = GlobalWorkflow.GetMenuItem();
@@ -93,7 +90,8 @@ function AddGlobalAndAction(outlet) {
 }
 
 function GetOutletObject(){
-	$.AddGlobal("outlet", GlobalWorkflow.GetOutlet());
+	if (!$.Exists("outlet"))
+		$.AddGlobal("outlet", GlobalWorkflow.GetOutlet());
 	return GetObject($.outlet);
 }
 
@@ -107,7 +105,7 @@ function CreateOutletAndForward() {
 }
 
 function CreateVisitEnable() {
-	if ($.sessionConst.PlanEnbl && $.workflow.name == "Outlets")
+	if ($.sessionConst.PlanEnbl && $.workflow.name == "Outlet")
 		return true;
 	else
 		return false;
@@ -616,8 +614,7 @@ function SaveAndBack(outlet) {
 		ReviseParameters(outlet, true);
 		if ($.Exists("outlet"))
 			$.Remove("outlet");
-		// DB.Commit();
-		Workflow.BackTo("Outlets");
+		Workflow.Commit();
 	}
 }
 

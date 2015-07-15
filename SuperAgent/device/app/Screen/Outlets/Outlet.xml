@@ -35,7 +35,7 @@
 		</s:Else>
 		<c:HorizontalLine CssClass="b_line" />
 
-		<s:If Test="$workflow.name=='Outlets'">
+		<s:If Test="$workflow.name=='Outlet'">
 			<c:DockLayout CssClass="top_navigator">
 				<c:HorizontalLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$SaveAndBack($outlet)">
 					<c:Image />

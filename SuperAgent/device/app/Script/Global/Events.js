@@ -16,6 +16,122 @@ function OnApplicationRestore(){
 
 }
 
+// ------------------------ Events ------------------------
+
+function OnWorkflowStart(name) {
+	
+	if ($.Exists("workflow"))
+		$.Remove("workflow");
+	Variables.AddGlobal("workflow", new Dictionary());
+
+	if (name == "Visits" || name == "Outlets" || name=="Order" || name=="Return") 
+	{
+		GPS.StartTracking();
+	}
+
+	if (name=="Visit" || name=="Order" || name=="Return")
+	{
+		SetFilterIndex();
+	}
+
+	if (name == "Visit") 
+	{
+		CreateQuestionnareTable($.outlet);
+		CreateQuestionsTable($.outlet);
+		CreateSKUQuestionsTable($.outlet);
+
+		SetSteps($.outlet);
+	}
+
+}
+
+function OnWorkflowForward(name, lastStep, nextStep, parameters) {
+}
+
+function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
+
+	if (workflowName == "Visit" && nextStep != "Outlet" && nextStep != "Total") 
+	{
+		AlternativeStep();
+	}
+
+	if (workflowName == "Main" && GlobalWorkflow.GetOutletIsCreated()) //for step between CreateOutlet and Outlet
+	{
+		CloseCreatedOutlet();
+	}
+
+	if (NextDoc(lastStep, nextStep)) //between Return and Order
+	{
+		Global.ClearFilter();
+	}		
+
+	WriteScreenName(nextStep);
+
+	return true;
+}
+
+// function OnWorkflowBack(name, lastStep, nextStep) {}
+
+function OnWorkflowFinish(name, reason) {
+
+	RemoveVariables(name);
+
+	if (name != "Main") 
+	{		
+		GPS.StopTracking();
+	}
+
+	if (name=="Visit" || name=="CreateOrder" || name=="CreateReturn")
+	{
+		Global.ClearFilter();
+	}
+}
+
+function OnWorkflowFinished(name, reason){
+	if (name == "Main")
+	{
+		Indicators.SetIndicators();
+	}
+}
+
+function OnWorkflowBack(workflow, lastStep, nextStep){
+	
+	WriteScreenName(nextStep);
+	
+	if (NextDoc(lastStep, nextStep)) //between Order and Return
+	{
+		Global.ClearFilter();
+	}		
+
+	if (lastStep=="Image" && nextStep=="EditSKU")  //Diarty hack, if remove, will be created new orderItem
+	{
+		$.AddGlobal("orderitemAlt", $.entity);
+	}
+}
+
+function OnWorkflowPause(name) {
+	Variables.Remove("workflow");
+}
+
+// ------------------------ Functions ------------------------
+
+function RemoveVariables(name){
+
+	Variables.Remove("workflow");
+
+	if (name != "Main")
+	{
+		Variables.Remove("outlet");
+
+		if (Variables.Exists("planVisit"))
+			Variables.Remove("planVisit");
+		if (Variables.Exists("steps"))
+			Variables.Remove("steps");
+		if (Variables.Exists("executedOrder"))
+			Variables.Remove("executedOrder");
+	}
+}
+
 function CreateIndexes() {
 
 	var indexQuery = new Query("CREATE INDEX IF NOT EXISTS IND_QSKU ON _Document_Questionnaire_SKUs(Ref, SKU, IsTombstone); " +
@@ -37,132 +153,44 @@ function CreateIndexes() {
 
 }
 
-// ------------------------ Events ------------------------
+function SetFilterIndex(){
 
-function OnWorkflowStart(name) {
-	if ($.Exists("workflow"))
-		$.Remove("workflow");
-	Variables.AddGlobal("workflow", new Dictionary());
-	if (name == "Visits" || name == "Outlets" || name=="Order" || name=="Return") {
-		GPS.StartTracking();
-	}
+	var checkDropF = new Query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='USR_Filters'");
 
-	if (name == "Visit") {
+	var checkDropFResult = checkDropF.ExecuteScalar();
 
-			CreateQuestionnareTable($.outlet);
-			CreateQuestionsTable($.outlet);
-			CreateSKUQuestionsTable($.outlet);
+	if (checkDropFResult == 1) {
 
-			SetSteps($.outlet);
-	}
+		var dropF = new Query("DELETE FROM USR_Filters");
 
-	Variables["workflow"].Add("name", name);
+		dropF.Execute();
 
-	if (name=="Visit" || name=="CreateOrder" || name=="CreateReturn"){
+	} else {
 
-		var checkDropF = new Query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='USR_Filters'");
+		var createTable = new Query("CREATE TABLE IF NOT EXISTS USR_Filters(Id Text, FilterType Text); " +
+																"CREATE INDEX IF NOT EXISTS IND_FILTERS ON USR_Filters(FilterType)");
 
-		var checkDropFResult = checkDropF.ExecuteScalar();
-
-		if (checkDropFResult == 1) {
-
-			var dropF = new Query("DELETE FROM USR_Filters");
-
-			dropF.Execute();
-
-		} else {
-
-			var createTable = new Query("CREATE TABLE IF NOT EXISTS USR_Filters(Id Text, FilterType Text); " +
-																	"CREATE INDEX IF NOT EXISTS IND_FILTERS ON USR_Filters(FilterType)");
-
-			createTable.Execute();
-
-		}
+		createTable.Execute();
 
 	}
 
 }
 
-function OnWorkflowForward(name, lastStep, nextStep, parameters) {
-}
+function AlternativeStep(){
+	var action;
+	action = GetAction(nextStep);
 
-function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
-
-	if (workflowName == "Visit" && nextStep != "Outlet" && nextStep != "Total") {
-
-		var action;
-		action = GetAction(nextStep);
-
-		if (action != null) {
-			Workflow.Action(action, []);
-			return false;
-		}
-
-	}
-
-	if (workflowName == "Main" && GlobalWorkflow.GetOutletIsCreated()) //for step between CreateOutlet and Outlet
-	{
-		Workflow.Action("Select", []);
-		GlobalWorkflow.SetOutletIsCreated(false);
+	if (action != null) {
+		Workflow.Action(action, []);
 		return false;
 	}
-
-	if (NextDoc(lastStep, nextStep))
-		Global.ClearFilter();
-
-	WriteScreenName(nextStep);
-
-	return true;
 }
 
-// function OnWorkflowBack(name, lastStep, nextStep) {}
-
-function OnWorkflowFinish(name, reason) {
-
-	if (name != "Main") {
-		Variables.Remove("outlet");
-
-		if (Variables.Exists("planVisit"))
-			Variables.Remove("planVisit");
-		if (Variables.Exists("steps"))
-			Variables.Remove("steps");
-		if (Variables.Exists("executedOrder"))
-			Variables.Remove("executedOrder");
-
-		GPS.StopTracking();
-
-		// Indicators.SetIndicators();
-	}
-
-	Variables.Remove("workflow");
-
-	if (name=="Visit" || name=="CreateOrder" || name=="CreateReturn"){
-		Global.ClearFilter();
-	}
+function CloseCreatedOutlet(){
+	Workflow.Action("Select", []);
+	GlobalWorkflow.SetOutletIsCreated(false);
+	return false;
 }
-
-function OnWorkflowFinished(name, reason){
-	if (name == "Main"){
-		Indicators.SetIndicators();
-	}
-}
-
-function OnWorkflowBack(workflow, lastStep, nextStep){
-	WriteScreenName(nextStep);
-	if (NextDoc(lastStep, nextStep))
-		Global.ClearFilter();
-
-	if (lastStep=="Image" && nextStep=="EditSKU"){  //Diarty hack, if remove, will be created new orderItem
-		// Dialog.Debug($.entity);
-		$.AddGlobal("orderitemAlt", $.entity);
-	}
-}
-
-function OnWorkflowPause(name) {
-	Variables.Remove("workflow");
-}
-
-// ------------------------ Functions ------------------------
 
 function NextDoc(lastStep, nextStep){
 	next = false;

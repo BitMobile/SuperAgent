@@ -100,6 +100,13 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 
 	}
 
+	if (workflowName == "Main" && GlobalWorkflow.GetOutletIsCreated()) //for step between CreateOutlet and Outlet
+	{
+		Workflow.Action("Select", []);
+		GlobalWorkflow.SetOutletIsCreated(false);
+		return false;
+	}
+
 	if (NextDoc(lastStep, nextStep))
 		Global.ClearFilter();
 
@@ -111,11 +118,8 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 // function OnWorkflowBack(name, lastStep, nextStep) {}
 
 function OnWorkflowFinish(name, reason) {
-	$.Remove("finishedWorkflow");
-	$.AddGlobal("finishedWorkflow", name);
 
-	if (name == "Visit" || name == "CreateOrder" || name=="Outlets" || name=="CreateReturn"
-		|| name=="Order" || name=="Return") {
+	if (name != "Main") {
 		Variables.Remove("outlet");
 
 		if (Variables.Exists("planVisit"))
@@ -138,8 +142,7 @@ function OnWorkflowFinish(name, reason) {
 }
 
 function OnWorkflowFinished(name, reason){
-	if (name == "Visit" || name == "CreateOrder" || name=="Outlets" || name=="CreateReturn"
-		|| name=="Order" || name=="Return"){
+	if (name == "Main"){
 		Indicators.SetIndicators();
 	}
 }

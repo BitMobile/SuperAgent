@@ -29,8 +29,8 @@
 		</bp:Step>
 
 		<bp:Step Name="Outlets" Screen="Outlets\Outlets.xml" Controller="Outlets\Main.js">
-			<bp:Action Name="Select" NextStep="OpenOutlet" />
-			<bp:Action Name="Create" NextStep="CreateOutlet" />
+			<bp:Action Name="Select" NextWorkflow="Outlet" />
+			<bp:Action Name="CreateOutlet" NextWorkflow="CreateOutlet" />
 			<bp:Action Name="CreateReturn" NextWorkflow="CreateReturn"></bp:Action>
 			<bp:Action Name="CreateOrder" NextWorkflow="CreateOrder"></bp:Action>
 			<s:Include File="\Components\SideMenuActions.xml"/>
@@ -297,7 +297,13 @@
 
 	</bp:Workflow>
 
-	<bp:Workflow Name="Outlets" Controller="Outlets\Main.js">
+	<bp:Workflow Name="CreateOutlet">
+		<bp:Step Name="Create" Screen="Outlets\CreateOutlet.xml" Controller="Outlets\CreateOutlet.js">
+			<bp:Action Name="Open" NextWorkflow="OpenOutlet" />
+		</bp:Step>
+	</bp:Workflow>
+
+	<bp:Workflow Name="Outlet" Controller="Outlets\Main.js">
 
 		<bp:Step Name="OpenOutlet" Screen="Outlets\Outlet.xml">
 			<bp:Action Name="List" NextStep="Outlets" />
@@ -307,10 +313,6 @@
 			<bp:Action Name="ShowMap" NextStep="ShowMap"></bp:Action>
 			<bp:Action Name="Plans" NextStep="Plans" />
 			<bp:Action Name="ShowImage" NextStep="Image" />
-		</bp:Step>
-
-		<bp:Step Name="CreateOutlet" Screen="Outlets\CreateOutlet.xml" Controller="Outlets\CreateOutlet.js">
-			<bp:Action Name="Open" NextStep="OpenOutlet" />
 		</bp:Step>
 
 		<bp:Step Name="Contractors" Screen="Outlets\Outlets.xml" Controller="Outlets\DetailsAndContacts.js">

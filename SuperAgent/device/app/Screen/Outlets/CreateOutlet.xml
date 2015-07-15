@@ -16,7 +16,7 @@
 		<c:HorizontalLine />
 
 		<c:HorizontalLayout Id="btnCancel" CssClass="bottom_btn">
-			<c:VerticalLayout OnEvent="Back" OnClickAction="$DeleteAndBack($outlet)">
+			<c:VerticalLayout OnEvent="Back" OnClickAction="$DoRollback()">
 				<c:TextView CssClass="left_tv" Text="#cancel#" />
 			</c:VerticalLayout>
 

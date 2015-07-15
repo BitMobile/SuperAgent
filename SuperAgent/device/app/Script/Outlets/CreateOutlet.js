@@ -63,8 +63,7 @@ function NoRequired()
 }
 
 function DeleteAndBack(entity) {
-	DB.Delete(entity);
-	Workflow.Back();
+	Workflow.Rollback();
 }
 
 function SaveNewOutlet(outlet) {
@@ -85,7 +84,9 @@ function SaveNewOutlet(outlet) {
 			outlet.Save();
 			Variables.AddGlobal("outlet", outlet.Id);
 
-			DoAction("Open");
+			GlobalWorkflow.SetOutletIsCreated(true);
+			GlobalWorkflow.SetOutlet(outlet.Id);
+			Workflow.Commit();
 
 			return null;
 		}

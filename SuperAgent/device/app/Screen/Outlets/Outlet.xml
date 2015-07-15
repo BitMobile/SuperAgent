@@ -6,7 +6,7 @@
 		<s:Push Id="workflow.visit" Value="$CreateVisitIfNotExists($outlet,$common.UserRef, $workflow.visit, $planVisit)" />
 	</s:If>
 
-	<s:Push Id="outletObj" Value="$GetObject($outlet)" />
+	<s:Push Id="outletObj" Value="$GetOutletObject()" />
 
 	<c:DockLayout Id="vOutlet">
 

@@ -1,4 +1,4 @@
-var scheduledVisits;
+﻿var scheduledVisits;
 var unscheduledVisits;
 var visitsTotal;
 var plannedVisits;

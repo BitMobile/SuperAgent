@@ -1,4 +1,4 @@
-var amount;
+﻿var amount;
 var overdueAmount;
 var editingItem;
 //var receivablesRecdset;

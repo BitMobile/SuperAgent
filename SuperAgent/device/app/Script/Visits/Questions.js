@@ -1,4 +1,4 @@
-var questionsAtScreen;
+﻿var questionsAtScreen;
 var regularAnswers;
 var answerText;
 var obligateNumber;

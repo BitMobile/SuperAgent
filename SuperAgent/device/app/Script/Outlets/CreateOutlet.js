@@ -1,4 +1,4 @@
-
+﻿
 var requiredLeft;
 
 function CreateOutlet(outlet) {

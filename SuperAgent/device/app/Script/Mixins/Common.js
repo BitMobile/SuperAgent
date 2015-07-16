@@ -178,7 +178,7 @@ function FocusOnEditText(editFieldName, isInputField) {
 
 function FormatOutput(value) {
 	if (String.IsNullOrEmpty(value) || IsEmptyValue(value))
-		return "—";
+		return "-";
 	else
 		return value;
 }

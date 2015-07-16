@@ -1,4 +1,4 @@
-﻿function DoForward() {
+function DoForward() {
 	Workflow.Forward(arguments.array);
 }
 

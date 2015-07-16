@@ -131,41 +131,21 @@ function HasOrderParameters() {
 }
 
 function GetOrderParameters(outlet) {
-	var query = new Query("                                                      \
-		SELECT 																																		 \
-			P.Id,																																		 \
-			P.Description, 																													 \
-			P.DataType, 																														 \
-			DT.Description AS TypeDescription, 																			 \
-			OP.Id AS ParameterValue, 																								 \
-			OP.Value, 																															 \
-			P.Visible, 																															 \
-			P.Editable, 																														 \
-			CASE 																																		 \
-				WHEN P.DataType=@integer OR P.DataType=@decimal OR P.DataType=@string	 \
-					THEN 1 																															 \
-					ELSE 0 																															 \
-				END AS IsInputField, 																									 \
-			CASE 																																		 \
-				WHEN P.DataType=@integer OR P.DataType=@decimal 											 \
-					THEN 'numeric' 																											 \
-					ELSE 'auto' 																												 \
-				END AS KeyboardType, 																									 \
-			CASE 																																		 \
-				WHEN P.DataType=@integer OR P.DataType=@decimal OR P.DataType=@string  \
-					THEN OP.Value 																											 \
-				ELSE 																																	 \
-					CASE 																													 			 \
-						WHEN OP.Value IS NULL OR RTRIM(OP.Value)='' 											 \
-							THEN '—'																												 \
-						ELSE																								 							 \
-							OP.Value 																												 \
-					END 																																 \
-			END AS AnswerOutput 																										 \
-		FROM 																																			 \
-			Catalog_OrderParameters P 																						   \
-				JOIN Enum_DataType DT On DT.Id=P.DataType 														 \
-				LEFT JOIN Document_"+$.workflow.currentDoc+"_Parameters OP ON OP.Parameter = P.Id AND OP.Ref = @outlet WHERE NOT P.DataType=@snapshot");
+	var query = new Query("SELECT P.Id, P.Description, P.DataType, DT.Description AS TypeDescription, " +
+		" OP.Id AS ParameterValue, OP.Value, P.Visible, P.Editable, " + 
+		" CASE WHEN P.DataType=@integer OR P.DataType=@decimal OR P.DataType=@string " +
+		" THEN 1 ELSE 0 END AS IsInputField, " +
+		" CASE WHEN P.DataType=@integer OR P.DataType=@decimal THEN 'numeric' " +
+		" ELSE 'auto' END AS KeyboardType, " +
+		" CASE WHEN P.DataType=@integer OR P.DataType=@decimal OR P.DataType=@string " +
+		" THEN OP.Value ELSE " +
+		" CASE WHEN OP.Value IS NULL OR RTRIM(OP.Value)='' THEN '—'	" +
+		" ELSE OP.Value END " +
+		" END AS AnswerOutput " +
+		" FROM Catalog_OrderParameters P " +
+		" JOIN Enum_DataType DT On DT.Id=P.DataType " +
+		" LEFT JOIN Document_"+$.workflow.currentDoc+"_Parameters OP ON OP.Parameter = P.Id AND OP.Ref = @outlet " +
+		" WHERE NOT P.DataType=@snapshot");
 	query.AddParameter("integer", DB.Current.Constant.DataType.Integer);
 	query.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);
 	query.AddParameter("string", DB.Current.Constant.DataType.String);

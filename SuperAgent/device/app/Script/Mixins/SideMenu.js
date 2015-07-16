@@ -39,7 +39,7 @@ function GetOutletsCount() {
 }
 
 function GetCommitedScheduledVisits() {
-	return Indicators.GetCommitedScheduledVisits();
+	return Indicators.GetCommitedScheduledVisits().ToString();
 }
 
 function GetOrderSumm() {

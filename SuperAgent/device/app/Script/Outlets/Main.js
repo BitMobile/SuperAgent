@@ -32,6 +32,11 @@ function OnLoading() {
 
 }
 
+function HasMenu(){
+
+	return GlobalWorkflow.GetMenuItem() == "Outlets" ? true : false;
+}
+
 function GetOutlets(searchText) {
 	var search = "";
 	var showOutlet = "";

@@ -5,7 +5,9 @@
 
 	<c:SwipeHorizontalLayout Id="swipe_layout" Index="1">
 
-		<s:Include File="\Components\SideMenu.xml"/>
+		<s:If Test="$HasMenu()">
+			<s:Include File="\Components\SideMenu.xml"/>
+		</s:If>
 
 		<c:DockLayout>
 

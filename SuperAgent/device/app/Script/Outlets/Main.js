@@ -1,4 +1,4 @@
-var snapshotsExists;
+﻿var snapshotsExists;
 var singlePicture;
 var parameterValueC;
 var title;

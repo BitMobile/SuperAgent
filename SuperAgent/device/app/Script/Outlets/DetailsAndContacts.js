@@ -1,4 +1,4 @@
-var outlet;
+﻿var outlet;
 var title;
 var hasPartnerContacts;
 var hasOutletContacts;

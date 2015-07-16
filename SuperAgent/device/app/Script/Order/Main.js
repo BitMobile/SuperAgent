@@ -1,4 +1,4 @@
-var itemsQty;
+﻿var itemsQty;
 var listTitle;
 var mainTitle;
 var infoTitle;

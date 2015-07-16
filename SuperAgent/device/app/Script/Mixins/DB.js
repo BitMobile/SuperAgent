@@ -1,4 +1,4 @@
-function DoSave()
+﻿function DoSave()
 {
     DB.Save();
 }

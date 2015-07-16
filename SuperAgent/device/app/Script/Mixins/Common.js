@@ -1,4 +1,4 @@
-
+﻿
 //---------------Common functions-----------
 
 function ToFloat(text) {

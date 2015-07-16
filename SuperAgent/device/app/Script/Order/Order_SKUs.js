@@ -1,4 +1,4 @@
-var defFeature;
+﻿var defFeature;
 var defPack;
 var packDescription;
 var swipedRow;

@@ -1,4 +1,4 @@
-var swipedRow;
+﻿var swipedRow;
 var alreadyAdded;
 var forwardText;
 var c_orderItem;

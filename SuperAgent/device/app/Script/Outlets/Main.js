@@ -78,12 +78,13 @@ function AddGlobalAndAction(outlet) {
 	GlobalWorkflow.SetOutlet(outlet);
 
 	var actionName;
-	var curr = GlobalWorkflow.GetMenuItem();
+	var curr = GlobalWorkflow.GetMenuItem();	
+
 	if (curr=="Outlets")
 		actionName = "Select";
 	else if (curr == "Orders")
 		actionName = "CreateOrder";
-	else if (curr == "Return")
+	else if (curr == "Returns")
 		actionName = "CreateReturn";
 
 	Workflow.Action(actionName, []);

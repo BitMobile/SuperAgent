@@ -23,6 +23,7 @@ function OnWorkflowStart(name) {
 	if ($.Exists("workflow"))
 		$.Remove("workflow");
 	Variables.AddGlobal("workflow", new Dictionary());
+	Variables["workflow"].Add("name", name);
 
 	if (name == "Visits" || name == "Outlets" || name=="Order" || name=="Return") 
 	{
@@ -81,7 +82,7 @@ function OnWorkflowFinish(name, reason) {
 		GPS.StopTracking();
 	}
 
-	if (name=="Visit" || name=="CreateOrder" || name=="CreateReturn")
+	if (name=="Visit" || name=="Order" || name=="Return")
 	{
 		Global.ClearFilter();
 	}
@@ -121,8 +122,8 @@ function RemoveVariables(name){
 
 	if (name != "Main")
 	{
-		Variables.Remove("outlet");
-
+		if (Variables.Exists("outlet"))
+			Variables.Remove("outlet");
 		if (Variables.Exists("planVisit"))
 			Variables.Remove("planVisit");
 		if (Variables.Exists("steps"))

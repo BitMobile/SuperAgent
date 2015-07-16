@@ -36,6 +36,12 @@ function OnLoading(){
 
 //---------------------------UI calls----------------
 
+function GetOutlet(){
+	if (!$.Exists("outlet"))
+		$.AddGlobal("outlet", GlobalWorkflow.GetOutlet());
+	return $.outlet;
+}
+
 function GetItems() {
 
 	var q = new Query();
@@ -57,19 +63,13 @@ function GetItems() {
 
 function SelectOrder(order, outlet){
 	order = order.GetObject();		
-	if (IsNew(order)){		
-		$.AddGlobal("outlet", outlet);
-		$.AddGlobal("executedOrder", order.Id);
-		DoAction('Edit', null, null, order.Id);
-	}
-	else
-		DoAction('Review', outlet, null, order.Id);
+	GlobalWorkflow.SetOutlet(outlet);
+	$.AddGlobal("executedOrder", order.Id);
+	DoAction('Edit');
 }
 
-function FindExecutedOrder(executedOrder){
-	if (executedOrder!=null)
-		return executedOrder;
-	else if ($.Exists('executedOrder'))
+function FindExecutedOrder(){
+	if ($.Exists('executedOrder'))
 		return $.executedOrder;
 	else
 		return null;
@@ -283,8 +283,6 @@ function CreateDocumentIfNotExists(executedOrder, visitId) {
 
 
 			order.Date = DateTime.Now;
-			if (outlet == null)
-				outlet = $.outlet;
 			order.Outlet = outlet;
 			order.SR = userRef;
 			order.DeliveryDate = DateTime.Now.AddDays(1);
@@ -463,38 +461,35 @@ function IsEditable(executedOrder, order) {
 	return executedOrder == null && IsNew(order) && NotEmptyRef(order.PriceList);
 }
 
-function CheckIfEmptyAndForward(order, wfName) {
-	var save = true;
-	if (parseInt(itemsQty) == parseInt(0)) {
-		DB.Delete(order);
-		var query = new Query("SELECT * FROM Document_Order_Parameters WHERE Ref = @order")
-		query.AddParameter("order", order);
-		queryResult = query.Execute();
-		while (queryResult.Next()) {
-			DB.Delete(queryResult.Id);
+function CheckIfEmptyAndForward(order, wfName) {	
+	var empty = parseInt(itemsQty) == parseInt(0);
+
+	if (wfName=="Visit"){
+		if (empty){ //clearing parameters and delete order
+			DB.Delete(order);
+			var query = new Query("SELECT * FROM Document_Order_Parameters WHERE Ref = @order")
+			query.AddParameter("order", order);
+			queryResult = query.Execute();
+			while (queryResult.Next()) {
+				DB.Delete(queryResult.Id);
+			}
+
+			if ($.workflow.currentDoc=="Order")
+				$.workflow.Remove("order");
+			if ($.workflow.currentDoc=="Return")
+				$.workflow.Remove("Return");
 		}
-
-		if ($.workflow.currentDoc=="Order")
-			$.workflow.Remove("order");
-		if ($.workflow.currentDoc=="Return")
-			$.workflow.Remove("Return");
-
-		save = false;
+		else
+			Workflow.Forward([]);
 	}
 
-	if (wfName == "CreateOrder" || wfName == "CreateReturn") {
-		if (save)
-			order.GetObject().Save();
-		Workflow.Commit();
-	} else if (wfName == "Order" || wfName == "Return") {
-		if (IsNew(order)) {
-			order.GetObject().Save();
-			DB.Commit();
-		}
-		DoBackTo($.workflow.currentDoc + "List");
-	} else
-		Workflow.Forward([]);
-
+	else if (wfName=="Order" || wfName=="Return")
+	{
+		if (empty)
+			Workflow.Rollback();
+		else
+			Workflow.Commit();
+	}
 }
 
 function SaveOrder(order) {
@@ -513,34 +508,27 @@ function SetDeliveryDateDialog(order, control, executedOrder, title) {
 
 function OrderBack() {
 
-	if ($.workflow.name == "CreateOrder" || $.workflow.name == "CreateReturn") 
+	if ($.workflow.name == "Order" || $.workflow.name == "Return") 
 		Workflow.Rollback();
-	 else {
 
-		if ($.workflow.name == "Order" || $.workflow.name == "Return") 
-			DoBackTo($.workflow.currentDoc + "List");
+	else {
+		ClearFilters();
 
-		else{
+		var stepNumber;
+		if ($.workflow.currentDoc=="Order")
+			stepNumber = '4';
+		else
+			stepNumber = '5';
 
-			ClearFilters();
-
-			var stepNumber;
-			if ($.workflow.currentDoc=="Order")
-				stepNumber = '4';
-			else
-				stepNumber = '5';
-
-			var q = new Query("SELECT NextStep FROM USR_WorkflowSteps WHERE StepOrder<@stepNumber AND Value=0 ORDER BY StepOrder DESC");
-			q.AddParameter("stepNumber", stepNumber);
-			var step = q.ExecuteScalar();
-			if (step==null) {
-				Workflow.BackTo("Outlet");
-			}
-			else
-				Workflow.BackTo(step);
+		var q = new Query("SELECT NextStep FROM USR_WorkflowSteps WHERE StepOrder<@stepNumber AND Value=0 ORDER BY StepOrder DESC");
+		q.AddParameter("stepNumber", stepNumber);
+		var step = q.ExecuteScalar();
+		if (step==null) {
+			Workflow.BackTo("Outlet");
 		}
+		else
+			Workflow.BackTo(step);
 	}
-
 }
 
 function ClearFilters() {
@@ -566,7 +554,7 @@ function ShowInfoIfIsNew() {
 }
 
 function DeleteItem(item, executedOrder) {
-	DB.Delete(item);
+	DB.Delete(item, true);
 	Workflow.Refresh([ null, executedOrder ]);
 }
 

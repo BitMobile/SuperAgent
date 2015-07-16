@@ -646,16 +646,12 @@ function DeliveryDateCallBack(state, args){
 
 function OrderWillBeChanged(order, newPriceList) {
 	var query = new Query(
-		"SELECT DISTINCT                                \
-		    O.SKU																				\
-		FROM                                            \
-		    Document_" + $.workflow.currentDoc + "_SKUs O                       \
-				LEFT JOIN Document_PriceList_Prices P       \
-				    ON O.SKU = P.SKU                        \
-						AND P.Ref = @priceList                  \
-		WHERE																						\
-				O.Ref = @order                              \
-			  AND P.Ref IS NULL                           ");
+		"SELECT DISTINCT " +
+		" O.SKU " +
+		" FROM Document_" + $.workflow.currentDoc + "_SKUs O " +
+		" LEFT JOIN Document_PriceList_Prices P ON O.SKU = P.SKU AND P.Ref = @priceList " +
+		" WHERE	" +
+		" O.Ref = @order AND P.Ref IS NULL");
 	query.AddParameter("order", order);
 	query.AddParameter("priceList", newPriceList);
 	count = query.ExecuteCount();

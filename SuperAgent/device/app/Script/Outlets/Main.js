@@ -226,6 +226,15 @@ function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParamete
 				listChoice = table;
 			}
 
+			if (title == Translate["#partner#"]){
+				var query = new Query("SELECT D.Id, D.Description " +
+					" FROM Catalog_Distributor D " +
+					" JOIN Catalog_Territory_Distributors TD ON D.Id=TD.Distributor " +
+					" JOIN Catalog_Territory_Outlets T ON TD.Ref=T.Ref AND T.Outlet=@outlet");
+				query.AddParameter("outlet", outlet);
+				listChoice = query.Execute();
+			}
+
 			Dialogs.DoChoose(listChoice, outlet, attribute, control, func, title);
 		}
 	}

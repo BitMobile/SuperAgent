@@ -266,6 +266,12 @@ function CreatePlan(outlet, plan, planDate) {
 
 //---------------------Contractors--------------
 
+function HasMenu(){
+
+	return false;
+}
+
+
 function GetOutlets(searchText){
 	var search = "";
 	if (String.IsNullOrEmpty(searchText)==false) { //search processing

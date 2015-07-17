@@ -397,9 +397,14 @@ function GetContractors(chooseDefault, outletRef)
 	else
 	{
 		var q = new Query("SELECT  C.Id, C.Description " +
-			"FROM Catalog_Distributor_Contractors D " +
-			"JOIN Catalog_Contractors C ON D.Contractor=C.Id " +
-			"WHERE Ref=@distr " + defStr + " ORDER BY C.Description");
+
+			" FROM Catalog_Distributor_Contractors DC " +
+			" JOIN Catalog_Territory_Contractors TC ON DC.Contractor=TC.Contractor " +
+			" JOIN Catalog_Territory_Outlets T ON TC.Ref=T.Ref AND T.Outlet=@outlet " +
+			" JOIN Catalog_Contractors C ON C.Id=TC.Contractor " +
+
+			" WHERE DC.Ref=@distr " + defStr + "ORDER BY IsDefault desc, C.Description");
+		q.AddParameter("outlet", outlet.Id);
 		q.AddParameter("distr", outlet.Distributor);
 		result = q.Execute();
 	}

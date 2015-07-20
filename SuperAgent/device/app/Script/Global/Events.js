@@ -19,13 +19,13 @@ function OnApplicationRestore(){
 // ------------------------ Events ------------------------
 
 function OnWorkflowStart(name) {
-	
+
 	if ($.Exists("workflow"))
 		$.Remove("workflow");
 	Variables.AddGlobal("workflow", new Dictionary());
 	Variables["workflow"].Add("name", name);
 
-	if (name == "Visits" || name == "Outlets" || name=="Order" || name=="Return") 
+	if (name == "Visits" || name == "Outlets" || name=="Order" || name=="Return")
 	{
 		GPS.StartTracking();
 	}
@@ -35,7 +35,7 @@ function OnWorkflowStart(name) {
 		SetFilterIndex();
 	}
 
-	if (name == "Visit") 
+	if (name == "Visit")
 	{
 		CreateQuestionnareTable($.outlet);
 		CreateQuestionsTable($.outlet);
@@ -51,9 +51,11 @@ function OnWorkflowForward(name, lastStep, nextStep, parameters) {
 
 function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 
-	if (workflowName == "Visit" && nextStep != "Outlet" && nextStep != "Total") 
+	if (workflowName == "Visit" && nextStep != "Outlet" && nextStep != "Total")
 	{
-		AlternativeStep();
+		var standart = AlternativeStep(nextStep);
+		if (!standart)
+			return false;
 	}
 
 	if (workflowName == "Main" && GlobalWorkflow.GetOutletIsCreated()) //for step between CreateOutlet and Outlet
@@ -64,7 +66,7 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 	if (NextDoc(lastStep, nextStep)) //between Return and Order
 	{
 		Global.ClearFilter();
-	}		
+	}
 
 	WriteScreenName(nextStep);
 
@@ -77,8 +79,8 @@ function OnWorkflowFinish(name, reason) {
 
 	RemoveVariables(name);
 
-	if (name != "Main") 
-	{		
+	if (name != "Main")
+	{
 		GPS.StopTracking();
 	}
 
@@ -96,13 +98,13 @@ function OnWorkflowFinished(name, reason){
 }
 
 function OnWorkflowBack(workflow, lastStep, nextStep){
-	
+
 	WriteScreenName(nextStep);
-	
+
 	if (NextDoc(lastStep, nextStep)) //between Order and Return
 	{
 		Global.ClearFilter();
-	}		
+	}
 
 	if (lastStep=="Image" && nextStep=="EditSKU")  //Diarty hack, if remove, will be created new orderItem
 	{
@@ -177,14 +179,16 @@ function SetFilterIndex(){
 
 }
 
-function AlternativeStep(){
+function AlternativeStep(nextStep){
 	var action;
 	action = GetAction(nextStep);
 
 	if (action != null) {
+		Dialog.Debug(action)
 		Workflow.Action(action, []);
 		return false;
 	}
+	return true;
 }
 
 function CloseCreatedOutlet(){

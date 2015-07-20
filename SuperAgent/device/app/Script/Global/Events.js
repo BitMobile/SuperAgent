@@ -184,7 +184,6 @@ function AlternativeStep(nextStep){
 	action = GetAction(nextStep);
 
 	if (action != null) {
-		Dialog.Debug(action)
 		Workflow.Action(action, []);
 		return false;
 	}

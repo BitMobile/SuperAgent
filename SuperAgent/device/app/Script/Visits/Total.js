@@ -224,6 +224,13 @@ function NoTasks(skipTasks) {
 		return true;
 }
 
+function FormatOutput(value) {
+	if (String.IsNullOrEmpty(value) || IsEmptyValue(value))
+		return "—";
+	else
+		return value;
+}
+
 
 //------------------------------Questionnaires handlers------------------
 

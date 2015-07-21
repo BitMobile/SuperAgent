@@ -464,8 +464,7 @@ function CheckIfEmptyAndForward(order, wfName) {
 			if ($.workflow.currentDoc=="Return")
 				$.workflow.Remove("Return");
 		}
-		else
-			Workflow.Forward([]);
+		Workflow.Forward([]);
 	}
 
 	else if (wfName=="Order" || wfName=="Return")

@@ -15,11 +15,11 @@
 				<c:VerticalLayout OnClickAction="$ShowContractorsIfExists($outlet)" CssClass="trple">
 					<c:TextView Text="#contractors#" CssClass="trpl_left_tv"></c:TextView>
 				</c:VerticalLayout>
-				<c:VerticalLayout Id="btnContacts" OnEvent="Forward" OnClickAction="$DoAction(ShowContacts, $outlet)" CssClass="trple">
+				<c:VerticalLayout Id="btnContacts" OnClickAction="$DoAction(ShowContacts, $outlet)" CssClass="trple_center">
 					<c:TextView Text="#contacts#" CssClass="trpl_center_tv"></c:TextView>
 				</c:VerticalLayout>
-				<c:VerticalLayout Id="btnVisit" OnEvent="Forward" OnClickAction="$DoAction(Plans, $outlet)" CssClass="trple">
-					<c:TextView Text="#visit#" CssClass="trpl_right_tv"></c:TextView>
+				<c:VerticalLayout Id="btnVisit" OnClickAction="$DoAction(Plans, $outlet)" CssClass="trple">
+					<c:TextView Text="#visits#" CssClass="trpl_right_tv"></c:TextView>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 		</s:If>
@@ -28,7 +28,7 @@
 				<c:VerticalLayout OnClickAction="$ShowContractorsIfExists($outlet)">
 					<c:TextView Text="#contractors#" CssClass="left_tv"></c:TextView>
 				</c:VerticalLayout>
-				<c:VerticalLayout Id="btnContacts" OnEvent="Forward" OnClickAction="$DoAction(ShowContacts, $outlet)">
+				<c:VerticalLayout Id="btnContacts" OnClickAction="$DoAction(ShowContacts, $outlet)">
 					<c:TextView Text="#contacts#" CssClass="right_tv"></c:TextView>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>

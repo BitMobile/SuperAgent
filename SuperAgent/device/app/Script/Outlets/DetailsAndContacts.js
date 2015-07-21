@@ -179,6 +179,13 @@ function EditOwner(contact, owner){
 
 }
 
+function CheckAndFocus(editFieldName, isInputField){
+	if ($.owner.Text == "—")
+		Dialog.Message(Translate["#selectOwner#"]);
+	else
+		FocusOnEditText(editFieldName, isInputField);
+}
+
 function HasContacts(outlet){
 	hasOutletContacts = HasOutletContacts(outlet);
 	hasPartnerContacts = HasPartnerContacts(outlet);

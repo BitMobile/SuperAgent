@@ -80,19 +80,29 @@ function GetOutlets(searchText) {
 }
 
 function AddGlobalAndAction(outlet) {
-	GlobalWorkflow.SetOutlet(outlet);
 
-	var actionName;
+	var actionName = "";
 	var curr = GlobalWorkflow.GetMenuItem();	
 
 	if (curr=="Outlets")
 		actionName = "Select";
-	else if (curr == "Orders")
-		actionName = "CreateOrder";
-	else if (curr == "Returns")
-		actionName = "CreateReturn";
+	else{
+		if (HasContractors(outlet)){
+			if (curr == "Orders")
+				actionName = "CreateOrder";
+			if (curr == "Returns")
+				actionName = "CreateReturn";
+		}
+		else{
+			Dialog.Message(Translate["#noContractorsMessage#"]);
+		}
+	}
 
-	Workflow.Action(actionName, []);
+	if (actionName != ""){
+		GlobalWorkflow.SetOutlet(outlet);
+		Workflow.Action(actionName, []);
+	}
+		
 }
 
 function GetOutletObject(){
@@ -585,7 +595,7 @@ function HasContractors(outlet){
 
 	var res;
 
-	var outletObj = $.outlet.GetObject();
+	var outletObj = outlet.GetObject();
 	if (outletObj.Distributor==DB.EmptyRef("Catalog_Distributor"))
 		res = HasOutletContractors(outlet);
 	else

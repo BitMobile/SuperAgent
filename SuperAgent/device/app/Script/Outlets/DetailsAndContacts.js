@@ -236,7 +236,7 @@ function DeleteContact(ref) {
 	Workflow.Refresh([ $.outlet ]);
 }
 
-function SelectOwnership(control) {
+function SelectOwnership(control, contractor) {
 	var q = new Query();
 	// q.Text = "SELECT Id, Description FROM Enum_OwnershipType UNION SELECT @emptyRef, '—' ORDER BY Description desc";// UNION SELECT NULL, '—' ORDER BY Description";
 	// q.AddParameter("emptyRef",  DB.EmptyRef("Enum_OwnershipType"));
@@ -251,7 +251,7 @@ function SelectOwnership(control) {
 		arr.push([res.Id, Translate["#" + res.Description + "#"]]);
 	}
 
-	Dialogs.DoChoose(arr, $.outlet, "OwnershipType", control, OwnTypeCallBack, Translate["#ownership#"]);
+	Dialogs.DoChoose(arr, contractor, "OwnershipType", control, OwnTypeCallBack, Translate["#ownership#"]);
 
 }
 

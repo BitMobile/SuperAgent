@@ -142,6 +142,7 @@ function CountOutlets() {
 function AddGlobalAndAction(planVisit, outlet, actionName) {
 	$.AddGlobal("planVisit", planVisit);
 	$.AddGlobal("outlet", outlet);
+	GlobalWorkflow.SetOutlet(outlet);
 	Workflow.Action(actionName, []);
 }
 

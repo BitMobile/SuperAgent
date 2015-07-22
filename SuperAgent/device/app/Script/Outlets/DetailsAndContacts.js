@@ -344,8 +344,8 @@ function CreateOutletEnabled(){
 	return false;
 }
 
-function AddGlobalAndAction(name, contractor, actionName){
-	DoAction(actionName, contractor);
+function AddGlobalAndAction(contractor){
+	DoAction("Select", contractor);
 }
 
 // --------------------internal-----------------

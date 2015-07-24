@@ -82,6 +82,14 @@ function CountResultAndForward() {
 //--------------------------------Questions list handlers--------------------------
 //
 
+function HasQuestions(){
+	if (regularAnswers && parseInt(regular_total)==parseInt(0))
+		return false;
+	if (!regularAnswers && parseInt(single_total)==parseInt(0))
+		return false;
+	return true;
+}
+
 function GetSKUsFromQuesionnaires(search) {
 
 	var single = 1;

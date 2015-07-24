@@ -315,3 +315,4 @@ email_regexp	^(([а-яА-ЯёЁa-zA-Z0-9_-]+\.)*[а-яА-ЯёЁa-zA-Z0-9_-]+@[а
 kpp_regexp		^(\d{9}|)?$
 inn_regexp		^((\d{10})|(\d{12})|)?$
 selectOwner		Owner isn't selected
+no_questions_list	NO QUESTIONS

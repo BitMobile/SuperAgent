@@ -122,6 +122,14 @@ function SetIndiactors() {
 
 }
 
+function HasQuestions(){
+	if (regularAnswers && parseInt(regular_total)==parseInt(0))
+		return false;
+	if (!regularAnswers && parseInt(single_total)==parseInt(0))
+		return false;
+	return true;
+}
+
 function CreateVisitQuestionValueIfNotExists(question, answer, dialogInput) {
 
 	var query = new Query("SELECT Id FROM Document_Visit_Questions WHERE Ref == @Visit AND Question == @Question");

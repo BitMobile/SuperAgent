@@ -2,8 +2,6 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Main.css">
 
 	<s:Push Id="unscheduledVisits" Value="$GetUnscheduledVisits()" />
-	<s:Push Id="visitsTotal" Value="$GetSum($scheduledVisits, $unscheduledVisits)"></s:Push>
-	<s:Push Id="planVisitsLeft" Value="$GetDifference($plannedVisits, $scheduledVisits)"></s:Push>
 	<s:Push Id="encashmentSumm" Value="$GetEncashmentSumm()" />
 	<s:Push Id="receivablesSumm" Value="$GetReceivablesSumm()" />
 
@@ -30,7 +28,7 @@
 				<c:DockLayout>
 					<c:VerticalLayout CssClass="left">
 						<c:DockLayout CssClass="caption_big">
-							<c:TextView Text="$visitsTotal" />
+							<c:TextView Text="$GetTotal()" />
 							<c:TextView Text="#vpVisits#" CssClass="descr" />
 							<c:TextView Text="#vpPerformed#" CssClass="descr" />
 						</c:DockLayout>
@@ -38,7 +36,7 @@
 						<c:VerticalLayout CssClass="simple">
 							<c:HorizontalLayout>
 								<c:TextView Text="#further#" CssClass="descr" />
-								<c:TextView Text="$planVisitsLeft" CssClass="mark" />
+								<c:TextView Text="$GetVisitsLeft()" CssClass="mark" />
 								<c:TextView Text="#vpVisits#" />
 							</c:HorizontalLayout>
 							<c:TextView Text="#scheduled#" CssClass="descr" />

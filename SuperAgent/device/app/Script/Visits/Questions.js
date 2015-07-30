@@ -31,7 +31,7 @@ function SetListType() {
 			regularAnswers = false;
 		else
 			regularAnswers = true;
-	}		
+	}
 }
 
 function ChangeListAndRefresh(control, param) {
@@ -163,7 +163,7 @@ function CreateVisitQuestionValueIfNotExists(question, answer, dialogInput) {
 		if ((answer=="—" || TrimAll(answer)=="") && dialogInput==false) {
 
 			DB.Delete(result);
-			
+
 		} else{
 
 			var p = result.GetObject();
@@ -237,7 +237,7 @@ function AssignAnswer(control, question, answer) {
 		answerString = "@answer ";
 
 	var q =	new Query("UPDATE USR_Questions SET Answer=" + answerString + ", AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question");
-	q.AddParameter("answer", answer);
+	q.AddParameter("answer", (question.AnswerType == DB.Current.Constant.DataType.DateTime ? Format("{0:dd.MM.yyyy HH:mm}", Date(answer)) : answer));
 	q.AddParameter("question", question);
 	q.Execute();
 }

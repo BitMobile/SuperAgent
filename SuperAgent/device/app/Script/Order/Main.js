@@ -62,7 +62,7 @@ function GetItems() {
 }
 
 function SelectOrder(order, outlet){
-	order = order.GetObject();		
+	order = order.GetObject();
 	GlobalWorkflow.SetOutlet(outlet);
 	$.AddGlobal("executedOrder", order.Id);
 	DoAction('Edit');
@@ -132,7 +132,7 @@ function HasOrderParameters() {
 
 function GetOrderParameters(outlet) {
 	var query = new Query("SELECT P.Id, P.Description, P.DataType, DT.Description AS TypeDescription, " +
-		" OP.Id AS ParameterValue, OP.Value, P.Visible, P.Editable, " + 
+		" OP.Id AS ParameterValue, OP.Value, P.Visible, P.Editable, " +
 		" CASE WHEN P.DataType=@integer OR P.DataType=@decimal OR P.DataType=@string " +
 		" THEN 1 ELSE 0 END AS IsInputField, " +
 		" CASE WHEN P.DataType=@integer OR P.DataType=@decimal THEN 'numeric' " +
@@ -156,9 +156,9 @@ function GetOrderParameters(outlet) {
 	return result;
 }
 
-function GoToParameterAction(typeDescription, parameterValue, value, order, parameter, control, parameterDescription, 
+function GoToParameterAction(typeDescription, parameterValue, value, order, parameter, control, parameterDescription,
 	editable, isInputField) {
-	
+
 	if (IsNew(order)) {
 		if (editable) {
 
@@ -199,8 +199,8 @@ function CreateOrderParameterValue(order, parameter, value, parameterValue, isIn
 	} else{
 		parameterValue = parameterValue.GetObject();
 		if (isInputField)
-			parameterValue.Value = value;		
-	}		
+			parameterValue.Value = value;
+	}
 	parameterValue.Save();
 	return parameterValue.Id;
 }
@@ -215,7 +215,7 @@ function DateHandler(state, args) {
 	var control = state[1];
 	if(getType(args.Result)=="System.DateTime"){
 		parameterValue = parameterValue.GetObject();
-		parameterValue.Value = args.Result;
+		parameterValue.Value = Format("{0:dd.MM.yyyy HH:mm}", Date(args.Result));
 		parameterValue.Save();
 		Workflow.Refresh([$.sum, $.executedOrder, $.thisDoc]);
 	}
@@ -241,7 +241,7 @@ function IsEditText(isInputField, editable, order) {
 function CreateDocumentIfNotExists(executedOrder, visitId) {
 	var outlet = $.outlet;
 	var userRef = $.common.UserRef;
-	
+
 	var order;
 	if ($.workflow.currentDoc=="Order")
 		order = $.workflow.HasValue("order")==true ? $.workflow.order : null;
@@ -373,14 +373,14 @@ function SelectStock(order, attr, control) {
 function SelectContractor(thisDoc)
 {
 	var listChoice = GetContractors(false, thisDoc.Outlet);
-		
+
 	Dialogs.DoChoose(listChoice, thisDoc, "Contractor", $.contractor, null, Translate["#contractor#"]);
 }
 
 function GetContractors(chooseDefault, outletRef)
 {
 	var outlet = outletRef.GetObject();
-	var defStr = "";	
+	var defStr = "";
 	var result;
 	if (chooseDefault)
 		defStr = " AND Isdefault=1 ";
@@ -446,7 +446,7 @@ function IsEditable(executedOrder, order) {
 	return executedOrder == null && IsNew(order) && NotEmptyRef(order.PriceList);
 }
 
-function CheckIfEmptyAndForward(order, wfName) {	
+function CheckIfEmptyAndForward(order, wfName) {
 	var empty = parseInt(itemsQty) == parseInt(0);
 
 	if (wfName=="Visit"){
@@ -492,7 +492,7 @@ function SetDeliveryDateDialog(order, control, executedOrder, title) {
 
 function OrderBack() {
 
-	if ($.workflow.name == "Order" || $.workflow.name == "Return") 
+	if ($.workflow.name == "Order" || $.workflow.name == "Return")
 		Workflow.Rollback();
 
 	else {
@@ -670,12 +670,12 @@ function ReviseSKUs(order, priceList, stock) {
 		Dialog.Message(Translate["#" + $.workflow.currentDoc + "SKUWillRevised#"]);
 
 	var query = new Query();
-	query.Text = "SELECT O.Id, O.Qty, O.Discount, O.Price, O.Total, " + 
-	" O.Amount, P.Price AS NewPrice, SS.StockValue AS NewStock, SP.Multiplier " + 
-	" FROM Document_" + $.workflow.currentDoc + "_SKUs O " + 
-	" LEFT JOIN Document_PriceList_Prices P ON O.SKU=P.SKU AND P.Ref = @priceList " + 
-	" LEFT JOIN Catalog_SKU_Stocks SS ON SS.Ref=O.SKU AND SS.Stock = @stock " + 
-	" JOIN Catalog_SKU_Packing SP ON O.Units=SP.Pack AND SP.Ref=O.SKU " + 
+	query.Text = "SELECT O.Id, O.Qty, O.Discount, O.Price, O.Total, " +
+	" O.Amount, P.Price AS NewPrice, SS.StockValue AS NewStock, SP.Multiplier " +
+	" FROM Document_" + $.workflow.currentDoc + "_SKUs O " +
+	" LEFT JOIN Document_PriceList_Prices P ON O.SKU=P.SKU AND P.Ref = @priceList " +
+	" LEFT JOIN Catalog_SKU_Stocks SS ON SS.Ref=O.SKU AND SS.Stock = @stock " +
+	" JOIN Catalog_SKU_Packing SP ON O.Units=SP.Pack AND SP.Ref=O.SKU " +
 	" WHERE O.Ref=@order";
 	query.AddParameter("order", order);
 	query.AddParameter("priceList", priceList);

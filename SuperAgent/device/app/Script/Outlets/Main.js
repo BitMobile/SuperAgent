@@ -82,7 +82,7 @@ function GetOutlets(searchText) {
 function AddGlobalAndAction(outlet) {
 
 	var actionName = "";
-	var curr = GlobalWorkflow.GetMenuItem();	
+	var curr = GlobalWorkflow.GetMenuItem();
 
 	if (curr=="Outlets")
 		actionName = "Select";
@@ -102,7 +102,7 @@ function AddGlobalAndAction(outlet) {
 		GlobalWorkflow.SetOutlet(outlet);
 		Workflow.Action(actionName, []);
 	}
-		
+
 }
 
 function GetOutletObject(){
@@ -355,7 +355,7 @@ function DateHandler(state, args) {
 	var control = state[1];
 	if(getType(args.Result)=="System.DateTime"){
 		parameterValue = parameterValue.GetObject();
-		parameterValue.Value = args.Result;
+		parameterValue.Value = Format("{0:dd.MM.yyyy HH:mm}", Date(args.Result));
 		parameterValue.Save();
 		Workflow.Refresh([]);
 	}

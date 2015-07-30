@@ -312,7 +312,7 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 	setScroll = false;
 }
 
-function AssignAnswer(control, question, sku, answer) {
+function AssignAnswer(control, question, sku, answer, answerType) {
 
 	if (control != null) {
 		answer = control.Text;
@@ -322,6 +322,12 @@ function AssignAnswer(control, question, sku, answer) {
 	}
 	if (answer == "—" || answer == "" || answer=="-")
 		answer = null;
+
+	if (!String.IsNullOrEmpty(answer) && answerType == DB.Current.Constant.DataType.Integer){
+		var i = Find(answer, ",");
+		answer = parseInt(i)!=parseInt(0) ? Left(answer, i - 1) : answer;
+		control.Text = answer;
+	}
 
 	var answerString;
 	if (String.IsNullOrEmpty(answer))

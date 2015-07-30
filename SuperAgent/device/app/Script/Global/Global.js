@@ -20,6 +20,7 @@ function SetSessionConstants() {
 	var NOR = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='ControlOrderReasonEnabled'");
 	var SnapshotSize = new Query("SELECT NumericValue FROM Catalog_MobileApplicationSettings WHERE Description='SnapshotSize'");
 	var SKUFeaturesRegistration = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='SKUFeaturesRegistration'");
+	var coordActuality = new Query("SELECT NumericValue FROM Catalog_MobileApplicationSettings WHERE Description='UserCoordinatesActualityTime'");
 
 	$.AddGlobal("sessionConst", new Dictionary());
 	$.sessionConst.Add("solVersion", solVersion.ExecuteScalar());
@@ -30,7 +31,8 @@ function SetSessionConstants() {
 	$.sessionConst.Add("UVR", EvaluateBoolean(UVR.ExecuteScalar()));
 	$.sessionConst.Add("NOR", EvaluateBoolean(NOR.ExecuteScalar()));
 	$.sessionConst.Add("SnapshotSize", SnapshotSize.ExecuteScalar());
-	$.sessionConst.Add("SKUFeaturesRegistration", SKUFeaturesRegistration.ExecuteScalar());
+	$.sessionConst.Add("SKUFeaturesRegistration", SKUFeaturesRegistration.ExecuteScalar());	
+	$.sessionConst.Add("UserCoordinatesActualityTime", coordActuality.ExecuteScalar());
 
 	var q = new Query("SELECT U.AccessRight, A.Id, A.Code FROM Catalog_MobileAppAccessRights A " +
 		" LEFT JOIN Catalog_User_UserRights U ON U.AccessRight=A.Id ");

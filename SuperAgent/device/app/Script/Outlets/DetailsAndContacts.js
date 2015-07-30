@@ -12,16 +12,17 @@ function OnLoading(){
 function OnLoad() 
 {
 	outlet = $.param1;
-	if ($.Exists("contactOwner")) 
+	if ($.Exists("contactOwner")) //for Contact screen
 	{
 		var isEditableContact = IsEditableContact($.ownerType);
 		if ($.owner.Text == "—" || !isEditableContact)
 		{
 			SetEnabledToContactScope(false);
+			SelectOwner($.contactOwner);
 		}
 	}
 
-	if ($.Exists("contractor"))
+	if ($.Exists("contractor")) //for Contractor screen
 	{
 		if (!$.sessionConst.contractorEditable)
 		{

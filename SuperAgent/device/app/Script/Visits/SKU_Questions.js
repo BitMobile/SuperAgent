@@ -330,7 +330,7 @@ function AssignAnswer(control, question, sku, answer) {
 		answerString = "@answer ";
 
 	var q =	new Query("UPDATE USR_SKUQuestions SET Answer=" + answerString + ", AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question AND SKU=@sku");
-	q.AddParameter("answer", answer);
+	q.AddParameter("answer", (question.AnswerType == DB.Current.Constant.DataType.DateTime ? Format("{0:dd.MM.yyyy HH:mm}", Date(answer)) : answer));
 	q.AddParameter("sku", sku);
 	q.AddParameter("question", question);
 	q.Execute();

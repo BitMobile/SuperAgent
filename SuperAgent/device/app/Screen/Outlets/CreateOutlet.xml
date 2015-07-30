@@ -43,7 +43,7 @@
 			</s:If>
 			<s:Else>
 				<c:HorizontalLayout CssClass="required_grid">
-					<c:TextView Text="#requiredLeft# "></c:TextView>
+					<c:TextView Text="#requiredFieldsLeft# "></c:TextView>
 					<c:Image />
 					<c:TextView Id="obligateredInfo" Text="{@requiredLeft}"></c:TextView>
 				</c:HorizontalLayout>

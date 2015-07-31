@@ -241,7 +241,7 @@ function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParamete
 					" FROM Catalog_Distributor D " +
 					" JOIN Catalog_Territory_Distributors TD ON D.Id=TD.Distributor " +
 					" JOIN Catalog_Territory_Outlets T ON TD.Ref=T.Ref AND T.Outlet=@outlet " +
-					" UNION SELECT '', '—'" +
+					" UNION SELECT '', '-'" +
 					" ORDER BY Description ");
 				query.AddParameter("outlet", outlet);
 				listChoice = query.Execute();

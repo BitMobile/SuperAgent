@@ -317,3 +317,4 @@ kpp_regexp		^(\d{9}|)?$
 inn_regexp		^((\d{10})|(\d{12})|)?$
 selectOwner		Принадлежность контакта не выбрана
 no_questions_list	НЕТ ВОПРОСОВ
+requiredFieldsLeft	Обязательных полей осталось:

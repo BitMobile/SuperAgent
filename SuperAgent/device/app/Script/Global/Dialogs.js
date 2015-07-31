@@ -65,8 +65,10 @@ function CallBack(state, args) {
 	if (getType(args.Result)=="BitMobile.DbEngine.DbRef") {
 		if (attribute == "OutletStatus")
 			control.Text = Translate[String.Format("#{0}#", args.Result.Description)];
-		else
-			control.Text = args.Result.Description;
+		else{
+			control.Text = Find(args.Result.ToString(), '00000000-0000-0000-0000-000000000000') != parseInt(0) ? "—" : args.Result.Description;
+
+		}
 	}
 	else
 		control.Text = String.IsNullOrEmpty(args.Result) ? "—" : args.Result;

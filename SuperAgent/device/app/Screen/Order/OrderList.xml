@@ -24,7 +24,7 @@
 			<c:HorizontalLine />
 
 
-			<c:HorizontalLayout Id="btnAdd" CssClass="bottom_btn" OnEvent="Back" OnClickAction="$DoAction(Create)">
+			<c:HorizontalLayout Id="btnAdd" CssClass="bottom_btn" OnClickAction="$DoAction(Create)">
 				<c:TextView Text="#add#"></c:TextView>
 			</c:HorizontalLayout>
 			<c:HorizontalLine CssClass="b_line" />

@@ -237,10 +237,12 @@ function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParamete
 			}
 
 			if (title == Translate["#partner#"]){
-				var query = new Query("SELECT D.Id, D.Description " +
+				var query = new Query("SELECT DISTINCT D.Id, D.Description " +
 					" FROM Catalog_Distributor D " +
 					" JOIN Catalog_Territory_Distributors TD ON D.Id=TD.Distributor " +
-					" JOIN Catalog_Territory_Outlets T ON TD.Ref=T.Ref AND T.Outlet=@outlet");
+					" JOIN Catalog_Territory_Outlets T ON TD.Ref=T.Ref AND T.Outlet=@outlet " +
+					" UNION SELECT '', '—'" +
+					" ORDER BY Description ");
 				query.AddParameter("outlet", outlet);
 				listChoice = query.Execute();
 			}

@@ -25,9 +25,9 @@ function OnWorkflowStart(name) {
 	Variables.AddGlobal("workflow", new Dictionary());
 	Variables["workflow"].Add("name", name);
 
-	if (name == "Visits" || name == "Outlets" || name=="Order" || name=="Return")
+	if (name == "Visit" || name == "Outlet" || name=="Order" || name=="Return")
 	{
-		GPS.StartTracking();
+		StartTracking();		
 	}
 
 	if (name=="Visit" || name=="Order" || name=="Return")
@@ -117,6 +117,20 @@ function OnWorkflowPause(name) {
 }
 
 // ------------------------ Functions ------------------------
+
+function StartTracking(){		
+
+	if (parseInt($.sessionConst.UserCoordinatesActualityTime) == parseInt(0))
+	{
+		GPS.StartTracking(-1);
+	}
+	else
+	{
+		GPS.StartTracking(parseInt($.sessionConst.UserCoordinatesActualityTime * 60));
+	}
+		
+	// GPS.StartTracking();
+}
 
 function RemoveVariables(name){
 

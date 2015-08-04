@@ -49,16 +49,18 @@ function GetOutlets(searchText) {
 		searchText = StrReplace(searchText, "'", "''");
 		search = "WHERE Contains(O.Description, '" + searchText + "') ";
 	}
+	
+	var currentDoc = GlobalWorkflow.GetMenuItem();
 
-	if ($.workflow.name=="Outlets") {  //ShowOutletInMA for Outlets.xml at Outlets workflow
+	if (currentDoc=="Outlets") {  //ShowOutletInMA for Outlets.xml at Outlets workflow
 		showOutlet = " JOIN Catalog_OutletsStatusesSettings OS ON OS.Status=O.OutletStatus AND ShowOutletInMA=1 ";
 	}
 
-	if ($.workflow.name=="Order") {  //CreateOrderInMA for Outlets.xml at Order workflow
+	if (currentDoc=="Orders") {  //CreateOrderInMA for Outlets.xml at Order workflow
 		createOrder = " JOIN Catalog_OutletsStatusesSettings OS ON OS.Status=O.OutletStatus AND CreateOrderInMA=1 ";
 	}
 
-	if ($.workflow.name=="Return"){
+	if (currentDoc=="Returns"){
 		createReturn = " JOIN Catalog_OutletsStatusesSettings OS ON OS.Status=O.OutletStatus AND CreateReturnInMA=1 ";
 	}
 

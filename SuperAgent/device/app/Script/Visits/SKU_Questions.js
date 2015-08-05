@@ -236,7 +236,17 @@ function GetImagePath(visitID, outletID, pictID, pictExt) {
 	return (pathFromVisit == "/shared/result.jpg" ? pathFromOutlet : pathFromVisit);
 }
 
-function RefreshScreen(control, search) {
+function RefreshScreen(control, search, sku, question, answerType) {
+
+	var answer = control.Text;
+
+	if (!String.IsNullOrEmpty(answer) && answerType == DB.Current.Constant.DataType.Integer){
+
+		control.Text = Round(Number(answer), 0);
+
+		AssignAnswer(control, question, sku, answer, answerType);
+	}
+
 	Workflow.Refresh([search]);
 }
 
@@ -322,12 +332,6 @@ function AssignAnswer(control, question, sku, answer, answerType) {
 	}
 	if (answer == "—" || answer == "" || answer=="-")
 		answer = null;
-
-	if (!String.IsNullOrEmpty(answer) && answerType == DB.Current.Constant.DataType.Integer){
-		var i = Find(answer, ",");
-		answer = parseInt(i)!=parseInt(0) ? Left(answer, i - 1) : answer;
-		control.Text = answer;
-	}
 
 	var answerString;
 	if (String.IsNullOrEmpty(answer))

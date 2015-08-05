@@ -215,6 +215,21 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 
 }
 
+function FormatAndRefresh(control, question, answerType){
+
+	var answer = control.Text;	
+
+	if (!String.IsNullOrEmpty(answer) && answerType == DB.Current.Constant.DataType.Integer){
+
+		control.Text = control.Text = Round(Number(answer), 0);
+
+		AssignAnswer(control, question, answer, answerType);
+	}
+
+	Workflow.Refresh([]);
+
+}
+
 function AssignAnswer(control, question, answer, answerType) {
 
 	if (control != null) {
@@ -225,12 +240,6 @@ function AssignAnswer(control, question, answer, answerType) {
 	}
 	if (answer == "—" || answer == "-")
 		answer = null;
-
-	if (!String.IsNullOrEmpty(answer) && answerType == DB.Current.Constant.DataType.Integer){
-		var i = Find(answer, ",");
-		answer = parseInt(i)!=parseInt(0) ? Left(answer, i - 1) : answer;
-		control.Text = answer;
-	}
 
 	var answerString;
 	if (String.IsNullOrEmpty(answer))

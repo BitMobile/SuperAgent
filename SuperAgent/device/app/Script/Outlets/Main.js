@@ -107,12 +107,6 @@ function AddGlobalAndAction(outlet) {
 
 }
 
-function GetOutletObject(){
-	if (!$.Exists("outlet"))
-		$.AddGlobal("outlet", GlobalWorkflow.GetOutlet());
-	return GetObject($.outlet);
-}
-
 function CreateOutletAndForward() {
 	var p = DB.Create("Catalog.Outlet");
 	p.Lattitude = 0;
@@ -424,7 +418,7 @@ function GetImagePath(objectID, pictID, pictExt) {
 function ImageActions(control, valueRef, imageControl, outlet, filename) {
 	if ($.sessionConst.editOutletParameters && $.primaryParametersSettings["000000008"]) {
 		parameterValueC = valueRef;
-		Images.AddSnapshot($.outlet, valueRef, OutletSnapshotHandler, Translate["#snapshot#"], Variables[imageControl].Source);
+		Images.AddSnapshot($.workflow.outlet, valueRef, OutletSnapshotHandler, Translate["#snapshot#"], Variables[imageControl].Source);
 	} else {
 		Workflow.Action("ShowImage", [GetImagePath(outlet, filename, ".jpg"), valueRef, "Value", true])
 	}
@@ -463,13 +457,13 @@ function OutletSnapshotHandler(state, args) {
 
 // --------------------------case Visits----------------------
 
-function CreateVisitIfNotExists(outlet, userRef, visit, planVisit) {
+function CreateVisitIfNotExists(userRef, visit, planVisit) {
 
 	if (visit == null) {
 		visit = DB.Create("Document.Visit");
 		if (planVisit != null)
 			visit.Plan = planVisit;
-		visit.Outlet = outlet;
+		visit.Outlet = $.workflow.outlet;
 		visit.SR = userRef;
 		visit.Date = DateTime.Now;
 		visit.StartTime = DateTime.Now;

@@ -13,10 +13,6 @@ function GetItemsStyles(){
 	return styles;
 }
 
-function ShowDialog(val){
-	Dialog.Debug(val);
-}
-
 function IsCurrent(name){	
 	var c = GlobalWorkflow.GetMenuItem() == null ? "Summary" : GlobalWorkflow.GetMenuItem();
 	return name == c ? "header" : "common";

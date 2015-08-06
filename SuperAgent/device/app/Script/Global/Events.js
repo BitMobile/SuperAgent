@@ -28,6 +28,7 @@ function OnWorkflowStart(name) {
 	if (name == "Visit" || name == "Outlet" || name=="Order" || name=="Return")
 	{
 		StartTracking();		
+		$.workflow.Add("outlet", GlobalWorkflow.GetOutlet());		
 	}
 
 	if (name=="Visit" || name=="Order" || name=="Return")
@@ -37,11 +38,14 @@ function OnWorkflowStart(name) {
 
 	if (name == "Visit")
 	{
-		CreateQuestionnareTable($.outlet);
-		CreateQuestionsTable($.outlet);
-		CreateSKUQuestionsTable($.outlet);
 
-		SetSteps($.outlet);
+		var outlet = $.workflow.outlet;
+
+		CreateQuestionnareTable(outlet);
+		CreateQuestionsTable(outlet);
+		CreateSKUQuestionsTable(outlet);
+
+		SetSteps(outlet);
 	}
 
 }
@@ -138,8 +142,6 @@ function RemoveVariables(name){
 
 	if (name != "Main")
 	{
-		if (Variables.Exists("outlet"))
-			Variables.Remove("outlet");
 		if (Variables.Exists("planVisit"))
 			Variables.Remove("planVisit");
 		if (Variables.Exists("steps"))
@@ -306,7 +308,7 @@ function HasContractors(outlet){
 
 	var res;
 
-	var outletObj = $.outlet.GetObject();
+	var outletObj = outlet.GetObject();
 	if (outletObj.Distributor==DB.EmptyRef("Catalog_Distributor"))
 		res = HasOutletContractors(outlet);
 	else

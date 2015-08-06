@@ -14,10 +14,6 @@ function OnLoading(){
         c_itemsHistory = Translate["#returnHistory#"];
 }
 
-function ShowDialog(val){
-    Dialog.Debug(val);
-}
-
 function DiscountOutput(discount){
     if (String.IsNullOrEmpty(discount))
         return '0';
@@ -317,7 +313,6 @@ function GetItemHistory(sku, order) {
     q.AddParameter("ref", order);
 
     $.Add("historyCount", q.ExecuteCount());
-    // Dialog.Debug($.historyCount);
 
     return q.Execute();
 }

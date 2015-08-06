@@ -314,7 +314,7 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 				if (String.IsNullOrEmpty(parameterValue.Value))
 					Dialogs.ChooseDateTime(parameterValue, "Value", Variables[control], DateHandler, parameterDescription);
 				else
-					Dialog.Choose(parameterDescription, [[0, Translate["#clearValue#"]], [1, Translate["#setDate#"]]], DateHandler, [parameterValue, control]);
+					Dialog.Choose(parameterDescription, [[0, Translate["#clearValue#"]], [1, Translate["#setDate#"]]], DateHandler, [parameterValue, control, parameterDescription]);
 			}
 			if (typeDescription == "Boolean") {  //----------Boolean--------
 				Dialogs.ChooseBool(parameterValue, "Value", Variables[control], null, parameterDescription);
@@ -371,7 +371,8 @@ function DateHandler(state, args) {
 		Workflow.Refresh([]);
 	}
 	if (parseInt(args.Result)==parseInt(1)){
-		Dialogs.ChooseDateTime(parameterValue, "Value", Variables[control]);
+		var parameterDescription = state[2];
+		Dialogs.ChooseDateTime(parameterValue, "Value", Variables[control], DateHandler, parameterDescription);
 	}
 }
 

@@ -76,7 +76,7 @@ function GetOwnerType(owner)
 		|| ownerObj == null)
 	{
 		if (newContact 
-			&& $.outlet.Distributor!=DB.EmptyRef("Catalog_Distributor_Contacts"))
+			&& $.workflow.outlet.Distributor!=DB.EmptyRef("Catalog_Distributor_Contacts"))
 		{
 			if ($.sessionConst.outletContactEditable 
 				&& $.sessionConst.partnerContactEditable)
@@ -93,7 +93,7 @@ function GetOwnerType(owner)
 			}
 		}
 		else if(newContact 
-			&& $.outlet.Distributor==DB.EmptyRef("Catalog_Distributor_Contacts"))
+			&& $.workflow.outlet.Distributor==DB.EmptyRef("Catalog_Distributor_Contacts"))
 		{
 			return Translate["#outlet#"];
 		}
@@ -111,7 +111,7 @@ function GetOwnerType(owner)
 function SelectOwner(owner)
 {
 	if ($.sessionConst.outletContactEditable && $.sessionConst.partnerContactEditable 
-		&& $.outlet.Distributor != DB.EmptyRef("Catalog_Distributor_Contacts"))
+		&& $.workflow.outlet.Distributor != DB.EmptyRef("Catalog_Distributor_Contacts"))
 	{
 		Dialog.Choose(Translate["#owner#"], [[0, Translate["#partner#"]], [1, Translate["#outlet#"]]], OwnerCallBack);
 	}	
@@ -166,11 +166,11 @@ function EditOwner(contact, owner){
 		
 		if (ownerInput==Translate["#partner#"]){
 			newOwner = DB.Create("Catalog.Distributor_Contacts");
-			newOwner.Ref = $.outlet.Distributor;			
+			newOwner.Ref = $.workflow.outlet.Distributor;			
 		}
 		else{
 			newOwner = DB.Create("Catalog.Outlet_Contacts");
-			newOwner.Ref = $.outlet;
+			newOwner.Ref = $.workflow.outlet;
 		}
 
 		newOwner.NotActual = false;
@@ -234,7 +234,7 @@ function DeleteContact(ref) {
 	contact.NotActual = true;
 	contact.Save();
 	DB.Commit();
-	Workflow.Refresh([ $.outlet ]);
+	Workflow.Refresh([ $.workflow.outlet ]);
 }
 
 function SelectOwnership(control, contractor) {
@@ -287,14 +287,14 @@ function GetOutlets(searchText){
 		search = " AND Contains(C.Description, '" + searchText + "') ";
 	}
 
-	var outletObj = $.outlet.GetObject();
+	var outletObj = $.workflow.outlet.GetObject();
 	if (outletObj.Distributor==DB.EmptyRef("Catalog_Distributor")){
 		var q = new Query("SELECT C.Id, C.Description, C.LegalAddress AS Address, '3' AS OutletStatus, " +
 			"CASE WHEN IsDefault=1 THEN 'main_row_bold' ELSE 'main_row' END AS Style " +
 			"FROM Catalog_Outlet_Contractors O " +
 			"JOIN Catalog_Contractors C ON O.Contractor=C.Id " +			
 			"WHERE O.Ref=@outlet " + search + "ORDER BY IsDefault desc, C.Description");
-		q.AddParameter("outlet", $.outlet);
+		q.AddParameter("outlet", $.workflow.outlet);
 		var result = q.Execute();
 	}
 	else{
@@ -383,7 +383,7 @@ function DialogCallBack(control, key) {
 	if ($.Exists("param2"))
 		v = $.param2;
 
-	Workflow.Refresh([ $.contact, $.outlet ]);
+	Workflow.Refresh([ $.contact, $.workflow.outlet ]);
 }
 
 function ValidEntity(entity) {

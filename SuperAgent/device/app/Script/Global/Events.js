@@ -122,7 +122,7 @@ function StartTracking(){
 
 	if (parseInt($.sessionConst.UserCoordinatesActualityTime) == parseInt(0))
 	{
-		GPS.StartTracking(-1);
+		GPS.StartTracking(0);
 	}
 	else
 	{

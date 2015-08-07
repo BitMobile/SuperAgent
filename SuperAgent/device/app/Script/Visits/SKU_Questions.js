@@ -242,7 +242,7 @@ function RefreshScreen(control, search, sku, question, answerType) {
 
 	if (!String.IsNullOrEmpty(answer) && answerType == DB.Current.Constant.DataType.Integer){
 
-		control.Text = Round(Number(answer), 0);
+		control.Text = RoundToInt(answer);
 
 		AssignAnswer(control, question, sku, answer, answerType);
 	}

@@ -221,7 +221,7 @@ function FormatAndRefresh(control, question, answerType){
 
 	if (!String.IsNullOrEmpty(answer) && answerType == DB.Current.Constant.DataType.Integer){
 
-		control.Text = control.Text = Round(Number(answer), 0);
+		control.Text = RoundToInt(answer);
 
 		AssignAnswer(control, question, answer, answerType);
 	}

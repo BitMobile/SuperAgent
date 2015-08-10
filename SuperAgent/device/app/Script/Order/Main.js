@@ -372,9 +372,10 @@ function SelectStock(order, attr, control) {
 
 function SelectContractor(thisDoc)
 {
-	var listChoice = GetContractors(false, thisDoc.Outlet);
-
-	Dialogs.DoChoose(listChoice, thisDoc, "Contractor", $.contractor, null, Translate["#contractor#"]);
+	if (IsNew(thisDoc)){
+		var listChoice = GetContractors(false, thisDoc.Outlet);
+		Dialogs.DoChoose(listChoice, thisDoc, "Contractor", $.contractor, null, Translate["#contractor#"]);
+	}
 }
 
 function GetContractors(chooseDefault, outletRef)

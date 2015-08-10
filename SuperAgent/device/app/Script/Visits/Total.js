@@ -24,8 +24,10 @@ function GetNextVisit(outlet){
 	q.AddParameter("outlet", outlet);
 	q.AddParameter("date", DateTime.Now.Date);
 	var res = q.Execute();
-	res.Next();
-	return res;
+	if (res.Next())
+		return res;
+	else
+		return null;
 
 }
 

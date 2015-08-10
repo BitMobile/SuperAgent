@@ -37,9 +37,7 @@ function OnLoading(){
 //---------------------------UI calls----------------
 
 function GetOutlet(){
-	if (!$.Exists("outlet"))
-		$.AddGlobal("outlet", GlobalWorkflow.GetOutlet());
-	return $.outlet;
+	return GlobalWorkflow.GetOutlet();
 }
 
 function GetItems() {
@@ -239,7 +237,7 @@ function IsEditText(isInputField, editable, order) {
 }
 
 function CreateDocumentIfNotExists(executedOrder, visitId) {
-	var outlet = $.outlet;
+	var outlet = GlobalWorkflow.GetOutlet();
 	var userRef = $.common.UserRef;
 
 	var order;

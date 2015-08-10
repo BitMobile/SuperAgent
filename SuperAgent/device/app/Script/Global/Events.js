@@ -277,7 +277,7 @@ function SetSteps(outlet) {
 			skipQuest = true;
 	}
 
-	if (parseInt(GetTasksCount()) != parseInt(0))
+	if (parseInt(GetTasksCount(outlet)) != parseInt(0))
 		InsertIntoSteps("1", "SkipTask", false, "Visit_Tasks", "Outlet");
 	else
 		InsertIntoSteps("1", "SkipTask", true, "Visit_Tasks", "Outlet");
@@ -368,9 +368,9 @@ function PrepareScheduledVisits_Map() {
 	}
 }
 
-function GetTasksCount() {
+function GetTasksCount(outlet) {
 	var taskQuery = new Query("SELECT COUNT(Id) FROM Document_Task WHERE PlanDate >= date('now','start of day', 'localtime') AND Outlet=@outlet");
-	taskQuery.AddParameter("outlet", $.outlet);
+	taskQuery.AddParameter("outlet", outlet);
 	return taskQuery.ExecuteScalar();
 }
 

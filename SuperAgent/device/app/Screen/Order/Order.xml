@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope" StyleSheet="Order.css">
 
-	<s:Push Id="workflow.outlet" Value="$GetOutlet()"></s:Push>
 	<s:Push Id="executedOrder" Value="$FindExecutedOrder()"></s:Push>
 
 

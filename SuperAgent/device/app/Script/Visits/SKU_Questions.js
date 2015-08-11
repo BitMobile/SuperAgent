@@ -282,7 +282,7 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 	editControl = Variables[editControl];
 	curr_sku = sku;
 
-	if ((answerType).ToString() == (DB.Current.Constant.DataType.ValueList).ToString()) {
+	if (answerType == DB.Current.Constant.DataType.ValueList) {
 		var q = new Query();
 		q.Text = "SELECT Value, Value FROM Catalog_Question_ValueList WHERE Ref=@ref UNION SELECT '', '—' ORDER BY Value";
 		q.AddParameter("ref", question);
@@ -290,30 +290,26 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 		DoChoose(q.Execute(), question, null, editControl, DialogCallBack, title);
 	}
 
-	if ((answerType).ToString() == (DB.Current.Constant.DataType.Snapshot).ToString()) {
+	if (answerType == DB.Current.Constant.DataType.Snapshot) {
 		skuValueGl = sku;
 		questionValueGl = question;
 
-		//AddSnapshot($.workflow.visit, null, GalleryCallBack, listChoice, "document.visit", title);
 		var path = null;
-//		if (String.IsNullOrEmpty(currAnswer)==false)
-//			path = Images.FindImage($.visit, currAnswer, ".jpg");
 		Images.AddQuestionSnapshot("USR_SKUQuestions", question, sku, currAnswer, true, title, GalleryCallBack);
 	}
 
-	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {
-		//Dialogs.ChooseDateTime(question, null, editControl, DialogCallBack);
+	if (answerType == DB.Current.Constant.DataType.DateTime) {
 		ChooseDateTime(question, null, editControl, DialogCallBack, title);
 	}
 
-	if ((answerType).ToString() == (DB.Current.Constant.DataType.Boolean).ToString()) {
+	if (answerType == DB.Current.Constant.DataType.Boolean) {
 		bool_answer = currAnswer;
 		curr_item = sku;
-		//Dialogs.ChooseBool(question, null, editControl, DialogCallBack);
+
 		ChooseBool(question, null, editControl, DialogCallBack, title);
 	}
 
-	if (((answerType).ToString() == (DB.Current.Constant.DataType.String).ToString()) ||
+	if ((answerType == DB.Current.Constant.DataType.String) ||
 	   ((answerType).ToString() == (DB.Current.Constant.DataType.Integer).ToString()) ||
 		 ((answerType).ToString() == (DB.Current.Constant.DataType.Decimal).ToString())) {
 		FocusOnEditText(editControlName, '1');

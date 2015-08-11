@@ -267,7 +267,7 @@ function CreateDocumentIfNotExists(executedOrder, visitId) {
 			order.Stock = GetStock(userRef);
 			order.Contractor = GetContractors(true, outlet);
 			var location = GPS.CurrentLocation;
-			if (location.NotEmpty) {
+			if (ActualLocation(location)) {
 				order.Lattitude = location.Latitude;
 				order.Longitude = location.Longitude;
 			}
@@ -370,7 +370,7 @@ function SelectStock(order, attr, control) {
 
 function SelectContractor(thisDoc)
 {
-	if (IsNew(thisDoc)){
+	if (IsNew(thisDoc) && NotEmptyRef(thisDoc.PriceList)){
 		var listChoice = GetContractors(false, thisDoc.Outlet);
 		Dialogs.DoChoose(listChoice, thisDoc, "Contractor", $.contractor, null, Translate["#contractor#"]);
 	}

@@ -468,7 +468,7 @@ function CreateVisitIfNotExists(userRef, visit, planVisit) {
 		visit.Date = DateTime.Now;
 		visit.StartTime = DateTime.Now;
 		var location = GPS.CurrentLocation;
-		if (location.NotEmpty) {
+		if (ActualLocation(location)) {
 			visit.Lattitude = location.Latitude;
 			visit.Longitude = location.Longitude;
 		}
@@ -486,7 +486,7 @@ function CreateVisitIfNotExists(userRef, visit, planVisit) {
 
 function SetLocation(control, outlet) {
 	var location = GPS.CurrentLocation;
-	if (location.NotEmpty) {
+	if (ActualLocation(location)) {
 		outlet = outlet.GetObject();
 		outlet.Lattitude = location.Latitude;
 		outlet.Longitude = location.Longitude;
@@ -520,7 +520,7 @@ function VisitCoordsHandler(answ, visit) {
 	visit = $.workflow.visit;
 	if (answ == DialogResult.Yes) {
 		var location = GPS.CurrentLocation;
-		if (location.NotEmpty) {
+		if (ActualLocation(location)) {
 			visit = visit.GetObject();
 			visit.Lattitude = location.Latitude;
 			visit.Longitude = location.Longitude;

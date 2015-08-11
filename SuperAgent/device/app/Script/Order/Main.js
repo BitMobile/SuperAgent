@@ -372,7 +372,7 @@ function SelectStock(order, attr, control) {
 
 function SelectContractor(thisDoc)
 {
-	if (IsNew(thisDoc) && NotEmptyRef(order.PriceList)){
+	if (IsNew(thisDoc) && NotEmptyRef(thisDoc.PriceList)){
 		var listChoice = GetContractors(false, thisDoc.Outlet);
 		Dialogs.DoChoose(listChoice, thisDoc, "Contractor", $.contractor, null, Translate["#contractor#"]);
 	}

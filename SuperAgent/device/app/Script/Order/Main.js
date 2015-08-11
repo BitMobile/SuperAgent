@@ -269,7 +269,7 @@ function CreateDocumentIfNotExists(executedOrder, visitId) {
 			order.Stock = GetStock(userRef);
 			order.Contractor = GetContractors(true, outlet);
 			var location = GPS.CurrentLocation;
-			if (location.NotEmpty) {
+			if (ActualLocation(location)) {
 				order.Lattitude = location.Latitude;
 				order.Longitude = location.Longitude;
 			}

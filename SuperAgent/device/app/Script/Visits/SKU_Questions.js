@@ -8,8 +8,6 @@ var single_answ;
 var single_total;
 var scrollIndex;
 var setScroll;
-var bool_answer;
-var curr_item;
 var curr_sku;
 var skuValueGl;
 var questionValueGl;
@@ -280,7 +278,7 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 
 	editControlName = editControl;
 	editControl = Variables[editControl];
-	curr_sku = sku;
+	skuValueGl = sku;
 
 	if (answerType == DB.Current.Constant.DataType.ValueList) {
 		var q = new Query();
@@ -289,8 +287,7 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 		Dialogs.DoChoose(q.Execute(), question, null, editControl, DialogCallBack, title);
 	}
 
-	if (answerType == DB.Current.Constant.DataType.Snapshot) {
-		skuValueGl = sku;
+	if (answerType == DB.Current.Constant.DataType.Snapshot) {		
 		questionValueGl = question;
 
 		var path = null;
@@ -302,9 +299,6 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 	}
 
 	if (answerType == DB.Current.Constant.DataType.Boolean) {
-		bool_answer = currAnswer;
-		curr_item = sku;
-
 		Dialogs.ChooseBool(question, null, editControl, DialogCallBack, title);
 	}
 
@@ -367,7 +361,7 @@ function ClearIndex() {
 
 function DialogCallBack(state, args){
 	var entity = state[0];
-	AssignAnswer(null, entity, curr_sku, args.Result);
+	AssignAnswer(null, entity, skuValueGl, args.Result);
 
 	Workflow.Refresh([$.search]);
 }

@@ -120,16 +120,7 @@ function OnWorkflowPause(name) {
 
 function StartTracking(){		
 
-	if (parseInt($.sessionConst.UserCoordinatesActualityTime) == parseInt(0))
-	{
-		GPS.StartTracking(0);
-	}
-	else
-	{
-		GPS.StartTracking(parseInt($.sessionConst.UserCoordinatesActualityTime * 60));
-	}
-		
-	// GPS.StartTracking();
+	GPS.StartTracking(-1);
 }
 
 function RemoveVariables(name){

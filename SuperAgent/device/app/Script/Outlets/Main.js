@@ -474,7 +474,7 @@ function CreateVisitIfNotExists(outlet, userRef, visit, planVisit) {
 		visit.Date = DateTime.Now;
 		visit.StartTime = DateTime.Now;
 		var location = GPS.CurrentLocation;
-		if (location.NotEmpty) {
+		if (ActualLocation(location)) {
 			visit.Lattitude = location.Latitude;
 			visit.Longitude = location.Longitude;
 		}

@@ -234,3 +234,14 @@ function AssignDialogValue(state, args) {
 	entity.GetObject().Save();
 	return entity;
 }
+
+//--------------------------WorkWithGPS-----------------------
+
+function ActualLocation(location){
+    
+    var locTime = location.Time.ToLocalTime();
+    var maxTime = DateTime.Now.AddMinutes(-parseInt($.sessionConst.UserCoordinatesActualityTime));
+    var actualTime = locTime > maxTime;
+
+    return (location.NotEmpty && actualTime);
+}

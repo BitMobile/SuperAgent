@@ -239,9 +239,15 @@ function AssignDialogValue(state, args) {
 
 function ActualLocation(location){
     
-    var locTime = location.Time.ToLocalTime();
-    var maxTime = DateTime.Now.AddMinutes(-parseInt($.sessionConst.UserCoordinatesActualityTime));
-    var actualTime = locTime > maxTime;
+    var actualTime;
+    if (parseInt($.sessionConst.UserCoordinatesActualityTime)==parseInt(0)){
+        actualTime = true;
+    }
+    else{
+        var locTime = location.Time.ToLocalTime();
+        var maxTime = DateTime.Now.AddMinutes(-parseInt($.sessionConst.UserCoordinatesActualityTime));
+        actualTime = locTime > maxTime;
+    }
 
     return (location.NotEmpty && actualTime);
 }

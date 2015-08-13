@@ -360,10 +360,8 @@ function DeleteAndBack(orderitem) {
     Workflow.Back();
 }
 
-function RepeatOrder(orderitem, qty, total, price, discount, baseUnit, baseUnitDescr){
+function RepeatOrder(orderitem, qty, discount, baseUnit, baseUnitDescr){
     orderitem = orderitem.LoadObject();
-    Dialog.Debug(orderitem.Price);
-    Dialog.Debug(orderitem.Price * (1 + discount / 100));
     
     orderitem.Qty = qty;
     $.orderItemQty.Text = qty;

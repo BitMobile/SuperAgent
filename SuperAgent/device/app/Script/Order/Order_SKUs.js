@@ -83,7 +83,7 @@ function GetSKUAndGroups(searchText, thisDoc) {
 
         var recOrderSort = " OrderRecOrder DESC, ";
 
-    } else {
+    } else if ($.workflow.name=='Order'){
 
         var recOrderFields = ", NULL AS RecUnit " +
                              ", NULL AS UnitId " +
@@ -98,7 +98,16 @@ function GetSKUAndGroups(searchText, thisDoc) {
         query.AddParameter("visit", $.workflow.visit);
 
         var recOrderSort = " OrderRecOrder DESC, ";
+    }
+    else{
+        var recOrderFields = ", NULL AS RecUnit " +
+                     ", NULL AS UnitId " +
+                     ", 0 AS RecOrder " +
+                     ", 0 AS OrderRecOrder ";
+        
+        var recOrderStr = "";
 
+        var recOrderSort = "";
     }
 
     if (stock.EmptyRef()==true){

@@ -126,8 +126,8 @@ function CreateOrderItemIfNotExist(order, sku, orderitem, price, features, recOr
             p.Ref = order;
             p.SKU = sku;
             p.Feature = feature;
-            p.Price = price * defaultUnit.Multiplier;
-            p.Total = price * defaultUnit.Multiplier;
+            p.Price = CalculatePrice(price, 0, defaultUnit.Multiplier);
+            p.Total = p.Price;
             p.Units = defaultUnit.Pack;
             p.Discount = 0;
             p.Qty = recOrder;
@@ -246,7 +246,7 @@ function CountPrice(orderitem) {
 
 function CalculatePrice(price, discount, multiplier) {
     
-    var total = (price * (discount / 100 + 1)) * multiplier;
+    var total = (price * (discount / 100 + 1)) * (parseFloat(multiplier)==parseFloat(0) ? 1 : multiplier);
     return FormatValue(total);
 
 }
@@ -369,7 +369,7 @@ function RepeatOrder(orderitem, qty, discount, baseUnit, baseUnitDescr){
     orderitem.Discount = discount;
     $.discountEdit.Text = discount;
     
-    orderitem.Total = orderitem.Price * (1 + discount / 100);
+    orderitem.Total = CalculatePrice(orderitem.Price, discount, 1);
     $.orderItemTotalId.Text = orderitem.Total;    
     
     orderitem.Units = baseUnit;

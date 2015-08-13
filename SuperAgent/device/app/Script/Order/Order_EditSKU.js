@@ -361,16 +361,22 @@ function DeleteAndBack(orderitem) {
 }
 
 function RepeatOrder(orderitem, qty, total, price, discount, baseUnit, baseUnitDescr){
-    orderitem = orderitem.GetObject();
+    orderitem = orderitem.LoadObject();
+    Dialog.Debug(orderitem.Price);
+    Dialog.Debug(orderitem.Price * (1 + discount / 100));
+    
     orderitem.Qty = qty;
     $.orderItemQty.Text = qty;
-    orderitem.Total = total;
-    $.orderItemTotalId.Text = total;
-    orderitem.Price = price;
+
     orderitem.Discount = discount;
     $.discountEdit.Text = discount;
+    
+    orderitem.Total = orderitem.Price * (1 + discount / 100);
+    $.orderItemTotalId.Text = orderitem.Total;    
+    
     orderitem.Units = baseUnit;
     $.itemUnits.Text = baseUnitDescr;
+    
     orderitem.Save();
 }
 

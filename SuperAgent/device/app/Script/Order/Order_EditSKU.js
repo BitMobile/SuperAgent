@@ -294,8 +294,8 @@ function ChangeUnit(sku, orderitem, price) {
         var selectedUnit = q2.Execute();
     }
 
-    orderitem.Price = price * selectedUnit.Multiplier;
-    Variables["multiplier"] = selectedUnit.Multiplier;
+    $.multiplier = parseFloat(selectedUnit.Multiplier)==parseFloat(0) ? 1 : selectedUnit.Multiplier;
+    orderitem.Price = price * $.multiplier;
     orderitem.Units = selectedUnit.Pack;
     Variables["itemUnits"].Text = selectedUnit.Pack.Description;
     orderitem.Save();

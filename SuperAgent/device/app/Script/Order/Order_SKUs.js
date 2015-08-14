@@ -133,7 +133,7 @@ function GetSKUAndGroups(searchText, thisDoc) {
 
     } else {
 
-    	if ($.sessionConst.NoStkEnbl) {
+    	if ($.sessionConst.NoStkEnbl || $.workflow.currentDoc=='Return') {
             var stockCondition = "";
         } else {
             var stockCondition = " AND SS.StockValue > 0 ";

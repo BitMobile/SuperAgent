@@ -112,7 +112,7 @@ function GetSKUAndGroups(searchText, thisDoc) {
 
     if (stock.EmptyRef()==true){
 
-    	if ($.sessionConst.NoStkEnbl) {
+    	if ($.sessionConst.NoStkEnbl || $.workflow.currentDoc=='Return') {
             var stockCondition = "";
         } else {
             var stockCondition = " AND S.CommonStock > 0 ";

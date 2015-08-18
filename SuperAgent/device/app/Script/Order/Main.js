@@ -5,6 +5,7 @@ var infoTitle;
 var sumTitle;
 var skuTitle;
 var infoTitleSmall;
+var back;
 var c_parameterDescription;
 var c_docParams;
 
@@ -31,6 +32,10 @@ function OnLoading(){
 		infoTitleSmall = Translate["#returnInfoSmall#"];
 		c_docParams = Translate["#returnParameters#"];
 	}
+
+	var menuItem = GlobalWorkflow.GetMenuItem();
+	back = (menuItem == "Orders" || menuItem == "Returns" ? Translate["#clients#"] : Translate["#back#"]);
+
 }
 
 

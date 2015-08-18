@@ -593,7 +593,7 @@ function ShowContractorsIfExists(outlet) {
 			q.AddParameter("ref", outletObj.Distributor);
 			contractor = q.ExecuteScalar();
 		}
-		DoAction('Contractor', contractor);
+		DoAction('Contractor', contractor, true);
 	}
 
 	else if (con > parseInt(1))

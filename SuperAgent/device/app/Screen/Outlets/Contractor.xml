@@ -2,13 +2,19 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="CreateOutlet.css">
 
 	<s:Push Id="contractor" Value="$param1"></s:Push>
+	<s:Push Id="single" Value="$param2"></s:Push>
 
 	<c:DockLayout>
 
 		<c:DockLayout CssClass="top_navigator">
 			<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$SaveContractorAndBack($contractor)" SubmitScope="INN;KPP;phone_number;email">
 				<c:Image />
-				<c:TextView Text="#list#" />
+				<s:If Test="$single">
+					<c:TextView Text="@back" />
+				</s:If>
+				<s:Else>
+					<c:TextView Text="#list#" />
+				</s:Else>
 			</c:DockLayout>
 			<c:DockLayout Id="btnForward" CssClass="btn_forward" />
 			<c:HorizontalLayout>

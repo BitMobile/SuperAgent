@@ -113,7 +113,7 @@ function AddGlobalAndAction(outlet) {
 function GetOutletObject(){
 	if (!$.Exists("outlet"))
 		$.AddGlobal("outlet", GlobalWorkflow.GetOutlet());
-	return GetObject($.outlet);
+	return $.outlet.LoadObject();
 }
 
 function CreateOutletAndForward() {

@@ -68,8 +68,9 @@ function HideSwiped()
 
 function GetFeatures(sku, stock) {
     var query = new Query(
-            "SELECT DISTINCT Feature FROM Catalog_SKU_Stocks WHERE Ref=@Ref AND CASE WHEN @Stock = @EmptyStock THEN 1 ELSE Stock = @Stock END ORDER BY LineNumber");
+            "SELECT DISTINCT Feature FROM Catalog_SKU_Stocks WHERE Ref=@Ref AND CASE WHEN @Stock = @EmptyStock THEN 1 ELSE Stock = @Stock END AND CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE StockValue > 0 END ORDER BY LineNumber");
     query.AddParameter("Ref", sku);
+    query.AddParameter("NoStkEnbl", $.sessionConst.NoStkEnbl);
     query.AddParameter("EmptyStock", DB.EmptyRef("Catalog_Stock"));
     query.AddParameter("Stock", stock);
     return query.Execute();

@@ -362,16 +362,19 @@ function GetDescription(priceList) {
 		return (Translate["#priceList#"] + ": " + priceList.Description);
 }
 
-function SelectStock(order, attr, control) {
+function SelectStock(order, outlet, attr, control) {
 	if (IsNew(order) && NotEmptyRef(order.PriceList)) {
-		var q = new Query("SELECT Id, Description FROM Catalog_Stock");
+		var q = new Query("SELECT CS.Id, CS.Description FROM Catalog_Stock CS JOIN Catalog_Territory_Stocks CTS ON CS.Id = CTS.Stock LEFT JOIN Catalog_Territory_Outlets CTO ON CTS.Ref = CTO.Ref WHERE CTO.Outlet = @outlet");
+		q.AddParameter("outlet", outlet);
 		var res = q.Execute().Unload();
-		var table = [];
-		table.push([ DB.EmptyRef("Catalog_Stock"), Translate["#allStocks#"] ]);
-		while (res.Next()) {
-			table.push([ res.Id, res.Description ]);
+		if (res.Count() > 1) {
+			var table = [];
+			table.push([ DB.EmptyRef("Catalog_Stock"), Translate["#allStocks#"] ]);
+			while (res.Next()) {
+				table.push([ res.Id, res.Description ]);
+			}
+			Dialogs.DoChoose(table, order, attr, control, StockSelectHandler, Translate["#stockPlace#"]);	
 		}
-		Dialogs.DoChoose(table, order, attr, control, StockSelectHandler, Translate["#stockPlace#"]);
 	}
 }
 

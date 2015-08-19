@@ -59,7 +59,7 @@
 			<c:HorizontalLine />
 
 			<s:If Test="$sessionConst.MultStck">
-				<c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectStock($thisDoc, Stock, $stockDescription)">
+				<c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectStock($thisDoc, $thisDoc.Outlet, Stock, $stockDescription)">
 					<c:TextView Text="#stockPlace#" />
 					<c:TextView Id="stockDescription" Text="$GetStockDescription($thisDoc.Stock)" CssClass="value" />
 				</c:DockLayout>

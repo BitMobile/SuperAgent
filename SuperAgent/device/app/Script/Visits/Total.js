@@ -133,20 +133,24 @@ function GetReturnSum(returnDoc) {
 	return FormatValue(sum);
 }
 
-function CheckAndCommit(order, visit, wfName) {
+function AskEndVisit(order, visit, wfName) {
+	Dialog.Alert(Translate["#visit_end_question#"], CheckAndCommit, [order, visit, wfName], Translate["#end#"], Translate["#go_back#"]);
+}
 
-    visit = visit.GetObject();
-	visit.EndTime = DateTime.Now;
-
+function CheckAndCommit(state, args) {
+	if (args.Result == 0) {
+		order = state[0];
+		visit = state[1];
+		wfName = state[2];
+	  visit = visit.GetObject();
+		visit.EndTime = DateTime.Now;
     if (OrderExists(visit.Id)) {
         order.GetObject().Save();
     }
-
     CreateQuestionnaireAnswers();
-
     visit.Save();
     Workflow.Commit();
-
+	}
 }
 
 
@@ -155,7 +159,7 @@ function CheckAndCommit(order, visit, wfName) {
 
 function NextDateHandler(state, args){
 
-	var newVistPlan = state[0]; 
+	var newVistPlan = state[0];
 
 	if (newVistPlan.Id==null){
 		newVistPlan = DB.Create("Document.MobileAppPlanVisit");

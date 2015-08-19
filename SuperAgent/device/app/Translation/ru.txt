@@ -319,3 +319,6 @@ selectOwner		Принадлежность контакта не выбрана
 no_questions_list	НЕТ ВОПРОСОВ
 requiredFieldsLeft	Обязательных полей осталось:
 outlet_short	ТТ
+visit_end_question	После завершения визита редактирование недоступно
+end	Завершить
+go_back	Вернуться

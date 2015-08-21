@@ -373,7 +373,7 @@ function SelectStock(order, outlet, attr, control) {
 			while (res.Next()) {
 				table.push([ res.Id, res.Description ]);
 			}
-			Dialogs.DoChoose(table, order, attr, control, StockSelectHandler, Translate["#stockPlace#"]);	
+			Dialogs.DoChoose(table, order, attr, control, StockSelectHandler, Translate["#stockPlace#"]);
 		}
 	}
 }
@@ -577,8 +577,8 @@ function FormatDate(datetime) {
 function GetStock(userRef) {
 	if ($.sessionConst.MultStck == false)
 		return DB.EmptyRef("Catalog_Stock");
-
-	var q = new Query("SELECT S.Stock FROM Catalog_Territory_Stocks S WHERE S.LineNumber = 1 LIMIT 1");
+	var q = new Query("SELECT CTS.Stock FROM Catalog_Territory_Stocks CTS JOIN Catalog_Territory_Outlets CTO ON CTS.Ref = CTO.Ref WHERE CTO.Outlet = @outlet LIMIT 1");
+	q.AddParameter("outlet", outlet)
 	var s = q.ExecuteScalar();
 	if (s == null)
 		return DB.EmptyRef("Catalog_Stock");

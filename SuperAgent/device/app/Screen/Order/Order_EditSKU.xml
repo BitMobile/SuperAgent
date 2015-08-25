@@ -5,7 +5,7 @@
 	<s:Push Id="sku" Value="$param1"></s:Push>
 	<s:Push Id="price" Value="$param2"></s:Push>
 	<s:Push Id="orderitem" Value="$param3"></s:Push> <s:Push Id="showimage" Value="$param5"></s:Push>
-	<s:Push Id="features" Value="$GetFeatures($sku.Id)"></s:Push>
+	<s:Push Id="features" Value="$GetFeatures($sku.Id, $thisDoc.Stock)"></s:Push>
 	<s:Push Id="orderitem" Value="$CreateOrderItemIfNotExist($thisDoc,$sku,$orderitem,$price,$features, $param6, $param7)"></s:Push>
 	<s:Push Id="featureDescr" Value="$GetFeatureDescr($orderitem.Feature)"></s:Push>
 
@@ -131,7 +131,7 @@
 					<c:TextView Text="#features#:"></c:TextView>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
-			
+
 				<s:Iterator Id="feature" Value="$features">
 					<c:DockLayout CssClass="parameter_grid" OnClickAction="$ChangeFeatureAndRefresh($orderitem, $feature.Feature, $sku, $price, $discountEdit.Text, $showimage)">
 						<s:If Test="$AreEqual($orderitem.Feature, $feature.Feature);">

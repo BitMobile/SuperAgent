@@ -2,6 +2,7 @@
 var singlePicture;
 var parameterValueC;
 var title;
+var back;
 
 //"description"	= "000000001"
 //"address"			= "000000002"
@@ -28,6 +29,8 @@ function OnLoading() {
 
 	$.Add("primaryParametersSettings", primaryParametersSettings);
 
+	back = Translate["#" + Lower(GlobalWorkflow.GetMenuItem()) + "#"];
+
 	title = Translate["#outlet#"];
 
 }
@@ -49,7 +52,7 @@ function GetOutlets(searchText) {
 		searchText = StrReplace(searchText, "'", "''");
 		search = "WHERE Contains(O.Description, '" + searchText + "') ";
 	}
-	
+
 	var currentDoc = GlobalWorkflow.GetMenuItem();
 
 	if (currentDoc=="Outlets") {  //ShowOutletInMA for Outlets.xml at Outlets workflow
@@ -110,7 +113,7 @@ function AddGlobalAndAction(outlet) {
 function GetOutletObject(){
 	if (!$.Exists("outlet"))
 		$.AddGlobal("outlet", GlobalWorkflow.GetOutlet());
-	return GetObject($.outlet);
+	return $.outlet.LoadObject();
 }
 
 function CreateOutletAndForward() {
@@ -590,7 +593,7 @@ function ShowContractorsIfExists(outlet) {
 			q.AddParameter("ref", outletObj.Distributor);
 			contractor = q.ExecuteScalar();
 		}
-		DoAction('Contractor', contractor);
+		DoAction('Contractor', contractor, true);
 	}
 
 	else if (con > parseInt(1))

@@ -4,12 +4,14 @@ var hasPartnerContacts;
 var hasOutletContacts;
 var newContact;
 var c_ownerType;
+var back;
 
 function OnLoading(){
 	title = Translate["#contractors#"];
+	back = Translate["#outlet_short#"];
 }
 
-function OnLoad() 
+function OnLoad()
 {
 	outlet = $.param1;
 	if ($.Exists("contactOwner")) //for Contact screen
@@ -27,7 +29,7 @@ function OnLoad()
 		if (!$.sessionConst.contractorEditable)
 		{
 			SetEnabledToContractorScope(false);
-		}			
+		}
 	}
 }
 
@@ -55,7 +57,7 @@ function CreateContactIfNotExist(contact, owner) {
 	}
 }
 
-function IsEditableContact(owner){	
+function IsEditableContact(owner){
 	// var ownerObj = owner == null ? null : owner.GetObject();
 	if (owner == Translate["#outlet#"]){	//(getType(ownerObj)=="DefaultScope.Catalog.Outlet_Contacts"){
 		return $.sessionConst.outletContactEditable;
@@ -69,21 +71,21 @@ function IsEditableContact(owner){
 }
 
 function GetOwnerType(owner)
-{	
+{
 	var ownerObj = owner == null ? null : owner.GetObject();
-	if (ownerObj.Ref==DB.EmptyRef("Catalog_Outlet_Contacts") 
+	if (ownerObj.Ref==DB.EmptyRef("Catalog_Outlet_Contacts")
 		|| ownerObj.Ref==DB.EmptyRef("Catalog_Distributor_Contacts")
 		|| ownerObj == null)
 	{
-		if (newContact 
+		if (newContact
 			&& $.outlet.Distributor!=DB.EmptyRef("Catalog_Distributor_Contacts"))
 		{
-			if ($.sessionConst.outletContactEditable 
+			if ($.sessionConst.outletContactEditable
 				&& $.sessionConst.partnerContactEditable)
 			{
 				return "—";
-			}				
-			else if ($.sessionConst.outletContactEditable)				
+			}
+			else if ($.sessionConst.outletContactEditable)
 			{
 				return Translate["#outlet#"];
 			}
@@ -92,13 +94,13 @@ function GetOwnerType(owner)
 				return Translate["#partner#"];
 			}
 		}
-		else if(newContact 
+		else if(newContact
 			&& $.outlet.Distributor==DB.EmptyRef("Catalog_Distributor_Contacts"))
 		{
 			return Translate["#outlet#"];
 		}
 	}
-	else if (getType(ownerObj)=="DefaultScope.Catalog.Outlet_Contacts") 
+	else if (getType(ownerObj)=="DefaultScope.Catalog.Outlet_Contacts")
 	{
 		return Translate["#outlet#"];
 	}
@@ -110,14 +112,14 @@ function GetOwnerType(owner)
 
 function SelectOwner(owner)
 {
-	if ($.sessionConst.outletContactEditable && $.sessionConst.partnerContactEditable 
+	if ($.sessionConst.outletContactEditable && $.sessionConst.partnerContactEditable
 		&& $.outlet.Distributor != DB.EmptyRef("Catalog_Distributor_Contacts"))
 	{
 		Dialog.Choose(Translate["#owner#"], [[0, Translate["#partner#"]], [1, Translate["#outlet#"]]], OwnerCallBack);
-	}	
+	}
 }
 
-function OwnerCallBack(state, args){	
+function OwnerCallBack(state, args){
 	if ($.owner.Text == "—")
 	{
 		SetEnabledToContactScope(true);
@@ -132,9 +134,9 @@ function SetEnabledToContactScope(value){
 	$.email.Enabled = value;
 }
 
-function SaveAndBack(entity, owner) {	
+function SaveAndBack(entity, owner) {
 
-	if (ValidOwner()) // if (ValidEntity(entity) && ValidOwner()) 
+	if (ValidOwner()) // if (ValidEntity(entity) && ValidOwner())
 	{
 		EditOwner(entity, owner);
 		entity.GetObject().Save();
@@ -162,11 +164,11 @@ function EditOwner(contact, owner){
 	}
 	else{
 		DB.Delete(owner);
-		var newOwner;		
-		
+		var newOwner;
+
 		if (ownerInput==Translate["#partner#"]){
 			newOwner = DB.Create("Catalog.Distributor_Contacts");
-			newOwner.Ref = $.outlet.Distributor;			
+			newOwner.Ref = $.outlet.Distributor;
 		}
 		else{
 			newOwner = DB.Create("Catalog.Outlet_Contacts");
@@ -174,8 +176,8 @@ function EditOwner(contact, owner){
 		}
 
 		newOwner.NotActual = false;
-		newOwner.ContactPerson = contact;	
-		newOwner.Save();	
+		newOwner.ContactPerson = contact;
+		newOwner.Save();
 	}
 
 }
@@ -212,7 +214,7 @@ function GetOutletContacts(outlet) {
 function HasPartnerContacts(outlet){
 	var outletObj = outlet.GetObject();
 	var q = new Query("SELECT COUNT(Id) " +
-		" FROM Catalog_Distributor_Contacts C " +		
+		" FROM Catalog_Distributor_Contacts C " +
 		" WHERE C.Ref=@distr AND C.NotActual=0 ");
 	q.AddParameter("distr", outletObj.Distributor);
 	var c = q.ExecuteScalar();
@@ -292,7 +294,7 @@ function GetOutlets(searchText){
 		var q = new Query("SELECT C.Id, C.Description, C.LegalAddress AS Address, '3' AS OutletStatus, " +
 			"CASE WHEN IsDefault=1 THEN 'main_row_bold' ELSE 'main_row' END AS Style " +
 			"FROM Catalog_Outlet_Contractors O " +
-			"JOIN Catalog_Contractors C ON O.Contractor=C.Id " +			
+			"JOIN Catalog_Contractors C ON O.Contractor=C.Id " +
 			"WHERE O.Ref=@outlet " + search + "ORDER BY IsDefault desc, C.Description");
 		q.AddParameter("outlet", $.outlet);
 		var result = q.Execute();
@@ -311,12 +313,12 @@ function GetOutlets(searchText){
 		q.AddParameter("outlet", outletObj.Id);
 		var result = q.Execute();
 	}
-	
+
 	return result;
 }
 
 function SaveContractorAndBack(entity){
-	if (ValidateINN(entity.INN)) 
+	if (ValidateINN(entity.INN))
 	{
 		entity.GetObject().Save();
 		Workflow.Back();
@@ -341,7 +343,7 @@ function BackMenu(){
 	return true;
 }
 
-function CreateOutletEnabled(){	
+function CreateOutletEnabled(){
 	return false;
 }
 
@@ -389,7 +391,7 @@ function DialogCallBack(control, key) {
 function ValidEntity(entity) {
 
 	// Validate Contact
-	if (getType(entity.GetObject()) == "DefaultScope.Catalog.ContactPersons") 
+	if (getType(entity.GetObject()) == "DefaultScope.Catalog.ContactPersons")
 	{
 		if (EmptyContact(entity) && entity.IsNew()) {
 			DB.Delete(entity);
@@ -432,7 +434,7 @@ function ValidateINN(inn)
 		var i = 1;
 		var sum = 0;
 		while (i < StrLen(inn))
-		{		
+		{
 			sum = sum + Mid(inn, i, 1) * multipliers[i];
 			i = i + 1;
 		}
@@ -443,9 +445,9 @@ function ValidateINN(inn)
 		{
 			Dialog.Message(String.Format("{0} {1}", Translate["#incorrect#"], Translate["#inn#"]));
 			return false;
-		}			
+		}
 	}
-	
+
 	if (inn.length == 12)
 	{
 		//for 11th digit
@@ -464,7 +466,7 @@ function ValidateINN(inn)
 		var i = 1;
 		var sum11 = 0;
 		while (i < 11)
-		{		
+		{
 			sum11 = sum11 + Mid(inn, i, 1) * multipliers11[i];
 			i = i + 1;
 		}
@@ -486,7 +488,7 @@ function ValidateINN(inn)
 		var i = 1;
 		var sum12 = 0;
 		while (i < 12)
-		{		
+		{
 			sum12 = sum12 + Mid(inn, i, 1) * multipliers12[i];
 			i = i + 1;
 		}
@@ -498,7 +500,7 @@ function ValidateINN(inn)
 		{
 			Dialog.Message(String.Format("{0} {1}", Translate["#incorrect#"], Translate["#inn#"]));
 			return false;
-		}			
+		}
 	}
 
 	if (inn.length == 0)

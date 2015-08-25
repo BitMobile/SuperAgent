@@ -66,10 +66,13 @@ function HideSwiped()
         swipedRow.Index = 1;
 }
 
-function GetFeatures(sku) {
+function GetFeatures(sku, stock) {
     var query = new Query(
-            "SELECT DISTINCT Feature FROM Catalog_SKU_Stocks WHERE Ref=@Ref ORDER BY LineNumber");
+            "SELECT DISTINCT Feature FROM Catalog_SKU_Stocks WHERE Ref=@Ref AND CASE WHEN @Stock = @EmptyStock THEN 1 ELSE Stock = @Stock END AND CASE WHEN @NoStkEnbl = 1 THEN 1 ELSE StockValue > 0 END ORDER BY LineNumber");
     query.AddParameter("Ref", sku);
+    query.AddParameter("NoStkEnbl", $.sessionConst.NoStkEnbl);
+    query.AddParameter("EmptyStock", DB.EmptyRef("Catalog_Stock"));
+    query.AddParameter("Stock", stock);
     return query.Execute();
 }
 
@@ -78,7 +81,7 @@ function CreateOrderItemIfNotExist(order, sku, orderitem, price, features, recOr
     if ($.Exists("orderitemAlt")){  //Dirty hack, see Events.js line 109
         orderitem = c_orderItem;
         $.Remove("orderitemAlt");
-    }   
+    }
 
     if (orderitem == null) {
 
@@ -166,14 +169,14 @@ function ApplyDiscount(sender, orderitem) {
         else {
             if ($.discountDescr.Text == Translate["#discount#"]
                 && parseFloat(sender.Text) > parseFloat(0))
-            $.discountEdit.Text = -1 * $.discountEdit.Text;     
-            }   
+            $.discountEdit.Text = -1 * $.discountEdit.Text;
+            }
         orderitem = orderitem.GetObject();
         orderitem.Discount = parseFloat($.discountEdit.Text);
         orderitem.Save();
 
         CountPrice(orderitem.Id);
-    }    
+    }
 }
 
 function ChandeDiscount(orderitem) {
@@ -245,7 +248,7 @@ function CountPrice(orderitem) {
 }
 
 function CalculatePrice(price, discount, multiplier) {
-    
+
     var total = (price * (discount / 100 + 1)) * (parseFloat(multiplier)==parseFloat(0) ? 1 : multiplier);
     return FormatValue(total);
 
@@ -362,19 +365,19 @@ function DeleteAndBack(orderitem) {
 
 function RepeatOrder(orderitem, qty, discount, baseUnit, baseUnitDescr){
     orderitem = orderitem.LoadObject();
-    
+
     orderitem.Qty = qty;
     $.orderItemQty.Text = qty;
 
     orderitem.Discount = discount;
     $.discountEdit.Text = discount;
-    
+
     orderitem.Total = CalculatePrice(orderitem.Price, discount, 1);
-    $.orderItemTotalId.Text = orderitem.Total;    
-    
+    $.orderItemTotalId.Text = orderitem.Total;
+
     orderitem.Units = baseUnit;
     $.itemUnits.Text = baseUnitDescr;
-    
+
     orderitem.Save();
 }
 

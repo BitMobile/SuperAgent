@@ -700,11 +700,6 @@ function BackMenu(){
 		return true;
 }
 
-function CommitAndBack(){
-	DB.Commit();
-	Workflow.Rollback();
-}
-
 function SnapshotExists(filename) {
 
 	return FileSystem.Exists(filename);

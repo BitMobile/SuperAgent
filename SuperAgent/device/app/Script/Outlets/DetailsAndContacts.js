@@ -234,8 +234,8 @@ function GetPartnerContacts(outlet){
 function DeleteContact(ref) {
 	var contact = ref.GetObject();
 	contact.NotActual = true;
-	contact.Save();
-	DB.Commit();
+	contact.Save(false);
+	// DB.Commit();
 	Workflow.Refresh([ $.outlet ]);
 }
 
@@ -386,25 +386,6 @@ function DialogCallBack(control, key) {
 		v = $.param2;
 
 	Workflow.Refresh([ $.contact, $.outlet ]);
-}
-
-function ValidEntity(entity) {
-
-	// Validate Contact
-	if (getType(entity.GetObject()) == "DefaultScope.Catalog.ContactPersons")
-	{
-		if (EmptyContact(entity) && entity.IsNew()) {
-			DB.Delete(entity);
-			DB.Commit();
-			return true;
-		}
-
-		return true;
-	}
-
-	// Validate Details
-	if (getType(entity.GetObject()) == "DefaultScope.Catalog.Outlet")
-		return ValidateINN(entity.INN);
 }
 
 function ValidateContactName(entity) {

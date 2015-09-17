@@ -67,7 +67,7 @@
 					<c:DockLayout CssClass="short_panel">
 						<c:DockLayout CssClass="grid">
 							<c:VerticalLayout>
-								<c:TextView Text="{$FormatValue($orderSum)} #currency#" CssClass="main_row"></c:TextView>
+								<c:TextView Text="{$GetOrderSumm()} #currency#" CssClass="main_row"></c:TextView>
 								<c:TextView Text="#amountOfOrdersForToday#" CssClass="description_row" />
 							</c:VerticalLayout>
 						</c:DockLayout>

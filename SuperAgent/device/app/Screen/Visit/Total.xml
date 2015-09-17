@@ -12,7 +12,7 @@
 				<c:TextView Text="#back#" />
 			</c:DockLayout>
 			<s:If Test="$result">
-				<c:DockLayout CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckAndCommit($workflow.order, $workflow.visit, $workflow.name)" >
+				<c:DockLayout CssClass="btn_forward" OnEvent="Forward" OnClickAction="$AskEndVisit($workflow.order, $workflow.visit, $workflow.name)" >
 					<c:TextView Id="btnForward" Text="#ready#" />
 				</c:DockLayout>
 			</s:If>

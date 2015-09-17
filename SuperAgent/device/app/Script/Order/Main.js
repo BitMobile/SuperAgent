@@ -5,6 +5,7 @@ var infoTitle;
 var sumTitle;
 var skuTitle;
 var infoTitleSmall;
+var back;
 var c_parameterDescription;
 var c_docParams;
 
@@ -31,6 +32,10 @@ function OnLoading(){
 		infoTitleSmall = Translate["#returnInfoSmall#"];
 		c_docParams = Translate["#returnParameters#"];
 	}
+
+	var menuItem = GlobalWorkflow.GetMenuItem();
+	back = (menuItem == "Orders" || menuItem == "Returns" ? Translate["#clients#"] : Translate["#back#"]);
+
 }
 
 
@@ -355,16 +360,19 @@ function GetDescription(priceList) {
 		return (Translate["#priceList#"] + ": " + priceList.Description);
 }
 
-function SelectStock(order, attr, control) {
+function SelectStock(order, outlet, attr, control) {
 	if (IsNew(order) && NotEmptyRef(order.PriceList)) {
-		var q = new Query("SELECT Id, Description FROM Catalog_Stock");
+		var q = new Query("SELECT CS.Id, CS.Description FROM Catalog_Stock CS JOIN Catalog_Territory_Stocks CTS ON CS.Id = CTS.Stock LEFT JOIN Catalog_Territory_Outlets CTO ON CTS.Ref = CTO.Ref WHERE CTO.Outlet = @outlet");
+		q.AddParameter("outlet", outlet);
 		var res = q.Execute().Unload();
-		var table = [];
-		table.push([ DB.EmptyRef("Catalog_Stock"), Translate["#allStocks#"] ]);
-		while (res.Next()) {
-			table.push([ res.Id, res.Description ]);
+		if (res.Count() > 1) {
+			var table = [];
+			table.push([ DB.EmptyRef("Catalog_Stock"), Translate["#allStocks#"] ]);
+			while (res.Next()) {
+				table.push([ res.Id, res.Description ]);
+			}
+			Dialogs.DoChoose(table, order, attr, control, StockSelectHandler, Translate["#stockPlace#"]);
 		}
-		Dialogs.DoChoose(table, order, attr, control, StockSelectHandler, Translate["#stockPlace#"]);
 	}
 }
 
@@ -567,8 +575,8 @@ function FormatDate(datetime) {
 function GetStock(userRef) {
 	if ($.sessionConst.MultStck == false)
 		return DB.EmptyRef("Catalog_Stock");
-
-	var q = new Query("SELECT S.Stock FROM Catalog_Territory_Stocks S WHERE S.LineNumber = 1 LIMIT 1");
+	var q = new Query("SELECT CTS.Stock FROM Catalog_Territory_Stocks CTS JOIN Catalog_Territory_Outlets CTO ON CTS.Ref = CTO.Ref WHERE CTO.Outlet = @outlet LIMIT 1");
+	q.AddParameter("outlet", outlet)
 	var s = q.ExecuteScalar();
 	if (s == null)
 		return DB.EmptyRef("Catalog_Stock");

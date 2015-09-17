@@ -7,6 +7,7 @@ var single_answ;
 var single_total;
 var bool_answer;
 var questionGl;
+var submitCollectionString;
 
 //
 // -------------------------------Header handlers-------------------------
@@ -243,6 +244,7 @@ function AssignAnswer(control, question, answer, answerType) {
 	q.AddParameter("answer", (question.AnswerType == DB.Current.Constant.DataType.DateTime ? Format("{0:dd.MM.yyyy HH:mm}", Date(answer)) : answer));
 	q.AddParameter("question", question);
 	q.Execute();
+
 }
 
 function DialogCallBack(state, args) {
@@ -277,4 +279,10 @@ function SnapshotExists(filename) {
 
 	return FileSystem.Exists(filename);
 
+}
+
+function AddToSubmitCollection(submitCollectionString, fieldName){
+	var submitCollectionString = String.IsNullOrEmpty(submitCollectionString) ? fieldName : (submitCollectionString + ";" + fieldName);
+	$.btn_forward.SubmitScope = submitCollectionString; //all the magic is in this strings
+	return submitCollectionString;
 }

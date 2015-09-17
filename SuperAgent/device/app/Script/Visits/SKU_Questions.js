@@ -357,6 +357,12 @@ function ClearIndex() {
 	setScroll = null;
 }
 
+function AddToSubmitCollection(submitCollectionString, fieldName){
+	var submitCollectionString = String.IsNullOrEmpty(submitCollectionString) ? fieldName : (submitCollectionString + ";" + fieldName);
+	$.btn_forward.SubmitScope = submitCollectionString; //all the magic is in this strings
+	return submitCollectionString;
+}
+
 //------------------------------internal-----------------------------------
 
 function DialogCallBack(state, args){

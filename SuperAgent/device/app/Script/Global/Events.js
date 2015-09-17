@@ -95,10 +95,7 @@ function OnWorkflowFinish(name, reason) {
 }
 
 function OnWorkflowFinished(name, reason){
-	if (name == "Main" || name == "Visit")
-	{
-		Indicators.SetIndicators();
-	}
+	Indicators.SetIndicators();
 }
 
 function OnWorkflowBack(workflow, lastStep, nextStep){

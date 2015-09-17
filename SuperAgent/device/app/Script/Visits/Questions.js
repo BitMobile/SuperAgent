@@ -68,7 +68,7 @@ function GetQuestionsByQuestionnaires(outlet) {
 
 function GetQuestions(single) {
 
-	var q = new Query("SELECT UQ.Answer, UQ.AnswerType , UQ.Question, UQ.Description, UQ.Obligatoriness, UQ.IsInputField, UQ.KeyboardType, " +
+	var q = new Query("SELECT DISTINCT UQ.Answer, UQ.AnswerType , UQ.Question, UQ.Description, UQ.Obligatoriness, UQ.IsInputField, UQ.KeyboardType, " +
 			"CASE WHEN UQ.IsInputField='1' THEN UQ.Answer ELSE " +
 				"CASE WHEN TRIM(IFNULL(UQ.Answer, '')) != '' THEN UQ.Answer ELSE '—' END END AS AnswerOutput, " +
 			"CASE WHEN UQ.AnswerType=@snapshot THEN " +

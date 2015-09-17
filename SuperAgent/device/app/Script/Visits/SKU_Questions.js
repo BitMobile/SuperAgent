@@ -204,7 +204,7 @@ function GetChilds(sku) {
 	if (regularAnswers)
 		single = 0;
 
-var q = new Query("SELECT S.Description, S.Obligatoriness, S.AnswerType, S.Question, S.Answer, S.IsInputField, S.KeyboardType, " +
+var q = new Query("SELECT DISTINCT S.Description, S.Obligatoriness, S.AnswerType, S.Question, S.Answer, S.IsInputField, S.KeyboardType, " +
 			"CASE WHEN IsInputField='1' THEN Answer ELSE " +
 				"CASE WHEN (RTRIM(Answer)!='' AND Answer IS NOT NULL) THEN CASE WHEN AnswerType=@snapshot THEN @attached ELSE Answer END ELSE '—' END END AS AnswerOutput, " +
 				"CASE WHEN S.AnswerType=@snapshot THEN 1 END AS IsSnapshot, " +

@@ -14,7 +14,7 @@
 				<c:TextView Text="#back#" />
 			</c:DockLayout>
 			<s:If Test="@forwardAllowed">
-				<c:DockLayout  CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CountResultAndForward()">
+				<c:DockLayout Id="btn_forward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CountResultAndForward()">
 					<c:TextView Id="btnForward" Text="#forward#" />
 				</c:DockLayout>
 			</s:If>
@@ -167,7 +167,8 @@
 									<c:VerticalLayout OnClick="$GoToQuestionAction($child.AnswerType, $child.Question, $sku.SKU, control{$indexCh}, $child.Answer, $child.Description)">
 										<c:TextView Text="$child.Description" CssClass="description_row"></c:TextView>
 										<s:If Test="$child.IsInputField==1">
-											<c:EditText Id="control{$indexCh}" Text="$child.Answer" Placeholder="—" OnChange="$AssignAnswer($child.Question, $sku.SKU, null, $child.AnswerType)" OnLostFocus="$RefreshScreen($search, $sku.SKU, $child.Question, $child.AnswerType)" Keyboard="$child.KeyboardType" CssClass="child_main_row"></c:EditText>
+											<s:Push Id="submitCollectionString" Value="$AddToSubmitCollection($submitCollectionString, control{$indexCh})"></s:Push>
+											<c:EditText Id="control{$indexCh}" Text="$child.Answer" Placeholder="—" OnChange="$AssignAnswer($child.Question, $sku.SKU, null, $child.AnswerType)" OnLostFocus="$RefreshScreen($search, $sku.SKU, $child.Question, $child.AnswerType)" Keyboard="$child.KeyboardType" CssClass="child_main_row" Length="100"></c:EditText>
 										</s:If>
 										<s:Else>
 											<c:TextView Id="control{$indexCh}" Text="$child.AnswerOutput" CssClass="child_main_row"></c:TextView>

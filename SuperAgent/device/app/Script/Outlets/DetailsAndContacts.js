@@ -48,7 +48,7 @@ function CreateContactIfNotExist(contact, owner) {
 	if (contact == null) {
 		newContact = true;
 		contact = DB.Create("Catalog.ContactPersons");
-		contact.Save();
+		contact.Save(false);
 		return contact.Id;
 	} else{
 		newContact = false;
@@ -134,12 +134,17 @@ function SetEnabledToContactScope(value){
 	$.email.Enabled = value;
 }
 
+function DeleteAndBack(contact){
+	DB.Delete(contact, false);
+	DoBack();
+}
+
 function SaveAndBack(entity, owner) {
 
 	if (ValidOwner()) // if (ValidEntity(entity) && ValidOwner())
 	{
 		EditOwner(entity, owner);
-		entity.GetObject().Save();
+		entity.GetObject().Save(false);
 		Workflow.Back();
 	}
 }
@@ -160,7 +165,7 @@ function EditOwner(contact, owner){
 	var ownerInput = $.owner.Text;
 
 	if (ownerType == ownerInput || ownerType!=null){
-		ownerObj.Save();
+		ownerObj.Save(false);
 	}
 	else{
 		DB.Delete(owner);
@@ -177,7 +182,7 @@ function EditOwner(contact, owner){
 
 		newOwner.NotActual = false;
 		newOwner.ContactPerson = contact;
-		newOwner.Save();
+		newOwner.Save(false);
 	}
 
 }

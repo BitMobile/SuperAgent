@@ -11,7 +11,7 @@
 
 		<s:If Test="@newContact">
 			<c:HorizontalLayout Id="btnDone" CssClass="bottom_btn">
-				<c:VerticalLayout OnClickAction="$DoBack()">
+				<c:VerticalLayout OnClickAction="$DeleteAndBack($contact)">
 					<c:TextView Text="#cancel#" CssClass="left_tv"></c:TextView>
 				</c:VerticalLayout>
 				<c:VerticalLayout OnClickAction="$SaveAndBack($contact, $contactOwner)" SubmitScope="contact_name;phone_number;email">

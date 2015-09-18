@@ -459,7 +459,7 @@ function CheckIfEmptyAndForward(order, wfName) {
 	if (wfName=="Visit"){
 		if (empty){ //clearing parameters and delete order
 			DB.Delete(order);
-			var query = new Query("SELECT * FROM Document_Order_Parameters WHERE Ref = @order")
+			var query = new Query("SELECT * FROM Document_" + $.workflow.currentDoc + "_Parameters WHERE Ref = @order")
 			query.AddParameter("order", order);
 			queryResult = query.Execute();
 			while (queryResult.Next()) {

@@ -209,6 +209,19 @@ function GetQuickOrder(control, skuId, itemPrice, packField, editField, textView
     swipedRow = control;
 }
 
+function SelectSKU(sku, price, recOrder, unit){
+    var args = new Dictionary();
+    args.Add("sku", sku);
+    args.Add("price", price);
+    args.Add("recOrder", recOrder);
+    args.Add("unit", unit);
+    args.Add("order", $.workflow.order);
+
+    OrderItem.InitItem(args);
+
+    DoAction('SelectSKU');
+}
+
 function AddToOrder(control, editFieldName) {
     var editText = Converter.ToDecimal(0);
     if (String.IsNullOrEmpty(Variables[editFieldName].Text) == false)

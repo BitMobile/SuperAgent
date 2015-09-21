@@ -13,14 +13,25 @@ function SetItemValue(args){ //attr - dictionary
 
     var orderItemObj = orderItem.GetObject();
 
-    if (args.HasValue("Units")){
-        orderItemObj.Units = args.Units;
+    if (args.HasValue("Units"))
+    {        
         multiplier = parseFloat(args.Multiplier)==parseFloat(0) ? 1 : args.Multiplier;
+        
+        orderItemObj.Units = args.Units;
+        // orderItemObj.Price = basePrice * multiplier;
+
         orderItemObj = CalculateItem(orderItemObj);
     }
 
-    if (args.HasValue("Qty")){
+    if (args.HasValue("Qty"))
+    {
         orderItemObj.Qty = args.Qty;
+    }
+
+    if (args.HasValue("Discount"))
+    {
+        orderItemObj.Discount = args.Discount;
+        orderItemObj = CalculateItem(orderItemObj);
     }
 
 	orderItemObj.Save();
@@ -36,7 +47,8 @@ function GetItem(){
 
 function CalculateItem(orderItemObj){   
 
-    orderItemObj.Total = (orderItemObj.Price * (orderItemObj.Discount / 100 + 1)) * (parseFloat(multiplier)==parseFloat(0) ? 1 : multiplier);
+    orderItemObj.Price = basePrice * multiplier;
+    orderItemObj.Total = (orderItemObj.Price * (orderItemObj.Discount / 100 + 1)) ;
 	orderItemObj.Amount = orderItemObj.Total * orderItemObj.Qty;
 
     return orderItemObj;

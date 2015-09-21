@@ -94,11 +94,9 @@
 			<c:HorizontalLine />
 
 			<c:DockLayout CssClass="parameter_grid">
-				<s:Push Id="discountDescrText" Value="$GetDiscountDescription($orderitem)"></s:Push>
 				<c:HorizontalLayout CssClass="clickable" OnClickAction="$ChandeDiscount($orderitem)">
-					<c:TextView Id="discountDescr" Text="$discountDescrText" />
+					<c:TextView Id="discountDescr" Text="$GetDiscountDescription($orderitem)" />
 				</c:HorizontalLayout>
-				<!-- <s:Push Id="dummy" Value="$ShowDialog($param4)"></s:Push> -->
 				<c:EditText Id="discountEdit" Text="$DiscountOutput($param4)" CssClass="value" Keyboard="numeric" OnChange="$ApplyDiscount($orderitem)" OnGetFocus="$HideSwiped()"></c:EditText>
 			</c:DockLayout>
 			<c:HorizontalLine />

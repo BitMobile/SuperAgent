@@ -91,41 +91,46 @@ function GetDiscountDescription(orderitem) {
         return Translate["#markUp#"];
 }
 
-// function ApplyDiscount(sender, orderitem) {
-//     if (TrimAll(sender.Text) == '.' || TrimAll(sender.Text) == ','){
-//         sender.Text = '0,';
-//     }
-//     else{
-//         if (IsNullOrEmpty(sender.Text))
-//             sender.Text = parseFloat(0);
-//         else {
-//             if ($.discountDescr.Text == Translate["#discount#"]
-//                 && parseFloat(sender.Text) > parseFloat(0))
-//             $.discountEdit.Text = -1 * $.discountEdit.Text;
-//             }
-//         orderitem = orderitem.GetObject();
-//         orderitem.Discount = parseFloat($.discountEdit.Text);
-//         orderitem.Save();
+function ApplyDiscount(sender, orderitem) {
+    if (TrimAll(sender.Text) == '.' || TrimAll(sender.Text) == ',')
+    {
+        sender.Text = '0,';
+    }
+    else
+    {
+        if (IsNullOrEmpty(sender.Text))
+        {
+            sender.Text = parseFloat(0);
+        }            
+        else if ($.discountDescr.Text == Translate["#discount#"] && parseFloat(sender.Text) > parseFloat(0))
+        {
+            sender.Text = -1 * sender.Text;
+        }
 
-//         CountPrice(orderitem.Id);
-//     }
-// }
+            var d = new Dictionary();
+            d.Add("Discount", parseFloat(sender.Text));
+            OrderItem.SetItemValue(d);
 
-// function ChandeDiscount(orderitem) {
-//     if ($.discountDescr.Text == Translate["#discount#"]) {
-//         $.discountDescr.Text = Translate["#markUp#"];
-//     } else
-//         $.discountDescr.Text = Translate["#discount#"];
+            orderitem = OrderItem.GetItem();
 
-//     orderitem = orderitem.GetObject();
-//     orderitem.Discount = -1 * orderitem.Discount;
-//     orderitem.Save();
+            $.orderItemTotalId.Text = orderitem.Total;
+    }
+}
 
-//     $.discountEdit.Text = orderitem.Discount;
-//     CountPrice(orderitem.Id);
+function ChandeDiscount(orderitem) {
 
-//     FocusOnEditText('discountEdit', '1');
-// }
+    var d = new Dictionary();
+    d.Add("Discount", (-1 * orderitem.Discount));
+    OrderItem.SetItemValue(d);
+
+    orderitem = OrderItem.GetItem();
+
+    $.discountDescr.Text = GetDiscountDescription(orderitem);
+    $.orderItemTotalId.Text = orderitem.Total;
+    $.discountEdit.Text = orderitem.Discount;
+
+    FocusOnEditText('discountEdit', '1');
+}
 
 function GetFeatureDescr(feature) {
     if (feature.Code == "000000001" || $.sessionConst.SKUFeaturesRegistration==false)

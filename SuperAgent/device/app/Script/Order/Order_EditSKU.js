@@ -35,20 +35,6 @@ function GetCurrentDoc(){
     return d;
 }
 
-// function GetMultiplier(sku, orderitem) {
-
-//     if (orderitem != null) {
-//         // var item = DB.Current.Catalog.SKU_Packing.SelectBy("Pack",
-//         // orderitem.Units).Where("Ref==@p1", [sku]).First();
-//         var q = new Query(
-//                 "SELECT Multiplier FROM Catalog_SKU_Packing WHERE Pack=@pack and Ref=@ref");
-//         q.AddParameter("pack", orderitem.Units);
-//         q.AddParameter("ref", sku);
-//         return q.ExecuteScalar();
-//     }
-//     return parseInt(1);
-// }
-
 function WriteSwipedRow(control){
     if(swipedRow != control)
         HideSwiped();
@@ -139,68 +125,37 @@ function GetFeatureDescr(feature) {
         return (", " + feature.Description);
 }
 
-// function RefreshEditSKU(orderItem, sku, price, discountEdit, showimage) {
-//     HideSwiped();
-//     var d = $.discountEdit.Text;
-//     var arr = [ sku, price, orderItem, d, showimage ];// , discountText];
-//     Workflow.Refresh(arr);
-// }
-
 function GetImagePath(objectID, pictID, pictExt) {
   return Images.FindImage(objectID, ToString(pictID), pictExt, "Catalog_SKU_Files");
 }
 
-// function ImageActions(imageControl, sku) {
-// 	Images.AddSnapshot(sku, sku, GalleryCallBack, sku.Description, imageControl.Source, false);
-// }
+function ImageActions(imageControl, sku) {
+	Images.AddSnapshot(sku, sku, GalleryCallBack, sku.Description, imageControl.Source, false);
+}
 
-// function GalleryCallBack(state, args) {
-// 	if (args.Result){
-// 		var sku = state[0];
-// 		var fileName = state[1];
+function GalleryCallBack(state, args) {
+	if (args.Result){
+		var sku = state[0];
+		var fileName = state[1];
 
-// 		sku = sku.GetObject();
-// 		sku.DefaultPicture = fileName;
-// 		sku.Save();
+		sku = sku.GetObject();
+		sku.DefaultPicture = fileName;
+		sku.Save();
 
-// 		Workflow.Refresh([sku.Id, $.price, $.orderitem, $.param4, $.showimage, $.param6, $param7]);
-// 	}
-// }
+		Workflow.Refresh([$.showimage]);
+	}
+}
 
-// function CountPrice(orderitem) {
+function ChangeFeatureAndRefresh(orderItem, feature, showimage) {
 
-//     orderitem = orderitem.GetObject();
+    if (orderItem.Feature != feature.Feature) {
+        var d = new Dictionary();
+        d.Add("Feature", feature);
+        OrderItem.SetItemValue(d);
 
-//     var discount = $.discountEdit.Text;
-//     if (String.IsNullOrEmpty(discount))
-//         discount = parseInt(0);
-//     p = CalculatePrice(orderitem.Price, discount, 1);
-//     // orderitem.Discount = Converter.ToDecimal(discount);
-//     orderitem.Total = p;
-//     orderitem.Save();
-
-//     $.orderItemTotalId.Text = p;
-
-//     return orderitem;
-// }
-
-// function CalculatePrice(price, discount, multiplier) {
-
-//     var total = (price * (discount / 100 + 1)) * (parseFloat(multiplier)==parseFloat(0) ? 1 : multiplier);
-//     return FormatValue(total);
-
-// }
-
-// function ChangeFeatureAndRefresh(orderItem, feature, sku, price, discountEdit,
-//         showimage) {
-
-//     if (orderItem.Feature != feature.Feature) {
-//         var itemObj = orderItem.GetObject();
-//         itemObj.Feature = feature;
-//         itemObj.Save()
-//         RefreshEditSKU(orderItem, sku, price, discountEdit, showimage);
-//     }
-// }
+        DoRefresh(showimage);
+    }
+}
 
 function ChangeUnit(sku, orderitem) {
 

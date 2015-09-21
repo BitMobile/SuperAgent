@@ -549,8 +549,8 @@ function DeleteItem(item, executedOrder) {
 	Workflow.Refresh([ null, executedOrder ]);
 }
 
-function EditIfNew(order, param1, param2, param3) {
-	var orderItem = param3.GetObject();
+function EditIfNew(order, orderItem) {
+	orderItem = orderItem.GetObject();
 	if (order.IsNew()){
 		if (Variables.Exists("AlreadyAdded") == false)
 			Variables.AddGlobal("AlreadyAdded", true);
@@ -561,8 +561,26 @@ function EditIfNew(order, param1, param2, param3) {
 		$.itemFields.Add("Total", orderItem.Total);
 		$.itemFields.Add("Units", orderItem.Units);
 		$.itemFields.Add("Feature", orderItem.Feature);
-		Workflow.Action("Edit", [ param1, param2, param3 ]);
+
+		var args = new Dictionary();
+	    args.Add("sku", orderItem.SKU);
+	    args.Add("price", GetBasePrice(order, orderItem));
+	    args.Add("recOrder", orderItem.Qty);
+	    args.Add("unit", orderItem.Units);
+	    args.Add("order", $.workflow.order);
+	    args.Add("Id", orderItem.Id);
+
+	    OrderItem.InitItem(args);
+
+		Workflow.Action("Edit", []);
 	}
+}
+
+function GetBasePrice(order, orderItem){
+	var q = new Query("SELECT Price FROM Document_PriceList_Prices WHERE Ref=@priceList AND SKU=@sku");
+	q.AddParameter("priceList", order.PriceList);
+	q.AddParameter("sku", orderItem.SKU);
+	return q.ExecuteScalar();
 }
 
 function FormatDate(datetime) {

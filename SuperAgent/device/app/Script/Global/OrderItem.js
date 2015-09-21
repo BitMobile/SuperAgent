@@ -32,6 +32,11 @@ function SetItemValue(args){ //attr - dictionary
         orderItemObj = CalculateItem(orderItemObj);
     }
 
+    if (args.HasValue("Feature"))
+    {
+        orderItemObj.Feature = args.Feature;
+    }
+
 	orderItemObj.Save();
     orderItem = orderItemObj.Id;
 }
@@ -70,7 +75,11 @@ function CreateOrderItem(args){//order, sku, orderItem, price, features, recOrde
 
     basePrice = args.price;
 
-    var p = DB.Create("Document." + $.workflow.currentDoc + "_SKUs");
+    var p;
+    if (!$.Exists("AlreadyAdded"))
+        p = DB.Create("Document." + $.workflow.currentDoc + "_SKUs");
+    else
+        p = (args.Id).GetObject();
     p.Ref = args.order;
     p.SKU = args.sku;
     p.Feature = GetNewFeature(args.sku);    

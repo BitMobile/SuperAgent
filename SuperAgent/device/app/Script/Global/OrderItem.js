@@ -7,8 +7,6 @@ var basePrice;
 function InitItem(args){
 	if (orderItem==null)
 		CreateOrderItem(args);
-
-	CalculateItem(new Dictionary());
 }
 
 function SetItemValue(args){ //attr - dictionary
@@ -23,6 +21,7 @@ function GetItem(){
 //-----------internal handlers------------
 
 function CalculateItem(args){
+    Dialog.Debug(args);
 	
 	orderItem.Total = (orderItem.price * (orderItem.discount / 100 + 1)) * (parseFloat(multiplier)==parseFloat(0) ? 1 : multiplier);
 	orderItem.Amount = orderItem.Total * orderItem.Qty;
@@ -48,6 +47,8 @@ function CreateOrderItem(args){//order, sku, orderItem, price, features, recOrde
     p.Discount = 0;
     p.Qty = GetFromRecOrder(args.recOrder);
     p.Price = args.price * multiplier;
+    p.Total = p.Price;
+    p.Amount = p.Price;
     p.Save();
     
     orderItem = p.Id;

@@ -79,9 +79,9 @@ function GetFeatures(sku, stock) {
 
 
 
-// function SnapshotExists(sku, filename, filesTableName) {
-// 	return Images.SnapshotExists(sku, ToString(filename), filesTableName);
-// }
+function SnapshotExists(sku, filename, filesTableName) {
+	return Images.SnapshotExists(sku, ToString(filename), filesTableName);
+}
 
 function GetDiscountDescription(orderitem) {
     if (parseInt(orderitem.Discount) == parseInt(0)
@@ -141,9 +141,9 @@ function GetFeatureDescr(feature) {
 //     Workflow.Refresh(arr);
 // }
 
-// function GetImagePath(objectID, pictID, pictExt) {
-//   return Images.FindImage(objectID, ToString(pictID), pictExt, "Catalog_SKU_Files");
-// }
+function GetImagePath(objectID, pictID, pictExt) {
+  return Images.FindImage(objectID, ToString(pictID), pictExt, "Catalog_SKU_Files");
+}
 
 // function ImageActions(imageControl, sku) {
 // 	Images.AddSnapshot(sku, sku, GalleryCallBack, sku.Description, imageControl.Source, false);

@@ -38,12 +38,12 @@
 
 		<s:If Test="$sku.DefaultPicture != null">
 			<s:If Test="$showimage == 'NotShow'">
-				<c:HorizontalLayout Id="ShowImage" CssClass="btn_showpicture" OnClickAction="$RefreshEditSKU(Show)">
+				<c:HorizontalLayout Id="ShowImage" CssClass="btn_showpicture" OnClickAction="$DoRefresh(Show)">
 					<c:TextView Text="[#showImage#]"></c:TextView>
 				</c:HorizontalLayout>
 			</s:If>
 			<s:If Test="$showimage == 'Show'">
-				<c:HorizontalLayout Id="HideImage" CssClass="btn_showpicture" OnClickAction="$RefreshEditSKU(NotShow)">
+				<c:HorizontalLayout Id="HideImage" CssClass="btn_showpicture" OnClickAction="$DoRefresh(NotShow)">
 					<c:TextView Text="[#hideImage#]"></c:TextView>
 				</c:HorizontalLayout>
 			</s:If>

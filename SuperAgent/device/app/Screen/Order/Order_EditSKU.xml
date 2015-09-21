@@ -101,7 +101,7 @@
 			</c:DockLayout>
 			<c:HorizontalLine />
 
-			<s:Push Id="historyItems" Value="$GetItemHistory($sku, $thisDoc)"></s:Push>
+			<s:Push Id="historyItems" Value="$GetItemHistory($sku.Id, $thisDoc)"></s:Push>
 			<s:If Test="$historyCount != 0">
 				<c:HorizontalLayout CssClass="caption_grid">
 					<c:TextView Text="{@c_itemsHistory}:"></c:TextView>

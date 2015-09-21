@@ -254,62 +254,66 @@ function GetItemHistory(sku, order) {
     return q.Execute();
 }
 
-// function CalculateSKUAndForward(outlet, orderitem) {
+function CalculateSKUAndForward(outlet, orderitem) {
 
-//     if (Converter.ToDecimal(orderitem.Qty) == Converter.ToDecimal(0)) {
-//         DB.Delete(orderitem);
-//     } else {
-//         Global.FindTwinAndUnite(orderitem.GetObject());
-//     }
+    if (Converter.ToDecimal(orderitem.Qty) == Converter.ToDecimal(0)) {
+        DB.Delete(orderitem);
+    } else {
+        Global.FindTwinAndUnite(orderitem.GetObject());
+    }
 
-//     if ($.Exists("itemFields"))
-//     	$.Remove("itemFields");
-//     if ($.Exists("AlreadyAdded"))
-//     	$.Remove("AlreadyAdded");
+    if ($.Exists("itemFields"))
+    	$.Remove("itemFields");
+    if ($.Exists("AlreadyAdded"))
+    	$.Remove("AlreadyAdded");
 
-//     if (alreadyAdded)
-//         DoAction('Show' + $.workflow.currentDoc);
-//     else
-//         DoForward();
-// }
+    OrderItem.ClearItem();
 
-// function DeleteAndBack(orderitem) {
-//     if (Variables.Exists("AlreadyAdded") == false) {
-//         DB.Delete(orderitem);
-//     } else{
-//         orderitem = orderitem.GetObject();
-//         orderitem.Qty = $.itemFields.Qty;
-//         orderitem.Price = $.itemFields.Price;
-//         orderitem.Discount = $.itemFields.Discount;
-//         orderitem.Total = $.itemFields.Total;
-//         orderitem.Units = $.itemFields.Units;
-//         orderitem.Feature = $.itemFields.Feature;
-//         orderitem.Save();
-//         $.Remove("AlreadyAdded");
-//     }
-//     if ($.Exists("itemFields"))
-//     	$.Remove("itemFields");
-//     Workflow.Back();
-// }
+    if (alreadyAdded)
+        DoAction('Show' + $.workflow.currentDoc);
+    else
+        DoForward();
+}
 
-// function RepeatOrder(orderitem, qty, discount, baseUnit, baseUnitDescr){
-//     orderitem = orderitem.LoadObject();
+function DeleteAndBack(orderitem) {
+    if (Variables.Exists("AlreadyAdded") == false) {
+        DB.Delete(orderitem);
+    } else{
+        orderitem = orderitem.GetObject();
+        orderitem.Qty = $.itemFields.Qty;
+        orderitem.Price = $.itemFields.Price;
+        orderitem.Discount = $.itemFields.Discount;
+        orderitem.Total = $.itemFields.Total;
+        orderitem.Units = $.itemFields.Units;
+        orderitem.Feature = $.itemFields.Feature;
+        orderitem.Save();
+        $.Remove("AlreadyAdded");
+    }
+    if ($.Exists("itemFields"))
+    	$.Remove("itemFields");
 
-//     orderitem.Qty = qty;
-//     $.orderItemQty.Text = qty;
+    OrderItem.ClearItem();
 
-//     orderitem.Discount = discount;
-//     $.discountEdit.Text = discount;
+    Workflow.Back();
+}
 
-//     orderitem.Total = CalculatePrice(orderitem.Price, discount, 1);
-//     $.orderItemTotalId.Text = orderitem.Total;
+function RepeatOrder(orderitem, qty, discount, baseUnit, baseUnitDescr){
 
-//     orderitem.Units = baseUnit;
-//     $.itemUnits.Text = baseUnitDescr;
+    var d = new Dictionary();
+    d.Add("Qty", qty);
+    d.Add("Discount", discount);
+    d.Add("Units", baseUnit);
+    d.Add("Multiplier", 1);
+    OrderItem.SetItemValue(d);
 
-//     orderitem.Save();
-// }
+    orderitem = OrderItem.GetItem();
+    $.orderItemQty.Text = orderitem.Qty;
+    $.discountEdit.Text = orderitem.Discount;
+    $.orderItemTotalId.Text = orderitem.Total;
+    $.itemUnits.Text = orderitem.Units.Description;
 
-// function FormatDate(datetime) {
-//     return Format("{0:d}", Date(datetime));
-// }
+}
+
+function FormatDate(datetime) {
+    return Format("{0:d}", Date(datetime));
+}

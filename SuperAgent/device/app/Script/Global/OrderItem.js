@@ -18,8 +18,6 @@ function SetItemValue(args){ //attr - dictionary
         multiplier = parseFloat(args.Multiplier)==parseFloat(0) ? 1 : args.Multiplier;
         
         orderItemObj.Units = args.Units;
-        // orderItemObj.Price = basePrice * multiplier;
-
         orderItemObj = CalculateItem(orderItemObj);
     }
 
@@ -42,6 +40,11 @@ function GetItem(){
 	return orderItem;
 }
 
+function ClearItem(){
+    orderItem = null;
+    multiplier = null;
+    basePrice = null;
+}
 
 //-----------internal handlers------------
 

@@ -49,23 +49,23 @@ function GetCurrentDoc(){
 //     return parseInt(1);
 // }
 
-// function WriteSwipedRow(control){
-//     if(swipedRow != control)
-//         HideSwiped();
-//     swipedRow = control;
-// }
+function WriteSwipedRow(control){
+    if(swipedRow != control)
+        HideSwiped();
+    swipedRow = control;
+}
 
-// function OnScroll(sender)
-// {
-//     if($.grScrollView.ScrollIndex > 0 && swipedRow != $.grScrollView.Controls[$.grScrollView.ScrollIndex])
-//         HideSwiped();
-// }
+function OnScroll(sender)
+{
+    if($.grScrollView.ScrollIndex > 0 && swipedRow != $.grScrollView.Controls[$.grScrollView.ScrollIndex])
+        HideSwiped();
+}
 
-// function HideSwiped()
-// {
-//     if(swipedRow != null)
-//         swipedRow.Index = 1;
-// }
+function HideSwiped()
+{
+    if(swipedRow != null)
+        swipedRow.Index = 1;
+}
 
 function GetFeatures(sku, stock) {
     var query = new Query(
@@ -197,47 +197,40 @@ function GetImagePath(objectID, pictID, pictExt) {
 //     }
 // }
 
-// function ChangeUnit(sku, orderitem, price) {
+function ChangeUnit(sku, orderitem) {
 
-//     HideSwiped();
+    HideSwiped();
 
-//     orderitem = orderitem.GetObject();
+    var q1 = new Query(
+            "SELECT LineNumber FROM Catalog_SKU_Packing WHERE Pack=@pack AND Ref=@ref");
+    q1.AddParameter("ref", sku);
+    q1.AddParameter("pack", orderitem.Units);
+    var currLineNumber = q1.ExecuteScalar();
 
-//     if (price==null){
-//         var q = new Query("SELECT Price FROM Document_PriceList_Prices WHERE Ref=@priceList AND SKU=@sku");
-//         q.AddParameter("priceList", $.workflow.order.PriceList);
-//         q.AddParameter("sku", orderitem.SKU);
-//         price = q.ExecuteScalar();
-//     }
+    var q2 = new Query(
+            "SELECT Pack, Multiplier FROM Catalog_SKU_Packing WHERE Ref=@ref AND LineNumber=@lineNumber");
+    q2.AddParameter("ref", sku);
+    q2.AddParameter("lineNumber", currLineNumber + 1);
+    var selectedUnit = q2.Execute();
+    if (selectedUnit.Pack == null) {
+        q2 = new Query(
+                "SELECT Pack, Multiplier FROM Catalog_SKU_Packing WHERE Ref=@ref AND LineNumber=@lineNumber");
+        q2.AddParameter("ref", sku);
+        q2.AddParameter("lineNumber", 1);
+        var selectedUnit = q2.Execute();
+    }
 
-//     var q1 = new Query(
-//             "SELECT LineNumber FROM Catalog_SKU_Packing WHERE Pack=@pack AND Ref=@ref");
-//     q1.AddParameter("ref", sku);
-//     q1.AddParameter("pack", orderitem.Units);
-//     var currLineNumber = q1.ExecuteScalar();
+    var args = new Dictionary();
+    args.Add("Units", selectedUnit.Pack);
+    args.Add("Multiplier", selectedUnit.Multiplier);
 
-//     var q2 = new Query(
-//             "SELECT Pack, Multiplier FROM Catalog_SKU_Packing WHERE Ref=@ref AND LineNumber=@lineNumber");
-//     q2.AddParameter("ref", sku);
-//     q2.AddParameter("lineNumber", currLineNumber + 1);
-//     var selectedUnit = q2.Execute();
-//     if (selectedUnit.Pack == null) {
-//         q2 = new Query(
-//                 "SELECT Pack, Multiplier FROM Catalog_SKU_Packing WHERE Ref=@ref AND LineNumber=@lineNumber");
-//         q2.AddParameter("ref", sku);
-//         q2.AddParameter("lineNumber", 1);
-//         var selectedUnit = q2.Execute();
-//     }
+    OrderItem.SetItemValue(args);
+    orderitem = OrderItem.GetItem();
 
-//     $.multiplier = parseFloat(selectedUnit.Multiplier)==parseFloat(0) ? 1 : selectedUnit.Multiplier;
-//     orderitem.Price = price * $.multiplier;
-//     orderitem.Units = selectedUnit.Pack;
-//     Variables["itemUnits"].Text = selectedUnit.Pack.Description;
-//     orderitem.Save();
+    $.itemUnits.Text = orderitem.Units.Description;    
+    $.orderItemTotalId.Text = orderitem.Total;
 
-//     orderitem = CountPrice(orderitem.Id, price)
-
-// }
+}
 
 function GetItemHistory(sku, order) {
     var q = new Query("SELECT D.Date AS Date, S.Qty*P.Multiplier AS Qty, " +

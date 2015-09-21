@@ -10,7 +10,21 @@ function InitItem(args){
 }
 
 function SetItemValue(args){ //attr - dictionary
-	CalculateItem(args);
+
+    var orderItemObj = orderItem.GetObject();
+
+    if (args.HasValue("Units")){
+        orderItemObj.Units = args.Units;
+        multiplier = parseFloat(args.Multiplier)==parseFloat(0) ? 1 : args.Multiplier;
+        orderItemObj = CalculateItem(orderItemObj);
+    }
+
+    if (args.HasValue("Qty")){
+        orderItemObj.Qty = args.Qty;
+    }
+
+	orderItemObj.Save();
+    orderItem = orderItemObj.Id;
 }
 
 function GetItem(){
@@ -20,11 +34,13 @@ function GetItem(){
 
 //-----------internal handlers------------
 
-function CalculateItem(args){
-    Dialog.Debug(args);
-	
-	orderItem.Total = (orderItem.price * (orderItem.discount / 100 + 1)) * (parseFloat(multiplier)==parseFloat(0) ? 1 : multiplier);
-	orderItem.Amount = orderItem.Total * orderItem.Qty;
+function CalculateItem(orderItemObj){   
+
+    orderItemObj.Total = (orderItemObj.Price * (orderItemObj.Discount / 100 + 1)) * (parseFloat(multiplier)==parseFloat(0) ? 1 : multiplier);
+	orderItemObj.Amount = orderItemObj.Total * orderItemObj.Qty;
+
+    return orderItemObj;
+
 }
 
 
@@ -48,7 +64,7 @@ function CreateOrderItem(args){//order, sku, orderItem, price, features, recOrde
     p.Qty = GetFromRecOrder(args.recOrder);
     p.Price = args.price * multiplier;
     p.Total = p.Price;
-    p.Amount = p.Price;
+    p.Amount = 0;
     p.Save();
     
     orderItem = p.Id;

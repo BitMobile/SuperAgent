@@ -87,7 +87,7 @@
 			</c:DockLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="parameter_grid" OnClickAction="$ChangeUnit($sku, $orderitem, $price)">
+			<c:DockLayout CssClass="parameter_grid" OnClickAction="$ChangeUnit($sku.Id, $orderitem)">
 				<c:TextView Text="#packUnit#"></c:TextView>
 				<c:TextView Id="itemUnits" Text="$orderitem.Units.Description" CssClass="value"></c:TextView>
 			</c:DockLayout>

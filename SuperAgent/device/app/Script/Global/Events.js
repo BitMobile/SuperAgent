@@ -10,11 +10,19 @@ function OnApplicationInit() {
 
 }
 
-function OnApplicationRestore(){
+function OnApplicationRestore(name){
 
 	Indicators.SetIndicators();
 
+	if (name=="Visit")
+		GPS.StartTracking();
+
 }
+
+function OnApplicationBackground(name){
+	GPS.StopTracking();
+}
+
 
 // ------------------------ Events ------------------------
 
@@ -53,8 +61,6 @@ function OnWorkflowStart(name) {
 function OnWorkflowForward(name, lastStep, nextStep, parameters) {
 	if (name = "Visit" && lastStep == "Outlet")
 		GPS.StopTracking();
-	if (name = "Visit" && nextStep == "Outlet")
-		GPS.StopTracking();
 }
 
 function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
@@ -81,7 +87,10 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 	return true;
 }
 
-// function OnWorkflowBack(name, lastStep, nextStep) {}
+function OnWorkflowBack(name, lastStep, nextStep) {
+	if (name = "Visit" && nextStep == "Outlet")
+		GPS.StartTracking();
+}
 
 function OnWorkflowFinish(name, reason) {
 
@@ -116,6 +125,7 @@ function OnWorkflowBack(workflow, lastStep, nextStep){
 function OnWorkflowPause(name) {
 	Variables.Remove("workflow");
 }
+
 
 // ------------------------ Functions ------------------------
 

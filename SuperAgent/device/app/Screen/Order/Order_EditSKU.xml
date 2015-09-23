@@ -55,7 +55,7 @@
 				<s:If Test="$showimage == 'Show'">
 					<c:HorizontalLine />
 					<c:VerticalLayout CssClass="60" OnClickAction="$ImageActions($image, $sku.Id)">
-						<s:If Test="$SnapshotExists($sku, $sku.DefaultPicture, Catalog_SKU_Files)">
+						<s:If Test="$SnapshotExists($sku.Id, $sku.DefaultPicture, Catalog_SKU_Files)">
 							<c:Image Id="image" Source="$GetImagePath($sku.Id, $sku.DefaultPicture, $sku.DefaultPictureExtension)" />
 						</s:If>
 						<s:Else>

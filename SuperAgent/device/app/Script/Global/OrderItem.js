@@ -73,23 +73,27 @@ function CreateOrderItem(args){//order, sku, orderItem, price, features, recOrde
     //     $.Remove("orderItemAlt");
     // }
 
-    basePrice = args.price;
-
+    basePrice = args.basePrice;
     var p;
-    if (!$.Exists("AlreadyAdded"))
+    if (!$.Exists("AlreadyAdded")){
         p = DB.Create("Document." + $.workflow.currentDoc + "_SKUs");
-    else
+        p.Ref = args.Ref;
+        p.SKU = args.SKU;
+        p.Feature = GetNewFeature(args.SKU);    
+        p.Units = GetDefaultUnit(args.SKU, args.Units);
+        p.Discount = 0;
+        p.Qty = GetFromRecOrder(args.recOrder);
+        p.Price = basePrice * multiplier;
+        p.Total = p.Price;
+        p.Amount = 0;
+
+        p.Save();
+    }
+    else{
         p = (args.Id).GetObject();
-    p.Ref = args.order;
-    p.SKU = args.sku;
-    p.Feature = GetNewFeature(args.sku);    
-    p.Units = GetDefaultUnit(args.sku, args.unit);
-    p.Discount = 0;
-    p.Qty = GetFromRecOrder(args.recOrder);
-    p.Price = args.price * multiplier;
-    p.Total = p.Price;
-    p.Amount = 0;
-    p.Save();
+        GetDefaultUnit(args.SKU, args.Units);
+    }
+
     
     orderItem = p.Id;
 

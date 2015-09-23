@@ -211,11 +211,11 @@ function GetQuickOrder(control, skuId, itemPrice, packField, editField, textView
 
 function SelectSKU(sku, price, recOrder, unit){
     var args = new Dictionary();
-    args.Add("sku", sku);
-    args.Add("price", price);
+    args.Add("SKU", sku);
+    args.Add("basePrice", price);
     args.Add("recOrder", recOrder);
-    args.Add("unit", unit);
-    args.Add("order", $.workflow.order);
+    args.Add("Units", unit);
+    args.Add("Ref", $.workflow.order);
 
     OrderItem.InitItem(args);
 

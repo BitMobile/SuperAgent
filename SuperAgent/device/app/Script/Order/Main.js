@@ -561,25 +561,23 @@ function EditIfNew(order, orderItem) {
 		$.itemFields.Add("Total", orderItem.Total);
 		$.itemFields.Add("Units", orderItem.Units);
 		$.itemFields.Add("Feature", orderItem.Feature);
+		$.itemFields.Add("Id", orderItem.Id);
+		//for OrderItemInit
+		$.itemFields.Add("SKU", orderItem.SKU);
+		$.itemFields.Add("recOrder", orderItem.Qty);
+		$.itemFields.Add("Ref", orderItem.Ref);	
+		$.itemFields.Add("basePrice", GetBasePrice(order.PriceList, orderItem.SKU));
 
-		var args = new Dictionary();
-	    args.Add("sku", orderItem.SKU);
-	    args.Add("price", GetBasePrice(order, orderItem));
-	    args.Add("recOrder", orderItem.Qty);
-	    args.Add("unit", orderItem.Units);
-	    args.Add("order", $.workflow.order);
-	    args.Add("Id", orderItem.Id);
-
-	    OrderItem.InitItem(args);
+	    OrderItem.InitItem($.itemFields);
 
 		Workflow.Action("Edit", []);
 	}
 }
 
-function GetBasePrice(order, orderItem){
+function GetBasePrice(priceList, sku){
 	var q = new Query("SELECT Price FROM Document_PriceList_Prices WHERE Ref=@priceList AND SKU=@sku");
-	q.AddParameter("priceList", order.PriceList);
-	q.AddParameter("sku", orderItem.SKU);
+	q.AddParameter("priceList", priceList);
+	q.AddParameter("sku", sku);
 	return q.ExecuteScalar();
 }
 

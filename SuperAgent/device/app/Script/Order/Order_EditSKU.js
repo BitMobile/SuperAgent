@@ -111,7 +111,7 @@ function ChandeDiscount(orderitem) {
 
     orderitem = OrderItem.GetItem();
 
-    $.discountDescr.Text = GetDiscountDescription(orderitem);
+    $.discountDescr.Text = $.discountDescr.Text == Translate["#markUp#"] ? Translate["#discount#"] : Translate["#markUp#"];
     $.orderItemTotalId.Text = orderitem.Total;
     $.discountEdit.Text = orderitem.Discount;
 

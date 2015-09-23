@@ -51,6 +51,10 @@ function OnWorkflowStart(name) {
 }
 
 function OnWorkflowForward(name, lastStep, nextStep, parameters) {
+	if (name = "Visit" && lastStep == "Outlet")
+		GPS.StopTracking();
+	if (name = "Visit" && nextStep == "Outlet")
+		GPS.StopTracking();
 }
 
 function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {

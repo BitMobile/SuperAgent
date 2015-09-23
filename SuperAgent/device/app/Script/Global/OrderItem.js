@@ -68,11 +68,6 @@ function CalculateItem(orderItemObj){
 
 function CreateOrderItem(args){//order, sku, orderItem, price, features, recOrder, unit) {
 
-    // if ($.Exists("orderItemAlt")){  //Dirty hack, see Events.js line 109
-    //     orderItem = c_orderItem;
-    //     $.Remove("orderItemAlt");
-    // }
-
     basePrice = args.basePrice;
     var p;
     if (!$.Exists("AlreadyAdded")){

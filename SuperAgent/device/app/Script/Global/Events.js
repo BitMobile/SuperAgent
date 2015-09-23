@@ -107,10 +107,6 @@ function OnWorkflowBack(workflow, lastStep, nextStep){
 		Global.ClearFilter();
 	}
 
-	if (lastStep=="Image" && nextStep=="EditSKU")  //Diarty hack, if remove, will be created new orderItem
-	{
-		$.AddGlobal("orderitemAlt", $.entity);
-	}
 }
 
 function OnWorkflowPause(name) {

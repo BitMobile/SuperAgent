@@ -99,7 +99,7 @@ function ApplyDiscount(sender, orderitem) {
 
             orderitem = OrderItem.GetItem();
 
-            $.orderItemTotalId.Text = orderitem.Total;
+            $.orderItemTotalId.Text = FormatValue(orderitem.Total);
     }
 }
 
@@ -112,7 +112,7 @@ function ChandeDiscount(orderitem) {
     orderitem = OrderItem.GetItem();
 
     $.discountDescr.Text = $.discountDescr.Text == Translate["#markUp#"] ? Translate["#discount#"] : Translate["#markUp#"];
-    $.orderItemTotalId.Text = orderitem.Total;
+    $.orderItemTotalId.Text = FormatValue(orderitem.Total);
     $.discountEdit.Text = orderitem.Discount;
 
     FocusOnEditText('discountEdit', '1');
@@ -188,7 +188,7 @@ function ChangeUnit(sku, orderitem) {
     orderitem = OrderItem.GetItem();
 
     $.itemUnits.Text = orderitem.Units.Description;    
-    $.orderItemTotalId.Text = orderitem.Total;
+    $.orderItemTotalId.Text = FormatValue(orderitem.Total);
 
 }
 
@@ -264,7 +264,7 @@ function RepeatOrder(orderitem, qty, discount, baseUnit, baseUnitDescr){
     orderitem = OrderItem.GetItem();
     $.orderItemQty.Text = orderitem.Qty;
     $.discountEdit.Text = orderitem.Discount;
-    $.orderItemTotalId.Text = orderitem.Total;
+    $.orderItemTotalId.Text = FormatValue(orderitem.Total);
     $.itemUnits.Text = orderitem.Units.Description;
 
 }

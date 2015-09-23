@@ -82,7 +82,7 @@ function LogoutCallback(state, args) {
 
 	if (args.Result == 1) {
 
-		Application.Logout();
+		Application.Exit();
 
 	}
 

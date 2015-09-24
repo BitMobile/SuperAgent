@@ -1,4 +1,38 @@
-var swipedRow;
+﻿var swipedRow;
+var alreadyAdded;
+var forwardText;
+var c_orderItem;
+var c_itemsHistory;
+
+function OnLoading(){
+    alreadyAdded = $.Exists("AlreadyAdded");
+    forwardText = alreadyAdded ? Translate["#editSKU#"] : Translate["#add#"];
+    //#orderHistory#
+    if ($.workflow.currentDoc=='Order')
+        c_itemsHistory = Translate["#orderHistory#"];
+    else
+        c_itemsHistory = Translate["#returnHistory#"];
+}
+
+function ShowDialog(val){
+    Dialog.Debug(val);
+}
+
+function DiscountOutput(discount){
+    if (String.IsNullOrEmpty(discount))
+        return '0';
+    else
+        return discount.ToString();
+}
+
+function GetCurrentDoc(){
+    var d;
+    if ($.workflow.currentDoc=='Order')
+        d =  $.workflow.order;
+    else
+        d =  $.workflow.Return;
+    return d;
+}
 
 function GetMultiplier(sku, orderitem) {
 
@@ -41,12 +75,22 @@ function GetFeatures(sku) {
 
 function CreateOrderItemIfNotExist(order, sku, orderitem, price, features, recOrder, unit) {
 
+    if ($.Exists("orderitemAlt")){  //Dirty hack, see Events.js line 109
+        orderitem = c_orderItem;
+        $.Remove("orderitemAlt");
+    }   
+
     if (orderitem == null) {
 
-        var query = new Query(
-                "SELECT Feature FROM Catalog_SKU_Stocks WHERE Ref = @Ref ORDER BY LineNumber LIMIT 1");
-        query.AddParameter("Ref", sku);
-        var feature = query.ExecuteScalar();
+        var feature;
+        if ($.sessionConst.SKUFeaturesRegistration){
+            var query = new Query(
+                    "SELECT Feature FROM Catalog_SKU_Stocks WHERE Ref = @Ref ORDER BY LineNumber LIMIT 1");
+            query.AddParameter("Ref", sku);
+            feature = query.ExecuteScalar();
+        }
+        else
+            feature = null;
 
 //        var query = new Query(
 //                "SELECT Id FROM Document_Order_SKUs WHERE Ref = @Ref AND SKU=@sku AND Feature = @Feature");
@@ -63,9 +107,9 @@ function CreateOrderItemIfNotExist(order, sku, orderitem, price, features, recOr
             }
             else
                 recOrder = 0;
-                
-            
-            // getting a unit            
+
+
+            // getting a unit
             if (unit==null){
                 var q = new Query("SELECT Pack, Multiplier FROM Catalog_SKU_Packing WHERE Ref=@ref AND LineNumber=1");
                 q.AddParameter("ref", sku);
@@ -78,24 +122,30 @@ function CreateOrderItemIfNotExist(order, sku, orderitem, price, features, recOr
                 var defaultUnit = q.Execute();
             }
 
-            var p = DB.Create("Document.Order_SKUs");
+            var p = DB.Create("Document." + $.workflow.currentDoc + "_SKUs");
             p.Ref = order;
             p.SKU = sku;
             p.Feature = feature;
-            p.Price = price * defaultUnit.Multiplier;
-            p.Total = price * defaultUnit.Multiplier;
+            p.Price = CalculatePrice(price, 0, defaultUnit.Multiplier);
+            p.Total = p.Price;
             p.Units = defaultUnit.Pack;
             p.Discount = 0;
             p.Qty = recOrder;
             p.Save();
+            c_orderItem = p.Id;
             return p.Id;
 //        }
     } else {
         if (parseInt(orderitem.Discount) != parseInt(0))
             Variables["param4"] = orderitem.Discount;
+        c_orderItem = orderitem;
         return orderitem;
     }
 
+}
+
+function SnapshotExists(sku, filename, filesTableName) {
+	return Images.SnapshotExists(sku, ToString(filename), filesTableName);
 }
 
 function GetDiscountDescription(orderitem) {
@@ -107,19 +157,23 @@ function GetDiscountDescription(orderitem) {
 }
 
 function ApplyDiscount(sender, orderitem) {
-    if (IsNullOrEmpty(sender.Text))
-        sender.Text = parseFloat(0);
-    else {
-        if ($.discountDescr.Text == Translate["#discount#"]
-                && parseFloat(sender.Text) > parseFloat(0))
-            $.discountEdit.Text = -1 * $.discountEdit.Text;
+    if (TrimAll(sender.Text) == '.' || TrimAll(sender.Text) == ','){
+        sender.Text = '0,';
     }
+    else{
+        if (IsNullOrEmpty(sender.Text))
+            sender.Text = parseFloat(0);
+        else {
+            if ($.discountDescr.Text == Translate["#discount#"]
+                && parseFloat(sender.Text) > parseFloat(0))
+            $.discountEdit.Text = -1 * $.discountEdit.Text;     
+            }   
+        orderitem = orderitem.GetObject();
+        orderitem.Discount = parseFloat($.discountEdit.Text);
+        orderitem.Save();
 
-    orderitem = orderitem.GetObject();
-    orderitem.Discount = parseFloat($.discountEdit.Text);
-    orderitem.Save();
-
-    CountPrice(orderitem.Id);
+        CountPrice(orderitem.Id);
+    }    
 }
 
 function ChandeDiscount(orderitem) {
@@ -134,10 +188,12 @@ function ChandeDiscount(orderitem) {
 
     $.discountEdit.Text = orderitem.Discount;
     CountPrice(orderitem.Id);
+
+    FocusOnEditText('discountEdit', '1');
 }
 
 function GetFeatureDescr(feature) {
-    if (feature.Code == "000000001")
+    if (feature.Code == "000000001" || $.sessionConst.SKUFeaturesRegistration==false)
         return "";
     else
         return (", " + feature.Description);
@@ -150,14 +206,31 @@ function RefreshEditSKU(orderItem, sku, price, discountEdit, showimage) {
     Workflow.Refresh(arr);
 }
 
-function GetImagePath(objectType, objectID, pictID, pictExt) {
-    return GetSharedImagePath(objectType, objectID, pictID, pictExt);
+function GetImagePath(objectID, pictID, pictExt) {
+  return Images.FindImage(objectID, ToString(pictID), pictExt, "Catalog_SKU_Files");
+}
+
+function ImageActions(imageControl, sku) {
+	Images.AddSnapshot(sku, sku, GalleryCallBack, sku.Description, imageControl.Source, false);
+}
+
+function GalleryCallBack(state, args) {
+	if (args.Result){
+		var sku = state[0];
+		var fileName = state[1];
+
+		sku = sku.GetObject();
+		sku.DefaultPicture = fileName;
+		sku.Save();
+
+		Workflow.Refresh([sku.Id, $.price, $.orderitem, $.param4, $.showimage, $.param6, $param7]);
+	}
 }
 
 function CountPrice(orderitem) {
 
     orderitem = orderitem.GetObject();
-    
+
     var discount = $.discountEdit.Text;
     if (String.IsNullOrEmpty(discount))
         discount = parseInt(0);
@@ -165,15 +238,15 @@ function CountPrice(orderitem) {
     // orderitem.Discount = Converter.ToDecimal(discount);
     orderitem.Total = p;
     orderitem.Save();
-    
+
     $.orderItemTotalId.Text = p;
-    
+
     return orderitem;
 }
 
 function CalculatePrice(price, discount, multiplier) {
-
-    var total = (price * (discount / 100 + 1)) * multiplier;
+    
+    var total = (price * (discount / 100 + 1)) * (parseFloat(multiplier)==parseFloat(0) ? 1 : multiplier);
     return FormatValue(total);
 
 }
@@ -192,9 +265,9 @@ function ChangeFeatureAndRefresh(orderItem, feature, sku, price, discountEdit,
 function ChangeUnit(sku, orderitem, price) {
 
     HideSwiped();
-    
+
     orderitem = orderitem.GetObject();
-    
+
     if (price==null){
         var q = new Query("SELECT Price FROM Document_PriceList_Prices WHERE Ref=@priceList AND SKU=@sku");
         q.AddParameter("priceList", $.workflow.order.PriceList);
@@ -221,8 +294,8 @@ function ChangeUnit(sku, orderitem, price) {
         var selectedUnit = q2.Execute();
     }
 
-    orderitem.Price = price * selectedUnit.Multiplier;
-    Variables["multiplier"] = selectedUnit.Multiplier;
+    $.multiplier = parseFloat(selectedUnit.Multiplier)==parseFloat(0) ? 1 : selectedUnit.Multiplier;
+    orderitem.Price = price * $.multiplier;
     orderitem.Units = selectedUnit.Pack;
     Variables["itemUnits"].Text = selectedUnit.Pack.Description;
     orderitem.Save();
@@ -232,13 +305,20 @@ function ChangeUnit(sku, orderitem, price) {
 }
 
 function GetItemHistory(sku, order) {
-    var q = new Query("SELECT strftime('%d.%m.%Y', D.Date) AS Date, S.Qty*P.Multiplier AS Qty, S.Total/P.Multiplier AS Total, S.Discount, S.Price FROM Document_Order_SKUs S JOIN Document_Order D ON S.Ref=D.Id JOIN Catalog_SKU_Packing P ON S.SKU=P.Ref AND P.Pack=S.Units WHERE D.Outlet=@outlet AND S.SKU=@sku AND S.Ref<>@ref ORDER BY D.Date DESC LIMIT 4");
+    var q = new Query("SELECT D.Date AS Date, S.Qty*P.Multiplier AS Qty, " +
+        "S.Total/P.Multiplier AS Total, S.Discount, S.Price " +
+        "FROM Document_" + $.workflow.currentDoc + "_SKUs S " +
+        "JOIN Document_" + $.workflow.currentDoc + " D ON S.Ref=D.Id " +
+        "JOIN Catalog_SKU_Packing P ON S.SKU=P.Ref AND P.Pack=S.Units " +
+        "WHERE D.Outlet=@outlet AND S.SKU=@sku AND S.Ref<>@ref " +
+        "ORDER BY D.Date DESC LIMIT 4");
     q.AddParameter("outlet", order.Outlet);
     q.AddParameter("sku", sku);
-    q.AddParameter("ref", order);    
-    
+    q.AddParameter("ref", order);
+
     $.Add("historyCount", q.ExecuteCount());
-    
+    // Dialog.Debug($.historyCount);
+
     return q.Execute();
 }
 
@@ -252,14 +332,19 @@ function CalculateSKUAndForward(outlet, orderitem) {
 
     if ($.Exists("itemFields"))
     	$.Remove("itemFields");
-    
-    Workflow.Forward([]);
+    if ($.Exists("AlreadyAdded"))
+    	$.Remove("AlreadyAdded");
+
+    if (alreadyAdded)
+        DoAction('Show' + $.workflow.currentDoc);
+    else
+        DoForward();
 }
 
 function DeleteAndBack(orderitem) {
     if (Variables.Exists("AlreadyAdded") == false) {
         DB.Delete(orderitem);
-    } else{        
+    } else{
         orderitem = orderitem.GetObject();
         orderitem.Qty = $.itemFields.Qty;
         orderitem.Price = $.itemFields.Price;
@@ -275,16 +360,24 @@ function DeleteAndBack(orderitem) {
     Workflow.Back();
 }
 
-function RepeatOrder(orderitem, qty, total, price, discount, baseUnit, baseUnitDescr){
-    orderitem = orderitem.GetObject();
+function RepeatOrder(orderitem, qty, discount, baseUnit, baseUnitDescr){
+    orderitem = orderitem.LoadObject();
+    
     orderitem.Qty = qty;
     $.orderItemQty.Text = qty;
-    orderitem.Total = total;
-    $.orderItemTotalId.Text = total;
-    orderitem.Price = price;
+
     orderitem.Discount = discount;
     $.discountEdit.Text = discount;
+    
+    orderitem.Total = CalculatePrice(orderitem.Price, discount, 1);
+    $.orderItemTotalId.Text = orderitem.Total;    
+    
     orderitem.Units = baseUnit;
     $.itemUnits.Text = baseUnitDescr;
+    
     orderitem.Save();
+}
+
+function FormatDate(datetime) {
+    return Format("{0:d}", Date(datetime));
 }

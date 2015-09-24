@@ -1,50 +1,63 @@
-function GetReceivables(outlet) {
+﻿var amount;
+var overdueAmount;
+var editingItem;
+//var receivablesRecdset;
 
-	var receivables = new Query("SELECT RD.DocumentName, RD.DocumentSum, RD.Overdue FROM Document_AccountReceivable_ReceivableDocuments RD JOIN Document_AccountReceivable AR ON AR.Id=RD.Ref WHERE AR.Outlet = @outlet ORDER BY AR.Date, RD.LineNumber");
-	receivables.AddParameter("outlet", outlet);
-	var d = receivables.Execute();
-
-	Variables.Add("receivableAmount", GetAmount(d));
-	Variables.Add("overdueAmount", GetOverdueAmount(outlet));
-
-	return d;
-
+function OnLoad() {
+	editingItem = null;
 }
 
-function ValidateAmount(control) {
-	return Global.ValidateField(control.Text, "[0-9\\.,]*", Translate["#encashmentAmount#"]);
+function GetHeader(outlet) {
+	GetAmount(outlet);
+	GetOverdueAmount(outlet);
+}
+
+function GetReceivables(outlet) {
+
+	var receivables = new Query("SELECT RD.DocumentName, RD.DocumentSum, RD.Overdue, E.ID AS EncItem, E.EncashmentSum AS EncSum " + //IFNULL(E.EncashmentSum, '') AS EncSum" +
+			" FROM Document_AccountReceivable_ReceivableDocuments RD " +
+			" JOIN Document_AccountReceivable AR ON AR.Id=RD.Ref AND AR.Outlet = @outlet " +
+			" LEFT JOIN Document_Encashment_EncashmentDocuments E ON E.Ref = @encashment AND E.DocumentName=RD.DocumentName " +
+			" ORDER BY AR.Date, RD.LineNumber");
+	receivables.AddParameter("encashment", $.workflow.encashment);
+	receivables.AddParameter("outlet", outlet);
+	var r = receivables.Execute();
+
+	return r;
 }
 
 function ValidateEncashments() {
 	var i = 0;
 	while ($.Exists(("control" + i))) {
-		var valid = Global.ValidateField(Variables["control" + i].Text, "[0-9\\.,]*", Translate["#encashment#"]);
+		var valid = ValidateField(Variables["control" + i].Text, "[0-9\\.,]*", Translate["#encashment#"]);
 		if (valid == false)
-			return false;		
+			return false;
 		i = i + 1;
 	}
 	return true;
 }
 
-function GetAmount(receivables) {
-	var receivables = new Query("SELECT RD.DocumentName, RD.DocumentSum FROM Document_AccountReceivable_ReceivableDocuments RD JOIN Document_AccountReceivable AR ON AR.Id=RD.Ref WHERE AR.Outlet = @outlet ORDER BY RD.LineNumber");
+function GetAmount(outlet) {
+	var receivables = new Query("SELECT SUM(RD.DocumentSum) " +
+			" FROM Document_AccountReceivable_ReceivableDocuments RD " +
+			" JOIN Document_AccountReceivable AR ON AR.Id=RD.Ref AND AR.Outlet = @outlet" +
+			" ORDER BY RD.LineNumber");
 	receivables.AddParameter("outlet", outlet);
-	var d = receivables.Execute();
-	var amount = parseInt(0);
-	while (d.Next()) {
-		amount += d.DocumentSum;
-	}
-	return amount;
+	amount = FormatValue(receivables.ExecuteScalar());
 }
 
-function RefreshAmount(control, encashment, encasmentItem) {
+function RefreshAmount(control, encashment, encasmentItem, receivableDoc) {
 
-	if (Global.ValidateField(control.Text, "[0-9\\.,]*", Translate["#encashment#"])) {
+	if (encasmentItem==null)
+		encasmentItem = CreateEncashmentItem(encashment, receivableDoc);
+	editingItem = encasmentItem;
+
+	if (ValidateField(control.Text, "[0-9\\.,]*", Translate["#encashment#"])) {
 		encasmentItem = encasmentItem.GetObject();
 		if (String.IsNullOrEmpty(control.Text))
 			encasmentItem.EncashmentSum = 0;
 		else
-			encasmentItem.EncashmentSum = parseFloat(control.Text); 
+			encasmentItem.EncashmentSum = parseFloat(control.Text);
 		encasmentItem.Save();
 
 		var q = new Query("SELECT SUM(EncashmentSum) FROM Document_Encashment_EncashmentDocuments WHERE Ref=@ref");
@@ -54,7 +67,8 @@ function RefreshAmount(control, encashment, encasmentItem) {
 		encashment = encashment.GetObject();
 		encashment.EncashmentAmount = FormatValue(s);
 		encashment.Save();
-		$.encAmount.Text = FormatValue(s);
+		//$.encAmount.Text = FormatValue(s);
+		//Workflow.Refresh([]);
 	}
 }
 
@@ -75,16 +89,9 @@ function CreateEncashmentIfNotExist(visit) {// , textValue) {
 	return encashment;
 }
 
-function CreateEncashmentItemIfNotExist(encashment, receivableDoc) {
-	var query = new Query("SELECT Id FROM Document_Encashment_EncashmentDocuments WHERE Ref=@ref AND DocumentName=@docName");
-	query.AddParameter("ref", encashment);
-	query.AddParameter("docName", receivableDoc);
-	// query.Text = "select single(*) from
-	// Document.Encashment_EncashmentDocuments where Ref == @docRef &&
-	// DocumentName == @docName";
-	var encItem = query.ExecuteScalar();
+function CreateEncashmentItem(encashment, receivableDoc) {
 
-	if (encItem == null) {
+	if (editingItem == null) {
 		encItem = DB.Create("Document.Encashment_EncashmentDocuments");
 		encItem.Ref = encashment;
 		encItem.DocumentName = receivableDoc;
@@ -92,44 +99,53 @@ function CreateEncashmentItemIfNotExist(encashment, receivableDoc) {
 		encItem.Save();
 		encItem = encItem.Id;
 	}
+	else
+		encItem = editingItem;
 	return encItem;
 }
 
-function SpreadEncasmentAndRefresh(encashent, outlet) {
+function SpreadEncasmentAndRefresh(encashment, outlet, receivables) {
 
-	var receivables = new Query("SELECT RD.DocumentName, RD.DocumentSum FROM Document_AccountReceivable_ReceivableDocuments RD JOIN Document_AccountReceivable AR ON AR.Id=RD.Ref WHERE AR.Outlet = @outlet ORDER BY AR.Date, RD.LineNumber");
-	receivables.AddParameter("outlet", outlet);
-	var d = receivables.Execute();
+	SaveSum();
+	receivables = GetReceivables(outlet);
 
-	var sumToSpread = encashent.EncashmentAmount;
-	while (d.Next()) {
-		var query = new Query("SELECT Id FROM Document_Encashment_EncashmentDocuments WHERE Ref=@ref AND DocumentName=@docName");
-		query.AddParameter("ref", encashent);
-		query.AddParameter("docName", d.DocumentName);
-		var encRow = query.ExecuteScalar();
+	var sumToSpread = encashment.EncashmentAmount;
+	while (receivables.Next()) {
 
-		encRowObj = encRow.GetObject();
-		if (Converter.ToDecimal(sumToSpread) > Converter.ToDecimal(d.DocumentSum)) {
-			encRowObj.EncashmentSum = FormatValue(d.DocumentSum);
-			sumToSpread = sumToSpread - d.DocumentSum;
-		} else {
-			encRowObj.EncashmentSum = FormatValue(sumToSpread);
-			sumToSpread = Converter.ToDecimal(0);
+		if (parseInt(0)!=parseInt(sumToSpread)) {
+			var encRowObj;
+			if (receivables.EncItem==null){
+				encRowObj = CreateEncashmentItem(encashment, receivables.DocumentName);
+				encRowObj = encRowObj.GetObject();
+			}
+			else
+				encRowObj = receivables.encItem.GetObject();
+
+			if (Converter.ToDecimal(sumToSpread) > Converter.ToDecimal(receivables.DocumentSum)) {
+				encRowObj.EncashmentSum = FormatValue(receivables.DocumentSum);
+				sumToSpread = sumToSpread - receivables.DocumentSum;
+			} else {
+				encRowObj.EncashmentSum = FormatValue(sumToSpread);
+				sumToSpread = Converter.ToDecimal(0);
+			}
+			encRowObj.Save();
 		}
-		encRowObj.Save();
+		else{
+			if (receivables.encItem!=null) {
+				DB.Delete(receivables.encItem);
+			}
+		}
 	}
 	Workflow.Refresh([]);
 }
 
 function SaveAndForward(encashment) {
-	if (ValidateAmount($.encAmount) && ValidateEncashments()) {
-		ClearEmptyRecDocs(encashment);
-		if (parseFloat(encashment.EncashmentAmount) != parseFloat(0))
-			encashment.GetObject().Save();
-		else
-			DB.Delete(encashment);
-		Workflow.Forward([]);
-	}
+	ClearEmptyRecDocs(encashment);
+	if (parseFloat(encashment.EncashmentAmount) != parseFloat(0))
+		encashment.GetObject().Save();
+	else
+		DB.Delete(encashment);
+	Workflow.Forward([]);
 }
 
 function ClearEmptyRecDocs(encashment) {
@@ -142,9 +158,53 @@ function ClearEmptyRecDocs(encashment) {
 }
 
 function GetOverdueAmount(outlet) {
-	// var outlet = Variables["workflow"].outlet;
-	var q = new Query("SELECT SUM(R.DocumentSum) FROM Document_AccountReceivable A JOIN Document_AccountReceivable_ReceivableDocuments R ON A.Id=R.Ref WHERE A.Outlet = @outlet AND Overdue=1");
+	var q = new Query("SELECT SUM(R.DocumentSum) " +
+			" FROM Document_AccountReceivable_ReceivableDocuments R " +
+			" JOIN Document_AccountReceivable A ON A.Id=R.Ref AND A.Outlet = @outlet" +
+			" WHERE Overdue=1");
 	q.AddParameter("outlet", outlet);
 
-	return q.ExecuteScalar();
+	overdueAmount = FormatValue(q.ExecuteScalar());
+}
+
+function FormatSum(control, value) {
+
+	if (value==null || parseInt(value)==parseInt(0))
+		return "";
+	else
+		return String.Format("{0:F2}", value);
+
+}
+
+function FormatAmount(control) {
+	if (control.Text==null || parseInt(control.Text)==parseInt(0))
+		control.Text = "";
+	else
+		control.Text = String.Format("{0:F2}", control.Text);
+}
+
+function SaveSum(control) {
+	var enc = $.workflow.encashment.GetObject();
+	if ($.encAmount.Text == '.') {
+		$.encAmount.Text = '';
+	}
+	else {
+		enc.EncashmentAmount = ToDecimal($.encAmount.Text);
+		$.encAmount.Text = enc.EncashmentAmount;
+		enc.Save();
+	}
+}
+
+//------------------------------Temporary, from global----------------
+
+function ValidateField(string, regExp, fieldName){
+	if (string==null)
+		string = "";
+	var dotPosition = Find(string, ",");
+	var commaPosition = Find(string, ".");
+	var validDotAndComma = ((dotPosition > 0 && commaPosition == 0 || commaPosition > 0 && dotPosition == 0 || dotPosition == 0 && commaPosition == 0) ? true : false);
+	var validField = validate(string, regExp) && validDotAndComma;
+	if (validField==false)
+		Dialog.Message(String.Format("{0} {1}", Translate["#incorrect#"], fieldName));
+	return validField;
 }

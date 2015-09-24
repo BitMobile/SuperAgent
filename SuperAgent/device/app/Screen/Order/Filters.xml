@@ -3,6 +3,7 @@
 
 	<s:Push Id="screenContext" Value="$param1"></s:Push>
 	<s:Push Id="screenFilter" Value="$SetFilter()"></s:Push>
+	<s:Push Id="thisDoc" Value="$GetCurrentDoc()"></s:Push>
 
 	<c:DockLayout Id="DLayout">
 
@@ -49,7 +50,7 @@
 
 			<s:If Test="$filterType=='group'">
 
-				<s:Push Id="groupsHierarchy" Value="$GetGroups($workflow.order.PriceList,$screenContext)"></s:Push>
+				<s:Push Id="groupsHierarchy" Value="$GetGroups($thisDoc.PriceList,$thisDoc.Stock,$screenContext)"></s:Push>
 				<s:Push Id="currentGroup" Value=""></s:Push>
 				<s:Iterator Id="group" Value="$groupsHierarchy">
 
@@ -59,12 +60,11 @@
 						<s:Push Id="dummy" Value="$AssignHierarchy($group)" />
 
 						<c:DockLayout CssClass="parameter_grid" OnClickAction="$AddFilterAndRefresh($parentId, group_filter)">
-							<s:Push Id="isSet" Value="$FilterIsSet($parentId, group_filter)"></s:Push>
 							<s:If Test="$isSet">
-								<c:Image CssClass="tick" />
+								<c:Image Id="flag{$parentId}" CssClass="tick" Visible = "true" />
 							</s:If>
 							<s:Else>
-								<c:VerticalLayout CssClass="empty_tick"></c:VerticalLayout>
+								<c:Image Id="flag{$parentId}" CssClass="tick" Visible = "false" />
 							</s:Else>
 							<c:TextView Text="$parent"></c:TextView>
 						</c:DockLayout>
@@ -73,12 +73,11 @@
 
 					<s:If Test="$childExists">
 						<c:DockLayout CssClass="parameter_grid" OnClickAction="$AddFilterAndRefresh($group.ChildId, group_filter)">
-							<s:Push Id="isSet" Value="$FilterIsSet($group.ChildId, group_filter)"></s:Push>
-							<s:If Test="$isSet">
-								<c:Image CssClass="child_tick" />
+							<s:If Test="$group.ChildIsSet != null">
+								<c:Image Id="flag{$group.ChildId}" CssClass="child_tick" Visible = "true" />
 							</s:If>
 							<s:Else>
-								<c:VerticalLayout CssClass="child_empty_tick"></c:VerticalLayout>
+								<c:Image Id="flag{$group.ChildId}" CssClass="child_tick" Visible = "false" />
 							</s:Else>
 							<c:TextView Text="$group.Child"></c:TextView>
 						</c:DockLayout>
@@ -90,16 +89,15 @@
 
 
 			<s:Else>
-				<s:Push Id="brands" Value="$GetBrands($workflow.order.PriceList,$screenContext)"></s:Push>
+				<s:Push Id="brands" Value="$GetBrands($thisDoc.PriceList,$thisDoc.Stock,$screenContext)"></s:Push>
 				<s:Iterator Id="brand" Value="$brands">
 
 					<c:HorizontalLayout CssClass="parameter_grid" OnClickAction="$AddFilterAndRefresh($brand.Id, brand_filter)">
-						<s:Push Id="isSet" Value="$FilterIsSet($brand.Id, brand_filter)"></s:Push>
-						<s:If Test="$isSet">
-							<c:Image CssClass="tick" />
+						<s:If Test="$brand.BrandIsSet != null">
+							<c:Image Id="flag{$brand.Id}" CssClass="tick" Visible = "true" />
 						</s:If>
 						<s:Else>
-							<c:VerticalLayout CssClass="empty_tick"></c:VerticalLayout>
+							<c:Image Id="flag{$brand.Id}" CssClass="tick" Visible = "false" />
 						</s:Else>
 						<c:TextView Text="$brand.Description"></c:TextView>
 					</c:HorizontalLayout>

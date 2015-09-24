@@ -24,6 +24,8 @@ sv vl {
 }
 
 sv hl {
+	height: 100%;
+	width: 100%;
 	background-color: #ffffff;
 }
 
@@ -44,6 +46,7 @@ dl {
 dl hl {
 	width: 100%;
 	height: 100%;
+	dock-align: top;
 }
 
 shl {
@@ -54,6 +57,11 @@ shl {
 svl {
 	width: 100%;
 	height: 100%;
+}
+
+svl vl {
+	height: 100%;
+	width: 100%;
 }
 
 TextView {
@@ -79,6 +87,7 @@ MemoEdit {
 .top_navigator {
 	height: 6.7mm;
 	dock-align: top;
+	background-color: #ffffff;
 }
 
 .top_navigator Button {
@@ -89,18 +98,18 @@ MemoEdit {
 	width: 100%;
 	height: 100%;
 	dock-align: top;
-	horizontal-align: central;	
+	horizontal-align: central;
 }
 
 .top_navigator hl TextView {
 	width: 100%;
 	height: 100%;
 	margin-left: 0%;
-	padding-top: 25%;
+	padding-top: 26%;
 	horizontal-align: central;
 	text-align: center;
 	color: #000000;
-	font: 38% Arial;
+	font: 39.5% arial;
 	selected-color: #D3D3D3;
 }
 
@@ -110,13 +119,13 @@ MemoEdit {
 
 .top_navigator dl {
 	width: 16.3mm;
-	height: 100%;	
+	height: 100%;
 }
 
 .btn_forward {
 	width: 16.3mm;
 	height: 100%;
-	dock-align: right;	
+	dock-align: right;
 }
 
 .btn_forward TextView {
@@ -243,10 +252,10 @@ MemoEdit {
 }
 
 .small_grid hl select_zone {
-	width: 90%;
+	width: 100%;
 	height: 90%;
 	margin-top: 5%;
-	margin-left: 5%;
+	/*margin-left: 5%;*/
 }
 
 .small_grid hl select_zone TextView {
@@ -398,6 +407,7 @@ MemoEdit {
 	height: 40%;
 	width: 90%;
 	font: 45% Arial;
+	placeholder-color: #2d89cf;
 }
 
 .grid vl EditText {
@@ -442,6 +452,7 @@ MemoEdit {
 	width: 100%;
 	height: 40%;
 	white-space: normal;
+	placeholder-color: #2d89cf;
 	font: 42% Arial;
 }
 
@@ -465,7 +476,7 @@ MemoEdit {
 	height: 100%;
 	width: 100%;
 	vertical-align: central;
-	font: 45% arial;
+	font: 37% arial;
 }
 
 .half_grid TextView {
@@ -610,6 +621,7 @@ MemoEdit {
 	padding-top: 30%;
 	dock-align: left;
 	font: 37% arial;
+	placeholder-color: #2d89cf;
 }
 
 .parameter_grid hl {
@@ -624,6 +636,15 @@ MemoEdit {
 	padding-top: 30%;
 	color: #2d89cf;
 	font: 36% arial;
+}
+
+.parameter_image {
+	height: 100%;
+	margin-right: 2.4mm;
+	margin-top: 1.5%;
+	margin-bottom: 1.5%;
+	background-image: url(arrow.png);
+	dock-align: right;
 }
 
 .tick {
@@ -786,4 +807,154 @@ MemoEdit {
 	width: 100%;
 	margin-left: 0%;
 	font: 15% Arial;
+}
+
+.no_image{
+	background-color: #eeeeee;
+	height: 100%;
+	width: 45.7mm;
+	margin-top: 0.5mm;
+	margin-bottom: 2.3mm;
+	margin-left: 3mm;
+	margin-right: 3mm;
+}
+
+.no_image TextView {
+	height: 100%;
+	width: 25mm;
+	color: #8e8e93;
+	text-align: center;
+	horizontal-align: central;
+	padding-top: 0mm;
+	padding-left: 2mm;
+	padding-right: 2mm;
+	white-space: normal;
+	font: 25% arial;
+}
+
+.no_image img {
+	height: 12mm;
+	width: 12mm;
+	background-image: url(no_image_big.png);
+	margin-top: 10%;
+	horizontal-align: center;
+}
+
+.no_single_image {
+	height: 25.6mm;
+	background-color: #ffffff;
+	width: 45.7mm;
+	margin-top: 0.5mm;
+	margin-bottom: 2.3mm;
+	horizontal-align: center;
+}
+
+
+/*-----------side menu-------------*/
+
+.menu {
+	padding-top: 2%;
+	background-color: #2d89cf;
+	width: 43.4mm;
+}
+
+.menu line {
+	margin-left: 1.4mm;
+	background-color: #43acfd;
+}
+
+.menu dl {
+	height: 6.9mm;
+	selected-color: #5ea6dc;
+}
+
+.menu_text {
+	width: 30% auto;	
+	height: 32%;
+	dock-align: right;
+	text-align: right;
+	vertical-align: central;
+	margin-top: 30%;
+	margin-right: 2mm;
+	margin-left: 0.5mm;
+	color: #c5e3f7;
+	font: 90% arial;
+}
+
+.menu dl hl {
+	margin-left: 2mm;
+	dock-align: left;
+}
+
+.menu dl hl img{
+	height: 65%;
+	vertical-align: central;
+}
+
+.menu dl hl TextView {
+	width: 100% auto;;
+	height: 40%;
+	margin-left: 1.4mm;
+	vertical-align: central;
+	color: #ffffff;
+	font: 90% arial;
+}
+
+.header {
+	background-color: #43acfd;
+	margin-left: 0mm;
+}
+
+.btn_summary {
+	background-image: url(Menu_01.png);
+}
+
+.btn_visits {
+	background-image: url(Menu_02.png);
+}
+
+.btn_orders {
+	background-image: url(Menu_03.png);
+}
+
+.btn_returns {
+	background-image: url(Menu_11.png);
+}
+
+.btn_clients {
+	background-image: url(Menu_04.png);
+}
+
+.btn_stocks {
+	background-image: url(Menu_05.png);
+}
+
+.btn_kpi {
+	background-image: url(Menu_06.png);
+}
+
+.btn_set {
+	background-image: url(Menu_07.png);
+}
+
+.btn_sync {
+	background-image: url(Menu_08.png);
+}
+
+.btn_info {
+	background-image: url(Menu_09.png);
+}
+
+.btn_logout {
+	background-image: url(Menu_10.png);
+}
+
+.no_contacts {
+	height: 5.5mm;
+	width: 100%;
+	margin-top: 2mm;
+	text-align: center;
+	font: 2.2mm Arial;
+	color: #000;
+	
 }

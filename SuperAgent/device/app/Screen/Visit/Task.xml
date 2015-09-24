@@ -7,18 +7,27 @@
 
 	<c:DockLayout>
 
+		<c:DockLayout CssClass="top_navigator">
+			<c:HorizontalLayout>
+				<c:TextView Text="#task#" />
+			</c:HorizontalLayout>
+		</c:DockLayout>
+
+		<c:HorizontalLine />
+		
 		<c:HorizontalLayout Id="btnDone" CssClass="bottom_btn" OnEvent="Back" OnClickAction="$DoBack()">
 			<c:TextView Text="#ready#" />
 		</c:HorizontalLayout>
 		<c:HorizontalLine CssClass="b_line" />
 
 		<c:ScrollView Id="grScrollView">
-			<c:HorizontalLayout CssClass="empty_caption_grid" />
+			
+			<c:HorizontalLayout CssClass="margin_top" />
 			<c:HorizontalLine />
-
+			
 			<c:HorizontalLayout CssClass="half_grid">
 				<c:TextView Text="#turnaroundTime#" />
-				<s:Push Id="date" Value="$GetDate($task.PlanDate, $task)"></s:Push>
+				<s:Push Id="date" Value="$FormatDate($task.PlanDate)"></s:Push>
 				<c:TextView Text="$date" CssClass="hlf_value" />
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

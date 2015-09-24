@@ -15,13 +15,20 @@ function ToString(val) {
 	return val.ToString();
 }
 
+function ToDecimal(val) {
+	if (String.IsNullOrEmpty(val))
+		return Converter.ToDecimal(0);
+	else
+		return Converter.ToDecimal(val);
+}
+
 function GetSum(val1, val2) {
-	
+
 	if (val1 == null)
 		val1 = parseFloat(0);
 	if (val2 == null)
 		val2 = parseFloat(0);
-	
+
     return parseFloat(val1) + parseFloat(val2);
 }
 
@@ -61,7 +68,7 @@ function GetMultiple(val1, val2) {
 }
 
 function FormatValue(value) {
-    return String.Format("{0:F2}", value);
+    return String.Format("{0:F2}", value || 0);
 }
 
 function ConvertToBoolean(val) {
@@ -109,10 +116,26 @@ function EmptyRef(ref) {
     return ref.EmptyRef();
 }
 
+function IsEmptyValue(value) {
+
+	if (String.IsNullOrEmpty(value))
+		return true;
+	else{
+		if (getType(value)=="System.String" || getType(value)=="System.DateTime" || getType(value)=="System.Boolean")
+			return false;
+		else{
+			if (value.EmptyRef())
+	            return true;
+	        else
+	            return false;
+		}
+	}
+}
+
 function NotEmptyRef(ref) {
-    if (ref.EmptyRef()) 
+    if (ref.EmptyRef())
         return false;
-    else 
+    else
         return true;
 }
 
@@ -145,6 +168,44 @@ function GetPrivateImagePath(objectType, objectID, pictID, pictExt) {
 	return r;
 }
 
+function FocusOnEditText(editFieldName, isInputField) {
+  if (isInputField != null) {
+    if (isInputField == '1') {
+      Variables[editFieldName].SetFocus();
+    }
+  }
+}
+
+function FormatOutput(value) {
+	if (String.IsNullOrEmpty(value) || IsEmptyValue(value))
+		return "-";
+	else
+		return value;
+}
+
+function RoundToInt(val){ 
+    
+    var string = val;
+    var resultString = "";
+    
+    if (typeof string != "string")
+        string = string.ToString();    
+
+    for (var i = 1; i <= StrLen(string); i++){  // it's all about ot clear source from incorrect chars
+        var ch = Mid(string, i, 1);
+
+        if (validate(ch, "([0-9.,])*")){
+            resultString += ch;
+
+            if (validate(resultString, "([0-9])*[.,][0-9]")) //we've just got a last char to round the source
+                break;
+        }
+        else
+            break;
+    };
+
+    return Round(resultString, 0);
+}
 
 //--------------------Clear Button part----------------------
 
@@ -164,3 +225,29 @@ function ClearField(source, field, objectRef, attribute) {
 	source.Visible = false;
 }
 
+//-------------------------Dialogs----------------------------
+
+function AssignDialogValue(state, args) {
+	var entity = state[0];
+	var attribute = state[1];
+	entity[attribute] = args.Result;
+	entity.GetObject().Save();
+	return entity;
+}
+
+//--------------------------WorkWithGPS-----------------------
+
+function ActualLocation(location){
+    
+    var actualTime;
+    if (parseInt($.sessionConst.UserCoordinatesActualityTime)==parseInt(0)){
+        actualTime = true;
+    }
+    else{
+        var locTime = location.Time.ToLocalTime();
+        var maxTime = DateTime.Now.AddMinutes(-parseInt($.sessionConst.UserCoordinatesActualityTime));
+        actualTime = locTime > maxTime;
+    }
+
+    return (location.NotEmpty && actualTime);
+}

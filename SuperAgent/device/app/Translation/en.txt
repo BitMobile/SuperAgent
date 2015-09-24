@@ -6,14 +6,17 @@ caps_summary	SUMMARY
 new			New
 client		Client
 clients		Clients
+newClient	New client
 main		MAIN
 mainInfo	MAIN INFORMATION
+mainData	MAIN DATA
 additionally	ADDITIONALLY
  todo		ToDo
 stock		Stock
 schedule	Schedule
 order		Order
 visit		Visit
+newVisit	New visit
 visits		Visits
 incompletedVisits	INCOMPLETED VISITS
 completedVisits		COMPLETED VISITS
@@ -138,12 +141,12 @@ locationSetFailed	Location set is failed.
 saveChanges	Save changes?
 map			Map
 showOnMap	Show on map
-no_visitPlans	No visits to display 
+no_visitPlans	No visits to display
 current		Current
 couldnt_be_cleaned	Field couldn't be cleaned
 priceList	Price list
 isntSelected	Isn't selected
-SKUWillRevised	SKU list has been revised
+OrderSKUWillRevised	SKU list has been revised
 features	Features
 noPriceLists	No Price Lists
 emptyList	List is empty
@@ -173,6 +176,7 @@ fillInVisitReason	Reason of visit should be filled
 visitReason	Visit reason
 debt	Debt
 orderInfo	ORDER INFORMATION
+orderInfoSmall	Order information
 visitTotal	Visit total
 synchronizationData	SYNCHRONIZATION OF DATA
 synchronizationPhoto	SYNCHRONIZATION OF PHOTOS
@@ -200,6 +204,8 @@ Synchronization_has_not_been_performed	Synchronization has not been performed
 delete	Delete
 details		Details
 contacts	Contacts
+contact		Contact
+newContact	New contact
 legal_name	Legal name
 legal_address	Legal address
 ownership		Ownership type
@@ -228,7 +234,7 @@ developer	DEVELOPER
 bitMobile	BIT.MOBILE
 bitmobileDesc	BIT.MOBILE is a division of the First Bit. We are developing mobile solutions for business.
 about		ПОДРОБНЕЕ О ПРИЛОЖЕНИИ
-version		Версия 2.4.0.67
+version		Версия
 superDescription	СуперАгент — мобильное решение для сбора заказов, анкетирования и мерчандайзинга, контроля работы сотрудников.
 support		Тех.поддержка
 idea		Предложить идею
@@ -237,7 +243,7 @@ icons		При создании приложения использованы и�
 firstBIT	Первый БИТ — эффективные решения для вашего бизнеса. Лидер на рынке автоматизации 1С с 17 летним опытом!
 webSite		Сайт разработчика
 others		Другие приложения
-clear_coord		Clear coordinates
+clear_coord		Clear
 refresh		Refresh
 copy		Copy
 deleteImage		Delete this image?
@@ -248,3 +254,66 @@ notAvailable	Snapshot isnt't available
 clearValue		Clear value
 setDate			Set date
 choose_action	Choose action:
+skuAdd			Adding SKU
+skuDetail		Detail
+skuList			LIST OF SKUs
+OrderskuWillBeDeleted	Part of SKUs will be removed from order. Continue?
+logout			Logout
+logoutQuery		When you exit will delete all data
+cancel			Cancel
+logoutConfirm	Logout
+visitReason		"Visit reason" field should be filled
+noOrder			"No order reason" field should be filled
+notAvailableShort	N/A
+orderParameters	ORDER PARAMETERS:
+status	Статус
+Active	Active
+Potential	Potential
+Closed	Closed
+show			Show image
+snapshot			Snapshot
+reshot			Make another snapshot
+editChange		Edit
+returns			Returns
+return			Return
+returnInfo		RETURN INFORMATION
+returnSum		Return sum
+skuInReturn		Returning SKUs
+returnInfoSmall	Информация о заказе
+alreadyReturned	already in return
+ReturnskuWillBeDeleted	Part of SKUs will be removed from return. Continue?
+ReturnSKUWillRevised	SKU list has been revised
+send			Send log
+success			Данные успешно отправлены
+imageNotAvailable	Image not available now
+noSuccess		Произошла ошибка во время отправки. Данные не отправлены
+errorMessage	Error message
+sending			Sending..
+editSKU			Edit
+returnParameters	RETURN PARAMETERS
+returnHistory	RETURN HISTORY
+ZAO				ZAO
+OOO				OOO
+IP				IP
+NKO				NKO
+OAO				OAO
+OP				OP
+TSJ				TSJ
+outlet_territory Territory
+no_contacts	NO CONTACTS
+contractors		Contarctors
+contractor		Contarctor
+outletContacts	OUTLET CINTACTS
+partnerContacts	PARTNER CONTACTS
+partner			Partner
+owner			Contact owner
+emptyContactOwner	Contact owner field is empty
+noContractors	No contractors
+noContractorsMessage	This outlet has no contractors
+phone_regexp	^(((8|\+7)[\- ]?)?(\(?\d{3,4}\)?[\- ]?)?[\d\- ]{5,10})?$
+email_regexp	^(([а-яА-ЯёЁa-zA-Z0-9_-]+\.)*[а-яА-ЯёЁa-zA-Z0-9_-]+@[а-яА-ЯёЁa-zA-Z0-9_-]+(\.[а-яА-ЯёЁa-zA-Z0-9_-]+)*\.[а-яА-ЯёЁa-zA-Z]{2,6})?$
+kpp_regexp		^(\d{9}|)?$
+inn_regexp		^((\d{10})|(\d{12})|)?$
+selectOwner		Owner isn't selected
+no_questions_list	NO QUESTIONS
+requiredFieldsLeft	Required fields left

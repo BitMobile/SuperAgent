@@ -14,7 +14,7 @@ function OnApplicationRestore(name){
 
 	Indicators.SetIndicators();
 
-	if (name=="Visit")
+	if (name=="Visit" || name=="Outlet" || name=="Order" || name=="Return")
 		GPS.StartTracking();
 
 }

@@ -362,7 +362,11 @@ function GetDescription(priceList) {
 
 function SelectStock(order, outlet, attr, control) {
 	if (IsNew(order) && NotEmptyRef(order.PriceList)) {
-		var q = new Query("SELECT CS.Id, CS.Description FROM Catalog_Stock CS JOIN Catalog_Territory_Stocks CTS ON CS.Id = CTS.Stock LEFT JOIN Catalog_Territory_Outlets CTO ON CTS.Ref = CTO.Ref WHERE CTO.Outlet = @outlet");
+		var q = new Query("SELECT CS.Id, CS.Description " +
+			" FROM Catalog_Stock CS " +
+			" JOIN Catalog_Territory_Stocks CTS ON CS.Id = CTS.Stock " +
+			" LEFT JOIN Catalog_Territory_Outlets CTO ON CTS.Ref = CTO.Ref " +
+			" WHERE CTO.Outlet = @outlet");
 		q.AddParameter("outlet", outlet);
 		var res = q.Execute().Unload();
 		if (res.Count() > 1) {
@@ -591,7 +595,10 @@ function FormatDate(datetime) {
 function GetStock(userRef) {
 	if ($.sessionConst.MultStck == false)
 		return DB.EmptyRef("Catalog_Stock");
-	var q = new Query("SELECT CTS.Stock FROM Catalog_Territory_Stocks CTS JOIN Catalog_Territory_Outlets CTO ON CTS.Ref = CTO.Ref WHERE CTO.Outlet = @outlet LIMIT 1");
+	var q = new Query("SELECT CTS.Stock " +
+		" FROM Catalog_Territory_Stocks CTS " +
+		" JOIN Catalog_Territory_Outlets CTO ON CTS.Ref = CTO.Ref " +
+		" WHERE CTO.Outlet = @outlet LIMIT 1");
 	q.AddParameter("outlet", outlet)
 	var s = q.ExecuteScalar();
 	if (s == null)

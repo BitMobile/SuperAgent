@@ -87,11 +87,6 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 	return true;
 }
 
-function OnWorkflowBack(name, lastStep, nextStep) {
-	if (name = "Visit" && nextStep == "Outlet")
-		GPS.StartTracking();
-}
-
 function OnWorkflowFinish(name, reason) {
 
 	RemoveVariables(name);
@@ -112,6 +107,9 @@ function OnWorkflowFinished(name, reason){
 }
 
 function OnWorkflowBack(workflow, lastStep, nextStep){
+
+	if (name = "Visit" && nextStep == "Outlet")
+		GPS.StartTracking();
 
 	WriteScreenName(nextStep);
 

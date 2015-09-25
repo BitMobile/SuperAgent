@@ -268,7 +268,7 @@ MemoEdit {
 
 .search {
 	height: 6.7mm;
-	background-color: #d6d9dd;
+	/*background-color: #d6d9dd;*/
 	dock-align: top;
 }
 

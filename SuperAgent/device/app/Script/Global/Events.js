@@ -10,11 +10,17 @@ function OnApplicationInit() {
 
 }
 
-function OnApplicationRestore(){
+function OnApplicationRestore(name){
 
 	Indicators.SetIndicators();
 
+	if ((name=="Visit" && $.Exists('outletScreen')) || name=="Outlet" || name=="Order" || name=="Return")
+		GPS.StartTracking();
+
 }
+
+function OnApplicationBackground(name){
+	GPS.StopTracking();
 
 // ------------------------ Events ------------------------
 
@@ -47,6 +53,8 @@ function OnWorkflowStart(name) {
 }
 
 function OnWorkflowForward(name, lastStep, nextStep, parameters) {
+	if (name = "Visit" && lastStep == "Outlet")
+		GPS.StopTracking();
 }
 
 function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
@@ -98,6 +106,9 @@ function OnWorkflowFinished(name, reason){
 }
 
 function OnWorkflowBack(workflow, lastStep, nextStep){
+
+	if (name = "Visit" && nextStep == "Outlet")
+		GPS.StartTracking();
 
 	WriteScreenName(nextStep);
 

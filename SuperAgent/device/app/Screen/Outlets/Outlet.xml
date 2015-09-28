@@ -7,6 +7,7 @@
 	</s:If>
 
 	<s:Push Id="outletObj" Value="$GetOutletObject()" />
+	<s:Push Id="outletScreen" Value="true"></s:Push><!-- dirty hack, see Events.js OnApplicationRestore() -->
 
 	<c:DockLayout Id="vOutlet">
 

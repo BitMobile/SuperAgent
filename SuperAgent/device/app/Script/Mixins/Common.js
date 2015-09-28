@@ -185,7 +185,7 @@ function FormatOutput(value) {
 
 function RoundToInt(val){ 
     
-    var string = val;
+     var string = val;
     var resultString = "";
     
     if (typeof string != "string")
@@ -194,17 +194,17 @@ function RoundToInt(val){
     for (var i = 1; i <= StrLen(string); i++){  // it's all about ot clear source from incorrect chars
         var ch = Mid(string, i, 1);
 
-        if (validate(ch, "([0-9.,])*")){
+        if (validate(ch, "([0-9.,-])*") && validate((resultString + ch), "(-)?([0-9])*[.,]?[0-9]?")){
             resultString += ch;
-
-            if (validate(resultString, "([0-9])*[.,][0-9]")) //we've just got a last char to round the source
-                break;
         }
         else
             break;
-    };
+    }
 
-    return Round(resultString, 0);
+    if (resultString == "")
+        return null;
+    else
+        return Round(resultString, 0);
 }
 
 //--------------------Clear Button part----------------------

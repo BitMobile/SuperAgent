@@ -185,7 +185,7 @@ function FormatOutput(value) {
 
 function RoundToInt(val){ 
     
-        var string = val;
+    var string = val;
     var resultString = "";
     
     if (typeof string != "string")

@@ -5,13 +5,24 @@ function OnApplicationInit() {
 	Indicators.SetIndicators();
 }
 
+function OnApplicationRestore(name){
+
+	if ((name=="Visit" && $.Exists('outletScreen')) || name=="Outlet" || name=="Order" || name=="Return")
+		GPS.StartTracking();
+
+}
+
+function OnApplicationBackground(name){
+	GPS.StopTracking();
+}
+
 // ------------------------ Events ------------------------
 
 function OnWorkflowStart(name) {
 	if ($.Exists("workflow"))
 		$.Remove("workflow");
 	Variables.AddGlobal("workflow", new Dictionary());
-	if (name == "Visits" || name == "Outlets" || name=="Order" || name=="Return") {
+	if (name == "Visit" || name == "Outlets" || name=="Order" || name=="Return") {
 		GPS.StartTracking();
 	}
 
@@ -55,6 +66,8 @@ function OnWorkflowStart(name) {
 }
 
 function OnWorkflowForward(name, lastStep, nextStep, parameters) {
+	if (name = "Visit" && lastStep == "Outlet")
+		GPS.StopTracking();
 }
 
 function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
@@ -114,6 +127,9 @@ function OnWorkflowBack(workflow, lastStep, nextStep){
 		// Dialog.Debug($.entity);
 		$.AddGlobal("orderitemAlt", $.entity);
 	}
+
+	if (name = "Visit" && nextStep == "Outlet")
+		GPS.StartTracking();
 }
 
 function OnWorkflowPause(name) {

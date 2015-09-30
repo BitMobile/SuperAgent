@@ -131,7 +131,7 @@ function OnWorkflowBack(workflow, lastStep, nextStep){
 		$.AddGlobal("orderitemAlt", $.entity);
 	}
 
-	if (name == "Visit" && nextStep == "Outlet"){
+	if (workflow == "Visit" && nextStep == "Outlet"){
 		GPS.StartTracking();
 		Console.WriteLine("3");
 	}

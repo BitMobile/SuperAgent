@@ -213,19 +213,19 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet,Class,$workflow.outletClass,#outlet_class#, $sessionConst.editOutletParameters, 000000005)">
+			<c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet,Class,$outletClass,#outlet_class#, $sessionConst.editOutletParameters, 000000005)">
 				<c:TextView Text="#outlet_class#"></c:TextView>
 				<c:TextView Id="outletClass" Text="$workflow.outlet.Class.Description" CssClass="value"></c:TextView>
 			</c:DockLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet,Type,$workflow.outletType,#outlet_type#, $sessionConst.editOutletParameters, 000000004)">
+			<c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet,Type,$outletType,#outlet_type#, $sessionConst.editOutletParameters, 000000004)">
 				<c:TextView Text="#outlet_type#"></c:TextView>
 				<c:TextView Id="outletType" Text="$workflow.outlet.Type.Description" CssClass="value"></c:TextView>
 			</c:DockLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet, Distributor, $workflow.outletDistr, #partner#, $sessionConst.editOutletParameters, 000000006)">
+			<c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet, Distributor, $outletDistr, #partner#, $sessionConst.editOutletParameters, 000000006)">
 				<c:TextView Text="#partner#"></c:TextView>
 				<c:TextView Id="outletDistr" Text="$GetDescr($workflow.outlet.Distributor.Description)" CssClass="value"></c:TextView>
 			</c:DockLayout>

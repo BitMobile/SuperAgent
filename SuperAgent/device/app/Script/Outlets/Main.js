@@ -223,7 +223,6 @@ function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParamete
 		if (editOutletParameters && $.primaryParametersSettings[primaryParameterName]) {
 
 			var listChoice = null;
-			var func = null;
 
 			if (title == Translate["#status#"]) {
 				var query = new Query("SELECT Id, Description FROM Enum_OutletStatus");
@@ -247,7 +246,7 @@ function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParamete
 				listChoice = query.Execute();
 			}
 
-			Dialogs.DoChoose(listChoice, outlet, attribute, control, func, title);
+			Dialogs.DoChoose(listChoice, outlet, attribute, control, null, title);
 		}
 	}
 }

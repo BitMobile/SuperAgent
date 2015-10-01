@@ -366,7 +366,7 @@ function SelectStock(order, outlet, attr, control) {
 			" FROM Catalog_Stock CS " +
 			" JOIN Catalog_Territory_Stocks CTS ON CS.Id = CTS.Stock " +
 			" LEFT JOIN Catalog_Territory_Outlets CTO ON CTS.Ref = CTO.Ref " +
-			" WHERE CTO.Outlet = @outlet");
+			" WHERE CTO.Outlet = @outlet ORDER BY CTO.LineNumber, CS.Description");
 		q.AddParameter("outlet", outlet);
 		var res = q.Execute().Unload();
 		if (res.Count() > 1) {

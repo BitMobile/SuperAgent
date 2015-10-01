@@ -465,6 +465,15 @@ function CheckIfEmptyAndForward(order, wfName) {
 			if ($.workflow.currentDoc=="Return")
 				$.workflow.Remove("Return");
 		}
+		else{
+		var location = GPS.CurrentLocation;
+			if (ActualLocation(location)) {
+				var orderObj = order.GetObject();
+				orderObj.Lattitude = location.Latitude;
+				orderObj.Longitude = location.Longitude;
+				orderObj.Save();
+			}
+		}
 		Workflow.Forward([]);
 	}
 
@@ -472,8 +481,16 @@ function CheckIfEmptyAndForward(order, wfName) {
 	{
 		if (empty)
 			Workflow.Rollback();
-		else
+		else{
+			var location = GPS.CurrentLocation;
+			if (ActualLocation(location)) {
+				var orderObj = order.GetObject();
+				orderObj.Lattitude = location.Latitude;
+				orderObj.Longitude = location.Longitude;
+				orderObj.Save();
+			}
 			Workflow.Commit();
+		}
 	}
 }
 

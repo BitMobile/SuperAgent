@@ -418,6 +418,15 @@ function CheckIfEmptyAndForward(order, wfName) {
 
 		save = false;
 	}
+	else {
+		var location = GPS.CurrentLocation;
+		if (location.NotEmpty) {
+			var orderObj = order.GetObject();
+			orderObj.Lattitude = location.Latitude;
+			orderObj.Longitude = location.Longitude;
+			orderObj.Save();
+		}
+	}
 
 	if (wfName == "CreateOrder" || wfName == "CreateReturn") {
 		if (save)

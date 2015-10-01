@@ -449,6 +449,15 @@ function HasCoordinates(outlet) {
 }
 
 function CoordsChecked(visit) {
+
+	var location = GPS.CurrentLocation;
+	if (location.NotEmpty) {
+		var visitObj = visit.GetObject();
+		visitObj.Lattitude = location.Latitude;
+		visitObj.Longitude = location.Longitude;
+		visitObj.Save();
+	}
+	
 	if (Variables["workflow"]["name"] == "Visit" && NotEmptyRef(visit.Plan)) {
 		var query = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='CoordinateControlEnabled'");
 		var coordControl = query.ExecuteScalar();

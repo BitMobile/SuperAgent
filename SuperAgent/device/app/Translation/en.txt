@@ -260,6 +260,7 @@ skuList			LIST OF SKUs
 OrderskuWillBeDeleted	Part of SKUs will be removed from order. Continue?
 logout			Logout
 logoutQuery		When you exit will delete all data
+noLogout		Require syncronization
 cancel			Cancel
 logoutConfirm	Logout
 visitReason		"Visit reason" field should be filled

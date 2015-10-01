@@ -260,6 +260,7 @@ skuList			СПИСОК ТОВАРОВ
 OrderskuWillBeDeleted	Часть товаров из заказа будет удалена. Продолжить?
 logout			Выход
 logoutQuery		При выходе будут удалены все данные
+noLogout		Не выполнена синхронизация
 cancel			Отменить
 logoutConfirm	Выйти
 visitReasonMessage		Поле "Причина визита" должно быть заполнено

@@ -67,14 +67,36 @@ function GetMainVersion(ver) {
 	return Left(ver, 3);
 }
 
-function LogoutQuery() {
+function Logout() {
 
-	Dialog.Alert("#logoutQuery#"
+	var q = new Query("SELECT name " +
+		"FROM SQLITE_MASTER " +
+		"WHERE type='view' " +
+		"AND (Contains(name, 'Document') OR Contains(name, 'Catalog'))");
+		var tables = q.Execute();
+
+		var queryString = "";
+		while (tables.Next()){
+			queryString = queryString +
+			" SELECT DISTINCT IsDirty " +
+			" FROM " + tables.name + " WHERE IsDirty=1 " +
+			" UNION ALL "
+		}
+		queryString = queryString + " SELECT DISTINCT IsDirty FROM Catalog_Distributor ";
+
+		var q2 = new Query();
+		q2.Text = queryString;
+
+		if (parseInt(q2.ExecuteScalar()) == parseInt(1))
+			Dialog.Message("#noLogout#");
+		else{
+			Dialog.Alert("#logoutQuery#"
 		    , LogoutCallback
 		    , null
 		    , "#cancel#"
 		    , "#logoutConfirm#"
 		    , null);
+		}
 
 }
 
@@ -82,7 +104,7 @@ function LogoutCallback(state, args) {
 
 	if (args.Result == 1) {
 
-		Application.Exit();
+		Application.Logout();
 
 	}
 

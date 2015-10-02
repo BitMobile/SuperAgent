@@ -88,7 +88,7 @@ function Logout() {
 		q2.Text = queryString;
 
 		if (parseInt(q2.ExecuteScalar()) == parseInt(1))
-			Dialog.Message("#noLogout#");
+			Dialog.Message("#noLogout#", GoToSync);
 		else{
 			Dialog.Alert("#logoutQuery#"
 		    , LogoutCallback
@@ -98,6 +98,10 @@ function Logout() {
 		    , null);
 		}
 
+}
+
+function GoToSync(){
+	Workflow.Action('Sync', []);
 }
 
 function LogoutCallback(state, args) {

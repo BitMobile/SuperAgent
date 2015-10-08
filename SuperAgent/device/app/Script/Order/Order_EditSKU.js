@@ -103,6 +103,46 @@ function ApplyDiscount(sender, orderitem) {
     }
 }
 
+function TotalOutput(total){
+    return FormatValue(total);
+}
+
+function ApplyTotal(sender, orderitem){
+
+    CheckUserInput(sender);
+
+    var d = new Dictionary();
+    d.Add("Total", parseFloat(sender.Text));
+    OrderItem.SetItemValue(d);
+
+    orderitem = OrderItem.GetItem();
+    $.orderitem = orderitem;
+
+    $.orderItemTotalId.Text = FormatValue(orderitem.Total);
+
+}
+
+function FormatThisInput(sender){    
+
+    var d = FormatValue(ToDecimal(sender.Text));
+    sender.Text = d;
+}
+
+function CheckUserInput(sender){
+    if (TrimAll(sender.Text) == '.' || TrimAll(sender.Text) == ',')
+    {
+        sender.Text = '0,';
+    }
+    else
+    {
+        if (IsNullOrEmpty(sender.Text))
+        {
+            sender.Text = parseFloat(0);
+        }                    
+    }
+
+}
+
 function ChandeDiscount(orderitem) {
 
     var d = new Dictionary();

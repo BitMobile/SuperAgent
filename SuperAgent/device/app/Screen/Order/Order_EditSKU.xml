@@ -101,6 +101,14 @@
 			</c:DockLayout>
 			<c:HorizontalLine />
 
+			<c:DockLayout CssClass="parameter_grid">
+				<c:HorizontalLayout CssClass="clickable" OnClickAction="$ChandeTotal($orderitem)">
+					<c:TextView Id="discountDescr" Text="Новая цена" />
+				</c:HorizontalLayout>
+				<c:EditText Id="totalEdit" Text="$TotalOutput($orderitem.Total)" CssClass="value" Keyboard="numeric" OnChange="$ApplyTotal($orderitem)" OnLostFocus="$FormatThisInput()" OnGetFocus="$HideSwiped()"></c:EditText>
+			</c:DockLayout>
+			<c:HorizontalLine />
+
 			<s:Push Id="historyItems" Value="$GetItemHistory($sku.Id, $thisDoc)"></s:Push>
 			<s:If Test="$historyCount != 0">
 				<c:HorizontalLayout CssClass="caption_grid">

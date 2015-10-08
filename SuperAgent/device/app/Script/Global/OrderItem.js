@@ -32,6 +32,12 @@ function SetItemValue(args){ //attr - dictionary
         orderItemObj = CalculateItem(orderItemObj);
     }
 
+    if (args.HasValue("Total"))
+    {
+        orderItemObj.Total = args.Total;
+        orderItemObj.Amount = orderItemObj.Total * orderItemObj.Qty;
+    }
+
     if (args.HasValue("Feature"))
     {
         orderItemObj.Feature = args.Feature;

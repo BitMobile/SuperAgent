@@ -132,14 +132,15 @@ function CheckUserInput(sender){
     if (TrimAll(sender.Text) == '.' || TrimAll(sender.Text) == ',')
     {
         sender.Text = '0,';
-    }
-    else
+    }    
+    else if (IsNullOrEmpty(sender.Text))
     {
-        if (IsNullOrEmpty(sender.Text))
-        {
-            sender.Text = parseFloat(0);
-        }                    
+        sender.Text = parseFloat(0);
     }
+    else if (sender.Text < 0)
+    {
+        sender.Text = -1 * sender.Text;
+    }                    
 
 }
 

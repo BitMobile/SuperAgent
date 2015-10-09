@@ -89,11 +89,13 @@ function ApplyDiscount(sender, orderitem) {
                             : parseFloat(sender.Text));
     OrderItem.SetItemValue(d);
 
-    // orderitem = OrderItem.GetItem();
+    orderitem = OrderItem.GetItem();
+    $.orderItem = orderitem;
 
-    // $.orderItemTotalId.Text = FormatValue(orderitem.Total);
+    $.discountDescr.Text = GetDiscountDescription(orderitem.Discount);
+    $.orderItemTotalId.Text = FormatValue(orderitem.Total);
 
-    DoRefresh($.showimage);
+    // DoRefresh($.showimage);
 }
 
 function RefreshScreen(control, param1){
@@ -120,18 +122,18 @@ function ApplyTotalDiscount(sender, orderitem){
                             : parseFloat(sender.Text));
     OrderItem.SetItemValue(d);
 
-    // orderItem = OrderItem.GetItem();
-    // $.orderItem = orderitem;
-    // $.orderItemTotalId.Text = FormatValue(orderItem.Total);
-    // $.totalDiscountDescr.Text = GetTotalDiscountDescription();
+    orderItem = OrderItem.GetItem();
+    $.orderItem = orderitem;
+    $.totalDiscountDescr.Text = GetTotalDiscountDescription();
+    $.orderItemTotalId.Text = FormatValue(orderItem.Total);    
 
-    DoRefresh($.showimage);
+    // DoRefresh($.showimage);
 
 }
 
 function GetTotalDiscountDescription(){
     
-    var value = GetDiscountDescription(OrderItem.GetTotalDiscount());
+    var value = OrderItem.GetTotalDiscount();
 
     if (parseInt(value) == parseInt(0)
             || parseInt(value) < parseInt(0))
@@ -164,29 +166,29 @@ function ApplyTotal(sender, orderitem){
     d.Add("Total", parseFloat(sender.Text));
     OrderItem.SetItemValue(d);
 
-    // orderitem = OrderItem.GetItem();
-    // $.orderitem = orderitem;
-    // $.orderItemTotalId.Text = FormatValue(orderitem.Total);    
+    orderitem = OrderItem.GetItem();
+    $.orderitem = orderitem;
+    $.orderItemTotalId.Text = FormatValue(orderitem.Total);    
 
-    DoRefresh($.showimage);
+    // DoRefresh($.showimage);
 
 }
 
-function CheckNull(sender){
+// function CheckNull(sender){
     
-    if (IsNullOrEmpty(sender.Text))
-    {
-        sender.Text = parseFloat(0);
-    } 
-}
+//     if (IsNullOrEmpty(sender.Text))
+//     {
+//         sender.Text = parseFloat(0);
+//     } 
+// }
 
-function FormatThisInput(sender){    
+// function FormatThisInput(sender){    
     
-    CheckNull(sender);
+//     CheckNull(sender);
 
-    var d = FormatValue(ToDecimal(sender.Text));
-    sender.Text = d;
-}
+//     var d = FormatValue(ToDecimal(sender.Text));
+//     sender.Text = d;
+// }
 
 function CheckUserInput(sender){
     if (TrimAll(sender.Text) == '.' || TrimAll(sender.Text) == ',')

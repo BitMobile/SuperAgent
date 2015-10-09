@@ -83,6 +83,9 @@ function ApplyDiscount(sender, orderitem) {
 
     CheckUserInput(sender);
 
+    if (Math.abs(parseFloat(sender.Text)) > 100)
+        sender.Text =  sender.Text > 0 ? 100 : -100;
+
     var d = new Dictionary();
     d.Add("Discount", String.IsNullOrEmpty(sender.Text) 
                             ? parseFloat(0) 
@@ -115,6 +118,11 @@ function GetTotalDiscount(){
 function ApplyTotalDiscount(sender, orderitem){
 
     CheckUserInput(sender);
+
+    if (!String.IsNullOrEmpty(sender.Text)){
+        if (sender.Text < -orderitem.Price)
+            sender.Text = -orderitem.Price;
+    }    
 
     var d = new Dictionary();
     d.Add("TotalDiscount", String.IsNullOrEmpty(sender.Text) 

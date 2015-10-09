@@ -84,7 +84,7 @@ available	Доступность
 facing		Фейсинг
 stock		Остатки
 price		Цена
-markUp		Наценка
+markUp		Наценка, %
 outOfStock	Наличие на складе
 false		Нет
 true		Да
@@ -94,7 +94,7 @@ pcs			шт.
 orders		Заказы
 newOrder	Создать новый заказ
 add			Добавить
-discount	Скидка
+discount	Скидка, %
 noNumber	Нет номера
 showImage	Показать фото
 hideImage	Скрыть фото

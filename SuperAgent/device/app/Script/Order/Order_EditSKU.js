@@ -69,9 +69,9 @@ function SnapshotExists(sku, filename, filesTableName) {
 	return Images.SnapshotExists(sku, ToString(filename), filesTableName);
 }
 
-function GetDiscountDescription(orderitem) {
-    if (parseInt(orderitem.Discount) == parseInt(0)
-            || parseInt(orderitem.Discount) < parseInt(0))
+function GetDiscountDescription(value) {
+    if (parseInt(value) == parseInt(0)
+            || parseInt(value) < parseInt(0))
         return Translate["#discount#"];
     else
         return Translate["#markUp#"];
@@ -103,13 +103,56 @@ function ApplyDiscount(sender, orderitem) {
     }
 }
 
+function RefreshScreen(control, param1){
+    DoRefresh(param1);
+}
+
+//total discount
+
+function GetTotalDiscount(){
+    return OrderItem.GetTotalDiscount().ToString();
+}
+
+function ApplyTotalDiscount(sender, orderitem){
+
+    CheckUserInput(sender);
+
+    var d = new Dictionary();
+    d.Add("TotalDiscount", String.IsNullOrEmpty(sender.Text) 
+                            ? parseFloat(0) 
+                            : parseFloat(sender.Text));
+    OrderItem.SetItemValue(d);
+
+    orderItem = OrderItem.GetItem();
+    $.orderItem = orderitem;
+    $.orderItemTotalId.Text = FormatValue(orderItem.Total);
+    $.totalDiscountDescr.Text = GetTotalDiscountDescription();
+
+}
+
+function GetTotalDiscountDescription(){
+    return GetDiscountDescription(OrderItem.GetTotalDiscount());
+}
+
+function ConvertTotalDiscount(control){
+    control.Text = -1 * control.Text
+}
+
+//total
+
 function TotalOutput(total){
     return FormatValue(total);
 }
 
 function ApplyTotal(sender, orderitem){
 
+    $.discountEdit.Text = OrderItem.GetTotalDiscount();
+
     CheckUserInput(sender);
+    if (sender.Text < 0)
+    {
+        sender.Text = -1 * sender.Text;
+    }
 
     var d = new Dictionary();
     d.Add("Total", parseFloat(sender.Text));
@@ -117,12 +160,21 @@ function ApplyTotal(sender, orderitem){
 
     orderitem = OrderItem.GetItem();
     $.orderitem = orderitem;
-
-    $.orderItemTotalId.Text = FormatValue(orderitem.Total);
+    $.orderItemTotalId.Text = FormatValue(orderitem.Total);    
 
 }
 
+function CheckNull(sender){
+    
+    if (IsNullOrEmpty(sender.Text))
+    {
+        sender.Text = parseFloat(0);
+    } 
+}
+
 function FormatThisInput(sender){    
+    
+    CheckNull(sender);
 
     var d = FormatValue(ToDecimal(sender.Text));
     sender.Text = d;
@@ -132,16 +184,7 @@ function CheckUserInput(sender){
     if (TrimAll(sender.Text) == '.' || TrimAll(sender.Text) == ',')
     {
         sender.Text = '0,';
-    }    
-    else if (IsNullOrEmpty(sender.Text))
-    {
-        sender.Text = parseFloat(0);
-    }
-    else if (sender.Text < 0)
-    {
-        sender.Text = -1 * sender.Text;
-    }                    
-
+    }                       
 }
 
 function ChandeDiscount(orderitem) {
@@ -228,8 +271,11 @@ function ChangeUnit(sku, orderitem) {
     OrderItem.SetItemValue(args);
     orderitem = OrderItem.GetItem();
 
-    $.itemUnits.Text = orderitem.Units.Description;    
-    $.orderItemTotalId.Text = FormatValue(orderitem.Total);
+    // $.itemUnits.Text = orderitem.Units.Description;    
+    // $.orderItemTotalId.Text = FormatValue(orderitem.Total);
+    // $.totalEdit.Text = FormatValue(orderitem.Total);
+
+    DoRefresh($.showimage);
 
 }
 

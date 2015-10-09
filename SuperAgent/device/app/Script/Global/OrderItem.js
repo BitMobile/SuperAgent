@@ -1,6 +1,8 @@
 var orderItem;
 var multiplier;
 var basePrice;
+var baseTotalDiscount;
+var totalDiscount;
 
 //----------------access----------------
 
@@ -28,12 +30,24 @@ function SetItemValue(args){ //attr - dictionary
 
     if (args.HasValue("Discount"))
     {
-        orderItemObj.Discount = args.Discount;
+        baseTotalDiscount = 0;
+        totalDiscount = 0;
+        orderItemObj.Discount = args.Discount;        
         orderItemObj = CalculateItem(orderItemObj);
+    }
+
+    if (args.HasValue("TotalDiscount"))
+    {
+        baseTotalDiscount = args.TotalDiscount / multiplier;
+        orderItemObj.Discount = 0;
+        CalculateItem(orderItemObj);
     }
 
     if (args.HasValue("Total"))
     {
+        baseTotalDiscount = 0;
+        totalDiscount = 0;
+        orderItemObj.Discount = 0;
         orderItemObj.Total = args.Total;
         orderItemObj.Amount = orderItemObj.Total * orderItemObj.Qty;
     }
@@ -51,6 +65,10 @@ function GetItem(){
 	return orderItem;
 }
 
+function GetTotalDiscount(){
+    return totalDiscount;
+}
+
 function ClearItem(){
     orderItem = null;
     multiplier = null;
@@ -62,7 +80,8 @@ function ClearItem(){
 function CalculateItem(orderItemObj){   
 
     orderItemObj.Price = basePrice * multiplier;
-    orderItemObj.Total = (orderItemObj.Price * (orderItemObj.Discount / 100 + 1)) ;
+    totalDiscount = baseTotalDiscount * multiplier;
+    orderItemObj.Total = orderItemObj.Price * (orderItemObj.Discount / 100 + 1) + totalDiscount;
 	orderItemObj.Amount = orderItemObj.Total * orderItemObj.Qty;
 
     return orderItemObj;
@@ -75,6 +94,8 @@ function CalculateItem(orderItemObj){
 function CreateOrderItem(args){//order, sku, orderItem, price, features, recOrder, unit) {
 
     basePrice = args.basePrice;
+    baseTotalDiscount = 0;
+    totalDiscount = 0;
     var p;
     if (!$.Exists("AlreadyAdded")){
         p = DB.Create("Document." + $.workflow.currentDoc + "_SKUs");

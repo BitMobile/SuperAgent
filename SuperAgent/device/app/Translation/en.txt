@@ -322,3 +322,6 @@ outlet_short	Outlet
 visit_end_question	After visit ends you will not be allowed to edit it
 end	Continue
 go_back	Back
+sumMarkUp	Sum markup
+sumDiscount	Sum discount
+newPrice	New price

@@ -19,13 +19,6 @@ function GetCurrentItem(){
 }
 
 
-function DiscountOutput(discount){
-    if (String.IsNullOrEmpty(discount))
-        return '0';
-    else
-        return discount.ToString();
-}
-
 function GetCurrentDoc(){
     var d;
     if ($.workflow.currentDoc=='Order')
@@ -69,6 +62,8 @@ function SnapshotExists(sku, filename, filesTableName) {
 	return Images.SnapshotExists(sku, ToString(filename), filesTableName);
 }
 
+//discount
+
 function GetDiscountDescription(value) {
     if (parseInt(value) == parseInt(0)
             || parseInt(value) < parseInt(0))
@@ -77,34 +72,36 @@ function GetDiscountDescription(value) {
         return Translate["#markUp#"];
 }
 
-function ApplyDiscount(sender, orderitem) {
-    if (TrimAll(sender.Text) == '.' || TrimAll(sender.Text) == ',')
-    {
-        sender.Text = '0,';
-    }
+function DiscountOutput(discount){
+    if (String.IsNullOrEmpty(discount))
+        return '0';
     else
-    {
-        if (IsNullOrEmpty(sender.Text))
-        {
-            sender.Text = parseFloat(0);
-        }            
-        else if ($.discountDescr.Text == Translate["#discount#"] && parseFloat(sender.Text) > parseFloat(0))
-        {
-            sender.Text = -1 * sender.Text;
-        }
+        return discount.ToString();
+}
 
-            var d = new Dictionary();
-            d.Add("Discount", parseFloat(sender.Text));
-            OrderItem.SetItemValue(d);
+function ApplyDiscount(sender, orderitem) {
 
-            orderitem = OrderItem.GetItem();
+    CheckUserInput(sender);
 
-            $.orderItemTotalId.Text = FormatValue(orderitem.Total);
-    }
+    var d = new Dictionary();
+    d.Add("Discount", String.IsNullOrEmpty(sender.Text) 
+                            ? parseFloat(0) 
+                            : parseFloat(sender.Text));
+    OrderItem.SetItemValue(d);
+
+    // orderitem = OrderItem.GetItem();
+
+    // $.orderItemTotalId.Text = FormatValue(orderitem.Total);
+
+    DoRefresh($.showimage);
 }
 
 function RefreshScreen(control, param1){
     DoRefresh(param1);
+}
+
+function ConvertDiscount(control) {
+    control.Text = -1 * control.Text;
 }
 
 //total discount
@@ -123,15 +120,24 @@ function ApplyTotalDiscount(sender, orderitem){
                             : parseFloat(sender.Text));
     OrderItem.SetItemValue(d);
 
-    orderItem = OrderItem.GetItem();
-    $.orderItem = orderitem;
-    $.orderItemTotalId.Text = FormatValue(orderItem.Total);
-    $.totalDiscountDescr.Text = GetTotalDiscountDescription();
+    // orderItem = OrderItem.GetItem();
+    // $.orderItem = orderitem;
+    // $.orderItemTotalId.Text = FormatValue(orderItem.Total);
+    // $.totalDiscountDescr.Text = GetTotalDiscountDescription();
+
+    DoRefresh($.showimage);
 
 }
 
 function GetTotalDiscountDescription(){
-    return GetDiscountDescription(OrderItem.GetTotalDiscount());
+    
+    var value = GetDiscountDescription(OrderItem.GetTotalDiscount());
+
+    if (parseInt(value) == parseInt(0)
+            || parseInt(value) < parseInt(0))
+        return Translate["#sumDiscount#"];
+    else
+        return Translate["#sumMarkUp#"];
 }
 
 function ConvertTotalDiscount(control){
@@ -158,9 +164,11 @@ function ApplyTotal(sender, orderitem){
     d.Add("Total", parseFloat(sender.Text));
     OrderItem.SetItemValue(d);
 
-    orderitem = OrderItem.GetItem();
-    $.orderitem = orderitem;
-    $.orderItemTotalId.Text = FormatValue(orderitem.Total);    
+    // orderitem = OrderItem.GetItem();
+    // $.orderitem = orderitem;
+    // $.orderItemTotalId.Text = FormatValue(orderitem.Total);    
+
+    DoRefresh($.showimage);
 
 }
 
@@ -187,20 +195,6 @@ function CheckUserInput(sender){
     }                       
 }
 
-function ChandeDiscount(orderitem) {
-
-    var d = new Dictionary();
-    d.Add("Discount", (-1 * orderitem.Discount));
-    OrderItem.SetItemValue(d);
-
-    orderitem = OrderItem.GetItem();
-
-    $.discountDescr.Text = $.discountDescr.Text == Translate["#markUp#"] ? Translate["#discount#"] : Translate["#markUp#"];
-    $.orderItemTotalId.Text = FormatValue(orderitem.Total);
-    $.discountEdit.Text = orderitem.Discount;
-
-    FocusOnEditText('discountEdit', '1');
-}
 
 function GetFeatureDescr(feature) {
     if (feature.Code == "000000001" || $.sessionConst.SKUFeaturesRegistration==false)

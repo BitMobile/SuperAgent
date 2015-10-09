@@ -93,13 +93,13 @@
 			</c:DockLayout>
 			<c:HorizontalLine />
 
-<!-- 			<c:DockLayout CssClass="parameter_grid">
-				<c:HorizontalLayout CssClass="clickable" OnClickAction="$ChandeDiscount($orderitem)">
-					<c:TextView Id="discountDescr" Text="$GetDiscountDescription($orderitem)" />
+			<c:DockLayout CssClass="parameter_grid">
+				<c:HorizontalLayout CssClass="clickable" OnClickAction="$ConvertDiscount($percentDiscountEdit)">
+					<c:TextView Id="discountDescr" Text="$GetDiscountDescription($orderitem.Discount)" />
 				</c:HorizontalLayout>
-				<c:EditText Id="discountEdit" Text="$DiscountOutput($orderitem.Discount)" CssClass="value" Keyboard="numeric" OnChange="$ApplyDiscount($orderitem)" OnGetFocus="$HideSwiped()"></c:EditText>
+				<c:EditText Id="percentDiscountEdit" Text="$DiscountOutput($orderitem.Discount)" CssClass="value" Keyboard="numeric" OnChange="$ApplyDiscount($orderitem)" OnGetFocus="$HideSwiped()"></c:EditText>
 			</c:DockLayout>
-			<c:HorizontalLine /> -->
+			<c:HorizontalLine />
 
 			<c:DockLayout CssClass="parameter_grid">
 				<c:HorizontalLayout CssClass="clickable" OnClickAction="$ConvertTotalDiscount($discountEdit)">
@@ -111,7 +111,7 @@
 
 			<c:DockLayout CssClass="parameter_grid">
 				<c:HorizontalLayout CssClass="clickable" OnClickAction="$ChandeTotal($orderitem)">
-					<c:TextView Id="discountDescr" Text="Новая цена" />
+					<c:TextView Id="discountDescr" Text="#newPrice#" />
 				</c:HorizontalLayout>
 				<c:EditText Id="totalEdit" Text="$TotalOutput($orderitem.Total)" CssClass="value" Keyboard="numeric" OnChange="$ApplyTotal($orderitem)" OnLostFocus="$FormatThisInput()" OnGetFocus="$HideSwiped()"></c:EditText>
 			</c:DockLayout>

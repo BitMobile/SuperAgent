@@ -323,3 +323,6 @@ outlet_short	ТТ
 visit_end_question	После завершения визита редактирование недоступно
 end	Завершить
 go_back	Вернуться
+sumMarkUp	Суммовая наценка
+sumDiscount	Суммовая скидка
+newPrice	Новая цена

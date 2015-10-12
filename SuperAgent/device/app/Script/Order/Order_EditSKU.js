@@ -96,7 +96,6 @@ function ApplyDiscount(sender, orderitem) {
     $.orderItem = orderitem;
 
     $.discountDescr.Text = GetDiscountDescription(orderitem.Discount);
-    $.orderItemTotalId.Text = FormatValue(orderitem.Total);
 
     // DoRefresh($.showimage);
 }
@@ -107,6 +106,7 @@ function RefreshScreen(control, param1){
 
 function ConvertDiscount(control) {
     control.Text = -1 * control.Text;
+    DoRefresh($.showimage);
 }
 
 //total discount
@@ -133,7 +133,6 @@ function ApplyTotalDiscount(sender, orderitem){
     orderItem = OrderItem.GetItem();
     $.orderItem = orderitem;
     $.totalDiscountDescr.Text = GetTotalDiscountDescription();
-    $.orderItemTotalId.Text = FormatValue(orderItem.Total);    
 
     // DoRefresh($.showimage);
 
@@ -152,6 +151,7 @@ function GetTotalDiscountDescription(){
 
 function ConvertTotalDiscount(control){
     control.Text = -1 * control.Text
+    DoRefresh($.showimage);
 }
 
 //total
@@ -176,27 +176,10 @@ function ApplyTotal(sender, orderitem){
 
     orderitem = OrderItem.GetItem();
     $.orderitem = orderitem;
-    $.orderItemTotalId.Text = FormatValue(orderitem.Total);    
 
     // DoRefresh($.showimage);
 
 }
-
-// function CheckNull(sender){
-    
-//     if (IsNullOrEmpty(sender.Text))
-//     {
-//         sender.Text = parseFloat(0);
-//     } 
-// }
-
-// function FormatThisInput(sender){    
-    
-//     CheckNull(sender);
-
-//     var d = FormatValue(ToDecimal(sender.Text));
-//     sender.Text = d;
-// }
 
 function CheckUserInput(sender){
     if (TrimAll(sender.Text) == '.' || TrimAll(sender.Text) == ',')
@@ -355,7 +338,7 @@ function RepeatOrder(orderitem, qty, discount, baseUnit, baseUnitDescr){
     orderitem = OrderItem.GetItem();
     $.orderItemQty.Text = orderitem.Qty;
     $.discountEdit.Text = orderitem.Discount;
-    $.orderItemTotalId.Text = FormatValue(orderitem.Total);
+    // $.orderItemTotalId.Text = FormatValue(orderitem.Total);
     $.itemUnits.Text = orderitem.Units.Description;
 
 }

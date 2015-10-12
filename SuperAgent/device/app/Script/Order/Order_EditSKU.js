@@ -268,7 +268,7 @@ function ChangeUnit(sku, orderitem) {
 
 function GetItemHistory(sku, order) {
     var q = new Query("SELECT D.Date AS Date, S.Qty*P.Multiplier AS Qty, " +
-        "S.Total/P.Multiplier AS Total, S.Discount, S.Price " +
+        "S.Total/P.Multiplier AS Total, S.Discount, S.Price/P.Multiplier AS Price " +
         "FROM Document_" + $.workflow.currentDoc + "_SKUs S " +
         "JOIN Document_" + $.workflow.currentDoc + " D ON S.Ref=D.Id " +
         "JOIN Catalog_SKU_Packing P ON S.SKU=P.Ref AND P.Pack=S.Units " +
@@ -326,20 +326,26 @@ function DeleteAndBack(orderitem) {
     Workflow.Back();
 }
 
-function RepeatOrder(orderitem, qty, discount, baseUnit, baseUnitDescr){
+function RepeatOrder(orderitem, qty, discount, baseUnit, baseUnitDescr, price, total){
+
+    var totalDiscount = total - price;
 
     var d = new Dictionary();
+    
     d.Add("Qty", qty);
-    d.Add("Discount", discount);
+
+    if (parseFloat(discount)!=parseFloat(0))
+        d.Add("Discount", discount);
+    else if (totalDiscount != 0)
+        d.Add("TotalDiscount");
+    
     d.Add("Units", baseUnit);
+
     d.Add("Multiplier", 1);
+
     OrderItem.SetItemValue(d);
 
-    orderitem = OrderItem.GetItem();
-    $.orderItemQty.Text = orderitem.Qty;
-    $.discountEdit.Text = orderitem.Discount;
-    // $.orderItemTotalId.Text = FormatValue(orderitem.Total);
-    $.itemUnits.Text = orderitem.Units.Description;
+    DoRefresh($.showimage);
 
 }
 

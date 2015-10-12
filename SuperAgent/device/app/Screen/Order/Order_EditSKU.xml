@@ -75,9 +75,17 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="parameter_grid">
+<!-- 			<c:DockLayout CssClass="parameter_grid">
 				<c:TextView Text="#price#" CssClass="description_row"></c:TextView>
 				<c:TextView Id="orderItemTotalId" Text="$FormatValue($orderitem.Total)" CssClass="value"></c:TextView>
+			</c:DockLayout>
+			<c:HorizontalLine /> -->	
+
+			<c:DockLayout CssClass="parameter_grid">
+				<c:HorizontalLayout CssClass="clickable">
+					<c:TextView Text="#price#" />
+				</c:HorizontalLayout>
+				<c:EditText Id="totalEdit" Text="$TotalOutput($orderitem.Total)" CssClass="value" Keyboard="numeric" OnChange="$ApplyTotal($orderitem)" OnLostFocus="$RefreshScreen()" OnGetFocus="$HideSwiped()"></c:EditText>
 			</c:DockLayout>
 			<c:HorizontalLine />
 
@@ -99,7 +107,7 @@
 				</c:HorizontalLayout>
 				<c:EditText Id="percentDiscountEdit" Text="$DiscountOutput($orderitem.Discount)" CssClass="value" Keyboard="numeric" OnChange="$ApplyDiscount($orderitem)" OnLostFocus="$RefreshScreen($showimage)" OnGetFocus="$HideSwiped()"></c:EditText>
 			</c:DockLayout>
-			<c:HorizontalLine />
+			<c:HorizontalLine />	
 
 			<c:DockLayout CssClass="parameter_grid">
 				<c:HorizontalLayout CssClass="clickable" OnClickAction="$ConvertTotalDiscount($discountEdit)">
@@ -107,15 +115,7 @@
 				</c:HorizontalLayout>
 				<c:EditText Id="discountEdit" Text="$GetTotalDiscount()" CssClass="value" Keyboard="numeric" OnChange="$ApplyTotalDiscount($orderitem)" OnLostFocus="$RefreshScreen($showimage)" OnGetFocus="$HideSwiped()"></c:EditText>
 			</c:DockLayout>
-			<c:HorizontalLine />			
-
-			<c:DockLayout CssClass="parameter_grid">
-				<c:HorizontalLayout CssClass="clickable" OnClickAction="$ChandeTotal($orderitem)">
-					<c:TextView Text="#newPrice#" />
-				</c:HorizontalLayout>
-				<c:EditText Id="totalEdit" Text="$TotalOutput($orderitem.Total)" CssClass="value" Keyboard="numeric" OnChange="$ApplyTotal($orderitem)" OnLostFocus="$RefreshScreen()" OnGetFocus="$HideSwiped()"></c:EditText>
-			</c:DockLayout>
-			<c:HorizontalLine />
+			<c:HorizontalLine />				
 
 			<s:Push Id="historyItems" Value="$GetItemHistory($sku.Id, $thisDoc)"></s:Push>
 			<s:If Test="$historyCount != 0">
@@ -125,7 +125,7 @@
 				<c:HorizontalLine />
 				<s:Iterator Id="historyItem" Value="$historyItems">
 					<c:SwipeHorizontalLayout CssClass="swipe_history" Index="1" OnSwipe="$WriteSwipedRow()">
-						<c:HorizontalLayout CssClass="repeat" OnClickAction="$RepeatOrder($orderitem, $historyItem.Qty, $historyItem.Discount, $sku.BaseUnit, $sku.BaseUnit.Description)">
+						<c:HorizontalLayout CssClass="repeat" OnClickAction="$RepeatOrder($orderitem, $historyItem.Qty, $historyItem.Discount, $sku.BaseUnit, $sku.BaseUnit.Description, $.sku.Price, $sku.Total)">
 							<c:TextView Text="#repeat#" />
 						</c:HorizontalLayout>
 						<c:DockLayout CssClass="parameter_grid">

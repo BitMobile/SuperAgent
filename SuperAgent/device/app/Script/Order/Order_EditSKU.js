@@ -96,7 +96,6 @@ function ApplyDiscount(sender, orderitem) {
     $.orderItem = orderitem;
 
     $.discountDescr.Text = GetDiscountDescription(orderitem.Discount);
-    $.orderItemTotalId.Text = FormatValue(orderitem.Total);
 
     // DoRefresh($.showimage);
 }
@@ -107,6 +106,7 @@ function RefreshScreen(control, param1){
 
 function ConvertDiscount(control) {
     control.Text = -1 * control.Text;
+    DoRefresh($.showimage);
 }
 
 //total discount
@@ -133,7 +133,6 @@ function ApplyTotalDiscount(sender, orderitem){
     orderItem = OrderItem.GetItem();
     $.orderItem = orderitem;
     $.totalDiscountDescr.Text = GetTotalDiscountDescription();
-    $.orderItemTotalId.Text = FormatValue(orderItem.Total);    
 
     // DoRefresh($.showimage);
 
@@ -152,6 +151,7 @@ function GetTotalDiscountDescription(){
 
 function ConvertTotalDiscount(control){
     control.Text = -1 * control.Text
+    DoRefresh($.showimage);
 }
 
 //total
@@ -176,27 +176,10 @@ function ApplyTotal(sender, orderitem){
 
     orderitem = OrderItem.GetItem();
     $.orderitem = orderitem;
-    $.orderItemTotalId.Text = FormatValue(orderitem.Total);    
 
     // DoRefresh($.showimage);
 
 }
-
-// function CheckNull(sender){
-    
-//     if (IsNullOrEmpty(sender.Text))
-//     {
-//         sender.Text = parseFloat(0);
-//     } 
-// }
-
-// function FormatThisInput(sender){    
-    
-//     CheckNull(sender);
-
-//     var d = FormatValue(ToDecimal(sender.Text));
-//     sender.Text = d;
-// }
 
 function CheckUserInput(sender){
     if (TrimAll(sender.Text) == '.' || TrimAll(sender.Text) == ',')
@@ -285,7 +268,7 @@ function ChangeUnit(sku, orderitem) {
 
 function GetItemHistory(sku, order) {
     var q = new Query("SELECT D.Date AS Date, S.Qty*P.Multiplier AS Qty, " +
-        "S.Total/P.Multiplier AS Total, S.Discount, S.Price " +
+        "S.Total/P.Multiplier AS Total, S.Discount, S.Price/P.Multiplier AS Price " +
         "FROM Document_" + $.workflow.currentDoc + "_SKUs S " +
         "JOIN Document_" + $.workflow.currentDoc + " D ON S.Ref=D.Id " +
         "JOIN Catalog_SKU_Packing P ON S.SKU=P.Ref AND P.Pack=S.Units " +
@@ -343,20 +326,26 @@ function DeleteAndBack(orderitem) {
     Workflow.Back();
 }
 
-function RepeatOrder(orderitem, qty, discount, baseUnit, baseUnitDescr){
+function RepeatOrder(orderitem, qty, discount, baseUnit, baseUnitDescr, price, total){
+
+    var totalDiscount = total - price;
 
     var d = new Dictionary();
+    
     d.Add("Qty", qty);
-    d.Add("Discount", discount);
+
+    if (parseFloat(discount)!=parseFloat(0))
+        d.Add("Discount", discount);
+    else if (totalDiscount != 0)
+        d.Add("TotalDiscount");
+    
     d.Add("Units", baseUnit);
+
     d.Add("Multiplier", 1);
+
     OrderItem.SetItemValue(d);
 
-    orderitem = OrderItem.GetItem();
-    $.orderItemQty.Text = orderitem.Qty;
-    $.discountEdit.Text = orderitem.Discount;
-    $.orderItemTotalId.Text = FormatValue(orderitem.Total);
-    $.itemUnits.Text = orderitem.Units.Description;
+    DoRefresh($.showimage);
 
 }
 

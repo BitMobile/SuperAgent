@@ -115,6 +115,8 @@ function CreateOrderItem(args){//order, sku, orderItem, price, features, recOrde
     else{
         p = (args.Id).GetObject();
         GetDefaultUnit(args.SKU, args.Units);
+        totalDiscount = p.Total - basePrice * multiplier;
+        baseTotalDiscount = totalDiscount / multiplier;
     }
 
     

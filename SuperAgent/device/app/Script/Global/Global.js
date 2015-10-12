@@ -128,11 +128,12 @@ function ValidateField(string, regExp, fieldName){
 function FindTwinAndUnite(orderitem) {
 
 	var q = new Query(
-			"SELECT Id FROM Document_" + $.workflow.currentDoc + "_SKUs WHERE Ref=@ref AND SKU=@sku AND Discount=@discount AND Units=@units AND Feature=@feature AND Id<>@id LIMIT 1"); // AND
+			"SELECT Id FROM Document_" + $.workflow.currentDoc + "_SKUs WHERE Ref=@ref AND SKU=@sku AND Discount=@discount AND Total=@total AND Units=@units AND Feature=@feature AND Id<>@id LIMIT 1"); // AND
 																																								// Id<>@id
 	q.AddParameter("ref", orderitem.Ref);
 	q.AddParameter("sku", orderitem.SKU);
 	q.AddParameter("discount", orderitem.Discount);
+	q.AddParameter("total", orderitem.Total);
 	q.AddParameter("units", orderitem.Units);
 	q.AddParameter("feature", orderitem.Feature);
 	q.AddParameter("id", orderitem.Id);

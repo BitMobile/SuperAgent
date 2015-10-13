@@ -27,7 +27,7 @@ function GetUncommitedScheduledVisits(searchText) {
 		search = "AND Contains(O.Description, '" + searchText + "') ";
 	}
 	q.Text = ("SELECT DISTINCT VP.Outlet, VP.Ref, " +
-			" CASE WHEN strftime('%H:%M', VP.Date)='00:00' THEN '' ELSE strftime('%H:%M', VP.Date) END AS Time, " + 
+			" CASE WHEN strftime('%H:%M', VP.Date)='00:00' THEN '' ELSE strftime('%H:%M', VP.Date) END AS Time, " +
 			OutletStatusText() +
 			" FROM Catalog_Outlet O " +
 			" JOIN Document_VisitPlan_Outlets VP ON O.Id = VP.Outlet AND DATE(VP.Date)=DATE(@date) " +
@@ -53,6 +53,7 @@ function GetUncommitedScheduledVisitsCount(searchText) {
 	}
 	q.Text = ("SELECT COUNT(DISTINCT VP.Outlet) " +
 			" FROM Catalog_Outlet O JOIN Document_VisitPlan_Outlets VP ON O.Id = VP.Outlet AND DATE(VP.Date)=DATE(@date) " +
+			" JOIN Document_VisitPlan DV ON VP.Ref = DV.Id " +
 			" LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet AND V.Date >= @today AND V.Date < @tomorrow AND V.Plan<>@emptyRef LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA=1 " +
 			" WHERE V.Id IS NULL AND NOT OSS.Status IS NULL " + search + " ORDER BY O.Description LIMIT 100");
 	q.AddParameter("date", DateTime.Now.Date);
@@ -64,7 +65,7 @@ function GetUncommitedScheduledVisitsCount(searchText) {
 }
 
 function GetScheduledVisitsCount() {
-	var q = new Query("SELECT COUNT(VPO.Id) FROM Document_VisitPlan_Outlets VPO LEFT JOIN Catalog_Outlet O ON VPO.Outlet = O.Id LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA = 1 WHERE Date >= @today AND Date < @tomorrow AND NOT OSS.Status IS NULL");
+	var q = new Query("SELECT COUNT(VPO.Id) FROM Document_VisitPlan_Outlets VPO JOIN Document_VisitPlan DV ON VPO.Ref = DV.Id LEFT JOIN Catalog_Outlet O ON VPO.Outlet = O.Id LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA = 1 WHERE VPO.Date >= @today AND VPO.Date < @tomorrow AND NOT OSS.Status IS NULL");
 	q.AddParameter("today", DateTime.Now.Date);
 	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
 	var cnt = q.ExecuteScalar();

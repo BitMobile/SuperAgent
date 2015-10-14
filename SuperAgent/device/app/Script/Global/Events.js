@@ -80,6 +80,7 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 	if (NextDoc(lastStep, nextStep)) //between Return and Order
 	{
 		Global.ClearFilter();
+		GlobalWorkflow.SetMassDiscount(null);
 	}
 
 	WriteScreenName(nextStep);
@@ -99,6 +100,7 @@ function OnWorkflowFinish(name, reason) {
 	if (name=="Visit" || name=="Order" || name=="Return")
 	{
 		Global.ClearFilter();
+		GlobalWorkflow.SetMassDiscount(null);
 	}
 }
 

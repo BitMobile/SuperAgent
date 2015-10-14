@@ -37,6 +37,23 @@ function SetMassDiscount(discount){
 	massDiscount = discount;
 }
 
-function GetMassDiscount(){
+function GetMassDiscount(order){
+	if (String.IsNullOrEmpty(massDiscount))
+	{
+		var q = new Query("SELECT COUNT(DISTINCT Discount) " +
+			" FROM Document_Order_SKUs " +
+			" WHERE Ref=@ref");
+		q.AddParameter("ref", order);
+		var discounts = q.ExecuteScalar();
+	
+		if (parseInt(discounts)==parseInt(1))
+		{
+			var q = new Query("SELECT Discount " +
+				" FROM Document_Order_SKUs WHERE Ref=@ref LIMIT 1");
+			q.AddParameter("ref", order);
+
+			massDiscount = q.ExecuteScalar();
+		}
+	}
 	return massDiscount;
 }

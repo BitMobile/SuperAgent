@@ -744,11 +744,13 @@ function ReviseSKUs(order, priceList, stock) {
 //mass discount
 
 function MassDiscount(){
-	var d = GlobalWorkflow.GetMassDiscount();
-	return String.IsNullOrEmpty(d) ? '0' : d;
+	var d = GlobalWorkflow.GetMassDiscount(thisDoc);
+	var output = String.IsNullOrEmpty(d) ? '0' : d.ToString();
+	$.massDiscountDescription.Text = OrderDiscountDescription(output);
+	return output;
 }
 
-function SetMassDiscount(sender, thisDoc){
+function SetMassDiscount(sender, thisDoc){  
 	
 	var oldDiscount = MassDiscount();
 	if (parseFloat(sender.Text) == parseFloat(oldDiscount))
@@ -780,4 +782,14 @@ function SetMassDiscount(sender, thisDoc){
 		skuObj.Amount = skuObj.Total * skuObj.Qty;
 		skuObj.Save();
 	}
+
+	$.massDiscountDescription.Text = OrderDiscountDescription(discount);
+}
+
+function OrderDiscountDescription(value){
+	if (parseInt(value) == parseInt(0)
+            || parseInt(value) < parseInt(0))
+        return Translate["#orderDiscount#"];
+    else
+        return Translate["#orderMarkUp#"];
 }

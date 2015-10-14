@@ -104,10 +104,13 @@ function CreateOrderItem(args){//order, sku, orderItem, price, features, recOrde
         p.SKU = args.SKU;
         p.Feature = GetNewFeature(args.SKU);    
         p.Units = GetDefaultUnit(args.SKU, args.Units);
-        p.Discount = 0;
+        
+        var d = GlobalWorkflow.GetMassDiscount(p.Ref);    
+        p.Discount = String.IsNullOrEmpty(d) ? '0' : d;
+
         p.Qty = GetFromRecOrder(args.recOrder);
         p.Price = basePrice * multiplier;
-        p.Total = p.Price;
+        p.Total = p.Price * (1 + p.Discount / 100);
         p.Amount = 0;
 
         p.Save();

@@ -740,3 +740,44 @@ function ReviseSKUs(order, priceList, stock) {
 
 	return;
 }
+
+//mass discount
+
+function MassDiscount(){
+	var d = GlobalWorkflow.GetMassDiscount();
+	return String.IsNullOrEmpty(d) ? '0' : d;
+}
+
+function SetMassDiscount(sender, thisDoc){
+	
+	var oldDiscount = MassDiscount();
+	if (parseFloat(sender.Text) == parseFloat(oldDiscount))
+		break;
+
+	var t = new Query("SELECT MAX " + 
+		"(CASE WHEN Price=Total THEN 0 " +
+			" ELSE 1 " +
+			" END ) " +
+		" FROM Document_Order_SKUs " +
+		" WHERE Ref=@ref");
+	t.AddParameter("ref", thisDoc);
+	var result = t.ExecuteScalar() == null ? 0 : t.ExecuteScalar();
+	if (parseInt(result) == parseInt(1))
+		Dialog.Message(Translate["#orderDiscountReset#"]);
+
+	var discount = sender.Text;
+	GlobalWorkflow.SetMassDiscount(discount); 
+	var q = new Query("SELECT Id, Price, Total " +
+		" FROM Document_Order_SKUs " +
+		" WHERE Ref=@ref");
+	q.AddParameter("ref", thisDoc);
+	var sku = q.Execute();
+
+	while (sku.Next()){
+		var skuObj = sku.Id.GetObject();
+		skuObj.Discount = discount;
+		skuObj.Total = skuObj.Price * (1 + discount/100);
+		skuObj.Amount = skuObj.Total * skuObj.Qty;
+		skuObj.Save();
+	}
+}

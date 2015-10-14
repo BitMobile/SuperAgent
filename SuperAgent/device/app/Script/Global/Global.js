@@ -91,6 +91,13 @@ function SetSessionConstants() {
 				$.sessionConst.Add("partnerContactEditable", true);
 			}
 		}
+		if (rights.Code=='000000010') {
+			if (rights.AccessRight==null) {
+				$.sessionConst.Add("partnerContactEditable", false);
+			} else {
+				$.sessionConst.Add("partnerContactEditable", true);
+			}
+		}
 	}
 }
 

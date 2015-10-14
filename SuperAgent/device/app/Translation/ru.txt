@@ -95,6 +95,8 @@ orders		Заказы
 newOrder	Создать новый заказ
 add			Добавить
 discount	Скидка, %
+orderDiscount	Скидка на заказ
+orderDiscountReset	Скидки в заказе пересчитаны
 noNumber	Нет номера
 showImage	Показать фото
 hideImage	Скрыть фото

@@ -95,6 +95,8 @@ orders		Orders
 newOrder	Create new order
 add			Add
 discount	Discount
+orderDiscount	Order discount
+orderDiscountReset	Discounts are recalculated
 noNumber	No number
 showImage	Show image
 hideImage	Hide image

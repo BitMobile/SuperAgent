@@ -29,3 +29,14 @@ function SetOutletIsCreated(value){
 function GetOutletIsCreated(){
 	return outletIsCreated;
 }
+
+
+var massDiscount;
+
+function SetMassDiscount(discount){
+	massDiscount = discount;
+}
+
+function GetMassDiscount(){
+	return massDiscount;
+}

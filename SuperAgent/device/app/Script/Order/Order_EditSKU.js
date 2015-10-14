@@ -337,7 +337,7 @@ function RepeatOrder(orderitem, qty, discount, baseUnit, baseUnitDescr, price, t
     if (parseFloat(discount)!=parseFloat(0))
         d.Add("Discount", discount);
     else if (totalDiscount != 0)
-        d.Add("TotalDiscount");
+        d.Add("TotalDiscount", totalDiscount);
     
     d.Add("Units", baseUnit);
 

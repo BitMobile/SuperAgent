@@ -787,9 +787,16 @@ function SetMassDiscount(sender, thisDoc){
 }
 
 function OrderDiscountDescription(value){
-	if (parseInt(value) == parseInt(0)
-            || parseInt(value) < parseInt(0))
+	if (parseFloat(value) == parseFloat(0)
+            || parseFloat(value) < parseFloat(0))
         return Translate["#orderDiscount#"];
     else
         return Translate["#orderMarkUp#"];
+}
+
+function CheckUserInput(sender){
+    if (TrimAll(sender.Text) == '.' || TrimAll(sender.Text) == ',')
+    {
+        sender.Text = '0,';
+    }                       
 }

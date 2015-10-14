@@ -65,8 +65,8 @@ function SnapshotExists(sku, filename, filesTableName) {
 //discount
 
 function GetDiscountDescription(value) {
-    if (parseInt(value) == parseInt(0)
-            || parseInt(value) < parseInt(0))
+    if (parseFloat(value) == parseFloat(0)
+            || parseFloat(value) < parseFloat(0))
         return Translate["#discount#"];
     else
         return Translate["#markUp#"];
@@ -142,8 +142,8 @@ function GetTotalDiscountDescription(){
     
     var value = OrderItem.GetTotalDiscount();
 
-    if (parseInt(value) == parseInt(0)
-            || parseInt(value) < parseInt(0))
+    if (parseFloat(value) == parseFloat(0)
+            || parseFloat(value) < parseFloat(0))
         return Translate["#sumDiscount#"];
     else
         return Translate["#sumMarkUp#"];

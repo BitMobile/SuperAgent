@@ -74,7 +74,7 @@
 
 			<c:DockLayout CssClass="parameter_grid" OnClickAction="$FocusOnEditText(massDiscountEdit, 1)">
 				<c:TextView Id="massDiscountDescription" Text="#orderDiscount#" />
-				<c:EditText Id="massDiscountEdit" CssClass="value" Text="$MassDiscount($thisDoc)" OnLostFocus="$SetMassDiscount($thisDoc)" Keyboard="numeric"/>
+				<c:EditText Id="massDiscountEdit" CssClass="value" Text="$MassDiscount($thisDoc)" OnChange="$CheckUserInput()" OnLostFocus="$SetMassDiscount($thisDoc)" Keyboard="numeric"/>
 			</c:DockLayout>
 			<c:HorizontalLine />
 

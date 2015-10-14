@@ -93,9 +93,23 @@ function SetSessionConstants() {
 		}
 		if (rights.Code=='000000010') {
 			if (rights.AccessRight==null) {
-				$.sessionConst.Add("partnerContactEditable", false);
+				$.sessionConst.Add("percentDiscountEnabled", false);
 			} else {
-				$.sessionConst.Add("partnerContactEditable", true);
+				$.sessionConst.Add("percentDiscountEnabled", true);
+			}
+		}
+		if (rights.Code=='000000011') {
+			if (rights.AccessRight==null) {
+				$.sessionConst.Add("totaltDiscountEnabled", false);
+			} else {
+				$.sessionConst.Add("totaltDiscountEnabled", true);
+			}
+		}
+		if (rights.Code=='000000012') {
+			if (rights.AccessRight==null) {
+				$.sessionConst.Add("newPriceEnabled", false);
+			} else {
+				$.sessionConst.Add("newPriceEnabled", true);
 			}
 		}
 	}

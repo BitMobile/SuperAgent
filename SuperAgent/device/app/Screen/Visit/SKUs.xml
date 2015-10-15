@@ -189,6 +189,8 @@
 				<c:TextView Text="#no_questions_list#" CssClass="no_contacts" />
 			</s:Else>
 
+			<c:HorizontalLayout CssClass="end_of_block" />
+
 		</c:ScrollView>
 
 	</c:VerticalLayout>

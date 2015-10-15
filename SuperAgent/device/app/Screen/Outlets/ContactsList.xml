@@ -82,6 +82,8 @@
 				<c:TextView Text="#no_contacts#" CssClass="no_contacts" />
 			</s:Else>
 
+			<c:HorizontalLayout CssClass="end_of_block" />
+
 		</c:ScrollView>
 
 	</c:DockLayout>

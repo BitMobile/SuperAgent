@@ -106,6 +106,8 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
+			<c:HorizontalLayout CssClass="end_of_block" />
+
 		</c:ScrollView>
 
 	</c:DockLayout>

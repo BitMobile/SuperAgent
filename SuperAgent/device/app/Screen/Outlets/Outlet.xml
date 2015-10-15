@@ -208,27 +208,33 @@
 			</c:DockLayout>
 			<c:HorizontalLine />
 
+			<c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet,Class,$outletClass,#outlet_class#, $sessionConst.editOutletParameters, 000000005)">
+				<c:VerticalLayout>
+					<c:TextView Text="#outlet_class#" CssClass="description_row"></c:TextView>
+					<c:TextView Id="outletClass" Text="$workflow.outlet.Class.Description" CssClass="main_row"></c:TextView>
+				</c:VerticalLayout>
+			</c:DockLayout>
+			<c:HorizontalLine />
+
+			<c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet,Type,$outletType,#outlet_type#, $sessionConst.editOutletParameters, 000000004)">
+				<c:VerticalLayout>
+					<c:TextView Text="#outlet_type#" CssClass="description_row"></c:TextView>
+					<c:TextView Id="outletType" Text="$workflow.outlet.Type.Description" CssClass="main_row"></c:TextView>
+				</c:VerticalLayout>
+			</c:DockLayout>
+			<c:HorizontalLine />
+
+			<c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet, Distributor, $outletDistr, #partner#, $sessionConst.editOutletParameters, 000000006)">
+				<c:VerticalLayout>
+					<c:TextView Text="#partner#" CssClass="description_row"></c:TextView>
+					<c:TextView Id="outletDistr" Text="$GetDescr($workflow.outlet.Distributor.Description)" CssClass="main_row"></c:TextView>
+				</c:VerticalLayout>
+			</c:DockLayout>
+			<c:HorizontalLine />
+
 			<c:HorizontalLayout CssClass="caption_grid">
 				<c:TextView Text="#additionally#:"></c:TextView>
 			</c:HorizontalLayout>
-			<c:HorizontalLine />
-
-			<c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet,Class,$outletClass,#outlet_class#, $sessionConst.editOutletParameters, 000000005)">
-				<c:TextView Text="#outlet_class#"></c:TextView>
-				<c:TextView Id="outletClass" Text="$workflow.outlet.Class.Description" CssClass="value"></c:TextView>
-			</c:DockLayout>
-			<c:HorizontalLine />
-
-			<c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet,Type,$outletType,#outlet_type#, $sessionConst.editOutletParameters, 000000004)">
-				<c:TextView Text="#outlet_type#"></c:TextView>
-				<c:TextView Id="outletType" Text="$workflow.outlet.Type.Description" CssClass="value"></c:TextView>
-			</c:DockLayout>
-			<c:HorizontalLine />
-
-			<c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet, Distributor, $outletDistr, #partner#, $sessionConst.editOutletParameters, 000000006)">
-				<c:TextView Text="#partner#"></c:TextView>
-				<c:TextView Id="outletDistr" Text="$GetDescr($workflow.outlet.Distributor.Description)" CssClass="value"></c:TextView>
-			</c:DockLayout>
 			<c:HorizontalLine />
 
 			<s:Iterator Id="parameter" Value="$GetOutletParameters($workflow.outlet)" Status="statusCount">

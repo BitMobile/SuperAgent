@@ -72,7 +72,7 @@ function SelectOrder(order, outlet){
 }
 
 function FindExecutedOrder(){
-	if ($.Exists('executedOrder'))
+	if ($.Exists('executedOrder')) //this dirty hack is used in Events.js (OnApplicationRestore, OnWorkflowStart) too, think twice before edit here
 		return $.executedOrder;
 	else
 		return null;

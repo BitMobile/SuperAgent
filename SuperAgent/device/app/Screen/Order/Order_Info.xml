@@ -73,8 +73,10 @@
 			<c:HorizontalLine />
 
 			<s:If Test="$sessionConst.percentDiscountEnabled">
-				<c:DockLayout CssClass="parameter_grid" OnClickAction="$FocusOnEditText(massDiscountEdit, 1)">
-					<c:TextView Id="massDiscountDescription" Text="#orderDiscount#" />
+				<c:DockLayout CssClass="parameter_grid">
+					<c:HorizontalLayout CssClass="clickable" OnClickAction="$ConvertDiscount($massDiscountEdit, $thisDoc)">
+						<c:TextView Id="massDiscountDescription" Text="#orderDiscount#" />
+					</c:HorizontalLayout>
 					<c:EditText Id="massDiscountEdit" CssClass="value" Text="$MassDiscount($thisDoc)" OnChange="$CheckUserInput()" OnLostFocus="$SetMassDiscount($thisDoc)" Keyboard="numeric"/>
 				</c:DockLayout>
 				<c:HorizontalLine />

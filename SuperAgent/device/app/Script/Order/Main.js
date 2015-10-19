@@ -800,3 +800,9 @@ function CheckUserInput(sender){
         sender.Text = '0,';
     }                       
 }
+
+function ConvertDiscount(control, thisDoc) {
+    control.Text = -1 * control.Text;
+    SetMassDiscount(control, thisDoc);
+}
+

@@ -112,7 +112,7 @@ function ConvertDiscount(control) {
 //total discount
 
 function GetTotalDiscount(){
-    return OrderItem.GetTotalDiscount().ToString();
+    return FormatValue(OrderItem.GetTotalDiscount());
 }
 
 function ApplyTotalDiscount(sender, orderitem){
@@ -161,8 +161,6 @@ function TotalOutput(total){
 }
 
 function ApplyTotal(sender, orderitem){
-
-    $.discountEdit.Text = OrderItem.GetTotalDiscount();
 
     CheckUserInput(sender);
     if (sender.Text < 0)

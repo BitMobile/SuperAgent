@@ -163,6 +163,8 @@ function TotalOutput(total){
 function ApplyTotal(sender, orderitem){
 
     CheckUserInput(sender);
+    if (String.IsNullOrEmpty(sender.Text))
+        sender.Text = '0';
     if (sender.Text < 0)
     {
         sender.Text = -1 * sender.Text;

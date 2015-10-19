@@ -746,15 +746,15 @@ function ReviseSKUs(order, priceList, stock) {
 function MassDiscount(){
 	var d = GlobalWorkflow.GetMassDiscount(thisDoc);
 	var output = String.IsNullOrEmpty(d) ? '0' : d.ToString();
-	$.massDiscountDescription.Text = OrderDiscountDescription(output);
+	//$.massDiscountDescription.Text = OrderDiscountDescription(output);
 	return output;
 }
 
 function SetMassDiscount(sender, thisDoc){  
 	
 	var oldDiscount = MassDiscount();
-	if (parseFloat(sender.Text) == parseFloat(oldDiscount))
-		break;
+	// if (parseFloat(sender.Text) == parseFloat(oldDiscount))
+	// 	break;
 
 	var t = new Query("SELECT MAX " + 
 		"(CASE WHEN Price=Total THEN 0 " +
@@ -789,9 +789,9 @@ function SetMassDiscount(sender, thisDoc){
 function OrderDiscountDescription(value){
 	if (parseFloat(value) == parseFloat(0)
             || parseFloat(value) < parseFloat(0))
-        return Translate["#orderDiscount#"];
+        return Translate["#"+ $.workflow.currentDoc +"Discount#"];
     else
-        return Translate["#orderMarkUp#"];
+        return Translate["#"+ $.workflow.currentDoc +"MarkUp#"];
 }
 
 function CheckUserInput(sender){
@@ -800,3 +800,9 @@ function CheckUserInput(sender){
         sender.Text = '0,';
     }                       
 }
+
+function ConvertDiscount(control, thisDoc) {
+    control.Text = -1 * control.Text;
+    SetMassDiscount(control, thisDoc);
+}
+

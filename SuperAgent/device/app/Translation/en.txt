@@ -95,8 +95,10 @@ orders		Orders
 newOrder	Create new order
 add			Add
 discount	Discount
-orderDiscount	Order discount, %
-orderMarkUp	Order markup , %
+OrderDiscount	Order discount, %
+OrderMarkUp	Order markup , %
+ReturnDiscount	Return discount, %
+ReturnMarkUp	Return markup , %
 orderDiscountReset	Discounts are recalculated
 noNumber	No number
 showImage	Show image

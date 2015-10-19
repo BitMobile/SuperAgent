@@ -208,6 +208,14 @@
 			</c:DockLayout>
 			<c:HorizontalLine />
 
+			<c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet, Distributor, $outletDistr, #partner#, $sessionConst.editOutletParameters, 000000006)">
+				<c:VerticalLayout>
+					<c:TextView Text="#partner#" CssClass="description_row"></c:TextView>
+					<c:TextView Id="outletDistr" Text="$GetDescr($workflow.outlet.Distributor.Description)" CssClass="main_row"></c:TextView>
+				</c:VerticalLayout>
+			</c:DockLayout>
+			<c:HorizontalLine />
+
 			<c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet,Class,$outletClass,#outlet_class#, $sessionConst.editOutletParameters, 000000005)">
 				<c:VerticalLayout>
 					<c:TextView Text="#outlet_class#" CssClass="description_row"></c:TextView>
@@ -220,14 +228,6 @@
 				<c:VerticalLayout>
 					<c:TextView Text="#outlet_type#" CssClass="description_row"></c:TextView>
 					<c:TextView Id="outletType" Text="$workflow.outlet.Type.Description" CssClass="main_row"></c:TextView>
-				</c:VerticalLayout>
-			</c:DockLayout>
-			<c:HorizontalLine />
-
-			<c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet, Distributor, $outletDistr, #partner#, $sessionConst.editOutletParameters, 000000006)">
-				<c:VerticalLayout>
-					<c:TextView Text="#partner#" CssClass="description_row"></c:TextView>
-					<c:TextView Id="outletDistr" Text="$GetDescr($workflow.outlet.Distributor.Description)" CssClass="main_row"></c:TextView>
 				</c:VerticalLayout>
 			</c:DockLayout>
 			<c:HorizontalLine />

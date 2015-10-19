@@ -86,11 +86,7 @@ function ApplyDiscount(sender, orderitem) {
     if (Math.abs(parseFloat(sender.Text)) > 100)
         sender.Text =  sender.Text > 0 ? 100 : -100;
 
-    var d = new Dictionary();
-    d.Add("Discount", String.IsNullOrEmpty(sender.Text) 
-                            ? parseFloat(0) 
-                            : parseFloat(sender.Text));
-    OrderItem.SetItemValue(d);
+    SendDiscountMap(sender.Text);
 
     orderitem = OrderItem.GetItem();
     $.orderItem = orderitem;
@@ -100,12 +96,20 @@ function ApplyDiscount(sender, orderitem) {
     // DoRefresh($.showimage);
 }
 
+function SendDiscountMap(discount){
+    var d = new Dictionary();
+    d.Add("Discount", String.IsNullOrEmpty(discount) 
+                            ? parseFloat(0) 
+                            : parseFloat(discount));
+    OrderItem.SetItemValue(d);
+}
+
 function RefreshScreen(control, param1){
     DoRefresh(param1);
 }
 
 function ConvertDiscount(control) {
-    control.Text = -1 * control.Text;
+    SendDiscountMap(-1 * control.Text);
     DoRefresh($.showimage);
 }
 
@@ -124,17 +128,22 @@ function ApplyTotalDiscount(sender, orderitem){
             sender.Text = -orderitem.Price;
     }    
 
-    var d = new Dictionary();
-    d.Add("TotalDiscount", String.IsNullOrEmpty(sender.Text) 
-                            ? parseFloat(0) 
-                            : parseFloat(sender.Text));
-    OrderItem.SetItemValue(d);
+    SendTotalDiscountMap(sender.Text);
 
     orderItem = OrderItem.GetItem();
     $.orderItem = orderitem;
     $.totalDiscountDescr.Text = GetTotalDiscountDescription();
 
     // DoRefresh($.showimage);
+
+}
+
+function SendTotalDiscountMap(discount){
+    var d = new Dictionary();
+    d.Add("TotalDiscount", String.IsNullOrEmpty(discount) 
+                            ? parseFloat(0) 
+                            : parseFloat(discount));
+    OrderItem.SetItemValue(d);
 
 }
 
@@ -149,8 +158,8 @@ function GetTotalDiscountDescription(){
         return Translate["#sumMarkUp#"];
 }
 
-function ConvertTotalDiscount(control){
-    control.Text = -1 * control.Text
+function ConvertTotalDiscount(control, orderitem){    
+    SendTotalDiscountMap(-1 * control.Text);
     DoRefresh($.showimage);
 }
 

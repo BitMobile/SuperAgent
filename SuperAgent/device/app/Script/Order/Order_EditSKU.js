@@ -139,6 +139,7 @@ function RefreshTotalDiscount(sender, param1){
     if (parseFloat(sender.Text) != parseFloat(OrderItem.GetTotalDiscount()))
     {
         SendTotalDiscountMap(sender.Text);
+        GlobalWorkflow.SetMassDiscount(null);
         DoRefresh(param1);
     }
     

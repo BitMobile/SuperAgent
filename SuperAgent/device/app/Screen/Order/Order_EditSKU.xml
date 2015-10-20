@@ -116,7 +116,7 @@
 					<c:HorizontalLayout CssClass="clickable" OnClickAction="$ConvertTotalDiscount($discountEdit)">
 						<c:TextView Id="totalDiscountDescr" Text="$GetTotalDiscountDescription()" />
 					</c:HorizontalLayout>
-					<c:EditText Id="discountEdit" Text="$GetTotalDiscount()" CssClass="value" Keyboard="numeric" OnChange="$ApplyTotalDiscount($orderitem)" OnLostFocus="$RefreshScreen($showimage)" OnGetFocus="$HideSwiped()"></c:EditText>
+					<c:EditText Id="discountEdit" Text="$GetTotalDiscount()" CssClass="value" Keyboard="numeric" OnChange="$ApplyTotalDiscount($orderitem)" OnLostFocus="$RefreshTotalDiscount($showimage)" OnGetFocus="$HideSwiped()"></c:EditText>
 				</c:DockLayout>
 				<c:HorizontalLine />				
 			</s:If>

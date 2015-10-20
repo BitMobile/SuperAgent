@@ -127,15 +127,18 @@ function ApplyTotalDiscount(sender, orderitem){
         if (sender.Text < -orderitem.Price)
             sender.Text = -orderitem.Price;
     }    
+}
 
-    SendTotalDiscountMap(sender.Text);
+function RefreshTotalDiscount(sender, param1){
 
-    orderItem = OrderItem.GetItem();
-    $.orderItem = orderitem;
-    $.totalDiscountDescr.Text = GetTotalDiscountDescription();
+    sender.Text = String.IsNullOrEmpty(sender.Text) ? FormatValue(0) : sender.Text;
 
-    // DoRefresh($.showimage);
-
+    if (parseFloat(sender.Text) != parseFloat(OrderItem.GetTotalDiscount()))
+    {
+        SendTotalDiscountMap(sender.Text);
+        DoRefresh(param1);
+    }
+    
 }
 
 function SendTotalDiscountMap(discount){

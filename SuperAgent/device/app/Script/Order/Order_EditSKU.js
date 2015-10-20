@@ -94,7 +94,6 @@ function RefreshDiscount(sender, param1, orderitem){
     if (parseFloat(sender.Text) != parseFloat(orderitem.Discount))
     {
         SendDiscountMap(sender.Text);
-        GlobalWorkflow.SetMassDiscount(null);
         DoRefresh(param1);
     }
 }
@@ -105,6 +104,7 @@ function SendDiscountMap(discount){
                             ? parseFloat(0) 
                             : parseFloat(discount));
     OrderItem.SetItemValue(d);
+    GlobalWorkflow.SetMassDiscount(null);
 }
 
 function RefreshScreen(control, param1){
@@ -138,8 +138,7 @@ function RefreshTotalDiscount(sender, param1){
 
     if (parseFloat(sender.Text) != parseFloat(OrderItem.GetTotalDiscount()))
     {
-        SendTotalDiscountMap(sender.Text);
-        GlobalWorkflow.SetMassDiscount(null);
+        SendTotalDiscountMap(sender.Text);        
         DoRefresh(param1);
     }
     
@@ -151,7 +150,7 @@ function SendTotalDiscountMap(discount){
                             ? parseFloat(0) 
                             : parseFloat(discount));
     OrderItem.SetItemValue(d);
-
+    GlobalWorkflow.SetMassDiscount(null);
 }
 
 function GetTotalDiscountDescription(){

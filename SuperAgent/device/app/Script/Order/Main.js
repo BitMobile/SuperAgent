@@ -788,7 +788,7 @@ function SetMassDiscount(sender, thisDoc){
 
 function OrderDiscountDescription(value){
 	if (parseFloat(value) == parseFloat(0)
-            || parseFloat(value) < parseFloat(0))
+            || parseFloat(value) < parseFloat(0) || value==null)
         return Translate["#"+ $.workflow.currentDoc +"Discount#"];
     else
         return Translate["#"+ $.workflow.currentDoc +"MarkUp#"];

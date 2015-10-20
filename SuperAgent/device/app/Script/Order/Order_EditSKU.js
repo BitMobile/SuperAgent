@@ -94,6 +94,7 @@ function RefreshDiscount(sender, param1, orderitem){
     if (parseFloat(sender.Text) != parseFloat(orderitem.Discount))
     {
         SendDiscountMap(sender.Text);
+        GlobalWorkflow.SetMassDiscount(null);
         DoRefresh(param1);
     }
 }

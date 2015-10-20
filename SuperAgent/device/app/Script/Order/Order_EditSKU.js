@@ -85,15 +85,17 @@ function ApplyDiscount(sender, orderitem) {
 
     if (Math.abs(parseFloat(sender.Text)) > 100)
         sender.Text =  sender.Text > 0 ? 100 : -100;
+}
 
-    SendDiscountMap(sender.Text);
+function RefreshDiscount(sender, param1, orderitem){
+    
+    sender.Text = String.IsNullOrEmpty(sender.Text) ? '0' : sender.Text;
 
-    orderitem = OrderItem.GetItem();
-    $.orderItem = orderitem;
-
-    $.discountDescr.Text = GetDiscountDescription(orderitem.Discount);
-
-    // DoRefresh($.showimage);
+    if (parseFloat(sender.Text) != parseFloat(orderitem.Discount))
+    {
+        SendDiscountMap(sender.Text);
+        DoRefresh(param1);
+    }
 }
 
 function SendDiscountMap(discount){

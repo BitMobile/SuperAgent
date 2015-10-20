@@ -104,7 +104,6 @@ function SendDiscountMap(discount){
                             ? parseFloat(0) 
                             : parseFloat(discount));
     OrderItem.SetItemValue(d);
-    GlobalWorkflow.SetMassDiscount(null);
 }
 
 function RefreshScreen(control, param1){
@@ -150,7 +149,6 @@ function SendTotalDiscountMap(discount){
                             ? parseFloat(0) 
                             : parseFloat(discount));
     OrderItem.SetItemValue(d);
-    GlobalWorkflow.SetMassDiscount(null);
 }
 
 function GetTotalDiscountDescription(){

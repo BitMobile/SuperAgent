@@ -87,7 +87,10 @@ function Logout() {
 		var q2 = new Query();
 		q2.Text = queryString;
 
-		if (parseInt(q2.ExecuteScalar()) == parseInt(1))
+		var ex = q2.ExecuteScalar();
+		var res = String.IsNullOrEmpty(ex) ? 0 : ex;
+
+		if (parseInt(res) == parseInt(1))
 			Dialog.Message("#noLogout#", GoToSync);
 		else{
 			Dialog.Alert("#logoutQuery#"

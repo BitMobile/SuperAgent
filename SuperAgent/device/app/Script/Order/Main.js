@@ -752,9 +752,8 @@ function MassDiscount(thisDoc){
 
 function SetMassDiscount(sender, thisDoc){  
 	
-	var oldDiscount = MassDiscount();
-	// if (parseFloat(sender.Text) == parseFloat(oldDiscount))
-	// 	break;
+	if (String.IsNullOrEmpty(sender.Text))
+		sender.Text = '0';
 
 	var t = new Query("SELECT MAX " + 
 		"(CASE WHEN Price=Total THEN 0 " +

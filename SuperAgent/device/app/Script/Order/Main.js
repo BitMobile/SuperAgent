@@ -125,6 +125,12 @@ function GetPriceListQty(outlet) {
 
 }
 
+function ApplyComment(sender, thisDoc){ //dirty hack, see SUPA-1784
+	var obj = thisDoc.GetObject();
+	obj.Commentary = sender.Text;
+	obj.Save();
+}
+
 function HasOrderParameters() {
 
 	var query = new Query("SELECT DISTINCT Id From Catalog_OrderParameters WHERE Visible = 1");

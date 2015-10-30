@@ -86,7 +86,7 @@
 					<c:VerticalLayout>
 						<c:TextView Text="#commentary#" CssClass="description_row" />
 						<s:If Test="$IsEditable($executedOrder, $thisDoc)">
-							<c:MemoEdit Value="$thisDoc.Commentary" CssClass="main_row" />
+							<c:MemoEdit Text="$thisDoc.Commentary" CssClass="main_row" OnLostFocus="$ApplyComment($thisDoc)"/>
 						</s:If>
 						<s:Else>
 							<c:TextView Text="$thisDoc.Commentary" CssClass="main_row" />

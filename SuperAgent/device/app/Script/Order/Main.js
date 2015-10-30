@@ -746,7 +746,7 @@ function ReviseSKUs(order, priceList, stock) {
 function MassDiscount(thisDoc){
 	var d = GlobalWorkflow.GetMassDiscount(thisDoc);
 	var output = String.IsNullOrEmpty(d) ? '0' : d.ToString();
-	//$.massDiscountDescription.Text = OrderDiscountDescription(output);
+	$.massDiscountDescription.Text = OrderDiscountDescription(output);
 	return output;
 }
 
@@ -786,6 +786,7 @@ function SetMassDiscount(sender, thisDoc){
 }
 
 function OrderDiscountDescription(value){
+
 	if (parseFloat(value) == parseFloat(0)
             || parseFloat(value) < parseFloat(0) || value==null)
         return Translate["#"+ $.workflow.currentDoc +"Discount#"];

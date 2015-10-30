@@ -44,9 +44,9 @@ function SetItemValue(args){ //attr - dictionary
     }
 
     if (args.HasValue("Total"))
-    {
-        baseTotalDiscount = 0;
+    {        
         totalDiscount = args.Total - basePrice * multiplier;
+        baseTotalDiscount = totalDiscount / multiplier;
         orderItemObj.Discount = 0;
         orderItemObj.Total = args.Total;
         orderItemObj.Amount = orderItemObj.Total * orderItemObj.Qty;

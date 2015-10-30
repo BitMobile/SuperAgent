@@ -30,7 +30,6 @@ function SetItemValue(args){ //attr - dictionary
 
     if (args.HasValue("Discount"))
     {
-        GlobalWorkflow.SetMassDiscount(null);
         baseTotalDiscount = 0;
         totalDiscount = 0;
         orderItemObj.Discount = args.Discount;        
@@ -38,8 +37,7 @@ function SetItemValue(args){ //attr - dictionary
     }
 
     if (args.HasValue("TotalDiscount"))
-    {
-        GlobalWorkflow.SetMassDiscount(null);
+    {        
         baseTotalDiscount = args.TotalDiscount / multiplier;
         orderItemObj.Discount = 0;
         CalculateItem(orderItemObj);

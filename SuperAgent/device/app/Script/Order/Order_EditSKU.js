@@ -302,6 +302,8 @@ function CalculateSKUAndForward(outlet, orderitem) {
         DB.Delete(orderitem);
     } else {
         Global.FindTwinAndUnite(orderitem.GetObject());
+        GlobalWorkflow.SetMassDiscount(null);
+        GlobalWorkflow.GetMassDiscount(orderitem.Ref);
     }
 
     if ($.Exists("itemFields"))
@@ -335,6 +337,7 @@ function DeleteAndBack(orderitem) {
     	$.Remove("itemFields");
 
     OrderItem.ClearItem();
+    GlobalWorkflow.GetMassDiscount(orderitem.Ref);
 
     Workflow.Back();
 }

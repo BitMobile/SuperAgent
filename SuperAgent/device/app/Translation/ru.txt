@@ -331,3 +331,4 @@ go_back	Вернуться
 sumMarkUp	Наценка, руб.
 sumDiscount	Скидка, руб.
 newPrice	Новая цена
+enc_amount_regexp	^(\d{1,8}((\.|,)\d{1,2})?)?$

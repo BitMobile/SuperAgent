@@ -5,7 +5,7 @@
 		<s:Push Id="workflow.visit" Value="$CreateVisitIfNotExists($common.UserRef, $workflow.visit, $planVisit)" />
 	</s:If>
 
-	<s:Push Id="outletObj" Value="$GetObject($workflow.outlet)" />
+	<s:Push Id="outletObj" Value="$LoadObject($workflow.outlet)" />
 	<s:Push Id="outletScreen" Value="true"></s:Push><!-- dirty hack, see Events.js OnApplicationRestore() -->
 
 	<c:DockLayout Id="vOutlet">

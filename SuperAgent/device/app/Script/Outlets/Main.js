@@ -35,6 +35,10 @@ function OnLoading() {
 
 }
 
+function LoadObject(val){
+	return val.LoadObject();
+}
+
 function HasMenu(){
 
 	return GlobalWorkflow.GetMenuItem() == "Outlets" ? true : false;

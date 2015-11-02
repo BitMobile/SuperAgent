@@ -50,7 +50,7 @@
 						<c:TextView Text="#encashmentAmount#:"></c:TextView>
 						<c:Button Text="#spread#" OnClickAction="$SpreadEncasmentAndRefresh($workflow.encashment, $visit.Outlet, $receivables)" SubmitScope="encAmount"></c:Button>
 					</c:DockLayout>
-					<c:EditText Id="encAmount" Text="$FormatSum(null, $workflow.encashment.EncashmentAmount)" CssClass="main_row" Keyboard="numeric" Placeholder="—" OnLostFocus="$SaveSum()" Mask="#enc_amount_regexp#"></c:EditText>
+					<c:EditText Id="encAmount" Text="$FormatSum(null, $workflow.encashment.EncashmentAmount)" CssClass="main_row" Keyboard="numeric" OnChange="$CheckUserInput()" Placeholder="—" OnLostFocus="$SaveSum()" Mask="#enc_amount_regexp#"></c:EditText>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

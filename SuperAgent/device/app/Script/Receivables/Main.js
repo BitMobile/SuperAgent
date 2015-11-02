@@ -183,14 +183,17 @@ function FormatAmount(control) {
 		control.Text = String.Format("{0:F2}", control.Text);
 }
 
-function SaveSum(control) {
+function SaveSum(sender) {
 	var enc = $.workflow.encashment.GetObject();
-	if ($.encAmount.Text == '.') {
-		$.encAmount.Text = '';
+	if (sender.Text == '.') {
+		sender.Text = '';
+	}
+	else if (TrimAll(sender.Text) == TrimAll('-')){
+		sender.Text = "";
 	}
 	else {
-		enc.EncashmentAmount = ToDecimal($.encAmount.Text);
-		$.encAmount.Text = enc.EncashmentAmount;
+		enc.EncashmentAmount = ToDecimal(sender.Text);
+		sendert.Text = enc.EncashmentAmount;
 		enc.Save();
 	}
 }

@@ -800,13 +800,6 @@ function OrderDiscountDescription(value){
         return Translate["#"+ $.workflow.currentDoc +"MarkUp#"];
 }
 
-function CheckUserInput(sender){
-    if (TrimAll(sender.Text) == '.' || TrimAll(sender.Text) == ',')
-    {
-        sender.Text = '0,';
-    }                       
-}
-
 function ConvertDiscount(control, thisDoc) {
     control.Text = -1 * control.Text;
     SetMassDiscount(control, thisDoc);

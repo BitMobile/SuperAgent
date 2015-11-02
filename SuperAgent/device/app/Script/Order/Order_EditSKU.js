@@ -194,14 +194,6 @@ function ApplyTotal(sender, orderitem){
 
 }
 
-function CheckUserInput(sender){
-    if (TrimAll(sender.Text) == '.' || TrimAll(sender.Text) == ',')
-    {
-        sender.Text = '0,';
-    }                       
-}
-
-
 function GetFeatureDescr(feature) {
     if (feature.Code == "000000001" || $.sessionConst.SKUFeaturesRegistration==false)
         return "";

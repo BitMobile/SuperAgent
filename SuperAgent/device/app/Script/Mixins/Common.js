@@ -16,6 +16,7 @@ function ToString(val) {
 }
 
 function ToDecimal(val) {
+    val = TrimAll(val);
 	if (String.IsNullOrEmpty(val))
 		return Converter.ToDecimal(0);
 	else
@@ -205,6 +206,13 @@ function RoundToInt(val){
         return null;
     else
         return Round(resultString, 0);
+}
+
+function CheckUserInput(sender){
+    if (TrimAll(sender.Text) == '.' || TrimAll(sender.Text) == ',')
+    {
+        sender.Text = '0,';
+    }                       
 }
 
 //--------------------Clear Button part----------------------

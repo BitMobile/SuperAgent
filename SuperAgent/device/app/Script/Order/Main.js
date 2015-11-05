@@ -758,37 +758,41 @@ function MassDiscount(thisDoc){
 
 function SetMassDiscount(sender, thisDoc){  
 	
-	if (String.IsNullOrEmpty(sender.Text))
-		sender.Text = '0';
+	var massDisc = MassDiscount(thisDoc);
 
-	var t = new Query("SELECT MAX " + 
-		"(CASE WHEN Price=Total THEN 0 " +
-			" ELSE 1 " +
-			" END ) " +
-		" FROM Document_Order_SKUs " +
-		" WHERE Ref=@ref");
-	t.AddParameter("ref", thisDoc);
-	var result = t.ExecuteScalar() == null ? 0 : t.ExecuteScalar();
-	if (parseInt(result) == parseInt(1))
-		Dialog.Message(Translate["#orderDiscountReset#"]);
+	if (parseFloat(massDisc)!=parseFloat(sender.Text)){
+		if (String.IsNullOrEmpty(sender.Text))
+			sender.Text = '0';
 
-	var discount = sender.Text;
-	GlobalWorkflow.SetMassDiscount(discount); 
-	var q = new Query("SELECT Id, Price, Total " +
-		" FROM Document_Order_SKUs " +
-		" WHERE Ref=@ref");
-	q.AddParameter("ref", thisDoc);
-	var sku = q.Execute();
+		var t = new Query("SELECT MAX " + 
+			"(CASE WHEN Price=Total THEN 0 " +
+				" ELSE 1 " +
+				" END ) " +
+			" FROM Document_Order_SKUs " +
+			" WHERE Ref=@ref");
+		t.AddParameter("ref", thisDoc);
+		var result = t.ExecuteScalar() == null ? 0 : t.ExecuteScalar();
+		if (parseInt(result) == parseInt(1))
+			Dialog.Message(Translate["#orderDiscountReset#"]);
 
-	while (sku.Next()){
-		var skuObj = sku.Id.GetObject();
-		skuObj.Discount = discount;
-		skuObj.Total = skuObj.Price * (1 + discount/100);
-		skuObj.Amount = skuObj.Total * skuObj.Qty;
-		skuObj.Save();
-	}
+		var discount = sender.Text;
+		GlobalWorkflow.SetMassDiscount(discount); 
+		var q = new Query("SELECT Id, Price, Total " +
+			" FROM Document_Order_SKUs " +
+			" WHERE Ref=@ref");
+		q.AddParameter("ref", thisDoc);
+		var sku = q.Execute();
 
-	$.massDiscountDescription.Text = OrderDiscountDescription(discount);
+		while (sku.Next()){
+			var skuObj = sku.Id.GetObject();
+			skuObj.Discount = discount;
+			skuObj.Total = skuObj.Price * (1 + discount/100);
+			skuObj.Amount = skuObj.Total * skuObj.Qty;
+			skuObj.Save();
+		}
+
+		$.massDiscountDescription.Text = OrderDiscountDescription(discount);
+	}	
 }
 
 function OrderDiscountDescription(value){

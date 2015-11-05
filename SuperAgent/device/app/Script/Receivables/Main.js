@@ -106,7 +106,7 @@ function CreateEncashmentItem(encashment, receivableDoc) {
 
 function SpreadEncasmentAndRefresh(encashment, outlet, receivables) {
 
-	SaveSum();
+	SaveSum($.encAmount);
 	receivables = GetReceivables(outlet);
 
 	var sumToSpread = encashment.EncashmentAmount;
@@ -193,7 +193,7 @@ function SaveSum(sender) {
 	}
 	else {
 		enc.EncashmentAmount = ToDecimal(sender.Text);
-		sendert.Text = enc.EncashmentAmount;
+		sender.Text = enc.EncashmentAmount;
 		enc.Save();
 	}
 }

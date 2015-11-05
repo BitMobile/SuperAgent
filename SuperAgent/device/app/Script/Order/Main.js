@@ -789,6 +789,8 @@ function SetMassDiscount(sender, thisDoc){
 			skuObj.Total = skuObj.Price * (1 + discount/100);
 			skuObj.Amount = skuObj.Total * skuObj.Qty;
 			skuObj.Save();
+
+			Global.FindTwinAndUnite(skuObj);
 		}
 
 		$.massDiscountDescription.Text = OrderDiscountDescription(discount);

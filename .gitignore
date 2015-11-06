@@ -39,3 +39,5 @@ SuperAgent/solution/resource.rar
 *.dll
 *.dll
 *.prefs
+/.metadata
+/bitmobile

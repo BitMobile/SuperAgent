@@ -67,6 +67,10 @@ function CountResultAndForward() {
 
 	parentId = null;
 
+	if (parentGUID == null){
+		$.btn_forward.SubmitScope = "";
+	}
+	
 	var q = regular_total + single_total;
 	$.workflow.Add("questions_qty_sku", q);
 
@@ -267,6 +271,7 @@ function CreateItemAndShow(control, sku, index, showChild) {
 	}
 	else
 		parentGUID = sku;
+		
 
 	scrollIndex = index;
 	setScroll = true;

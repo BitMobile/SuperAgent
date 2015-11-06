@@ -99,7 +99,7 @@ OrderDiscount	Скидка на заказ, %
 OrderMarkUp	Наценка на заказ, %
 ReturnDiscount	Скидка на возврат, %
 ReturnMarkUp	Наценка на возврат, %
-orderDiscountReset	Скидки в заказе пересчитаны
+orderDiscountReset	Скидки пересчитаны
 noNumber	Нет номера
 showImage	Показать фото
 hideImage	Скрыть фото

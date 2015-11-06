@@ -768,7 +768,7 @@ function SetMassDiscount(sender, thisDoc){
 			"(CASE WHEN Price=Total THEN 0 " +
 				" ELSE 1 " +
 				" END ) " +
-			" FROM Document_Order_SKUs " +
+			" FROM Document_"+ $.workflow.currentDoc +"_SKUs " +
 			" WHERE Ref=@ref");
 		t.AddParameter("ref", thisDoc);
 		var result = t.ExecuteScalar() == null ? 0 : t.ExecuteScalar();
@@ -778,7 +778,7 @@ function SetMassDiscount(sender, thisDoc){
 		var discount = sender.Text;
 		GlobalWorkflow.SetMassDiscount(discount); 
 		var q = new Query("SELECT Id, Price, Total " +
-			" FROM Document_Order_SKUs " +
+			" FROM Document_"+ $.workflow.currentDoc +"_SKUs " +
 			" WHERE Ref=@ref");
 		q.AddParameter("ref", thisDoc);
 		var sku = q.Execute();

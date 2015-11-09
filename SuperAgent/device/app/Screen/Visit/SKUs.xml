@@ -6,7 +6,7 @@
 	<s:Push Id="visit" Value="$workflow.visit"></s:Push>
 	<s:Push Id="SKUs" Value="$GetSKUsFromQuesionnaires($search)"></s:Push>
 
-	<c:VerticalLayout>
+	<c:VerticalLayout Id="screenContainer">
 
 		<c:DockLayout CssClass="top_navigator">
 			<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$GetActionAndBack()">
@@ -74,7 +74,7 @@
 				</c:DockLayout>
 				<c:HorizontalLine />
 
-				<c:DockLayout CssClass="parameter_grid" OnClickAction="$Workflow.DoAction(ShowFilters1, Questionnaire)">
+				<c:DockLayout Id="btn_filters" CssClass="parameter_grid" OnClickAction="$Workflow.DoAction(ShowFilters1, Questionnaire)">
 					<c:TextView Text="#filter#"></c:TextView>
 					<c:Image></c:Image>
 				</c:DockLayout>
@@ -95,7 +95,7 @@
 				<s:Iterator Id="sku" Value="$SKUs" Status="statusCount">
 					<s:Push Id="index" Value="{$statusCount.Index}"></s:Push>
 
-					<c:DockLayout CssClass="grid" OnClick="$CreateItemAndShow($sku.SKU, $index, $sku.ShowChild)">
+					<c:DockLayout Id="parent{$index}" CssClass="grid" OnClick="$CreateItemAndShow($sku.SKU, $index, $sku.ShowChild)">
 						<s:If Test="$sku.Obligatoriness=='1'">
 							<s:If Test="$sku.ObligateredLeft > 0">
 								<c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout>
@@ -113,7 +113,7 @@
 							</s:If>
 							<c:TextView Text="{$sku.Answered} #of# {$sku.Total}" CssClass="description_row" />
 						</c:DockLayout>
-						<c:TextView Text="$sku.SKUDescription" CssClass="main_row"></c:TextView>
+						<c:TextView Text="{parent{$index}}{$sku.SKUDescription}" CssClass="main_row"></c:TextView>
 					</c:DockLayout>
 					<c:HorizontalLine />
 
@@ -168,7 +168,7 @@
 										<c:TextView Text="$child.Description" CssClass="description_row"></c:TextView>
 										<s:If Test="$child.IsInputField==1">
 											<s:Push Id="submitCollectionString" Value="$AddToSubmitCollection($submitCollectionString, control{$indexCh})"></s:Push>
-											<c:EditText Id="control{$indexCh}" Text="$child.Answer" Placeholder="—" OnChange="$AssignAnswer($child.Question, $sku.SKU, null, $child.AnswerType)" OnLostFocus="$RefreshScreen($search, $sku.SKU, $child.Question, $child.AnswerType)" Keyboard="$child.KeyboardType" CssClass="child_main_row" Length="140"></c:EditText>
+											<c:EditText Id="control{$indexCh}" Text="$child.Answer" Placeholder="—" OnChange="$AssignAnswer($child.Question, $sku.SKU, null, $child.AnswerType)" OnLostFocus="$RefreshScreen($search, $sku.SKU, $child.Question, $child.AnswerType)" Keyboard="$child.KeyboardType" CssClass="child_main_row" Length="3"></c:EditText>
 										</s:If>
 										<s:Else>
 											<c:TextView Id="control{$indexCh}" Text="$child.AnswerOutput" CssClass="child_main_row"></c:TextView>

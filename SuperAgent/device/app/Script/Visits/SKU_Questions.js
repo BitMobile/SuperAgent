@@ -372,21 +372,14 @@ function AddToSubmitCollection(submitCollectionString, fieldName){
 }
 
 function AssignSubmitScope(){
-	$.btn_forward.SubmitScope = submitCollectionString; //all the magic is in this strings
-	$.regular.SubmitScope = submitCollectionString;
-	$.nonregular.SubmitScope = submitCollectionString;
-	$.btnSearch.SubmitScope = submitCollectionString;
-	$.btn_filters.SubmitScope = submitCollectionString;	
-	var container = $.screenContainer;
+	$.btn_forward.SubmitScope = $.submitCollectionString; //all the magic is in this strings
+	$.regular.SubmitScope = $.submitCollectionString;
+	$.nonregular.SubmitScope = $.submitCollectionString;
+	$.btnSearch.SubmitScope = $.submitCollectionString;
+	$.btn_filters.SubmitScope = $.submitCollectionString;	
 	
-	Console.WriteLine($.btn_forward);
-
-	Console.WriteLine($.submitCollectionString);
-	
-	for (control in container){
-		Console.WriteLine(control);
+	for (control in $.grScrollView.Controls){
 		control.SubmitScope = $.submitCollectionString;
-		Console.WriteLine(control.SubmitScope);
 	}
 }
 //------------------------------internal-----------------------------------

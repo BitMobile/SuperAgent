@@ -113,7 +113,7 @@
 							</s:If>
 							<c:TextView Text="{$sku.Answered} #of# {$sku.Total}" CssClass="description_row" />
 						</c:DockLayout>
-						<c:TextView Text="{parent{$index}}{$sku.SKUDescription}" CssClass="main_row"></c:TextView>
+						<c:TextView Text="$sku.SKUDescription" CssClass="main_row"></c:TextView>
 					</c:DockLayout>
 					<c:HorizontalLine />
 
@@ -168,7 +168,7 @@
 										<c:TextView Text="$child.Description" CssClass="description_row"></c:TextView>
 										<s:If Test="$child.IsInputField==1">
 											<s:Push Id="submitCollectionString" Value="$AddToSubmitCollection($submitCollectionString, control{$indexCh})"></s:Push>
-											<c:EditText Id="control{$indexCh}" Text="$child.Answer" Placeholder="—" OnChange="$AssignAnswer($child.Question, $sku.SKU, null, $child.AnswerType)" OnLostFocus="$RefreshScreen($search, $sku.SKU, $child.Question, $child.AnswerType)" Keyboard="$child.KeyboardType" CssClass="child_main_row" Length="3"></c:EditText>
+											<c:EditText Id="control{$indexCh}" Text="$child.Answer" Placeholder="—" OnChange="$AssignAnswer($child.Question, $sku.SKU, null, $child.AnswerType)" OnLostFocus="$RefreshScreen($search, $sku.SKU, $child.Question, $child.AnswerType)" Keyboard="$child.KeyboardType" CssClass="child_main_row" Length="140"></c:EditText>
 										</s:If>
 										<s:Else>
 											<c:TextView Id="control{$indexCh}" Text="$child.AnswerOutput" CssClass="child_main_row"></c:TextView>

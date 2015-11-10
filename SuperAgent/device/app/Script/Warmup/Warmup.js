@@ -4,11 +4,11 @@ function RequestOutlets(){
 	q.Execute();
 }
 
-function RequestSKUs(){
-	var q = new Query("var query = new Query();
-        query.Text = "SELECT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, G.Id AS GroupId, G.Parent AS GroupParent, CB.Description AS Brand FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id JOIN Catalog_Brands CB ON CB.Id=S.Brand"; 
-        q.Execute();
-}
+// function RequestSKUs(){
+// 	var q = new Query("var query = new Query();
+//         query.Text = "SELECT S.Id, S.Description, PL.Price, S.CommonStock, G.Description AS GroupDescription, G.Id AS GroupId, G.Parent AS GroupParent, CB.Description AS Brand FROM Catalog_SKU S JOIN Catalog_SKUGroup G ON G.Id = S.Owner JOIN Document_PriceList_Prices PL ON PL.SKU = S.Id JOIN Catalog_Brands CB ON CB.Id=S.Brand"; 
+//         q.Execute();
+// }
 
 function RequestOrderList() {
 

@@ -171,16 +171,20 @@ function OnWorkflowPause(name) {
 // ------------------------ Functions ------------------------
 
 function SetSessionConstants() { 
-	var planEnbl = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='PlanEnbl'");
-	var multStck = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='MultStck'");
-	var stckEnbl = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='NoStkEnbl'");
-	var orderCalc = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='OrderCalc'");
+	// var planEnbl = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='PlanEnbl'");
+	// var multStck = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='MultStck'");
+	// var stckEnbl = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='NoStkEnbl'");
+	// var orderCalc = new Query("SELECT Use FROM Catalog_MobileApplicationSettings WHERE Code='OrderCalc'");
 	
 	$.AddGlobal("sessionConst", new Dictionary());
-	$.sessionConst.Add("PlanEnbl", EvaluateBoolean(planEnbl.ExecuteScalar()));
-	$.sessionConst.Add("MultStck", EvaluateBoolean(multStck.ExecuteScalar()));
-	$.sessionConst.Add("NoStkEnbl", EvaluateBoolean(stckEnbl.ExecuteScalar()));
-	$.sessionConst.Add("OrderCalc", EvaluateBoolean(orderCalc.ExecuteScalar()));
+	// $.sessionConst.Add("PlanEnbl", EvaluateBoolean(planEnbl.ExecuteScalar()));
+	// $.sessionConst.Add("MultStck", EvaluateBoolean(multStck.ExecuteScalar()));
+	// $.sessionConst.Add("NoStkEnbl", EvaluateBoolean(stckEnbl.ExecuteScalar()));
+	// $.sessionConst.Add("OrderCalc", EvaluateBoolean(orderCalc.ExecuteScalar()));
+	$.sessionConst.Add("PlanEnbl", true);
+	$.sessionConst.Add("MultStck", true);
+	$.sessionConst.Add("NoStkEnbl", true);
+	$.sessionConst.Add("OrderCalc", true);
 	
 	var q = new Query("SELECT U.AccessRight, A.Id, A.Code FROM Catalog_MobileAppAccessRights A " +
 			" LEFT JOIN Catalog_User_UserRights U ON U.AccessRight=A.Id ");

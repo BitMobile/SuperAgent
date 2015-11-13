@@ -79,7 +79,7 @@
 							<c:TextView Id="textView{$index}" Text="0 {@alreadyOrdered}" />
 						</c:VerticalLayout>
 					</c:HorizontalLayout>
-					<c:DockLayout OnClickAction="$DoAction(SelectSKU, $item.Id, $item.Price, null, null, null, $item.RecOrder, $item.UnitId)" CssClass="grid">
+					<c:DockLayout OnClickAction="$SelectSKU($item.Id, $item.Price, $item.RecOrder, $item.UnitId, $thisDoc)" CssClass="grid">
 						<c:Image />
 						<c:VerticalLayout>
 							<c:DockLayout>

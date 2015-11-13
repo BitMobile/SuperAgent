@@ -5,6 +5,7 @@ var infoTitle;
 var sumTitle;
 var skuTitle;
 var infoTitleSmall;
+var back;
 var c_parameterDescription;
 var c_docParams;
 
@@ -31,15 +32,17 @@ function OnLoading(){
 		infoTitleSmall = Translate["#returnInfoSmall#"];
 		c_docParams = Translate["#returnParameters#"];
 	}
+
+	var menuItem = GlobalWorkflow.GetMenuItem();
+	back = (menuItem == "Orders" || menuItem == "Returns" ? Translate["#clients#"] : Translate["#back#"]);
+
 }
 
 
 //---------------------------UI calls----------------
 
 function GetOutlet(){
-	if (!$.Exists("outlet"))
-		$.AddGlobal("outlet", GlobalWorkflow.GetOutlet());
-	return $.outlet;
+	return GlobalWorkflow.GetOutlet();
 }
 
 function GetItems() {
@@ -69,7 +72,7 @@ function SelectOrder(order, outlet){
 }
 
 function FindExecutedOrder(){
-	if ($.Exists('executedOrder'))
+	if ($.Exists('executedOrder')) //this dirty hack is used in Events.js (OnApplicationRestore, OnWorkflowStart) too, think twice before edit here
 		return $.executedOrder;
 	else
 		return null;
@@ -120,6 +123,12 @@ function GetPriceListQty(outlet) {
 	} else
 		return pl;
 
+}
+
+function ApplyComment(sender, thisDoc){ //dirty hack, see SUPA-1784
+	var obj = thisDoc.GetObject();
+	obj.Commentary = sender.Text;
+	obj.Save();
 }
 
 function HasOrderParameters() {
@@ -239,7 +248,7 @@ function IsEditText(isInputField, editable, order) {
 }
 
 function CreateDocumentIfNotExists(executedOrder, visitId) {
-	var outlet = $.outlet;
+	var outlet = GlobalWorkflow.GetOutlet();
 	var userRef = $.common.UserRef;
 
 	var order;
@@ -357,16 +366,23 @@ function GetDescription(priceList) {
 		return (Translate["#priceList#"] + ": " + priceList.Description);
 }
 
-function SelectStock(order, attr, control) {
+function SelectStock(order, outlet, attr, control) {
 	if (IsNew(order) && NotEmptyRef(order.PriceList)) {
-		var q = new Query("SELECT Id, Description FROM Catalog_Stock");
+		var q = new Query("SELECT CS.Id, CS.Description " +
+			" FROM Catalog_Stock CS " +
+			" JOIN Catalog_Territory_Stocks CTS ON CS.Id = CTS.Stock " +
+			" LEFT JOIN Catalog_Territory_Outlets CTO ON CTS.Ref = CTO.Ref " +
+			" WHERE CTO.Outlet = @outlet ORDER BY CTS.LineNumber, CS.Description");
+		q.AddParameter("outlet", outlet);
 		var res = q.Execute().Unload();
-		var table = [];
-		table.push([ DB.EmptyRef("Catalog_Stock"), Translate["#allStocks#"] ]);
-		while (res.Next()) {
-			table.push([ res.Id, res.Description ]);
+		if (res.Count() > 1) {
+			var table = [];
+			table.push([ DB.EmptyRef("Catalog_Stock"), Translate["#allStocks#"] ]);
+			while (res.Next()) {
+				table.push([ res.Id, res.Description ]);
+			}
+			Dialogs.DoChoose(table, order, attr, control, StockSelectHandler, Translate["#stockPlace#"]);
 		}
-		Dialogs.DoChoose(table, order, attr, control, StockSelectHandler, Translate["#stockPlace#"]);
 	}
 }
 
@@ -453,7 +469,7 @@ function CheckIfEmptyAndForward(order, wfName) {
 	if (wfName=="Visit"){
 		if (empty){ //clearing parameters and delete order
 			DB.Delete(order);
-			var query = new Query("SELECT * FROM Document_Order_Parameters WHERE Ref = @order")
+			var query = new Query("SELECT * FROM Document_" + $.workflow.currentDoc + "_Parameters WHERE Ref = @order")
 			query.AddParameter("order", order);
 			queryResult = query.Execute();
 			while (queryResult.Next()) {
@@ -464,6 +480,15 @@ function CheckIfEmptyAndForward(order, wfName) {
 				$.workflow.Remove("order");
 			if ($.workflow.currentDoc=="Return")
 				$.workflow.Remove("Return");
+		}
+		else{
+			var location = GPS.CurrentLocation;
+			if (ActualLocation(location)) {
+				var orderObj = order.GetObject();
+				orderObj.Lattitude = location.Latitude;
+				orderObj.Longitude = location.Longitude;
+				orderObj.Save();
+			}
 		}
 		Workflow.Forward([]);
 	}
@@ -543,8 +568,8 @@ function DeleteItem(item, executedOrder) {
 	Workflow.Refresh([ null, executedOrder ]);
 }
 
-function EditIfNew(order, param1, param2, param3) {
-	var orderItem = param3.GetObject();
+function EditIfNew(order, orderItem) {
+	orderItem = orderItem.GetObject();
 	if (order.IsNew()){
 		if (Variables.Exists("AlreadyAdded") == false)
 			Variables.AddGlobal("AlreadyAdded", true);
@@ -555,8 +580,24 @@ function EditIfNew(order, param1, param2, param3) {
 		$.itemFields.Add("Total", orderItem.Total);
 		$.itemFields.Add("Units", orderItem.Units);
 		$.itemFields.Add("Feature", orderItem.Feature);
-		Workflow.Action("Edit", [ param1, param2, param3 ]);
+		$.itemFields.Add("Id", orderItem.Id);
+		//for OrderItemInit
+		$.itemFields.Add("SKU", orderItem.SKU);
+		$.itemFields.Add("recOrder", orderItem.Qty);
+		$.itemFields.Add("Ref", orderItem.Ref);	
+		$.itemFields.Add("basePrice", GetBasePrice(order.PriceList, orderItem.SKU));
+
+	    OrderItem.InitItem($.itemFields);
+
+		Workflow.Action("Edit", []);
 	}
+}
+
+function GetBasePrice(priceList, sku){
+	var q = new Query("SELECT Price FROM Document_PriceList_Prices WHERE Ref=@priceList AND SKU=@sku");
+	q.AddParameter("priceList", priceList);
+	q.AddParameter("sku", sku);
+	return q.ExecuteScalar();
 }
 
 function FormatDate(datetime) {
@@ -569,8 +610,11 @@ function FormatDate(datetime) {
 function GetStock(userRef) {
 	if ($.sessionConst.MultStck == false)
 		return DB.EmptyRef("Catalog_Stock");
-
-	var q = new Query("SELECT S.Stock FROM Catalog_Territory_Stocks S WHERE S.LineNumber = 1 LIMIT 1");
+	var q = new Query("SELECT CTS.Stock " +
+		" FROM Catalog_Territory_Stocks CTS " +
+		" JOIN Catalog_Territory_Outlets CTO ON CTS.Ref = CTO.Ref " +
+		" WHERE CTO.Outlet = @outlet LIMIT 1");
+	q.AddParameter("outlet", outlet)
 	var s = q.ExecuteScalar();
 	if (s == null)
 		return DB.EmptyRef("Catalog_Stock");
@@ -702,3 +746,68 @@ function ReviseSKUs(order, priceList, stock) {
 
 	return;
 }
+
+//mass discount
+
+function MassDiscount(thisDoc){
+	var d = GlobalWorkflow.GetMassDiscount(thisDoc);
+	var output = String.IsNullOrEmpty(d) ? '0' : d.ToString();
+	$.massDiscountDescription.Text = OrderDiscountDescription(output);
+	return output;
+}
+
+function SetMassDiscount(sender, thisDoc){  
+	
+	var massDisc = MassDiscount(thisDoc);
+
+	if (parseFloat(massDisc)!=parseFloat(sender.Text)){
+		if (String.IsNullOrEmpty(sender.Text))
+			sender.Text = '0';
+
+		var t = new Query("SELECT MAX " + 
+			"(CASE WHEN Price=Total THEN 0 " +
+				" ELSE 1 " +
+				" END ) " +
+			" FROM Document_"+ $.workflow.currentDoc +"_SKUs " +
+			" WHERE Ref=@ref");
+		t.AddParameter("ref", thisDoc);
+		var result = t.ExecuteScalar() == null ? 0 : t.ExecuteScalar();
+		if (parseInt(result) == parseInt(1))
+			Dialog.Message(Translate["#orderDiscountReset#"]);
+
+		var discount = sender.Text;
+		GlobalWorkflow.SetMassDiscount(discount); 
+		var q = new Query("SELECT Id, Price, Total " +
+			" FROM Document_"+ $.workflow.currentDoc +"_SKUs " +
+			" WHERE Ref=@ref");
+		q.AddParameter("ref", thisDoc);
+		var sku = q.Execute();
+
+		while (sku.Next()){
+			var skuObj = sku.Id.GetObject();
+			skuObj.Discount = discount;
+			skuObj.Total = skuObj.Price * (1 + discount/100);
+			skuObj.Amount = skuObj.Total * skuObj.Qty;
+			skuObj.Save();
+
+			Global.FindTwinAndUnite(skuObj);
+		}
+
+		$.massDiscountDescription.Text = OrderDiscountDescription(discount);
+	}	
+}
+
+function OrderDiscountDescription(value){
+
+	if (parseFloat(value) == parseFloat(0)
+            || parseFloat(value) < parseFloat(0) || value==null)
+        return Translate["#"+ $.workflow.currentDoc +"Discount#"];
+    else
+        return Translate["#"+ $.workflow.currentDoc +"MarkUp#"];
+}
+
+function ConvertDiscount(control, thisDoc) {
+    control.Text = -1 * control.Text;
+    SetMassDiscount(control, thisDoc);
+}
+

@@ -10,11 +10,19 @@ function OnApplicationInit() {
 
 }
 
-function OnApplicationRestore(){
+function OnApplicationRestore(name){
 
 	Indicators.SetIndicators();
 
+	if ((name=="Visit" && $.Exists('outletScreen')) || name=="Outlet" || ((name=="Order" || name=="Return") && !$.Exists('executedOrder')))
+		GPS.StartTracking();
+
 }
+
+function OnApplicationBackground(name){
+	GPS.StopTracking();
+}
+
 
 // ------------------------ Events ------------------------
 
@@ -25,9 +33,10 @@ function OnWorkflowStart(name) {
 	Variables.AddGlobal("workflow", new Dictionary());
 	Variables["workflow"].Add("name", name);
 
-	if (name == "Visit" || name == "Outlet" || name=="Order" || name=="Return")
+	if (name == "Visit" || name == "Outlet" || ((name=="Order" || name=="Return") && !$.Exists('executedOrder')))
 	{
 		StartTracking();		
+		$.workflow.Add("outlet", GlobalWorkflow.GetOutlet());		
 	}
 
 	if (name=="Visit" || name=="Order" || name=="Return")
@@ -37,16 +46,21 @@ function OnWorkflowStart(name) {
 
 	if (name == "Visit")
 	{
-		CreateQuestionnareTable($.outlet);
-		CreateQuestionsTable($.outlet);
-		CreateSKUQuestionsTable($.outlet);
 
-		SetSteps($.outlet);
+		var outlet = $.workflow.outlet;
+
+		CreateQuestionnareTable(outlet);
+		CreateQuestionsTable(outlet);
+		CreateSKUQuestionsTable(outlet);
+
+		SetSteps(outlet);
 	}
 
 }
 
 function OnWorkflowForward(name, lastStep, nextStep, parameters) {
+	if (name = "Visit" && lastStep == "Outlet")
+		GPS.StopTracking();
 }
 
 function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
@@ -66,14 +80,13 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 	if (NextDoc(lastStep, nextStep)) //between Return and Order
 	{
 		Global.ClearFilter();
+		GlobalWorkflow.SetMassDiscount(null);
 	}
 
 	WriteScreenName(nextStep);
 
 	return true;
 }
-
-// function OnWorkflowBack(name, lastStep, nextStep) {}
 
 function OnWorkflowFinish(name, reason) {
 
@@ -87,6 +100,7 @@ function OnWorkflowFinish(name, reason) {
 	if (name=="Visit" || name=="Order" || name=="Return")
 	{
 		Global.ClearFilter();
+		GlobalWorkflow.SetMassDiscount(null);
 	}
 }
 
@@ -96,6 +110,9 @@ function OnWorkflowFinished(name, reason){
 
 function OnWorkflowBack(workflow, lastStep, nextStep){
 
+	if (name = "Visit" && nextStep == "Outlet")
+		GPS.StartTracking();
+
 	WriteScreenName(nextStep);
 
 	if (NextDoc(lastStep, nextStep)) //between Order and Return
@@ -103,15 +120,12 @@ function OnWorkflowBack(workflow, lastStep, nextStep){
 		Global.ClearFilter();
 	}
 
-	if (lastStep=="Image" && nextStep=="EditSKU")  //Diarty hack, if remove, will be created new orderItem
-	{
-		$.AddGlobal("orderitemAlt", $.entity);
-	}
 }
 
 function OnWorkflowPause(name) {
 	Variables.Remove("workflow");
 }
+
 
 // ------------------------ Functions ------------------------
 
@@ -126,8 +140,6 @@ function RemoveVariables(name){
 
 	if (name != "Main")
 	{
-		if (Variables.Exists("outlet"))
-			Variables.Remove("outlet");
 		if (Variables.Exists("planVisit"))
 			Variables.Remove("planVisit");
 		if (Variables.Exists("steps"))
@@ -263,7 +275,7 @@ function SetSteps(outlet) {
 			skipQuest = true;
 	}
 
-	if (parseInt(GetTasksCount()) != parseInt(0))
+	if (parseInt(GetTasksCount(outlet)) != parseInt(0))
 		InsertIntoSteps("1", "SkipTask", false, "Visit_Tasks", "Outlet");
 	else
 		InsertIntoSteps("1", "SkipTask", true, "Visit_Tasks", "Outlet");
@@ -294,7 +306,7 @@ function HasContractors(outlet){
 
 	var res;
 
-	var outletObj = $.outlet.GetObject();
+	var outletObj = outlet.GetObject();
 	if (outletObj.Distributor==DB.EmptyRef("Catalog_Distributor"))
 		res = HasOutletContractors(outlet);
 	else
@@ -354,9 +366,9 @@ function PrepareScheduledVisits_Map() {
 	}
 }
 
-function GetTasksCount() {
+function GetTasksCount(outlet) {
 	var taskQuery = new Query("SELECT COUNT(Id) FROM Document_Task WHERE PlanDate >= date('now','start of day', 'localtime') AND Outlet=@outlet");
-	taskQuery.AddParameter("outlet", $.outlet);
+	taskQuery.AddParameter("outlet", outlet);
 	return taskQuery.ExecuteScalar();
 }
 

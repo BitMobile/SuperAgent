@@ -138,6 +138,8 @@
 
 					</s:Iterator>
 
+					<c:HorizontalLayout CssClass="end_of_block" />
+
 				</c:ScrollView>
 			</s:If>
 
@@ -168,6 +170,9 @@
 						</c:DockLayout>
 						<c:HorizontalLine />
 					</s:Iterator>
+
+					<c:HorizontalLayout CssClass="end_of_block" />
+
 				</c:ScrollView>
 
 			</s:Else>

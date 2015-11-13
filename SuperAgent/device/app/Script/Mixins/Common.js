@@ -16,6 +16,7 @@ function ToString(val) {
 }
 
 function ToDecimal(val) {
+    val = TrimAll(val);
 	if (String.IsNullOrEmpty(val))
 		return Converter.ToDecimal(0);
 	else
@@ -194,17 +195,24 @@ function RoundToInt(val){
     for (var i = 1; i <= StrLen(string); i++){  // it's all about ot clear source from incorrect chars
         var ch = Mid(string, i, 1);
 
-        if (validate(ch, "([0-9.,])*")){
+        if (validate(ch, "([0-9.,-])*") && validate((resultString + ch), "(-)?([0-9])*[.,]?[0-9]?")){
             resultString += ch;
-
-            if (validate(resultString, "([0-9])*[.,][0-9]")) //we've just got a last char to round the source
-                break;
         }
         else
             break;
-    };
+    }
 
-    return Round(resultString, 0);
+    if (resultString == "")
+        return null;
+    else
+        return Round(resultString, 0);
+}
+
+function CheckUserInput(sender){
+    if (TrimAll(sender.Text) == '.' || TrimAll(sender.Text) == ',')
+    {
+        sender.Text = '0,';
+    }                       
 }
 
 //--------------------Clear Button part----------------------

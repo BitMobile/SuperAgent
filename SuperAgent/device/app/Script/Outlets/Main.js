@@ -2,6 +2,7 @@
 var singlePicture;
 var parameterValueC;
 var title;
+var back;
 
 //"description"	= "000000001"
 //"address"			= "000000002"
@@ -28,8 +29,14 @@ function OnLoading() {
 
 	$.Add("primaryParametersSettings", primaryParametersSettings);
 
+	back = Translate["#" + Lower(GlobalWorkflow.GetMenuItem()) + "#"];
+
 	title = Translate["#outlet#"];
 
+}
+
+function LoadObject(val){
+	return val.LoadObject();
 }
 
 function HasMenu(){
@@ -49,7 +56,7 @@ function GetOutlets(searchText) {
 		searchText = StrReplace(searchText, "'", "''");
 		search = "WHERE Contains(O.Description, '" + searchText + "') ";
 	}
-	
+
 	var currentDoc = GlobalWorkflow.GetMenuItem();
 
 	if (currentDoc=="Outlets") {  //ShowOutletInMA for Outlets.xml at Outlets workflow
@@ -105,12 +112,6 @@ function AddGlobalAndAction(outlet) {
 		Workflow.Action(actionName, []);
 	}
 
-}
-
-function GetOutletObject(){
-	if (!$.Exists("outlet"))
-		$.AddGlobal("outlet", GlobalWorkflow.GetOutlet());
-	return GetObject($.outlet);
 }
 
 function CreateOutletAndForward() {
@@ -226,7 +227,6 @@ function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParamete
 		if (editOutletParameters && $.primaryParametersSettings[primaryParameterName]) {
 
 			var listChoice = null;
-			var func = null;
 
 			if (title == Translate["#status#"]) {
 				var query = new Query("SELECT Id, Description FROM Enum_OutletStatus");
@@ -250,7 +250,7 @@ function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParamete
 				listChoice = query.Execute();
 			}
 
-			Dialogs.DoChoose(listChoice, outlet, attribute, control, func, title);
+			Dialogs.DoChoose(listChoice, outlet, attribute, control, null, title);
 		}
 	}
 }
@@ -424,7 +424,7 @@ function GetImagePath(objectID, pictID, pictExt) {
 function ImageActions(control, valueRef, imageControl, outlet, filename) {
 	if ($.sessionConst.editOutletParameters && $.primaryParametersSettings["000000008"]) {
 		parameterValueC = valueRef;
-		Images.AddSnapshot($.outlet, valueRef, OutletSnapshotHandler, Translate["#snapshot#"], Variables[imageControl].Source);
+		Images.AddSnapshot($.workflow.outlet, valueRef, OutletSnapshotHandler, Translate["#snapshot#"], Variables[imageControl].Source);
 	} else {
 		Workflow.Action("ShowImage", [GetImagePath(outlet, filename, ".jpg"), valueRef, "Value", true])
 	}
@@ -463,13 +463,13 @@ function OutletSnapshotHandler(state, args) {
 
 // --------------------------case Visits----------------------
 
-function CreateVisitIfNotExists(outlet, userRef, visit, planVisit) {
+function CreateVisitIfNotExists(userRef, visit, planVisit) {
 
 	if (visit == null) {
 		visit = DB.Create("Document.Visit");
 		if (planVisit != null)
 			visit.Plan = planVisit;
-		visit.Outlet = outlet;
+		visit.Outlet = $.workflow.outlet;
 		visit.SR = userRef;
 		visit.Date = DateTime.Now;
 		visit.StartTime = DateTime.Now;
@@ -503,6 +503,15 @@ function SetLocation(control, outlet) {
 }
 
 function CoordsChecked(visit) {
+
+	var location = GPS.CurrentLocation;
+	if (ActualLocation(location)) {
+		var visitObj = visit.GetObject();
+		visitObj.Lattitude = location.Latitude;
+		visitObj.Longitude = location.Longitude;
+		visitObj.Save();
+	}
+
 	if (Variables["workflow"]["name"] == "Visit" && NotEmptyRef(visit.Plan)) {
 		var query = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='CoordinateControlEnabled'");
 		var coordControl = query.ExecuteScalar();
@@ -590,7 +599,7 @@ function ShowContractorsIfExists(outlet) {
 			q.AddParameter("ref", outletObj.Distributor);
 			contractor = q.ExecuteScalar();
 		}
-		DoAction('Contractor', contractor);
+		DoAction('Contractor', contractor, true);
 	}
 
 	else if (con > parseInt(1))
@@ -695,11 +704,6 @@ function BackMenu(){
 		return false;
 	else
 		return true;
-}
-
-function CommitAndBack(){
-	DB.Commit();
-	Workflow.Rollback();
 }
 
 function SnapshotExists(filename) {

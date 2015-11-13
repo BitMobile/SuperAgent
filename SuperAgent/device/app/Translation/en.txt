@@ -95,6 +95,11 @@ orders		Orders
 newOrder	Create new order
 add			Add
 discount	Discount
+OrderDiscount	Order discount, %
+OrderMarkUp	Order markup , %
+ReturnDiscount	Return discount, %
+ReturnMarkUp	Return markup , %
+orderDiscountReset	Discounts are recalculated
 noNumber	No number
 showImage	Show image
 hideImage	Hide image
@@ -260,6 +265,7 @@ skuList			LIST OF SKUs
 OrderskuWillBeDeleted	Part of SKUs will be removed from order. Continue?
 logout			Logout
 logoutQuery		When you exit will delete all data
+noLogout		Require syncronization
 cancel			Cancel
 logoutConfirm	Logout
 visitReason		"Visit reason" field should be filled
@@ -317,3 +323,11 @@ inn_regexp		^((\d{10})|(\d{12})|)?$
 selectOwner		Owner isn't selected
 no_questions_list	NO QUESTIONS
 requiredFieldsLeft	Required fields left
+outlet_short	Outlet
+visit_end_question	After visit ends you will not be allowed to edit it
+end	Continue
+go_back	Back
+sumMarkUp	Sum markup
+sumDiscount	Sum discount
+newPrice	New price
+enc_amount_regexp	^(\d{1,8}((\.|,)\d{1,2})?)?$

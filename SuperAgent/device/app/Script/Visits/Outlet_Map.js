@@ -1,4 +1,4 @@
 ﻿function OnLoad() {
 	if ($.Exists("map"))
-		$.map.AddMarker("", $.outlet.Lattitude, $.outlet.Longitude, "blue");
+		$.map.AddMarker("", $.workflow.outlet.Lattitude, $.workflow.outlet.Longitude, "blue");
 }

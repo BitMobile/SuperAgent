@@ -59,7 +59,7 @@
 			<c:HorizontalLine />
 
 			<s:If Test="$sessionConst.MultStck">
-				<c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectStock($thisDoc, Stock, $stockDescription)">
+				<c:DockLayout CssClass="parameter_grid" OnClickAction="$SelectStock($thisDoc, $thisDoc.Outlet, Stock, $stockDescription)">
 					<c:TextView Text="#stockPlace#" />
 					<c:TextView Id="stockDescription" Text="$GetStockDescription($thisDoc.Stock)" CssClass="value" />
 				</c:DockLayout>
@@ -72,11 +72,21 @@
 			</c:DockLayout>
 			<c:HorizontalLine />
 
+			<s:If Test="$sessionConst.percentDiscountEnabled">
+				<c:DockLayout CssClass="parameter_grid">
+					<c:HorizontalLayout CssClass="clickable" OnClickAction="$ConvertDiscount($massDiscountEdit, $thisDoc)">
+						<c:TextView Id="massDiscountDescription" Text="$OrderDiscountDescription($massDiscountEdit.Text)" />
+					</c:HorizontalLayout>
+					<c:EditText Id="massDiscountEdit" CssClass="value" Text="$MassDiscount($thisDoc)" OnChange="$CheckUserInput()" OnLostFocus="$SetMassDiscount($thisDoc)" Keyboard="numeric" Enabled="$IsEditable($executedOrder, $thisDoc)"/>
+				</c:DockLayout>
+				<c:HorizontalLine />
+			</s:If>
+
 				<c:HorizontalLayout CssClass="memo_block">
 					<c:VerticalLayout>
 						<c:TextView Text="#commentary#" CssClass="description_row" />
 						<s:If Test="$IsEditable($executedOrder, $thisDoc)">
-							<c:MemoEdit Value="$thisDoc.Commentary" CssClass="main_row" />
+							<c:MemoEdit Text="$thisDoc.Commentary" CssClass="main_row" OnLostFocus="$ApplyComment($thisDoc)"/>
 						</s:If>
 						<s:Else>
 							<c:TextView Text="$thisDoc.Commentary" CssClass="main_row" />

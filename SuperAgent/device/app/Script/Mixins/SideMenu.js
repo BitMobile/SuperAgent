@@ -13,10 +13,6 @@ function GetItemsStyles(){
 	return styles;
 }
 
-function ShowDialog(val){
-	Dialog.Debug(val);
-}
-
 function IsCurrent(name){	
 	var c = GlobalWorkflow.GetMenuItem() == null ? "Summary" : GlobalWorkflow.GetMenuItem();
 	return name == c ? "header" : "common";
@@ -71,15 +67,44 @@ function GetMainVersion(ver) {
 	return Left(ver, 3);
 }
 
-function LogoutQuery() {
+function Logout() {
 
-	Dialog.Alert("#logoutQuery#"
+	var q = new Query("SELECT name " +
+		"FROM SQLITE_MASTER " +
+		"WHERE type='view' " +
+		"AND (Contains(name, 'Document') OR Contains(name, 'Catalog'))");
+		var tables = q.Execute();
+
+		var queryString = "";
+		while (tables.Next()){
+			queryString = queryString +
+			" SELECT DISTINCT IsDirty " +
+			" FROM " + tables.name + " WHERE IsDirty=1 " +
+			" UNION ALL "
+		}
+		queryString = queryString + " SELECT DISTINCT IsDirty FROM Catalog_Distributor ";
+
+		var q2 = new Query();
+		q2.Text = queryString;
+
+		var ex = q2.ExecuteScalar();
+		var res = String.IsNullOrEmpty(ex) ? 0 : ex;
+
+		if (parseInt(res) == parseInt(1))
+			Dialog.Message("#noLogout#", GoToSync);
+		else{
+			Dialog.Alert("#logoutQuery#"
 		    , LogoutCallback
 		    , null
 		    , "#cancel#"
 		    , "#logoutConfirm#"
 		    , null);
+		}
 
+}
+
+function GoToSync(){
+	Workflow.Action('Sync', []);
 }
 
 function LogoutCallback(state, args) {

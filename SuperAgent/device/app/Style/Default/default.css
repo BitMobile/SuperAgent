@@ -787,7 +787,7 @@ MemoEdit {
 }
 
 .memo_block {
-	height: 20.5mm;
+	height: 18mm;
 }
 
 .memo_block vl {
@@ -803,10 +803,10 @@ MemoEdit {
 }
 
 .memo_block vl main_row {
-	height: 80%;
+	height: 78%;
 	width: 100%;
 	margin-left: 0%;
-	font: 15% Arial;
+	font: 20% Arial;
 }
 
 .no_image{
@@ -957,4 +957,16 @@ MemoEdit {
 	font: 2.2mm Arial;
 	color: #000;
 	
+}
+
+.clickable {
+	width: 60%;
+	dock-align: left;
+	margin-left: 0%;
+}
+
+.clickable TextView {
+	height: 100%;
+	width: 100%;
+	margin-left: 2.7mm;
 }

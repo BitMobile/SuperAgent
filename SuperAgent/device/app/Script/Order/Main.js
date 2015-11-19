@@ -608,12 +608,20 @@ function FormatDate(datetime) {
 // ----------------------------------Functions---------------------------
 
 function GetStock(userRef) {
+
+		// var q = new Query("SELECT CS.Id, CS.Description " +
+		// 	" FROM Catalog_Stock CS " +
+		// 	" JOIN Catalog_Territory_Stocks CTS ON CS.Id = CTS.Stock " +
+		// 	" LEFT JOIN Catalog_Territory_Outlets CTO ON CTS.Ref = CTO.Ref " +
+		// 	" WHERE CTO.Outlet = @outlet ORDER BY CTS.LineNumber, CS.Description");
+
 	if ($.sessionConst.MultStck == false)
 		return DB.EmptyRef("Catalog_Stock");
-	var q = new Query("SELECT CTS.Stock " +
-		" FROM Catalog_Territory_Stocks CTS " +
-		" JOIN Catalog_Territory_Outlets CTO ON CTS.Ref = CTO.Ref " +
-		" WHERE CTO.Outlet = @outlet LIMIT 1");
+	var q = new Query("SELECT CS.Id, CS.Description " +
+			" FROM Catalog_Stock CS " +
+			" JOIN Catalog_Territory_Stocks CTS ON CS.Id = CTS.Stock " +
+			" LEFT JOIN Catalog_Territory_Outlets CTO ON CTS.Ref = CTO.Ref " +
+			" WHERE CTO.Outlet = @outlet ORDER BY CTS.LineNumber, CS.Description");
 	q.AddParameter("outlet", outlet)
 	var s = q.ExecuteScalar();
 	if (s == null)

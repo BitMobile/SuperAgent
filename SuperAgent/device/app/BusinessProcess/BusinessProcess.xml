@@ -34,6 +34,9 @@
 			<s:Include File="\Components\SideMenuActions.xml"/>
 		</bp:Step>
 
+		<bp:Step Name="Tasks" Screen="Visit\Tasks.xml">
+		</bp:Step>
+
 		<bp:Step Name="Sync" Screen="Sync\Sync.xml" Controller="Sync\Main.js">
 			<s:Include File="\Components\SideMenuActions.xml"/>
 		</bp:Step>

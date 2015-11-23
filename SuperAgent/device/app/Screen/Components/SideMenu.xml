@@ -31,6 +31,15 @@
 		</c:DockLayout>
 		<c:HorizontalLine />
 
+		<c:DockLayout Id="Tasks" CssClass="{$styles.Tasks}" OnClickAction="$SwitchScreen(Tasks)">
+			<c:TextView CssClass="menu_text" Text="XXX" />
+			<c:HorizontalLayout>
+				<c:Image CssClass="btn_stocks" />
+				<c:TextView Text="#tasks#" />
+			</c:HorizontalLayout>
+		</c:DockLayout>
+		<c:HorizontalLine />
+
 		<s:If Test="$sessionConst.orderEnabled">
 			<c:DockLayout Id="Orders" CssClass="{$styles.Orders}" OnClickAction="$SwitchScreen(Orders)">
 				<c:TextView CssClass="menu_text" Text="{$GetOrderQty()} | {$GetOrderSumm()}"></c:TextView>

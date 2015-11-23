@@ -9,6 +9,8 @@ var encashmentSumm;
 var receivablesSumm;
 var returnSum;
 var returnQty;
+var tasksSum;
+var tasksDone;
 
 function SetIndicators() {
 	SetCommitedScheduledVisits();
@@ -21,6 +23,8 @@ function SetIndicators() {
 	SetUnscheduledVisits();
 	SetReturnSum();
 	SetReturnQty();
+	SetTasksSum();
+	SetTasksDone();
 }
 
 function SetOutletsCount() {
@@ -169,4 +173,25 @@ function SetReceivablesSumm() {
 
 function GetReceivablesSumm() {
 	return receivablesSumm;
+}
+
+function SetTasksSum(){
+	var q = new Query("SELECT COUNT(Id) FROM Document_Task");
+	var cnt = q.ExecuteScalar();
+	tasksSum = cnt == null ? 0 : cnt;
+}
+
+function GetTasksSum(){
+	return tasksSum;
+}
+
+function SetTasksDone(){
+	var q = new Query("SELECT COUNT(Id) FROM Document_Task WHERE Status=1");
+	var cnt = q.ExecuteScalar();	
+	tasksDone = cnt == null ? 0 : cnt;
+	Console.WriteLine(tasksDone);
+}
+
+function GetTasksDone(){
+	return tasksDone;
 }

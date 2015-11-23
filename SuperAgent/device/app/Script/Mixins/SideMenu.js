@@ -5,6 +5,7 @@ function GetItemsStyles(){
 	styles.Add("Summary", IsCurrent("Summary"));
 	styles.Add("Visits", IsCurrent("Visits"));
 	styles.Add("Outlets", IsCurrent("Outlets"));
+	styles.Add("Tasks", IsCurrent("Tasks"));
 	styles.Add("Orders", IsCurrent("Orders"));
 	styles.Add("Returns", IsCurrent("Returns"));
 	styles.Add("Sync", IsCurrent("Sync"));
@@ -36,6 +37,14 @@ function GetOutletsCount() {
 
 function GetCommitedScheduledVisits() {
 	return Indicators.GetCommitedScheduledVisits().ToString();
+}
+
+function GetTasksSum(){
+	return Indicators.GetTasksSum().ToString();
+}
+
+function GetTasksDone(){
+	return Indicators.GetTasksDone().ToString();
 }
 
 function GetOrderSumm() {

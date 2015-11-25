@@ -72,7 +72,7 @@ todoDone	Tasks done
 execute		Execute
 retrieve	Retrieve
 newTasks	NEW TASKS
-executedtask	EXECUTED TASK
+executedtask	TODAY EXECUTED
 description	Description
 result		Result
 plandate	Plan date

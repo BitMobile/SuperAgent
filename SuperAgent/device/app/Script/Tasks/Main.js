@@ -11,6 +11,7 @@ function GetExecutedTasks() {
 		" FROM Document_Task DT " +
 		" JOIN Catalog_Outlet O ON DT.Outlet=O.Id " +
 		" WHERE DT.Status=1 " +
+		" AND DATE(ExecutionDate)=DATE('now', 'localtime') " +
 		" ORDER BY DT.ExecutionDate desc, O.Description");
 
 	return query.Execute();

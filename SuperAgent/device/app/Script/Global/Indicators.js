@@ -160,8 +160,6 @@ function GetEncashmentSumm(){
 	return encashmentSumm;
 }
 
-
-
 function SetReceivablesSumm() {
 	var q = new Query("SELECT SUM(RD.DocumentSum) FROM Document_AccountReceivable_ReceivableDocuments RD JOIN Document_AccountReceivable AR ON AR.Id = RD.Ref");
 	var cnt = q.ExecuteScalar();
@@ -186,7 +184,9 @@ function GetTasksSum(){
 }
 
 function SetTasksDone(){
-	var q = new Query("SELECT COUNT(Id) FROM Document_Task WHERE Status=1");
+	var q = new Query("SELECT COUNT(Id) FROM Document_Task " +
+		" WHERE Status=1 " +
+		" AND DATE(ExecutionDate)=DATE('now', 'localtime') ");
 	var cnt = q.ExecuteScalar();	
 	tasksDone = cnt == null ? 0 : cnt;
 	Console.WriteLine(tasksDone);

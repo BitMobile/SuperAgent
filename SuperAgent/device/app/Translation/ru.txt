@@ -72,7 +72,7 @@ todoDone	Задач выполнено
 execute		Выполнить
 retrieve	Вернуть
 newTasks	НЕВЫПОЛНЕННЫЕ
-executedtask	ВЫПОЛНЕННЫЕ
+executedtask	ВЫПОЛНЕННЫЕ СЕГОДНЯ
 description	Наименование
 result		Результат
 plandate	Плановый срок

@@ -72,7 +72,7 @@ todoDone	Задач выполнено
 execute		Выполнить
 retrieve	Вернуть
 newTasks	НЕВЫПОЛНЕННЫЕ
-executedtask	ВЫПОЛНЕННЫЕ
+executedtask	ВЫПОЛНЕННЫЕ СЕГОДНЯ
 description	Наименование
 result		Результат
 plandate	Плановый срок
@@ -332,3 +332,5 @@ sumMarkUp	Наценка, руб.
 sumDiscount	Скидка, руб.
 newPrice	Новая цена
 enc_amount_regexp	^(\d{1,8}((\.|,)\d{1,2})?)?$
+untill			до
+executed		выполнена

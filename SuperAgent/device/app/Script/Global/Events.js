@@ -136,6 +136,8 @@ function StartTracking(){
 
 function RemoveVariables(name){
 
+	GlobalWorkflow.ClearVariables();
+
 	Variables.Remove("workflow");
 
 	if (name != "Main")

@@ -57,10 +57,10 @@
 								<c:TextView Text="#execute#"></c:TextView>
 							</c:VerticalLayout>
 						</c:HorizontalLayout>
-						<c:DockLayout CssClass="grid" OnClickAction="$DoAction(Select, $task.Id, null, $task.TextTask)">
+						<c:DockLayout CssClass="grid" OnClickAction="$AddGlobalAndAction($task.Id)">
 							<c:Image />
 							<c:VerticalLayout>
-								<c:TextView Text="{$task.Outlet} #untill# {$FormatDate($task.EndPlanDate)}" CssClass="description_row"></c:TextView>
+								<c:TextView Text="#untill# {$FormatDate($task.EndPlanDate)} {$task.Outlet}" CssClass="description_row"></c:TextView>
 								<c:TextView Text="$task.TextTask" CssClass="main_row"></c:TextView>
 							</c:VerticalLayout>						
 						</c:DockLayout>
@@ -79,10 +79,10 @@
 				<s:Iterator Id="eTask" Value="$GetExecutedTasks()">
 
 					<c:SwipeHorizontalLayout Id="swipe_layout2" CssClass="swipe_layout">
-						<c:DockLayout CssClass="grid" OnClickAction="$DoAction(Select, $eTask.Id ,$eTask.Id, $eTask.TextTask)">
+						<c:DockLayout CssClass="grid" OnClickAction="$AddGlobalAndAction($eTask.Id)">
 							<c:Image />
 							<c:VerticalLayout>
-								<c:TextView Text="{$eTask.Outlet} #executed# {$FormatDate($eTask.ExecutionDate)}" CssClass="description_row"></c:TextView>
+								<c:TextView Text="#executed# {$FormatDate($eTask.ExecutionDate)} {$eTask.Outlet}" CssClass="description_row"></c:TextView>
 								<c:TextView Text="$eTask.TextTask" CssClass="main_row"></c:TextView>
 							</c:VerticalLayout>						
 						</c:DockLayout>

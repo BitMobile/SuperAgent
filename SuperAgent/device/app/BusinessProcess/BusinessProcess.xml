@@ -35,6 +35,7 @@
 		</bp:Step>
 
 		<bp:Step Name="Tasks" Screen="Visit\Tasks.xml" Controller="Tasks\Main.js">
+			<bp:Action Name="Select" NextWorkflow="Task" />
 			<s:Include File="\Components\SideMenuActions.xml"/>
 		</bp:Step>
 
@@ -172,6 +173,10 @@
 
 		<bp:Step Name="Image" Screen="Image.xml" Controller="Outlets\Image.js"></bp:Step>
 
+	</bp:Workflow>
+
+	<bp:Workflow Name="Task">
+		<bp:Step Name="Task" Screen="Task.xml" Controller="Tasks\EditTask.js"></bp:Step>
 	</bp:Workflow>
 
 	<bp:Workflow Name="Return" Controller="Order\Main.js">

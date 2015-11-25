@@ -30,3 +30,7 @@ function FormatDate(datetime) {
 	return Format("{0:d}", Date(datetime).Date);
 }
 
+function AddGlobalAndAction(paramValue){
+	GlobalWorkflow.SetCurrentTask(paramValue);
+	Workflow.Action('Select', []);
+}

@@ -5,6 +5,7 @@ phone_regexp	^(((8|\+7)[\- ]?)?(\(?\d{3,4}\)?[\- ]?)?[\d\- ]{5,10})?$
 email_regexp	^(([а-яА-ЯёЁa-zA-Z0-9_-]+\.)*[а-яА-ЯёЁa-zA-Z0-9_-]+@[а-яА-ЯёЁa-zA-Z0-9_-]+(\.[а-яА-ЯёЁa-zA-Z0-9_-]+)*\.[а-яА-ЯёЁa-zA-Z]{2,6})?$
 inn_regexp	^.*$
 kpp_regexp	^.*$
+enc_amount_regexp	^(\d{1,8}((\.|,)\d{1,2})?)?$
 info	O aplikaci
 accountsReceivables	výše pohledávek
 Active	Aktivní

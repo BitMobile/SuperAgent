@@ -333,3 +333,6 @@ newPrice	New price
 enc_amount_regexp	^(\d{1,8}((\.|,)\d{1,2})?)?$
 untill			untill
 executed		executed
+startPlanTime	Start Plan date
+endPlanTime		End Plan date
+selectOutlet	Select outlet

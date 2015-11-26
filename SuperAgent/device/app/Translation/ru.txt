@@ -292,7 +292,6 @@ ReturnSKUWillRevised	Возврат пересчитан
 send			Отправить логи
 success			Данные успешно отправлены
 imageNotAvailable	В данный момент изображение недоступно
-
 noSuccess		Произошла ошибка во время отправки. Данные не отправлены
 errorMessage	Сообщить об ошибке
 sending			Отправка..
@@ -334,3 +333,6 @@ newPrice	Новая цена
 enc_amount_regexp	^(\d{1,8}((\.|,)\d{1,2})?)?$
 untill			до
 executed		выполнена
+startPlanTime	Плановая дата начала
+endPlanTime		Плановая дата завершения
+selectOutlet	Выберите торговую точку

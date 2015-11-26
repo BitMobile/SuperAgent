@@ -318,4 +318,10 @@ status	Stav
 superDescription	BIT.MOBILE - mobilní aplikace na řízení objednávek, dotazování a merchandising, řízení personálu.
 support	Podpora
 outlet_territory	Territory
-
+visit_end_question		Po uložení souboru editace není povolena
+go_back				Zpět
+end					Ukončit
+sumMarkUp			Přirážka, Kč
+sumDiscount			Sleva, Kč
+outlet_short		PM
+newPrice			Nová cena

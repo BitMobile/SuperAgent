@@ -10,7 +10,12 @@
 		</s:If>
 
 
-		<c:VerticalLayout>
+		<c:DockLayout>
+
+			<c:HorizontalLayout Id="backtnDone" CssClass="bottom_btn" OnEvent="Back" OnClickAction="$DoAction(CreateTask)">
+				<c:TextView Text="#add#" />
+			</c:HorizontalLayout>
+			<c:HorizontalLine CssClass="b_line" />
 
 			<s:If Test="$HasMenu()">
 				<c:DockLayout CssClass="top_navigator">
@@ -101,7 +106,7 @@
 
 			</c:ScrollView>
 
-		</c:VerticalLayout>
+		</c:DockLayout>
 
 	</c:SwipeHorizontalLayout>
 

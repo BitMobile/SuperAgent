@@ -179,6 +179,10 @@
 		<bp:Step Name="Task" Screen="Task.xml" Controller="Tasks\EditTask.js"></bp:Step>
 	</bp:Workflow>
 
+	<bp:Workflow Name="CreateTask">
+		<bp:Step Name="CreateTask" Screen="CreateTask.xml" Controller="Task\CreateTask.js"></bp:Step>
+	</bp:Workflow>
+
 	<bp:Workflow Name="Return" Controller="Order\Main.js">
 
 		<bp:Step Name="Return" Screen="Order\Order.xml">
@@ -241,7 +245,6 @@
 
 	<bp:Workflow Name="CreateOutlet">
 		<bp:Step Name="Create" Screen="Outlets\CreateOutlet.xml" Controller="Outlets\CreateOutlet.js">
-			<bp:Action Name="Open" NextWorkflow="OpenOutlet" />
 		</bp:Step>
 	</bp:Workflow>
 

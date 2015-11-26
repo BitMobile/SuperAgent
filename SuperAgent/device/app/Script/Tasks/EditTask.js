@@ -1,9 +1,4 @@
 
-// function OnLoad(){
-// 	var task = GlobalWorkflow.GetCurrentTask();
-// 	$.resultEdit.Editable = task.IsNew();
-// }
-
 function GetCurrentTask(){
 	return GlobalWorkflow.GetCurrentTask();
 }

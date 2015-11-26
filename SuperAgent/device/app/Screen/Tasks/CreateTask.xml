@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope" StyleSheet="Visit_Total.css">
+
+	<c:DockLayout>
+
+		<c:HorizontalLayout Id="btnDone" CssClass="bottom_btn" OnEvent="Back" OnClickAction="$CompleteTask()">
+			<c:TextView Text="#ready#" />
+		</c:HorizontalLayout>
+		<c:HorizontalLine CssClass="b_line" />
+
+		<c:HorizontalLayout CssClass="margin_top" />
+		<c:HorizontalLine />
+
+		<c:DockLayout CssClass="parameter_grid">
+			<c:TextView Text="#endPlanTime#"/>
+			<c:TextView Text="$FormatDate($task.EndPlanDate)" CssClass="value"/>
+		</c:DockLayout>
+		<c:HorizontalLine />
+
+	</c:DockLayout>
+
+</c:Screen>

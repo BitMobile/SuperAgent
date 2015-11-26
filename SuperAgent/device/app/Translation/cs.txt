@@ -253,6 +253,7 @@ showOnMap	Zobrazit na mapě
 schedule	Kalendář
 scheduled	je naplánováno
 sku	Zboží
+noLogout	Syncronization is required
 OrderSKUWillRevised	Objednávka byla přepočítána
 ReturnSKUWillRevised	Vrácení zboží bylo přepočítáno
 snapshot	Foto
@@ -325,3 +326,8 @@ sumMarkUp			Přirážka, Kč
 sumDiscount			Sleva, Kč
 outlet_short		PM
 newPrice			Nová cena
+OrderDiscount		Sleva na objednávku, %
+OrderMarkUp			Přirážka na objednávku, %
+ReturnDiscount		Sleva na vracení, %
+ReturnMarkUp		Přirážka na vracení, %
+orderDiscountReset		Sleva byla přepočítána

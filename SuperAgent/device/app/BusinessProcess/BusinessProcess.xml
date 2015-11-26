@@ -36,6 +36,7 @@
 
 		<bp:Step Name="Tasks" Screen="Visit\Tasks.xml" Controller="Tasks\Main.js">
 			<bp:Action Name="Select" NextWorkflow="Task" />
+			<bp:Action Name="CreateTask" NextWorkflow="CreateTask"></bp:Action>
 			<s:Include File="\Components\SideMenuActions.xml"/>
 		</bp:Step>
 
@@ -175,12 +176,15 @@
 
 	</bp:Workflow>
 
-	<bp:Workflow Name="Task">
+	<bp:Workflow Name="Task" Controller="Tasks\Main.js">
 		<bp:Step Name="Task" Screen="Task.xml" Controller="Tasks\EditTask.js"></bp:Step>
 	</bp:Workflow>
 
 	<bp:Workflow Name="CreateTask">
-		<bp:Step Name="CreateTask" Screen="CreateTask.xml" Controller="Task\CreateTask.js"></bp:Step>
+		<bp:Step Name="CreateTask" Screen="CreateTask.xml" Controller="Tasks\CreateTask.js">
+			<bp:Action Name="SelectOutlet" NextStep="SelectOutlet"></bp:Action>
+		</bp:Step>
+		<bp:Step Name="SelectOutlet" Screen="Outlets.xml" Controller="Tasks\SelectOutlet.js"></bp:Step>
 	</bp:Workflow>
 
 	<bp:Workflow Name="Return" Controller="Order\Main.js">

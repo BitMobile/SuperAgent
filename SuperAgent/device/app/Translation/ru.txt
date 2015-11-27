@@ -336,5 +336,5 @@ executed		выполнена
 startPlanTime	Плановая дата начала
 endPlanTime		Плановая дата завершения
 selectOutlet	Выберите торговую точку
-newTask 		Новая задача
+newTask			Новая задача
 executionDate	Фактическое выполнение

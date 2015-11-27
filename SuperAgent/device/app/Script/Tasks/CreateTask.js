@@ -89,3 +89,12 @@ function CompleteTask(){
 	else
 		DoCommit();
 }
+
+function RollbackTask(task){
+	if ($.workflow.name == 'Visit'){
+		DB.Delete(task);
+		DoBack();
+	}
+	else
+		DoRollback();
+}

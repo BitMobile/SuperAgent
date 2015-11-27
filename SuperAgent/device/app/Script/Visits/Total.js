@@ -138,8 +138,9 @@ function CountTasks(outlet) {
 	q.Text = "SELECT O.Description AS Outlet, DT.Id, DT.TextTask, DT.EndPlanDate " +
 		" FROM Document_Task DT " +
 		" JOIN Catalog_Outlet O ON DT.Outlet=O.Id " +
-		" WHERE DT.Status=0 " +
-		" AND DATE(DT.StartPlanDate)<=DATE('now', 'localtime') " + outlet +
+		" WHERE ((Status=0 AND DATE(StartPlanDate)<=DATE('now', 'localtime')) " +
+		" OR " +
+		" (Status=1 AND DATE(ExecutionDate)=DATE('now', 'localtime'))) " + outlet +
 		" ORDER BY DT.EndPlanDate, O.Description";
 
 	return q.ExecuteCount();

@@ -15,7 +15,7 @@
 			<c:HorizontalLine />
 
 			<c:HorizontalLayout Id="btnCancel" CssClass="bottom_btn">
-				<c:VerticalLayout OnEvent="Back" OnClickAction="$DoRollback()">
+				<c:VerticalLayout OnEvent="Back" OnClickAction="$RollbackTask($task)">
 					<c:TextView CssClass="left_tv" Text="#cancel#" />
 				</c:VerticalLayout>
 

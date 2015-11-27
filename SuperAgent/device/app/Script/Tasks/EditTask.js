@@ -26,8 +26,10 @@ function CompleteTheTask(task){
 }
 
 function CompleteTask(){
-	if ($.workflow.name == 'Visit')
+	if ($.workflow.name == 'Visit'){
+		GlobalWorkflow.SetCurrentTask(null);
 		DoBack();
+	}
 	else
 		DoCommit();
 }

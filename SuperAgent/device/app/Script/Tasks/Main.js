@@ -1,3 +1,8 @@
+function OnLoad(){
+	if ($.workflow.curentStep == "Total_Tasks")
+		$.btnForward.Text = "";
+}
+
 function GetOutlet(){
 	return GlobalWorkflow.GetOutlet();
 }
@@ -54,3 +59,13 @@ function AddGlobalAndAction(paramValue){
 	GlobalWorkflow.SetCurrentTask(paramValue);
 	Workflow.Action('Select', []);
 }
+
+function BackAction(){
+	if ($.workflow.curentStep == "Visit_Tasks")
+		DoBackTo("Outlet");
+	else if ($.workflow.curentStep == "Total_Tasks")
+		DoBackTo("Total");
+	else
+		DoBack();
+
+}//DoBackTo(Outlet)

@@ -174,7 +174,10 @@ function GetReceivablesSumm() {
 }
 
 function SetTasksSum(){
-	var q = new Query("SELECT COUNT(Id) FROM Document_Task");
+	var q = new Query("SELECT COUNT(Id) FROM Document_Task " +
+		"WHERE (Status=0 AND DATE(StartPlanDate)<=DATE('now', 'localtime')) " +
+		" OR " +
+		" (Status=1 AND DATE(ExecutionDate)=DATE('now', 'localtime')) ");
 	var cnt = q.ExecuteScalar();
 	tasksSum = cnt == null ? 0 : cnt;
 }

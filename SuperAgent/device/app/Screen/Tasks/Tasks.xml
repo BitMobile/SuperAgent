@@ -12,7 +12,7 @@
 
 		<c:DockLayout>
 
-			<c:HorizontalLayout Id="backtnDone" CssClass="bottom_btn" OnEvent="Back" OnClickAction="$DoAction(CreateTask)">
+			<c:HorizontalLayout Id="backtnDone" CssClass="bottom_btn" OnClickAction="$DoAction(CreateTask)">
 				<c:TextView Text="#add#" />
 			</c:HorizontalLayout>
 			<c:HorizontalLine CssClass="b_line" />
@@ -30,11 +30,11 @@
 			</s:If>
 			<s:Else>
 				<c:DockLayout CssClass="top_navigator">
-					<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoBackTo(Outlet)">
+					<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$BackAction()">
 						<c:Image />
 						<c:TextView Text="#back#" />
 					</c:DockLayout>
-					<c:DockLayout  OnEvent="Forward" CssClass="btn_forward" OnClickAction="$Workflow.DoForward()">
+					<c:DockLayout OnEvent="Forward" CssClass="btn_forward" OnClickAction="$Workflow.DoForward()">
 						<c:TextView Id="btnForward" Text="#forward#" />
 					</c:DockLayout>			
 					<c:HorizontalLayout>

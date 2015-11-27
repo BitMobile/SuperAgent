@@ -15,12 +15,12 @@
 			<c:HorizontalLine />
 
 			<c:HorizontalLayout Id="btnCancel" CssClass="bottom_btn">
-				<c:VerticalLayout OnEvent="Back" OnClickAction="$DoRollback()">
+				<c:VerticalLayout OnEvent="Back" OnClickAction="$RollbackTask($task)">
 					<c:TextView CssClass="left_tv" Text="#cancel#" />
 				</c:VerticalLayout>
 
 				<s:If Test="$NoRequired()">
-					<c:VerticalLayout Id="btnSave" OnClickAction="$DoCommit()">
+					<c:VerticalLayout Id="btnSave" OnClickAction="$CompleteTask()">
 						<c:TextView CssClass="right_tv" Text="#save#" />
 					</c:VerticalLayout>
 				</s:If>

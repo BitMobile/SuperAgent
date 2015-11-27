@@ -336,5 +336,5 @@ executed		executed
 startPlanTime	Start Plan date
 endPlanTime		End Plan date
 selectOutlet	Select outlet
-newTask 		New task
+newTask			New task
 executionDate	Fact execution

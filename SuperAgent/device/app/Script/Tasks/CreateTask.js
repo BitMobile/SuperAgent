@@ -19,6 +19,8 @@ function CreateNewTask(){
 	taskObj.CreatedAtMA = true;
 	taskObj.Responsible = $.common.UserRef;
 	taskObj.Status = false;
+	if ($.workflow.name=="Visit")
+		taskObj.Outlet = GlobalWorkflow.GetOutlet();
 	taskObj.Save();
 
 	task = taskObj.Id;
@@ -79,4 +81,11 @@ function SaveAndRefresh(sender){
 	taskObj.TextTask = sender.Text;
 	taskObj.Save();
 	Workflow.Refresh([]);
+}
+
+function CompleteTask(){
+	if ($.workflow.name == 'Visit')
+		DoBack();
+	else
+		DoCommit();
 }

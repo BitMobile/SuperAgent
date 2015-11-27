@@ -65,7 +65,7 @@ function OnWorkflowForward(name, lastStep, nextStep, parameters) {
 
 function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 
-	if (workflowName == "Visit" && nextStep != "Outlet" && nextStep != "Total")
+	if (workflowName == "Visit" && nextStep != "Outlet" && nextStep != "Total" && nextStep != "Total_Tasks")
 	{
 		var standart = AlternativeStep(nextStep);
 		if (!standart)
@@ -369,9 +369,15 @@ function PrepareScheduledVisits_Map() {
 }
 
 function GetTasksCount(outlet) {
-	var taskQuery = new Query("SELECT COUNT(Id) FROM Document_Task WHERE PlanDate >= date('now','start of day', 'localtime') AND Outlet=@outlet");
-	taskQuery.AddParameter("outlet", outlet);
-	return taskQuery.ExecuteScalar();
+	// var taskQuery = new Query("SELECT COUNT(Id) FROM Document_Task " +
+	// 	"WHERE (Status=0 AND DATE(StartPlanDate)<=DATE('now', 'localtime')) " +
+	// 	" OR " +
+	// 	" (Status=1 AND DATE(ExecutionDate)=DATE('now', 'localtime')) " +
+	// 	" AND Outlet=@outlet");
+	// taskQuery.AddParameter("outlet", outlet);
+	// return taskQuery.ExecuteScalar();
+	return parseInt(1);
+
 }
 
 

@@ -20,7 +20,7 @@
 				</c:VerticalLayout>
 
 				<s:If Test="$NoRequired()">
-					<c:VerticalLayout Id="btnSave" OnClickAction="$DoCommit()">
+					<c:VerticalLayout Id="btnSave" OnClickAction="$CompleteTask()">
 						<c:TextView CssClass="right_tv" Text="#save#" />
 					</c:VerticalLayout>
 				</s:If>

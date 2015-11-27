@@ -37,7 +37,7 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<s:If Test="$EditableTask($task)">
+			<s:If Test="$IsEditable($task)">
 
 				<c:HorizontalLayout CssClass="end_of_block" />
 				<c:HorizontalLine />
@@ -57,11 +57,20 @@
 				<c:HorizontalLine />
 
 			</s:If>
+			<s:Else>
+				<s:If Test="$task.Status==1">
+					<c:DockLayout CssClass="parameter_grid">
+						<c:TextView Text="#executionDate#"/>
+						<c:TextView Text="$FormatDate($task.ExecutionDate)" CssClass="value"/>
+					</c:DockLayout>
+					<c:HorizontalLine />
+				</s:If>
+			</s:Else>
 
 			<c:HorizontalLayout CssClass="memo_block">
 				<c:VerticalLayout>
 					<c:TextView Text="#commentary#" CssClass="description_row"></c:TextView>
-					<c:MemoEdit  Value="$task.Result" CssClass="main_row" Placeholder="—" Enabled="$EditableTask($task)"></c:MemoEdit>
+					<c:MemoEdit  Value="$task.Result" CssClass="main_row" Placeholder="—" Enabled="$IsEditable($task)"></c:MemoEdit>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

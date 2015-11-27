@@ -32,10 +32,10 @@ function CompleteTask(){
 		DoCommit();
 }
 
-function EditableTask(task){
+function IsEditable(task){
 	var q = new Query("SELECT IsDirty FROM Document_Task WHERE Id=@task");
 	q.AddParameter("task", task);
 	var isDirty = q.ExecuteScalar();
-	var c = !task.Status || parseInt(isDirty)==parseInt(1);
+	var c = (!task.Status || parseInt(isDirty)==parseInt(1)) && ($.sessionConst.editTasksWithoutVisit || $.workflow.name=="Visit");
 	return c;
 }

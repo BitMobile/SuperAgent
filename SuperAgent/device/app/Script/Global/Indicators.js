@@ -189,7 +189,6 @@ function SetTasksDone(){
 		" AND DATE(ExecutionDate)=DATE('now', 'localtime') ");
 	var cnt = q.ExecuteScalar();	
 	tasksDone = cnt == null ? 0 : cnt;
-	Console.WriteLine(tasksDone);
 }
 
 function GetTasksDone(){

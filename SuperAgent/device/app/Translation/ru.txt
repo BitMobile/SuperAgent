@@ -1,4 +1,4 @@
-﻿outlet_description	Наименование магазина
+﻿outlet_description	Наименование торговой точки
 forward		Далее
 back		Назад
 summary		Сводная информация
@@ -336,3 +336,4 @@ executed		выполнена
 startPlanTime	Плановая дата начала
 endPlanTime		Плановая дата завершения
 selectOutlet	Выберите торговую точку
+newTask 		Новая задача

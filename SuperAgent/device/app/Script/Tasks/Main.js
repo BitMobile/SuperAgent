@@ -22,6 +22,7 @@ function GetNotExecutedTasks() {
 		" FROM Document_Task DT " +
 		" JOIN Catalog_Outlet O ON DT.Outlet=O.Id " +
 		" WHERE DT.Status=0 " +
+		" AND DATE(DT.StartPlanDate)<=DATE('now', 'localtime') " +
 		" ORDER BY DT.EndPlanDate, O.Description");
 	return q.Execute();
 }

@@ -112,6 +112,13 @@ function SetSessionConstants() {
 				$.sessionConst.Add("newPriceEnabled", true);
 			}
 		}
+		if (rights.Code=='000000013') {
+			if (rights.AccessRight==null) {
+				$.sessionConst.Add("editTasksWithoutVisit", false);
+			} else {
+				$.sessionConst.Add("editTasksWithoutVisit", true);
+			}
+		}
 	}
 }
 

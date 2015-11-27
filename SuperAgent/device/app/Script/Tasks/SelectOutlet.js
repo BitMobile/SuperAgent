@@ -43,6 +43,7 @@ function GetOutlets(searchText) {
 	}
 
 	q.Text = "SELECT O.Id, O.Description, O.Address, 'main_row' AS Style, 3 AS OutletStatus " +
+		" FROM Catalog_Outlet O " +
 		search + " ORDER BY O.Description LIMIT 500";
 
 	return q.Execute();

@@ -1,0 +1,333 @@
+﻿todo	ToDo
+noDescriGiven	(žádný popis)
+overdueSum	[posplatnosti]
+phone_regexp	^(((8|\+7)[\- ]?)?(\(?\d{3,4}\)?[\- ]?)?[\d\- ]{5,10})?$
+email_regexp	^(([а-яА-ЯёЁa-zA-Z0-9_-]+\.)*[а-яА-ЯёЁa-zA-Z0-9_-]+@[а-яА-ЯёЁa-zA-Z0-9_-]+(\.[а-яА-ЯёЁa-zA-Z0-9_-]+)*\.[а-яА-ЯёЁa-zA-Z]{2,6})?$
+inn_regexp	^.*$
+kpp_regexp	^.*$
+enc_amount_regexp	^(\d{1,8}((\.|,)\d{1,2})?)?$
+info	O aplikaci
+accountsReceivables	výše pohledávek
+Active	Aktivní
+add	Přidat
+addFromGallery	Vybrat z nabídky
+skuInOrder	POLOŽKY OBJEDNÁVKY
+skuAdd	Nová položka
+additionally	DODATEČNÉ ÚDAJE
+address	Adresa
+allStocks	Všechny sklady
+alreadyOrdered	již byla přidána do objednávky
+alreadyReturned	již byla přidána do vrácení zboží
+amount	Celkem
+maximumAmount	Maximální částka
+amountOfOrdersForToday	výše objednávek za dnešek
+answer	Odpověď
+apply	Použit
+at	v
+available	Dostupné
+back	Zpět
+baseUnit	Základní MJ
+bitMobile	BIT.MOBILE
+bitmobileDesc	Vyvíjíme mobilní řešení pro byznys
+brand	Značka
+brands	Značky
+currency	Kč
+cancel	Zrušit
+cancel	Zrušit
+clear_coord	Odstranit
+clearFilter	Zrušit filtr?
+clearValue	Odstranit
+clickToInsert	Pro uvedení data kliknete sem
+client	Klient
+clients	Klienti
+Closed	Vyřízená
+commentary	Poznámky
+completedVisits	PROVEDENÉ NÁVŠTĚVY
+contact	Kontakt
+contactName	Jméno
+owner	Vlastník kontaktu
+emptyContactOwner	U kontaktu není uvedena firma
+contacts	Kontakty
+contractor	Dodavatel
+contractors	Dodavatelé
+coordinates	Poloha
+coordinatesAreSet	Poloha byla nastavena
+noCoordinates	Poloha není nastavena
+copy	Kopírovat
+countPrice	Přepočítat ceny
+newOrder	Vytvořit novou objednávku
+newOutlet	Přidat nové prodejní místo
+current	Aktuální
+date	Datum
+debt	Pohledávky
+delete	Odstranit
+deleteImage	Odstranit obrázek?
+deleteItem	Odstranit tento řádek
+deliveryDate	Datum dodání
+description	Název
+description	Název
+skuDetail	Detail
+details	Fakturační údaje
+developer	VÝROBCE
+discard	Zrušit
+discount	Sleva
+distribution	Distribuce
+distributor	Distributor
+distributor	Distributor
+document	Dokument
+docNumber	Číslo dokumentu
+documentSum	Částka
+byDocs	DOKUMENTY
+done	Uložit
+ready	Uložit
+edit	Upravit
+editChange	Upravit
+editSKU	Upravit
+email	E-mail
+encashment	Úhrada pohledávky
+encashmentAmount	Zaplacená částka
+programmingCollectionForToday	výše plateb v hotovosti za dnešek
+encashmentSum	Uhrazené pohledávky
+enterDateTime	Uveďte datum a čas
+error	Chyba
+errorMessage	Chybová zpráva
+execute	Vyřídit 
+executedtask	VYŘÍZENÉ ÚKOLY
+facing	Facing
+false	Ne
+features	VLASTNOSTI
+couldnt_be_cleaned	Hodnotu pole nelze zrušit
+empty_field	Hodnotu pole nelze zrušit
+filter	Filtr
+further	dalších
+groups	Skupiny
+hideImage	Skryt foto
+choose_action	Zvolte akci:
+imageNotAvailable	Obrázek není dostupný
+impossibleToCreateVisit	Nelze vytvořit plánovanou návštěvu pokud není zjištěna poloha. Provést zjištění polohy?
+impossibleToDelete	Nelze odstranit, objednávka již byla uložena na serveru
+impossibleToEdit	Nelze změnit, objednávka již byla uložena na serveru
+incompletedVisits	NEPROVEDENÉ NÁVŠTĚVY
+incorrect	Chyba
+information	Informace
+inn	DIČ
+typeanswer	Uveďte hodnoty..
+insert_text	Uveďte text..
+insert_answer	UVEĎTE HODNOTU..
+IP	IP
+isntSelected	Nevybrán
+kpi	KPI
+kpp	IČ
+lastSync	Poslední synchronizace
+legal_address	Fakturační adresa
+legal_name	Obchodní jméno 
+list	Evidence
+emptyList	Prázdný seznam
+skuList	POLOŽKY
+locationSetFailed	Polohu nelze načíst
+logo	logoCz
+logout	Odhlášení
+logoutConfirm	Odhlášení
+main	ZÁKLADNÍ
+mainData	ZÁKLADNÍ
+mainInfo	ZÁKLADNÍ ÚDAJE
+reshot	Pořídit jiné foto
+makeSnapshot	Pořídit foto
+map	Mapa
+markUp	Přirážka 
+markUp	Přirážka 
+notAvailableShort	N/A
+nameSurname	Jméno, příjmení
+new	Nový
+newClient	Nový klient
+newContact	Nový kontakt
+newTasks	ČEKAJÍCÍ ÚKOLY
+newVisit	Nová návštěva
+forward	Dále
+nextVisitDate	Datum příští návštěvy
+NKO	NKO
+NO	Ne
+no_contacts	ŽÁDNÉ KONTAKTY
+noContractors	Žádní dodavatelé
+noImage	Nebyl nalezen žádný obrázek
+NoLimit	Neomezeno
+noNumber	Žádné číslo
+noOrder	"Pole ""Důvod k nepřijetí objednávky"" musí být vyplněno"
+noPriceLists	Žádné ceníky
+no_questions	Žádné dotazy
+no_questions_list	ŽÁDNÉ DOTAZY
+noSnapshot	Žádné foto
+no_tasks	Žádné úkoly
+no_visitPlans	Žádné návštěvy k zobrazení
+nonregular	Nepravidelné
+noteAsExecuted	VYŘÍZENO
+noteAsNew	NEVYŘÍZENO
+OAO	a.s.
+of	z 
+Ok	OK
+OOO	s.r.o.
+OP	OP
+order	Objednávka
+orderSum	Výše objednávky
+orderHistory	HISTORIE OBJEDNÁVKY
+orderInfo	PŘEHLED OBJEDNÁVKY
+orderInfoSmall	Info o objednávce
+orderParameters	PARAMETRY OBJEDNÁVKY:
+orders	Objednávky
+outOfStock	Není skladem
+outlet	Prodejní místo
+outletContacts	KONTAKTY PARTNERA
+outlet_class	Třída prodejního místa
+outletClass	Třída prodejního místa
+outlet_description	Název prodejního místa
+outletSnapshots	Foto prodejního místa
+outlet_type	Typ prodejního místa
+outletType	Typ prodejního místa
+outlets	Prodejní místa
+overdue	Po splatnosti:
+selectOwner	Vlastník nevybrán
+ownership	Právní forma
+packUnit	Kusů v balení
+parameter	Parametr
+parameters	Parametry
+OrderskuWillBeDeleted	Některé položky budou odstraněny. Pokračovat?
+ReturnskuWillBeDeleted	Některé položky budou odstraněny. Pokračovat?
+partner	Partner
+partnerContacts	KONTAKTY PARTNERA
+password	Heslo
+pcs	ks.
+vpPerformed	bylo provedeno
+phone	Telefon
+plandate	Termín
+planned	naplánovaných
+planVisit	Naplánované
+position	Funkce
+Potential	Potencionální
+price	Cena
+price	Cena
+priceList	Ceník
+price2	Cena:
+quantity	Množství
+questAnswers	Dotazník
+questions	Dotazy
+reasonForEmptyOrder	Důvod k nepřijetí objednávky
+fillNoOrderReason	Důvod k nepřijetí objednávky musí být vyplněn.
+fillInVisitReason	Důvod návštěvy musí být vyplněn
+receivable	Pohledávky
+receivableAmount	VÝŠE POHLEDÁVEK
+receivables	Pohledávky
+recommended	doporučeno
+refresh	Aktualizovat
+refreshScreen	Aktualizovat
+regular	Pravidelné
+repeat	Zopakovat
+requiredLeft	Zbylo povinných dotazů:
+requiredFieldsLeft	Zbylo povinných polí
+result	Výsledek
+retrieve	Vrátit
+setVisitCoordinates	Provést znovu nastavení polohy?
+return	Vrácení zboží
+returnHistory	HISTORIE VRÁCENÍ ZBOŽÍ
+returnInfo	PŘEHLED VRÁCENÍ ZBOŽÍ
+returnParameters	PARAMETRY VRÁCENÍ ZBOŽÍ
+returnSum	Vrácená částka
+skuInReturn	VRÁCENÉ POLOŽKY
+returns	Vrácení zboží
+save	Uložit
+saveChanges	Uložit změny?
+search	Hledat
+selectUnit	Zvolte MJ:
+select_answer	ZVOLTE HODNOTU..
+select_answer_low	Zvolte hodnotu..
+send	Odeslat log
+sending	Odesílání..
+set	Nastavit
+setCoords	Nastavit polohu
+setDate	Nastavit datum
+setCoordinates	Nastavit polohu prodejního místa dle aktuální polohy?
+location	Nastavit polohu prodejního místa
+settings	Nastavení 
+show	Zobrazit foto
+showImage	Zobrazit foto
+showOnMap	Zobrazit na mapě
+schedule	Kalendář
+scheduled	je naplánováno
+sku	Zboží
+noLogout	Syncronization is required
+OrderSKUWillRevised	Objednávka byla přepočítána
+ReturnSKUWillRevised	Vrácení zboží bylo přepočítáno
+snapshot	Foto
+snapshot	Foto
+snapshotAttached	Foto bylo přidáno
+notAvailable	Foto není dostupné
+spread	Rozdělit
+spreadOnDocuments	Rozdělit mezi dokumenty
+startTime	Začátek
+stock	Skladem
+stock	Skladem
+stockPlace	Sklad
+sum	Výše
+caps_summary	PŘEHLED
+summary	Přehled
+sync	Synchronizace
+syncPhoto	Synchronizovat foto
+Synchronization_has_not_been_performed	Synchronizace nebyla provedena
+synchronizationData	SYNCHRONIZACE DAT
+synchronizationPhoto	SYNCHRONIZACE FOTO
+synchronize	Synchronizovat
+target	Cíl
+targets	Cíle
+task	Úkol
+tasks	Úkoly
+todoDone	Počet vyřízených úkolů
+messageNulls	Všechna pole musí být vyplněna
+noContractorsMessage	Toto prodejní místo nemá žádné dodavatele
+totalamount	Celkem
+total_receivable	Celkem:
+true	Ano
+TSJ	Území
+turnaroundTime	Termín
+unit	MJ
+unknown	Žádná data
+unplanned	Neplánované
+vpUnplanned	neplánovaných
+username	Jméno uživatele
+valueList	Nabídka hodnot
+visit	Návštěva
+visitdate	Datum návštěvy
+visitReason	Důvod návštěvy
+visitReason	"Pole ""Důvod návštěvy"" musí být vyplněno"
+visitTotal	celkem
+visits	Návštěvy
+vpVisits	návštěv
+web_site	Web
+logoutQuery	Po odhlášení všechna data budou odstraněna
+YES	Ano
+ZAO	ZAO
+version	Verze
+success	Data byla úspěšně odeslána
+others	Další aplikace
+returnInfoSmall	Informace k vrácení zboží
+agreement	Používáním aplikace souhlasíte s podmínkami licenčních ujednání.
+firstBIT	První BIT - spolehlivý dodavatel softwarů pro vaš byznys.
+about	O APLIKACI
+idea	Navrhněte nám svůj nápad
+icons	Aplikace používá ikony Icons8. Web icons8.com
+noSuccess	Během odesílání došlo k chybě. Data nebyla odeslána
+webSite	Web
+status	Stav
+superDescription	BIT.MOBILE - mobilní aplikace na řízení objednávek, dotazování a merchandising, řízení personálu.
+support	Podpora
+outlet_territory	Territory
+visit_end_question		Po uložení souboru editace není povolena
+go_back				Zpět
+end					Ukončit
+sumMarkUp			Přirážka, Kč
+sumDiscount			Sleva, Kč
+outlet_short		PM
+newPrice			Nová cena
+OrderDiscount		Sleva na objednávku, %
+OrderMarkUp			Přirážka na objednávku, %
+ReturnDiscount		Sleva na vracení, %
+ReturnMarkUp		Přirážka na vracení, %
+orderDiscountReset		Sleva byla přepočítána

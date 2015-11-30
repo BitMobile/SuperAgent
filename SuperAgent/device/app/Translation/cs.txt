@@ -331,3 +331,10 @@ OrderMarkUp			Přirážka na objednávku, %
 ReturnDiscount		Sleva na vracení, %
 ReturnMarkUp		Přirážka na vracení, %
 orderDiscountReset		Sleva byla přepočítána
+endPlanTime			
+executed
+executionDate
+newTask
+selectOutlet
+startPlanTime
+untill

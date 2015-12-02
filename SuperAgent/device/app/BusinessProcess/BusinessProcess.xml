@@ -40,6 +40,10 @@
 			<s:Include File="\Components\SideMenuActions.xml"/>
 		</bp:Step>
 
+		<bp:Step Name="KPI" Screen="KPI\KPI.xml" Controller="KPI\Main.js">
+			<s:Include File="\Components\SideMenuActions.xml"/>
+		</bp:Step>
+
 		<bp:Step Name="Sync" Screen="Sync\Sync.xml" Controller="Sync\Main.js">
 			<s:Include File="\Components\SideMenuActions.xml"/>
 		</bp:Step>

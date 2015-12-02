@@ -6,6 +6,7 @@
 	<bp:Action Name="Tasks" NextStep="Tasks"></bp:Action>
 	<bp:Action Name="Orders" NextStep="OrderList"></bp:Action>
 	<bp:Action Name="Returns" NextStep="ReturnList"></bp:Action>			
+	<bp:Action Name="KPI" NextStep="KPI"></bp:Action>			
 	<bp:Action Name="Sync" NextStep="Sync" />
 	<bp:Action Name="About" NextStep="About" />
 

@@ -8,6 +8,7 @@ function GetItemsStyles(){
 	styles.Add("Tasks", IsCurrent("Tasks"));
 	styles.Add("Orders", IsCurrent("Orders"));
 	styles.Add("Returns", IsCurrent("Returns"));
+	styles.Add("KPI", IsCurrent("KPI"));
 	styles.Add("Sync", IsCurrent("Sync"));
 	styles.Add("About", IsCurrent("About"));
 

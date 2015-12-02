@@ -115,7 +115,7 @@ insert_answer	ВВЕДИТЕ ЗНАЧЕНИЕ..
 insert_text	Введите текст..			
 IP				ИП
 isntSelected	Не выбран			
-kpi			Отчеты/KPI	
+kpi			KPI	
 kpp			КПП	
 kpp_regexp		^(\d{9}|)?$		
 lastSync	Последняя синхронизация			

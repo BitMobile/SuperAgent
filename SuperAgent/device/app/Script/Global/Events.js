@@ -60,10 +60,6 @@ function OnWorkflowStart(name) {
 
 function OnWorkflowForward(name, lastStep, nextStep, parameters) {
 
-	if ($.workflow.HasValue("curentStep"))
-		$.workflow.Remove("curentStep");
-	$.workflow.Add("curentStep", nextStep);
-
 	if (name = "Visit" && lastStep == "Outlet")
 		GPS.StopTracking();
 }
@@ -89,6 +85,10 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 	}
 
 	WriteScreenName(nextStep);
+
+	if ($.workflow.HasValue("curentStep"))
+		$.workflow.Remove("curentStep");
+	$.workflow.Add("curentStep", nextStep);
 
 	return true;
 }

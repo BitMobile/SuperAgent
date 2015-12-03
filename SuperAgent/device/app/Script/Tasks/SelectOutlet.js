@@ -4,7 +4,7 @@ var back;
 
 function OnLoading() {
 	title = Translate["#selectOutlet#"];
-	back = Translate["#back"];
+	back = Translate["#back#"];
 }
 
 function OnLoad(){

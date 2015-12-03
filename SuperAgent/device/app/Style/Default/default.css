@@ -592,13 +592,14 @@ MemoEdit {
 .parameter_grid {
 	width: 100%;
 	height: 6.7mm;
+	padding-left: 2.7mm;
+	padding-right: 2.7mm;
 	dock-align: top;
 }
 
 .parameter_grid TextView {
 	width: 50% auto;
 	height: 100%;
-	margin-left: 2.7mm;
 	padding-top: 30%;
 	color: #2d89cf;
 	dock-align: left;
@@ -608,8 +609,8 @@ MemoEdit {
 .parameter_grid img {
 	height: 1.9mm;
 	width: 1.3mm;
-	margin-right: 2.4mm;
 	margin-top: 35%;
+	margin-left: 1mm;
 	background-image: url(arrow.png);
 	dock-align: right;
 }
@@ -703,7 +704,6 @@ MemoEdit {
 	width: 35%;
 	height: 100%;
 	white-space: nowrap;
-	margin-right: 2.4mm;
 	font: 28% Arial;
 	color: #8e8e93;
 	dock-align: right;

@@ -33,11 +33,13 @@ function SetSideStyles(){
 
 	var taskRef = task.GetObject();
 
-	requiredLeft = parseInt(0);
+	requiredLeft = parseInt(0);	
+
 	sideStyle.Add("startPlanDate", ClassValue(taskRef.StartPlanDate));
 	sideStyle.Add("endPlanDate", ClassValue(taskRef.EndPlanDate));
 	sideStyle.Add("outlet", ClassValue(taskRef.Outlet));
 	sideStyle.Add("textTask", ClassValue(taskRef.TextTask));
+
 	return sideStyle;
 }
 
@@ -71,9 +73,33 @@ function SelectDateTime(sender, attr, title){
 	Dialogs.ChooseDateTime(task, attr, sender, CallBack, title);
 }
 
-function CallBack(state, args){
-	AssignDialogValue(state, args);
-	Workflow.Refresh([]);
+function CallBack(state, args){ //call back for dates only
+
+	var task = state[0];
+	var attr = state[1];
+
+	var ranged;
+
+	if (attr == "StartPlanDate" && !String.IsNullOrEmpty(task.EndPlanDate)){
+		ranged = Date(task.EndPlanDate).Date >= Date(args.Result).Date;
+	}
+	else if (attr == "EndPlanDate" && !String.IsNullOrEmpty(task.StartPlanDate)){
+		ranged = Date(task.StartPlanDate).Date <= Date(args.Result).Date;
+	}
+	else
+		ranged = true;
+
+
+	if (ranged){
+		if (attr == "StartPlanDate" && Date(args.Result).Date < Date(DateTime.Now).Date)
+			Dialog.Message("Invalid value");
+		else
+			AssignDialogValue(state, args);
+			Workflow.Refresh([]);
+	}
+	else
+		Dialog.Message("cannot be less ...");
+
 }
 
 function SaveAndRefresh(sender){

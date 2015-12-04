@@ -330,6 +330,7 @@ visitdate		Дата визита
 visitReason	Причина визита			
 visitReasonMessage		Поле "Причина визита" должно быть заполнено		
 visits		Визиты		
+visitsKPI	Выполнение плановых визитов
 visitTotal	Итоги визита			
 vpPerformed	выполнено			
 vpUnplanned	внеплановых			

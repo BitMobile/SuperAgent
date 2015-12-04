@@ -330,6 +330,7 @@ OrderDiscount		Sleva na objednávku, %
 OrderMarkUp			Přirážka na objednávku, %
 ReturnDiscount		Sleva na vracení, %
 ReturnMarkUp		Přirážka na vracení, %
+visitsKPI			XXXX
 orderDiscountReset		Sleva byla přepočítána
 endPlanTime			
 executed

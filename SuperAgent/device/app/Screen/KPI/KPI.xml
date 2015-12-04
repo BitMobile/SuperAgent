@@ -26,7 +26,7 @@
 						<c:DockLayout CssClass="grid">
 							<c:VerticalLayout>
 								<c:TextView Text="{$PlanVisitsKPI()} %" CssClass="main_row"></c:TextView>
-								<c:TextView Text="посещение ТТ" CssClass="description_row" />
+								<c:TextView Text="#visitsKPI#" CssClass="description_row" />
 							</c:VerticalLayout>
 						</c:DockLayout>
 					</c:DockLayout>				

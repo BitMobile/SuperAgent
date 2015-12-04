@@ -329,7 +329,8 @@ visit_end_question	After visit ends you will not be allowed to edit it
 visitdate		Visit date		
 visitReason	Visit reason			
 visitReason		Visit reason field should be filled		
-visits		Visits		
+visits		Visits	
+visitsKPI	Plan visits	KPI
 visitTotal	Visit total			
 vpPerformed	performed			
 vpUnplanned	unplanned			

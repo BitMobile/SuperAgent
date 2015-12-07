@@ -34,7 +34,7 @@
 		<c:DockLayout Id="Tasks" CssClass="{$styles.Tasks}" OnClickAction="$SwitchScreen(Tasks)">
 			<c:TextView CssClass="menu_text" Text="{$GetTasksDone()} | {$GetTasksSum()}" />
 			<c:HorizontalLayout>
-				<c:Image CssClass="btn_stocks" />
+				<c:Image CssClass="btn_todo" />
 				<c:TextView Text="#tasks#" />
 			</c:HorizontalLayout>
 		</c:DockLayout>

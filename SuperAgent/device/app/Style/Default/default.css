@@ -361,7 +361,6 @@ MemoEdit {
 
 .margin_top {
 	height: 3.3mm;
-	selected-color: #bacdce;
 	background-color: #efeff4;
 	dock-align: top;
 }
@@ -621,6 +620,7 @@ MemoEdit {
 	height: 100%;
 	color: #2d89cf;
 	padding-top: 30%;
+	margin-left: 2.7mm;
 	dock-align: left;
 	font: 37% arial;
 	placeholder-color: #2d89cf;
@@ -927,16 +927,8 @@ MemoEdit {
 	background-image: url(Menu_04.png);
 }
 
-.btn_stocks {
-	background-image: url(Menu_05.png);
-}
-
 .btn_kpi {
 	background-image: url(Menu_06.png);
-}
-
-.btn_set {
-	background-image: url(Menu_07.png);
 }
 
 .btn_sync {
@@ -949,6 +941,10 @@ MemoEdit {
 
 .btn_logout {
 	background-image: url(Menu_10.png);
+}
+
+.btn_todo {
+	background-image: url(Menu_12.png);
 }
 
 .no_contacts {

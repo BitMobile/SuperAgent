@@ -105,7 +105,7 @@
 			<bp:Action Name="ShowImage" NextStep="Image" />
 		</bp:Step>
 
-		<bp:Step Name="Order" Screen="Order\Order.xml" Controller="Order\Main.js">
+		<bp:Step Name="Order" Screen="Order\Order.xml" Controller="Order\Order.js">
 			<bp:Action Name="Add" NextStep="AddSKU"></bp:Action>
 			<bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
 			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
@@ -114,7 +114,7 @@
 			<bp:Action Name="SkipEncashment" NextStep="Total"/>
 		</bp:Step>
 
-		<bp:Step Name="Return" Screen="Order\Order.xml" Controller="Order\Main.js">
+		<bp:Step Name="Return" Screen="Order\Order.xml" Controller="Order\Order.js">
 			<bp:Action Name="Add" NextStep="AddSKU"></bp:Action>
 			<bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
 			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
@@ -147,7 +147,7 @@
 			<bp:Action Name="Forward" NextStep="SKUs"></bp:Action>
 		</bp:Step>
 
-		<bp:Step Name="OrderInfo" Screen="Order_Info.xml" Controller="Order\Main.js">
+		<bp:Step Name="OrderInfo" Screen="Order_Info.xml" Controller="Order\Order_Info.js">
 		</bp:Step>
 
 		<bp:Step Name="AddSKU" Screen="Order\Order_SKUs.xml" Controller="Order\Order_SKUs.js">
@@ -202,15 +202,15 @@
 		<bp:Step Name="SelectOutlet" Screen="Outlets.xml" Controller="Tasks\SelectOutlet.js"></bp:Step>
 	</bp:Workflow>
 
-	<bp:Workflow Name="Return" Controller="Order\Main.js">
+	<bp:Workflow Name="Return" Controller="Order\Order.js">
 
-		<bp:Step Name="Return" Screen="Order\Order.xml">
+		<bp:Step Name="Return" Screen="Order\Order.xml" Controller="Order\Order.js">
 			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
 			<bp:Action Name="Add" NextStep="AddSKU"></bp:Action>
 			<bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
 		</bp:Step>
 
-		<bp:Step Name="OrderInfo" Screen="Order_Info.xml" Controller="Order\Main.js">
+		<bp:Step Name="OrderInfo" Screen="Order_Info.xml" Controller="Order\Order_Info.js">
 		</bp:Step>
 
 		<bp:Step Name="AddSKU" Screen="Order_SKUs.xml" Controller="Order\Order_SKUs.js">
@@ -234,7 +234,7 @@
 
 	<bp:Workflow Name="Order">
 
-		<bp:Step Name="Order" Screen="Order.xml" Controller="Order\Main.js">
+		<bp:Step Name="Order" Screen="Order.xml" Controller="Order\Order.js">
 			<bp:Action Name="Add" NextStep="AddSKU"></bp:Action>
 			<bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
 			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
@@ -255,7 +255,7 @@
 			<bp:Action Name="ShowImage" NextStep="Image" />
 		</bp:Step>
 
-		<bp:Step Name="OrderInfo" Screen="Order_Info.xml" Controller="Order\Main.js">
+		<bp:Step Name="OrderInfo" Screen="Order_Info.xml" Controller="Order\Order_Info.js">
 		</bp:Step>
 
 		<bp:Step Name="Image" Screen="Image.xml" Controller="Outlets\Image.js"></bp:Step>

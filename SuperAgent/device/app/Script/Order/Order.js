@@ -35,9 +35,10 @@ function OnLoad(){
 		if (parseInt(itemsQty) == parseInt(0)){
 
 			var q = new Query(" SELECT S.SKU, S.Unit, S.BaseUnitQty, P.Price, " +
-				" CASE WHEN Q.Answer IS NULL THEN S.Qty ELSE (S.BaseUnitQty - Q.Answer) END AS Qty, " +
-				" CASE WHEN Q.Answer IS NULL THEN U.Id ELSE UB.Id END AS UnitId, " +
-				" CASE WHEN Q.Answer IS NULL THEN U.Description ELSE UB.Description END AS RecUnit " +
+				" CASE WHEN Q.Answer IS NULL THEN (CASE WHEN VA.VisitAnswer IS NULL THEN S.Qty ELSE (S.BaseUnitQty - VA.VisitAnswer) END) ELSE (S.BaseUnitQty - Q.Answer) END AS Qty, " +
+				" CASE WHEN (Q.Answer IS NULL AND VA.VisitAnswer IS NULL) THEN U.Id ELSE UB.Id END AS UnitId, " +
+				" CASE WHEN (Q.Answer IS NULL AND VA.VisitAnswer IS NULL) THEN U.Description ELSE UB.Description END AS RecUnit " +
+				
  				" FROM Catalog_AssortmentMatrix_Outlets AO " + 
  				" JOIN Catalog_AssortmentMatrix_SKUs S ON AO.Ref=S.Ref " +
  				" JOIN Document_PriceList_Prices P ON P.SKU=S.SKU AND P.Ref=@priceList " +
@@ -46,6 +47,11 @@ function OnLoad(){
  				" LEFT JOIN Catalog_UnitsOfMeasure U ON S.Unit=U.Id " +
  				" LEFT JOIN USR_SKUQuestions Q ON Q.SKU=S.SKU AND Q.Question IN (SELECT Id FROM Catalog_Question CQ WHERE CQ.Assignment=@assignment " +
  				" LIMIT 1) " +
+				" LEFT JOIN " +
+					" (SELECT VS.Answer AS VisitAnswer, MAX(V.Date), VS.SKU AS VisitSKU, V.Outlet AS VisitOutlet " +
+					" FROM Document_Visit_SKUs VS " +
+					" JOIN Document_Visit V ON VS.Ref=V.Id " +
+					" GROUP BY VS.Answer, VS.SKU, V.Outlet) VA ON CS.Id=VA.VisitSKU AND AO.Outlet=VA.VisitOutlet " +
 				" WHERE AO.Outlet=@outlet ");
 			q.AddParameter("outlet", GlobalWorkflow.GetOutlet());
 			q.AddParameter("priceList", $.workflow.order.PriceList);

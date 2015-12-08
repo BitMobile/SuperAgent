@@ -107,6 +107,11 @@ function OnWorkflowFinish(name, reason) {
 		Global.ClearFilter();
 		GlobalWorkflow.SetMassDiscount(null);
 	}
+
+	if (name=="Visit")
+	{
+		ClearUSRTables();
+	}
 }
 
 function OnWorkflowFinished(name, reason){
@@ -709,4 +714,15 @@ function DeleteFromList(item, collection) {
             list.Add(i);
     }
     return list;
+}
+
+function ClearUSRTables(){
+	var q = new Query("DELETE FROM USR_Questionnaires");
+	q.Execute();
+
+	var q = new Query("DELETE FROM USR_Questions");
+	q.Execute();
+	
+	var q = new Query("DELETE FROM USR_SKUQuestions");
+	q.Execute();
 }

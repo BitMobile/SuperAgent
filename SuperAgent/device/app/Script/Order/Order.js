@@ -32,7 +32,7 @@ function OnLoad(){
 
 	if ($.workflow.currentDoc=="Order"){
 
-		if (parseInt(itemsQty) == parseInt(0)){
+		if (parseInt(itemsQty) == parseInt(0) && $.sessionConst.UseAutoFillForRecOrder){
 
 			Dialog.Ask(Translate["#autoFillOrder#"], AutoFill);			
 

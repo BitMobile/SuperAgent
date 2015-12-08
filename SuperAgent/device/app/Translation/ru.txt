@@ -15,6 +15,7 @@ answer		Ответ
 apply		Применить		
 at	в			
 available	Доступность			
+autoFillOrder	Заполнить заказ автоматически?
 back		Назад		
 baseUnit	Баз. единица изм.			
 bitMobile	БИТ.МОБАЙЛ			

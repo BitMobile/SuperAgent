@@ -15,6 +15,7 @@ answer		Answer
 apply		Apply		
 at	at			
 available	Available			
+autoFillOrder	Fill in the order automatically?
 back		Back		
 baseUnit	Base unit			
 bitMobile	BIT.MOBILE			

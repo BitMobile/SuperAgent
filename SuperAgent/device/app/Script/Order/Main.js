@@ -1,37 +1,17 @@
-﻿var itemsQty;
-var listTitle;
-var mainTitle;
-var infoTitle;
-var sumTitle;
-var skuTitle;
-var infoTitleSmall;
+﻿var listTitle;
 var back;
-var c_parameterDescription;
-var c_docParams;
+var no_docs;
 
 function OnLoading(){
 
-	if ($.workflow.step=='OrderList')
+	if ($.workflow.step=='OrderList'){
 		listTitle = Translate["#orders#"];
-	else
-		listTitle = Translate["#returns#"];
-
-	if ($.workflow.currentDoc=='Order'){
-		mainTitle = Translate["#order#"];
-		infoTitle = Translate["#orderInfo#"];
-		sumTitle = Translate["#orderSum#"];
-		skuTitle = Translate["#skuInOrder#"];
-		infoTitleSmall = Translate["#orderInfoSmall#"];
-		c_docParams = Translate["#orderParameters#"];
+		no_docs = Translate["#no_orders#"];
 	}
 	else{
-		mainTitle = Translate["#return#"];
-		infoTitle = Translate["#returnInfo#"];
-		sumTitle = Translate["#returnSum#"];
-		skuTitle = Translate["#skuInReturn#"];
-		infoTitleSmall = Translate["#returnInfoSmall#"];
-		c_docParams = Translate["#returnParameters#"];
-	}
+		listTitle = Translate["#returns#"];
+		no_docs = Translate["#no_returns#"];
+	}	
 
 	var menuItem = GlobalWorkflow.GetMenuItem();
 	back = (menuItem == "Orders" || menuItem == "Returns" ? Translate["#clients#"] : Translate["#back#"]);
@@ -40,6 +20,25 @@ function OnLoading(){
 
 
 //---------------------------UI calls----------------
+
+function NoOrders(){	
+
+	if ($.workflow.step=='OrderList') {
+		var q = new Query("SELECT COUNT(DO.Id) " +
+			" FROM Document_Order DO ");		
+	}
+	else{
+		var q = new Query("SELECT COUNT(DO.Id) " +
+			" FROM Document_Return DO ");
+	}
+
+	var c = q.ExecuteScalar();
+
+	if (parseInt(c) == parseInt(0))
+		return true;
+	else
+		return false;
+}
 
 function GetItems() {
 

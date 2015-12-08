@@ -28,6 +28,41 @@ function OnLoading(){
 
 }
 
+function OnLoad(){
+
+	if ($.workflow.currentDoc=="Order"){
+
+		if (parseInt(itemsQty) == parseInt(0)){
+
+			var q = new Query("SELECT S.SKU, S.Qty, S.Unit, S.BaseUnitQty, P.Price " +
+				" FROM Catalog_AssortmentMatrix_Outlets AO " +
+				" JOIN Catalog_AssortmentMatrix_SKUs S ON AO.Ref=S.Ref " +
+				" JOIN Document_PriceList_Prices P ON P.SKU=S.SKU AND P.Ref=@priceList " +
+				" WHERE AO.Outlet=@outlet");
+			q.AddParameter("outlet", GlobalWorkflow.GetOutlet());
+			q.AddParameter("priceList", $.workflow.order.PriceList);
+
+			var skus  = q.Execute();
+			
+			OrderItem.ClearItem();
+			while (skus.Next()){
+				var args = new Dictionary;
+				args.Add("basePrice", skus.Price);
+				args.Add("Ref", $.workflow.order);
+				args.Add("SKU", skus.SKU);
+				args.Add("Units", skus.Unit);
+				args.Add("recOrder", skus.Qty);
+
+				OrderItem.InitItem(args);
+				OrderItem.ClearItem();
+			}
+
+			DoRefresh(); 
+
+		}
+	}
+}
+
 
 //-------------------------start screen------------------
 
@@ -67,6 +102,7 @@ function GetOrderedSKUs(order) {
 	query.AddParameter("Ref", order);
 	var r = query.Execute();
 	itemsQty = query.ExecuteCount();
+	$.skuTitleTV.Text = skuTitle +" (" + itemsQty + "):";
 	return r;
 }
 

@@ -15,6 +15,7 @@ answer		Ответ
 apply		Применить		
 at	в			
 available	Доступность			
+autoFillOrder	Заполнить заказ автоматически?
 back		Назад		
 baseUnit	Баз. единица изм.			
 bitMobile	БИТ.МОБАЙЛ			
@@ -152,7 +153,9 @@ NKO				НКО
 NO		Нет		
 no_contacts	НЕТ КОНТАКТОВ			
 no_questions	Вопросов нет			
-no_questions_list	НЕТ ВОПРОСОВ			
+no_questions_list	НЕТ ВОПРОСОВ	
+no_orders		НЕТ ЗАКАЗОВ
+no_returns		НЕТ ВОЗВРАТОВ
 no_tasks	Задач нет			
 no_visitPlans		Нет визитов для отображения		
 noContractors	Нет контрагентов			

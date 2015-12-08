@@ -15,6 +15,7 @@ answer		Answer
 apply		Apply		
 at	at			
 available	Available			
+autoFillOrder	Fill in the order automatically?
 back		Back		
 baseUnit	Base unit			
 bitMobile	BIT.MOBILE			
@@ -153,6 +154,8 @@ NO		No
 no_contacts	NO CONTACTS			
 no_questions	No questions			
 no_questions_list	NO QUESTIONS			
+no_orders		NO ORDERS
+no_returns		NO RETURNS
 no_tasks	No tasks			
 no_visitPlans	No visits to display			
 noContractors	No contractors			

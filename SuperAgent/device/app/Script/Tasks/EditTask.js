@@ -40,3 +40,7 @@ function IsEditable(task){
 	var isDirty = q.ExecuteScalar();
 	return (!task.Status || parseInt(isDirty)==parseInt(1)) && ($.sessionConst.editTasksWithoutVisit || $.workflow.name=="Visit");
 }
+
+function ShowConsole(val){
+	Console.WriteLine(val);
+}

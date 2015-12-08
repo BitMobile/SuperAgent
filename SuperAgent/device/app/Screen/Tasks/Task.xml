@@ -57,8 +57,11 @@
 				<c:HorizontalLine />
 
 			</s:If>
+
+			<s:Push Id="fake" Value="$ShowConsole($task.Status == '1')"></s:Push>
+
 			<s:Else>
-				<s:If Test="$task.Status==1">
+				<s:If Test="$task.Status == '1'">
 					<c:DockLayout CssClass="parameter_grid">
 						<c:TextView Text="#executionDate#"/>
 						<c:TextView Text="$FormatDate($task.ExecutionDate)" CssClass="value"/>

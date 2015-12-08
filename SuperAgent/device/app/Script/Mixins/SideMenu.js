@@ -5,8 +5,10 @@ function GetItemsStyles(){
 	styles.Add("Summary", IsCurrent("Summary"));
 	styles.Add("Visits", IsCurrent("Visits"));
 	styles.Add("Outlets", IsCurrent("Outlets"));
+	styles.Add("Tasks", IsCurrent("Tasks"));
 	styles.Add("Orders", IsCurrent("Orders"));
 	styles.Add("Returns", IsCurrent("Returns"));
+	styles.Add("KPI", IsCurrent("KPI"));
 	styles.Add("Sync", IsCurrent("Sync"));
 	styles.Add("About", IsCurrent("About"));
 
@@ -36,6 +38,14 @@ function GetOutletsCount() {
 
 function GetCommitedScheduledVisits() {
 	return Indicators.GetCommitedScheduledVisits().ToString();
+}
+
+function GetTasksSum(){
+	return Indicators.GetTasksSum().ToString();
+}
+
+function GetTasksDone(){
+	return Indicators.GetTasksDone().ToString();
 }
 
 function GetOrderSumm() {
@@ -87,7 +97,10 @@ function Logout() {
 		var q2 = new Query();
 		q2.Text = queryString;
 
-		if (parseInt(q2.ExecuteScalar()) == parseInt(1))
+		var ex = q2.ExecuteScalar();
+		var res = String.IsNullOrEmpty(ex) ? 0 : ex;
+
+		if (parseInt(res) == parseInt(1))
 			Dialog.Message("#noLogout#", GoToSync);
 		else{
 			Dialog.Alert("#logoutQuery#"

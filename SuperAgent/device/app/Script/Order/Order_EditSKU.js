@@ -85,19 +85,25 @@ function ApplyDiscount(sender, orderitem) {
 
     if (Math.abs(parseFloat(sender.Text)) > 100)
         sender.Text =  sender.Text > 0 ? 100 : -100;
+}
 
+function RefreshDiscount(sender, param1, orderitem){
+    
+    sender.Text = String.IsNullOrEmpty(sender.Text) ? '0' : sender.Text;
+
+    if (parseFloat(sender.Text) != parseFloat(orderitem.Discount))
+    {
+        SendDiscountMap(sender.Text);
+        DoRefresh(param1);
+    }
+}
+
+function SendDiscountMap(discount){
     var d = new Dictionary();
-    d.Add("Discount", String.IsNullOrEmpty(sender.Text) 
+    d.Add("Discount", String.IsNullOrEmpty(discount) 
                             ? parseFloat(0) 
-                            : parseFloat(sender.Text));
+                            : parseFloat(discount));
     OrderItem.SetItemValue(d);
-
-    orderitem = OrderItem.GetItem();
-    $.orderItem = orderitem;
-
-    $.discountDescr.Text = GetDiscountDescription(orderitem.Discount);
-
-    // DoRefresh($.showimage);
 }
 
 function RefreshScreen(control, param1){
@@ -105,7 +111,7 @@ function RefreshScreen(control, param1){
 }
 
 function ConvertDiscount(control) {
-    control.Text = -1 * control.Text;
+    SendDiscountMap(-1 * control.Text);
     DoRefresh($.showimage);
 }
 
@@ -123,19 +129,26 @@ function ApplyTotalDiscount(sender, orderitem){
         if (sender.Text < -orderitem.Price)
             sender.Text = -orderitem.Price;
     }    
+}
 
+function RefreshTotalDiscount(sender, param1){
+
+    sender.Text = String.IsNullOrEmpty(sender.Text) ? FormatValue(0) : sender.Text;
+
+    if (parseFloat(sender.Text) != parseFloat(OrderItem.GetTotalDiscount()))
+    {
+        SendTotalDiscountMap(sender.Text);        
+        DoRefresh(param1);
+    }
+    
+}
+
+function SendTotalDiscountMap(discount){
     var d = new Dictionary();
-    d.Add("TotalDiscount", String.IsNullOrEmpty(sender.Text) 
+    d.Add("TotalDiscount", String.IsNullOrEmpty(discount) 
                             ? parseFloat(0) 
-                            : parseFloat(sender.Text));
+                            : parseFloat(discount));
     OrderItem.SetItemValue(d);
-
-    orderItem = OrderItem.GetItem();
-    $.orderItem = orderitem;
-    $.totalDiscountDescr.Text = GetTotalDiscountDescription();
-
-    // DoRefresh($.showimage);
-
 }
 
 function GetTotalDiscountDescription(){
@@ -149,8 +162,8 @@ function GetTotalDiscountDescription(){
         return Translate["#sumMarkUp#"];
 }
 
-function ConvertTotalDiscount(control){
-    control.Text = -1 * control.Text
+function ConvertTotalDiscount(control, orderitem){    
+    SendTotalDiscountMap(-1 * control.Text);
     DoRefresh($.showimage);
 }
 
@@ -180,14 +193,6 @@ function ApplyTotal(sender, orderitem){
     // DoRefresh($.showimage);
 
 }
-
-function CheckUserInput(sender){
-    if (TrimAll(sender.Text) == '.' || TrimAll(sender.Text) == ',')
-    {
-        sender.Text = '0,';
-    }                       
-}
-
 
 function GetFeatureDescr(feature) {
     if (feature.Code == "000000001" || $.sessionConst.SKUFeaturesRegistration==false)
@@ -289,6 +294,8 @@ function CalculateSKUAndForward(outlet, orderitem) {
         DB.Delete(orderitem);
     } else {
         Global.FindTwinAndUnite(orderitem.GetObject());
+        GlobalWorkflow.SetMassDiscount(null);
+        GlobalWorkflow.GetMassDiscount(orderitem.Ref);
     }
 
     if ($.Exists("itemFields"))
@@ -322,6 +329,7 @@ function DeleteAndBack(orderitem) {
     	$.Remove("itemFields");
 
     OrderItem.ClearItem();
+    GlobalWorkflow.GetMassDiscount(orderitem.Ref);
 
     Workflow.Back();
 }

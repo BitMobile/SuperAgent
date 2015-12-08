@@ -12,7 +12,7 @@ var curr_sku;
 var skuValueGl;
 var questionValueGl;
 var forwardAllowed;
-
+var parents;
 
 //
 //-------------------------------Header handlers-------------------------
@@ -20,6 +20,7 @@ var forwardAllowed;
 
 function OnLoading(){
 	obligateredLeft = '0';
+	parents = [];
 	SetIndicators();
 	SetListType();
 	if (String.IsNullOrEmpty(setScroll))
@@ -33,6 +34,7 @@ function OnLoading(){
 function OnLoad() {
 	if (setScroll)
 		SetScrollIndex();
+	AssignSubmitScope();
 }
 
 function SetListType(){
@@ -188,6 +190,11 @@ function AddFilter(filterString, filterName, condition, connector) {
 
 	return filterString;
 
+}
+
+function AddToParents(fieldName){
+	parents.push(fieldName);
+	return parents;
 }
 
 function ShowChilds(index) {
@@ -358,11 +365,22 @@ function ClearIndex() {
 }
 
 function AddToSubmitCollection(submitCollectionString, fieldName){
-	var submitCollectionString = String.IsNullOrEmpty(submitCollectionString) ? fieldName : (submitCollectionString + ";" + fieldName);
-	$.btn_forward.SubmitScope = submitCollectionString; //all the magic is in this strings
+	submitCollectionString = String.IsNullOrEmpty(submitCollectionString) ? fieldName : (submitCollectionString + ";" + fieldName);
+
 	return submitCollectionString;
 }
 
+function AssignSubmitScope(){
+	$.btn_forward.SubmitScope = $.submitCollectionString; //all the magic is in this strings
+	$.regular.SubmitScope = $.submitCollectionString;
+	$.nonregular.SubmitScope = $.submitCollectionString;
+	$.btnSearch.SubmitScope = $.submitCollectionString;
+	$.btn_filters.SubmitScope = $.submitCollectionString;	
+	
+	for (control in $.grScrollView.Controls){
+		control.SubmitScope = $.submitCollectionString;
+	}
+}
 //------------------------------internal-----------------------------------
 
 function DialogCallBack(state, args){

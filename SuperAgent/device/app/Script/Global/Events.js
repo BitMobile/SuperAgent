@@ -59,13 +59,14 @@ function OnWorkflowStart(name) {
 }
 
 function OnWorkflowForward(name, lastStep, nextStep, parameters) {
+
 	if (name = "Visit" && lastStep == "Outlet")
 		GPS.StopTracking();
 }
 
 function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 
-	if (workflowName == "Visit" && nextStep != "Outlet" && nextStep != "Total")
+	if (workflowName == "Visit" && nextStep != "Outlet" && nextStep != "Total" && nextStep != "Total_Tasks")
 	{
 		var standart = AlternativeStep(nextStep);
 		if (!standart)
@@ -85,6 +86,10 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 
 	WriteScreenName(nextStep);
 
+	if ($.workflow.HasValue("curentStep"))
+		$.workflow.Remove("curentStep");
+	$.workflow.Add("curentStep", nextStep);
+
 	return true;
 }
 
@@ -102,6 +107,11 @@ function OnWorkflowFinish(name, reason) {
 		Global.ClearFilter();
 		GlobalWorkflow.SetMassDiscount(null);
 	}
+
+	if (name=="Visit")
+	{
+		ClearUSRTables();
+	}
 }
 
 function OnWorkflowFinished(name, reason){
@@ -109,6 +119,10 @@ function OnWorkflowFinished(name, reason){
 }
 
 function OnWorkflowBack(workflow, lastStep, nextStep){
+
+	if ($.workflow.HasValue("curentStep"))
+		$.workflow.Remove("curentStep");
+	$.workflow.Add("curentStep", nextStep);
 
 	if (name = "Visit" && nextStep == "Outlet")
 		GPS.StartTracking();
@@ -135,6 +149,8 @@ function StartTracking(){
 }
 
 function RemoveVariables(name){
+
+	GlobalWorkflow.ClearVariables();
 
 	Variables.Remove("workflow");
 
@@ -367,9 +383,15 @@ function PrepareScheduledVisits_Map() {
 }
 
 function GetTasksCount(outlet) {
-	var taskQuery = new Query("SELECT COUNT(Id) FROM Document_Task WHERE PlanDate >= date('now','start of day', 'localtime') AND Outlet=@outlet");
-	taskQuery.AddParameter("outlet", outlet);
-	return taskQuery.ExecuteScalar();
+	// var taskQuery = new Query("SELECT COUNT(Id) FROM Document_Task " +
+	// 	"WHERE (Status=0 AND DATE(StartPlanDate)<=DATE('now', 'localtime')) " +
+	// 	" OR " +
+	// 	" (Status=1 AND DATE(ExecutionDate)=DATE('now', 'localtime')) " +
+	// 	" AND Outlet=@outlet");
+	// taskQuery.AddParameter("outlet", outlet);
+	// return taskQuery.ExecuteScalar();
+	return parseInt(1);
+
 }
 
 
@@ -692,4 +714,15 @@ function DeleteFromList(item, collection) {
             list.Add(i);
     }
     return list;
+}
+
+function ClearUSRTables(){
+	var q = new Query("DELETE FROM USR_Questionnaires");
+	q.Execute();
+
+	var q = new Query("DELETE FROM USR_Questions");
+	q.Execute();
+	
+	var q = new Query("DELETE FROM USR_SKUQuestions");
+	q.Execute();
 }

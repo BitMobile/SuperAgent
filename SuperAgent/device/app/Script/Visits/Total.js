@@ -106,17 +106,44 @@ function GetOrderControlValue() {
 }
 
 function CountDoneTasks(visit) {
-    var query = new Query("SELECT Id FROM Document_Visit_Task WHERE Ref=@ref AND Result=@result");
-    query.AddParameter("ref", visit);
-    query.AddParameter("result", true);
-    return query.ExecuteCount();
+	var query = new Query;
+
+	var outlet = "";
+
+	if ($.workflow.name == "Visit"){
+		query.AddParameter("outlet", GlobalWorkflow.GetOutlet());
+		outlet = " AND DT.Outlet=@outlet ";
+	}
+
+	query.Text = "SELECT O.Description AS Outlet, DT.Id, DT.TextTask, DT.EndPlanDate, DT.ExecutionDate " +
+		" FROM Document_Task DT " +
+		" JOIN Catalog_Outlet O ON DT.Outlet=O.Id " +
+		" WHERE DT.Status=1 " +
+		" AND DATE(ExecutionDate)=DATE('now', 'localtime') " + outlet +
+		" ORDER BY DT.ExecutionDate desc, O.Description";
+
+	return query.ExecuteCount();
 }
 
 function CountTasks(outlet) {
-    var query = new Query("SELECT Id FROM Document_Task WHERE PlanDate >= @planDate AND Outlet = @outlet");
-    query.AddParameter("outlet", outlet);
-    query.AddParameter("planDate", DateTime.Now.Date);
-    return query.ExecuteCount();
+	var q = new Query;
+
+	var outlet = "";
+
+	if ($.workflow.name == "Visit"){
+		q.AddParameter("outlet", GlobalWorkflow.GetOutlet());
+		outlet = " AND DT.Outlet=@outlet ";
+	}
+
+	q.Text = "SELECT O.Description AS Outlet, DT.Id, DT.TextTask, DT.EndPlanDate " +
+		" FROM Document_Task DT " +
+		" JOIN Catalog_Outlet O ON DT.Outlet=O.Id " +
+		" WHERE ((Status=0 AND DATE(StartPlanDate)<=DATE('now', 'localtime')) " +
+		" OR " +
+		" (Status=1 AND DATE(ExecutionDate)=DATE('now', 'localtime'))) " + outlet +
+		" ORDER BY DT.EndPlanDate, O.Description";
+
+	return q.ExecuteCount();
 }
 
 function GetOrderSUM(order) {

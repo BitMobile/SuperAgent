@@ -14,5 +14,5 @@ function PlanVisitsKPI(){
 		" WHERE DATE(VPO.Date)>=DATE('now', 'start of month', 'localtime') AND NOT OSS.Status IS NULL");
 	var planned = q.ExecuteScalar();
 
-	return String.Format("{0:F0}", (executed * 100 / planned) || 0);
+	return parseFloat(planned)==parseFloat(0) ? "0" : String.Format("{0:F0}", (executed * 100 / planned) || 0);
 }

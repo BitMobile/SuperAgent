@@ -174,7 +174,8 @@ noSuccess		Произошла ошибка во время отправки. Д�
 notAvailable	Snapshot isnt't available			
 notAvailableShort	N/A			
 noteAsExecuted	Note as executed			
-noteAsNew	Note as new			
+noteAsNew	Note as new		
+notLimited		unlimited	
 OAO				OAO
 of	of			
 Ok		Ok		

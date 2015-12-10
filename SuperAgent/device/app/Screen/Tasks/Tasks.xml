@@ -43,7 +43,9 @@
 				</c:DockLayout>
 			</s:Else>			
 
-			<c:Image CssClass="2_scroll"></c:Image>
+			<s:If Test="$workflow.name=='Visit'">
+				<c:Image CssClass="2_scroll"></c:Image>				
+			</s:If>
 			<c:HorizontalLine />
 
 			<c:ScrollView Id="grScrollView">
@@ -65,7 +67,7 @@
 						<c:DockLayout CssClass="grid" OnClickAction="$AddGlobalAndAction($task.Id)">
 							<c:Image />
 							<c:VerticalLayout>
-								<c:TextView Text="#untill# {$FormatDate($task.EndPlanDate)} {$task.Outlet}" CssClass="description_row"></c:TextView>
+								<c:TextView Text="{$FormatDate($task.EndPlanDate)} {$task.Outlet}" CssClass="description_row"></c:TextView>
 								<c:TextView Text="$task.TextTask" CssClass="main_row"></c:TextView>
 							</c:VerticalLayout>						
 						</c:DockLayout>

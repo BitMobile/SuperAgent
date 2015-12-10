@@ -41,18 +41,25 @@ function GetNotExecutedTasks() {
 		outlet = " AND DT.Outlet=@outlet ";
 	}
 
-	q.Text = "SELECT O.Description AS Outlet, DT.Id, DT.TextTask, DT.EndPlanDate " +
+	q.Text = "SELECT O.Description AS Outlet, DT.Id, DT.TextTask " +
+		" , CASE WHEN DT.EndPlanDate='0001-01-01 00:00:00' THEN 2 ELSE 1 END AS DateOrder " +
+		" , CASE WHEN DT.EndPlanDate='0001-01-01 00:00:00' THEN @notLimited ELSE DT.EndPlanDate END AS EndPlanDate " +
 		" FROM Document_Task DT " +
 		" JOIN Catalog_Outlet O ON DT.Outlet=O.Id " +
 		" WHERE DT.Status=0 " +
 		" AND DATE(DT.StartPlanDate)<=DATE('now', 'localtime') " + outlet +
-		" ORDER BY DT.EndPlanDate, O.Description";
+		" ORDER BY DateOrder, DT.EndPlanDate, O.Description";
+
+		q.AddParameter("notLimited", Translate["#notLimited#"]);
 
 	return q.Execute();
 }
 
 function FormatDate(datetime) {
-	return Format("{0:d}", Date(datetime).Date);
+	if (datetime == Translate["#notLimited#"])
+		return datetime;
+	else
+		return Translate["#untill#"] + " " + Format("{0:d}", Date(datetime).Date);
 }
 
 function AddGlobalAndAction(paramValue){

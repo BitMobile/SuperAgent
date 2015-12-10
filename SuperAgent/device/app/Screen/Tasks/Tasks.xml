@@ -11,11 +11,13 @@
 
 
 		<c:DockLayout>
-
-			<c:HorizontalLayout Id="backtnDone" CssClass="bottom_btn" OnClickAction="$DoAction(CreateTask)">
-				<c:TextView Text="#add#" />
-			</c:HorizontalLayout>
-			<c:HorizontalLine CssClass="b_line" />
+			
+			<s:If Test="$sessionConst.editTasksWithoutVisit">
+				<c:HorizontalLayout CssClass="bottom_btn" OnClickAction="$DoAction(CreateTask)">
+					<c:TextView Text="#add#" />
+				</c:HorizontalLayout>
+				<c:HorizontalLine CssClass="b_line" />
+			</s:If>
 
 			<s:If Test="$HasMenu()">
 				<c:DockLayout CssClass="top_navigator">

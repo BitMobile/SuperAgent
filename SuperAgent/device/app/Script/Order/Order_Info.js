@@ -407,3 +407,11 @@ function ConvertDiscount(control, thisDoc) {
     control.Text = -1 * control.Text;
     SetMassDiscount(control, thisDoc);
 }
+
+function ApplyDiscount(sender){
+	
+	CheckUserInput(sender);
+
+    if (Math.abs(parseFloat(sender.Text)) > 100)
+        sender.Text =  sender.Text > 0 ? 100 : -100;
+}

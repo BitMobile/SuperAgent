@@ -111,6 +111,7 @@ function SaveAndRefresh(sender){
 }
 
 function CompleteTask(){
+	GlobalWorkflow.SetCurrentTask(null);
 	if ($.workflow.name == 'Visit')
 		DoBack();
 	else
@@ -118,9 +119,9 @@ function CompleteTask(){
 }
 
 function RollbackTask(task){
+	GlobalWorkflow.SetCurrentTask(null);
 	if ($.workflow.name == 'Visit'){
-		DB.Delete(task);
-		GlobalWorkflow.SetCurrentTask(null);
+		DB.Delete(task);		
 		DoBack();
 	}
 	else

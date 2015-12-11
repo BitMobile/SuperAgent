@@ -92,13 +92,13 @@ function CallBack(state, args){ //call back for dates only
 
 	if (ranged){
 		if (attr == "StartPlanDate" && Date(args.Result).Date < Date(DateTime.Now).Date)
-			Dialog.Message("Invalid value");
+			Dialog.Message(Translate["#lessToday#"]);
 		else
 			AssignDialogValue(state, args);
 			Workflow.Refresh([]);
 	}
 	else
-		Dialog.Message("cannot be less ...");
+		Dialog.Message(Translate["#lessStart#"]);
 
 }
 
@@ -119,6 +119,7 @@ function CompleteTask(){
 function RollbackTask(task){
 	if ($.workflow.name == 'Visit'){
 		DB.Delete(task);
+		GlobalWorkflow.SetCurrentTask(null);
 		DoBack();
 	}
 	else

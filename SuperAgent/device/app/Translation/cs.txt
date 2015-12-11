@@ -343,3 +343,5 @@ no_orders		XXXXXXX
 no_returns		XXXXXXX
 autoFillOrder	XXXXXXX
 notLimited		XXXXXXX
+lessStart		XXXXXXX
+lessToday		XXXXXXX

@@ -122,6 +122,8 @@ kpp_regexp		^(\d{9}|)?$
 lastSync	Last synchronization			
 legal_address	Legal address			
 legal_name	Legal name			
+lessStart	Дата завершения не может быть меньше даты начала
+lessToday	Дата начала не может быть меньше текущей
 list	List			
 location	Set outlet location			
 locationSetFailed	Location set is failed.			

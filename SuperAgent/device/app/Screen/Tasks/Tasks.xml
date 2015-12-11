@@ -12,7 +12,7 @@
 
 		<c:DockLayout>
 			
-			<s:If Test="$sessionConst.editTasksWithoutVisit">
+			<s:If Test="$sessionConst.editTasksWithoutVisit || $workflow.name=='Visit'">
 				<c:HorizontalLayout CssClass="bottom_btn" OnClickAction="$DoAction(CreateTask)">
 					<c:TextView Text="#add#" />
 				</c:HorizontalLayout>

@@ -18,7 +18,8 @@ function CreateNewTask(){
 	taskObj.Date = DateTime.Now;
 	taskObj.CreatedAtMA = true;
 	taskObj.Responsible = $.common.UserRef;
-	taskObj.Status = false;
+	taskObj.PlanExecutor = $.common.UserRef;
+	taskObj.Status = false;	
 	if ($.workflow.name=="Visit")
 		taskObj.Outlet = GlobalWorkflow.GetOutlet();
 	taskObj.Save();

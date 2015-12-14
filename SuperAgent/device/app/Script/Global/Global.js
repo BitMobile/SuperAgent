@@ -21,7 +21,7 @@ function SetSessionConstants() {
 	var SnapshotSize = new Query("SELECT NumericValue FROM Catalog_MobileApplicationSettings WHERE Description='SnapshotSize'");
 	var SKUFeaturesRegistration = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='SKUFeaturesRegistration'");
 	var coordActuality = new Query("SELECT NumericValue FROM Catalog_MobileApplicationSettings WHERE Description='UserCoordinatesActualityTime'");
-	var autoFillOrder = new Query("SELECT NumericValue FROM Catalog_MobileApplicationSettings WHERE Description='UseAutoFillForRecOrder'");
+	var autoFillOrder = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='UseAutoFillForRecOrder'");
 
 	$.AddGlobal("sessionConst", new Dictionary());
 	$.sessionConst.Add("solVersion", solVersion.ExecuteScalar());

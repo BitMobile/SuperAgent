@@ -4,7 +4,15 @@ function GetCurrentTask(){
 }
 
 function FormatDate(datetime) {
-	return Format("{0:d}", Date(datetime).Date);
+
+	Console.WriteLine(datetime);
+
+	if (String.IsNullOrEmpty(datetime))
+		return Translate["#notLimited#"];
+	else if (datetime == "01.01.0001 0:00:00")
+		return Translate["#notLimited#"];
+	else
+		return Format("{0:d}", Date(datetime).Date);	
 }
 
 function RetrieveTask(task){

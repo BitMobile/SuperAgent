@@ -41,14 +41,14 @@
 				<c:HorizontalLine />
 
 				<c:DockLayout CssClass="parameter_grid" OnClick="$SelectDateTime(StartPlanDate, #startPlanTime#)">
-					<c:HorizontalLayout CssClass="$sideStyle.startPlanDate"></c:HorizontalLayout>
+					<c:HorizontalLayout CssClass="empty_side_wh"></c:HorizontalLayout>
 					<c:TextView Text="#startPlanTime#"/>
 					<c:TextView Text="$FormatDate($task.StartPlanDate)" CssClass="value"/>
 				</c:DockLayout>
 				<c:HorizontalLine />
 
 				<c:DockLayout CssClass="parameter_grid" OnClick="$SelectDateTime(EndPlanDate, #endPlanTime#)">
-					<c:HorizontalLayout CssClass="$sideStyle.endPlanDate"></c:HorizontalLayout>
+					<c:HorizontalLayout CssClass="empty_side_wh"></c:HorizontalLayout>
 					<c:TextView Text="#endPlanTime#"/>
 					<c:TextView Text="$FormatDate($task.EndPlanDate)" CssClass="value"/>
 				</c:DockLayout>

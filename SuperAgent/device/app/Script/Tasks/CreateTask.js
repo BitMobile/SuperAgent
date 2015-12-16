@@ -36,8 +36,8 @@ function SetSideStyles(){
 
 	requiredLeft = parseInt(0);	
 
-	sideStyle.Add("startPlanDate", ClassValue(taskRef.StartPlanDate));
-	sideStyle.Add("endPlanDate", ClassValue(taskRef.EndPlanDate));
+	// sideStyle.Add("startPlanDate", ClassValue(taskRef.StartPlanDate));
+	// sideStyle.Add("endPlanDate", ClassValue(taskRef.EndPlanDate));
 	sideStyle.Add("outlet", ClassValue(taskRef.Outlet));
 	sideStyle.Add("textTask", ClassValue(taskRef.TextTask));
 

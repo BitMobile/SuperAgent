@@ -32,7 +32,11 @@ function OnLoad(){
 
 	if ($.workflow.currentDoc=="Order"){
 
-		if (parseInt(itemsQty) == parseInt(0) && $.sessionConst.UseAutoFillForRecOrder){
+		var q = new Query("SELECT COUNT(Id) FROM Catalog_AssortmentMatrix_Outlets WHERE Outlet=@outlet");
+		q.AddParameter("outlet", GlobalWorkflow.GetOutlet());
+		var matrixForOutlet = q.ExecuteScalar();
+
+		if (parseInt(itemsQty) == parseInt(0) && $.sessionConst.UseAutoFillForRecOrder && parseInt(matrixForOutlet) != parseInt(0)){
 
 			Dialog.Ask(Translate["#autoFillOrder#"], AutoFill);			
 

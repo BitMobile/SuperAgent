@@ -326,7 +326,7 @@ typeanswer		Uveďte hodnoty..
 unit			MJ
 unknown			Žádná data
 unplanned		Neplánované
-untill			XXXXXXX
+untill			termín
 username		Jméno uživatele
 valueList		Nabídka hodnot
 version			Verze

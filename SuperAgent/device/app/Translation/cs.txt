@@ -70,7 +70,7 @@ done			Uložit
 edit			Upravit
 editChange		Upravit
 editSKU			Upravit
-email			E-mail
+email			Email
 email_regexp	^(([а-яА-ЯёЁa-zA-Z0-9_-]+\.)*[а-яА-ЯёЁa-zA-Z0-9_-]+@[а-яА-ЯёЁa-zA-Z0-9_-]+(\.[а-яА-ЯёЁa-zA-Z0-9_-]+)*\.[а-яА-ЯёЁa-zA-Z]{2,6})?$
 empty_field		Hodnotu pole nelze zrušit
 emptyContactOwner	U kontaktu není uvedena firma

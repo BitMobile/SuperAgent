@@ -14,7 +14,7 @@ amountOfOrdersForToday	výše objednávek za dnešek
 answer					Odpověď
 apply			Použit
 at				v
-autoFillOrder	XXXXXXX
+autoFillOrder	Vyplnit objednávku automaticky?
 available		Dostupné
 back			Zpět
 baseUnit		Základní MJ
@@ -39,8 +39,8 @@ completedVisits	PROVEDENÉ NÁVŠTĚVY
 contact			Kontakt
 contactName		Jméno
 contacts		Kontakty
-contractor		Dodavatel
-contractors			Dodavatelé
+contractor		Fakturační údaje
+contractors			Fakturační údaje
 coordinates			Poloha
 coordinatesAreSet	Poloha byla nastavena
 copy			Kopírovat
@@ -74,20 +74,20 @@ email			E-mail
 email_regexp	^(([а-яА-ЯёЁa-zA-Z0-9_-]+\.)*[а-яА-ЯёЁa-zA-Z0-9_-]+@[а-яА-ЯёЁa-zA-Z0-9_-]+(\.[а-яА-ЯёЁa-zA-Z0-9_-]+)*\.[а-яА-ЯёЁa-zA-Z]{2,6})?$
 empty_field		Hodnotu pole nelze zrušit
 emptyContactOwner	U kontaktu není uvedena firma
-emptyList		Prázdný seznam
+emptyList			Prázdný seznam
 enc_amount_regexp	^(\d{1,8}((\.|,)\d{1,2})?)?$
-encashment		Úhrada pohledávky
+encashment			Úhrada pohledávky
 encashmentAmount	Zaplacená částka
 encashmentSum	Uhrazené pohledávky
 end				Ukončit
-endPlanTime		XXXXXXX
+endPlanTime		Konec (plán)
 enterDateTime	Uveďte datum a čas
 error			Chyba
 errorMessage	Chybová zpráva
 execute			Vyřídit 
-executed		XXXXXXX
+executed		vyřízeno
 executedtask	VYŘÍZENÉ ÚKOLY
-executionDate	XXXXXXX
+executionDate	Konec (fakt)
 facing			Facing
 false			Ne
 features		VLASTNOSTI
@@ -122,8 +122,8 @@ kpp_regexp		^.*$
 lastSync		Poslední synchronizace
 legal_address	Fakturační adresa
 legal_name		Obchodní jméno 
-lessStart		XXXXXXX
-lessToday		XXXXXXX
+lessStart		Konečný datum nesmí být menší než počáteční
+lessToday		Počáteční datum nesmí být menší než aktuální datum
 list			Evidence
 location		Nastavit polohu prodejního místa
 locationSetFailed	Polohu nelze načíst
@@ -147,21 +147,21 @@ newContact		Nový kontakt
 newOrder		Vytvořit novou objednávku
 newOutlet		Přidat nové prodejní místo
 newPrice		Nová cena
-newTask			XXXXXXX
+newTask			Nový úkol
 newTasks		ČEKAJÍCÍ ÚKOLY
 newVisit		Nová návštěva
 nextVisitDate	Datum příští návštěvy
 NKO				NKO
 NO				Ne
 no_contacts		ŽÁDNÉ KONTAKTY
-no_orders		XXXXXXX
+no_orders		ŽÁDNÉ OBJEDNÁVKY
 no_questions	Žádné dotazy
 no_questions_list	ŽÁDNÉ DOTAZY
-no_returns		XXXXXXX
+no_returns		ŽÁDNÉ VRÁCENÍ ZBOŽÍ
 no_tasks		Žádné úkoly
 no_visitPlans	Žádné návštěvy k zobrazení
-noContractors	Žádní dodavatelé
-noContractorsMessage	Toto prodejní místo nemá žádné dodavatele
+noContractors	Žádné fakturáční údaje
+noContractorsMessage	Toto prodejní místo nemá žádné fakturáční údaje
 noCoordinates	Poloha není nastavena
 noDescriGiven	(žádný popis)
 noImage	Nebyl 	nalezen žádný obrázek
@@ -177,7 +177,7 @@ notAvailable	Foto není dostupné
 notAvailableShort	N/A
 noteAsExecuted	VYŘÍZENO
 noteAsNew		NEVYŘÍZENO
-notLimited		XXXXXXX
+notLimited		 bez omezení
 OAO				a.s.
 of				z 
 Ok				OK
@@ -267,7 +267,7 @@ scheduled		je naplánováno
 search			Hledat
 select_answer	ZVOLTE HODNOTU..
 select_answer_low	Zvolte hodnotu..
-selectOutlet	XXXXXXX
+selectOutlet	Zvolte prodejní místo
 selectOwner		Vlastník nevybrán
 selectUnit		Zvolte MJ:
 send			Odeslat log
@@ -292,7 +292,7 @@ snapshot		Foto
 snapshotAttached	Foto bylo přidáno
 spread				Rozdělit
 spreadOnDocuments	Rozdělit mezi dokumenty
-startPlanTime	XXXXXXX
+startPlanTime	Začátek (plán)
 startTime		Začátek
 status			Stav
 stock			Skladem
@@ -336,7 +336,7 @@ visitdate			Datum návštěvy
 visitReason			Důvod návštěvy
 visitReason		Pole "Důvod návštěvy" musí být vyplněno
 visits			Návštěvy
-visitsKPI		XXXXXXX
+visitsKPI		Provedení plánovaných návštěv
 visitTotal		celkem
 vpPerformed		bylo provedeno
 vpUnplanned		neplánovaných

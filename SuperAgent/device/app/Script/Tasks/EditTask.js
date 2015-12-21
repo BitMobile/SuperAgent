@@ -48,3 +48,9 @@ function IsEditable(task){
 	var isDirty = q.ExecuteScalar();
 	return (!task.Status || parseInt(isDirty)==parseInt(1)) && ($.sessionConst.editTasksWithoutVisit || $.workflow.name=="Visit");
 }
+
+function SaveComment(control, task){
+	var taskObj = task.GetObject();
+	taskObj.Result = control.Text;
+	taskObj.Save();
+}

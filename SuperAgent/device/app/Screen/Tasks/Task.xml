@@ -80,7 +80,7 @@
 			<c:HorizontalLayout CssClass="memo_block">
 				<c:VerticalLayout>
 					<c:TextView Text="#commentary#" CssClass="description_row"></c:TextView>
-					<c:MemoEdit  Value="$task.Result" CssClass="main_row" Placeholder="—" Enabled="$IsEditable($task)"></c:MemoEdit>
+					<c:MemoEdit  Text="$task.Result" CssClass="main_row" Placeholder="—" Enabled="$IsEditable($task)" OnLostFocus="$SaveComment($task)"></c:MemoEdit>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

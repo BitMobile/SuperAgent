@@ -69,7 +69,7 @@ function AutoFill(state, args){
 			" (SELECT VS.Answer AS VisitAnswer, MAX(V.Date), VS.SKU AS VisitSKU, V.Outlet AS VisitOutlet " +
 			" FROM Document_Visit_SKUs VS " +
 			" JOIN Document_Visit V ON VS.Ref=V.Id " +
-			" GROUP BY VS.Answer, VS.SKU, V.Outlet) VA ON CS.Id=VA.VisitSKU AND AO.Outlet=VA.VisitOutlet " +
+			" GROUP BY VS.SKU, V.Outlet) VA ON CS.Id=VA.VisitSKU AND AO.Outlet=VA.VisitOutlet " +
 		" WHERE AO.Outlet=@outlet ");
 	q.AddParameter("outlet", GlobalWorkflow.GetOutlet());
 	q.AddParameter("priceList", $.workflow.order.PriceList);

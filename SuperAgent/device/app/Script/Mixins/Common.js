@@ -226,7 +226,7 @@ function HideClearButton(source, button) {
 }
 
 function ClearField(source, field, objectRef, attribute) {
-	field.Text = "";
+    field.Text = "";
 	var object = objectRef.GetObject();
 	object[attribute] = "";
 	object.Save();

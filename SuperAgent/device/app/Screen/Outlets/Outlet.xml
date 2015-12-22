@@ -171,11 +171,11 @@
 			<c:HorizontalLine />
 
 			<c:DockLayout CssClass="grid" OnClickAction="$FocusIfHasEditText(outletAddress, $sessionConst.editOutletParameters, 000000002)">
-				<c:Button Id="clearButton" CssClass="clear" Visible="false" OnClick="$ClearField($workflow.outletAddress, $workflow.outlet, Address)"/>
+				<c:Button Id="clearButton" CssClass="clear" Visible="false" OnClick="$ClearField($outletAddress, $workflow.outlet, Address)"/>
 				<c:VerticalLayout>
 					<c:TextView Text="#address#" CssClass="description_row"></c:TextView>
 					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000002 == true">
-						<c:MemoEdit Id="outletAddress" Value="$workflow.outlet.Address" OnGetFocus="$ShowClearButton($clearButton)" OnLostFocus="$HideClearButton($clearButton)" OnChange="$SaveValue($workflow.outlet)"></c:MemoEdit>
+						<c:MemoEdit Id="outletAddress" Text="$workflow.outlet.Address" OnGetFocus="$ShowClearButton($clearButton)" OnLostFocus="$HideClearButton($clearButton)" OnChange="$SaveValue($workflow.outlet)"></c:MemoEdit>
 					</s:If>
 					<s:Else>
 						<c:TextView Id="outletAddress" Text="$workflow.outlet.Address" CssClass="main_row"></c:TextView>

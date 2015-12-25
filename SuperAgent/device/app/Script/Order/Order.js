@@ -32,11 +32,15 @@ function OnLoad(){
 
 	if ($.workflow.currentDoc=="Order"){
 
-		var q = new Query("SELECT COUNT(Id) FROM Catalog_AssortmentMatrix_Outlets WHERE Outlet=@outlet");
+		var q = new Query("SELECT COUNT(S.SKU) " + 
+			GetAutoOrderText()
+			);
 		q.AddParameter("outlet", GlobalWorkflow.GetOutlet());
-		var matrixForOutlet = q.ExecuteScalar();
+		q.AddParameter("priceList", $.workflow.order.PriceList);
+		q.AddParameter("assignment", DB.Current.Constant.SKUQuestions.Stock);
+		var hasSKUs = q.ExecuteScalar();
 
-		if (parseInt(itemsQty) == parseInt(0) && $.sessionConst.UseAutoFillForRecOrder && parseInt(matrixForOutlet) != parseInt(0)){
+		if (parseInt(itemsQty) == parseInt(0) && $.sessionConst.UseAutoFillForRecOrder && parseInt(hasSKUs) != parseInt(0)){
 
 			Dialog.Ask(Translate["#autoFillOrder#"], AutoFill);			
 
@@ -53,27 +57,15 @@ function AutoFill(state, args){
 	
 
 	var q = new Query(" SELECT S.SKU, S.Unit, S.BaseUnitQty, P.Price, " +
-		" CASE WHEN Q.Answer IS NULL THEN (CASE WHEN VA.VisitAnswer IS NULL THEN S.Qty ELSE (S.BaseUnitQty - VA.VisitAnswer) END) ELSE (S.BaseUnitQty - Q.Answer) END AS Qty, " +
-		" CASE WHEN (Q.Answer IS NULL AND VA.VisitAnswer IS NULL) THEN U.Id ELSE UB.Id END AS UnitId, " +
-		" CASE WHEN (Q.Answer IS NULL AND VA.VisitAnswer IS NULL) THEN U.Description ELSE UB.Description END AS RecUnit " +
-
-		" FROM Catalog_AssortmentMatrix_Outlets AO " + 
-		" JOIN Catalog_AssortmentMatrix_SKUs S ON AO.Ref=S.Ref " +
-		" JOIN Document_PriceList_Prices P ON P.SKU=S.SKU AND P.Ref=@priceList " +
-		" JOIN Catalog_SKU CS ON S.SKU=CS.Id " +
-		" JOIN Catalog_UnitsOfMeasure UB ON CS.BaseUnit=UB.Id " +
-		" LEFT JOIN Catalog_UnitsOfMeasure U ON S.Unit=U.Id " +
-		" LEFT JOIN USR_SKUQuestions Q ON Q.SKU=S.SKU AND Q.Question IN (SELECT Id FROM Catalog_Question CQ WHERE CQ.Assignment=@assignment " +
-		" LIMIT 1) " +
-		" LEFT JOIN " +
-			" (SELECT VS.Answer AS VisitAnswer, MAX(V.Date), VS.SKU AS VisitSKU, V.Outlet AS VisitOutlet " +
-			" FROM Document_Visit_SKUs VS " +
-			" JOIN Document_Visit V ON VS.Ref=V.Id " +
-			" GROUP BY VS.SKU, V.Outlet) VA ON CS.Id=VA.VisitSKU AND AO.Outlet=VA.VisitOutlet " +
-		" WHERE AO.Outlet=@outlet ");
+		" CASE WHEN @atVisit THEN (CASE WHEN Q.Answer IS NULL THEN S.BaseUnitQty ELSE (S.BaseUnitQty - Q.Answer) END) ELSE (CASE WHEN VA.VisitAnswer IS NULL THEN S.Qty ELSE (S.BaseUnitQty - VA.VisitAnswer) END)  END AS Qty, " +
+		" CASE WHEN (@atVisit AND Q.Answer IS NOT NULL) OR (NOT @atVisit AND VA.VisitAnswer IS NOT NULL) THEN UB.Id ELSE U.Id END AS UnitId, " +
+		" CASE WHEN (@atVisit AND Q.Answer IS NOT NULL) OR (NOT @atVisit AND VA.VisitAnswer IS NOT NULL) THEN UB.Description ELSE U.Description END AS RecUnit " +
+		GetAutoOrderText()
+		);
 	q.AddParameter("outlet", GlobalWorkflow.GetOutlet());
 	q.AddParameter("priceList", $.workflow.order.PriceList);
 	q.AddParameter("assignment", DB.Current.Constant.SKUQuestions.Stock);
+	q.AddParameter("atVisit", $.workflow.name=='Visit');
 
 	var skus  = q.Execute();
 	
@@ -94,6 +86,23 @@ function AutoFill(state, args){
 
 	DoRefresh(); 
 
+}
+
+function GetAutoOrderText(){
+	return " FROM Catalog_AssortmentMatrix_Outlets AO " + 
+		" JOIN Catalog_AssortmentMatrix_SKUs S ON AO.Ref=S.Ref " +
+		" JOIN Document_PriceList_Prices P ON P.SKU=S.SKU AND P.Ref=@priceList " +
+		" JOIN Catalog_SKU CS ON S.SKU=CS.Id " +
+		" JOIN Catalog_UnitsOfMeasure UB ON CS.BaseUnit=UB.Id " +
+		" LEFT JOIN Catalog_UnitsOfMeasure U ON S.Unit=U.Id " +
+		" LEFT JOIN USR_SKUQuestions Q ON Q.SKU=S.SKU AND Q.Question IN (SELECT Id FROM Catalog_Question CQ WHERE CQ.Assignment=@assignment " +
+		" LIMIT 1) " +
+		" LEFT JOIN " +
+			" (SELECT VS.Answer AS VisitAnswer, MAX(V.Date), VS.SKU AS VisitSKU, V.Outlet AS VisitOutlet " +
+			" FROM Document_Visit_SKUs VS " +
+			" JOIN Document_Visit V ON VS.Ref=V.Id AND DATE(V.Date)=DATE('now', 'localtime') " +
+			" GROUP BY VS.SKU, V.Outlet) VA ON CS.Id=VA.VisitSKU AND AO.Outlet=VA.VisitOutlet " +
+		" WHERE AO.Outlet=@outlet ";
 }
 
 //-------------------------start screen------------------

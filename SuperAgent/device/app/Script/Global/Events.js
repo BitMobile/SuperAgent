@@ -567,3 +567,4 @@ function DeleteFromList(item, collection) {
     }
     return list;
 }
+

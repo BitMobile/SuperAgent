@@ -210,10 +210,17 @@ function CheckIfEmptyAndForward(order, wfName) {
 
 	else if (wfName=="Order" || wfName=="Return")
 	{
-		if (empty)
-			Workflow.Rollback();
-		else
-			Workflow.Commit();
+		if (empty){
+			DB.Delete(order);
+			var query = new Query("SELECT * FROM Document_" + $.workflow.currentDoc + "_Parameters WHERE Ref = @order")
+			query.AddParameter("order", order);
+			queryResult = query.Execute();
+			while (queryResult.Next()) {
+				DB.Delete(queryResult.Id);
+			}			
+		}
+
+		Workflow.Commit();
 	}
 }
 

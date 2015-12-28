@@ -57,7 +57,7 @@ function AutoFill(state, args){
 	
 
 	var q = new Query(" SELECT S.SKU, S.Unit, S.BaseUnitQty, P.Price, " +
-		" CASE WHEN @atVisit THEN (CASE WHEN Q.Answer IS NULL THEN S.BaseUnitQty ELSE (S.BaseUnitQty - Q.Answer) END) ELSE (CASE WHEN VA.VisitAnswer IS NULL THEN S.Qty ELSE (S.BaseUnitQty - VA.VisitAnswer) END)  END AS Qty, " +
+		" CASE WHEN @atVisit THEN (CASE WHEN Q.Answer IS NULL THEN S.Qty ELSE (S.BaseUnitQty - Q.Answer) END) ELSE (CASE WHEN VA.VisitAnswer IS NULL THEN S.Qty ELSE (S.BaseUnitQty - VA.VisitAnswer) END)  END AS Qty, " +
 		" CASE WHEN (@atVisit AND Q.Answer IS NOT NULL) OR (NOT @atVisit AND VA.VisitAnswer IS NOT NULL) THEN UB.Id ELSE U.Id END AS UnitId, " +
 		" CASE WHEN (@atVisit AND Q.Answer IS NOT NULL) OR (NOT @atVisit AND VA.VisitAnswer IS NOT NULL) THEN UB.Description ELSE U.Description END AS RecUnit " +
 		GetAutoOrderText()
@@ -76,7 +76,7 @@ function AutoFill(state, args){
 			args.Add("basePrice", skus.Price);
 			args.Add("Ref", $.workflow.order);
 			args.Add("SKU", skus.SKU);
-			args.Add("Units", skus.Unit);
+			args.Add("Units", skus.UnitId);
 			args.Add("recOrder", skus.Qty);
 
 			OrderItem.InitItem(args);

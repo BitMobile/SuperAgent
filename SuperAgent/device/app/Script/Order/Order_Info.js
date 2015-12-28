@@ -198,6 +198,44 @@ function SelectContractor(thisDoc)
 	}
 }
 
+function GetContractors(chooseDefault, outletRef)
+{
+	var outlet = outletRef.GetObject();
+	var defStr = "";
+	var result;
+	if (chooseDefault)
+		defStr = " AND Isdefault=1 ";
+
+	if (outlet.Distributor==DB.EmptyRef("Catalog.Distributor"))
+	{
+		var q = new Query("SELECT C.Id, C.Description " +
+			"FROM Catalog_Outlet_Contractors O " +
+			"JOIN Catalog_Contractors C ON O.Contractor=C.Id " +
+			"WHERE O.Ref=@outlet " + defStr + " ORDER BY C.Description");
+		q.AddParameter("outlet", outlet.Id);
+		result = q.Execute();
+	}
+	else
+	{
+		var q = new Query("SELECT  C.Id, C.Description " +
+
+			" FROM Catalog_Distributor_Contractors DC " +
+			" JOIN Catalog_Territory_Contractors TC ON DC.Contractor=TC.Contractor " +
+			" JOIN Catalog_Territory_Outlets T ON TC.Ref=T.Ref AND T.Outlet=@outlet " +
+			" JOIN Catalog_Contractors C ON C.Id=TC.Contractor " +
+
+			" WHERE DC.Ref=@distr " + defStr + "ORDER BY IsDefault desc, C.Description");
+		q.AddParameter("outlet", outlet.Id);
+		q.AddParameter("distr", outlet.Distributor);
+		result = q.Execute();
+	}
+
+	if (chooseDefault)
+		return result.Id;
+	else
+		return result;
+}
+
 function GetStockDescription(stock) {
 	if (stock.EmptyRef())
 		return Translate["#allStocks#"];

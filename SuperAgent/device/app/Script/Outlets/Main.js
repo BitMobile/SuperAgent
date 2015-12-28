@@ -139,6 +139,12 @@ function CreateOutletEnabled(){
 
 }
 
+function SaveValue(control, ref) {
+	var outlet = ref.GetObject();	
+	outlet.Address = control.Text;
+	outlet.Save();
+}
+
 function GetOutletParameters(outlet) {
 
 	var query = new Query();

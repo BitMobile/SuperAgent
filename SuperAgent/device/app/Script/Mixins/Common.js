@@ -215,6 +215,10 @@ function CheckUserInput(sender){
     }                       
 }
 
+function TranslateString(val){
+    return Translate["#" + val + "#"];
+}
+
 //--------------------Clear Button part----------------------
 
 function ShowClearButton(source, button) {

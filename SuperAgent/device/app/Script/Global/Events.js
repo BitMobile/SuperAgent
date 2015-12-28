@@ -1,4 +1,4 @@
-// ------------------------ Application -------------------
+﻿// ------------------------ Application -------------------
 
 function OnApplicationInit() {
 	SetSessionConstants();

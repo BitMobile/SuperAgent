@@ -32,12 +32,13 @@ function OnLoad(){
 
 	if ($.workflow.currentDoc=="Order"){
 
-		var q = new Query("SELECT COUNT(S.SKU) " + 
+		var q = new Query("SELECT COUNT(SKU) " + 
 			GetAutoOrderText()
 			);
 		q.AddParameter("outlet", GlobalWorkflow.GetOutlet());
 		q.AddParameter("priceList", $.workflow.order.PriceList);
 		q.AddParameter("assignment", DB.Current.Constant.SKUQuestions.Stock);
+		q.AddParameter("atVisit", $.workflow.name=='Visit');
 		var hasSKUs = q.ExecuteScalar();
 
 		if (parseInt(itemsQty) == parseInt(0) && $.sessionConst.UseAutoFillForRecOrder && parseInt(hasSKUs) != parseInt(0)){
@@ -56,10 +57,7 @@ function AutoFill(state, args){
 	q_usr.Execute();
 	
 
-	var q = new Query(" SELECT S.SKU, S.Unit, S.BaseUnitQty, P.Price, " +
-		" CASE WHEN @atVisit THEN (CASE WHEN Q.Answer IS NULL THEN S.Qty ELSE (S.BaseUnitQty - Q.Answer) END) ELSE (CASE WHEN VA.VisitAnswer IS NULL THEN S.Qty ELSE (S.BaseUnitQty - VA.VisitAnswer) END)  END AS Qty, " +
-		" CASE WHEN (@atVisit AND Q.Answer IS NOT NULL) OR (NOT @atVisit AND VA.VisitAnswer IS NOT NULL) THEN UB.Id ELSE U.Id END AS UnitId, " +
-		" CASE WHEN (@atVisit AND Q.Answer IS NOT NULL) OR (NOT @atVisit AND VA.VisitAnswer IS NOT NULL) THEN UB.Description ELSE U.Description END AS RecUnit " +
+	var q = new Query(" SELECT SKU, Unit, BaseUnitQty, Price, Qty, UnitId, RecUnit " +
 		GetAutoOrderText()
 		);
 	q.AddParameter("outlet", GlobalWorkflow.GetOutlet());
@@ -89,7 +87,13 @@ function AutoFill(state, args){
 }
 
 function GetAutoOrderText(){
-	return " FROM Catalog_AssortmentMatrix_Outlets AO " + 
+	return " FROM (" +
+		" SELECT DISTINCT S.SKU, S.Unit, S.BaseUnitQty, P.Price, " +
+		" CASE WHEN @atVisit THEN (CASE WHEN Q.Answer IS NULL THEN S.Qty ELSE (S.BaseUnitQty - Q.Answer) END) ELSE (CASE WHEN VA.Answer IS NULL THEN S.Qty ELSE (S.BaseUnitQty - VA.Answer) END)  END AS Qty, " +
+		" CASE WHEN (@atVisit AND Q.Answer IS NOT NULL) OR (NOT @atVisit AND VA.Answer IS NOT NULL) THEN UB.Id ELSE U.Id END AS UnitId, " +
+		" CASE WHEN (@atVisit AND Q.Answer IS NOT NULL) OR (NOT @atVisit AND VA.Answer IS NOT NULL) THEN UB.Description ELSE U.Description END AS RecUnit " +
+
+		" FROM Catalog_AssortmentMatrix_Outlets AO " + 
 		" JOIN Catalog_AssortmentMatrix_SKUs S ON AO.Ref=S.Ref " +
 		" JOIN Document_PriceList_Prices P ON P.SKU=S.SKU AND P.Ref=@priceList " +
 		" JOIN Catalog_SKU CS ON S.SKU=CS.Id " +
@@ -98,11 +102,13 @@ function GetAutoOrderText(){
 		" LEFT JOIN USR_SKUQuestions Q ON Q.SKU=S.SKU AND Q.Question IN (SELECT Id FROM Catalog_Question CQ WHERE CQ.Assignment=@assignment " +
 		" LIMIT 1) " +
 		" LEFT JOIN " +
-			" (SELECT VS.Answer AS VisitAnswer, MAX(V.Date), VS.SKU AS VisitSKU, V.Outlet AS VisitOutlet " +
-			" FROM Document_Visit_SKUs VS " +
-			" JOIN Document_Visit V ON VS.Ref=V.Id AND DATE(V.Date)=DATE('now', 'localtime') " +
-			" GROUP BY VS.SKU, V.Outlet) VA ON CS.Id=VA.VisitSKU AND AO.Outlet=VA.VisitOutlet " +
-		" WHERE AO.Outlet=@outlet ";
+			" (SELECT MAX(V.Date), V.Outlet AS VisitOutlet, V.Id " +
+			" FROM Document_Visit V " +
+			" GROUP BY V.Outlet) VD ON AO.Outlet=VD.VisitOutlet " +
+		" LEFT JOIN Document_Visit_SKUs VA ON VA.Ref=VD.Id AND VA.SKU=CS.Id " +
+		" WHERE AO.Outlet=@outlet " +
+		") " +
+		" WHERE Qty > 0 ";
 }
 
 //-------------------------start screen------------------

@@ -30,7 +30,12 @@ function OnLoading(){
 
 function OnLoad(){
 
-	if ($.workflow.currentDoc=="Order"){
+	if ($.workflow.currentDoc=="Order" && parseInt(itemsQty) == parseInt(0)){
+
+		var q_usr = new Query("CREATE TABLE IF NOT EXISTS USR_SKUQuestions (DocDate, SKU, SKUDescription, Question, Description, " +
+				" AnswerType, ParentQuestion, QuestionOrder, IsInputField, KeyboardType, Single, Obligatoriness, OwnerGroup, Brand, " +
+				" Answer, HistoryAnswer, AnswerDate )");
+		q_usr.Execute();
 
 		var q = new Query("SELECT COUNT(SKU) " + 
 			GetAutoOrderText()
@@ -41,7 +46,7 @@ function OnLoad(){
 		q.AddParameter("atVisit", $.workflow.name=='Visit');
 		var hasSKUs = q.ExecuteScalar();
 
-		if (parseInt(itemsQty) == parseInt(0) && $.sessionConst.UseAutoFillForRecOrder && parseInt(hasSKUs) != parseInt(0)){
+		if ($.sessionConst.UseAutoFillForRecOrder && parseInt(hasSKUs) != parseInt(0)){
 
 			Dialog.Ask(Translate["#autoFillOrder#"], AutoFill);			
 
@@ -49,13 +54,7 @@ function OnLoad(){
 	}
 }
 
-function AutoFill(state, args){
-
-	var q_usr = new Query("CREATE TABLE IF NOT EXISTS USR_SKUQuestions (DocDate, SKU, SKUDescription, Question, Description, " +
-			" AnswerType, ParentQuestion, QuestionOrder, IsInputField, KeyboardType, Single, Obligatoriness, OwnerGroup, Brand, " +
-			" Answer, HistoryAnswer, AnswerDate )");
-	q_usr.Execute();
-	
+function AutoFill(state, args){	
 
 	var q = new Query(" SELECT SKU, Unit, BaseUnitQty, Price, Qty, UnitId, RecUnit " +
 		GetAutoOrderText()

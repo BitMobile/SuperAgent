@@ -186,7 +186,8 @@
 
 
 			<c:DockLayout CssClass="grid">
-				<s:If Test="$workflow.outlet != null &amp;&amp; $workflow.outlet.Lattitude != 0 &amp;&amp; $workflow.outlet.Longitude != 0">
+				<!-- <s:If Test="$workflow.outlet != null &amp;&amp; $workflow.outlet.Lattitude != 0 &amp;&amp; $workflow.outlet.Longitude != 0"> -->
+				<s:If Test="$EmptyCoordinates($workflow.outlet)">
 					<c:Button OnClickAction="$DoAction(ShowMap, $workflow.outlet)" />
 				</s:If>
 				<s:Else>
@@ -194,7 +195,7 @@
 				</s:Else>
 				<c:VerticalLayout>
 					<c:TextView Text="#coordinates#" CssClass="description_row"></c:TextView>
-					<s:If Test="$workflow.outlet != null &amp;&amp; $workflow.outlet.Lattitude != 0 &amp;&amp; $workflow.outlet.Longitude != 0">
+					<s:If Test="$EmptyCoordinates($workflow.outlet)">
 						<c:HorizontalLayout OnClick="$ShowCoordOptions($workflow.outlet, $sessionConst.editOutletParameters)">
 							<c:TextView Id="outletCoord" Text="{$workflow.outlet.Lattitude}; {$workflow.outlet.Longitude}" CssClass="main_row"></c:TextView>
 						</c:HorizontalLayout>

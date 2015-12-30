@@ -82,7 +82,6 @@ function SaveNewOutlet(outlet) {
 			outlet.Lattitude = parseInt(0);
 			outlet.Longitude = parseInt(0);
 			outlet.Save();
-			Variables.AddGlobal("outlet", outlet.Id);
 
 			GlobalWorkflow.SetOutletIsCreated(true);
 			GlobalWorkflow.SetOutlet(outlet.Id);

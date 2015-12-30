@@ -103,6 +103,7 @@ function GetAutoOrderText(){
 		" LEFT JOIN " +
 			" (SELECT MAX(V.Date), V.Outlet AS VisitOutlet, V.Id " +
 			" FROM Document_Visit V " +
+			" WHERE DATE(V.Date)=DATE('now', 'localtime') " +
 			" GROUP BY V.Outlet) VD ON AO.Outlet=VD.VisitOutlet " +
 		" LEFT JOIN Document_Visit_SKUs VA ON VA.Ref=VD.Id AND VA.SKU=CS.Id " +
 		" WHERE AO.Outlet=@outlet " +

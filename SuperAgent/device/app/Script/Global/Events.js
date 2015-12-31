@@ -14,7 +14,7 @@ function OnApplicationRestore(name){
 
 	Indicators.SetIndicators();
 
-	if ((name=="Visit" && $.Exists('outletScreen')) || name=="Outlet" || ((name=="Order" || name=="Return") && !$.Exists('executedOrder')))
+	if ((name=="Visit" && $.Exists('outletScreen')) || name=="Outlet" || name=="CreateOutlet" || ((name=="Order" || name=="Return") && !$.Exists('executedOrder')))
 		GPS.StartTracking();
 
 }
@@ -33,7 +33,7 @@ function OnWorkflowStart(name) {
 	Variables.AddGlobal("workflow", new Dictionary());
 	Variables["workflow"].Add("name", name);
 
-	if (name == "Visit" || name == "Outlet" || ((name=="Order" || name=="Return") && !$.Exists('executedOrder')))
+	if (name == "Visit" || name == "Outlet" || name=="CreateOutlet" || ((name=="Order" || name=="Return") && !$.Exists('executedOrder')))
 	{
 		StartTracking();		
 		$.workflow.Add("outlet", GlobalWorkflow.GetOutlet());		

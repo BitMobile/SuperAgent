@@ -262,41 +262,18 @@
 
 	</bp:Workflow>
 
-	<bp:Workflow Name="CreateOutlet">
+	<bp:Workflow Name="CreateOutlet" Controller="Outlets\Main.js">
 		<bp:Step Name="Create" Screen="Outlets\CreateOutlet.xml" Controller="Outlets\CreateOutlet.js">
+			<bp:Action Name="OpenOutlet" NextStep="OpenOutlet"></bp:Action>
 		</bp:Step>
+
+		<s:Include File="\Components\OutletActions.xml"/>
+
 	</bp:Workflow>
 
 	<bp:Workflow Name="Outlet" Controller="Outlets\Main.js">
 
-		<bp:Step Name="OpenOutlet" Screen="Outlets\Outlet.xml">
-			<bp:Action Name="List" NextStep="Outlets" />
-			<bp:Action Name="ShowContractors" NextStep="Contractors" />
-			<bp:Action Name="Contractor" NextStep="Contractor" />
-			<bp:Action Name="ShowContacts" NextStep="Contacts" />
-			<bp:Action Name="ShowMap" NextStep="ShowMap"></bp:Action>
-			<bp:Action Name="Plans" NextStep="Plans" />
-			<bp:Action Name="ShowImage" NextStep="Image" />
-		</bp:Step>
-
-		<bp:Step Name="Contractors" Screen="Outlets\Outlets.xml" Controller="Outlets\DetailsAndContacts.js">
-			<bp:Action Name="Select" NextStep="Contractor"></bp:Action>
-		</bp:Step>
-
-		<bp:Step Name="Contractor" Screen="Outlets\Contractor.xml" Controller="Outlets\DetailsAndContacts.js"></bp:Step>
-
-		<bp:Step Name="Contacts" Screen="ContactsList.xml" Controller="Outlets\DetailsAndContacts.js">
-			<bp:Action Name="Select" NextStep="Contact" />
-		</bp:Step>
-
-		<bp:Step Name="ShowMap" Screen="Outlet_Map.xml" Controller="Visits\Outlet_Map.js">
-		</bp:Step>
-
-		<bp:Step Name="Plans" Screen="PlanList.xml" Controller="Outlets\DetailsAndContacts.js"></bp:Step>
-
-		<bp:Step Name="Contact" Screen="Contact.xml" Controller="Outlets\DetailsAndContacts.js"></bp:Step>
-
-		<bp:Step Name="Image" Screen="Image.xml" Controller="Outlets\Image.js"></bp:Step>
+		<s:Include File="\Components\OutletActions.xml"/>
 
 	</bp:Workflow>
 

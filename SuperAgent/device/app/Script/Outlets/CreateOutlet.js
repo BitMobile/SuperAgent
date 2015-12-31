@@ -85,7 +85,10 @@ function SaveNewOutlet(outlet) {
 
 			GlobalWorkflow.SetOutletIsCreated(true);
 			GlobalWorkflow.SetOutlet(outlet.Id);
-			Workflow.Commit();
+
+			$.workflow.Add("outlet", GlobalWorkflow.GetOutlet());
+
+			Workflow.Action('OpenOutlet', []);
 
 			return null;
 		}

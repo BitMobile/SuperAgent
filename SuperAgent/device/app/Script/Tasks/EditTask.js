@@ -12,7 +12,7 @@ function FormatDate(datetime) {
 	else if (datetime == "01.01.0001 0:00:00")
 		return Translate["#notLimited#"];
 	else
-		return Format("{0:d}", Date(datetime).Date);	
+		return Format("{0:d}", Date(datetime).Date);
 }
 
 function RetrieveTask(task){
@@ -20,6 +20,7 @@ function RetrieveTask(task){
 	taskObj.Status = false;
 	taskObj.ExecutionDate = null;
 	taskObj.FactExecutor = DB.EmptyRef("Catalog_User");
+	taskObj.Result = $.result.Text;
 	taskObj.Save();
 	DoRefresh();
 }
@@ -29,6 +30,7 @@ function CompleteTheTask(task){
 	taskObj.Status = true;
 	taskObj.ExecutionDate = DateTime.Now;
 	taskObj.FactExecutor = $.common.UserRef;
+	taskObj.Result = $.result.Text;
 	taskObj.Save();
 	DoRefresh();
 }

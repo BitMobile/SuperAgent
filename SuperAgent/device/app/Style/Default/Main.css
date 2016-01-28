@@ -13,8 +13,20 @@ sv {
 	background-color: #7fc8fd;
 }
 
+svl vl Textview {
+	color: #000000;
+	font: 50% arial;
+	width: 100%;
+	height: 10%;
+	background-color: #336699;
+}
 
-
+.register_button {
+	color: #000000;
+	font: 60% arial;
+	height: 20%;
+	width: 80%;
+}
 
 .grid {
 	height: 45%;
@@ -183,4 +195,3 @@ sv {
 	height: 1px;
 	background-color: #3384b8;
 }
-

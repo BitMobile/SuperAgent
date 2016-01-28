@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<c:Component xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
+	<c:VerticalLayout>
+		<c:TextView Text="Hello World"></c:TextView>
+		<c:Button Id="btnRegister" OnClickAction="$GoToSummary()" Text="Register" CssClass="register_button"></c:Button>
+	</c:VerticalLayout>
+</c:Component>

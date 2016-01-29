@@ -2,6 +2,9 @@
 <c:Component xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
 	<c:VerticalLayout>
 		<c:TextView Text="Hello World"></c:TextView>
-		<c:Button Id="btnRegister" OnClickAction="$SendContacts()" Text="Register" CssClass="register_button"></c:Button>
+		<c:EditText Id="FullName" Placeholder="#name#"></c:EditText>
+		<c:EditText Keyboard="Phone" Id="Phone" Placeholder="#phone#"></c:EditText>
+		<c:Button Id="btnRegister" OnClickAction="$Register()" Text="#register#" CssClass="register_button"></c:Button>
+		<c:Button Id="btnEnterUnregistered" OnClickAction="$EnterUnregistered()" CssClass="register_button" Text="#enterUnregistered#"></c:Button>
 	</c:VerticalLayout>
 </c:Component>

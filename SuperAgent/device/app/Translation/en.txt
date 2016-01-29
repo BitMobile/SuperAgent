@@ -82,6 +82,7 @@ encashmentSum	Encashment sum
 end	Continue
 endPlanTime		End Plan date
 enterDateTime	Enter date, time
+enterUnregistered	Enter unregistered
 error	Error
 errorMessage	Error message
 execute		Execute
@@ -120,6 +121,8 @@ kpi			KPI
 kpp			KPP
 kpp_regexp		^(\d{9}|)?$
 lastSync	Last synchronization
+leadThanks	Thank You for granted data! Our specialists will contact with You in short!
+leadFillDataPlease	Please, fill data
 legal_address	Legal address
 legal_name	Legal name
 lessStart	Дата завершения не может быть меньше даты начала
@@ -140,6 +143,7 @@ markUp		Mark Up
 markUp		MarkUp
 maximumAmount	Amount limit
 messageNulls	There shouldn't be empty fields.
+name	Name
 nameSurname	Name, surname
 new			New
 newClient	New client
@@ -242,6 +246,7 @@ receivables	Receivables
 recommended		recommend.
 refresh		Refresh
 refreshScreen	Refresh screen
+register	Register
 regular		Regular
 repeat		Repeat
 requiredFieldsLeft	Required fields left
@@ -345,4 +350,3 @@ web_site	Web-site
 webSite		Сайт разработчика
 YES		Yes
 ZAO				ZAO
-leadThanks	Thank You for granted data! Our specialists will contact with You in short!

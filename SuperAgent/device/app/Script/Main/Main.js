@@ -30,11 +30,26 @@ function GetVisitsLeft(){
 	return c + "";
 }
 
-function SendContacts() {
-	SendContactsRequest();
+function Register() {
+	if (IsFilledCorrectly()) {
+		SendContactsRequest(true);
+		GoToSummary();
+		SetContactsSentFlag();
+		Dialog.Message(Translate["#leadThanks#"]);
+	} else {
+		Dialog.Message(Translate["#leadFillDataPlease#"]);
+	}
+}
+
+function EnterUnregistered() {
+	SendContactsRequest(false);
 	GoToSummary();
-	SetContactsSentFlag();
-	Dialog.Message(Translate["#leadThanks#"]);
+}
+
+function IsFilledCorrectly() {
+	var IsNameFilled = $.FullName.Text != "";
+	var IsPhoneFilled = $.Phone.Text != "";
+	return IsNameFilled && IsPhoneFilled;
 }
 
 function GoToSummary() {
@@ -65,15 +80,28 @@ function GetContactsSentFlag() {
 	return ContactsSent;
 }
 
-function SendContactsRequest() {
+function SendContactsRequest(registered) {
+	var headers = [];
+	headers.push(["registered", registered]);
+	headers.push(["regdate", DateTime.Now]);
+	headers.push(["name", $.FullName.Text]);
+	headers.push(["phone", $.Phone.Text]);
+	headers.push(["os", $.common.OS]);
+	SendRequest("http://192.168.21.41", "/BITSA.DEV/hs/DemoAccess", "Admin", "1", "00:00:10", headers);
+}
+
+function SendRequest(host, address, username, password, timeout, headers) {
 	var request = Web.Request();
-	request.Host = "http://192.168.21.41";
-	request.UserName = "Admin";
-	request.Password = "1";
-	request.Timeout = "00:00:10";
-	request.AddHeader("regdate", DateTime.Now);
-	request.AddHeader("name", "Имя");
-	request.AddHeader("phone", "89817041002");
-	request.AddHeader("os", $.common.OS);
-	request.Post("/BITSA.DEV/hs/DemoAccess", "");
+	request.Host = host;
+	request.UserName = username;
+	request.Password = password;
+	request.Timeout = timeout;
+
+	headers = (headers == undefined ? [] : headers);
+
+	for (var i = 0; i < headers.length; i++) {
+		request.AddHeader(headers[i][0], headers[i][1]);
+	}
+
+	request.Post(address, "");
 }

@@ -10,19 +10,6 @@ function OnApplicationInit() {
 
 }
 
-function SendDemoAccessRequest() {
-	var request = Web.Request();
-	request.Host = "http://192.168.21.41";
-	request.UserName = "Admin";
-	request.Password = "1";
-	request.Timeout = "00:00:10";
-	request.AddHeader("regdate", DateTime.Now);
-	request.AddHeader("name", "Имя");
-	request.AddHeader("phone", "89817041002");
-	request.AddHeader("os", $.common.OS);
-	request.Post("/BITSA.DEV/hs/DemoAccess", "", callback);
-}
-
 function OnApplicationRestore(name){
 
 	Indicators.SetIndicators();

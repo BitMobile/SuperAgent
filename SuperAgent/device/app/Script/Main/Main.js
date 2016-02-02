@@ -65,7 +65,7 @@ function IsDemoUser() {
 }
 
 function SetContactsSentFlag() {
-	var q = new Query("CREATE TABLE USR_ContactsSent(" +
+	var q = new Query("CREATE TABLE USR_ContactsSent IF NOT EXISTS (" +
 	"ID INT PRIMARY KEY NOT NULL)");
 	q.Execute();
 }

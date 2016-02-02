@@ -13,31 +13,78 @@ sv {
 	background-color: #7fc8fd;
 }
 
-svl vl Textview {
-	color: #000000;
-	font: 50% arial;
+.lead {
+	background-color: #f8f8f8;
 	width: 100%;
-	height: 10%;
-	background-color: #336699;
+	horizontal-align: center;
 }
 
-svl vl EditText {
-	height: 20%;
-	width: 90%;
-	font: 45% Arial;
-	color: #2d89cf;
-	border-color: #336699;
+.lead hl {
+	width: 45mm;
+	height: 8mm;
+	margin-top: 1mm;
+	border-color: #43acfd;
 	border-radius: 16px;
-	border-width: 4px;
+	border-width: 2px;
 	border-style: solid;
-	margin-top: 2%;
+	horizontal-align: center;
+}
+
+.lead Button {
+	width: 45mm;
+	height: 8mm;
+	margin-top: 1mm;
+	/*border-color: #43acfd;*/
+	border-radius: 16px;
+	border-width: 3px;
+	border-style: solid;
+	font: 40% arial;
+	color: #ffffff;
+	horizontal-align: center;
+}
+
+.lead_field {
+	height: 60%;
+	width: 80%;
+	font: 60% Arial;
+	color: #2d89cf;
+	vertical-align: center;
+	placeholder-color: #b7b7b7;
+}
+
+.lead TextView {
+	height: 2.2mm;
+	width: 100%;
+	font: 80% arial;
+	color: #b7b7b7;
+	margin-top: 0.6mm;
+	margin-bottom: 0.8mm;
+	text-align: center;
+	horizontal-align: center;
+}
+
+.lead hl img {
+	width: 45px;
+	height: 45px;
+	margin-left: 16px;
+	margin-right: 16px;
+	vertical-align: center;
+}
+
+.name_icon {
+	background-image: url(name_icon.png);
+}
+
+.phone_icon {
+	background-image: url(phone_icon.png);
 }
 
 .register_button {
-	color: #000000;
-	font: 20% arial;
-	height: 10%;
-	width: 80%;
+	background-color: #43acfd;
+}
+
+.enter_button {
+	background-color: #b7b7b7;
 }
 
 .grid {

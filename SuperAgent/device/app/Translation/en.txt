@@ -120,6 +120,7 @@ isntSelected	Isn't selected
 kpi			KPI
 kpp			KPP
 kpp_regexp		^(\d{9}|)?$
+leadGetPersonalDemoAccess	and get personal demo access
 leadFail	Connect to network or enter without registration
 lastSync	Last synchronization
 leadThanks	Thank You for granted data! Our specialists will contact with You in short!

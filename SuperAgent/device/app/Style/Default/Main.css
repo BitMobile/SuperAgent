@@ -43,7 +43,7 @@ sv {
 .lead {
 	height: 100%;
 	width: 45mm;
-	margin-top: 2mm;
+	margin-top: 15%;
 
 	horizontal-align: center;
 	dock-align: top;
@@ -172,6 +172,8 @@ sv {
 
 .enter_button {
 	background-color: #b7b7b7;
+	dock-align: bottom;
+	margin-bottom: 5%;
 }
 
 .grid {

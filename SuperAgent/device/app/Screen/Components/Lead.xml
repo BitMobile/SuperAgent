@@ -29,9 +29,9 @@
 					<c:TextView Text="#leadOrderDemo#"></c:TextView>
 
 					<c:DockLayout CssClass="lead_contacts">
-						<c:Button Text="#leadMail#" CssClass="contact_mail"></c:Button>
+						<c:Button Text="#leadMail#" CssClass="contact_mail" OnClickAction="$SendMail()"></c:Button>
 
-						<c:Button Text="#leadPhone#" CssClass="contact_phone"></c:Button>
+						<c:Button Text="#leadPhone#" CssClass="contact_phone" OnClickAction="$Call()"></c:Button>
 
 						<c:VerticalLayout>
 							<c:TextView Text="|" CssClass="contact_placeholder"></c:TextView>

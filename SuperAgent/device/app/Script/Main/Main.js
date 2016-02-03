@@ -110,6 +110,14 @@ function RegisterSuccess() {
 	Dialog.Message(Translate["#leadThanks#"]);
 }
 
+function SendMail() {
+	Email.Create(Translate["#leadMail#"], "", "");
+}
+
+function Call() {
+	Phone.Call(Translate["#leadPhone#"]);
+}
+
 function RegisterCallback(state, args) {
 	if (args.Success) {
 		RegisterSuccess();

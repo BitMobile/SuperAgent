@@ -5,8 +5,6 @@
 
 		<c:DockLayout CssClass="lead">
 
-
-
 			<c:HorizontalLayout>
 				<c:Image CssClass="name_icon" />
 				<c:EditText Id="FullName" Placeholder="#name#" CssClass="lead_field"></c:EditText>

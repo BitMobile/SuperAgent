@@ -19,9 +19,32 @@ sv {
 	background-color: #f8f8f8;
 }
 
+.lead_root vl {
+	border-color: #b7b7b7;
+	border-width: 2px;
+	border-style: solid;
+}
+
+.lead_header {
+	height: 30%;
+	width: 100%;
+	background-image: url(bg.png);
+
+}
+
+.lead_header img {
+	width: 450px;
+	height: 88px;
+	margin-top: 30%;
+	background-image: url(logo.png);
+	horizontal-align: center;
+}
+
 .lead {
 	height: 100%;
 	width: 45mm;
+	margin-top: 2mm;
+
 	horizontal-align: center;
 	dock-align: top;
 }
@@ -89,7 +112,7 @@ sv {
 .lead_contacts Button {
 	height: 2.2mm;
 	width: 40%;
-	font: 90% arial;
+	font: 85% arial;
 	color: #b7b7b7;
 	margin-top: 0.6mm;
 	margin-bottom: 0.8mm;

@@ -84,7 +84,7 @@ function SendContactsRequest(registered, callback) {
 	headers.push(["name", $.FullName.Text]);
 	headers.push(["phone", $.Phone.Text]);
 	headers.push(["os", $.common.OS]);
-	SendRequest("http://bitmobile2.bt", "/InfoBase/hs/DemoAccess", "Admin", "1", "00:00:10", headers, callback);
+	SendRequest("http://192.168.21.41", "/BITSA.DEV/hs/DemoAccess", "Admin", "1", "00:00:10", headers, callback);
 }
 
 function SendRequest(host, address, username, password, timeout, headers, callback) {

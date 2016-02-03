@@ -1,20 +1,43 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <c:Component xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack">
-	<c:VerticalLayout CssClass="lead">
 
-		<c:HorizontalLayout>
-			<c:Image CssClass="name_icon" />
-			<c:EditText Id="FullName" Placeholder="#name#" CssClass="lead_field"></c:EditText>
-		</c:HorizontalLayout>
+	<c:VerticalLayout CssClass="lead_root">
 
-		<c:HorizontalLayout>
-			<c:Image CssClass="phone_icon" />
-			<c:EditText Keyboard="Phone" Id="Phone" Placeholder="#phone#" CssClass="lead_field"></c:EditText>
-		</c:HorizontalLayout>
+		<c:DockLayout CssClass="lead">
 
-		<c:Button Id="btnRegister" OnClickAction="$Register()" Text="#register#" CssClass="register_button"></c:Button>
-		<c:TextView Text="#leadGetPersonalDemoAccess#"></c:TextView>
-		<c:Button Id="btnEnterUnregistered" OnClickAction="$EnterUnregistered()" CssClass="enter_button" Text="#enterUnregistered#"></c:Button>
+
+
+			<c:HorizontalLayout>
+				<c:Image CssClass="name_icon" />
+				<c:EditText Id="FullName" Placeholder="#name#" CssClass="lead_field"></c:EditText>
+			</c:HorizontalLayout>
+
+			<c:HorizontalLayout>
+				<c:Image CssClass="phone_icon" />
+				<c:EditText Keyboard="Phone" Id="Phone" Placeholder="#phone#" CssClass="lead_field"></c:EditText>
+			</c:HorizontalLayout>
+
+			<c:Button Id="btnRegister" OnClickAction="$Register()" Text="#register#" CssClass="register_button"></c:Button>
+			<c:TextView Text="#leadGetPersonalDemoAccess#"></c:TextView>
+			<c:Button Id="btnEnterUnregistered" OnClickAction="$EnterUnregistered()" CssClass="enter_button" Text="#enterUnregistered#"></c:Button>
+
+			<c:VerticalLayout CssClass="lead_order">
+				<c:TextView Text="Закажите подробную демонстрацию"></c:TextView>
+
+				<c:DockLayout CssClass="lead_contacts">
+					<c:Button Text="mobilespb@1cbit.ru" CssClass="contact_mail"></c:Button>
+
+					<c:Button Text="+7 (812) 320-65-66" CssClass="contact_phone"></c:Button>
+
+					<c:VerticalLayout>
+						<c:TextView Text="|" CssClass="contact_placeholder"></c:TextView>
+					</c:VerticalLayout>
+				</c:DockLayout>
+
+			</c:VerticalLayout>
+
+		</c:DockLayout>
 
 	</c:VerticalLayout>
+
 </c:Component>

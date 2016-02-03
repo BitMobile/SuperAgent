@@ -13,13 +13,21 @@ sv {
 	background-color: #7fc8fd;
 }
 
-.lead {
-	background-color: #f8f8f8;
+.lead_root {
+	height: 100%;
 	width: 100%;
+	background-color: #f8f8f8;
+}
+
+.lead {
+	height: 100%;
+	width: 45mm;
 	horizontal-align: center;
+	dock-align: top;
 }
 
 .lead hl {
+	dock-align: top;
 	width: 45mm;
 	height: 8mm;
 	margin-top: 1mm;
@@ -31,10 +39,10 @@ sv {
 }
 
 .lead Button {
+	dock-align: top;
 	width: 45mm;
 	height: 8mm;
 	margin-top: 1mm;
-	/*border-color: #43acfd;*/
 	border-radius: 16px;
 	border-width: 3px;
 	border-style: solid;
@@ -55,8 +63,64 @@ sv {
 .lead TextView {
 	height: 2.2mm;
 	width: 100%;
+	font: 90% arial;
+	color: #b7b7b7;
+	margin-top: 0.6mm;
+	margin-bottom: 0.8mm;
+	text-align: center;
+	horizontal-align: center;
+}
+
+.lead_order {
+	dock-align: bottom;
+	width: 100%;
+	height: 8mm;
+}
+
+.lead_contacts {
+	width: 100%;
+	height: 6mm;
+}
+
+.lead_contacts vl {
+	dock-align: left;
+}
+
+.lead_contacts Button {
+	height: 2.2mm;
+	width: 40%;
+	font: 90% arial;
+	color: #b7b7b7;
+	margin-top: 0.6mm;
+	margin-bottom: 0.8mm;
+	text-align: center;
+	horizontal-align: center;
+}
+
+.contact_mail {
+	margin-top: 0px;
+	dock-align: left;
+}
+
+.contact_phone {
+	margin-top: 0px;
+	dock-align: right;
+}
+
+.contact_placeholder {
+	width: 1mm;
+	height: 2.2mm;
 	font: 80% arial;
 	color: #b7b7b7;
+	margin-top: 0px;
+	horizontal-align: center;
+}
+
+.lead_order TextView {
+	height: 2.2mm;
+	width: 100%;
+	font: 90% arial;
+	color: #cccccc;
 	margin-top: 0.6mm;
 	margin-bottom: 0.8mm;
 	text-align: center;

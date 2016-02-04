@@ -145,6 +145,8 @@ function RegisterCallback(state, args) {
 	$.btnEnterUnregistered.CssClass = "enter_button";
 	$.FullName.CssClass = "lead_field";
 	$.Phone.CssClass = "lead_field";
+	$.FullName.Enabled = true;
+	$.Phone.Enabled = true;
 	$.btnRegister.Refresh();
 	sendingRequest = false;
 }

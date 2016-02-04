@@ -36,6 +36,7 @@ function Register() {
 	if (!sendingRequest) {
 		if (IsFilledCorrectly()) {
 			$.btnRegister.CssClass = "register_button_blocked";
+			$.btnRegister.Text = Translate["#sending#"];
 			$.btnEnterUnregistered.CssClass = "enter_button_blocked";
 			$.FullName.CssClass = "edittext_blocked";
 			$.Phone.CssClass = "edittext_blocked";
@@ -140,6 +141,7 @@ function RegisterCallback(state, args) {
 		Dialog.Message(Translate["#leadFail#"]);
 	}
 	$.btnRegister.CssClass = "register_button";
+	$.btnRegister.Text = Translate["#register#"];
 	$.btnEnterUnregistered.CssClass = "enter_button";
 	$.FullName.CssClass = "lead_field";
 	$.Phone.CssClass = "lead_field";

@@ -203,7 +203,6 @@ function GetQuickOrder(control, skuId, itemPrice, packField, editField, textView
             defMultiplier = quickOrderItem.Multiplier;
         }
 
-        Variables[packField].Text = packDescription;
         Variables[textViewField].Text = quickOrderItem.Qty + " " + packDescription + " " + alreadyOrdered;
         multiplier = quickOrderItem.Multiplier;
 

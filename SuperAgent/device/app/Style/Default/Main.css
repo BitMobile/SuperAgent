@@ -170,6 +170,26 @@ sv {
 	background-color: #43acfd;
 }
 
+.register_button_blocked {
+	color: #b2b2b7;
+}
+
+.enter_button_blocked {
+	color: #b2b2b7;
+	dock-align: bottom;
+	margin-bottom: 5%;
+}
+
+.edittext_blocked {
+	height: 60%;
+	width: 80%;
+	font: 60% Arial;
+	color: #2d89cf;
+	vertical-align: center;
+	placeholder-color: #b7b7b7;
+	color: #b2b2b7;
+}
+
 .enter_button {
 	background-color: #b7b7b7;
 	dock-align: bottom;

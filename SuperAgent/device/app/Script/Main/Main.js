@@ -1,8 +1,10 @@
 
 var summaryScreenIndex;
 var leadScreenIndex;
+var sendingRequest;
 
 function OnLoad() {
+	sendingRequest = false;
 	summaryScreenIndex = 1;
 	leadScreenIndex = 0;
 	$.swipe_vl.Index = GetFirstScreenIndex();
@@ -31,16 +33,29 @@ function GetVisitsLeft(){
 }
 
 function Register() {
-	if (IsFilledCorrectly()) {
-		SendContactsRequest(true, RegisterCallback);
-	} else {
-		Dialog.Message(Translate["#leadFillDataPlease#"]);
+	if (!sendingRequest) {
+		if (IsFilledCorrectly()) {
+			$.btnRegister.CssClass = "register_button_blocked";
+			$.btnEnterUnregistered.CssClass = "enter_button_blocked";
+			$.FullName.CssClass = "edittext_blocked";
+			$.Phone.CssClass = "edittext_blocked";
+			$.btnRegister.Refresh();
+			$.FullName.Enabled = false;
+			$.Phone.Enabled = false;
+			sendingRequest = true;
+
+			SendContactsRequest(true, RegisterCallback);
+		} else {
+			Dialog.Message(Translate["#leadFillDataPlease#"]);
+		}
 	}
 }
 
 function EnterUnregistered() {
-	SendContactsRequest(false);
-	GoToSummary();
+	if (!sendingRequest) {
+		SendContactsRequest(false);
+		GoToSummary();
+	}
 }
 
 function IsFilledCorrectly() {
@@ -124,6 +139,12 @@ function RegisterCallback(state, args) {
 	} else {
 		Dialog.Message(Translate["#leadFail#"]);
 	}
+	$.btnRegister.CssClass = "register_button";
+	$.btnEnterUnregistered.CssClass = "enter_button";
+	$.FullName.CssClass = "lead_field";
+	$.Phone.CssClass = "lead_field";
+	$.btnRegister.Refresh();
+	sendingRequest = false;
 }
 
 function Dummy() {

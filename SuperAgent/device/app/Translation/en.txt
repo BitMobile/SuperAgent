@@ -1,11 +1,11 @@
-﻿about		ПОДРОБНЕЕ О ПРИЛОЖЕНИИ
+﻿about		MORE ABOUT THE APPLICATION		
 accountsReceivables	account receivables
 Active	Active
 add			Add
 addFromGallery	Add from gallery
 additionally	ADDITIONALLY
 address		Address
-agreement		Используя приложение вы принимаете условия лицензионного соглашения.
+agreement		Using the app, you accept the terms of the license agreement.		
 allStocks	All stocks
 alreadyOrdered	already in order
 alreadyReturned	already in return
@@ -95,14 +95,14 @@ features	Features
 fillInVisitReason	Reason of visit should be filled
 fillNoOrderReason	Reason for not taking the order should be filled.
 filter	Filter
-firstBIT	Первый БИТ — эффективные решения для вашего бизнеса. Лидер на рынке автоматизации 1С с 17 летним опытом!
+firstBIT	The First BIT - effective solutions for your business. The leader in the automation market 1C with 17 years experience!			
 forward		Next
 further	further
 go_back	Back
 groups	Groups
 hideImage	Hide image
-icons		При создании приложения использованы иконки Icons8. Сайт разработчика icons8.com
-idea		Предложить идею
+icons		When creating an application used Icons8 icons. Developer website icons8.com		
+idea		To suggest an idea		
 imageNotAvailable	Image not available now
 impossibleToCreateVisit	Impossible to create plan visit until coordinates aren't set. Retry to get location?
 impossibleToDelete	Impossible to delete, order is already in base
@@ -130,8 +130,8 @@ leadPhone	+7 (812) 320-65-66
 leadMail	mobilespb@1cbit.ru
 legal_address	Legal address
 legal_name	Legal name
-lessStart	Дата завершения не может быть меньше даты начала
-lessToday	Дата начала не может быть меньше текущей
+lessStart	End date can not be less than the start date
+lessToday	Start Date can not be less than the current
 list	List
 location	Set outlet location
 locationSetFailed	Location set is failed.
@@ -181,7 +181,7 @@ noNumber	No number
 noOrder			No order reason field should be filled
 noPriceLists	No Price Lists
 noSnapshot	No snapshot
-noSuccess		Произошла ошибка во время отправки. Данные не отправлены
+noSuccess		An error has occurred while sending. The data is not sent		
 notAvailable	Snapshot isnt't available
 notAvailableShort	N/A
 noteAsExecuted	Note as executed
@@ -204,7 +204,7 @@ orders		Orders
 OrderskuWillBeDeleted	Part of SKUs will be removed from order. Continue?
 OrderSKUWillRevised	SKU list has been revised
 orderSum	Order amount
-others		Другие приложения
+others		Other applications		
 outlet		Outlet
 outlet_class	Outlet class
 outlet_description	Outlet description
@@ -263,7 +263,7 @@ return			Return
 ReturnDiscount	Return discount, %
 returnHistory	RETURN HISTORY
 returnInfo		RETURN INFORMATION
-returnInfoSmall	Информация о заказе
+returnInfoSmall	information about order			
 ReturnMarkUp	Return markup , %
 returnParameters	RETURN PARAMETERS
 returns			Returns
@@ -304,17 +304,17 @@ spread		Spread
 spreadOnDocuments	Spread on documents
 startPlanTime	Start Plan date
 startTime	Start time
-status	Статус
+status		Status				
 stock		Stock
 stock		Stock
 stockPlace	Stock
-success			Данные успешно отправлены
+success			Data successfully sent	
 sum			Sum
 sumDiscount	Sum discount
 sumMarkUp	Sum markup
 summary		Summary
-superDescription	СуперАгент — мобильное решение для сбора заказов, анкетирования и мерчандайзинга, контроля работы сотрудников.
-support		Тех.поддержка
+superDescription	SuperAgent - mobile solution for collecting orders, survey and merchandising, control employee.			
+support		Tech Support		
 sync		Sync
 Synchronization_has_not_been_performed	Synchronization has not been performed
 synchronizationData	SYNCHRONIZATION OF DATA
@@ -352,6 +352,6 @@ vpPerformed	performed
 vpUnplanned	unplanned
 vpVisits	visits
 web_site	Web-site
-webSite		Сайт разработчика
+webSite		Website Developer		
 YES		Yes
 ZAO				ZAO

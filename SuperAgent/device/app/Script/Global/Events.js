@@ -35,8 +35,8 @@ function OnWorkflowStart(name) {
 
 	if (name == "Visit" || name == "Outlet" || name=="CreateOutlet" || ((name=="Order" || name=="Return") && !$.Exists('executedOrder')))
 	{
-		StartTracking();		
-		$.workflow.Add("outlet", GlobalWorkflow.GetOutlet());		
+		StartTracking();
+		$.workflow.Add("outlet", GlobalWorkflow.GetOutlet());
 	}
 
 	if (name=="Visit" || name=="Order" || name=="Return")
@@ -143,7 +143,7 @@ function OnWorkflowPause(name) {
 
 // ------------------------ Functions ------------------------
 
-function StartTracking(){		
+function StartTracking(){
 
 	GPS.StartTracking(-1);
 }
@@ -722,7 +722,7 @@ function ClearUSRTables(){
 
 	var q = new Query("DELETE FROM USR_Questions");
 	q.Execute();
-	
+
 	var q = new Query("DELETE FROM USR_SKUQuestions");
 	q.Execute();
 }

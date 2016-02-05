@@ -43,13 +43,19 @@ sv {
 .lead {
 	height: 100%;
 	width: 45mm;
-	margin-top: 10%;
+	/*margin-top: 10%;*/
 
 	horizontal-align: center;
 	dock-align: top;
 }
 
-.lead hl {
+.input {
+	/*background-color: #336699;*/
+	vertical-align: center;
+	height: 30mm;
+}
+
+.lead_fieldcontainer {
 	dock-align: top;
 	width: 45mm;
 	height: 8mm;
@@ -59,6 +65,14 @@ sv {
 	border-width: 2px;
 	border-style: solid;
 	horizontal-align: center;
+}
+
+.lead_fieldcontainer img {
+	width: 45px;
+	height: 45px;
+	margin-left: 16px;
+	margin-right: 16px;
+	vertical-align: center;
 }
 
 .lead Button {
@@ -74,16 +88,7 @@ sv {
 	horizontal-align: center;
 }
 
-.lead_field {
-	height: 60%;
-	width: 80%;
-	font: 60% Arial;
-	color: #2d89cf;
-	vertical-align: center;
-	placeholder-color: #b7b7b7;
-}
-
-.lead TextView {
+.lead hl vl TextView {
 	height: 2.2mm;
 	width: 100%;
 	font: 90% arial;
@@ -93,6 +98,16 @@ sv {
 	text-align: center;
 	horizontal-align: center;
 }
+
+.lead_field {
+	height: 60%;
+	width: 80%;
+	font: 60% Arial;
+	color: #2d89cf;
+	vertical-align: center;
+	placeholder-color: #b7b7b7;
+}
+
 
 .lead_order {
 	dock-align: bottom;
@@ -150,13 +165,6 @@ sv {
 	horizontal-align: center;
 }
 
-.lead hl img {
-	width: 45px;
-	height: 45px;
-	margin-left: 16px;
-	margin-right: 16px;
-	vertical-align: center;
-}
 
 .name_icon {
 	background-image: url(name_icon.png);
@@ -167,10 +175,27 @@ sv {
 }
 
 .register_button {
+	dock-align: top;
+	width: 45mm;
+	height: 8mm;
+	margin-top: 1mm;
+	border-radius: 16px;
+	border-width: 3px;
+	border-style: solid;
+	font: 40% arial;
+	color: #ffffff;
 	background-color: #43acfd;
 }
 
 .register_button_blocked {
+	dock-align: top;
+	width: 45mm;
+	height: 8mm;
+	margin-top: 1mm;
+	border-radius: 16px;
+	border-width: 3px;
+	border-style: solid;
+	font: 40% arial;
 	color: #b2b2b7;
 }
 

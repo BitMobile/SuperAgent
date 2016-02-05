@@ -11,19 +11,6 @@
 
 			<c:DockLayout CssClass="lead">
 
-				<c:HorizontalLayout>
-					<c:Image CssClass="name_icon" />
-					<c:EditText Id="FullName" Placeholder="#name#" CssClass="lead_field"></c:EditText>
-				</c:HorizontalLayout>
-
-				<c:HorizontalLayout>
-					<c:Image CssClass="phone_icon" />
-					<c:EditText Keyboard="Phone" Id="Phone" Placeholder="#phone#" CssClass="lead_field"></c:EditText>
-				</c:HorizontalLayout>
-
-				<c:Button Id="btnRegister" OnClickAction="$Register()" Text="#register#" CssClass="register_button"></c:Button>
-				<c:TextView Text="#leadGetPersonalDemoAccess#"></c:TextView>
-
 				<c:VerticalLayout CssClass="lead_order">
 					<c:TextView Text="#leadOrderDemo#"></c:TextView>
 
@@ -40,6 +27,27 @@
 				</c:VerticalLayout>
 
 				<c:Button Id="btnEnterUnregistered" OnClickAction="$EnterUnregistered()" CssClass="enter_button" Text="#enterUnregistered#"></c:Button>
+
+				<c:HorizontalLayout>
+
+					<c:VerticalLayout CssClass="input">
+
+						<c:HorizontalLayout CssClass="lead_fieldcontainer">
+							<c:Image CssClass="name_icon" />
+							<c:EditText Id="FullName" Placeholder="#name#" CssClass="lead_field"></c:EditText>
+						</c:HorizontalLayout>
+
+						<c:HorizontalLayout CssClass="lead_fieldcontainer">
+							<c:Image CssClass="phone_icon" />
+							<c:EditText Keyboard="Phone" Id="Phone" Placeholder="#phone#" CssClass="lead_field"></c:EditText>
+						</c:HorizontalLayout>
+
+						<c:Button Id="btnRegister" OnClickAction="$Register()" Text="#register#" CssClass="register_button"></c:Button>
+						<c:TextView Text="#leadGetPersonalDemoAccess#"></c:TextView>
+
+					</c:VerticalLayout>
+
+				</c:HorizontalLayout>
 
 			</c:DockLayout>
 

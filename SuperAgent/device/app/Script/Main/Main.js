@@ -60,8 +60,8 @@ function EnterUnregistered() {
 }
 
 function IsFilledCorrectly() {
-	var IsNameFilled = $.FullName.Text != "";
-	var IsPhoneFilled = $.Phone.Text != "";
+	var IsNameFilled = $.FullName.Text != "" && $.FullName.Text != null;
+	var IsPhoneFilled = $.Phone.Text != "" && $.Phone.Text != null;
 	return IsNameFilled && IsPhoneFilled;
 }
 

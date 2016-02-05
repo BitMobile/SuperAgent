@@ -31,6 +31,16 @@ function GetExecutedTasks() {
 	return query.Execute();
 }
 
+function CompleteTheTask(task){
+	var taskObj = task.GetObject();
+	taskObj.Status = true;
+	taskObj.ExecutionDate = DateTime.Now;
+	taskObj.FactExecutor = $.common.UserRef;
+	taskObj.Result = $.result.Text;
+	taskObj.Save();
+	DoRefresh();
+}
+
 function GetNotExecutedTasks() {
 	var q = new Query;
 

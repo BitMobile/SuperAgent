@@ -66,7 +66,7 @@ function GetNotExecutedTasks() {
 }
 
 function FormatDate(datetime) {
-	if (datetime == Translate["#notLimited#"])
+	if (datetime == null || datetime == Translate["#notLimited#"])
 		return datetime;
 	else
 		return Translate["#untill#"] + " " + Format("{0:d}", Date(datetime).Date);

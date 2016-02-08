@@ -1,12 +1,11 @@
 
-var summaryScreenIndex;
-var leadScreenIndex;
+var summaryScreenIndex = 1;
+var leadScreenIndex = 0;
+var entered = false;
 var sendingRequest;
 
 function OnLoad() {
 	sendingRequest = false;
-	summaryScreenIndex = 1;
-	leadScreenIndex = 0;
 	$.swipe_vl.Index = GetFirstScreenIndex();
 }
 
@@ -56,6 +55,7 @@ function EnterUnregistered() {
 	if (!sendingRequest) {
 		SendContactsRequest(false);
 		GoToSummary();
+		entered = true;
 	}
 }
 
@@ -70,7 +70,7 @@ function GoToSummary() {
 }
 
 function GetFirstScreenIndex() {
-	return (IsDemoUser() && !GetContactsSentFlag() ? leadScreenIndex : summaryScreenIndex);
+	return (IsDemoUser() && !GetContactsSentFlag() && !entered ? leadScreenIndex : summaryScreenIndex);
 }
 
 function IsDemoUser() {

@@ -151,6 +151,28 @@ function RegisterCallback(state, args) {
 	sendingRequest = false;
 }
 
+function crutch(sender) {
+	// if (sender.Id == "FullName") {
+	// 	if (Right(sender.Text, 1) == "\n") {
+	// 		$.FullName.Text = StrReplace($.FullName.Text, "\n", "");
+	// 	}
+	// } else if (sender.Id == "Phone") {
+	// 	if (Right(sender.Text, 1) == "\n") {
+	// 		$.Phone.Text = StrReplace($.Phone.Text, "\n", "");
+	// 	}
+	// }
+	if (Right(sender.Text, 1) == "\n") {
+		sender.Text = StrReplace(sender.Text, "\n", "");
+		if (sender.Id == "FullName") {
+			$.Phone.SetFocus();
+		} else if (sender.Id == "Phone") {
+			sender.Enabled = false;
+			$.Phone.Refresh();
+			sender.Enabled = true;
+		}
+	}
+}
+
 function Dummy() {
 
 }

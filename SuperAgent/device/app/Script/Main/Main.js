@@ -100,7 +100,7 @@ function SendContactsRequest(registered, callback) {
 	headers.push(["name", $.FullName.Text]);
 	headers.push(["phone", $.Phone.Text]);
 	headers.push(["os", $.common.OS]);
-	SendRequest("http://192.168.21.41", "/BITSA.DEV/hs/DemoAccess", "Admin", "1", "00:00:10", headers, callback);
+	SendRequest("http://demo.superagent.ru", "/demo/hs/DemoAccess", "demoaccess", "password", "00:00:10", headers, callback);
 }
 
 function SendRequest(host, address, username, password, timeout, headers, callback) {
@@ -149,6 +149,28 @@ function RegisterCallback(state, args) {
 	$.Phone.Enabled = true;
 	$.btnRegister.Refresh();
 	sendingRequest = false;
+}
+
+function crutch(sender) {
+	// if (sender.Id == "FullName") {
+	// 	if (Right(sender.Text, 1) == "\n") {
+	// 		$.FullName.Text = StrReplace($.FullName.Text, "\n", "");
+	// 	}
+	// } else if (sender.Id == "Phone") {
+	// 	if (Right(sender.Text, 1) == "\n") {
+	// 		$.Phone.Text = StrReplace($.Phone.Text, "\n", "");
+	// 	}
+	// }
+	if (Right(sender.Text, 1) == "\n") {
+		sender.Text = StrReplace(sender.Text, "\n", "");
+		if (sender.Id == "FullName") {
+			$.Phone.SetFocus();
+		} else if (sender.Id == "Phone") {
+			sender.Enabled = false;
+			$.Phone.Refresh();
+			sender.Enabled = true;
+		}
+	}
 }
 
 function Dummy() {

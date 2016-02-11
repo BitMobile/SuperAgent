@@ -325,6 +325,7 @@ target		Цель
 targets		Цели
 task		Задача
 tasks		Задачи
+TextMes	  Текст
 todo		Задачи
 todoDone	Задач выполнено
 total_receivable	Общая сумма (руб.):

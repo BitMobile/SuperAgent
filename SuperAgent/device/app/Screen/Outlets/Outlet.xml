@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope" StyleSheet="Outlet.css">
 
-	<s:If Test="$workflow.name=='Visit'">		
+	<s:If Test="$workflow.name=='Visit'">
 		<s:Push Id="workflow.visit" Value="$CreateVisitIfNotExists($common.UserRef, $workflow.visit, $planVisit)" />
 	</s:If>
 
@@ -166,10 +166,10 @@
 				<c:VerticalLayout>
 					<c:TextView Text="#status#" CssClass="description_row" />
 					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000007 == true">
-						<c:TextView Id="status" Text="$GetStatusDescription($workflow.outlet)" CssClass="main_row_available" />					
+						<c:TextView Id="status" Text="$GetStatusDescription($workflow.outlet)" CssClass="main_row_available" />
 					</s:If>
 					<s:Else>
-						<c:TextView Id="status" Text="$GetStatusDescription($workflow.outlet)" CssClass="not_available_basic" />					
+						<c:TextView Id="status" Text="$GetStatusDescription($workflow.outlet)" CssClass="not_available_basic" />
 					</s:Else>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
@@ -226,7 +226,7 @@
 						<c:TextView Id="outletDistr" Text="$GetDescr($workflow.outlet.Distributor.Description)" CssClass="main_row_available"></c:TextView>
 					</s:If>
 					<s:Else>
-						<c:TextView Id="outletDistr" Text="$GetDescr($workflow.outlet.Distributor.Description)" CssClass="not_available_basic"></c:TextView>					
+						<c:TextView Id="outletDistr" Text="$GetDescr($workflow.outlet.Distributor.Description)" CssClass="not_available_basic"></c:TextView>
 					</s:Else>
 				</c:VerticalLayout>
 			</c:DockLayout>
@@ -235,11 +235,11 @@
 			<c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet,Class,$outletClass,#outlet_class#, $sessionConst.editOutletParameters, 000000005)">
 				<c:VerticalLayout>
 					<c:TextView Text="#outlet_class#" CssClass="description_row"></c:TextView>
-					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000005 == true">					
+					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000005 == true">
 						<c:TextView Id="outletClass" Text="$workflow.outlet.Class.Description" CssClass="main_row_available"></c:TextView>
 					</s:If>
 					<s:Else>
-						<c:TextView Id="outletClass" Text="$workflow.outlet.Class.Description" CssClass="not_available_basic"></c:TextView>					
+						<c:TextView Id="outletClass" Text="$workflow.outlet.Class.Description" CssClass="not_available_basic"></c:TextView>
 					</s:Else>
 				</c:VerticalLayout>
 			</c:DockLayout>
@@ -248,11 +248,11 @@
 			<c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet,Type,$outletType,#outlet_type#, $sessionConst.editOutletParameters, 000000004)">
 				<c:VerticalLayout>
 					<c:TextView Text="#outlet_type#" CssClass="description_row"></c:TextView>
-					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000004 == true">					
+					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000004 == true">
 						<c:TextView Id="outletType" Text="$workflow.outlet.Type.Description" CssClass="main_row_available"></c:TextView>
 					</s:If>
 					<s:Else>
-						<c:TextView Id="outletType" Text="$workflow.outlet.Type.Description" CssClass="not_available_basic"></c:TextView>					
+						<c:TextView Id="outletType" Text="$workflow.outlet.Type.Description" CssClass="not_available_basic"></c:TextView>
 					</s:Else>
 				</c:VerticalLayout>
 			</c:DockLayout>
@@ -297,14 +297,14 @@
 								</s:Else>
 							</s:If>
 							<s:Else>
-								<c:TextView Id="control{$index}" Text="$parameter.AnswerOutput" CssClass="value"></c:TextView>															
+								<c:TextView Id="control{$index}" Text="$parameter.AnswerOutput" CssClass="value"></c:TextView>
 							</s:Else>
 						</s:Else>
 						<s:If Test="$editable == true">
 							<c:TextView Text="$parameter.Description"></c:TextView>
 						</s:If>
 						<s:Else>
-							<c:TextView Text="$parameter.Description" CssClass="not_available"></c:TextView>						
+							<c:TextView Text="$parameter.Description" CssClass="not_available"></c:TextView>
 						</s:Else>
 					</c:DockLayout>
 					<c:HorizontalLine />

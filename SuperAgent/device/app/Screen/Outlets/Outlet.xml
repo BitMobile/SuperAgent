@@ -153,7 +153,7 @@
 				<c:VerticalLayout>
 					<c:TextView Text="#description#" CssClass="description_row"></c:TextView>
 					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000001 == true">
-						<c:EditText Id="outletDescr" Value="$workflow.outlet.Description" OnLostFocus="$CheckForNullDesc($workflow.outlet)" CssClass="main_row"></c:EditText>
+						<c:EditText Id="outletDescr" Value="$workflow.outlet.Description" OnGetFocus="$CashDesc($workflow.outlet)" OnLostFocus="$CheckForNullDesc($workflow.outlet)" CssClass="main_row"></c:EditText>
 					</s:If>
 					<s:Else>
 						<c:TextView Id="outletDescr" Text="$workflow.outlet.Description" CssClass="not_available_basic"></c:TextView>

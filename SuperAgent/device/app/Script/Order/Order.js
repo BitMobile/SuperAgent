@@ -25,7 +25,9 @@ function OnLoading(){
 
 	var menuItem = GlobalWorkflow.GetMenuItem();
 	back = (menuItem == "Orders" || menuItem == "Returns" ? Translate["#clients#"] : Translate["#back#"]);
-
+	if ($.workflow.name=='Visit'){
+		back=Translate["#back#"];
+	}
 }
 
 function OnLoad(){

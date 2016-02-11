@@ -54,7 +54,7 @@ function GetOutlets(searchText) {
 
 	if (String.IsNullOrEmpty(searchText)==false) { //search processing
 		searchText = StrReplace(searchText, "'", "''");
-		search = "WHERE Contains(O.Description, '" + searchText + "') ";
+		search = "WHERE Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "')";
 	}
 
 	var currentDoc = GlobalWorkflow.GetMenuItem();
@@ -141,6 +141,14 @@ function CreateOutletEnabled(){
 
 function EmptyCoordinates(outlet){
 	return !!(outlet != null && Converter.ToDecimal(outlet.Lattitude)!= Converter.ToDecimal(outlet.Longitude));
+}
+
+function CheckForNullDesc(sender,tempoutlet){
+	var outlet=tempoutlet.GetObject();
+	if (outlet.Description==""){
+		outlet.Description=" ";
+		outlet.Save();
+	}
 }
 
 function SaveValue(control, ref) {

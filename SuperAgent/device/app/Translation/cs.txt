@@ -84,7 +84,7 @@ endPlanTime		Konec (plán)
 enterDateTime	Uveďte datum a čas
 error			Chyba
 errorMessage	Chybová zpráva
-execute			Vyřídit 
+execute			Vyřídit
 executed		vyřízeno
 executedtask	VYŘÍZENÉ ÚKOLY
 executionDate	Konec (fakt)
@@ -121,7 +121,7 @@ kpp				IČ
 kpp_regexp		^.*$
 lastSync		Poslední synchronizace
 legal_address	Fakturační adresa
-legal_name		Obchodní jméno 
+legal_name		Obchodní jméno
 lessStart		Konečný datum nesmí být menší než počáteční
 lessToday		Počáteční datum nesmí být menší než aktuální datum
 list			Evidence
@@ -136,8 +136,8 @@ mainData		ZÁKLADNÍ
 mainInfo		ZÁKLADNÍ ÚDAJE
 makeSnapshot	Pořídit foto
 map				Mapa
-markUp			Přirážka 
-markUp			Přirážka 
+markUp			Přirážka
+markUp			Přirážka
 maximumAmount	Maximální částka
 messageNulls	Všechna pole musí být vyplněna
 nameSurname		Jméno, příjmení
@@ -179,7 +179,7 @@ noteAsExecuted	VYŘÍZENO
 noteAsNew		NEVYŘÍZENO
 notLimited		 bez omezení
 OAO				a.s.
-of				z 
+of				z
 Ok				OK
 OOO				s.r.o.
 OP				OP
@@ -276,7 +276,7 @@ set				Nastavit
 setCoordinates	Nastavit polohu prodejního místa dle aktuální polohy?
 setCoords		Nastavit polohu
 setDate			Nastavit datum
-settings			Nastavení 
+settings			Nastavení
 setVisitCoordinates	Provést znovu nastavení polohy?
 show				Zobrazit foto
 showImage		Zobrazit foto
@@ -315,6 +315,7 @@ target			Cíl
 targets			Cíle
 task			Úkol
 tasks			Úkoly
+TextMes	  Text
 todo			ToDo
 todoDone		Počet vyřízených úkolů
 total_receivable	Celkem:

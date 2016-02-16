@@ -325,6 +325,7 @@ target		Target
 targets		Targets
 task		Task
 tasks		Tasks
+TextMes	  Text
 todo		ToDo
 todoDone	Tasks done
 total_receivable	Total sum:

@@ -39,7 +39,7 @@
 				<c:HorizontalLine />
 			</s:If>
 
-			<c:HorizontalLayout CssClass="grid">
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$DoAction(SelectTaskText,$task.TextTask)">
 				<c:VerticalLayout>
 					<c:TextView Text="#target#" CssClass="description_row"></c:TextView>
 					<c:TextView Text="$task.TextTask" CssClass="main_row" />

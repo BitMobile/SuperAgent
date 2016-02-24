@@ -39,7 +39,7 @@ function OnLoad(){
 				" Answer, HistoryAnswer, AnswerDate )");
 		q_usr.Execute();
 
-		var q = new Query("SELECT COUNT(SKU) " + 
+		var q = new Query("SELECT COUNT(SKU) " +
 			GetAutoOrderText()
 			);
 		q.AddParameter("outlet", GlobalWorkflow.GetOutlet());
@@ -50,13 +50,13 @@ function OnLoad(){
 
 		if ($.sessionConst.UseAutoFillForRecOrder && parseInt(hasSKUs) != parseInt(0)){
 
-			Dialog.Ask(Translate["#autoFillOrder#"], AutoFill);			
+			Dialog.Ask(Translate["#autoFillOrder#"], AutoFill);
 
 		}
 	}
 }
 
-function AutoFill(state, args){	
+function AutoFill(state, args){
 
 	var q = new Query(" SELECT SKU, Unit, BaseUnitQty, Price, Qty, UnitId, RecUnit " +
 		GetAutoOrderText()
@@ -67,7 +67,7 @@ function AutoFill(state, args){
 	q.AddParameter("atVisit", $.workflow.name=='Visit');
 
 	var skus  = q.Execute();
-	
+
 	OrderItem.ClearItem();
 	while (skus.Next()){
 		if (parseFloat(skus.Qty) > parseFloat(0)){
@@ -83,7 +83,7 @@ function AutoFill(state, args){
 		}
 	}
 
-	DoRefresh(); 
+	DoRefresh();
 
 }
 
@@ -94,7 +94,7 @@ function GetAutoOrderText(){
 		" CASE WHEN (@atVisit AND Q.Answer IS NOT NULL) OR (NOT @atVisit AND VA.Answer IS NOT NULL) THEN UB.Id ELSE U.Id END AS UnitId, " +
 		" CASE WHEN (@atVisit AND Q.Answer IS NOT NULL) OR (NOT @atVisit AND VA.Answer IS NOT NULL) THEN UB.Description ELSE U.Description END AS RecUnit " +
 
-		" FROM Catalog_AssortmentMatrix_Outlets AO " + 
+		" FROM Catalog_AssortmentMatrix_Outlets AO " +
 		" JOIN Catalog_AssortmentMatrix_SKUs S ON AO.Ref=S.Ref " +
 		" JOIN Document_PriceList_Prices P ON P.SKU=S.SKU AND P.Ref=@priceList " +
 		" JOIN Catalog_SKU CS ON S.SKU=CS.Id " +
@@ -225,7 +225,7 @@ function CheckIfEmptyAndForward(order, wfName) {
 			queryResult = query.Execute();
 			while (queryResult.Next()) {
 				DB.Delete(queryResult.Id);
-			}			
+			}
 		}
 
 		Workflow.Commit();
@@ -288,7 +288,7 @@ function EditIfNew(order, orderItem) {
 		//for OrderItemInit
 		$.itemFields.Add("SKU", orderItem.SKU);
 		$.itemFields.Add("recOrder", orderItem.Qty);
-		$.itemFields.Add("Ref", orderItem.Ref);	
+		$.itemFields.Add("Ref", orderItem.Ref);
 		$.itemFields.Add("basePrice", GetBasePrice(order.PriceList, orderItem.SKU));
 
 	    OrderItem.InitItem($.itemFields);

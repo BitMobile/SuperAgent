@@ -48,16 +48,24 @@
 				<c:HorizontalLine />
 
 				<s:Iterator Id="task" Value="$GetNotExecutedTasks()">
-
-					<c:SwipeHorizontalLayout Id="swipe_layout1" CssClass="swipe_layout" Index="1">
-
-						<c:HorizontalLayout CssClass="green_swipe" OnClickAction="$CompleteTheTask($task.Id)">
-							<c:VerticalLayout>
-								<c:Image></c:Image>
-								<c:TextView Text="#execute#"></c:TextView>
-							</c:VerticalLayout>
-						</c:HorizontalLayout>
-
+					<s:If Test="$sessionConst.editTasksWithoutVisit || $workflow.name=='Visit'">
+						<c:SwipeHorizontalLayout Id="swipe_layout1" CssClass="swipe_layout" Index="1">
+							<c:HorizontalLayout CssClass="green_swipe" OnClickAction="$CompleteTheTask($task.Id)">
+								<c:VerticalLayout>
+									<c:Image></c:Image>
+									<c:TextView Text="#execute#"></c:TextView>
+								</c:VerticalLayout>
+							</c:HorizontalLayout>
+							<c:DockLayout CssClass="grid" OnClickAction="$AddGlobalAndAction($task.Id)">
+								<c:Image />
+								<c:VerticalLayout>
+									<c:TextView Text="{$FormatDate($task.EndPlanDate)} {$task.Outlet}" CssClass="description_row"></c:TextView>
+									<c:TextView Text="$task.TextTask" CssClass="main_row"></c:TextView>
+								</c:VerticalLayout>
+							</c:DockLayout>
+						</c:SwipeHorizontalLayout>
+					</s:If>
+					<s:Else>
 						<c:DockLayout CssClass="grid" OnClickAction="$AddGlobalAndAction($task.Id)">
 							<c:Image />
 							<c:VerticalLayout>
@@ -65,7 +73,7 @@
 								<c:TextView Text="$task.TextTask" CssClass="main_row"></c:TextView>
 							</c:VerticalLayout>
 						</c:DockLayout>
-					</c:SwipeHorizontalLayout>
+					</s:Else>
 					<c:HorizontalLine />
 				</s:Iterator>
 
@@ -77,7 +85,24 @@
 				<c:HorizontalLine />
 
 				<s:Iterator Id="eTask" Value="$GetExecutedTasks()">
-					<c:SwipeHorizontalLayout Id="swipe_layout2" CssClass="swipe_layout">
+					<s:If Test="$sessionConst.editTasksWithoutVisit || $workflow.name=='Visit'">
+						<c:SwipeHorizontalLayout Id="swipe_layout2" CssClass="swipe_layout">
+							<c:DockLayout CssClass="grid" OnClickAction="$AddGlobalAndAction($eTask.Id)">
+								<c:Image />
+								<c:VerticalLayout>
+									<c:TextView Text="#executed# {$FormatDate($eTask.ExecutionDate)} {$eTask.Outlet}" CssClass="description_row"></c:TextView>
+									<c:TextView Text="$eTask.TextTask" CssClass="main_row"></c:TextView>
+								</c:VerticalLayout>
+							</c:DockLayout>
+							<c:HorizontalLayout CssClass="gray_swipe" OnClickAction="$RetrieveTask($eTask.Id)">
+								<c:VerticalLayout>
+									<c:Image></c:Image>
+									<c:TextView Text="#retrieve#"></c:TextView>
+								</c:VerticalLayout>
+							</c:HorizontalLayout>
+						</c:SwipeHorizontalLayout>
+					</s:If>
+					<s:Else>
 						<c:DockLayout CssClass="grid" OnClickAction="$AddGlobalAndAction($eTask.Id)">
 							<c:Image />
 							<c:VerticalLayout>
@@ -85,13 +110,7 @@
 								<c:TextView Text="$eTask.TextTask" CssClass="main_row"></c:TextView>
 							</c:VerticalLayout>
 						</c:DockLayout>
-						<c:HorizontalLayout CssClass="gray_swipe" OnClickAction="$RetrieveTask($eTask.Id)">
-							<c:VerticalLayout>
-								<c:Image></c:Image>
-								<c:TextView Text="#retrieve#"></c:TextView>
-							</c:VerticalLayout>
-						</c:HorizontalLayout>						
-					</c:SwipeHorizontalLayout>
+					</s:Else>
 					<c:HorizontalLine />
 
 				</s:Iterator>

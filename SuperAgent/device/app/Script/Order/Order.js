@@ -28,7 +28,9 @@ function OnLoading(){
 	if ($.workflow.name == 'Visit'){
 		back = Translate["#back#"];
 	}
-
+	if ($.workflow.name == 'Return'){
+		back = Translate["#returns#"];
+	}
 }
 
 function OnLoad(){

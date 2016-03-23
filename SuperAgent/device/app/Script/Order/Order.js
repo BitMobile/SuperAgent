@@ -24,14 +24,23 @@ function OnLoading(){
 	}
 
 	var menuItem = GlobalWorkflow.GetMenuItem();
+	newDoc = FindExecutedOrder();
+	if (newDoc == null) {
 	back = (menuItem == "Orders" || menuItem == "Returns" ? Translate["#clients#"] : Translate["#back#"]);
+	}
+	else {
+		if ($.workflow.name == 'Return'){
+			back = Translate["#returns#"];
+		}
+		if ($.workflow.name == 'Order'){
+			back = Translate["#orders#"];
+		}
+	}
 	if ($.workflow.name == 'Visit'){
 		back = Translate["#back#"];
 	}
-	if ($.workflow.name == 'Return'){
-		back = Translate["#returns#"];
-	}
 }
+
 
 function OnLoad(){
 

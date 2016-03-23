@@ -13,8 +13,8 @@
 		<c:DockLayout CssClass="top_navigator">
 			<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$OrderBack()">
 				<c:Image />
-				<c:TextView Text="@back" />
-			</c:DockLayout>
+						<c:TextView Text="@back" />
+				</c:DockLayout>
 			<c:DockLayout CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckIfEmptyAndForward($thisDoc, $workflow.name)">
 				<c:TextView Id="btnForward" Text="#forward#" />
 			</c:DockLayout>

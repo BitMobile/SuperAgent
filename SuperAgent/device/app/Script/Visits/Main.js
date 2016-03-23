@@ -24,7 +24,7 @@ function GetUncommitedScheduledVisits(searchText) {
 	var q = new Query();
 	if (String.IsNullOrEmpty(searchText)==false) {
 		searchText = StrReplace(searchText, "'", "''");
-		search = "AND Contains(O.Description, '" + searchText + "') ";
+		search = "AND Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "') ";
 	}
 	q.Text = ("SELECT DISTINCT VP.Outlet, VP.Ref, " +
 			" CASE WHEN strftime('%H:%M', VP.Date)='00:00' THEN '' ELSE strftime('%H:%M', VP.Date) END AS Time, " +
@@ -48,7 +48,7 @@ function GetUncommitedScheduledVisitsCount(searchText) {
 	var q = new Query();
 	if (String.IsNullOrEmpty(searchText)==false) {
 		searchText = StrReplace(searchText, "'", "''");
-		search = "AND Contains(O.Description, '" + searchText + "') ";
+		search = "AND Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "') ";
 	}
 	q.Text = ("SELECT COUNT(DISTINCT VP.Outlet) " +
 			" FROM Catalog_Outlet O JOIN Document_VisitPlan_Outlets VP ON O.Id = VP.Outlet AND DATE(VP.Date)=DATE(@date) " +
@@ -81,7 +81,7 @@ function GetCommitedVisits(searchText) {
 	var search = "";
 	if (String.IsNullOrEmpty(searchText)==false) {
 		searchText = StrReplace(searchText, "'", "''");
-		search = "AND Contains(O.Description, '" + searchText + "') ";
+		search = "AND Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "') ";
 	}
 
 //	var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet WHERE V.Date >= @today AND V.Date < @tomorrow AND VP.Date >= @today AND VP.Date < @tomorrow " + search + " ORDER BY O.Description LIMIT 100");
@@ -99,7 +99,7 @@ function GetCommitedScheduledVisitsCount(searchText) {
 	var search = "";
 	if (String.IsNullOrEmpty(searchText)==false) {
 		searchText = StrReplace(searchText, "'", "''");
-		search = "AND Contains(O.Description, '" + searchText + "') ";
+		search = "AND Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "') ";
 	}
 
 //	var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet WHERE V.Date >= @today AND V.Date < @tomorrow AND VP.Date >= @today AND VP.Date < @tomorrow " + search + " ORDER BY O.Description LIMIT 100");
@@ -119,7 +119,7 @@ function GetOutlets(searchText) {
 
 	if (String.IsNullOrEmpty(searchText)==false) {
 		searchText = StrReplace(searchText, "'", "''");
-		search = "WHERE Contains(O.Description, '" + searchText + "') ";
+		search = "WHERE Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "')";
 	}
 
 	q.Text = "SELECT O.Id AS Outlet, O.Description, O.Address," + OutletStatusText() +

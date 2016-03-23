@@ -40,7 +40,15 @@ function CompleteTheTask(task){
 	taskObj.Save();
 	DoRefresh();
 }
-
+function RetrieveTask(task){
+	var taskObj = task.GetObject();
+	taskObj.Status = false;
+	taskObj.ExecutionDate = null;
+	taskObj.FactExecutor = DB.EmptyRef("Catalog_User");
+	taskObj.Result = $.result.Text;
+	taskObj.Save();
+	DoRefresh();
+}
 function GetNotExecutedTasks() {
 	var q = new Query;
 

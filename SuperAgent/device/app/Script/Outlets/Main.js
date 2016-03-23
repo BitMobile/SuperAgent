@@ -3,6 +3,7 @@ var singlePicture;
 var parameterValueC;
 var title;
 var back;
+var outletDesc;
 
 //"description"	= "000000001"
 //"address"			= "000000002"
@@ -54,7 +55,7 @@ function GetOutlets(searchText) {
 
 	if (String.IsNullOrEmpty(searchText)==false) { //search processing
 		searchText = StrReplace(searchText, "'", "''");
-		search = "WHERE Contains(O.Description, '" + searchText + "') ";
+		search = "WHERE Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "')";
 	}
 
 	var currentDoc = GlobalWorkflow.GetMenuItem();
@@ -142,9 +143,25 @@ function CreateOutletEnabled(){
 function EmptyCoordinates(outlet){
 	return !!(outlet != null && Converter.ToDecimal(outlet.Lattitude)!= Converter.ToDecimal(outlet.Longitude));
 }
+function CashDesc(sender,tempoutlet){
+	var outlet=tempoutlet.GetObject();
+	outletDesc=outlet.Description;
+}
+function CheckForNullDesc(sender,tempoutlet){
+	var outlet=tempoutlet.GetObject();
+	var descString=TrimAll(outlet.Description);
+	if (IsNullOrEmpty(descString)){
+		outlet.Description=outletDesc;
+		$.outletDescr.Text=outletDesc;
+		outlet.Save();
+	}
+	//$.outletDescr.CssClass="main_row";
+	//$.outletDescr.Refresh();
+	//Workflow.Refresh([]);
+	}
 
 function SaveValue(control, ref) {
-	var outlet = ref.GetObject();	
+	var outlet = ref.GetObject();
 	outlet.Address = control.Text;
 	outlet.Save();
 }

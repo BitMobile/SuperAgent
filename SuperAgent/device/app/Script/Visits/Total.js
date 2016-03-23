@@ -147,17 +147,17 @@ function CountTasks(outlet) {
 }
 
 function GetOrderSUM(order) {
-    var query = new Query("SELECT SUM(Qty*Total) FROM Document_Order_SKUs WHERE Ref = @Ref");
+    var query = new Query("SELECT FormatNumber(\"{0:F2}\",SUM(Qty*Total)) FROM Document_Order_SKUs WHERE Ref = @Ref");
     query.AddParameter("Ref", order);
-    var sum = query.ExecuteScalar();
-    return FormatValue(sum);
+    var sum = query.ExecuteScalar() || 0;
+    return sum;
 }
 
 function GetReturnSum(returnDoc) {
-	var query = new Query("SELECT SUM(Qty*Total) FROM Document_Return_SKUs WHERE Ref = @Ref");
+	var query = new Query("SELECT FormatNumber(\"{0:F2}\",SUM(Qty*Total)) FROM Document_Return_SKUs WHERE Ref = @Ref");
 	query.AddParameter("Ref", returnDoc);
-	var sum = query.ExecuteScalar();
-	return FormatValue(sum);
+	var sum = query.ExecuteScalar() || 0;
+	return sum;
 }
 
 function AskEndVisit(order, visit, wfName) {

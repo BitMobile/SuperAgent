@@ -1,7 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope" StyleSheet="Outlet.css">
 
-	<s:If Test="$workflow.name=='Visit'">		
+	<s:If Test="$workflow.name=='Visit'">
 		<s:Push Id="workflow.visit" Value="$CreateVisitIfNotExists($common.UserRef, $workflow.visit, $planVisit)" />
 	</s:If>
 
@@ -153,10 +153,10 @@
 				<c:VerticalLayout>
 					<c:TextView Text="#description#" CssClass="description_row"></c:TextView>
 					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000001 == true">
-						<c:EditText Id="outletDescr" Value="$workflow.outlet.Description" CssClass="main_row"></c:EditText>
+						<c:EditText Id="outletDescr" Value="$workflow.outlet.Description" OnGetFocus="$CashDesc($workflow.outlet)" OnLostFocus="$CheckForNullDesc($workflow.outlet)" CssClass="main_row"></c:EditText>
 					</s:If>
 					<s:Else>
-						<c:TextView Id="outletDescr" Text="$workflow.outlet.Description" CssClass="main_row"></c:TextView>
+						<c:TextView Id="outletDescr" Text="$workflow.outlet.Description" CssClass="not_available_basic"></c:TextView>
 					</s:Else>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
@@ -165,7 +165,12 @@
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet, OutletStatus, $status, #status#, $sessionConst.editOutletParameters, 000000007)">
 				<c:VerticalLayout>
 					<c:TextView Text="#status#" CssClass="description_row" />
-					<c:TextView Id="status" Text="$GetStatusDescription($workflow.outlet)" CssClass="main_row" />
+					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000007 == true &amp;&amp; $workflow.name != 'Visit'">
+						<c:TextView Id="status" Text="$GetStatusDescription($workflow.outlet)" CssClass="main_row_available" />
+					</s:If>
+					<s:Else>
+						<c:TextView Id="status" Text="$GetStatusDescription($workflow.outlet)" CssClass="not_available_basic" />
+					</s:Else>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -178,7 +183,7 @@
 						<c:MemoEdit Id="outletAddress" Text="$workflow.outlet.Address" OnGetFocus="$ShowClearButton($clearButton)" OnLostFocus="$HideClearButton($clearButton)" OnChange="$SaveValue($workflow.outlet)"></c:MemoEdit>
 					</s:If>
 					<s:Else>
-						<c:TextView Id="outletAddress" Text="$workflow.outlet.Address" CssClass="main_row"></c:TextView>
+						<c:TextView Id="outletAddress" Text="$workflow.outlet.Address" CssClass="not_available_basic"></c:TextView>
 					</s:Else>
 				</c:VerticalLayout>
 			</c:DockLayout>
@@ -197,7 +202,12 @@
 					<c:TextView Text="#coordinates#" CssClass="description_row"></c:TextView>
 					<s:If Test="$EmptyCoordinates($workflow.outlet)">
 						<c:HorizontalLayout OnClick="$ShowCoordOptions($workflow.outlet, $sessionConst.editOutletParameters)">
-							<c:TextView Id="outletCoord" Text="{$workflow.outlet.Lattitude}; {$workflow.outlet.Longitude}" CssClass="main_row"></c:TextView>
+							<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000003 == true">
+								<c:TextView Id="outletCoord" Text="{$workflow.outlet.Lattitude}; {$workflow.outlet.Longitude}" CssClass="main_row_available"></c:TextView>
+							</s:If>
+							<s:Else>
+								<c:TextView Id="outletCoord" Text="{$workflow.outlet.Lattitude}; {$workflow.outlet.Longitude}" CssClass="not_available_basic"></c:TextView>
+							</s:Else>
 						</c:HorizontalLayout>
 					</s:If>
 					<s:Else>
@@ -212,7 +222,12 @@
 			<c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet, Distributor, $outletDistr, #partner#, $sessionConst.editOutletParameters, 000000006)">
 				<c:VerticalLayout>
 					<c:TextView Text="#partner#" CssClass="description_row"></c:TextView>
-					<c:TextView Id="outletDistr" Text="$GetDescr($workflow.outlet.Distributor.Description)" CssClass="main_row"></c:TextView>
+					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000006 == true &amp;&amp; $workflow.name != 'Visit'">
+						<c:TextView Id="outletDistr" Text="$GetDescr($workflow.outlet.Distributor.Description)" CssClass="main_row_available"></c:TextView>
+					</s:If>
+					<s:Else>
+						<c:TextView Id="outletDistr" Text="$GetDescr($workflow.outlet.Distributor.Description)" CssClass="not_available_basic"></c:TextView>
+					</s:Else>
 				</c:VerticalLayout>
 			</c:DockLayout>
 			<c:HorizontalLine />
@@ -220,7 +235,12 @@
 			<c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet,Class,$outletClass,#outlet_class#, $sessionConst.editOutletParameters, 000000005)">
 				<c:VerticalLayout>
 					<c:TextView Text="#outlet_class#" CssClass="description_row"></c:TextView>
-					<c:TextView Id="outletClass" Text="$workflow.outlet.Class.Description" CssClass="main_row"></c:TextView>
+					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000005 == true &amp;&amp; $workflow.name != 'Visit'">
+						<c:TextView Id="outletClass" Text="$workflow.outlet.Class.Description" CssClass="main_row_available"></c:TextView>
+					</s:If>
+					<s:Else>
+						<c:TextView Id="outletClass" Text="$workflow.outlet.Class.Description" CssClass="not_available_basic"></c:TextView>
+					</s:Else>
 				</c:VerticalLayout>
 			</c:DockLayout>
 			<c:HorizontalLine />
@@ -228,7 +248,12 @@
 			<c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet,Type,$outletType,#outlet_type#, $sessionConst.editOutletParameters, 000000004)">
 				<c:VerticalLayout>
 					<c:TextView Text="#outlet_type#" CssClass="description_row"></c:TextView>
-					<c:TextView Id="outletType" Text="$workflow.outlet.Type.Description" CssClass="main_row"></c:TextView>
+					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000004 == true &amp;&amp; $workflow.name != 'Visit'">
+						<c:TextView Id="outletType" Text="$workflow.outlet.Type.Description" CssClass="main_row_available"></c:TextView>
+					</s:If>
+					<s:Else>
+						<c:TextView Id="outletType" Text="$workflow.outlet.Type.Description" CssClass="not_available_basic"></c:TextView>
+					</s:Else>
 				</c:VerticalLayout>
 			</c:DockLayout>
 			<c:HorizontalLine />
@@ -275,7 +300,12 @@
 								<c:TextView Id="control{$index}" Text="$parameter.AnswerOutput" CssClass="value"></c:TextView>
 							</s:Else>
 						</s:Else>
-						<c:TextView Text="$parameter.Description"></c:TextView>
+						<s:If Test="$editable == true &amp;&amp; $sessionConst.editOutletParameters == true">
+							<c:TextView Text="$parameter.Description"></c:TextView>
+						</s:If>
+						<s:Else>
+							<c:TextView Text="$parameter.Description" CssClass="not_available"></c:TextView>
+						</s:Else>
 					</c:DockLayout>
 					<c:HorizontalLine />
 				</s:If>

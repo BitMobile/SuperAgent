@@ -138,8 +138,9 @@
 
 		<bp:Step Name="Visit_Task" Screen="Tasks\Task.xml" Controller="Tasks\EditTask.js">
 			<bp:Action Name="Forward" NextStep="Visit_Tasks" />
+			<bp:Action Name="SelectTaskText" NextStep="SelectTaskText"></bp:Action>
 		</bp:Step>
-
+		<bp:Step Name="SelectTaskText" Screen="ShowText.xml" Controller="Tasks\ShowText.js"></bp:Step>
 		<bp:Step Name="CreateTask" Screen="Tasks\CreateTask.xml" Controller="Tasks\CreateTask.js">
 		</bp:Step>
 
@@ -192,7 +193,10 @@
 	</bp:Workflow>
 
 	<bp:Workflow Name="Task">
-		<bp:Step Name="Task" Screen="Tasks\Task.xml" Controller="Tasks\EditTask.js"></bp:Step>
+		<bp:Step Name="Task" Screen="Tasks\Task.xml" Controller="Tasks\EditTask.js">
+			<bp:Action Name="SelectTaskText" NextStep="SelectTaskText"></bp:Action>
+		</bp:Step>
+			<bp:Step Name="SelectTaskText" Screen="ShowText.xml" Controller="Tasks\ShowText.js"></bp:Step>
 	</bp:Workflow>
 
 	<bp:Workflow Name="CreateTask">

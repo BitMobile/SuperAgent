@@ -105,7 +105,7 @@ function GetSKUAndGroups(searchText, thisDoc) {
                      ", NULL AS UnitId " +
                      ", 0 AS RecOrder " +
                      ", 0 AS OrderRecOrder ";
-        
+
         var recOrderStr = "";
 
         var recOrderSort = "";
@@ -251,10 +251,12 @@ function CreateOrderItem(control, editFieldName, textFieldName, packField, sku, 
 
             var d = GlobalWorkflow.GetMassDiscount(thisDoc);
             p.Discount = String.IsNullOrEmpty(d) ? 0 : d;
-
+            var LineNumberQuery=new Query("SELECT Max(LineNumber) FROM Document_" + $.workflow.currentDoc + "_SKUs WHERE Ref=@ref");
+            LineNumberQuery.AddParameter("ref", p.Ref);
+            p.LineNumber=LineNumberQuery.ExecuteScalar() + 1;
             p.Total = p.Price * (1 + p.Discount/100);
             p.Amount = p.Total * p.Qty;
-            p.Units = defPack;            
+            p.Units = defPack;
             p.Save();
 
             Global.FindTwinAndUnite(p);

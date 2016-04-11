@@ -31,7 +31,7 @@ function SetSessionConstants() {
 	$.sessionConst.Add("UVR", EvaluateBoolean(UVR.ExecuteScalar()));
 	$.sessionConst.Add("NOR", EvaluateBoolean(NOR.ExecuteScalar()));
 	$.sessionConst.Add("SnapshotSize", SnapshotSize.ExecuteScalar());
-	$.sessionConst.Add("SKUFeaturesRegistration", SKUFeaturesRegistration.ExecuteScalar());	
+	$.sessionConst.Add("SKUFeaturesRegistration", SKUFeaturesRegistration.ExecuteScalar());
 	$.sessionConst.Add("UserCoordinatesActualityTime", coordActuality.ExecuteScalar());
 
 	var q = new Query("SELECT U.AccessRight, A.Id, A.Code FROM Catalog_MobileAppAccessRights A " +
@@ -61,6 +61,13 @@ function SetSessionConstants() {
 				$.sessionConst.Add("orderEnabled", false);
 			} else {
 				$.sessionConst.Add("orderEnabled", true);
+			}
+		}
+		if (rights.Code=='000000010') {
+			if (rights.AccessRight==null) {
+				$.sessionConst.Add("PrEnabled", false);
+			} else {
+				$.sessionConst.Add("PrEnabled", true);
 			}
 		}
 		if (rights.Code=='000000006') {

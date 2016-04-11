@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Pr.css">
+<!--
+	<s:Push Id="nextVisit" Value="$GetNextVisit($workflow.outlet)"></s:Push>
+	<s:Push Id="result" Value="$VisitIsChecked($workflow.visit)"></s:Push>-->
+
+		<s:Push Id="GetDocFor" Value="$GetDocPr()"></s:Push>
+
+	<c:VerticalLayout  Id="allLayout">
+
+		<c:DockLayout CssClass="top_navigator">
+			<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoBackPr()">
+				<c:Image />
+				<c:TextView Text="#back#" />
+			</c:DockLayout>
+
+				<c:DockLayout Id="btnForward" CssClass="forward" OnEvent="Forward" OnClickAction="$CheckIfEmptyAndForward($thisDoc, $workflow.name)">
+					<c:VerticalLayout></c:VerticalLayout>
+					<c:TextView Id="obligateredButton" Text="{@obligateNumber})" />
+					<c:Image/>
+					<c:TextView Text="#forward# (" />
+				</c:DockLayout>
+
+<!--
+			<c:DockLayout CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckIfEmptyAndForward($thisDoc, $workflow.name)">
+				<c:TextView Id="btnForward" Text="#forward#" />
+			</c:DockLayout>-->
+			<c:HorizontalLayout>
+				<c:TextView Text="Презентации" />
+			</c:HorizontalLayout>
+		</c:DockLayout>
+
+	<!--	<c:Image CssClass="6_scroll"></c:Image>-->
+		<c:HorizontalLine />
+	<c:DockLayout Id="vPr">
+
+			<c:HorizontalLayout Id="btnDetails" CssClass="bottom_btn">
+				<c:VerticalLayout Id="btnDetails_left" OnClick="$InInic()">
+					<c:TextView Text="{@resinic}"  CssClass="left_tvs"></c:TextView>
+				</c:VerticalLayout>
+				<c:VerticalLayout Id="btnDetails_right" OnClick="$InEducat()">
+				<c:TextView Text="{@reseduc}" CssClass="right_tvs"></c:TextView>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+		<c:HorizontalLine CssClass="b_line" />
+
+<c:HorizontalLayout CssClass="memo_head1">
+	<c:VerticalLayout  CssClass="memo_head2">
+	<c:ScrollView Id="grScrollView">
+
+<s:Iterator Id="snapshot" Value="$GetSnapShots()" Status="statusCount">
+								<s:Push Id="index" Value="$statusCount.Index" />
+									<c:HorizontalLayout CssClass="memo_pick">
+
+											<c:VerticalLayout OnClick="$ActionGetIm($snapshot.Id, $snapshot)">
+												<s:Push Id="path" Value="$GetPrivateImage($snapshot, $snapshot.Slide)" />
+													<c:Image Id="image{$index}" Source="$path" />
+											</c:VerticalLayout>
+
+									</c:HorizontalLayout>
+									<c:HorizontalLine />
+							</s:Iterator>
+	</c:ScrollView>
+		</c:VerticalLayout>
+
+		<c:VerticalLayout  CssClass="memo_head3">
+
+<!--Start-->
+
+			<c:SwipeHorizontalLayout Id="snapshotLayout3"  CssClass="carousel_head">
+
+				<s:Iterator Id="snapshot2" Value="$GetSnapShots2()" Status="statusCount">
+												<s:Push Id="index" Value="$statusCount.Index" />
+													<c:HorizontalLayout CssClass="memo_pick4">
+														<s:If Test="$OnVPresentation()">
+															<c:VerticalLayout OnClick="$ActionGetIm2($snapshot2.Slide, $snapshot2.Slide)">
+																<s:Push Id="path3" Value="$GetPrivateImage5($snapshot2.Slide, $snapshot2)" />
+																<c:Image Id="imageold" Source="$path3" />
+
+															</c:VerticalLayout>
+														</s:If>
+
+													</c:HorizontalLayout>
+
+											</s:Iterator>
+			</c:SwipeHorizontalLayout>
+<!--End-->
+
+			<c:VerticalLayout  CssClass="memo_head4" Id="snapshotLayout5">
+
+				<c:HorizontalLayout CssClass="memo_pick3"  Id="grScrollView3" OnClickAction="$OpenViewPres(View, $GetDocFor, $snapshot.Id)">
+					<c:HorizontalLayout CssClass="empty_side_wh"></c:HorizontalLayout>
+					<c:VerticalLayout CssClass="memo_picks_v" >
+						<s:Push Id="path2" Value="$GetImgF($snapshot2.Id)" />
+						<c:Image Id="imageindexon" Source="$path2"/>
+					</c:VerticalLayout>
+				</c:HorizontalLayout>
+				<c:HorizontalLine />
+
+
+				</c:VerticalLayout>
+			</c:VerticalLayout>
+
+		</c:HorizontalLayout>
+	</c:DockLayout>
+	</c:VerticalLayout>
+
+
+</c:Screen>

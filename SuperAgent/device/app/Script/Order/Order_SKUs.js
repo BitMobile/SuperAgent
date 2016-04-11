@@ -104,7 +104,7 @@ function GetSKUAndGroups(searchText, thisDoc) {
                      ", NULL AS UnitId " +
                      ", 0 AS RecOrder " +
                      ", 0 AS OrderRecOrder ";
-        
+
         var recOrderStr = "";
 
         var recOrderSort = "";
@@ -158,7 +158,7 @@ function GetSKUAndGroups(searchText, thisDoc) {
     }
 
     query.AddParameter("Ref", priceList);
-
+    Console.WriteLine(query.Text);
     return query.Execute();
 
 }
@@ -188,8 +188,12 @@ function GetQuickOrder(control, skuId, itemPrice, packField, editField, textView
         else
             query.AddParameter("pack", recUnitId);
         var quickOrderItem =  query.Execute();
-
+        if ($.sessionConst.SKUFeaturesRegistration){
         defFeature = quickOrderItem.DefaultFeature;
+        }
+        else {
+        defFeature = null;
+        }
         if (doRecommend && recUnit!=null){ //&& parseInt(quickOrderItem.Qty)==parseInt(0)) {
             defPack = recUnitId;
             packDescription = recUnit;

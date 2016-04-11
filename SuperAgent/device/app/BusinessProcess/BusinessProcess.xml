@@ -12,6 +12,7 @@
 			<bp:Action Name="Select" NextWorkflow="Visit"></bp:Action>
 			<bp:Action Name="SelectUnscheduled" NextWorkflow="Visit"></bp:Action>
 			<s:Include File="\Components\SideMenuActions.xml"/>
+			<bp:Action Name="EditFilter" NextStep="EditFilter"></bp:Action>
 		</bp:Step>
 
 		<bp:Step Name="OrderList" Screen="Order\OrderList.xml" Controller="Order\Main.js">
@@ -45,6 +46,9 @@
 		<bp:Step Name="ShowMap" Screen="ScheduledVisits_Map.xml">
 		</bp:Step>
 
+		<bp:Step Name="EditFilter" Screen="Visit\filter.xml" Controller="Visits\Main.js">
+    	</bp:Step>
+
 	</bp:Workflow>
 
 	<bp:Workflow Name="Visit">
@@ -53,13 +57,16 @@
 			<bp:Action Name="Forward" NextStep="Visit_Tasks"></bp:Action>
 			<bp:Action Name="SkipTask" NextStep="Questions"></bp:Action>
 			<bp:Action Name="SkipQuestions" NextStep="SKUs"></bp:Action>
-			<bp:Action Name="SkipSKUs" NextStep="Order"></bp:Action>
+			<bp:Action Name="SkipSKUs" NextStep="PrSKU"></bp:Action>
+			<bp:Action Name="SkipPr" NextStep="Order"></bp:Action>
 			<bp:Action Name="SkipOrder" NextStep="Receivables"></bp:Action>
-			<bp:Action Name="SkipEncashment" NextStep="Total"></bp:Action>
+			<bp:Action Name="SkipEncashment" NextStep="PrOrder"></bp:Action>
+				<bp:Action Name="SkipPrPer" NextStep="Total"></bp:Action>
+
 			<bp:Action Name="EditParameter" NextStep="EditOutletParameter"></bp:Action>
 			<bp:Action Name="EditAddParameter" NextStep="EditOutletAddParameter"></bp:Action>
 			<bp:Action Name="ShowMap" NextStep="ShowMap"></bp:Action>
-			<bp:Action Name="ShowContractors" NextStep="Contractors" />			
+			<bp:Action Name="ShowContractors" NextStep="Contractors" />
 			<bp:Action Name="Contractor" NextStep="Contractor" />
 			<bp:Action Name="ShowContacts" NextStep="Contacts" />
 			<bp:Action Name="ShowImage" NextStep="Image" />
@@ -70,9 +77,11 @@
 			<bp:Action Name="Outlet" NextStep="Outlet"></bp:Action>
 			<bp:Action Name="Select" NextStep="Visit_Task" />
 			<bp:Action Name="SkipQuestions" NextStep="SKUs"></bp:Action>
-			<bp:Action Name="SkipSKUs" NextStep="Order"></bp:Action>
+			<bp:Action Name="SkipSKUs" NextStep="PrSKU"></bp:Action>
+					<bp:Action Name="SkipPr" NextStep="Order"></bp:Action>
 			<bp:Action Name="SkipOrder" NextStep="Receivables"></bp:Action>
-			<bp:Action Name="SkipEncashment" NextStep="Total"></bp:Action>
+			<bp:Action Name="SkipEncashment" NextStep="PrOrder"></bp:Action>
+				<bp:Action Name="SkipPrPer" NextStep="Total"></bp:Action>
 		</bp:Step>
 
 		<bp:Step Name="Visit_Task" Screen="Visit\Task.xml" Controller="Tasks\Main.js">
@@ -81,21 +90,39 @@
 
 		<bp:Step Name="Questions" Screen="Visit\Questions.xml" Controller="Visits\Questions.js">
 			<bp:Action Name="Forward" NextStep="SKUs"></bp:Action>
-			<bp:Action Name="SkipSKUs" NextStep="Order"></bp:Action>
+			<bp:Action Name="SkipSKUs" NextStep="PrSKU"></bp:Action>
+			<bp:Action Name="SkipPr" NextStep="Order"></bp:Action>
 			<bp:Action Name="SkipOrder" NextStep="Return"></bp:Action>
 			<bp:Action Name="SkipReturn" NextStep="Receivables"></bp:Action>
-			<bp:Action Name="SkipEncashment" NextStep="Total"></bp:Action>
+			<bp:Action Name="SkipEncashment" NextStep="PrOrder"></bp:Action>
+				<bp:Action Name="SkipPrPer" NextStep="Total"></bp:Action>
 			<bp:Action Name="ShowImage" NextStep="Image" />
 			<bp:Action Name="Sk" NextStep="Image" />
 		</bp:Step>
 
 		<bp:Step Name="SKUs" Screen="Visit\SKUs.xml" Controller="Visits\SKU_Questions.js">
 			<bp:Action Name="ShowFilters1" NextStep="Filters1"/>
+			<bp:Action Name="Forward" NextStep="PrSKU"></bp:Action>
+				<bp:Action Name="SkipPr" NextStep="Order"></bp:Action>
+			<bp:Action Name="SkipOrder" NextStep="Return"></bp:Action>
+			<bp:Action Name="SkipReturn" NextStep="Receivables"></bp:Action>
+			<bp:Action Name="SkipEncashment" NextStep="PrOrder"></bp:Action>
+				<bp:Action Name="SkipPrPer" NextStep="Total"></bp:Action>
+			<bp:Action Name="ShowImage" NextStep="Image" />
+		</bp:Step>
+
+		<bp:Step Name="PrSKU" Screen="Visit\PrSKU.xml" Controller="Visits\PrSKU.js">
+
 			<bp:Action Name="Forward" NextStep="Order"></bp:Action>
 			<bp:Action Name="SkipOrder" NextStep="Return"></bp:Action>
 			<bp:Action Name="SkipReturn" NextStep="Receivables"></bp:Action>
-			<bp:Action Name="SkipEncashment" NextStep="Total"></bp:Action>
-			<bp:Action Name="ShowImage" NextStep="Image" />
+			<bp:Action Name="SkipEncashment" NextStep="PrOrder"></bp:Action>
+				<bp:Action Name="SkipPrPer" NextStep="Total"></bp:Action>
+			<bp:Action Name="View" NextStep="PrView"></bp:Action>
+
+		</bp:Step>
+
+		<bp:Step Name="PrView" Screen="Visit\PrView.xml" Controller="Visits\PrView.js">
 		</bp:Step>
 
 		<bp:Step Name="Order" Screen="Order\Order.xml" Controller="Order\Main.js">
@@ -104,7 +131,8 @@
 			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
 			<bp:Action Name="Forward" NextStep="Return"></bp:Action>
 			<bp:Action Name="SkipReturn" NextStep="Receivables" />
-			<bp:Action Name="SkipEncashment" NextStep="Total"/>
+			<bp:Action Name="SkipEncashment" NextStep="PrOrder"></bp:Action>
+				<bp:Action Name="SkipPrPer" NextStep="Total"></bp:Action>
 		</bp:Step>
 
 		<bp:Step Name="Return" Screen="Order\Order.xml" Controller="Order\Main.js">
@@ -112,12 +140,22 @@
 			<bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
 			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
 			<bp:Action Name="Forward" NextStep="Receivables"></bp:Action>
-			<bp:Action Name="SkipEncashment" NextStep="Total"/>
+			<bp:Action Name="SkipEncashment" NextStep="PrOrder"></bp:Action>
+				<bp:Action Name="SkipPrPer" NextStep="Total"></bp:Action>
 		</bp:Step>
 
 		<bp:Step Name="Receivables" Screen="Receivables.xml" Controller="Receivables\Main.js">
-			<bp:Action Name="Forward" NextStep="Total"></bp:Action>
+			<bp:Action Name="Forward" NextStep="PrOrder"></bp:Action>
+				<bp:Action Name="SkipPrPer" NextStep="Total"></bp:Action>
 		</bp:Step>
+
+		<bp:Step Name="PrOrder" Screen="Visit\PrOrder.xml" Controller="Visits\PrOrder.js">
+
+			<bp:Action Name="Forward" NextStep="Total"></bp:Action>
+			<bp:Action Name="View" NextStep="PrView"></bp:Action>
+
+		</bp:Step>
+
 
 		<bp:Step Name="Total" Screen="Visit\Total.xml" Controller="Visits\Total.js">
 		</bp:Step>

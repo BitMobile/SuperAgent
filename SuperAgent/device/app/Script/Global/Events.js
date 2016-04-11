@@ -34,7 +34,7 @@ function OnWorkflowStart(name) {
 
 	if (name == "Visit" || name == "Outlet" || name=="Order" || name=="Return")
 	{
-		StartTracking();		
+		StartTracking();
 	}
 
 	if (name=="Visit" || name=="Order" || name=="Return")
@@ -47,6 +47,7 @@ function OnWorkflowStart(name) {
 		CreateQuestionnareTable($.outlet);
 		CreateQuestionsTable($.outlet);
 		CreateSKUQuestionsTable($.outlet);
+		CreatePresTable($.outlet);
 
 		SetSteps($.outlet);
 	}
@@ -127,7 +128,7 @@ function OnWorkflowPause(name) {
 
 // ------------------------ Functions ------------------------
 
-function StartTracking(){		
+function StartTracking(){
 
 	GPS.StartTracking(-1);
 }
@@ -257,18 +258,26 @@ function SetSteps(outlet) {
 	var statusValues = q.Execute();
 	while (statusValues.Next()) {
 		if (EvaluateBoolean(statusValues.CreateOrderInMA) && $.sessionConst.orderEnabled && hasContractors)
-			InsertIntoSteps("4", "SkipOrder", false, "Order", "SKUs");
+			InsertIntoSteps("5", "SkipOrder", false, "Order", "PrSKU");
 		else
-			InsertIntoSteps("4", "SkipOrder", true, "Order", "SKUs");
+			InsertIntoSteps("5", "SkipOrder", true, "Order", "PrSKU");
 		if (EvaluateBoolean(statusValues.CreateReturnInMA) && $.sessionConst.returnEnabled && hasContractors) {
-			InsertIntoSteps("5", "SkipReturn", false, "Return", "Order");
+			InsertIntoSteps("6", "SkipReturn", false, "Return", "Order");
 		}
 		else
-			InsertIntoSteps("5", "SkipReturn", true, "Return", "Order");
+			InsertIntoSteps("6", "SkipReturn", true, "Return", "Order");
 		if (EvaluateBoolean(statusValues.DoEncashmentInMA) && $.sessionConst.encashEnabled)
-			InsertIntoSteps("6", "SkipEncashment", false, "Receivables", "Return");
+			InsertIntoSteps("7", "SkipEncashment", false, "Receivables", "Return");
 		else
-			InsertIntoSteps("6", "SkipEncashment", true, "Receivables", "Return");
+			InsertIntoSteps("7", "SkipEncashment", true, "Receivables", "Return");
+			////////
+		if (parseInt(GetPresCountPer()) == parseInt(0) && $.sessionConst.PrEnabled){
+				InsertIntoSteps("8", "SkipPrPer", true, "PrOrder", "Receivables");}
+				else {
+			InsertIntoSteps("8", "SkipPrPer", false, "PrOrder", "Receivables");
+				}
+			//////
+
 		if (EvaluateBoolean(statusValues.FillQuestionnaireInMA))
 			skipQuest = false;
 		else
@@ -289,6 +298,13 @@ function SetSteps(outlet) {
 		InsertIntoSteps("3", "SkipSKUs", true, "SKUs", "Questions");
 	else
 		InsertIntoSteps("3", "SkipSKUs", false, "SKUs", "Questions");
+	////////
+if (parseInt(GetPresCount()) == parseInt(0) && $.sessionConst.PrEnabled){
+		InsertIntoSteps("4", "SkipPr", true, "PrSKU", "SKUs");}
+		else {
+	InsertIntoSteps("4", "SkipPr", false, "PrSKU", "SKUs");
+		}
+	//////
 
 }
 
@@ -373,6 +389,111 @@ function GetTasksCount() {
 }
 
 
+function CreatePresTable(outlet) {
+
+	var q = new Query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name=@name");
+	q.AddParameter("name", "USR_OutletAttributes2");
+
+	var check = q.ExecuteScalar();
+
+	if (parseInt(check) == parseInt(1)) {
+		var tableCommand = "DELETE FROM USR_OutletAttributes2; ";
+	}	else {
+		var tableCommand = "CREATE TABLE USR_OutletAttributes2 (Selector, DataType, AdditionalParameter, Value); ";
+	}
+
+	var OutletAttributesText = tableCommand + "INSERT INTO USR_OutletAttributes2 " +
+										"SELECT 'Enum_OutletStatus' AS Selector, NULL AS DataType, '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000' AS AdditionalParameter, REPLACE(@outletStatus, ('@ref[Enum_OutletStatus]:'), '') AS Value " +
+							"UNION SELECT 'Catalog_OutletType', NULL, '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(@outletType, ('@ref[Catalog_OutletType]:'), '') " +
+							"UNION SELECT 'Catalog_OutletClass', NULL, '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(@outletClass, ('@ref[Catalog_OutletClass]:'), '') " +
+							"UNION SELECT 'Catalog_Distributor', NULL, '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(@distributor, ('@ref[Catalog_Distributor]:'), '') " +
+							"UNION SELECT 'Catalog_Positions', NULL, '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE((SELECT Position FROM Catalog_User LIMIT 1), ('@ref[Catalog_Positions]:'), '') " +
+							"UNION SELECT 'Catalog_Outlet', NULL, '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(@outlet, ('@ref[Catalog_Outlet]:'), '') " +
+							"UNION SELECT 'Catalog_OutletParameter', COP.DataType, OP.Parameter, OP.Value FROM Catalog_Outlet_Parameters OP LEFT JOIN Catalog_OutletParameter COP ON OP.Parameter=COP.Id WHERE Ref=@outlet " +
+							"UNION SELECT 'Catalog_Territory', NULL, '@ref[Catalog_OutletParameter]:00000000-0000-0000-0000-000000000000', REPLACE(Ref, ('@ref[Catalog_Territory]:'), '') FROM Catalog_Territory_Outlets WHERE Outlet=@outlet " +
+							 GetRegionQueryText1() + "; ";
+
+	var tableCommand = Global.CreateUserTableIfNotExists("USR_SelectedPres");
+
+	var SelectedPresText = tableCommand +
+	"SELECT DISTINCT Q.Id AS Id" + //all the parameters that compare with 'AND'
+	", CASE " +
+	"WHEN S.ComparisonType IS NULL " +
+	"THEN 0 " +
+
+	"WHEN O.Selector IS NULL AND (S.ComparisonType=@equal OR S.ComparisonType=@inList) " +
+	"THEN 1 " +
+	"WHEN O.Selector IS NULL AND S.ComparisonType=@notEqual " +
+	"THEN 0 " +
+
+	"WHEN S.ComparisonType=@equal " +
+	"THEN CASE WHEN O.DataType = @decimal THEN REPLACE(S.Value, ',', '.') = REPLACE(O.Value, ',', '.') ELSE S.Value = O.Value END " +
+	"WHEN S.ComparisonType=@inList " +
+	"THEN CASE WHEN O.DataType = @decimal THEN REPLACE(O.Value, ',', '.') IN (SELECT REPLACE(Value, ',', '.') FROM Document_SetPresentations_Selectors WHERE Ref=Q.Id) ELSE O.Value IN (SELECT Value FROM Document_SetPresentations_Selectors WHERE Ref=Q.Id) END " +
+	"WHEN S.ComparisonType=@notEqual " +
+	"THEN CASE WHEN O.DataType = @decimal THEN REPLACE(S.Value, ',', '.') != REPLACE(O.Value, ',', '.') ELSE S.Value != O.Value END " +
+
+	"END AS Selected " +
+
+	"FROM Document_SetPresentations Q " +
+	"LEFT JOIN Document_SetPresentations_Selectors S ON S.Ref=Q.Id " +
+	"LEFT JOIN USR_OutletAttributes2 O ON S.Selector=O.Selector AND S.AdditionalParameter=O.AdditionalParameter " +
+	"WHERE S.Selector IS NULL OR (S.Selector != 'Catalog_Territory' AND S.Selector != 'Catalog_Region' ) AND Q.MostActive == 1 " +
+
+	"UNION " +  //'Catalog_Territory' select
+	"SELECT DISTINCT S.Ref AS Id, 1 " +
+	"FROM USR_OutletAttributes2 O " +
+	"JOIN Document_SetPresentations_Selectors S ON O.Selector=S.Selector " +
+	"AND S.Selector = 'Catalog_Territory' " +
+
+	"AND CASE WHEN S.ComparisonType=@equal OR S.ComparisonType=@inList " +
+	"THEN S.Value = O.Value " +
+	"WHEN S.ComparisonType=@notEqual " +
+	"THEN S.Value != O.Value " +
+	"END " +
+
+	"UNION " + //'Catalog_Region' select
+	"SELECT DISTINCT S.Ref AS Id, 1 " +
+	"FROM USR_OutletAttributes2 O " +
+	"JOIN Document_SetPresentations_Selectors S ON O.Selector=S.Selector " +
+	"AND S.Selector = 'Catalog_Region' " +
+
+	"AND CASE WHEN S.ComparisonType=@equal OR S.ComparisonType=@inList " +
+	"THEN S.Value = O.Value " +
+	"WHEN S.ComparisonType=@notEqual " +
+	"THEN S.Value NOT IN (SELECT Value FROM USR_OutletAttributes2 WHERE Selector='Catalog_Region') " +
+	"END; ";
+
+	var tableCommand = Global.CreateUserTableIfNotExists("USR_Pres");
+//////////////////////////////////
+////Edit
+	var PresText = tableCommand +
+			"SELECT DISTINCT Q.Id AS Id, Q.Number AS Number, Q.Date AS Date, Q.Single AS Single " +
+				", S.BeginAnswerPeriod AS BeginAnswerPeriod, S.EndAnswerPeriod AS EndAnswerPeriod, MIN(CAST (SQ.Selected AS INT)) AS Selected " +
+			"FROM " +
+			"USR_SelectedPres SQ " +
+			"JOIN Document_Questionnaire Q ON SQ.Id=Q.Id " +
+			"JOIN _Document_Questionnaire_Schedule S INDEXED BY IND_QSCHEDULE ON SQ.Id=S.Ref AND S.IsTombstone=0 " +
+			"WHERE Q.Status=@active AND date(S.Date)=date('now', 'start of day') " +
+			"GROUP BY Q.Id, Q.Number, Q.Date, Q.Single, S.BeginAnswerPeriod, S.EndAnswerPeriod; " +
+			"DELETE FROM USR_Pres WHERE Selected=0";
+
+//	var query = new Query(OutletAttributesText + SelectedPresText + PresText);
+	var query = new Query(OutletAttributesText + SelectedPresText);
+
+	query.AddParameter("outletStatus", outlet.OutletStatus);
+	query.AddParameter("outletType", outlet.Type);
+	query.AddParameter("outletClass", outlet.Class);
+	query.AddParameter("distributor", outlet.Distributor);
+	query.AddParameter("outlet", outlet);
+	query.AddParameter("equal", DB.Current.Constant.ComparisonType.Equal);
+	query.AddParameter("inList", DB.Current.Constant.ComparisonType.InList);
+	query.AddParameter("notEqual", DB.Current.Constant.ComparisonType.NotEqual);
+	query.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);
+	query.AddParameter("active", DB.Current.Constant.QuestionnareStatus.Active);
+	query.Execute();
+
+}
 //-----Questionnaire selection-------
 
 function GetRegionQueryText1() {
@@ -663,6 +784,20 @@ function GetQuestionsCount() {
 
 function GetSKUQuestionsCount() {
 	var query = new Query("SELECT COUNT(SKU) FROM USR_SKUQuestions LIMIT 1");
+	var res = query.ExecuteScalar();
+	return res;
+}
+
+function GetPresCount() {
+	var query = new Query("SELECT COUNT(V.Id) from USR_SelectedPres V LEFT JOIN Document_SetPresentations D ON V.Id=D.Id WHERE D.Display=@manager AND V.Selected = 1 LIMIT 1");
+	query.AddParameter("manager", DB.Current.Constant.DisplayPresentations.Manageress);
+	var res = query.ExecuteScalar();
+	return res;
+}
+
+function GetPresCountPer() {
+	var query = new Query("SELECT COUNT(V.Id) from USR_SelectedPres V LEFT JOIN Document_SetPresentations D ON V.Id=D.Id WHERE D.Display=@manager AND V.Selected = 1 LIMIT 1");
+	query.AddParameter("manager", DB.Current.Constant.DisplayPresentations.Pervostolnik);
 	var res = query.ExecuteScalar();
 	return res;
 }

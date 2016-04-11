@@ -716,3 +716,17 @@ function SnapshotExists(filename) {
 	return FileSystem.Exists(filename);
 
 }
+
+function GetNextVisit(outlet){
+	var q = new Query("SELECT strftime('%d.%m.%Y',VP.Date) AS PlanDate " +
+			"FROM Document_VisitPlan_Outlets VP " +
+			"LEFT JOIN Document_Visit V ON V.Plan = VP.Ref AND V.Outlet = VP.Outlet AND date(V.Date) = date(VP.Date) AND date(V.Date) >= date('now') " +
+			"WHERE VP.Outlet=@outlet AND date(VP.Date) >= date('now') AND V.Id Is Null LIMIT 1");
+	q.AddParameter("outlet", outlet);
+	q.AddParameter("date", DateTime.Now);
+	var res = q.ExecuteScalar();
+	if (res != null)
+		return res;
+	else
+		return null;
+}

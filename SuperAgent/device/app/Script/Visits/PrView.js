@@ -1,4 +1,4 @@
-﻿
+
 var checkOrderReason;
 var checkVisitReason;
 var orderEnabled;
@@ -6,6 +6,107 @@ var returnEnabled;
 var encashmentEnabled;
 var forwardIsntAllowed;
 var obligateNumber;
+var ObjectPresentation;
+var OnPresentation;
+var PathForPick;
+var GetPreset;
+var report;
+var StartTime;
+
+function OnLoad(){
+	//Dialog.Debug($.param2);
+//Dialog.Debug($.param1);
+StartTime = DateTime.Now;
+
+}
+
+function GetPrivateImage(pictI, pictB) {
+	var r = "/shared/catalog.slides/" + pictB.Id + "/"
+	    + pictB.Picture + ".jpg";
+	return r;
+}
+
+
+function GetPrivateImage5(pictI, pictB) {
+		var r = "/shared/catalog.slides/" + pictI.Id.ToString() + "/"
+	    + pictI.Picture + ".jpg";
+	return r;
+}
+
+
+function ActionGetIm(sender, pictID2) {
+	ObjectPresentation = "1";
+	GetPreset=pictID2;
+	Workflow.Refresh([$.snapshotLayout3]);
+}
+
+
+function ActionGetIm2(sender, pictID) {
+	pictID2 = pictID;
+PathForPick = pictID2.ToString();
+Workflow.Refresh([]);
+}
+
+function GetImgF(pictID){
+	var q = new Query("SELECT V.Id, V.Picture, V.Extension from Catalog_Slides V WHERE V.Id=@PathToPick LIMIT 1");
+	q.AddParameter("PathToPick", pictID2);
+
+	var res = q.Execute();
+	if (res.Next()){
+
+	var r = "/shared/catalog.slides/" + pictID2.Id.ToString() + "/"
+		+ res.Picture + res.Extension;
+return r;}
+	else {
+		return null;}
+}
+
+function GetSnapShots() {
+		var q = new Query("Select Df.Id, V.Slide  from   Catalog_Presentations_Slides V  INNER JOIN Catalog_Presentations Df  ON  Df.Id = V.Ref GROUP BY Df.Id");
+		return q.Execute();
+}
+
+function CheckPr(){
+	newFile = DB.Create("Document.Visit_ResultPresent");
+	newFile.Ref = $.workflow.visit;
+	newFile.Presents = GetPreset;
+	newFile.Slides = SlidesPick;
+	newFile.TemeStart = StartTime;
+	newFile.TimeEnd = DateTime.Now;
+	newFile.Save();
+	StartTime =    DateTime.Now;
+	checkOrderReason = false;
+	checkVisitReason = false;
+
+	orderEnabled = OptionAvailable("SkipOrder");
+	returnEnabled = OptionAvailable("SkipReturn");
+	encashmentEnabled = OptionAvailable("SkipEncashment") && $.sessionConst.encashEnabled;
+
+	if ($.sessionConst.NOR && NotEmptyRef($.workflow.visit.Plan) && OrderExists($.workflow.visit)==false && orderEnabled)
+		checkOrderReason = true;
+	if ($.sessionConst.UVR && IsEmptyValue($.workflow.visit.Plan))
+		checkVisitReason = true;
+}
+
+function GetSnapShots2() {
+		var q = new Query("SELECT V.Id, V.Ref, V.Slide from Catalog_Presentations_Slides V WHERE V.Ref = @Ref ORDER BY V.LineNumber");
+  //  WHERE V.Ref=@Ref");
+	q.AddParameter("Ref", $.param1);
+			return q.Execute();
+			if (res.Next()){
+					return q.Execute();}
+			else {
+				return null;}
+}
+
+function OnVPresentation(){
+if (ObjectPresentation == null){
+	return false} else {
+ return true
+
+}
+}
+
 
 function OnLoading() {
 	checkOrderReason = false;
@@ -21,17 +122,14 @@ function OnLoading() {
 		checkVisitReason = true;
 }
 
-function OnLoad(){
-	GetPresentPodshet();
-}
-
-
 function GetNextVisit(outlet){
+//	Dialog.Debug(outlet);
 	var q = new Query("SELECT Id, PlanDate FROM Document_MobileAppPlanVisit WHERE Outlet=@outlet AND DATE(PlanDate)>=DATE(@date) AND Transformed=0 LIMIT 1");
 	q.AddParameter("outlet", outlet);
 	q.AddParameter("date", DateTime.Now.Date);
 	var res = q.Execute();
 	if (res.Next())
+
 		return res;
 	else
 		return null;
@@ -110,12 +208,6 @@ function GetOrderControlValue() {
     }
 }
 
-function CheckRecOrder(InOrder,RecOrderIn){
-
-return Converter.ToDecimal(InOrder) < Converter.ToDecimal(RecOrderIn);
-
-}
-
 function CountDoneTasks(visit) {
     var query = new Query("SELECT Id FROM Document_Visit_Task WHERE Ref=@ref AND Result=@result");
     query.AddParameter("ref", visit);
@@ -166,8 +258,7 @@ function GetOrderTable(order, outlet, visit) {
     		"JOIN Catalog_AssortmentMatrix_Outlets AMO ON AMO.Id = AMS.Ref AND AMO.Outlet = @Outlet " +
     		"WHERE Ref = @Ref");*/
 
-	var query = new Query("SELECT I.OSKU AS OSKU, SUM(I.Qty) AS Qty, I.AMSSKU AS AMSSKU, I.RecOrder AS RecOrder FROM("+
-						"SELECT O.SKU AS OSKU, Sum(ifnull(O.Qty, 0)) AS Qty, AMS.Id AS AMSSKU " +
+	var query = new Query("SELECT O.SKU AS OSKU, ifnull(O.Qty, 0) AS Qty, AMS.Id AS AMSSKU " +
 						", CASE WHEN ifnull(AMS.RecOrder, 0) < 0 THEN 0 ELSE ifnull(AMS.RecOrder, 0) END AS RecOrder " +
 						" FROM Document_Order_SKUs O " +
 						"LEFT JOIN " +
@@ -189,11 +280,11 @@ function GetOrderTable(order, outlet, visit) {
 
 						"	WHERE S.IsTombstone = 0  ORDER BY  OrderRecOrder DESC,  S.Description LIMIT 100) AS AMS ON AMS.Id = O.SKU " +
 
-						"WHERE Ref = @Ref GROUP BY O.SKU, ifnull(O.Qty, 0), AMS.Id, ifnull(AMS.RecOrder, 0) " +
+						"WHERE Ref = @Ref " +
 
 						"UNION " +
 
-						"SELECT O.SKU AS OSKU, Sum(ifnull(O.Qty, 0)) AS Qty, AMS.Id  AS AMSSKU" +
+						"SELECT O.SKU AS OSKU, ifnull(O.Qty, 0) AS Qty, AMS.Id  AS AMSSKU" +
 						", CASE WHEN ifnull(AMS.RecOrder, 0) < 0 THEN 0 ELSE ifnull(AMS.RecOrder, 0) END AS RecOrder " +
 						" FROM (SELECT DISTINCT S.Id" +
 						"		, S.Description" +
@@ -213,8 +304,7 @@ function GetOrderTable(order, outlet, visit) {
 						"	WHERE S.IsTombstone = 0  ORDER BY  OrderRecOrder DESC,  S.Description LIMIT 100) AS AMS " +
 						"LEFT JOIN " +
 						"Document_Order_SKUs O ON AMS.Id = O.SKU AND Ref = @Ref " +
-						"GROUP BY O.SKU, ifnull(O.Qty, 0), AMS.Id, ifnull(AMS.RecOrder, 0) "+
-						") I GROUP BY I.OSKU, I.AMSSKU, I.RecOrder ");
+						"GROUP BY O.SKU, ifnull(O.Qty, 0), AMS.Id, ifnull(AMS.RecOrder, 0) ");
 
     query.AddParameter("Ref", order);
     query.AddParameter("outlet", outlet);
@@ -308,23 +398,14 @@ function FormatOutput(value) {
 		return value;
 }
 
-function GetPresentPodshet(){
 
-var visit = $.workflow.visit;
-//Dialog.Debug(visit);
 
-var query = new Query("SELECT Id FROM Document_Visit_ResultPresent WHERE Ref=@ref AND EnableIniciativ==1");
-query.AddParameter("ref", visit);
-var visitgetini = query.ExecuteCount();
-$.initiatives.Text = 	visitgetini;
 
-//Dialog.Debug(visitgetini);
-var query = new Query("SELECT Id FROM Document_Visit_ResultPresent WHERE Ref=@ref AND EnableTeach==1");
-query.AddParameter("ref", visit);
-var conducttraining = query.ExecuteCount();
-$.conducttraining.Text = 	conducttraining;
-//Dialog.Debug(visitgetini);
-}
+
+
+
+
+
 
 
 //------------------------------Questionnaires handlers------------------

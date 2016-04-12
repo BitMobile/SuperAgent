@@ -869,7 +869,7 @@ MemoEdit {
 }
 
 .menu_text {
-	width: 30% auto;	
+	width: 30% auto;
 	height: 32%;
 	dock-align: right;
 	text-align: right;
@@ -956,5 +956,5 @@ MemoEdit {
 	text-align: center;
 	font: 2.2mm Arial;
 	color: #000;
-	
+
 }

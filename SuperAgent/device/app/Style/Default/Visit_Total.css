@@ -75,7 +75,8 @@
 }
 
 .parameter_grid textView_red {
-		width: 50% auto;
+		width: 50%;
+		white-space: nowrap;
 		height: 100%;
 		margin-left: 2.7mm;
 		padding-top: 26%;
@@ -126,4 +127,3 @@
 		text-align: center;
 		/* background-color: #2d89cf; */
 	}
-		

@@ -7,7 +7,7 @@
 		<supportedCore version="2.5.0.92" />
 	</client>
 	<server>
-		<supportedMeta version="1.12.0.610" />
+		<supportedMeta version="1.12.1.621" />
     <filterShared value="yes" />
   </server>
 </configuration>

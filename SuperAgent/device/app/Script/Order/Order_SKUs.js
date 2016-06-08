@@ -246,7 +246,7 @@ function CreateOrderItem(control, editFieldName, textFieldName, packField, sku, 
                 p.Ref = $.workflow.Return;
             p.SKU = sku;
             p.Feature = defFeature;
-            p.Price = price * defMultiplier;
+            p.Price = Round(price * defMultiplier,2);
             p.Qty = Converter.ToDecimal(Variables[editFieldName].Text);
 
             var d = GlobalWorkflow.GetMassDiscount(thisDoc);
@@ -254,8 +254,8 @@ function CreateOrderItem(control, editFieldName, textFieldName, packField, sku, 
             var LineNumberQuery=new Query("SELECT Max(LineNumber) FROM Document_" + $.workflow.currentDoc + "_SKUs WHERE Ref=@ref");
             LineNumberQuery.AddParameter("ref", p.Ref);
             p.LineNumber=LineNumberQuery.ExecuteScalar() + 1;
-            p.Total = p.Price * (1 + p.Discount/100);
-            p.Amount = p.Total * p.Qty;
+            p.Total = Round(p.Price * (1 + p.Discount/100),2);
+            p.Amount = Round(p.Total * p.Qty,2);
             p.Units = defPack;
             p.Save();
 

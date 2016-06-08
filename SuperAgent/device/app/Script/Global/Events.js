@@ -321,8 +321,17 @@ function InsertIntoSteps(stepOrder, skip, value, action, previousStep) {
 function HasContractors(outlet){
 
 	var res;
-
-	var outletObj = outlet.GetObject();
+	if (outlet == null) {
+		var existorno = new Query("Select type From sqlite_master where name = 'UT_answerQuest' And type = 'table'");
+		var exorno = existorno.ExecuteCount();
+		if (exorno > 0) {
+			var checkansquest = new Query("Select outlet From UT_answerQuest");0
+			var outletref = checkansquest.ExecuteScalar();
+			var outletObj = outletref.GetObject()
+		}
+	}else {
+		var outletObj = outlet.GetObject();
+	}
 	if (outletObj.Distributor==DB.EmptyRef("Catalog_Distributor"))
 		res = HasOutletContractors(outlet);
 	else

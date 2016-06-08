@@ -4,7 +4,13 @@
 function OnLoading(){
 	SetListType();
 }
-
+function OnLoad(){
+	var existorno = new Query("Select type From sqlite_master where name = 'UT_answerQuest' And type = 'table'");
+	var exorno = existorno.ExecuteCount();
+	if (exorno > 0) {
+		DB.TruncateTable("answerQuest");
+	}
+}
 function SetListType() {
 	if ($.Exists("visitsType") == false)
 		$.AddGlobal("visitsType", "planned");
@@ -143,7 +149,8 @@ function CountOutlets() {
 function AddGlobalAndAction(planVisit, outlet, actionName) {
 	$.AddGlobal("planVisit", planVisit);
 	GlobalWorkflow.SetOutlet(outlet);
-	Workflow.Action(actionName, []);
+	//Dialog.Message(actionName);
+	Workflow.Action("Select", []);
 }
 
 

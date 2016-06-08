@@ -30,14 +30,30 @@ function OnLoading() {
 
 	$.Add("primaryParametersSettings", primaryParametersSettings);
 
-	back = Translate["#" + Lower(GlobalWorkflow.GetMenuItem()) + "#"];
-
+	var existorno = new Query("Select type From sqlite_master where name = 'UT_answerQuest' And type = 'table'");
+	var exorno = existorno.ExecuteCount();
+	if (exorno > 0) {
+		back = Translate["#back#"];
+	}
+	else {
+		back = Translate["#" + Lower(GlobalWorkflow.GetMenuItem()) + "#"];
+	}
 	title = Translate["#outlet#"];
 
 }
 
 function LoadObject(val){
-	return val.LoadObject();
+	if (val == null) {
+		var existorno = new Query("Select type From sqlite_master where name = 'UT_answerQuest' And type = 'table'");
+		var exorno = existorno.ExecuteCount();
+		if (exorno > 0) {
+			var checkansquest = new Query("Select outlet From UT_answerQuest");
+			var outletref = checkansquest.ExecuteScalar();
+		}
+	}else {
+		outletref = val;
+	}
+	return outletref.GetObject();
 }
 
 function HasMenu(){
@@ -494,21 +510,75 @@ function CreateVisitIfNotExists(userRef, visit, planVisit) {
 
 	if (visit == null) {
 		visit = DB.Create("Document.Visit");
-		if (planVisit != null)
+		//Dialog.Message(planVisit);
+		if (planVisit != null && planVisit!="")
 			visit.Plan = planVisit;
+		var existorno = new Query("Select type From sqlite_master where name = 'UT_answerQuest' And type = 'table'");
+		var exorno = existorno.ExecuteCount();
 		visit.Outlet = $.workflow.outlet;
 		visit.SR = userRef;
 		visit.Date = DateTime.Now;
-		visit.StartTime = DateTime.Now;
-		var location = GPS.CurrentLocation;
-		if (ActualLocation(location)) {
-			visit.Lattitude = location.Latitude;
-			visit.Longitude = location.Longitude;
+		if (exorno > 0) {
+			var checkansquest = new Query("Select id From UT_answerQuest");
+			var counnurows = checkansquest.ExecuteCount();
+			if (counnurows>0) {
+				var datereq = new Query("Select DateStart From UT_answerQuest");
+				var datestart = datereq.ExecuteScalar();
+				visit.StartTime = datestart;
+			}
+			else {
+				visit.StartTime = DateTime.Now;
+			}
+		}
+		else {
+			visit.StartTime = DateTime.Now;
+		}
+//		visit.StartTime = DateTime.Now;
+		if (exorno > 0) {
+			var checkansquest = new Query("Select id From UT_answerQuest");
+			var counnurows = checkansquest.ExecuteCount();
+			if (counnurows>0) {
+				var Lattitudequ = new Query("Select Lattitude From UT_answerQuest");
+				var Lattitudeold = Lattitudequ.ExecuteScalar();
+				var Longitudequ = new Query("Select Longitude From UT_answerQuest");
+				var Longitudeold = Longitudequ.ExecuteScalar();
+				if (Lattitudeold!="" && Longitudeold!="") {
+					visit.Lattitude = Lattitudeold;
+					visit.Longitude = Longitudeold;					
+				}
+			}
+			else {
+				var location = GPS.CurrentLocation;
+				if (ActualLocation(location)) {
+					visit.Lattitude = location.Latitude;
+					visit.Longitude = location.Longitude;
+				}
+			}
+		}else {
+			var location = GPS.CurrentLocation;
+			if (ActualLocation(location)) {
+				visit.Lattitude = location.Latitude;
+				visit.Longitude = location.Longitude;
+			}
 		}
 		visit.Status = DB.Current.Constant.VisitStatus.Processing;
 
 		visit.Encashment = 0;
 		visit.Save();
+		if (exorno > 0) {
+			var checkansquest = new Query("Select id From UT_answerQuest");
+			var counnurows = checkansquest.ExecuteCount();
+			if (counnurows>0) {
+					var answeredquest = new Query("Select question As quest, answer AS ans From UT_answerQuest");
+					var param = answeredquest.Execute();
+					while (param.Next()) {
+						var upd = new Query("UPDATE USR_Questions SET Answer='" + param.ans + "' WHERE Question=@question");
+						upd.AddParameter("question",param.quest);
+						upd.Execute();
+					}
+			}
+		}
+
 		return visit.Id;
 	}
 
@@ -604,20 +674,30 @@ function ChooseHandler(state, args) {
 
 function ShowContractorsIfExists(outlet) {
 
-	var con = parseInt(HasContractors(outlet));
+	if (outlet == null) {
+		var existorno = new Query("Select type From sqlite_master where name = 'UT_answerQuest' And type = 'table'");
+		var exorno = existorno.ExecuteCount();
+		if (exorno > 0) {
+			var checkansquest = new Query("Select outlet From UT_answerQuest");
+			var outletref = checkansquest.ExecuteScalar();
+		}
+	}else {
+		outletref = outlet;
+	}
+	var con = parseInt(HasContractors(outletref));
 
 	if (con == parseInt(0))
 		Dialog.Message(Translate["#noContractors#"]);
 
 	else if (con == parseInt(1))
 	{
-		var outletObj = outlet.LoadObject();
+		var outletObj = outletref.GetObject();
 
 		var contractor;
 		if (outletObj.Distributor==DB.EmptyRef("Catalog_Distributor"))
 		{
 			var q = new Query("SELECT Contractor FROM Catalog_Outlet_Contractors WHERE Ref=@ref");
-			q.AddParameter("ref", outlet);
+			q.AddParameter("ref", outletref);
 			contractor = q.ExecuteScalar();
 		}
 		else

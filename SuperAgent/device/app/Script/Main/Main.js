@@ -5,6 +5,25 @@ var entered = false;
 var sendingRequest;
 
 function OnLoad() {
+	var existorno = new Query("Select type From sqlite_master where name = 'UT_answerQuest' And type = 'table'");
+	var exorno = existorno.ExecuteCount();
+	if (exorno > 0) {
+		var checkansquest = new Query("Select id From UT_answerQuest");
+		var counnurows = checkansquest.ExecuteCount();
+		if (counnurows>0) {
+			if (Variables.Exists("planVisit")){
+				Variables.Remove("planVisit");
+				Workflow.Action("Visits",[]);
+			}
+				var planVisitquery = new Query("Select refPlan From UT_answerQuest");
+				var planVisit = planVisitquery.ExecuteScalar();
+				var outletquery = new Query("Select outlet From UT_answerQuest");
+				var outlet = outletquery.ExecuteScalar();
+				$.AddGlobal("planVisit", planVisit);
+				GlobalWorkflow.SetOutlet(outlet);
+				Workflow.Action("ShowUncomlitedVisit",[]);
+		}
+	}
 	sendingRequest = false;
 	$.swipe_vl.Index = GetFirstScreenIndex();
 }

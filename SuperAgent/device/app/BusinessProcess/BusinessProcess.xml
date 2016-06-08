@@ -5,6 +5,7 @@
 
 		<bp:Step Name="Summary" Screen="Main.xml">
 			<s:Include File="\Components\SideMenuActions.xml"/>
+			<bp:Action Name="ShowUncomlitedVisit" NextWorkflow="Visit"></bp:Action>
 		</bp:Step>
 
 		<bp:Step Name="Visits" Screen="Visit\Visits.xml" Controller="Visits\Main.js">
@@ -128,6 +129,7 @@
 
 		<bp:Step Name="Total" Screen="Visit\Total.xml" Controller="Visits\Total.js">
 			<bp:Action Name="Total_Tasks" NextStep="Total_Tasks"></bp:Action>
+			<bp:Action Name="GoToVists" NextWorkflow="Main"></bp:Action>
 		</bp:Step>
 
 		<bp:Step Name="Total_Tasks" Screen="Tasks\Tasks.xml" Controller="Tasks\Main.js">

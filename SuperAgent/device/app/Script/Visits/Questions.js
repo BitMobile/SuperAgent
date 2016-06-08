@@ -210,7 +210,7 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 
 function FormatAndRefresh(control, question, answerType){
 
-	var answer = control.Text;	
+	var answer = control.Text;
 
 	if (!String.IsNullOrEmpty(answer) && answerType == DB.Current.Constant.DataType.Integer){
 
@@ -240,6 +240,26 @@ function AssignAnswer(control, question, answer, answerType) {
 	else
 		answerString = "@answer ";
 
+		if ($.sessionConst.UseSaveQuest) {
+			var existorno = new Query("Select type From sqlite_master where name = 'UT_answerQuest' And type = 'table'");
+			var exorno = existorno.ExecuteCount();
+			if (exorno == 0) {
+			DB.CreateTable("answerQuest", ["id","refPlan","outlet","DateStart","Lattitude","Longitude","question","answer"]);
+			}
+			var ans = (question.AnswerType == DB.Current.Constant.DataType.DateTime ? Format('{0:dd.MM.yyyy HH:mm}', Date(answer)) : answer);
+			var checkansquest = new Query("Select id From UT_answerQuest Where question = @question");
+			checkansquest.AddParameter("question",question);
+			var counnurows = checkansquest.ExecuteCount();
+			if (counnurows>0) {
+				var q2 = new Query("UPDATE UT_answerQuest SET answer = '"+ans+"' Where question = @question");
+				q2.AddParameter("question",question);
+				q2.Execute();
+			}else {
+				var q2 = new Query("Insert into UT_answerQuest values(1,'"+Variables["planVisit"]+"','"+$.workflow.outlet+"','"+$.workflow.visit.StartTime+"','"+$.workflow.visit.Lattitude+"','"+$.workflow.visit.Longitude+"','"+question+"','"+ans+"')");
+				q2.Execute();
+			}
+
+		}
 	var q =	new Query("UPDATE USR_Questions SET Answer=" + answerString + ", AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question");
 	q.AddParameter("answer", (question.AnswerType == DB.Current.Constant.DataType.DateTime ? Format("{0:dd.MM.yyyy HH:mm}", Date(answer)) : answer));
 	q.AddParameter("question", question);

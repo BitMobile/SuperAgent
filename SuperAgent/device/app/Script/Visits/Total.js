@@ -176,6 +176,11 @@ function CheckAndCommit(state, args) {
     }
     CreateQuestionnaireAnswers();
     visit.Save();
+		var existorno = new Query("Select type From sqlite_master where name = 'UT_answerQuest' And type = 'table'");
+		var exorno = existorno.ExecuteCount();
+		if (exorno > 0) {
+			DB.TruncateTable("answerQuest");
+		}
     Workflow.Commit();
 	}
 }

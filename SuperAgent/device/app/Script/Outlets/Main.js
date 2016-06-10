@@ -4,6 +4,7 @@ var parameterValueC;
 var title;
 var back;
 var outletDesc;
+var backvisit;
 
 //"description"	= "000000001"
 //"address"			= "000000002"
@@ -33,10 +34,16 @@ function OnLoading() {
 	var existorno = new Query("Select type From sqlite_master where name = 'UT_answerQuest' And type = 'table'");
 	var exorno = existorno.ExecuteCount();
 	if (exorno > 0) {
-		back = Translate["#back#"];
+		var checkansquest = new Query("Select id From UT_answerQuest");
+		var counnurows = checkansquest.ExecuteCount();
+		if (counnurows>0) {
+			backvisit = Translate["#back#"];
+		}else {
+		backvisit = Translate["#" + Lower(GlobalWorkflow.GetMenuItem()) + "#"];			
+		}
 	}
 	else {
-		back = Translate["#" + Lower(GlobalWorkflow.GetMenuItem()) + "#"];
+		backvisit = Translate["#" + Lower(GlobalWorkflow.GetMenuItem()) + "#"];
 	}
 	title = Translate["#outlet#"];
 
@@ -538,13 +545,18 @@ function CreateVisitIfNotExists(userRef, visit, planVisit) {
 			var checkansquest = new Query("Select id From UT_answerQuest");
 			var counnurows = checkansquest.ExecuteCount();
 			if (counnurows>0) {
+				var refq = new Query("Select id From UT_answerQuest");
+				var oldrefnumber = refq.ExecuteScalar();
+				var oldRef = "@ref[Document_Visit]:" + oldrefnumber;
+				//Dialog.Message(oldRef);
+				visit.Id = oldRef;
 				var Lattitudequ = new Query("Select Lattitude From UT_answerQuest");
 				var Lattitudeold = Lattitudequ.ExecuteScalar();
 				var Longitudequ = new Query("Select Longitude From UT_answerQuest");
 				var Longitudeold = Longitudequ.ExecuteScalar();
 				if (Lattitudeold!="" && Longitudeold!="") {
 					visit.Lattitude = Lattitudeold;
-					visit.Longitude = Longitudeold;					
+					visit.Longitude = Longitudeold;
 				}
 			}
 			else {
@@ -572,6 +584,13 @@ function CreateVisitIfNotExists(userRef, visit, planVisit) {
 					var answeredquest = new Query("Select question As quest, answer AS ans From UT_answerQuest");
 					var param = answeredquest.Execute();
 					while (param.Next()) {
+						if (param.quest.AnswerType == DB.Current.Constant.DataType.Snapshot) {
+							var snapshotold = DB.Create("Document.Visit_Files");
+							snapshotold.Ref = visit.Id;
+							snapshotold.FullFileName = "/private/document.visit/"+Right(ToString(visit.Id),36)+"/"+param.ans+".jpg";
+							snapshotold.FileName = param.ans;
+							snapshotold.Save();
+						}
 						var upd = new Query("UPDATE USR_Questions SET Answer='" + param.ans + "' WHERE Question=@question");
 						upd.AddParameter("question",param.quest);
 						upd.Execute();
@@ -755,6 +774,14 @@ function DeleteAndRollback(visit) {
 	DoRollback();
 }
 
+function DoRollbackAction(){
+	var existorno = new Query("Select type From sqlite_master where name = 'UT_answerQuest' And type = 'table'");
+	var exorno = existorno.ExecuteCount();
+	if (exorno > 0) {
+		DB.TruncateTable("answerQuest");
+	}
+	DoRollback();
+}
 function SaveAndBack(outlet) {
 	if (CheckEmptyOutletFields(outlet)) {
 		outlet.GetObject().Save();

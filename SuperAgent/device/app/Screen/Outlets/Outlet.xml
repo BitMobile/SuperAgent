@@ -50,9 +50,9 @@
 		</s:If>
 		<s:Else>
 			<c:DockLayout CssClass="top_navigator">
-				<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoRollback()">
+				<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoRollbackAction()">
 					<c:Image />
-					<c:TextView Text="#visits#" />
+					<c:TextView Text="@backvisit" />
 				</c:DockLayout>
 				<c:DockLayout OnEvent="Forward" CssClass="btn_forward" OnClickAction="$CheckNotNullAndForward($workflow.outlet, $workflow.visit)">
 					<c:TextView Id="btnForward" Text="#forward#" />

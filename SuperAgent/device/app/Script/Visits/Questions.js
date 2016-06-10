@@ -255,7 +255,7 @@ function AssignAnswer(control, question, answer, answerType) {
 				q2.AddParameter("question",question);
 				q2.Execute();
 			}else {
-				var q2 = new Query("Insert into UT_answerQuest values(1,'"+Variables["planVisit"]+"','"+$.workflow.outlet+"','"+$.workflow.visit.StartTime+"','"+$.workflow.visit.Lattitude+"','"+$.workflow.visit.Longitude+"','"+question+"','"+ans+"')");
+				var q2 = new Query("Insert into UT_answerQuest values('"+$.workflow.visit.Id+"','"+Variables["planVisit"]+"','"+$.workflow.outlet+"','"+$.workflow.visit.StartTime+"','"+$.workflow.visit.Lattitude+"','"+$.workflow.visit.Longitude+"','"+question+"','"+ans+"')");
 				q2.Execute();
 			}
 

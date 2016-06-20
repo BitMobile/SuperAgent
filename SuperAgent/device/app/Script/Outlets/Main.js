@@ -39,7 +39,7 @@ function OnLoading() {
 		if (counnurows>0) {
 			backvisit = Translate["#back#"];
 		}else {
-		backvisit = Translate["#" + Lower(GlobalWorkflow.GetMenuItem()) + "#"];			
+			backvisit = Translate["#" + Lower(GlobalWorkflow.GetMenuItem()) + "#"];
 		}
 	}
 	else {
@@ -774,11 +774,20 @@ function DeleteAndRollback(visit) {
 	DoRollback();
 }
 
-function DoRollbackAction(){
+function DoRollbackAction(visit){
 	var existorno = new Query("Select type From sqlite_master where name = 'UT_answerQuest' And type = 'table'");
 	var exorno = existorno.ExecuteCount();
 	if (exorno > 0) {
 		DB.TruncateTable("answerQuest");
+	}
+	if (visit!=null) {
+		var FileInVis = new Query("SELECT FullFileName From Document_Visit_Files WHERE Ref = @ref");
+		FileInVis.AddParameter("ref",visit);
+		var VisitFile = FileInVis.Execute();
+		while (VisitFile.Next()) {
+			//Dialog.Message("DELET");
+			FileSystem.Delete(VisitFile.FullFileName);
+		}
 	}
 	DoRollback();
 }

@@ -82,12 +82,15 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(phone_number, 1)">
-				<c:VerticalLayout>
+			<c:DockLayout CssClass="grid" OnClickAction="$FocusOnEditText(phone_number, 1)">
+				<c:HorizontalLayout CssClass="phone">
+					<c:VerticalLayout  OnClickAction="$GetPhoneAndCall($contractor)"></c:VerticalLayout>
+				</c:HorizontalLayout>
+				<c:VerticalLayout CssClass="partialW">
 					<c:TextView Text="#phone#" CssClass="description_row"></c:TextView>
 					<c:EditText Value="$contractor.PhoneNumber" Placeholder="—" Keyboard="phone" CssClass="main_row" Id="phone_number" Mask="#phone_regexp#"/>
 				</c:VerticalLayout>
-			</c:HorizontalLayout>
+			</c:DockLayout>
 			<c:HorizontalLine />
 
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(email, 1)">

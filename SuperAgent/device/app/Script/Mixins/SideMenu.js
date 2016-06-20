@@ -15,7 +15,7 @@ function GetItemsStyles(){
 	return styles;
 }
 
-function IsCurrent(name){	
+function IsCurrent(name){
 	var c = GlobalWorkflow.GetMenuItem() == null ? "Summary" : GlobalWorkflow.GetMenuItem();
 	return name == c ? "header" : "common";
 }
@@ -100,8 +100,13 @@ function Logout() {
 		var ex = q2.ExecuteScalar();
 		var res = String.IsNullOrEmpty(ex) ? 0 : ex;
 
-		if (parseInt(res) == parseInt(1))
-			Dialog.Message("#noLogout#", GoToSync);
+		if (parseInt(res) == parseInt(1)){
+			if (DB.SuccessSync) {
+				Dialog.Message("#noLogout#", GoToSync);
+			}else {
+				Dialog.Ask("#OutWhatEver#",LogoutCallbackWhatEver,"",GoToSync);				
+			}
+		}
 		else{
 			Dialog.Alert("#logoutQuery#"
 		    , LogoutCallback
@@ -111,6 +116,10 @@ function Logout() {
 		    , null);
 		}
 
+}
+
+function LogoutCallbackWhatEver(){
+		Application.Logout();
 }
 
 function GoToSync(){

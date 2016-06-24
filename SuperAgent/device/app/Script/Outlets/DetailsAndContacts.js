@@ -5,10 +5,18 @@ var hasOutletContacts;
 var newContact;
 var c_ownerType;
 var back;
+var DateAddTru;
 
 function OnLoading(){
 	title = Translate["#contractors#"];
 	back = Translate["#outlet_short#"];
+	if ($.workflow.name=='Visit') {
+		DateAddTru = GlobalWorkflow.GetDateAdd();
+	}
+	else {
+		DateAddTru = false;
+	}
+
 }
 
 function OnLoad()
@@ -173,7 +181,7 @@ function EditOwner(contact, owner){
 
 		if (ownerInput==Translate["#partner#"]){
 			newOwner = DB.Create("Catalog.Distributor_Contacts");
-			newOwner.Ref = $.workflow.outlet.Distributor;			
+			newOwner.Ref = $.workflow.outlet.Distributor;
 		}
 		else{
 			newOwner = DB.Create("Catalog.Outlet_Contacts");

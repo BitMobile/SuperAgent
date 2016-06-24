@@ -4,7 +4,7 @@ var parameterValueC;
 var title;
 var back;
 var outletDesc;
-
+var DateAddTru;
 //"description"	= "000000001"
 //"address"			= "000000002"
 //"coordinates" = "000000003"
@@ -33,6 +33,12 @@ function OnLoading() {
 	back = Translate["#" + Lower(GlobalWorkflow.GetMenuItem()) + "#"];
 
 	title = Translate["#outlet#"];
+	if ($.workflow.name=='Visit') {
+		DateAddTru = GlobalWorkflow.GetDateAdd();
+	}
+	else {
+		DateAddTru = false;
+	}
 
 }
 
@@ -97,7 +103,7 @@ function AddGlobalAndAction(outlet) {
 	if (curr=="Outlets")
 		actionName = "Select";
 	else{
-		if (HasContractors(outlet)){
+		if (HasContractors1(outlet)){
 			if (curr == "Orders")
 				actionName = "CreateOrder";
 			if (curr == "Returns")
@@ -326,7 +332,7 @@ function AssignParameterValue(control, typeDescription, parameterValue, value, o
 
 function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control, parameterDescription, editable, index, isEditText) {
 
-	if (editable) {
+	if (editable && DateAddTru == false) {
 
 		if ($.sessionConst.editOutletParameters) {
 			parameterValue = CreateOutletParameterValue(outlet, parameter, parameterValue, parameterValue, isEditText);
@@ -377,7 +383,7 @@ function GetStatusDescription(outlet) {
 }
 
 function FocusIfHasEditText(fieldName, editOutletParameters, primaryParameterName) {
-	if (editOutletParameters && $.primaryParametersSettings[primaryParameterName]) {
+	if (editOutletParameters && $.primaryParametersSettings[primaryParameterName] && DateAddTru == false) {
 		FocusOnEditText(fieldName, 1);
 	}
 }
@@ -578,7 +584,7 @@ function NoLocationHandler(descriptor) {
 }
 
 function ShowCoordOptions(control, outlet, editOutletParameters) {
-	if (editOutletParameters && $.primaryParametersSettings["000000003"]) {
+	if (editOutletParameters && $.primaryParametersSettings["000000003"] && DateAddTru == false) {
 		Dialog.Choose("#coordinates#", [[0,Translate["#clear_coord#"]], [1,Translate["#refresh#"]], [2,Translate["#copy#"]]], ChooseHandler, outlet);
 	}
 }
@@ -604,7 +610,7 @@ function ChooseHandler(state, args) {
 
 function ShowContractorsIfExists(outlet) {
 
-	var con = parseInt(HasContractors(outlet));
+	var con = parseInt(HasContractors1(outlet));
 
 	if (con == parseInt(0))
 		Dialog.Message(Translate["#noContractors#"]);
@@ -633,7 +639,7 @@ function ShowContractorsIfExists(outlet) {
 		DoAction('ShowContractors');
 }
 
-function HasContractors(outlet){
+function HasContractors1(outlet){
 
 	var res;
 

@@ -343,6 +343,33 @@ function CreateOutletParameterValue(outlet, parameter, value, parameterValue, is
 	return parameterValue.Id;
 }
 
+function RoundToIntIfNeed(control, typeDescription, parameterValue, value, outlet, parameter){
+	value = control.Text;
+	isEditText = true;
+	var q = new Query("SELECT Id FROM Catalog_Outlet_Parameters WHERE Ref=@ref AND Parameter = @parameter");
+	q.AddParameter("ref", outlet);
+	q.AddParameter("parameter", parameter);
+	parameterValue = q.ExecuteScalar();
+	if (parameterValue == null) {
+		parameterValue = DB.Create("Catalog.Outlet_Parameters");
+		parameterValue.Ref = outlet;
+		parameterValue.Parameter = parameter;
+		parameterValue.Save();
+	} else{
+		parameterValue = parameterValue.GetObject();
+		if (isEditText){
+			if ((parameter.DataType).ToString() != (DB.Current.Constant.DataType.Snapshot).ToString()){
+				if ((parameter.DataType).ToString() == (DB.Current.Constant.DataType.Integer).ToString()){
+					value = RoundToInt(value);
+					parameterValue.Value = value;
+				}
+			}
+			parameterValue.Save();
+		}
+	}
+	control.Text=value;
+}
+
 function AssignParameterValue(control, typeDescription, parameterValue, value, outlet, parameter){
 	CreateOutletParameterValue(outlet, parameter, control.Text, parameterValue, true)
 }

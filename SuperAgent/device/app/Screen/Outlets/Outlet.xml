@@ -271,7 +271,7 @@
 				<s:If Test="$visible">
 					<c:DockLayout CssClass="parameter_grid" OnClickAction="$GoToParameterAction($parameter.TypeDescription, $parameter.Value, Value, $workflow.outlet, $parameter.Id, control{$index}, $parameter.Description, $editable, $index, $parameter.IsInputField)">
 						<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $parameter.IsInputField == true &amp;&amp; $editable == true">
-							<c:EditText Id="control{$index}" Text="$parameter.Value" Placeholder="—" OnChange="$AssignParameterValue($parameter.TypeDescription, $parameterValue, Value, $workflow.outlet, $parameter.Id)" CssClass="value" Keyboard="$parameter.KeyboardType"></c:EditText>
+							<c:EditText Id="control{$index}" Text="$parameter.Value" Placeholder="—" OnLostFocus="$RoundToIntIfNeed($parameter.TypeDescription, $parameterValue, Value, $workflow.outlet, $parameter.Id)" OnChange="$AssignParameterValue($parameter.TypeDescription, $parameterValue, Value, $workflow.outlet, $parameter.Id)" CssClass="value" Keyboard="$parameter.KeyboardType"></c:EditText>
 						</s:If>
 						<s:Else>
 							<s:If Test="$parameter.TypeDescription == 'Snapshot'">

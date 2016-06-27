@@ -682,6 +682,7 @@ function DeleteAndRollback(visit) {
 }
 
 function SaveAndBack(outlet) {
+	GlobalWorkflow.SetDateAdd(false);
 	if (CheckEmptyOutletFields(outlet)) {
 		outlet.GetObject().Save();
 		ReviseParameters(outlet, true);

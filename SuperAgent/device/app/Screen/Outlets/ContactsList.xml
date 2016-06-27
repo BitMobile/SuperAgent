@@ -18,7 +18,7 @@
 
 		<c:HorizontalLine />
 
-		<s:If Test="$AddEnabled()">
+		<s:If Test="$AddEnabled() &amp;&amp; @DateAddTru == false">
 			<c:HorizontalLayout Id="btnAdd" CssClass="bottom_btn" OnClickAction="$DoAction(Select, null, null)">
 				<c:TextView Text="#add#"></c:TextView>
 			</c:HorizontalLayout>

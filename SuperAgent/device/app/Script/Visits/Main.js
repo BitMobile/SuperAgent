@@ -301,7 +301,7 @@ function AddGlobalAndAction(planVisit, outlet, actionName) {
 	}
 	GlobalWorkflow.SetOutlet(outlet);
 	var outletObj = outlet.GetObject();
-	if (addDay == 0 || addDay == null) {
+	if (addDay == 0 || addDay == null || $.visitsType!='planned') {
 		GlobalWorkflow.SetDateAdd(false);
 	}else {
 		GlobalWorkflow.SetDateAdd(true);

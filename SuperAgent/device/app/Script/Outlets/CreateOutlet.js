@@ -19,6 +19,16 @@ function CreateOutlet(outlet) {
 	}
 }
 
+function hasDistr(){
+	var qur = new Query("Select Id From Catalog_Distributor");
+	var distr = qur.ExecuteScalar();
+	if (distr == null) {
+		return false;
+	}else {
+		return true;
+	}
+}
+
 function GetTerritory() {
 	var q = new Query("SELECT Id From Catalog_Territory LIMIT 1");
 	var territory = q.ExecuteScalar();

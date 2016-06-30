@@ -37,15 +37,23 @@
 					<c:HorizontalLine />
 
 					<s:Iterator Id="contact" Value="$GetOutletContacts($outlet)" Status="statusCount">
-						<c:SwipeHorizontalLayout CssClass="swipe_layout">
+						<s:If Test="@DateAddTru == false">
+							<c:SwipeHorizontalLayout CssClass="swipe_layout">
+								<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoAction(Select, $contact.Id, $contact.OutletContact)">
+									<c:Image />
+									<c:TextView Text="$contact.ContactName"></c:TextView>
+								</c:DockLayout>
+								<c:HorizontalLayout CssClass="red_swipe" OnClickAction="$DeleteContact($contact.OutletContact)">
+									<c:TextView Text="#delete#"></c:TextView>
+								</c:HorizontalLayout>
+							</c:SwipeHorizontalLayout>
+						</s:If>
+						<s:Else>
 							<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoAction(Select, $contact.Id, $contact.OutletContact)">
 								<c:Image />
 								<c:TextView Text="$contact.ContactName"></c:TextView>
 							</c:DockLayout>
-							<c:HorizontalLayout CssClass="red_swipe" OnClickAction="$DeleteContact($contact.OutletContact)">
-								<c:TextView Text="#delete#"></c:TextView>
-							</c:HorizontalLayout>
-						</c:SwipeHorizontalLayout>
+						</s:Else>
 						<c:HorizontalLine />
 					</s:Iterator>
 				</s:If>

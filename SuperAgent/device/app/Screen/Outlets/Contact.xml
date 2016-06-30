@@ -2,7 +2,7 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="CreateOutlet.css">
 
 	<s:Push Id="contactOwner" Value="$param2"></s:Push>
-	<s:Push Id="contact" Value="$CreateContactIfNotExist($param1, $contactOwner)" />	
+	<s:Push Id="contact" Value="$CreateContactIfNotExist($param1, $contactOwner)" />
 	<s:Push Id="ownerType" Value="$GetOwnerType($contactOwner)"></s:Push>
 
 	<c:DockLayout>
@@ -42,7 +42,7 @@
 		</s:Else>
 
 		<c:ScrollView Id="grScrollView">
-			
+
 			<c:HorizontalLayout CssClass="margin_top" />
 			<c:HorizontalLine />
 

@@ -346,3 +346,4 @@ web_site		Web
 webSite			Web
 YES				Ano
 ZAO				ZAO
+today			Dnes

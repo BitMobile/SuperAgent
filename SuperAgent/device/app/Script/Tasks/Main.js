@@ -1,3 +1,13 @@
+var DateAddTru;
+
+function OnLoading(){
+	if ($.workflow.name=='Visit') {
+		DateAddTru = GlobalWorkflow.GetDateAdd();
+	}
+	else {
+		DateAddTru = false;
+	}
+}
 function OnLoad(){
 	if ($.workflow.curentStep == "Total_Tasks")
 		$.btnForward.Text = "";

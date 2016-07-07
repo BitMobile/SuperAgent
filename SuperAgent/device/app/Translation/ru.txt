@@ -356,3 +356,4 @@ web_site	Веб-сайт
 webSite		Сайт разработчика
 YES		Да
 ZAO				ЗАО
+today		Сегодня

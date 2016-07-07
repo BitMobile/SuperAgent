@@ -5,6 +5,7 @@ var title;
 var back;
 var outletDesc;
 var backvisit;
+var DateAddTru;
 
 //"description"	= "000000001"
 //"address"			= "000000002"
@@ -46,6 +47,12 @@ function OnLoading() {
 		backvisit = Translate["#" + Lower(GlobalWorkflow.GetMenuItem()) + "#"];
 	}
 	title = Translate["#outlet#"];
+	if ($.workflow.name=='Visit') {
+		DateAddTru = GlobalWorkflow.GetDateAdd();
+	}
+	else {
+		DateAddTru = false;
+	}
 
 }
 
@@ -120,7 +127,7 @@ function AddGlobalAndAction(outlet) {
 	if (curr=="Outlets")
 		actionName = "Select";
 	else{
-		if (HasContractors(outlet)){
+		if (HasContractors1(outlet)){
 			if (curr == "Orders")
 				actionName = "CreateOrder";
 			if (curr == "Returns")
@@ -349,7 +356,7 @@ function AssignParameterValue(control, typeDescription, parameterValue, value, o
 
 function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control, parameterDescription, editable, index, isEditText) {
 
-	if (editable) {
+	if (editable && DateAddTru == false) {
 
 		if ($.sessionConst.editOutletParameters) {
 			parameterValue = CreateOutletParameterValue(outlet, parameter, parameterValue, parameterValue, isEditText);
@@ -400,7 +407,7 @@ function GetStatusDescription(outlet) {
 }
 
 function FocusIfHasEditText(fieldName, editOutletParameters, primaryParameterName) {
-	if (editOutletParameters && $.primaryParametersSettings[primaryParameterName]) {
+	if (editOutletParameters && $.primaryParametersSettings[primaryParameterName] && DateAddTru == false) {
 		FocusOnEditText(fieldName, 1);
 	}
 }
@@ -667,7 +674,7 @@ function NoLocationHandler(descriptor) {
 }
 
 function ShowCoordOptions(control, outlet, editOutletParameters) {
-	if (editOutletParameters && $.primaryParametersSettings["000000003"]) {
+	if (editOutletParameters && $.primaryParametersSettings["000000003"] && DateAddTru == false) {
 		Dialog.Choose("#coordinates#", [[0,Translate["#clear_coord#"]], [1,Translate["#refresh#"]], [2,Translate["#copy#"]]], ChooseHandler, outlet);
 	}
 }
@@ -732,7 +739,7 @@ function ShowContractorsIfExists(outlet) {
 		DoAction('ShowContractors');
 }
 
-function HasContractors(outlet){
+function HasContractors1(outlet){
 
 	var res;
 
@@ -783,6 +790,7 @@ function DoRollbackAction(){
 	DoRollback();
 }
 function SaveAndBack(outlet) {
+	GlobalWorkflow.SetDateAdd(false);
 	if (CheckEmptyOutletFields(outlet)) {
 		outlet.GetObject().Save();
 		ReviseParameters(outlet, true);

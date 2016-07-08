@@ -47,7 +47,7 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<s:If Test="$IsEditable($task)">
+			<s:If Test="$IsEditable($task) &amp;&amp; @DateAddTru == false">
 
 				<c:HorizontalLayout CssClass="end_of_block" />
 				<c:HorizontalLine />
@@ -76,14 +76,15 @@
 					<c:HorizontalLine />
 				</s:If>
 			</s:Else>
-
-			<c:HorizontalLayout CssClass="memo_block">
-				<c:VerticalLayout>
-					<c:TextView Text="#commentary#" CssClass="description_row"></c:TextView>
-					<c:MemoEdit Id="result"  Text="$task.Result" CssClass="main_row" Placeholder="—" Enabled="$IsEditable($task)" OnLostFocus="$SaveComment($task)"></c:MemoEdit>
-				</c:VerticalLayout>
-			</c:HorizontalLayout>
-			<c:HorizontalLine />
+			<s:If Test="@DateAddTru == false">
+				<c:HorizontalLayout CssClass="memo_block">
+					<c:VerticalLayout>
+						<c:TextView Text="#commentary#" CssClass="description_row"></c:TextView>
+						<c:MemoEdit Id="result"  Text="$task.Result" CssClass="main_row" Placeholder="—" Enabled="$IsEditable($task)" OnLostFocus="$SaveComment($task)"></c:MemoEdit>
+					</c:VerticalLayout>
+				</c:HorizontalLayout>
+				<c:HorizontalLine />
+			</s:If>			
 
 			<c:HorizontalLayout CssClass="end_of_block" />
 

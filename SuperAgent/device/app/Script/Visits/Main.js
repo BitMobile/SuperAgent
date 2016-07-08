@@ -116,8 +116,8 @@ function SetDateFiltr(){
 function SetDateNow(state, args) {
 	$.DateText.Text = filterDate(args.Result);
 	//recvStartPeriod = BegOfDay(args.Result);
-	addDay = parseInt(args.Result.Subtract(DateTime.Now.Date).TotalDays);
-	//Dialog.Message(addDay);
+	addDay = parseInt(RoundToInt(args.Result.Subtract(DateTime.Now.Date).TotalDays));
+	//Dialog.Message(args.Result.Subtract(DateTime.Now.Date).TotalDays);
 	RefreshScrolView();
 }
 function filterDate(dt){
@@ -307,8 +307,10 @@ function AddGlobalAndAction(planVisit, outlet, actionName) {
 	GlobalWorkflow.SetOutlet(outlet);
 	var outletObj = outlet.GetObject();
 	if (addDay == 0 || addDay == null || $.visitsType!='planned') {
+		GlobalWorkflow.SetDateAddNumber(0);
 		GlobalWorkflow.SetDateAdd(false);
 	}else {
+		GlobalWorkflow.SetDateAddNumber(addDay);
 		GlobalWorkflow.SetDateAdd(true);
 	}
 	//Dialog.Message(outlet);

@@ -8,7 +8,13 @@ function GetMenuItem(){
 	return currentMenuItem;
 }
 
-
+var dateAddNumber;
+function SetDateAddNumber(addDay){
+	dateAddNumber = addDay;
+}
+function GetDateAddNumber(){
+	return dateAddNumber;
+}
 var outlet;
 
 function SetOutlet(value){

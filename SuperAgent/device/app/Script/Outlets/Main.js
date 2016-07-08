@@ -40,7 +40,7 @@ function OnLoading() {
 		if (counnurows>0) {
 			backvisit = Translate["#back#"];
 		}else {
-		backvisit = Translate["#" + Lower(GlobalWorkflow.GetMenuItem()) + "#"];			
+		backvisit = Translate["#" + Lower(GlobalWorkflow.GetMenuItem()) + "#"];
 		}
 	}
 	else {
@@ -710,7 +710,7 @@ function ShowContractorsIfExists(outlet) {
 	}else {
 		outletref = outlet;
 	}
-	var con = parseInt(HasContractors(outletref));
+	var con = parseInt(HasContractors1(outletref));
 
 	if (con == parseInt(0))
 		Dialog.Message(Translate["#noContractors#"]);

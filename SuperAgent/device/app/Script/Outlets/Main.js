@@ -257,7 +257,7 @@ function GetSnapshotText(text) {
 
 function CheckNotNullAndForward(outlet, visit) {
 	var c = CoordsChecked(visit);
-	if (CheckEmptyOutletFields(outlet) && c) {
+	if ((CheckEmptyOutletFields(outlet) && c) || DateAddTru == true) {
 		outlet.GetObject().Save();
 		ReviseParameters(outlet, false);
 		Workflow.Forward([]);
@@ -628,7 +628,7 @@ function SetLocation(control, outlet) {
 function CoordsChecked(visit) {
 
 	var location = GPS.CurrentLocation;
-	if (ActualLocation(location)) {
+	if (ActualLocation(location) && DateAddTru == false) {
 		var visitObj = visit.GetObject();
 		visitObj.Lattitude = location.Latitude;
 		visitObj.Longitude = location.Longitude;
@@ -646,7 +646,7 @@ function CoordsChecked(visit) {
 			else
 				var s = false;
 		}
-		if (s && visit.Lattitude == null && visit.Longitude == null) {
+		if (s && visit.Lattitude == null && visit.Longitude == null && DateAddTru == false) {
 			Dialog.Question(Translate["#impossibleToCreateVisit#"], VisitCoordsHandler, visit);
 			return false;
 		}

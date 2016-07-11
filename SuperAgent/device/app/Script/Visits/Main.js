@@ -98,6 +98,7 @@ function RefreshScrolView(){
 	}
 	$.grScrollView.append(toappend);
 	$.grScrollView.refresh();
+	$.grScrollView.ScrollIndex = 0;
 }
 function GoBackDate(){
 	addDay = addDay-1;
@@ -116,8 +117,7 @@ function SetDateFiltr(){
 }
 function SetDateNow(state, args) {
 	$.DateText.Text = filterDate(args.Result);
-	//recvStartPeriod = BegOfDay(args.Result);
-	addDay = parseInt(RoundToInt(args.Result.Subtract(DateTime.Now.Date).TotalDays));
+	addDay = Round(args.Result.Subtract(DateTime.Now).TotalDays);
 	RefreshScrolView();
 }
 function filterDate(dt){

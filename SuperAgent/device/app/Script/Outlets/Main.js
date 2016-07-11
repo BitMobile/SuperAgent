@@ -479,7 +479,7 @@ function GetImagePath(objectID, pictID, pictExt) {
 }
 
 function ImageActions(control, valueRef, imageControl, outlet, filename) {
-	if ($.sessionConst.editOutletParameters && $.primaryParametersSettings["000000008"]) {
+	if ($.sessionConst.editOutletParameters && $.primaryParametersSettings["000000008"] && DateAddTru == false) {
 		parameterValueC = valueRef;
 		Images.AddSnapshot($.workflow.outlet, valueRef, OutletSnapshotHandler, Translate["#snapshot#"], Variables[imageControl].Source);
 	} else {

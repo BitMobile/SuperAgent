@@ -121,7 +121,7 @@ function GetOwnerType(owner)
 function SelectOwner(owner)
 {
 	if ($.sessionConst.outletContactEditable && $.sessionConst.partnerContactEditable
-		&& $.workflow.outlet.Distributor != DB.EmptyRef("Catalog_Distributor_Contacts"))
+		&& $.workflow.outlet.Distributor != DB.EmptyRef("Catalog_Distributor_Contacts") && DateAddTru == false)
 	{
 		Dialog.Choose(Translate["#owner#"], [[0, Translate["#partner#"]], [1, Translate["#outlet#"]]], OwnerCallBack);
 	}

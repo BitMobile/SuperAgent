@@ -43,9 +43,11 @@
 									<c:Image />
 									<c:TextView Text="$contact.ContactName"></c:TextView>
 								</c:DockLayout>
-								<c:HorizontalLayout CssClass="red_swipe" OnClickAction="$DeleteContact($contact.OutletContact)">
-									<c:TextView Text="#delete#"></c:TextView>
-								</c:HorizontalLayout>
+								<s:If Test="@DateAddTru == false">
+									<c:HorizontalLayout CssClass="red_swipe" OnClickAction="$DeleteContact($contact.OutletContact)">
+										<c:TextView Text="#delete#"></c:TextView>
+									</c:HorizontalLayout>
+							</s:If>
 							</c:SwipeHorizontalLayout>
 						</s:If>
 						<s:Else>
@@ -72,7 +74,7 @@
 								<c:Image />
 								<c:TextView Text="$contact.ContactName"></c:TextView>
 							</c:DockLayout>
-							<s:If Test="$sessionConst.outletContactEditable">
+							<s:If Test="$sessionConst.outletContactEditable &amp;&amp; @DateAddTru == false">
 								<c:HorizontalLayout CssClass="red_swipe" OnClickAction="$DeleteContact($contact.PartnerContact)">
 									<c:TextView Text="#delete#"></c:TextView>
 								</c:HorizontalLayout>

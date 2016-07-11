@@ -65,36 +65,37 @@ function RefreshScrolView(){
 		toappend = toappend + "<c:TextView Text=\"{"+uncommitedVisits.Outlet.Address+"}\" CssClass=\"description_row\"></c:TextView>"
 		+ "</c:HorizontalLayout></c:VerticalLayout></c:DockLayout><c:HorizontalLine />";
 	}
-	toappend = toappend +"<c:HorizontalLayout CssClass=\"end_of_block\" />"
-	+ "<c:HorizontalLayout CssClass=\"caption_grid\">"
-	+ "<c:TextView Text=\"#completedVisits# ("+cv.ToString()+"):\"></c:TextView>"
-	+	"</c:HorizontalLayout>"
-	+ "<c:HorizontalLine />";
-while (commitedVisits.Next()) {
-	toappend = toappend + "<c:DockLayout CssClass=\"grid\">";
-	if (commitedVisits.OutletStatus == 0) {
-		toappend = toappend + "<c:Image CssClass=\"blue_mark\" />";
-	}
-	if (commitedVisits.OutletStatus == 1) {
-		toappend = toappend + "<c:Image CssClass=\"yellow_mark\" />";
-	}
-	if (commitedVisits.OutletStatus == 2) {
-		toappend = toappend + "<c:Image CssClass=\"y_blue_mark\" />";
-	}
-	if (commitedVisits.OutletStatus == 3) {
-		toappend = toappend + "<c:VerticalLayout CssClass=\"no_mark\"></c:VerticalLayout>";
-	}
-	var desc = StrReplace(commitedVisits.Description, "'", "\'");
-	var desc = StrReplace(commitedVisits.Description, '"', '\"');
-	toappend = toappend + "<c:Image />";
-	toappend = toappend + "<c:VerticalLayout>"
-	+ "<c:TextView Text=\'{"+desc+"}\' CssClass=\"main_row\"></c:TextView>"
-	+ "<c:HorizontalLayout>";
-	toappend = toappend + "<c:TextView Text=\"{"+commitedVisits.Address+"}\" CssClass=\"description_row\"></c:TextView>"
-	+ "</c:HorizontalLayout></c:VerticalLayout></c:DockLayout><c:HorizontalLine />";
+	if (addDay <= 0) {
+		toappend = toappend +"<c:HorizontalLayout CssClass=\"end_of_block\" />"
+		+ "<c:HorizontalLayout CssClass=\"caption_grid\">"
+		+ "<c:TextView Text=\"#completedVisits# ("+cv.ToString()+"):\"></c:TextView>"
+		+	"</c:HorizontalLayout>"
+		+ "<c:HorizontalLine />";
+	while (commitedVisits.Next()) {
+		toappend = toappend + "<c:DockLayout CssClass=\"grid\">";
+		if (commitedVisits.OutletStatus == 0) {
+			toappend = toappend + "<c:Image CssClass=\"blue_mark\" />";
+		}
+		if (commitedVisits.OutletStatus == 1) {
+			toappend = toappend + "<c:Image CssClass=\"yellow_mark\" />";
+		}
+		if (commitedVisits.OutletStatus == 2) {
+			toappend = toappend + "<c:Image CssClass=\"y_blue_mark\" />";
+		}
+		if (commitedVisits.OutletStatus == 3) {
+			toappend = toappend + "<c:VerticalLayout CssClass=\"no_mark\"></c:VerticalLayout>";
+		}
+		var desc = StrReplace(commitedVisits.Description, "'", "\'");
+		var desc = StrReplace(commitedVisits.Description, '"', '\"');
+		toappend = toappend + "<c:Image />";
+		toappend = toappend + "<c:VerticalLayout>"
+		+ "<c:TextView Text=\'{"+desc+"}\' CssClass=\"main_row\"></c:TextView>"
+		+ "<c:HorizontalLayout>";
+		toappend = toappend + "<c:TextView Text=\"{"+commitedVisits.Address+"}\" CssClass=\"description_row\"></c:TextView>"
+		+ "</c:HorizontalLayout></c:VerticalLayout></c:DockLayout><c:HorizontalLine />";
 
+		}
 	}
-	//Dialog.Message(toappend);
 	$.grScrollView.append(toappend);
 	$.grScrollView.refresh();
 }
@@ -117,7 +118,6 @@ function SetDateNow(state, args) {
 	$.DateText.Text = filterDate(args.Result);
 	//recvStartPeriod = BegOfDay(args.Result);
 	addDay = parseInt(RoundToInt(args.Result.Subtract(DateTime.Now.Date).TotalDays));
-	//Dialog.Message(args.Result.Subtract(DateTime.Now.Date).TotalDays);
 	RefreshScrolView();
 }
 function filterDate(dt){

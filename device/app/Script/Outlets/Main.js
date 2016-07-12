@@ -1,4 +1,4 @@
-﻿var snapshotsExists;
+var snapshotsExists;
 var singlePicture;
 var parameterValueC;
 var title;
@@ -271,9 +271,9 @@ function ReviseParameters(outlet, save) {
 }
 
 //---------------------------header parameters dialog.choose--------------------
-
+//Убрана проверка на наименование ворклофа Коммент.стр 276 и 305
 function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParameters, primaryParameterName) {
-	if ($.workflow.name != "Visit") {
+	//if ($.workflow.name != "Visit") {
 		if (editOutletParameters && $.primaryParametersSettings[primaryParameterName]) {
 
 			var listChoice = null;
@@ -302,7 +302,7 @@ function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParamete
 
 			Dialogs.DoChoose(listChoice, outlet, attribute, control, null, title);
 		}
-	}
+	//}
 }
 
 function GetDescr(description){

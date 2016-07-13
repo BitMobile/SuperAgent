@@ -6,7 +6,7 @@
 	<s:Push Id="questions" Value="$GetQuestionsByQuestionnaires($outlet)"></s:Push>
 
 	<c:VerticalLayout>
-
+ 
 		<c:DockLayout CssClass="top_navigator">
 			<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$GetActionAndBack()">
 				<c:Image />

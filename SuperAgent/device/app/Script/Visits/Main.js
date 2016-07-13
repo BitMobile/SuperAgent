@@ -20,12 +20,20 @@ function OnLoad(){
 	$.DateText.Text = filterDate(DateTime.Now.Date.AddDays(addDay));
 	//Dialog.Message(filterDate(DateTime.Now.Date.AddDays(addDay)));
 }
+function CheckDateAdd(){
+	if (addDay<=0) {
+		return true;
+	}else {
+		return false;
+	}
+}
 function GoForwardDate(){
 	addDay = addDay+1;
 	$.DateText.Text = filterDate(DateTime.Now.Date.AddDays(addDay));
 	RefreshScrolView();
 }
 function RefreshScrolView(){
+	$.edtSearch.Text="";
 	for (control in $.grScrollView.Controls) {
 		control.remove();
 	}

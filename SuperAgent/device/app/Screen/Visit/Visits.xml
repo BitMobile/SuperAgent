@@ -114,7 +114,7 @@
 
 
 					<c:HorizontalLayout CssClass="end_of_block" />
-
+			<s:If Test="$CheckDateAdd()">
 					<c:HorizontalLayout CssClass="caption_grid">
 
 						<s:Push Id="commitedVisits" Value="$GetCommitedVisits($search)"></s:Push>
@@ -150,7 +150,7 @@
 					</s:Iterator>
 
 					<c:HorizontalLayout CssClass="end_of_block" />
-
+			</s:If>
 				</c:ScrollView>
 			</s:If>
 

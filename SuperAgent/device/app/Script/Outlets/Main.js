@@ -5,7 +5,7 @@ var title;
 var back;
 var outletDesc;
 var backvisit;
-
+//
 //"description"	= "000000001"
 //"address"			= "000000002"
 //"coordinates" = "000000003"
@@ -39,7 +39,7 @@ function OnLoading() {
 		if (counnurows>0) {
 			backvisit = Translate["#back#"];
 		}else {
-		backvisit = Translate["#" + Lower(GlobalWorkflow.GetMenuItem()) + "#"];			
+		backvisit = Translate["#" + Lower(GlobalWorkflow.GetMenuItem()) + "#"];
 		}
 	}
 	else {

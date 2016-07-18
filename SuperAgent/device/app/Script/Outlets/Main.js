@@ -305,9 +305,13 @@ function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParamete
 	}
 }
 
-function GetDescr(description){
-
-	return String.IsNullOrEmpty(description) ? "—" : description;
+function GetDescr(outlet){
+	//Dialog.Message(outlet);
+	var q = new Query("Select D.Description As Desc From Catalog_Outlet O LEFT JOIN Catalog_Distributor D ON O.Distributor=D.Id	Where O.Id=@outlet");
+	q.AddParameter("outlet",outlet);
+	var result = q.ExecuteScalar();
+	var descdistr = result;
+	return String.IsNullOrEmpty(descdistr) ? "—" : descdistr;
 }
 
 

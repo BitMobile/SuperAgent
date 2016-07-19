@@ -60,7 +60,12 @@
 
 			<s:If Test="$visitsType=='planned'">
 				<c:DockLayout CssClass="searchDate">
+					<s:If Test="$sessionConst.DayPlanVisitCount == @addDay">
+						<c:Button Id="btnDateForward" CssClass="ForwardButtOff" OnClick="$GoForwardDate()"></c:Button>
+					</s:If>
+					<s:Else>
 						<c:Button Id="btnDateForward" CssClass="ForwardButt" OnClick="$GoForwardDate()"></c:Button>
+					</s:Else>
 						<c:Button Id="btnDateBack" CssClass="BackButt" OnClick="$GoBackDate()"></c:Button>
 					<c:VerticalLayout  CssClass="TodayTextStyle" OnClick="$SetToday()">
 						<c:TextView Text="#today#"/>

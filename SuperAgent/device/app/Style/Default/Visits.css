@@ -65,6 +65,14 @@
 	margin-top: 11%;
 	margin-right: 5%
 }
+.ForwardButtOff{
+	width: 5mm;
+	height: 5mm;
+	background-image: url(right_off.png);
+	dock-align: right;
+	margin-top: 11%;
+	margin-right: 5%
+}
 .BackButt{
 	width: 5mm;
 	height: 5mm;

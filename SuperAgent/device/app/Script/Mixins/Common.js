@@ -184,6 +184,24 @@ function FormatOutput(value) {
 		return value;
 }
 
+function RoundToIntFloor(val){
+  var roundInt = Round(val,0);
+  if (val > 0) {
+      if (roundInt>val) {
+        return roundInt - 1;
+      }else {
+        return roundInt;
+      }
+  }else {
+    if (roundInt>=val) {
+      return roundInt;
+    }else {
+      return roundInt + 1;
+    }
+
+  }
+}
+
 function RoundToInt(val){
 
     var string = val;

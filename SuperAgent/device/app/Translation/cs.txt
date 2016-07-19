@@ -347,3 +347,4 @@ webSite			Web
 YES				Ano
 ZAO				ZAO
 OutWhatEver		Poslední synchronizace nebyla dokončena. Všechna data budou ztracena. Pokračovat?
+today			Dnes

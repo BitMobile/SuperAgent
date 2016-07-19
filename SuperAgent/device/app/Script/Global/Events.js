@@ -47,12 +47,11 @@ function OnWorkflowStart(name) {
 	if (name == "Visit")
 	{
 
-		var outlet = $.workflow.outlet;
+		var outlet = GlobalWorkflow.GetOutlet();
 
 		CreateQuestionnareTable(outlet);
 		CreateQuestionsTable(outlet);
 		CreateSKUQuestionsTable(outlet);
-
 		SetSteps(outlet);
 	}
 

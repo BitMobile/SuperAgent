@@ -184,13 +184,13 @@ function FormatOutput(value) {
 		return value;
 }
 
-function RoundToInt(val){ 
-    
+function RoundToInt(val){
+
     var string = val;
     var resultString = "";
-    
+
     if (typeof string != "string")
-        string = string.ToString();    
+        string = string.ToString();
 
     for (var i = 1; i <= StrLen(string); i++){  // it's all about ot clear source from incorrect chars
         var ch = Mid(string, i, 1);
@@ -212,7 +212,7 @@ function CheckUserInput(sender){
     if (TrimAll(sender.Text) == '.' || TrimAll(sender.Text) == ',')
     {
         sender.Text = '0,';
-    }                       
+    }
 }
 
 function TranslateString(val){
@@ -250,7 +250,7 @@ function AssignDialogValue(state, args) {
 //--------------------------WorkWithGPS-----------------------
 
 function ActualLocation(location){
-    
+
     var actualTime;
     if (parseInt($.sessionConst.UserCoordinatesActualityTime)==parseInt(0)){
         actualTime = true;

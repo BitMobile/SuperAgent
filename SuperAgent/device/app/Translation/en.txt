@@ -357,3 +357,4 @@ webSite		Website Developer
 YES		Yes
 ZAO				ZAO
 OutWhatEver		Synchronization wasn't completed last time. All data will be lost. Quit?
+today		Today

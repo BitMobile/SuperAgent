@@ -49,11 +49,12 @@ function OnWorkflowStart(name) {
 
 		var outlet = $.workflow.outlet;
 
-		CreateQuestionnareTable(outlet);
-		CreateQuestionsTable(outlet);
-		CreateSKUQuestionsTable(outlet);
+	//	CreateQuestionnareTable(outlet);
+  //	CreateQuestionsTable(outlet);
+	//	CreateSKUQuestionsTable(outlet);
 
-		SetSteps(outlet);
+	//  SetSteps(outlet);
+
 	}
 
 }
@@ -726,12 +727,24 @@ function DeleteFromList(item, collection) {
 }
 
 function ClearUSRTables(){
-	var q = new Query("DELETE FROM USR_Questionnaires");
-	q.Execute();
+	var q = new Query("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name ='USR_Questionnaires'");
+	var TableQuestion = q.ExecuteScalar();
+	if (parseInt(TableQuestion)==parseInt(1)) {
+		var q = new Query("DELETE FROM USR_Questionnaires");
+		q.Execute();
+	}
 
-	var q = new Query("DELETE FROM USR_Questions");
-	q.Execute();
+	var q = new Query("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name ='USR_Questions'");
+	var TableQuestion = q.ExecuteScalar();
+	if (parseInt(TableQuestion)==parseInt(1)) {
+		var q = new Query("DELETE FROM USR_Questions");
+		q.Execute();
+	}
 
-	var q = new Query("DELETE FROM USR_SKUQuestions");
-	q.Execute();
+	var q = new Query("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name ='USR_SKUQuestions'");
+	var TableQuestion = q.ExecuteScalar();
+	if (parseInt(TableQuestion)==parseInt(1)) {
+		var q = new Query("DELETE FROM USR_SKUQuestions");
+		q.Execute();
+	}
 }

@@ -1,11 +1,11 @@
-var snapshotsExists;
+﻿var snapshotsExists;
 var singlePicture;
 var parameterValueC;
 var title;
 var back;
 var outletDesc;
 var backvisit;
-
+//
 //"description"	= "000000001"
 //"address"			= "000000002"
 //"coordinates" = "000000003"
@@ -39,7 +39,7 @@ function OnLoading() {
 		if (counnurows>0) {
 			backvisit = Translate["#back#"];
 		}else {
-		backvisit = Translate["#" + Lower(GlobalWorkflow.GetMenuItem()) + "#"];			
+		backvisit = Translate["#" + Lower(GlobalWorkflow.GetMenuItem()) + "#"];
 		}
 	}
 	else {
@@ -252,8 +252,11 @@ function CheckNotNullAndForward(outlet, visit) {
 	var c = CoordsChecked(visit);
 	if (CheckEmptyOutletFields(outlet) && c) {
 		outlet.GetObject().Save();
+
 		ReviseParameters(outlet, false);
-		Workflow.Forward([]);
+		Global.CreateTableQuestions(outlet);
+
+		Workflow.Forward([null, true]);
 	}
 }
 
@@ -271,37 +274,46 @@ function ReviseParameters(outlet, save) {
 }
 
 //---------------------------header parameters dialog.choose--------------------
-//Убрана проверка на наименование ворклофа Коммент.стр 276 и 305
+
 function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParameters, primaryParameterName) {
 	//if ($.workflow.name != "Visit") {
 		if (editOutletParameters && $.primaryParametersSettings[primaryParameterName]) {
+			var ResultCount = CountAnswerQuestionResult();
 
-			var listChoice = null;
+				if (ResultCount) {
+					var listChoice = null;
 
-			if (title == Translate["#status#"]) {
-				var query = new Query("SELECT Id, Description FROM Enum_OutletStatus");
-				listChoice = query.Execute();
-				var table = [];
-				while (listChoice.Next()) {
-					table.push([listChoice["Id"], Translate[String.Format("#{0}#", listChoice.Description)]]);
-				}
-				listChoice = table;
-			}
+					if (title == Translate["#status#"]) {
+						var query = new Query("SELECT Id, Description FROM Enum_OutletStatus");
+						listChoice = query.Execute();
+						var table = [];
+						while (listChoice.Next()) {
+							table.push([listChoice["Id"], Translate[String.Format("#{0}#", listChoice.Description)]]);
+						}
+						listChoice = table;
+					}
 
-			if (title == Translate["#partner#"]){
-				var query = new Query("SELECT DISTINCT D.Id, D.Description " +
-					" FROM Catalog_Distributor D " +
-					" JOIN Catalog_Territory_Distributors TD ON D.Id=TD.Distributor " +
-					" JOIN Catalog_Territory_Outlets T ON TD.Ref=T.Ref AND T.Outlet=@outlet " +
-					" UNION SELECT @emptyRef, '-'" +
-					" ORDER BY Description ");
-				query.AddParameter("outlet", outlet);
-				query.AddParameter("emptyRef", DB.EmptyRef("Catalog.Distributor"));
-				listChoice = query.Execute();
-			}
+					if (title == Translate["#partner#"]){
+						var query = new Query("SELECT DISTINCT D.Id, D.Description " +
+							" FROM Catalog_Distributor D " +
+							" JOIN Catalog_Territory_Distributors TD ON D.Id=TD.Distributor " +
+							" JOIN Catalog_Territory_Outlets T ON TD.Ref=T.Ref AND T.Outlet=@outlet " +
+							" UNION SELECT @emptyRef, '-'" +
+							" ORDER BY Description ");
+						query.AddParameter("outlet", outlet);
+						query.AddParameter("emptyRef", DB.EmptyRef("Catalog.Distributor"));
+						listChoice = query.Execute();
+					}
+					ClearQuestionsAndSKUQuestions();
+					Dialogs.DoChoose(listChoice, outlet, attribute, control, null, title);
 
-			Dialogs.DoChoose(listChoice, outlet, attribute, control, null, title);
-		}
+				} else {
+
+				Dialog.Ask(Translate["#ClearAnswer#"], ClearQuestionsAndSKUQuestions, true);
+
+		 }
+	}
+
 	//}
 }
 
@@ -517,7 +529,7 @@ function CreateVisitIfNotExists(userRef, visit, planVisit) {
 
 	if (visit == null) {
 		visit = DB.Create("Document.Visit");
-		//Dialog.Message(planVisit);
+
 		if (planVisit != null && planVisit!="")
 			visit.Plan = planVisit;
 		var existorno = new Query("Select type From sqlite_master where name = 'UT_answerQuest' And type = 'table'");
@@ -843,5 +855,57 @@ function BackMenu(){
 function SnapshotExists(filename) {
 
 	return FileSystem.Exists(filename);
+
+}
+
+function CountAnswerQuestionResult() {
+
+	var q = new Query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='USR_Questions'");
+  var CountTableQuestions = q.ExecuteScalar();
+
+	if (parseInt(CountTableQuestions) == parseInt(1)) {
+
+			var queryresult = new Query("SELECT Answer FROM USR_Questions WHERE NOT (Answer IS NULL)");
+			var CountAnswer = queryresult.ExecuteCount();
+
+			if (parseInt(CountAnswer) == parseInt(0)) {
+				var q = new Query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='USR_SKUQuestions'");
+				var CountTableSKUQuestions = q.ExecuteScalar();
+
+				if (parseInt(CountTableSKUQuestions) == parseInt(1)) {
+
+						var queryresult = new Query("SELECT Answer FROM USR_SKUQuestions WHERE NOT (Answer IS NULL)");
+						var CountAnswer = queryresult.ExecuteCount();
+						if (parseInt(CountAnswer) == parseInt(0)) {
+
+							return true;
+
+						} else {
+
+							return false;
+						}
+			  }
+	 		}
+	    return false;
+	}
+}
+
+function ClearQuestionsAndSKUQuestions() {
+
+	var q = new Query("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='USR_Questions'");
+	var check = q.ExecuteScalar();
+
+	if (parseInt(check) == parseInt(1)) {
+		var dropQS = new Query("DELETE FROM USR_Questions");
+		dropQS.Execute();
+	}
+
+	var q = new Query("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='USR_SKUQuestions'");
+	var check = q.ExecuteScalar();
+
+	if (parseInt(check) == parseInt(1)) {
+		var dropQS = new Query("DELETE FROM USR_SKUQuestions");
+		dropQS.Execute();
+	}
 
 }

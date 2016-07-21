@@ -119,6 +119,13 @@ function RefreshScrolView(){
 		$.btnDateForward.CssClass = "ForwardButtOff";
 		$.btnDateForward.Refresh();
 	}
+	if (parseInt(-32) < addDay) {
+		$.btnDateBack.CssClass = "BackButt";
+		$.btnDateBack.Refresh();
+	}else {
+		$.btnDateBack.CssClass = "ForwardButtOff";
+		$.btnDateBack.Refresh();
+	}
 }
 function GoBackDate(){
 	if (parseInt(-32)<=parseInt(addDay-1)) {
@@ -138,18 +145,17 @@ function SetDateFiltr(){
 		Dialog.Date(header, SetDateNow);
 }
 function SetDateNow(state, args) {
-	var DiffResult = args.Result.Subtract(DateTime.Now.Date).TotalDays);
+	var DiffResult = args.Result.Subtract(DateTime.Now.Date).TotalDays;
 	if (DiffResult > 0) {
-		if (parseInt($.sessionConst.DayPlanVisitCount) >= RoundToIntFloor(DiffResult) {
+		if (parseInt($.sessionConst.DayPlanVisitCount) >= RoundToIntFloor(DiffResult)) {
 			$.DateText.Text = filterDate(args.Result);
 			addDay = RoundToIntFloor(DiffResult);
-		}
-		else {
+		}else {
 			addDay = parseInt($.sessionConst.DayPlanVisitCount);
 			$.DateText.Text = filterDate(DateTime.Now.Date.AddDays(addDay));
 		}
 	}else {
-		if (parseInt(-32) <= RoundToIntFloor(DiffResult) {
+		if (parseInt(-32) <= RoundToIntFloor(DiffResult)) {
 			$.DateText.Text = filterDate(args.Result);
 			addDay = RoundToIntFloor(DiffResult);
 		}else {
@@ -157,7 +163,6 @@ function SetDateNow(state, args) {
 			$.DateText.Text = filterDate(DateTime.Now.Date.AddDays(addDay));
 		}
 	}
-
 	RefreshScrolView();
 }
 function filterDate(dt){

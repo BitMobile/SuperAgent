@@ -66,7 +66,13 @@
 					<s:Else>
 						<c:Button Id="btnDateForward" CssClass="ForwardButt" OnClick="$GoForwardDate()"></c:Button>
 					</s:Else>
+					<s:If Test="(-32) == @addDay">
+						<c:Button Id="btnDateBack" CssClass="ForwardButtOff" OnClick="$GoBackDate()"></c:Button>
+					</s:If>
+					<s:Else>
 						<c:Button Id="btnDateBack" CssClass="BackButt" OnClick="$GoBackDate()"></c:Button>
+					</s:Else>
+
 					<c:VerticalLayout  CssClass="TodayTextStyle" OnClick="$SetToday()">
 						<c:TextView Text="#today#"/>
 					</c:VerticalLayout>

@@ -8,7 +8,7 @@ function SendLog(){
 
 	// $.sendButton.Visible = true;
 	// $.dataSyncLayout.Visible = false;
-	// $.dataSyncIndicator.Stop();	
+	// $.dataSyncIndicator.Stop();
 
 	if (result)
 		Dialog.Message(Translate["#success#"]);

@@ -121,9 +121,11 @@ function RefreshScrolView(){
 	}
 }
 function GoBackDate(){
-	addDay = addDay-1;
-	$.DateText.Text = filterDate(DateTime.Now.Date.AddDays(addDay));
-	RefreshScrolView();
+	if (parseInt(-32)<=parseInt(addDay-1)) {
+		addDay = addDay-1;
+		$.DateText.Text = filterDate(DateTime.Now.Date.AddDays(addDay));
+		RefreshScrolView();
+	}
 }
 function SetToday(){
 	$.DateText.Text = filterDate(DateTime.Now.Date);
@@ -136,14 +138,26 @@ function SetDateFiltr(){
 		Dialog.Date(header, SetDateNow);
 }
 function SetDateNow(state, args) {
-	if (parseInt($.sessionConst.DayPlanVisitCount) >= RoundToIntFloor(args.Result.Subtract(DateTime.Now.Date).TotalDays)) {
-		$.DateText.Text = filterDate(args.Result);
-		addDay = RoundToIntFloor(args.Result.Subtract(DateTime.Now.Date).TotalDays);
+	var DiffResult = args.Result.Subtract(DateTime.Now.Date).TotalDays);
+	if (DiffResult > 0) {
+		if (parseInt($.sessionConst.DayPlanVisitCount) >= RoundToIntFloor(DiffResult) {
+			$.DateText.Text = filterDate(args.Result);
+			addDay = RoundToIntFloor(DiffResult);
+		}
+		else {
+			addDay = parseInt($.sessionConst.DayPlanVisitCount);
+			$.DateText.Text = filterDate(DateTime.Now.Date.AddDays(addDay));
+		}
+	}else {
+		if (parseInt(-32) <= RoundToIntFloor(DiffResult) {
+			$.DateText.Text = filterDate(args.Result);
+			addDay = RoundToIntFloor(DiffResult);
+		}else {
+			addDay = parseInt(-32);
+			$.DateText.Text = filterDate(DateTime.Now.Date.AddDays(addDay));
+		}
 	}
-	else {
-		addDay = parseInt($.sessionConst.DayPlanVisitCount);
-		$.DateText.Text = filterDate(DateTime.Now.Date.AddDays(addDay));
-	}
+
 	RefreshScrolView();
 }
 function filterDate(dt){

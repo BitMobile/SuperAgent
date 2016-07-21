@@ -53,7 +53,13 @@ function OnWorkflowStart(name) {
   //	CreateQuestionsTable(outlet);
 	//	CreateSKUQuestionsTable(outlet);
 
-	//  SetSteps(outlet);
+		var q = new Query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='USR_WorkflowSteps'");
+		var check = q.ExecuteScalar();
+
+		if (parseInt(check) == parseInt(0)) {
+			var q = new Query("CREATE TABLE " + " USR_WorkflowSteps (StepOrder, Skip, Value, NextStep, LastStep)");
+			q.Execute();
+		}
 
 	}
 

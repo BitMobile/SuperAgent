@@ -1,3 +1,0 @@
-solutions
-=========
-Demo data.

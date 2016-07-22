@@ -10,4 +10,5 @@
     <filterShared value="yes" />
 		<supportedMeta version="1.13.0.704" />
   </server>
+	
 </configuration>

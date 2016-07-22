@@ -28,6 +28,7 @@ cancel			Cancel
 caps_summary	SUMMARY
 choose_action	Choose action:
 clear_coord		Clear
+ClearAnswer				The results of the application form will be reset. Continue?
 clearFilter		Clear filter?
 clearValue		Clear value
 clickToInsert	Click to insert
@@ -356,4 +357,3 @@ web_site	Web-site
 webSite		Website Developer
 YES		Yes
 ZAO				ZAO
-today		Today

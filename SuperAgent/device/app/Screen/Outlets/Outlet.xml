@@ -77,7 +77,7 @@
 
 			<s:If Test="@snapshotsExists">
 				<c:DockLayout CssClass="snapshot_grid">
-					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000008 == true &amp;&amp; @DateAddTru == false">
+					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000008 == true">
 						<c:Button Text="#add#" OnClick="$AddSnapshot($workflow.outlet)" />
 					</s:If>
 					<c:TextView Text="#outletSnapshots#" />
@@ -140,7 +140,7 @@
 					<c:DockLayout CssClass="grid">
 						<c:VerticalLayout>
 							<c:TextView Text="#outletSnapshots#" CssClass="description_row" />
-							<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000008 == true &amp;&amp; @DateAddTru == false">
+							<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000008 == true">
 								<c:Button OnClick="$AddSnapshot($workflow.outlet)" Text="#add#" CssClass="add_button" />
 							</s:If>
 						</c:VerticalLayout>
@@ -152,7 +152,7 @@
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusIfHasEditText(outletDescr, $sessionConst.editOutletParameters, 000000001)">
 				<c:VerticalLayout>
 					<c:TextView Text="#description#" CssClass="description_row"></c:TextView>
-					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000001 == true &amp;&amp; @DateAddTru == false">
+					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000001 == true">
 						<c:EditText Id="outletDescr" Value="$workflow.outlet.Description" OnGetFocus="$CashDesc($workflow.outlet)" OnLostFocus="$CheckForNullDesc($workflow.outlet)" CssClass="main_row"></c:EditText>
 					</s:If>
 					<s:Else>
@@ -165,7 +165,7 @@
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet, OutletStatus, $status, #status#, $sessionConst.editOutletParameters, 000000007)">
 				<c:VerticalLayout>
 					<c:TextView Text="#status#" CssClass="description_row" />
-					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000007 == true &amp;&amp; $workflow.name != 'Visit'">
+					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000007 == true">
 						<c:TextView Id="status" Text="$GetStatusDescription($workflow.outlet)" CssClass="main_row_available" />
 					</s:If>
 					<s:Else>
@@ -179,7 +179,7 @@
 				<c:Button Id="clearButton" CssClass="clear" Visible="false" OnClick="$ClearField($outletAddress, $workflow.outlet, Address)"/>
 				<c:VerticalLayout>
 					<c:TextView Text="#address#" CssClass="description_row"></c:TextView>
-					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000002 == true  &amp;&amp; @DateAddTru == false">
+					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000002 == true">
 						<c:MemoEdit Id="outletAddress" Text="$workflow.outlet.Address" OnGetFocus="$ShowClearButton($clearButton)" OnLostFocus="$HideClearButton($clearButton)" OnChange="$SaveValue($workflow.outlet)"></c:MemoEdit>
 					</s:If>
 					<s:Else>
@@ -202,7 +202,7 @@
 					<c:TextView Text="#coordinates#" CssClass="description_row"></c:TextView>
 					<s:If Test="$EmptyCoordinates($workflow.outlet)">
 						<c:HorizontalLayout OnClick="$ShowCoordOptions($workflow.outlet, $sessionConst.editOutletParameters)">
-							<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000003 == true  &amp;&amp; @DateAddTru == false">
+							<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000003 == true">
 								<c:TextView Id="outletCoord" Text="{$workflow.outlet.Lattitude}; {$workflow.outlet.Longitude}" CssClass="main_row_available"></c:TextView>
 							</s:If>
 							<s:Else>
@@ -211,7 +211,7 @@
 						</c:HorizontalLayout>
 					</s:If>
 					<s:Else>
-						<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000003 == true &amp;&amp; @DateAddTru == false">
+						<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000003 == true">
 							<c:Button OnClick="$SetLocation($workflow.outlet)" Text="#set#" CssClass="coordButton" />
 						</s:If>
 					</s:Else>
@@ -222,7 +222,7 @@
 			<c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet, Distributor, $outletDistr, #partner#, $sessionConst.editOutletParameters, 000000006)">
 				<c:VerticalLayout>
 					<c:TextView Text="#partner#" CssClass="description_row"></c:TextView>
-					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000006 == true &amp;&amp; $workflow.name != 'Visit'">
+					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000006 == true">
 						<c:TextView Id="outletDistr" Text="$GetDescr($workflow.outlet.Distributor.Description)" CssClass="main_row_available"></c:TextView>
 					</s:If>
 					<s:Else>
@@ -235,7 +235,7 @@
 			<c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet,Class,$outletClass,#outlet_class#, $sessionConst.editOutletParameters, 000000005)">
 				<c:VerticalLayout>
 					<c:TextView Text="#outlet_class#" CssClass="description_row"></c:TextView>
-					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000005 == true &amp;&amp; $workflow.name != 'Visit'">
+					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000005 == true">
 						<c:TextView Id="outletClass" Text="$workflow.outlet.Class.Description" CssClass="main_row_available"></c:TextView>
 					</s:If>
 					<s:Else>
@@ -248,7 +248,7 @@
 			<c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet,Type,$outletType,#outlet_type#, $sessionConst.editOutletParameters, 000000004)">
 				<c:VerticalLayout>
 					<c:TextView Text="#outlet_type#" CssClass="description_row"></c:TextView>
-					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000004 == true &amp;&amp; $workflow.name != 'Visit'">
+					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000004 == true">
 						<c:TextView Id="outletType" Text="$workflow.outlet.Type.Description" CssClass="main_row_available"></c:TextView>
 					</s:If>
 					<s:Else>
@@ -270,7 +270,7 @@
 				<s:Push Id="editable" Value="$parameter.Editable"></s:Push>
 				<s:If Test="$visible">
 					<c:DockLayout CssClass="parameter_grid" OnClickAction="$GoToParameterAction($parameter.TypeDescription, $parameter.Value, Value, $workflow.outlet, $parameter.Id, control{$index}, $parameter.Description, $editable, $index, $parameter.IsInputField)">
-						<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $parameter.IsInputField == true &amp;&amp; $editable == true &amp;&amp; @DateAddTru == false">
+						<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $parameter.IsInputField == true &amp;&amp; $editable == true">
 							<c:EditText Id="control{$index}" Text="$parameter.Value" Placeholder="—" OnChange="$AssignParameterValue($parameter.TypeDescription, $parameterValue, Value, $workflow.outlet, $parameter.Id)" CssClass="value" Keyboard="$parameter.KeyboardType"></c:EditText>
 						</s:If>
 						<s:Else>
@@ -300,7 +300,7 @@
 								<c:TextView Id="control{$index}" Text="$parameter.AnswerOutput" CssClass="value"></c:TextView>
 							</s:Else>
 						</s:Else>
-						<s:If Test="$editable == true &amp;&amp; $sessionConst.editOutletParameters == true &amp;&amp; @DateAddTru == false">
+						<s:If Test="$editable == true &amp;&amp; $sessionConst.editOutletParameters == true">
 							<c:TextView Text="$parameter.Description"></c:TextView>
 						</s:If>
 						<s:Else>

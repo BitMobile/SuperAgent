@@ -4,7 +4,7 @@
 	<s:Push Id="search" Value="$param1" />
 
 	<c:SwipeHorizontalLayout Id="swipe_layout" Index="1">
-
+		
 		<s:Include File="\Components\SideMenu.xml"/>
 
 		<c:VerticalLayout>
@@ -25,7 +25,7 @@
 				<s:If Test="$visitsType=='planned'">
 					<c:HorizontalLayout CssClass="mode_left_button_on">
 						<c:HorizontalLayout Id="planned" CssClass="select_zone" OnClickAction="$ChangeListAndRefresh(planned)">
-							<c:TextView Id="plannedText" Text="#planVisit# ({$sv})"></c:TextView>
+							<c:TextView Text="#planVisit# ({$sv})"></c:TextView>
 						</c:HorizontalLayout>
 					</c:HorizontalLayout>
 					<c:HorizontalLayout CssClass="mode_right_button_off">
@@ -37,7 +37,7 @@
 				<s:Else>
 					<c:HorizontalLayout CssClass="mode_left_button_off">
 						<c:HorizontalLayout Id="planned" CssClass="select_zone" OnClickAction="$ChangeListAndRefresh(planned)">
-							<c:TextView Id="plannedText" Text="#planVisit# ({$sv})"></c:TextView>
+							<c:TextView Text="#planVisit# ({$sv})"></c:TextView>
 						</c:HorizontalLayout>
 					</c:HorizontalLayout>
 					<c:HorizontalLayout CssClass="mode_right_button_on">
@@ -54,22 +54,11 @@
 				<c:DockLayout>
 					<c:Image />
 					<c:EditText Id="edtSearch" Text="$search" Placeholder="#search#"></c:EditText>
-				</c:DockLayout>
+				</c:DockLayout>			
 			</c:DockLayout>
 			<c:HorizontalLayout CssClass="shadowLine"></c:HorizontalLayout>
 
 			<s:If Test="$visitsType=='planned'">
-				<c:DockLayout CssClass="searchDate">
-						<c:Button Id="btnDateForward" CssClass="ForwardButt" OnClick="$GoForwardDate()"></c:Button>
-						<c:Button Id="btnDateBack" CssClass="BackButt" OnClick="$GoBackDate()"></c:Button>
-					<c:VerticalLayout  CssClass="TodayTextStyle" OnClick="$SetToday()">
-						<c:TextView Text="#today#"/>
-					</c:VerticalLayout>
-					<c:VerticalLayout  CssClass="DateTextStyle" OnClick="$SetDateFiltr()">
-						<c:TextView Id="DateText"/>
-					</c:VerticalLayout>
-				</c:DockLayout>
-				<c:HorizontalLayout CssClass="shadowLine"></c:HorizontalLayout>
 				<c:ScrollView Id="grScrollView">
 					<s:Push Id="hasRow" Value="false" />
 
@@ -106,7 +95,7 @@
 									<c:TextView Text="{$planOutlet.Address}" CssClass="description_row"></c:TextView>
 								</c:HorizontalLayout>
 							</c:VerticalLayout>
-
+							
 						</c:DockLayout>
 						<c:HorizontalLine />
 
@@ -114,7 +103,7 @@
 
 
 					<c:HorizontalLayout CssClass="end_of_block" />
-			<s:If Test="$CheckDateAdd()">
+
 					<c:HorizontalLayout CssClass="caption_grid">
 
 						<s:Push Id="commitedVisits" Value="$GetCommitedVisits($search)"></s:Push>
@@ -150,7 +139,7 @@
 					</s:Iterator>
 
 					<c:HorizontalLayout CssClass="end_of_block" />
-			</s:If>
+
 				</c:ScrollView>
 			</s:If>
 
@@ -177,7 +166,7 @@
 							<c:VerticalLayout>
 								<c:TextView Text="$uOutlet.Description" CssClass="main_row"></c:TextView>
 								<c:TextView Text="{$uOutlet.Address}" CssClass="description_row"></c:TextView>
-							</c:VerticalLayout>
+							</c:VerticalLayout>						
 						</c:DockLayout>
 						<c:HorizontalLine />
 					</s:Iterator>

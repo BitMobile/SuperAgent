@@ -1,4 +1,4 @@
-﻿var regularAnswers;
+var regularAnswers;
 var parentId;
 var parentGUID;
 var obligateredLeft;
@@ -13,7 +13,14 @@ var skuValueGl;
 var questionValueGl;
 var forwardAllowed;
 var parents;
-
+var buferansw;
+var relouded;
+var answerinsku;
+var totalanswerinsku;
+var idPar;
+var idChail;
+var scrollIndex1;
+var inref;
 //
 //-------------------------------Header handlers-------------------------
 //
@@ -32,6 +39,7 @@ function OnLoading(){
 }
 
 function OnLoad() {
+	relouded = true;
 	if (setScroll)
 		SetScrollIndex();
 	AssignSubmitScope();
@@ -60,9 +68,17 @@ function SetScrollIndex() {
 		$.grScrollView.Index = parseInt(4);
 	}
 	else{
-		var s = (parseInt(scrollIndex) * parseInt(2)) + parseInt(6);
-		$.grScrollView.Index = s;
+		//if (inref) {
+		//	var s1 = (parseInt(scrollIndex1) * parseInt(2)) + parseInt(6);
+		//	$.grScrollView.Index = s1;
+		//}
+			var s = (parseInt(scrollIndex) * parseInt(2)) + parseInt(6);
+			$.grScrollView.Index = s;
+			//for(control in $.grScrollView.Controls){
+      //  control.Visible = true;
+			//	}
 	}
+	inref = false;
 }
 
 function CountResultAndForward() {
@@ -74,8 +90,9 @@ function CountResultAndForward() {
 
 	var a = regular_answ + single_answ;
 	$.workflow.Add("questions_answ_sku", a);
-
-	Workflow.Forward([]);
+	if (obligateredLeft==0) {
+		Workflow.Forward([]);
+}
 }
 
 //
@@ -241,9 +258,15 @@ function GetImagePath(visitID, outletID, pictID, pictExt) {
 	return (pathFromVisit == "/shared/result.jpg" ? pathFromOutlet : pathFromVisit);
 }
 
-function RefreshScreen(control, search, sku, question, answerType) {
+function RefreshScreen(control, search, sku, question, answerType, indexpar, answerednow,totalanswred,reqorno) {
 
+	if (!relouded) {
+		answerednow = answerinsku;
+		totalanswred = totalanswerinsku;
+	}
+	var parentCount = Variables["CountOnPar"+indexpar];
 	var answer = control.Text;
+	//var SkuObj = sku.GetObject();
 
 	if (!String.IsNullOrEmpty(answer) && answerType == DB.Current.Constant.DataType.Integer){
 
@@ -251,8 +274,85 @@ function RefreshScreen(control, search, sku, question, answerType) {
 
 		AssignAnswer(control, question, sku, answer, answerType);
 	}
+	var havenewotv = String.IsNullOrEmpty(answer);
+	if (!(havenewotv^buferansw)) {
 
-	Workflow.Refresh([search]);
+	}
+	if (buferansw && !havenewotv) {
+		single_answ = parseInt(single_answ) + 1;
+		regular_answ = parseInt(regular_answ) + 1;
+		answerednow = parseInt(answerednow) + 1;
+	}
+	if (!buferansw && havenewotv) {
+		single_answ = parseInt(single_answ) - 1;
+		regular_answ = parseInt(regular_answ) - 1;
+		answerednow = parseInt(answerednow) - 1;
+	}
+	parentCount.Text = answerednow + " " + Translate["#of#"] + " " + totalanswred;
+	if (regularAnswers) {
+		$.CountRegAnswer.Text = Translate["#regular#"] + " (" +regular_answ + " " + Translate["#of#"] + " " + regular_total + ")";
+	}else {
+
+		$.CountNoNRegAnswer.Text = Translate["#nonregular#"] + " (" +single_answ + " " + Translate["#of#"] + " " + single_total + ")";
+	}
+	answerinsku = answerednow ;
+	totalanswerinsku = totalanswred;
+ relouded = false;
+ if (reqorno == 1) {
+	var obl =new Query("SELECT Question FROM USR_SKUQuestions WHERE Obligatoriness = @obl And SKU = @sku And Answer IS NULL");
+ 	obl.AddParameter("obl",1);
+ 	obl.AddParameter("sku",sku);
+ 	var rez = obl.ExecuteCount();
+	if (rez > 0) {
+			//Dialog.Message("ParentReq"+idChail);
+			//Variables["ParentReq"+idChail].Refresh();
+			Variables["ParentReq"+idChail].CssClass = "required_side_wh";
+			//Variables["ParentReq"+idChail].Refresh();
+	 }
+ 	if (rez == 0) {
+		Variables["ParentReq"+idChail].Refresh();
+ 		Variables["ParentReq"+idChail].CssClass = "answered_side_wh";
+		Variables["ParentReq"+idChail].Refresh();
+ 	}
+ }
+//obligateredLeft = obligateredLeft - 1;
+ if (reqorno==1 && (buferansw && !havenewotv)) {
+	 obligateredLeft = parseInt(obligateredLeft) - 1;
+	 if (obligateredLeft==0) {
+	 	Variables["obligateredButton"].Text = "";
+		Variables["imagForw"].Refresh();
+		Variables["imagForw"].CssClass = "imgForw";
+		Variables["imagForw"].Refresh();
+		Variables["TextForw"].Text = Translate["#forward#"];
+		Variables["TextForw"].Refresh();
+		Variables["TextForw"].CssClass = "TextViewInTopNorm";
+		Variables["TextForw"].Refresh();
+
+	}else {
+		Variables["obligateredInfo"].Text = obligateredLeft;
+		Variables["obligateredButton"].Text = obligateredLeft+")";
+	}
+
+	 Variables["Req"+idPar].Refresh();
+	 Variables["Req"+idPar].CssClass = "answered_side_gr";
+	 Variables["Req"+idPar].Refresh();
+	 //Dialog.Message("ParentReq"+idChail);
+
+	 //setScroll = true;
+	 //scrollIndex = parseInt(idPar)+parseInt(idChail);
+	//Workflow.Refresh([search]);
+ }
+ if (reqorno==1 && (!buferansw && havenewotv)) {
+	 obligateredLeft = parseInt(obligateredLeft) + 1;
+	Variables["obligateredButton"].Text = obligateredLeft+")";
+		Variables["obligateredInfo"].Text = obligateredLeft;
+	 //Dialog.Message("RED");
+	 Variables["Req"+idPar].Refresh();
+	 Variables["Req"+idPar].CssClass = "required_side_gr";
+	 Variables["Req"+idPar].Refresh();
+
+ }
+		//Workflow.Refresh([search]);
 }
 
 function SnapshotExists(filename) {
@@ -281,11 +381,14 @@ function CreateItemAndShow(control, sku, index, showChild) {
 	Workflow.Refresh([$.search]);
 }
 
-function GoToQuestionAction(control, answerType, question, sku, editControl, currAnswer, title) {
+function GoToQuestionAction(control, answerType, question, sku, editControl, currAnswer, title,indexpar) {
 
-	editControlName = editControl;
-	editControl = Variables[editControl];
+	idPar = editControl;
+	idChail = indexpar;
+	editControlName = "control"+editControl;
+	editControl = Variables["control"+editControl];
 	skuValueGl = sku;
+	editControl.Enabled = "True";
 
 	if (answerType == DB.Current.Constant.DataType.ValueList) {
 		var q = new Query();
@@ -294,7 +397,7 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 		Dialogs.DoChoose(q.Execute(), question, null, editControl, DialogCallBack, title);
 	}
 
-	if (answerType == DB.Current.Constant.DataType.Snapshot) {		
+	if (answerType == DB.Current.Constant.DataType.Snapshot) {
 		questionValueGl = question;
 
 		var path = null;
@@ -317,7 +420,14 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 
 	setScroll = false;
 }
-
+function BuferAns(control){
+	if (String.IsNullOrEmpty(control.Text)) {
+			 	buferansw = true;
+			 }
+			 else {
+			 	buferansw = false;
+			 }
+}
 function AssignAnswer(control, question, sku, answer, answerType) {
 
 	if (control != null) {
@@ -375,8 +485,8 @@ function AssignSubmitScope(){
 	$.regular.SubmitScope = $.submitCollectionString;
 	$.nonregular.SubmitScope = $.submitCollectionString;
 	$.btnSearch.SubmitScope = $.submitCollectionString;
-	$.btn_filters.SubmitScope = $.submitCollectionString;	
-	
+	$.btn_filters.SubmitScope = $.submitCollectionString;
+
 	for (control in $.grScrollView.Controls){
 		control.SubmitScope = $.submitCollectionString;
 	}
@@ -386,8 +496,16 @@ function AssignSubmitScope(){
 function DialogCallBack(state, args){
 	var entity = state[0];
 	AssignAnswer(null, entity, skuValueGl, args.Result);
-
+	//var controlField = idBool;
+	//controlField.Text = args.Result;
+	setScroll = true;
+	scrollIndex = parseInt(idPar)+parseInt(idChail);
+	scrollIndex1= parseInt(idChail);
+	//Dialog.Message(idPar);
+	inref = true;
 	Workflow.Refresh([$.search]);
+	//idChail = idChail;
+
 }
 
 function GalleryCallBack(state, args) {

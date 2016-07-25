@@ -28,6 +28,7 @@ cancel			Отменить
 caps_summary	СВОДНАЯ ИНФОРМАЦИЯ
 choose_action	Выберите действие:
 clear_coord		Удалить
+ClearAnswer		Результаты анкетирования будут сброшены. Продолжить?
 clearFilter		Очистить фильтр?
 clearValue		Очистить значение
 clickToInsert	Нажмите для ввода даты

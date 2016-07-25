@@ -21,6 +21,7 @@ var idPar;
 var idChail;
 var scrollIndex1;
 var inref;
+var TempControl;
 //
 //-------------------------------Header handlers-------------------------
 //
@@ -258,6 +259,88 @@ function GetImagePath(visitID, outletID, pictID, pictExt) {
 	return (pathFromVisit == "/shared/result.jpg" ? pathFromOutlet : pathFromVisit);
 }
 
+function SnapshotExists(filename) {
+	return FileSystem.Exists(filename);
+}
+// ------------------------SKU----------------------
+
+function CreateItemAndShow(control, sku, index, showChild) {
+//	if (parentId == ("p"+index)){
+//		parentId = null;
+//		scrollIndex = null;
+//	}
+//	else
+//		parentId = "p" + index;
+
+	if (showChild){
+		parentGUID = null;
+		scrollIndex = null;
+	}
+	else
+		parentGUID = sku;
+
+	scrollIndex = index;
+	setScroll = true;
+
+	Workflow.Refresh([$.search]);
+}
+
+function GoToQuestionAction(control, answerType, question, sku, editControl, currAnswer, title,indexparm) {
+
+	idPar = editControl;
+	idChail = indexpar;
+	editControlName = "control"+editControl;
+	editControl = Variables["control"+editControl];
+	skuValueGl = sku;
+	editControl.Enabled = "True";
+
+
+	if (answerType == DB.Current.Constant.DataType.ValueList) {
+		var q = new Query();
+		q.Text = "SELECT Value, Value FROM Catalog_Question_ValueList WHERE Ref=@ref UNION SELECT '', '—' ORDER BY Value";
+		q.AddParameter("ref", question);
+		TempControl = editControl;
+		if (String.IsNullOrEmpty(editControl.Text) || editControl.Text == "" || editControl.Text == "-" || editControl.Text == "—") {
+					buferansw = true;
+				 }
+				 else {
+					buferansw = false;
+				 }
+
+		Dialogs.DoChoose(q.Execute(), question, null, editControl, DialogCallBack, title);
+	}
+
+	if (answerType == DB.Current.Constant.DataType.Snapshot) {
+		questionValueGl = question;
+
+		var path = null;
+		Images.AddQuestionSnapshot("USR_SKUQuestions", question, sku, currAnswer, true, title, GalleryCallBack);
+	}
+
+	if (answerType == DB.Current.Constant.DataType.DateTime) {
+		TempControl = editControl;
+		Dialogs.ChooseDateTime(question, null, editControl, DialogCallBack, title);
+	}
+
+	if (answerType == DB.Current.Constant.DataType.Boolean) {
+		TempControl = editControl;
+		if (String.IsNullOrEmpty(editControl.Text) || editControl.Text == "" || editControl.Text == "-" || editControl.Text == "—") {
+					buferansw = true;
+				 }
+				 else {
+					buferansw = false;
+				 }
+		Dialogs.ChooseBool(question, null, editControl, DialogCallBack, title);
+	}
+
+	if ((answerType == DB.Current.Constant.DataType.String) ||
+	   ((answerType).ToString() == (DB.Current.Constant.DataType.Integer).ToString()) ||
+		 ((answerType).ToString() == (DB.Current.Constant.DataType.Decimal).ToString())) {
+		FocusOnEditText(editControlName, '1');
+	}
+
+	setScroll = false;
+}
 function RefreshScreen(control, search, sku, question, answerType, indexpar, answerednow,totalanswred,reqorno) {
 
 	if (!relouded) {
@@ -297,129 +380,64 @@ function RefreshScreen(control, search, sku, question, answerType, indexpar, ans
 	}
 	answerinsku = answerednow ;
 	totalanswerinsku = totalanswred;
- relouded = false;
- if (reqorno == 1) {
-	var obl =new Query("SELECT Question FROM USR_SKUQuestions WHERE Obligatoriness = @obl And SKU = @sku And Answer IS NULL");
- 	obl.AddParameter("obl",1);
- 	obl.AddParameter("sku",sku);
- 	var rez = obl.ExecuteCount();
-	if (rez > 0) {
+	relouded = false;
+	if (reqorno == 1) {
+		var obl =new Query("SELECT Question FROM USR_SKUQuestions WHERE Obligatoriness = @obl And SKU = @sku And Answer IS NULL");
+		obl.AddParameter("obl",1);
+		obl.AddParameter("sku",sku);
+		var rez = obl.ExecuteCount();
+		if (rez > 0) {
 			//Dialog.Message("ParentReq"+idChail);
 			//Variables["ParentReq"+idChail].Refresh();
 			Variables["ParentReq"+idChail].CssClass = "required_side_wh";
-			//Variables["ParentReq"+idChail].Refresh();
-	 }
- 	if (rez == 0) {
-		Variables["ParentReq"+idChail].Refresh();
- 		Variables["ParentReq"+idChail].CssClass = "answered_side_wh";
-		Variables["ParentReq"+idChail].Refresh();
- 	}
- }
-//obligateredLeft = obligateredLeft - 1;
- if (reqorno==1 && (buferansw && !havenewotv)) {
-	 obligateredLeft = parseInt(obligateredLeft) - 1;
-	 if (obligateredLeft==0) {
-	 	Variables["obligateredButton"].Text = "";
-		Variables["imagForw"].Refresh();
-		Variables["imagForw"].CssClass = "imgForw";
-		Variables["imagForw"].Refresh();
-		Variables["TextForw"].Text = Translate["#forward#"];
-		Variables["TextForw"].Refresh();
-		Variables["TextForw"].CssClass = "TextViewInTopNorm";
-		Variables["TextForw"].Refresh();
-
-	}else {
-		Variables["obligateredInfo"].Text = obligateredLeft;
-		Variables["obligateredButton"].Text = obligateredLeft+")";
+			Variables["ParentReq"+idChail].Refresh();
+		}
+		if (rez == 0) {
+			Variables["ParentReq"+idChail].Refresh();
+			Variables["ParentReq"+idChail].CssClass = "answered_side_wh";
+			Variables["ParentReq"+idChail].Refresh();
+		}
 	}
+	//obligateredLeft = obligateredLeft - 1;
+	if (reqorno==1 && (buferansw && !havenewotv)) {
+		obligateredLeft = parseInt(obligateredLeft) - 1;
+		if (obligateredLeft==0) {
+			Variables["obligateredButton"].Text = "";
+			Variables["imagForw"].Refresh();
+			Variables["imagForw"].CssClass = "imgForw";
+			Variables["imagForw"].Refresh();
+			Variables["TextForw"].Text = Translate["#forward#"];
+			Variables["TextForw"].Refresh();
+			Variables["TextForw"].CssClass = "TextViewInTopNorm";
+			Variables["TextForw"].Refresh();
 
-	 Variables["Req"+idPar].Refresh();
-	 Variables["Req"+idPar].CssClass = "answered_side_gr";
-	 Variables["Req"+idPar].Refresh();
-	 //Dialog.Message("ParentReq"+idChail);
+		}else {
+			Variables["obligateredInfo"].Text = obligateredLeft;
+			Variables["obligateredButton"].Text = obligateredLeft+")";
+		}
 
-	 //setScroll = true;
-	 //scrollIndex = parseInt(idPar)+parseInt(idChail);
-	//Workflow.Refresh([search]);
- }
- if (reqorno==1 && (!buferansw && havenewotv)) {
-	 obligateredLeft = parseInt(obligateredLeft) + 1;
-	Variables["obligateredButton"].Text = obligateredLeft+")";
-		Variables["obligateredInfo"].Text = obligateredLeft;
-	 //Dialog.Message("RED");
-	 Variables["Req"+idPar].Refresh();
-	 Variables["Req"+idPar].CssClass = "required_side_gr";
-	 Variables["Req"+idPar].Refresh();
+		Variables["Req"+idPar].Refresh();
+		Variables["Req"+idPar].CssClass = "answered_side_gr";
+		Variables["Req"+idPar].Refresh();
+		//Dialog.Message("ParentReq"+idChail);
 
- }
+		//setScroll = true;
+		//scrollIndex = parseInt(idPar)+parseInt(idChail);
 		//Workflow.Refresh([search]);
+	}
+	if (reqorno==1 && (!buferansw && havenewotv)) {
+		obligateredLeft = parseInt(obligateredLeft) + 1;
+		Variables["obligateredButton"].Text = obligateredLeft+")";
+		Variables["obligateredInfo"].Text = obligateredLeft;
+		//Dialog.Message("RED");
+		Variables["Req"+idPar].Refresh();
+		Variables["Req"+idPar].CssClass = "required_side_gr";
+		Variables["Req"+idPar].Refresh();
+
+	}
+	//Workflow.Refresh([search]);
 }
 
-function SnapshotExists(filename) {
-	return FileSystem.Exists(filename);
-}
-// ------------------------SKU----------------------
-
-function CreateItemAndShow(control, sku, index, showChild) {
-//	if (parentId == ("p"+index)){
-//		parentId = null;
-//		scrollIndex = null;
-//	}
-//	else
-//		parentId = "p" + index;
-
-	if (showChild){
-		parentGUID = null;
-		scrollIndex = null;
-	}
-	else
-		parentGUID = sku;
-
-	scrollIndex = index;
-	setScroll = true;
-
-	Workflow.Refresh([$.search]);
-}
-
-function GoToQuestionAction(control, answerType, question, sku, editControl, currAnswer, title,indexpar) {
-
-	idPar = editControl;
-	idChail = indexpar;
-	editControlName = "control"+editControl;
-	editControl = Variables["control"+editControl];
-	skuValueGl = sku;
-	editControl.Enabled = "True";
-
-	if (answerType == DB.Current.Constant.DataType.ValueList) {
-		var q = new Query();
-		q.Text = "SELECT Value, Value FROM Catalog_Question_ValueList WHERE Ref=@ref UNION SELECT '', '—' ORDER BY Value";
-		q.AddParameter("ref", question);
-		Dialogs.DoChoose(q.Execute(), question, null, editControl, DialogCallBack, title);
-	}
-
-	if (answerType == DB.Current.Constant.DataType.Snapshot) {
-		questionValueGl = question;
-
-		var path = null;
-		Images.AddQuestionSnapshot("USR_SKUQuestions", question, sku, currAnswer, true, title, GalleryCallBack);
-	}
-
-	if (answerType == DB.Current.Constant.DataType.DateTime) {
-		Dialogs.ChooseDateTime(question, null, editControl, DialogCallBack, title);
-	}
-
-	if (answerType == DB.Current.Constant.DataType.Boolean) {
-		Dialogs.ChooseBool(question, null, editControl, DialogCallBack, title);
-	}
-
-	if ((answerType == DB.Current.Constant.DataType.String) ||
-	   ((answerType).ToString() == (DB.Current.Constant.DataType.Integer).ToString()) ||
-		 ((answerType).ToString() == (DB.Current.Constant.DataType.Decimal).ToString())) {
-		FocusOnEditText(editControlName, '1');
-	}
-
-	setScroll = false;
-}
 function BuferAns(control){
 	if (String.IsNullOrEmpty(control.Text)) {
 			 	buferansw = true;
@@ -497,16 +515,58 @@ function DialogCallBack(state, args){
 	var entity = state[0];
 	AssignAnswer(null, entity, skuValueGl, args.Result);
 	//var controlField = idBool;
-	//controlField.Text = args.Result;
+	TempControl.Text = args.Result;
+	answerednow = answerinsku;
+	totalanswred = totalanswerinsku;
+	var parentCount = Variables["CountOnPar"+idChail];
+	if (ToString(args.Result)!="-" && ToString(args.Result)!="" && ToString(args.Result)!="—") {
+		//Dialog.Message(args.Result);
+		if (buferansw) {
+			answerednow = answerednow + 1;
+			if (regularAnswers) {
+				regular_answ = regular_answ + 1;
+			}else {
+				single_answ = single_answ + 1;
+			}
+		}
+
+		Variables["Req"+idPar].Refresh();
+		Variables["Req"+idPar].CssClass = "answered_side_gr";
+		Variables["Req"+idPar].Refresh();
+	}else {
+		if (!buferansw) {
+			answerednow = answerednow - 1;
+			if (regularAnswers) {
+				regular_answ = regular_answ - 1;
+			}else {
+				single_answ = single_answ - 1;
+			}
+		}
+		TempControl.Text = "—";
+		Variables["Req"+idPar].Refresh();
+		Variables["Req"+idPar].CssClass = "required_side_gr";
+		Variables["Req"+idPar].Refresh();
+	}
+
+	parentCount.Text = answerednow + " " + Translate["#of#"] + " " + totalanswred;
+
+	if (regularAnswers) {
+		$.CountRegAnswer.Text = Translate["#regular#"] + " (" +regular_answ + " " + Translate["#of#"] + " " + regular_total + ")";
+	}else {
+
+		$.CountNoNRegAnswer.Text = Translate["#nonregular#"] + " (" +single_answ + " " + Translate["#of#"] + " " + single_total + ")";
+	}
+	answerinsku = answerednow;
+
 	setScroll = true;
 	scrollIndex = parseInt(idPar)+parseInt(idChail);
 	scrollIndex1= parseInt(idChail);
-	//Dialog.Message(idPar);
 	inref = true;
-	Workflow.Refresh([$.search]);
+	//Workflow.Refresh([$.search]);
 	//idChail = idChail;
 
 }
+
 
 function GalleryCallBack(state, args) {
 	if (args.Result) {
@@ -518,6 +578,8 @@ function GalleryCallBack(state, args) {
 		newFile.FullFileName = state[2];
 		newFile.Save();
 
+		//Variables["control"+idChail].Source = newFile.FullFileName;
+		//Variables["control"+idChail].refresh();
 		Workflow.Refresh([]);
 	}
 }

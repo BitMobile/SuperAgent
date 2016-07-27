@@ -124,8 +124,9 @@ function SetDateFiltr(){
 		Dialog.Date(header, SetDateNow);
 }
 function SetDateNow(state, args) {
+	var DiffResult = args.Result.Subtract(DateTime.Now.Date).TotalDays;
 	$.DateText.Text = filterDate(args.Result);
-	addDay = Round(args.Result.Subtract(DateTime.Now).TotalDays);
+	addDay = RoundToIntFloor(DiffResult);
 	RefreshScrolView();
 }
 function filterDate(dt){

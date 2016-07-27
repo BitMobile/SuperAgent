@@ -22,6 +22,8 @@ var idChail;
 var scrollIndex1;
 var inref;
 var TempControl;
+var skuRezTemp;
+var kolDoch;
 //
 //-------------------------------Header handlers-------------------------
 //
@@ -229,7 +231,7 @@ function GetChilds(sku) {
 	if (regularAnswers)
 		single = 0;
 
-var q = new Query("SELECT DISTINCT S.Description, S.Obligatoriness, S.AnswerType, S.Question, S.Answer, S.IsInputField, S.KeyboardType, " +
+var q = new Query("SELECT DISTINCT S.Description, S.Obligatoriness, S.AnswerType, S.Question, S.Answer, S.IsInputField, S.KeyboardType,S.ParentQuestion, " +
 			"CASE WHEN IsInputField='1' THEN Answer ELSE " +
 				"CASE WHEN (RTRIM(Answer)!='' AND Answer IS NOT NULL) THEN CASE WHEN AnswerType=@snapshot THEN @attached ELSE Answer END ELSE '—' END END AS AnswerOutput, " +
 				"CASE WHEN S.AnswerType=@snapshot THEN 1 END AS IsSnapshot, " +
@@ -285,15 +287,16 @@ function CreateItemAndShow(control, sku, index, showChild) {
 	Workflow.Refresh([$.search]);
 }
 
-function GoToQuestionAction(control, answerType, question, sku, editControl, currAnswer, title,indexparm) {
+function GoToQuestionAction(control, answerType, question, sku, editControl, currAnswer, title,indexparm,skurez) {
 
 	idPar = editControl;
-	idChail = indexpar;
+	idChail = indexparm;
 	editControlName = "control"+editControl;
 	editControl = Variables["control"+editControl];
 	skuValueGl = sku;
+	skuRezTemp = skurez;
 	editControl.Enabled = "True";
-
+//	Dialog.Message(skuRezTemp);
 
 	if (answerType == DB.Current.Constant.DataType.ValueList) {
 		var q = new Query();
@@ -312,9 +315,19 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 
 	if (answerType == DB.Current.Constant.DataType.Snapshot) {
 		questionValueGl = question;
+		var qForAns = new Query("Select Answer From USR_SKUQuestions Where SKU=@sku And Question=@quest");
+		qForAns.AddParameter("sku",sku);
+		qForAns.AddParameter("quest",question);
+		currAnswer = qForAns.ExecuteScalar();
+		if (String.IsNullOrEmpty(currAnswer)) {
+					buferansw = true;
+				 }
+				 else {
+					buferansw = false;
+				 }
 
 		var path = null;
-		Images.AddQuestionSnapshot("USR_SKUQuestions", question, sku, currAnswer, true, title, GalleryCallBack);
+		AddQuestionSnapshotSku("USR_SKUQuestions", question, sku, currAnswer, true, title, GalleryCallBack);
 	}
 
 	if (answerType == DB.Current.Constant.DataType.DateTime) {
@@ -330,7 +343,12 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 				 else {
 					buferansw = false;
 				 }
-		Dialogs.ChooseBool(question, null, editControl, DialogCallBack, title);
+				var qForAns = new Query("Select Answer From USR_SKUQuestions Where SKU=@sku And Question=@quest And ParentQuestion!=@emptyPar");
+				 qForAns.AddParameter("sku",sku);
+				 qForAns.AddParameter("quest",question);
+				 qForAns.AddParameter("emptyPar","@ref[Catalog_Question]:00000000-0000-0000-0000-000000000000");
+				 kolDoch = qForAns.ExecuteCount();
+		Dialogs.ChooseBool(question, null, editControl, DialogCallBackBool, title);
 	}
 
 	if ((answerType == DB.Current.Constant.DataType.String) ||
@@ -511,14 +529,44 @@ function AssignSubmitScope(){
 }
 //------------------------------internal-----------------------------------
 
-function DialogCallBack(state, args){
+function DialogCallBackBool(state, args){
 	var entity = state[0];
 	AssignAnswer(null, entity, skuValueGl, args.Result);
 	//var controlField = idBool;
 	TempControl.Text = args.Result;
-	answerednow = answerinsku;
-	totalanswred = totalanswerinsku;
+	var ShowDoch = false;
+	Dialog.Message(kolDoch);
+	Dialog.Message(args.Result);	
+	if ((args.Result == "Да" || args.Result == "Yes")&&(kolDoch>0)) {
+		ShowDoch = true;
+	}
+if (ShowDoch) {
+	setScroll = true;
+	scrollIndex = parseInt(idPar)+parseInt(idChail);
+	scrollIndex1= parseInt(idChail);
+	inref = true;
+	Workflow.Refresh([$.search]);
+
+}else {
+	if (!relouded) {
+		var answerednow = answerinsku;
+		var totalanswred = totalanswerinsku;
+	}else {
+		var answerednow = skuValueGl.Answered;
+		var totalanswred = skuRezTemp;
+	}
+
+//	 answerednow = answerinsku;
+//	 totalanswred = totalanswerinsku;
 	var parentCount = Variables["CountOnPar"+idChail];
+	var weHaveObl = false;
+	for(control in Variables["DockLa"+idPar].Controls){
+//		Dialog.Message(control.Id);
+		if (control.Id == "Req"+idPar) {
+				weHaveObl=true;
+				break;
+		}
+	}
 	if (ToString(args.Result)!="-" && ToString(args.Result)!="" && ToString(args.Result)!="—") {
 		//Dialog.Message(args.Result);
 		if (buferansw) {
@@ -529,10 +577,12 @@ function DialogCallBack(state, args){
 				single_answ = single_answ + 1;
 			}
 		}
+		if (weHaveObl) {
+			Variables["Req"+idPar].Refresh();
+			Variables["Req"+idPar].CssClass = "answered_side_gr";
+			Variables["Req"+idPar].Refresh();
+		}
 
-		Variables["Req"+idPar].Refresh();
-		Variables["Req"+idPar].CssClass = "answered_side_gr";
-		Variables["Req"+idPar].Refresh();
 	}else {
 		if (!buferansw) {
 			answerednow = answerednow - 1;
@@ -543,9 +593,11 @@ function DialogCallBack(state, args){
 			}
 		}
 		TempControl.Text = "—";
-		Variables["Req"+idPar].Refresh();
-		Variables["Req"+idPar].CssClass = "required_side_gr";
-		Variables["Req"+idPar].Refresh();
+		if (weHaveObl) {
+			Variables["Req"+idPar].Refresh();
+			Variables["Req"+idPar].CssClass = "required_side_gr";
+			Variables["Req"+idPar].Refresh();
+		}
 	}
 
 	parentCount.Text = answerednow + " " + Translate["#of#"] + " " + totalanswred;
@@ -557,18 +609,95 @@ function DialogCallBack(state, args){
 		$.CountNoNRegAnswer.Text = Translate["#nonregular#"] + " (" +single_answ + " " + Translate["#of#"] + " " + single_total + ")";
 	}
 	answerinsku = answerednow;
-
+	relouded = false;
 	setScroll = true;
 	scrollIndex = parseInt(idPar)+parseInt(idChail);
 	scrollIndex1= parseInt(idChail);
 	inref = true;
+	totalanswerinsku = totalanswred;
 	//Workflow.Refresh([$.search]);
 	//idChail = idChail;
 
 }
 
+function DialogCallBack(state, args){
+	var entity = state[0];
+	AssignAnswer(null, entity, skuValueGl, args.Result);
+	//var controlField = idBool;
+	TempControl.Text = args.Result;
+
+	if (!relouded) {
+		var answerednow = answerinsku;
+		var totalanswred = totalanswerinsku;
+	}else {
+		var answerednow = skuValueGl.Answered;
+		var totalanswred = skuRezTemp;
+	}
+
+//	 answerednow = answerinsku;
+//	 totalanswred = totalanswerinsku;
+	var parentCount = Variables["CountOnPar"+idChail];
+	var weHaveObl = false;
+	for(control in Variables["DockLa"+idPar].Controls){
+//		Dialog.Message(control.Id);
+		if (control.Id == "Req"+idPar) {
+				weHaveObl=true;
+				break;
+		}
+	}
+	if (ToString(args.Result)!="-" && ToString(args.Result)!="" && ToString(args.Result)!="—") {
+		//Dialog.Message(args.Result);
+		if (buferansw) {
+			answerednow = answerednow + 1;
+			if (regularAnswers) {
+				regular_answ = regular_answ + 1;
+			}else {
+				single_answ = single_answ + 1;
+			}
+		}
+		if (weHaveObl) {
+			Variables["Req"+idPar].Refresh();
+			Variables["Req"+idPar].CssClass = "answered_side_gr";
+			Variables["Req"+idPar].Refresh();
+		}
+
+	}else {
+		if (!buferansw) {
+			answerednow = answerednow - 1;
+			if (regularAnswers) {
+				regular_answ = regular_answ - 1;
+			}else {
+				single_answ = single_answ - 1;
+			}
+		}
+		TempControl.Text = "—";
+		if (weHaveObl) {
+			Variables["Req"+idPar].Refresh();
+			Variables["Req"+idPar].CssClass = "required_side_gr";
+			Variables["Req"+idPar].Refresh();
+		}
+	}
+
+	parentCount.Text = answerednow + " " + Translate["#of#"] + " " + totalanswred;
+
+	if (regularAnswers) {
+		$.CountRegAnswer.Text = Translate["#regular#"] + " (" +regular_answ + " " + Translate["#of#"] + " " + regular_total + ")";
+	}else {
+
+		$.CountNoNRegAnswer.Text = Translate["#nonregular#"] + " (" +single_answ + " " + Translate["#of#"] + " " + single_total + ")";
+	}
+	answerinsku = answerednow;
+	relouded = false;
+	totalanswerinsku = totalanswred;
+	//idChail = idChail;
+}
+
+
+}
+
 
 function GalleryCallBack(state, args) {
+	//Dialog.Message(args.Result);
 	if (args.Result) {
 		AssignAnswer(null, questionValueGl, skuValueGl, state[1]);
 
@@ -577,10 +706,64 @@ function GalleryCallBack(state, args) {
 		newFile.FileName = state[1];
 		newFile.FullFileName = state[2];
 		newFile.Save();
+//		Dialog.Message("control"+idPar)
+//		Variables["controlVert"+idPar].CssClass = "answer_snapshotVl";
+//		Variables["controlVert"+idPar].Refresh();
+	var weHaveIt = false;
+	for(control in Variables["controlVert"+idPar].Controls){
+//		Dialog.Message(control.Id);
+		if (control.Id == "controlVertIn"+idPar) {
+				weHaveIt=true;
+				break;
+		}
+	}
+	if (weHaveIt) {
+//		for(control in Variables["controlVertIn"+idPar])
+//        control.remove();
+		//		Dialog.Message()
+		Variables["controlVertIn"+idPar].after("<c:Image Id='control"+idPar+"' CssClass='answer_snapshot'></c:Image>").refresh();
+		Variables["controlVertIn"+idPar].remove();
+	}
 
-		//Variables["control"+idChail].Source = newFile.FullFileName;
-		//Variables["control"+idChail].refresh();
-		Workflow.Refresh([]);
+		Variables["control"+idPar].CssClass = "answer_snapshot";
+		Variables["control"+idPar].Refresh();
+		Variables["control"+idPar].Source = newFile.FullFileName;
+		Variables["control"+idPar].Refresh();
+		Variables["controlVert"+idPar].Refresh();
+
+		Dialog.Message(relouded);
+		if (!relouded) {
+			var answerednow = answerinsku;
+			var totalanswred = skuRezTemp;
+		}else {
+			var answerednow = skuValueGl.Answered;
+			var totalanswred = skuRezTemp;
+		}
+
+		var parentCount = Variables["CountOnPar"+idChail];
+	if (buferansw) {
+		answerednow = answerednow + 1;
+		if (regularAnswers) {
+			regular_answ = regular_answ + 1;
+		}else {
+			single_answ = single_answ + 1;
+		}
+	}
+	Variables["Req"+idPar].Refresh();
+	Variables["Req"+idPar].CssClass = "answered_side_gr";
+	Variables["Req"+idPar].Refresh();
+
+	parentCount.Text = answerednow + " " + Translate["#of#"] + " " + totalanswred;
+
+	if (regularAnswers) {
+		$.CountRegAnswer.Text = Translate["#regular#"] + " (" +regular_answ + " " + Translate["#of#"] + " " + regular_total + ")";
+	}else {
+
+		$.CountNoNRegAnswer.Text = Translate["#nonregular#"] + " (" +single_answ + " " + Translate["#of#"] + " " + single_total + ")";
+	}
+	answerinsku = answerednow;
+	relouded = false;
+		//Workflow.Refresh([]);
 	}
 }
 
@@ -588,4 +771,148 @@ function DeleteAnswers(recordset) {
 	while (recordset.Next()){
 		DB.Delete(recordset.Id);
 	}
+}
+
+//------------------------CustomFoto
+//---------------------------ForSkuQuest----------------------------
+function AddQuestionSnapshotSku(tableName, question, sku, answer, previewAllowed, title, func) {
+	title = String.IsNullOrEmpty(title) ? Translate["#snapshot#"] : title;
+	if (String.IsNullOrEmpty(answer) && !$.sessionConst.galleryChoose)
+		Images.MakeSnapshot($.workflow.visit, func);
+	else{
+
+		if (String.IsNullOrEmpty(answer)==false)
+		path = Images.FindImage($.workflow.visit, answer, ".jpg", "Document_Visit_Files");
+
+		var listChoice = new List;
+		if ($.sessionConst.galleryChoose) //if Gallery is allowed
+			listChoice.Add([0, Translate["#addFromGallery#"]]);
+		listChoice.Add([1, Translate["#makeSnapshot#"]]);
+		if (previewAllowed && String.IsNullOrEmpty(answer)==false && FileSystem.Exists(path)) //if not an Image.xml screen
+			listChoice.Add([3, Translate["#show#"]]);
+		if (String.IsNullOrEmpty(answer)==false && previewAllowed)
+			listChoice.Add([2, Translate["#clearValue#"]]);
+
+		Dialog.Choose(title, listChoice, AddSnapshotHandlerSku, [$.workflow.visit, func, tableName, path, question, sku]);
+	}
+}
+
+function AddSnapshotHandlerSku(state, args) {
+	var objRef = state[0];
+	var func = state[1];
+	var valueRef = state[2];
+
+	if (parseInt(args.Result)==parseInt(0)){ 	//Gallery answer
+		Images.ChooseFromGallery(objRef, func);
+	}
+
+	if (parseInt(args.Result)==parseInt(1)){ 	//SnapshotAnswer
+		Images.MakeSnapshot(objRef, func);
+	}
+
+	if (parseInt(args.Result)==parseInt(2)){ 	//Delete answer
+		if (getType(valueRef)=="System.String") 	//for Questions, SKUQuestions
+			DeleteFromTableSku(state[4], state[5]);
+		else
+			DeleteImageSku(valueRef); 		//common delete handler
+	}
+
+	if (parseInt(args.Result)==parseInt(3)){ 	//Show answer
+		var path = state[3];
+		var attr;
+		if (getType(valueRef)=="System.String"){ 	//for Questions/SKUQuestions, callback from AddQuestionSnapshot()
+			valueRef = state[4];
+			attr = state[5];
+		}
+		else{ 		//common handler
+			if (valueRef!=null)
+				attr = parameters[valueRef.Metadata().TableName];
+		}
+
+		var arr = [path, valueRef, attr];
+		if (valueRef != null){
+			if (valueRef.Metadata().TableName=="Catalog_SKU")
+				arr = [path, valueRef, attr, true];
+		}
+
+		Workflow.Action("ShowImage", arr);
+	}
+}
+
+function DeleteImageSku(valueRef) {
+	if (valueRef.IsNew()){
+		DB.Delete(valueRef);
+		//Workflow.Refresh([]);
+	}
+	else{
+		var index = parameters[valueRef.Metadata().TableName];
+		var value = valueRef.GetObject();
+
+		if (valueRef.Metadata().TableName == "Catalog_Outlet_Snapshots") {
+			value.Deleted = true;
+		} else {
+			value[index] = "";
+		}
+
+		value.Save();
+		//Workflow.Refresh([]);
+	}
+}
+
+function DeleteFromTableSku(question, sku) {
+	var answerString = "HistoryAnswer ";
+
+	var tableName = sku==null ? "USR_Questions" : "USR_SKUQuestions";
+
+	var q = new Query();
+
+	var cond = "";
+	if (tableName == "USR_SKUQuestions"){
+		cond = " AND SKU=@sku";
+		q.AddParameter("sku", sku);
+	}
+
+	q.Text = "UPDATE " + tableName + " SET Answer=" + answerString + ", AnswerDate=DATETIME('now', 'localtime') " +
+		"WHERE Question=@question " + cond;
+	q.AddParameter("answer", null);
+	q.AddParameter("question", question);
+	q.Execute();
+	Variables["control"+idPar].remove();
+	var textToAppend = "<c:VerticalLayout Id='controlVertIn"+idPar+"' CssClass='no_child_answer'>"
+	+"<c:Image Id='control"+idPar+"'/>"
+	+"</c:VerticalLayout>";
+	Variables["controlVert"+idPar].append(textToAppend).refresh();
+
+	if (!relouded) {
+		var answerednow = answerinsku;
+		var totalanswred = skuRezTemp;
+	}else {
+		var answerednow = skuValueGl.Answered;
+		var totalanswred = skuRezTemp;
+	}
+
+var parentCount = Variables["CountOnPar"+idChail];
+	answerednow = answerednow - 1;
+	if (regularAnswers) {
+		regular_answ = regular_answ - 1;
+	}else {
+		single_answ = single_answ - 1;
+	}
+Variables["Req"+idPar].Refresh();
+Variables["Req"+idPar].CssClass = "required_side_gr";
+Variables["Req"+idPar].Refresh();
+
+parentCount.Text = answerednow + " " + Translate["#of#"] + " " + totalanswred;
+
+if (regularAnswers) {
+	$.CountRegAnswer.Text = Translate["#regular#"] + " (" +regular_answ + " " + Translate["#of#"] + " " + regular_total + ")";
+}else {
+
+	$.CountNoNRegAnswer.Text = Translate["#nonregular#"] + " (" +single_answ + " " + Translate["#of#"] + " " + single_total + ")";
+}
+answerinsku = answerednow;
+relouded = false;
+
+
+	//Workflow.Refresh([]);
 }

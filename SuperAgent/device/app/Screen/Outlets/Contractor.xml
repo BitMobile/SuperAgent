@@ -107,7 +107,7 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="grid" OnClickAction="$FocusOnEditText(phone_number, 1)">
+			<c:DockLayout CssClass="grid" OnClickAction="$FocusOnEditText1(phone_number, 1)">
 				<c:HorizontalLayout CssClass="phone">
 					<c:VerticalLayout  OnClickAction="$GetPhoneAndCall($contractor)"></c:VerticalLayout>
 				</c:HorizontalLayout>

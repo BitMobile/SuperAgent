@@ -288,7 +288,8 @@ function CreateItemAndShow(control, sku, index, showChild) {
 }
 
 function GoToQuestionAction(control, answerType, question, sku, editControl, currAnswer, title,indexparm,skurez) {
-
+//	Dialog.Message("пар-"+editControl);
+//	Dialog.Message("Чаил"+indexparm);
 	idPar = editControl;
 	idChail = indexparm;
 	editControlName = "control"+editControl;
@@ -296,6 +297,12 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 	skuValueGl = sku;
 	skuRezTemp = skurez;
 	editControl.Enabled = "True";
+	var qForKol = new Query("Select Description From USR_SKUQuestions Where SKU=@sku And ParentQuestion==@quest");
+	 qForKol.AddParameter("sku",sku);
+	 qForKol.AddParameter("quest",question);
+	 //qForKol.AddParameter("emptyPar",DB.EmptyRef("Catalog_Question"));
+	 kolDoch = qForKol.ExecuteCount();
+
 //	Dialog.Message(skuRezTemp);
 
 	if (answerType == DB.Current.Constant.DataType.ValueList) {
@@ -310,7 +317,7 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 					buferansw = false;
 				 }
 
-		Dialogs.DoChoose(q.Execute(), question, null, editControl, DialogCallBack, title);
+		Dialogs.DoChoose(q.Execute(), question, null, editControl, DialogCallBackBool, title);
 	}
 
 	if (answerType == DB.Current.Constant.DataType.Snapshot) {
@@ -332,22 +339,17 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 
 	if (answerType == DB.Current.Constant.DataType.DateTime) {
 		TempControl = editControl;
-		Dialogs.ChooseDateTime(question, null, editControl, DialogCallBack, title);
+		Dialogs.ChooseDateTime(question, null, editControl, DialogCallBackBool, title);
 	}
 
 	if (answerType == DB.Current.Constant.DataType.Boolean) {
 		TempControl = editControl;
-		if (String.IsNullOrEmpty(editControl.Text) || editControl.Text == "" || editControl.Text == "-" || editControl.Text == "—") {
+		if (String.IsNullOrEmpty(editControl.Text) || editControl.Text == "" || editControl.Text == "-" || editControl.Text == "—" || editControl.Text == "Нет" || editControl.Text == "No") {
 					buferansw = true;
 				 }
 				 else {
 					buferansw = false;
 				 }
-				var qForAns = new Query("Select Answer From USR_SKUQuestions Where SKU=@sku And Question=@quest And ParentQuestion!=@emptyPar");
-				 qForAns.AddParameter("sku",sku);
-				 qForAns.AddParameter("quest",question);
-				 qForAns.AddParameter("emptyPar","@ref[Catalog_Question]:00000000-0000-0000-0000-000000000000");
-				 kolDoch = qForAns.ExecuteCount();
 		Dialogs.ChooseBool(question, null, editControl, DialogCallBackBool, title);
 	}
 
@@ -535,14 +537,14 @@ function DialogCallBackBool(state, args){
 	//var controlField = idBool;
 	TempControl.Text = args.Result;
 	var ShowDoch = false;
-	Dialog.Message(kolDoch);
-	Dialog.Message(args.Result);	
-	if ((args.Result == "Да" || args.Result == "Yes")&&(kolDoch>0)) {
+	//Dialog.Message(kolDoch);
+	//Dialog.Message(args.Result);
+	if (kolDoch>0) {
 		ShowDoch = true;
 	}
 if (ShowDoch) {
 	setScroll = true;
-	scrollIndex = parseInt(idPar)+parseInt(idChail);
+	scrollIndex = parseInt(idChail);
 	scrollIndex1= parseInt(idChail);
 	inref = true;
 	Workflow.Refresh([$.search]);
@@ -718,8 +720,8 @@ function GalleryCallBack(state, args) {
 		}
 	}
 	if (weHaveIt) {
-//		for(control in Variables["controlVertIn"+idPar])
-//        control.remove();
+		for(control in Variables["controlVertIn"+idPar].Controls)
+        control.remove();
 		//		Dialog.Message()
 		Variables["controlVertIn"+idPar].after("<c:Image Id='control"+idPar+"' CssClass='answer_snapshot'></c:Image>").refresh();
 		Variables["controlVertIn"+idPar].remove();
@@ -731,7 +733,7 @@ function GalleryCallBack(state, args) {
 		Variables["control"+idPar].Refresh();
 		Variables["controlVert"+idPar].Refresh();
 
-		Dialog.Message(relouded);
+		//Dialog.Message(relouded);
 		if (!relouded) {
 			var answerednow = answerinsku;
 			var totalanswred = skuRezTemp;

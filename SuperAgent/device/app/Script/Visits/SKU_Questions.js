@@ -110,6 +110,23 @@ function HasQuestions(){
 	return true;
 }
 
+function GetAnswerdAndTotal(){
+	var q = new Query();
+	q.Text="SELECT COUNT(DISTINCT S.Question) AS Total " +
+			", COUNT(DISTINCT S.Answer) AS Answered " +
+			"FROM USR_SKUQuestions S " +
+			"WHERE S.SKU=@sku AND (S.ParentQuestion=@emptyRef" +
+			" OR S.ParentQuestion IN (SELECT SS.Question" +
+			" FROM USR_SKUQuestions SS WHERE SS.SKU=S.SKU AND (SS.Answer='Yes' OR SS.Answer='Да')))" +
+			"GROUP BY S.SKU";
+	q.AddParameter("sku",skuValueGl);
+	q.AddParameter("emptyRef",DB.EmptyRef("Catalog_Question"));
+	var rez = q.Execute();
+	//Dialog.Message(rez);
+
+	return rez;
+}
+
 function GetSKUsFromQuesionnaires(search) {
 
 	var single = 1;
@@ -290,12 +307,20 @@ function CreateItemAndShow(control, sku, index, showChild) {
 function GoToQuestionAction(control, answerType, question, sku, editControl, currAnswer, title,indexparm,skurez) {
 //	Dialog.Message("пар-"+editControl);
 //	Dialog.Message("Чаил"+indexparm);
+
 	idPar = editControl;
 	idChail = indexparm;
 	editControlName = "control"+editControl;
 	editControl = Variables["control"+editControl];
 	skuValueGl = sku;
 	skuRezTemp = skurez;
+	var SourceIdChailAndPar = GetAnswerdAndTotal();
+	while (SourceIdChailAndPar.Next()) {
+		answerinsku = SourceIdChailAndPar.Answered;
+		totalanswerinsku = SourceIdChailAndPar.Total;
+	}
+	//Dialog.Message(totalanswerinsku);
+	//Dialog.Message(answerinsku);
 	editControl.Enabled = "True";
 	var qForKol = new Query("Select Description From USR_SKUQuestions Where SKU=@sku And ParentQuestion==@quest");
 	 qForKol.AddParameter("sku",sku);
@@ -339,6 +364,13 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 
 	if (answerType == DB.Current.Constant.DataType.DateTime) {
 		TempControl = editControl;
+		if (String.IsNullOrEmpty(currAnswer)) {
+					buferansw = true;
+				 }
+				 else {
+					buferansw = false;
+				 }
+
 		Dialogs.ChooseDateTime(question, null, editControl, DialogCallBackBool, title);
 	}
 
@@ -550,14 +582,8 @@ if (ShowDoch) {
 	Workflow.Refresh([$.search]);
 
 }else {
-	if (!relouded) {
-		var answerednow = answerinsku;
-		var totalanswred = totalanswerinsku;
-	}else {
-		var answerednow = skuValueGl.Answered;
-		var totalanswred = skuRezTemp;
-	}
-
+	var answerednow = answerinsku;
+	var totalanswred = totalanswerinsku
 //	 answerednow = answerinsku;
 //	 totalanswred = totalanswerinsku;
 	var parentCount = Variables["CountOnPar"+idChail];
@@ -610,6 +636,44 @@ if (ShowDoch) {
 
 		$.CountNoNRegAnswer.Text = Translate["#nonregular#"] + " (" +single_answ + " " + Translate["#of#"] + " " + single_total + ")";
 	}
+
+	var q = new Query("SELECT DISTINCT S.Question, S.Description, S.SKU " +
+			"FROM USR_SKUQuestions S " +
+			"WHERE (RTRIM(Answer)='' OR S.Answer IS NULL) AND S.Obligatoriness=1 " +
+			"AND (S.ParentQuestion=@emptyRef OR S.ParentQuestion IN (SELECT SS.Question FROM USR_SKUQuestions SS " +
+				"WHERE SS.SKU=S.SKU AND (SS.Answer='Yes' OR SS.Answer='Да')))");
+	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
+	obligateredLeft = q.ExecuteCount().ToString();
+	if (obligateredLeft==0) {
+		Variables["obligateredButton"].Text = "";
+		Variables["imagForw"].Refresh();
+		Variables["imagForw"].CssClass = "imgForw";
+		Variables["imagForw"].Refresh();
+		Variables["TextForw"].Text = Translate["#forward#"];
+		Variables["TextForw"].Refresh();
+		Variables["TextForw"].CssClass = "TextViewInTopNorm";
+		Variables["TextForw"].Refresh();
+
+	}else {
+		Variables["obligateredInfo"].Text = obligateredLeft;
+		Variables["obligateredButton"].Text = obligateredLeft+")";
+	}
+	var obl =new Query("SELECT Question FROM USR_SKUQuestions WHERE Obligatoriness = @obl And SKU = @sku And Answer IS NULL");
+	obl.AddParameter("obl",1);
+	obl.AddParameter("sku",skuValueGl);
+	var rez = obl.ExecuteCount();
+	if (rez > 0) {
+		//Dialog.Message("ParentReq"+idChail);
+		//Variables["ParentReq"+idChail].Refresh();
+		Variables["ParentReq"+idChail].CssClass = "required_side_wh";
+		Variables["ParentReq"+idChail].Refresh();
+	}
+	if (rez == 0) {
+		Variables["ParentReq"+idChail].Refresh();
+		Variables["ParentReq"+idChail].CssClass = "answered_side_wh";
+		Variables["ParentReq"+idChail].Refresh();
+	}
+
 	answerinsku = answerednow;
 	relouded = false;
 	setScroll = true;

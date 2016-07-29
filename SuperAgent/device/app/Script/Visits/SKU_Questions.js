@@ -113,7 +113,7 @@ function HasQuestions(){
 function GetAnswerdAndTotal(){
 	var q = new Query();
 	q.Text="SELECT COUNT(DISTINCT S.Question) AS Total " +
-			", COUNT(DISTINCT S.Answer) AS Answered " +
+			", COUNT(S.Answer) AS Answered " +
 			"FROM USR_SKUQuestions S " +
 			"WHERE S.SKU=@sku AND (S.ParentQuestion=@emptyRef" +
 			" OR S.ParentQuestion IN (SELECT SS.Question" +
@@ -160,7 +160,7 @@ function GetSKUsFromQuesionnaires(search) {
 	var q = new Query();
 	q.Text="SELECT S.SKU, S.SKUDescription " +
 			", COUNT(DISTINCT S.Question) AS Total " +
-			", COUNT(DISTINCT S.Answer) AS Answered " +
+			", COUNT(S.Answer) AS Answered " +
 			", MAX(CAST (Obligatoriness AS INT)) AS Obligatoriness " +
 			", (SELECT COUNT(DISTINCT U1.Question) FROM USR_SKUQuestions U1 " +
 				" WHERE U1.Single=@single AND (Answer='' OR Answer IS NULL) " +
@@ -583,7 +583,7 @@ if (ShowDoch) {
 
 }else {
 	var answerednow = answerinsku;
-	var totalanswred = totalanswerinsku
+	var totalanswred = totalanswerinsku;
 //	 answerednow = answerinsku;
 //	 totalanswred = totalanswerinsku;
 	var parentCount = Variables["CountOnPar"+idChail];
@@ -636,43 +636,44 @@ if (ShowDoch) {
 
 		$.CountNoNRegAnswer.Text = Translate["#nonregular#"] + " (" +single_answ + " " + Translate["#of#"] + " " + single_total + ")";
 	}
+var q = new Query("SELECT DISTINCT S.Question, S.Description, S.SKU " +
+    "FROM USR_SKUQuestions S " +
+    "WHERE (RTRIM(Answer)='' OR S.Answer IS NULL) AND S.Obligatoriness=1 " +
+    "AND (S.ParentQuestion=@emptyRef OR S.ParentQuestion IN (SELECT SS.Question FROM USR_SKUQuestions SS " +
+      "WHERE SS.SKU=S.SKU AND (SS.Answer='Yes' OR SS.Answer='Да')))");
+q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
+obligateredLeft = q.ExecuteCount().ToString();
+if (obligateredLeft==0) {
+  Variables["obligateredButton"].Text = "";
+  Variables["imagForw"].Refresh();
+  Variables["imagForw"].CssClass = "imgForw";
+  Variables["imagForw"].Refresh();
+  Variables["TextForw"].Text = Translate["#forward#"];
+  Variables["TextForw"].Refresh();
+  Variables["TextForw"].CssClass = "TextViewInTopNorm";
+  Variables["TextForw"].Refresh();
 
-	var q = new Query("SELECT DISTINCT S.Question, S.Description, S.SKU " +
-			"FROM USR_SKUQuestions S " +
-			"WHERE (RTRIM(Answer)='' OR S.Answer IS NULL) AND S.Obligatoriness=1 " +
-			"AND (S.ParentQuestion=@emptyRef OR S.ParentQuestion IN (SELECT SS.Question FROM USR_SKUQuestions SS " +
-				"WHERE SS.SKU=S.SKU AND (SS.Answer='Yes' OR SS.Answer='Да')))");
-	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
-	obligateredLeft = q.ExecuteCount().ToString();
-	if (obligateredLeft==0) {
-		Variables["obligateredButton"].Text = "";
-		Variables["imagForw"].Refresh();
-		Variables["imagForw"].CssClass = "imgForw";
-		Variables["imagForw"].Refresh();
-		Variables["TextForw"].Text = Translate["#forward#"];
-		Variables["TextForw"].Refresh();
-		Variables["TextForw"].CssClass = "TextViewInTopNorm";
-		Variables["TextForw"].Refresh();
+}else {
+  Variables["obligateredInfo"].Text = obligateredLeft;
+  Variables["obligateredButton"].Text = obligateredLeft+")";
+}
+var obl =new Query("SELECT Question FROM USR_SKUQuestions WHERE Obligatoriness = @obl And SKU = @sku And Answer IS NULL");
+obl.AddParameter("obl",1);
+obl.AddParameter("sku",skuValueGl);
+var rez = obl.ExecuteCount();
+if (rez > 0) {
+  //Dialog.Message("ParentReq"+idChail);
+  //Variables["ParentReq"+idChail].Refresh();
+  Variables["ParentReq"+idChail].CssClass = "required_side_wh";
+  Variables["ParentReq"+idChail].Refresh();
+}
+if (rez == 0) {
+  Variables["ParentReq"+idChail].Refresh();
+  Variables["ParentReq"+idChail].CssClass = "answered_side_wh";
+  Variables["ParentReq"+idChail].Refresh();
+}
 
-	}else {
-		Variables["obligateredInfo"].Text = obligateredLeft;
-		Variables["obligateredButton"].Text = obligateredLeft+")";
-	}
-	var obl =new Query("SELECT Question FROM USR_SKUQuestions WHERE Obligatoriness = @obl And SKU = @sku And Answer IS NULL");
-	obl.AddParameter("obl",1);
-	obl.AddParameter("sku",skuValueGl);
-	var rez = obl.ExecuteCount();
-	if (rez > 0) {
-		//Dialog.Message("ParentReq"+idChail);
-		//Variables["ParentReq"+idChail].Refresh();
-		Variables["ParentReq"+idChail].CssClass = "required_side_wh";
-		Variables["ParentReq"+idChail].Refresh();
-	}
-	if (rez == 0) {
-		Variables["ParentReq"+idChail].Refresh();
-		Variables["ParentReq"+idChail].CssClass = "answered_side_wh";
-		Variables["ParentReq"+idChail].Refresh();
-	}
+
 
 	answerinsku = answerednow;
 	relouded = false;
@@ -798,13 +799,9 @@ function GalleryCallBack(state, args) {
 		Variables["controlVert"+idPar].Refresh();
 
 		//Dialog.Message(relouded);
-		if (!relouded) {
-			var answerednow = answerinsku;
-			var totalanswred = skuRezTemp;
-		}else {
-			var answerednow = skuValueGl.Answered;
-			var totalanswred = skuRezTemp;
-		}
+		var answerednow = answerinsku;
+		var totalanswred = totalanswerinsku;
+
 
 		var parentCount = Variables["CountOnPar"+idChail];
 	if (buferansw) {
@@ -829,6 +826,44 @@ function GalleryCallBack(state, args) {
 	}
 	answerinsku = answerednow;
 	relouded = false;
+ 	var q = new Query("SELECT DISTINCT S.Question, S.Description, S.SKU " +
+    "FROM USR_SKUQuestions S " +
+    "WHERE (RTRIM(Answer)='' OR S.Answer IS NULL) AND S.Obligatoriness=1 " +
+    "AND (S.ParentQuestion=@emptyRef OR S.ParentQuestion IN (SELECT SS.Question FROM USR_SKUQuestions SS " +
+      "WHERE SS.SKU=S.SKU AND (SS.Answer='Yes' OR SS.Answer='Да')))");
+q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
+obligateredLeft = q.ExecuteCount().ToString();
+if (obligateredLeft==0) {
+  Variables["obligateredButton"].Text = "";
+  Variables["imagForw"].Refresh();
+  Variables["imagForw"].CssClass = "imgForw";
+  Variables["imagForw"].Refresh();
+  Variables["TextForw"].Text = Translate["#forward#"];
+  Variables["TextForw"].Refresh();
+  Variables["TextForw"].CssClass = "TextViewInTopNorm";
+  Variables["TextForw"].Refresh();
+
+}else {
+  Variables["obligateredInfo"].Text = obligateredLeft;
+  Variables["obligateredButton"].Text = obligateredLeft+")";
+}
+var obl =new Query("SELECT Question FROM USR_SKUQuestions WHERE Obligatoriness = @obl And SKU = @sku And Answer IS NULL");
+obl.AddParameter("obl",1);
+obl.AddParameter("sku",skuValueGl);
+var rez = obl.ExecuteCount();
+if (rez > 0) {
+  //Dialog.Message("ParentReq"+idChail);
+  //Variables["ParentReq"+idChail].Refresh();
+  Variables["ParentReq"+idChail].CssClass = "required_side_wh";
+  Variables["ParentReq"+idChail].Refresh();
+}
+if (rez == 0) {
+  Variables["ParentReq"+idChail].Refresh();
+  Variables["ParentReq"+idChail].CssClass = "answered_side_wh";
+  Variables["ParentReq"+idChail].Refresh();
+}
+
+
 		//Workflow.Refresh([]);
 	}
 }
@@ -949,13 +984,9 @@ function DeleteFromTableSku(question, sku) {
 	+"</c:VerticalLayout>";
 	Variables["controlVert"+idPar].append(textToAppend).refresh();
 
-	if (!relouded) {
-		var answerednow = answerinsku;
-		var totalanswred = skuRezTemp;
-	}else {
-		var answerednow = skuValueGl.Answered;
-		var totalanswred = skuRezTemp;
-	}
+	var answerednow = answerinsku;
+	var totalanswred = totalanswerinsku;
+
 
 var parentCount = Variables["CountOnPar"+idChail];
 	answerednow = answerednow - 1;
@@ -978,6 +1009,44 @@ if (regularAnswers) {
 }
 answerinsku = answerednow;
 relouded = false;
+var q = new Query("SELECT DISTINCT S.Question, S.Description, S.SKU " +
+    "FROM USR_SKUQuestions S " +
+    "WHERE (RTRIM(Answer)='' OR S.Answer IS NULL) AND S.Obligatoriness=1 " +
+    "AND (S.ParentQuestion=@emptyRef OR S.ParentQuestion IN (SELECT SS.Question FROM USR_SKUQuestions SS " +
+      "WHERE SS.SKU=S.SKU AND (SS.Answer='Yes' OR SS.Answer='Да')))");
+q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
+obligateredLeft = q.ExecuteCount().ToString();
+if (obligateredLeft==0) {
+  Variables["obligateredButton"].Text = "";
+  Variables["imagForw"].Refresh();
+  Variables["imagForw"].CssClass = "imgForw";
+  Variables["imagForw"].Refresh();
+  Variables["TextForw"].Text = Translate["#forward#"];
+  Variables["TextForw"].Refresh();
+  Variables["TextForw"].CssClass = "TextViewInTopNorm";
+  Variables["TextForw"].Refresh();
+
+}else {
+  Variables["obligateredInfo"].Text = obligateredLeft;
+  Variables["obligateredButton"].Text = obligateredLeft+")";
+}
+var obl =new Query("SELECT Question FROM USR_SKUQuestions WHERE Obligatoriness = @obl And SKU = @sku And Answer IS NULL");
+obl.AddParameter("obl",1);
+obl.AddParameter("sku",skuValueGl);
+var rez = obl.ExecuteCount();
+if (rez > 0) {
+  //Dialog.Message("ParentReq"+idChail);
+  //Variables["ParentReq"+idChail].Refresh();
+  Variables["ParentReq"+idChail].CssClass = "required_side_wh";
+  Variables["ParentReq"+idChail].Refresh();
+}
+if (rez == 0) {
+  Variables["ParentReq"+idChail].Refresh();
+  Variables["ParentReq"+idChail].CssClass = "answered_side_wh";
+  Variables["ParentReq"+idChail].Refresh();
+}
+
+
 
 
 	//Workflow.Refresh([]);

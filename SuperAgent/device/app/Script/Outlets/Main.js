@@ -212,8 +212,10 @@ function GetOutletParameters(outlet) {
 					"CASE WHEN TRIM(IFNULL(OFILES.FullFileName, '')) != '' THEN LOWER(OFILES.FullFileName) ELSE '/shared/result.jpg' END ELSE NULL END AS FullFileName " +
 			"FROM Catalog_OutletParameter P " +
 			"JOIN Enum_DataType DT ON DT.Id=P.DataType " +
+			"LEFT JOIN Catalog_OutletParametersNumber NP ON NP.Parameter = P.Id " +
 			"LEFT JOIN Catalog_Outlet_Parameters OP ON OP.Parameter = P.Id AND OP.Ref = @outlet " +
-			"LEFT JOIN Catalog_Outlet_Files OFILES ON OP.Value = OFILES.FileName AND OFILES.Ref = @outlet";
+			"LEFT JOIN Catalog_Outlet_Files OFILES ON OP.Value = OFILES.FileName AND OFILES.Ref = @outlet " +
+			"ORDER BY NP.Number ASC";
 
 	query.AddParameter("integer", DB.Current.Constant.DataType.Integer);
 	query.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);
@@ -259,8 +261,12 @@ function CheckNotNullAndForward(outlet, visit) {
 	var c = CoordsChecked(visit);
 	if ((CheckEmptyOutletFields(outlet) && c) || DateAddTru == true) {
 		outlet.GetObject().Save();
+
+
+
 		ReviseParameters(outlet, false);
 	 	Global.CreateTableQuestions(outlet);
+
 		Workflow.Forward([null, true]);
 	}
 }
@@ -279,6 +285,7 @@ function ReviseParameters(outlet, save) {
 }
 
 //---------------------------header parameters dialog.choose--------------------
+
 
 function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParameters, primaryParameterName) {
 	// if ($.workflow.name != "Visit") {

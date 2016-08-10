@@ -98,6 +98,7 @@
 							</s:If>
 							<c:Image />
 							<c:VerticalLayout>
+								<c:TextView Text="$pOutlet.Distributor" CssClass="distributor"></c:TextView>
 								<c:TextView Text="$planOutlet.Description" CssClass="main_row"></c:TextView>
 								<c:HorizontalLayout>
 									<s:If Test="$pOutlet.Time != ''">
@@ -140,6 +141,7 @@
 								<c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
 							</s:If>
 							<c:VerticalLayout>
+								<c:TextView Text="$pOutlet.Distributor" CssClass="distributor"></c:TextView>
 								<c:TextView Text="$pOutlet.Description" CssClass="main_row"></c:TextView>
 								<c:TextView Text="{$pOutlet.Address}" CssClass="description_row"></c:TextView>
 							</c:VerticalLayout>
@@ -175,6 +177,7 @@
 							</s:If>
 							<c:Image />
 							<c:VerticalLayout>
+								<c:TextView Text="$uOutlet.Distributor" CssClass="distributor"></c:TextView>
 								<c:TextView Text="$uOutlet.Description" CssClass="main_row"></c:TextView>
 								<c:TextView Text="{$uOutlet.Address}" CssClass="description_row"></c:TextView>
 							</c:VerticalLayout>

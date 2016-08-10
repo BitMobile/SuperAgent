@@ -398,7 +398,7 @@ MemoEdit {
 	width: 100%;
 	height: 100%;
 	dock-align: left;
-	padding-top: 11%;
+	padding-top: 8%;
 	padding-left: 2.4mm;
 }
 
@@ -449,7 +449,7 @@ MemoEdit {
 
 .main_row {
 	width: 100%;
-	height: 40%;
+	height: 30%;
 	white-space: normal;
 	placeholder-color: #2d89cf;
 	font: 42% Arial;
@@ -967,4 +967,14 @@ MemoEdit {
 	height: 100%;
 	width: 100%;
 	margin-left: 2.7mm;
+}
+
+
+.distributor {
+	width: 100%;
+	height: 30%;
+	white-space: normal;
+	margin-bottom: -1mm;
+	color: #8e8e93;
+	font: 50% Arial;
 }

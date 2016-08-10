@@ -155,19 +155,20 @@ function GetUncommitedScheduledVisits(searchText) {
 	var q = new Query();
 	if (String.IsNullOrEmpty(searchText)==false) {
 		searchText = StrReplace(searchText, "'", "''");
-		search = "AND Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "') ";
+		search = "AND Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "') Or Contains(D.Description, '" + searchText + "')";
 	}
-	q.Text = ("SELECT DISTINCT VP.Outlet, VP.Ref, " +
+	q.Text = ("SELECT DISTINCT VP.Outlet, VP.Ref, D.Description AS Distributor," +
 			" CASE WHEN strftime('%H:%M', VP.Date)='00:00' THEN '' ELSE strftime('%H:%M', VP.Date) END AS Time, " +
 			OutletStatusText() +
 			" FROM Catalog_Outlet O " +
+			" LEFT JOIN Catalog_Distributor D ON O.Distributor = D.Id " +
 			" JOIN Document_VisitPlan_Outlets VP ON O.Id = VP.Outlet AND DATE(VP.Date)=DATE(@date) " +
 			" JOIN Document_VisitPlan DV ON DV.Id=VP.Ref " +
 			" LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet " +
 				" AND V.Date >= @today AND V.Date < @tomorrow " +
 				" AND V.Plan<>@emptyRef " +
 			" LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA=1 " +
-			" WHERE V.Id IS NULL AND NOT OSS.Status IS NULL " + search + " ORDER BY VP.Date, O.Description LIMIT 100");
+			" WHERE V.Id IS NULL AND NOT OSS.Status IS NULL " + search + " ORDER BY VP.Date, D.Description, O.Description LIMIT 100");
 			if (addDay == null || addDay == 0) {
 				addDay = 0;
 				q.AddParameter("date", DateTime.Now.Date);
@@ -179,6 +180,7 @@ function GetUncommitedScheduledVisits(searchText) {
 				q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1));
 			}
 	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));
+	// Dialog.Debug(1);
 	return q.Execute();
 
 }
@@ -189,13 +191,15 @@ function GetUncommitedScheduledVisitsCount(searchText) {
 	var q = new Query();
 	if (String.IsNullOrEmpty(searchText)==false) {
 		searchText = StrReplace(searchText, "'", "''");
-		search = "AND Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "') ";
+		search = "AND Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "') Or Contains(D.Description, '" + searchText + "') ";
 	}
 	q.Text = ("SELECT COUNT(DISTINCT VP.Outlet) " +
-			" FROM Catalog_Outlet O JOIN Document_VisitPlan_Outlets VP ON O.Id = VP.Outlet AND DATE(VP.Date)=DATE(@date) " +
+			" FROM Catalog_Outlet O " +
+			" LEFT JOIN Catalog_Distributor D ON O.Distributor = D.Id " +
+			" JOIN Document_VisitPlan_Outlets VP ON O.Id = VP.Outlet AND DATE(VP.Date)=DATE(@date) " +
 			" JOIN Document_VisitPlan DV ON VP.Ref = DV.Id " +
 			" LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet AND V.Date >= @today AND V.Date < @tomorrow AND V.Plan<>@emptyRef LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA=1 " +
-			" WHERE V.Id IS NULL AND NOT OSS.Status IS NULL " + search + " ORDER BY O.Description LIMIT 100");
+			" WHERE V.Id IS NULL AND NOT OSS.Status IS NULL " + search + " ORDER BY D.Description, O.Description LIMIT 100");
 			if (addDay == null || addDay == 0) {
 				addDay = 0;
 				q.AddParameter("date", DateTime.Now.Date);
@@ -207,6 +211,7 @@ function GetUncommitedScheduledVisitsCount(searchText) {
 				q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1));
 			}
 	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));
+	// Dialog.Debug(2);
 	return q.ExecuteScalar();
 
 }
@@ -222,6 +227,7 @@ function GetScheduledVisitsCount() {
 		q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1));
 	}
 	var cnt = q.ExecuteScalar();
+	// Dialog.Debug(3);
 	if (cnt == null)
 		return 0;
 	else
@@ -235,12 +241,14 @@ function GetCommitedVisits(searchText) {
 	var search = "";
 	if (String.IsNullOrEmpty(searchText)==false) {
 		searchText = StrReplace(searchText, "'", "''");
-		search = "AND Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "') ";
+		search = "AND Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "') Or Contains(D.Description, '" + searchText + "') ";
 	}
 
 //	var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet WHERE V.Date >= @today AND V.Date < @tomorrow AND VP.Date >= @today AND VP.Date < @tomorrow " + search + " ORDER BY O.Description LIMIT 100");
-	var q = new Query("SELECT V.Outlet, O.Description, O.Address, " + OutletStatusText() +
-		"FROM Catalog_Outlet O JOIN Document_Visit V ON V.Outlet=O.Id AND V.Date >= @today AND V.Date < @tomorrow");
+	var q = new Query("SELECT V.Outlet, O.Description, O.Address, D.Description AS Distributor, " + OutletStatusText() +
+		"FROM Catalog_Outlet O " +
+		"LEFT JOIN Catalog_Distributor D ON O.Distributor = D.Id " +
+		"JOIN Document_Visit V ON V.Outlet=O.Id AND V.Date >= @today AND V.Date < @tomorrow");
 		if (addDay == null || addDay == 0) {
 			addDay = 0;
 			q.AddParameter("today", DateTime.Now.Date);
@@ -249,6 +257,7 @@ function GetCommitedVisits(searchText) {
 			q.AddParameter("today", DateTime.Now.Date.AddDays(addDay));
 			q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1));
 		}
+		// Dialog.Debug(4);
 	return q.Execute();
 
 }
@@ -259,12 +268,12 @@ function GetCommitedScheduledVisitsCount(searchText) {
 	var search = "";
 	if (String.IsNullOrEmpty(searchText)==false) {
 		searchText = StrReplace(searchText, "'", "''");
-		search = "AND Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "') ";
+		search = "AND Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "') Or Contains(D.Description, '" + searchText + "') ";
 	}
 
 //	var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet WHERE V.Date >= @today AND V.Date < @tomorrow AND VP.Date >= @today AND VP.Date < @tomorrow " + search + " ORDER BY O.Description LIMIT 100");
 	var q = new Query("SELECT COUNT(V.Outlet) " +
-		"FROM Catalog_Outlet O JOIN Document_Visit V ON V.Outlet=O.Id AND V.Date >= @today AND V.Date < @tomorrow");
+		"FROM Catalog_Outlet O LEFT JOIN Catalog_Distributor D ON O.Distributor = D.Id JOIN Document_Visit V ON V.Outlet=O.Id AND V.Date >= @today AND V.Date < @tomorrow");
 		if (addDay == null || addDay == 0) {
 			addDay = 0;
 			q.AddParameter("today", DateTime.Now.Date);
@@ -273,6 +282,7 @@ function GetCommitedScheduledVisitsCount(searchText) {
 			q.AddParameter("today", DateTime.Now.Date.AddDays(addDay));
 			q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1));
 		}
+		// Dialog.Debug(5);
 	return q.ExecuteScalar();
 }
 
@@ -285,21 +295,23 @@ function GetOutlets(searchText) {
 
 	if (String.IsNullOrEmpty(searchText)==false) {
 		searchText = StrReplace(searchText, "'", "''");
-		search = "WHERE Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "')";
+		search = "WHERE Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "') Or Contains(D.Description, '" + searchText + "')";
 	}
 
-	q.Text = "SELECT O.Id AS Outlet, O.Description, O.Address," + OutletStatusText() +
+	q.Text = "SELECT O.Id AS Outlet, O.Description, O.Address, D.Description AS Distributor," + OutletStatusText() +
 			"FROM Catalog_Outlet O " +
+			"LEFT JOIN Catalog_Distributor D ON O.Distributor = D.Id " +
 			"JOIN Catalog_OutletsStatusesSettings OS ON OS.Status=O.OutletStatus AND OS.DoVisitInMA=1 AND OS.ShowOutletInMA=1 " +
-			search + " ORDER BY O.Description LIMIT 500";
-
+			search + " ORDER BY D.Description, O.Description LIMIT 500";
+// Dialog.Debug(6);
 	return q.Execute();
 
 }
 
 function CountOutlets() {
-	var q = new Query("SELECT COUNT(O.Id) FROM Catalog_Outlet O LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA = 1 WHERE NOT OSS.Status IS NULL ORDER BY O.Description LIMIT 100");
+	var q = new Query("SELECT COUNT(O.Id) FROM Catalog_Outlet O LEFT JOIN Catalog_Distributor D ON O.Distributor = D.Id LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA = 1 WHERE NOT OSS.Status IS NULL ORDER BY O.Description LIMIT 100");
 	var cnt = q.ExecuteScalar();
+	// Dialog.Debug(7);
 	if (cnt == null)
 		return 0;
 	else
@@ -307,6 +319,7 @@ function CountOutlets() {
 }
 
 function AddGlobalAndAction(planVisit, outlet, actionName) {
+	// Dialog.Debug(8);
 	$.AddGlobal("planVisit", planVisit);
 	if (addDay!=null) {
 		var q = new Query("Select Id From Catalog_Outlet Where Id = @id");

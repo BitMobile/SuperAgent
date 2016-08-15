@@ -35,7 +35,7 @@ client		Клиент
 clients		Клиенты
 Closed	Закрытая
 commentary	Комментарий
-completedVisits		ВЫПОЛНЕННЫЕ ВИЗИТЫ
+completedVisits		ВЫПОЛНЕННЫЕ МЕРОПРИЯТИЯ
 contact		Контакт
 contactName		Контактное лицо
 contacts	Контакты
@@ -92,7 +92,7 @@ executionDate	Фактическое выполнение
 facing		Фейсинг
 false		Нет
 features	ХАРАКТЕРИСТИКИ
-fillInVisitReason	Причина визита должна быть заполнена
+fillInVisitReason	Причина мероприятия должна быть заполнена
 fillNoOrderReason	 Причина отсутствия заказа должна быть заполнена.
 filter	Фильтр
 firstBIT	Первый БИТ — эффективные решения для вашего бизнеса. Лидер на рынке автоматизации 1С с 17 летним опытом!
@@ -104,10 +104,10 @@ hideImage	Скрыть фото
 icons		При создании приложения использованы иконки Icons8. Сайт разработчика icons8.com
 idea		Предложить идею
 imageNotAvailable	В данный момент изображение недоступно
-impossibleToCreateVisit		Невозможно создать плановый визит пока не записаны координаты. Повторить попытку получить координаты?
+impossibleToCreateVisit		Невозможно создать плановое мероприятия пока не записаны координаты. Повторить попытку получить координаты?
 impossibleToDelete	Невозможно удалить, заказ уже передан в базу
 impossibleToEdit	Невозможно редактировать, заказ уже передан в базу
-incompletedVisits	НЕВЫПОЛНЕННЫЕ ВИЗИТЫ
+incompletedVisits	НЕВЫПОЛНЕННЫЕ МЕРОПРИЯТИЯ
 incorrect		Некорректное значение
 info		О приложении
 information	Информация
@@ -158,8 +158,8 @@ newOutlet	Создать новую торговую точку
 newPrice	Новая цена
 newTask			Новая задача
 newTasks	НЕВЫПОЛНЕННЫЕ
-newVisit	Новый визит
-nextVisitDate	Дата следующего визита
+newVisit	Новое мероприятия
+nextVisitDate	Дата следующего мероприятия
 NKO				НКО
 NO		Нет
 no_contacts	НЕТ КОНТАКТОВ
@@ -168,7 +168,7 @@ no_questions_list	НЕТ ВОПРОСОВ
 no_orders		НЕТ ЗАКАЗОВ
 no_returns		НЕТ ВОЗВРАТОВ
 no_tasks	Задач нет
-no_visitPlans		Нет визитов для отображения
+no_visitPlans		Нет мероприятий для отображения
 noContractors	Нет контрагентов
 noContractorsMessage	У данной торговой точки нет контрагентов
 noCoordinates	Координаты не установлены
@@ -341,17 +341,17 @@ untill			до
 username	Имя пользователя
 valueList	Список значений
 version		Версия
-visit		Визит
-visit_end_question	После завершения визита редактирование недоступно
-visitdate		Дата визита
-visitReason	Причина визита
-visitReasonMessage		Поле "Причина визита" должно быть заполнено
-visits		Визиты
-visitsKPI	Выполнение плановых визитов
-visitTotal	Итоги визита
+visit		Мероприятие
+visit_end_question	После завершения мероприятия редактирование недоступно
+visitdate		Дата мероприятия
+visitReason	Причина мероприятия
+visitReasonMessage		Поле "Причина мероприятия" должно быть заполнено
+visits		Мероприятия
+visitsKPI	Выполнение плановых мероприятий
+visitTotal	Итоги мероприятия
 vpPerformed	выполнено
 vpUnplanned	внеплановых
-vpVisits	визитов
+vpVisits	мероприятий
 web_site	Веб-сайт
 webSite		Сайт разработчика
 YES		Да

@@ -358,3 +358,11 @@ YES		Да
 ZAO				ЗАО
 OutWhatEver		Последняя синхронизация не была выполнена. При выходе все данные будут потеряны! Выйти?
 today		Сегодня
+history		История
+descriptionFULL		Полное наименование
+descriptionShort		Краткое наименование
+PlanDate		Плановая дата
+Goal		Цель
+TypeMer		Тип мероприятия
+MaybeDeal		Возможная сделка
+GoalContains		Содержания

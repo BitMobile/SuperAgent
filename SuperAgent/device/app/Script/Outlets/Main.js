@@ -428,7 +428,25 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 		}
 	}
 }
-
+function SetDateplan(){
+	var header = Translate["#enterDateTime#"];
+		Dialog.DateTime(header, SetDateNow);
+}
+function SetDateNow(state, args) {
+	$.PlanDate.Text = filterDate(args.Result);
+}
+function filterDate(dt){
+	if (dt != null){
+		return String.Format("{0:dd MMMM yyyy H:mm:ss}", DateTime.Parse(dt));
+	} else {
+		return "";
+	}
+}
+function ShowBool(){
+	//Dialog.Message($.ChkBox.Checked);
+	var checed = $.ChkBox.Checked;
+	$.ChkBox.Checked = !checed;
+}
 function GetStatusDescription(outlet) {
 	var query = new Query("SELECT Description FROM Enum_OutletStatus WHERE Id = @status");
 	query.AddParameter("status", outlet.OutletStatus);

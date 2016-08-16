@@ -83,6 +83,7 @@
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
+
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#descriptionShort#" CssClass="description_row"></c:TextView>
@@ -90,13 +91,15 @@
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
-			<c:HorizontalLayout CssClass="grid">
-				<c:VerticalLayout OnClickAction="$SetDateplan()">
-					<c:TextView Text="#PlanDate#" CssClass="description_row"></c:TextView>
-					<c:TextView Id="PlanDate" CssClass="main_row_available"></c:TextView>
-				</c:VerticalLayout>
-			</c:HorizontalLayout>
-			<c:HorizontalLine />
+			<s:If Test="$workflow.name=='Visit'">
+				<c:HorizontalLayout CssClass="grid">
+					<c:VerticalLayout OnClickAction="$SetDateplan()">
+						<c:TextView Text="#PlanDate#" CssClass="description_row"></c:TextView>
+						<c:TextView Id="PlanDate" CssClass="main_row_available"></c:TextView>
+					</c:VerticalLayout>
+				</c:HorizontalLayout>
+				<c:HorizontalLine />
+
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#Goal#" CssClass="description_row"></c:TextView>
@@ -139,15 +142,41 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid">
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$ShowGoalContains()">
 				<c:VerticalLayout>
 					<c:TextView Text="#GoalContains#" CssClass="description_row"></c:TextView>
-					<c:EditText Id="GoalContains" CssClass="main_row"></c:EditText>
+					<c:TextView Id="GoalContains" CssClass="main_row_available"></c:TextView>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+		</s:If>
+		<s:Else>
+
+			<c:HorizontalLayout CssClass="grid">
+				<c:VerticalLayout OnClickAction="$ChoseFromCatalog(Segment)">
+					<c:TextView Text="#Segment#" CssClass="description_row"></c:TextView>
+					<c:TextView Id="Segment" Text="$outletObj.Segment.Description" CssClass="main_row_available"></c:TextView>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			
+			<c:HorizontalLayout CssClass="grid">
+				<c:VerticalLayout OnClickAction="$ChoseFromCatalog(TypeOrg)">
+					<c:TextView Text="#TypeOrg#" CssClass="description_row"></c:TextView>
+					<c:TextView Id="TypeOrg" Text="$outletObj.OrgType.Description" CssClass="main_row_available"></c:TextView>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
+			<c:HorizontalLayout CssClass="grid">
+				<c:VerticalLayout OnClickAction="$ChoseFromCatalog(Profile)">
+					<c:TextView Text="#Profile#" CssClass="description_row"></c:TextView>
+					<c:TextView Id="Profile" Text="$outletObj.Profile.Description" CssClass="main_row_available"></c:TextView>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
+		</s:Else>
 
 		</c:ScrollView>
 

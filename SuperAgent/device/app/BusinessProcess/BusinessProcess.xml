@@ -74,6 +74,7 @@
 			<bp:Action Name="Contractor" NextStep="Contractor" />
 			<bp:Action Name="ShowContacts" NextStep="Contacts" />
 			<bp:Action Name="ShowImage" NextStep="Image" />
+			<bp:Action Name="ShowGoalContains" NextStep="GoalContains" />
 		</bp:Step>
 
 		<bp:Step Name="Visit_Tasks" Screen="Tasks\Tasks.xml" Controller="Tasks\Main.js">
@@ -189,8 +190,8 @@
 		<bp:Step Name="Contact" Screen="Contact.xml" Controller="Outlets\DetailsAndContacts.js">
 
 		</bp:Step>
-
 		<bp:Step Name="Image" Screen="Image.xml" Controller="Outlets\Image.js"></bp:Step>
+		<bp:Step Name="GoalContains" Screen="GoalContains.xml" Controller="Outlets\GoalContains.js"></bp:Step>
 
 	</bp:Workflow>
 

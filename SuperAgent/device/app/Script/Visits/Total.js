@@ -1,5 +1,4 @@
-﻿
-var checkOrderReason;
+﻿var checkOrderReason;
 var checkVisitReason;
 var orderEnabled;
 var returnEnabled;

@@ -115,6 +115,9 @@ function OnWorkflowFinish(name, reason) {
 
 function OnWorkflowFinished(name, reason){
 	Indicators.SetIndicators();
+	//DB.Save();
+	Global.StartSync();
+
 }
 
 function OnWorkflowBack(workflow, lastStep, nextStep){
@@ -141,6 +144,8 @@ function OnWorkflowPause(name) {
 
 
 // ------------------------ Functions ------------------------
+
+
 
 function StartTracking(){
 

@@ -51,6 +51,7 @@
 				<c:HorizontalLine />
 			</s:If>
 
+
 			<s:If Test="$sessionConst.PlanEnbl">
 				<c:HorizontalLayout CssClass="grid" OnClickAction="$SetnextVisitDate($nextVisit, $nextVisitControl)">
 					<c:HorizontalLayout CssClass="empty_side_wh"></c:HorizontalLayout>
@@ -114,7 +115,7 @@
 					<s:Push Id="todo" Value="$CountTasks($workflow.outlet)"></s:Push>
 					<c:Image></c:Image>
 					<c:TextView Text="#todoDone#"></c:TextView>
-					<c:TextView Text="{$todoDone} #of# {$todo}" CssClass="value"></c:TextView>					
+					<c:TextView Text="{$todoDone} #of# {$todo}" CssClass="value"></c:TextView>
 				</c:DockLayout>
 				<c:HorizontalLine />
 			<!-- </s:If> -->

@@ -366,3 +366,6 @@ Goal		Цель
 TypeMer		Тип мероприятия
 MaybeDeal		Возможная сделка
 GoalContains		Содержания
+Segment		Сегмент
+TypeOrg		Тип организации
+Profile		Профиль

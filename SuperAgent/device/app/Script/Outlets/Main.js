@@ -6,7 +6,8 @@ var back;
 var outletDesc;
 var backvisit;
 var DateAddTru;
-
+var NameControl;
+var OutNow;
 //"description"	= "000000001"
 //"address"			= "000000002"
 //"coordinates" = "000000003"
@@ -67,6 +68,7 @@ function LoadObject(val){
 	}else {
 		outletref = val;
 	}
+	OutNow = outletref;
 	return outletref.GetObject();
 }
 
@@ -75,6 +77,48 @@ function HasMenu(){
 	return GlobalWorkflow.GetMenuItem() == "Outlets" ? true : false;
 }
 
+function ChoseFromCatalog(Name){
+	var tabelName = "";
+	var startKey = "";
+	if (Name == "Segment") {
+		tabelName = "Catalog_BitSegment";
+		NameControl = Name;
+		startKey = OutNow.Segment;
+	}
+	if (Name == "TypeOrg") {
+		tabelName = "Catalog_OrgType";
+		NameControl = Name;
+		startKey = OutNow.OrgType;
+	}
+	if (Name == "Profile") {
+		tabelName = "Catalog_Profile";
+		NameControl = Name;
+		startKey = OutNow.Profile;
+	}
+
+
+	var items = [];
+	var query = new Query("Select Id,Description From "+tabelName);
+	Dialog.Choose("#select_answer#"
+	        , query.Execute()
+					,	startKey
+	        , SaveAnswerCatalog);
+}
+function SaveAnswerCatalog(state, args){
+	//Dialog.Message(args.Result);
+	Variables[NameControl].Text = args.Result.Description;
+	var outletObj = OutNow.GetObject();
+	if (NameControl == "Segment") {
+		outletObj.Segment = args.Result;
+	}
+	if (NameControl == "Profile") {
+		outletObj.Profile = args.Result;
+	}
+	if (NameControl == "TypeOrg") {
+		outletObj.OrgType = args.Result;
+	}
+	outletObj.Save();
+}
 function GetOutlets(searchText) {
 	var search = "";
 	var showOutlet = "";
@@ -260,9 +304,54 @@ function CheckNotNullAndForward(outlet, visit) {
 	if ((CheckEmptyOutletFields(outlet) && c) || DateAddTru == true) {
 		outlet.GetObject().Save();
 		ReviseParameters(outlet, false);
-		Workflow.Forward([]);
+		var NotExecutedTask = GetNotExecutedTasks();
+		//Dialog.Message(NotExecutedTask);
+		if (NotExecutedTask==0) {
+			Workflow.Action("SkipTask",[]);
+		}else {
+			Workflow.Forward([]);
+		}
 	}
 }
+
+function GetNotExecutedTasks() {
+	var q = new Query;
+
+	var outlet = "";
+
+	if ($.workflow.name == "Visit"){
+		q.AddParameter("outlet", GlobalWorkflow.GetOutlet());
+		outlet = " AND DT.Outlet=@outlet ";
+	}
+
+if ($.workflow.name == "Visit") {
+	var dateAddNumber = GlobalWorkflow.GetDateAddNumber();
+	q.Text = "SELECT O.Description AS Outlet, DT.Id, DT.TextTask " +
+		" , CASE WHEN DT.EndPlanDate='0001-01-01 00:00:00' OR DT.StartPlanDate IS NULL THEN 2 ELSE 1 END AS DateOrder " +
+		" , CASE WHEN DT.EndPlanDate='0001-01-01 00:00:00' OR DT.EndPlanDate IS NULL THEN @notLimited ELSE DT.EndPlanDate END AS EndPlanDate " +
+		" FROM Document_Task DT " +
+		" JOIN Catalog_Outlet O ON DT.Outlet=O.Id " +
+		" WHERE DT.Status=0 " +
+		" AND (DT.StartPlanDate<=@dayPlanVis OR DT.StartPlanDate IS NULL) " + outlet +
+		" ORDER BY DateOrder, DT.EndPlanDate, O.Description";
+		q.AddParameter("dayPlanVis", DateTime.Now.Date.AddDays(dateAddNumber));
+		//Dialog.Message(DateTime.Now.Date.AddDays(dateAddNumber));
+}else {
+q.Text = "SELECT O.Description AS Outlet, DT.Id, DT.TextTask " +
+	" , CASE WHEN DT.EndPlanDate='0001-01-01 00:00:00' OR DT.StartPlanDate IS NULL THEN 2 ELSE 1 END AS DateOrder " +
+	" , CASE WHEN DT.EndPlanDate='0001-01-01 00:00:00' OR DT.EndPlanDate IS NULL THEN @notLimited ELSE DT.EndPlanDate END AS EndPlanDate " +
+	" FROM Document_Task DT " +
+	" JOIN Catalog_Outlet O ON DT.Outlet=O.Id " +
+	" WHERE DT.Status=0 " +
+	" AND (DATE(DT.StartPlanDate)<=DATE('now', 'localtime') OR DT.StartPlanDate IS NULL) " + outlet +
+	" ORDER BY DateOrder, DT.EndPlanDate, O.Description";
+
+}
+		q.AddParameter("notLimited", Translate["#notLimited#"]);
+
+	return q.ExecuteCount();
+}
+
 
 function ReviseParameters(outlet, save) {
 	var q =
@@ -459,6 +548,10 @@ function FocusIfHasEditText(fieldName, editOutletParameters, primaryParameterNam
 	if (editOutletParameters && $.primaryParametersSettings[primaryParameterName] && DateAddTru == false) {
 		FocusOnEditText(fieldName, 1);
 	}
+}
+
+function ShowGoalContains(){
+	Workflow.Action("ShowGoalContains", [])
 }
 
 function DateHandler(state, args) {

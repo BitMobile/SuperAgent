@@ -8,7 +8,23 @@ function GenerateGuid() {
 function S4() {
 	return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 }
-
+function StartSync(){
+	try {
+		DB.Sync(SyncDataFinish);
+	} catch (e) {
+		LocalNotification.Notify("Синхронизация" , "Что то пошло не так");
+	}
+}
+function SyncDataFinish(state){
+	var message = "";
+	if (DB.SuccessSync) {
+		message = "Я красава,все засинхрил";
+	}else {
+		message = "Я не красава,все просрал";
+	}
+	LocalNotification.Notify("Синхронизация" , message);
+	DB.Save();
+}
 function SetSessionConstants() {
 
 	var solVersion = new Query("SELECT Value FROM ___SolutionInfo WHERE key='version'");

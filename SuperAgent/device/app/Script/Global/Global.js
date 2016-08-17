@@ -9,21 +9,20 @@ function S4() {
 	return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
 }
 function StartSync(){
-	try {
-		DB.Sync(SyncDataFinish);
-	} catch (e) {
-		LocalNotification.Notify("Синхронизация" , "Что то пошло не так");
-	}
+	//	DB.Sync(SyncDataFinish);
+		LocalNotification.Notify("Синхронизация" , "Начали");
+		var result = Application.SendDatabase();
+		if (result) {
+			message = "Я красава,все засинхрил";
+		}else {
+			message = "Я не красава,все просрал";
+		}
+		LocalNotification.Notify("Синхронизация" , message);
+
 }
-function SyncDataFinish(state){
+function SyncDataFinish(){
 	var message = "";
-	if (DB.SuccessSync) {
-		message = "Я красава,все засинхрил";
-	}else {
-		message = "Я не красава,все просрал";
-	}
-	LocalNotification.Notify("Синхронизация" , message);
-	DB.Save();
+//	DB.Save();
 }
 function SetSessionConstants() {
 

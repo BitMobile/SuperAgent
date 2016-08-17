@@ -116,7 +116,9 @@ function OnWorkflowFinish(name, reason) {
 function OnWorkflowFinished(name, reason){
 	Indicators.SetIndicators();
 	//DB.Save();
-	Global.StartSync();
+	if(reason == "commit") {
+			Global.StartSync();
+    }
 
 }
 

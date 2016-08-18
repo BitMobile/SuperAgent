@@ -5,7 +5,9 @@ body dl {
 .main_row {
 	color: #2d89cf;
 }
-
+.grid1 {
+	height: 0%;
+}
 .grid vl {
 	width: 100%;
 	padding-right: 11%;
@@ -28,7 +30,7 @@ body dl {
 	height: 100%;
 	/*margin-top: 37%;*/
 	margin-right: 3mm;
-	dock-align: right;	
+	dock-align: right;
 }
 
 .phone vl{
@@ -84,7 +86,7 @@ body dl {
 .gr_right_tv_mrg{
 	height: 100%;
 	width: 5%;
-	dock-align: right;	
+	dock-align: right;
 }
 
 /*---------markers---------*/

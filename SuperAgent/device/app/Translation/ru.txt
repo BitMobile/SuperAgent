@@ -369,3 +369,4 @@ GoalContains		Содержания
 Segment		Сегмент
 TypeOrg		Тип организации
 Profile		Профиль
+Newcontact		Новый контакт

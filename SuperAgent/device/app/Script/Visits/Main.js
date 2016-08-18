@@ -50,7 +50,7 @@ function RefreshScrolView(){
 	+ "<c:HorizontalLine />";
 	while (uncommitedVisits.Next()) {
 		var outletPlan = uncommitedVisits.Outlet;
-		toappend = toappend + "<c:DockLayout CssClass=\"grid\" OnClickAction=\"$AddGlobalAndAction('"+uncommitedVisits.Ref+"', '@ref[Catalog_Outlet]:"+outletPlan.Id+"', 'Select')\">";
+		toappend = toappend + "<c:DockLayout CssClass=\"grid\" OnClickAction=\"$AddGlobalAndAction('"+uncommitedVisits.Ref+"', '@ref[Catalog_Outlet]:"+outletPlan.Id+"', 'Select', "+uncommitedVisits.DatePlan+")\">";
 		if (uncommitedVisits.OutletStatus == 0) {
 			toappend = toappend + "<c:Image CssClass=\"blue_mark\" />";
 		}
@@ -194,7 +194,7 @@ function GetUncommitedScheduledVisits(searchText) {
 		search = "AND Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "') ";
 	}
 	q.Text = ("SELECT DISTINCT VP.Outlet, VP.Ref, " +
-			" CASE WHEN strftime('%H:%M', VP.Date)='00:00' THEN '' ELSE strftime('%H:%M', VP.Date) END AS Time, " +
+			" CASE WHEN strftime('%H:%M', VP.Date)='00:00' THEN '' ELSE strftime('%H:%M', VP.Date) END AS Time, VP.Date AS DatePlan, " +
 			OutletStatusText() +
 			" FROM Catalog_Outlet O " +
 			" JOIN Document_VisitPlan_Outlets VP ON O.Id = VP.Outlet AND DATE(VP.Date)=DATE(@date) " +
@@ -203,7 +203,8 @@ function GetUncommitedScheduledVisits(searchText) {
 				" AND V.Date >= @today AND V.Date < @tomorrow " +
 				" AND V.Plan<>@emptyRef " +
 			" LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA=1 " +
-			" WHERE V.Id IS NULL AND NOT OSS.Status IS NULL " + search + " ORDER BY VP.Date, O.Description LIMIT 100");
+			" LEFT JOIN Document_ChangeDateInPlan CDIP ON CDIP.OldDate = VP.Date AND CDIP.PV = VP.Ref AND CDIP.Outl = VP.Outlet " +
+			" WHERE V.Id IS NULL AND CDIP.ID IS NULL AND NOT OSS.Status IS NULL " + search + " ORDER BY VP.Date, O.Description LIMIT 100");
 			if (addDay == null || addDay == 0) {
 				addDay = 0;
 				q.AddParameter("date", DateTime.Now.Date);
@@ -231,7 +232,8 @@ function GetUncommitedScheduledVisitsCount(searchText) {
 			" FROM Catalog_Outlet O JOIN Document_VisitPlan_Outlets VP ON O.Id = VP.Outlet AND DATE(VP.Date)=DATE(@date) " +
 			" JOIN Document_VisitPlan DV ON VP.Ref = DV.Id " +
 			" LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet AND V.Date >= @today AND V.Date < @tomorrow AND V.Plan<>@emptyRef LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA=1 " +
-			" WHERE V.Id IS NULL AND NOT OSS.Status IS NULL " + search + " ORDER BY O.Description LIMIT 100");
+			" LEFT JOIN Document_ChangeDateInPlan CDIP ON CDIP.OldDate = VP.Date AND CDIP.PV = VP.Ref AND CDIP.Outl = VP.Outlet " +
+			" WHERE V.Id IS NULL AND CDIP.ID IS NULL AND NOT OSS.Status IS NULL " + search + " ORDER BY O.Description LIMIT 100");
 			if (addDay == null || addDay == 0) {
 				addDay = 0;
 				q.AddParameter("date", DateTime.Now.Date);
@@ -342,8 +344,13 @@ function CountOutlets() {
 		return cnt;
 }
 
-function AddGlobalAndAction(planVisit, outlet, actionName) {
+function AddGlobalAndAction(planVisit, outlet, actionName,datePlan) {
 	$.AddGlobal("planVisit", planVisit);
+	if (planVisit == null) {
+		$.AddGlobal("DatePlanVisit", DateTime.Now);
+	}else {
+		$.AddGlobal("DatePlanVisit", datePlan);
+	}
 	if (addDay!=null) {
 		var q = new Query("Select Id From Catalog_Outlet Where Id = @id");
 		q.AddParameter("id",outlet);

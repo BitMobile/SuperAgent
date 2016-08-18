@@ -116,9 +116,9 @@ function OnWorkflowFinish(name, reason) {
 function OnWorkflowFinished(name, reason){
 	Indicators.SetIndicators();
 	//DB.Save();
-	if(reason == "commit") {
-			Global.StartSync();
-    }
+	//if(reason == "commit") {
+	//		Global.StartSync();
+  //  }
 
 }
 
@@ -164,6 +164,8 @@ function RemoveVariables(name){
 	{
 		if (Variables.Exists("planVisit"))
 			Variables.Remove("planVisit");
+		if (Variables.Exists("DatePlanVisit"))
+			Variables.Remove("DatePlanVisit");
 		if (Variables.Exists("steps"))
 			Variables.Remove("steps");
 		if (Variables.Exists("executedOrder"))

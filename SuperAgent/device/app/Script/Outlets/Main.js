@@ -80,25 +80,34 @@ function HasMenu(){
 function ChoseFromCatalog(Name){
 	var tabelName = "";
 	var startKey = "";
+	NameControl = Name;
 	if (Name == "Segment") {
 		tabelName = "Catalog_BitSegment";
-		NameControl = Name;
+//		NameControl = Name;
 		startKey = OutNow.Segment;
 	}
 	if (Name == "TypeOrg") {
 		tabelName = "Catalog_OrgType";
-		NameControl = Name;
+//		NameControl = Name;
 		startKey = OutNow.OrgType;
 	}
 	if (Name == "Profile") {
 		tabelName = "Catalog_Profile";
-		NameControl = Name;
 		startKey = OutNow.Profile;
 	}
+	if (Name == "MaybeDeal") {
+		tabelName = "Catalog_MayBeDeal";
+//		startKey = OutNow.Profile;
 
+	}
 
-	var items = [];
-	var query = new Query("Select Id,Description From "+tabelName);
+//	var items = [];
+	if (Name == "MaybeDeal") {
+		var query = new Query("Select Id,Description From "+tabelName+" Where Outlet = @Outl");
+		query.AddParameter("Outl",OutNow);				
+	}else {
+		var query = new Query("Select Id,Description From "+tabelName);
+	}
 	Dialog.Choose("#select_answer#"
 	        , query.Execute()
 					,	startKey
@@ -517,13 +526,35 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 		}
 	}
 }
-function SetDateplan(){
+function SetDateplan(DatePlan){
 	var header = Translate["#enterDateTime#"];
-		Dialog.DateTime(header, SetDateNow);
+		Dialog.DateTime(header, DatePlan, SetDateNow, DatePlan);
 }
 function SetDateNow(state, args) {
 	$.PlanDate.Text = filterDate(args.Result);
+	if (filterDate(args.Result) != filterDate(state) && DateTime.Parse(args.Result) > DateTime.Parse(state)) {
+		Dialog.Ask("При изменении плановой даты, мероприятия будет завершенно. Продолжить?",OverVisAndCreatePLan,[state,args.Result],BackPLanDate,state);
+	}
+	if (DateTime.Parse(args.Result) < DateTime.Parse(state)){
+		$.PlanDate.Text = filterDate(state);
+		Dialog.Message("Невозможно перенести плановое мероприятие на прошедшие время");
+	}
 }
+function OverVisAndCreatePLan(state, args) {
+	newPicture = DB.Create("Document.ChangeDateInPlan");
+	newPicture.Date = DateTime.Now;
+	newPicture.sr = $.common.UserRef;
+	newPicture.Outl = OutNow;
+	newPicture.OldDate = state[0];
+	newPicture.NewDate = state[1];
+	newPicture.PV = Variables["planVisit"];
+	newPicture.Save(false);
+	Workflow.Rollback();
+}
+function BackPLanDate(state, args) {
+  $.PlanDate.Text = filterDate(state);
+}
+
 function filterDate(dt){
 	if (dt != null){
 		return String.Format("{0:dd MMMM yyyy H:mm:ss}", DateTime.Parse(dt));

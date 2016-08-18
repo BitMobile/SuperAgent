@@ -19,6 +19,18 @@
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine CssClass="b_line" />
+
+			<c:DockLayout CssClass="top_navigator">
+				<c:DockLayout Id="btnBack" CssClass="btn_back">
+				</c:DockLayout>
+				<c:DockLayout Id="btnForward" CssClass="btn_forward" />
+				<c:HorizontalLayout>
+					<c:TextView Text="#newContact#" />
+				</c:HorizontalLayout>
+				</c:DockLayout>
+
+			<c:HorizontalLine />
+
 		</s:If>
 
 		<s:Else>
@@ -46,15 +58,10 @@
 			<c:HorizontalLayout CssClass="margin_top" />
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid" OnClickAction="$SelectOwner($contactOwner)">
+			<c:HorizontalLayout CssClass="grid1">
 				<c:VerticalLayout>
 					<c:TextView Text="#owner#" CssClass="description_row"></c:TextView>
-					<s:If Test="@DateAddTru == false">
 						<c:TextView Text="$ownerType" CssClass="main_row" Id="owner"/>
-					</s:If>
-					<s:Else>
-						<c:TextView Text="$ownerType" CssClass="main_row" Id="owner"/>
-					</s:Else>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -75,12 +82,7 @@
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$CheckAndFocus(position, 1)">
 				<c:VerticalLayout>
 					<c:TextView Text="#position#" CssClass="description_row"></c:TextView>
-					<s:If Test="@DateAddTru == false">
-						<c:EditText Value="$contact.Position" Placeholder="—" CssClass="main_row" Id="position"/>
-					</s:If>
-					<s:Else>
-						<c:TextView Text="$contact.Position" CssClass="main_row" Id="position"/>
-					</s:Else>
+						<c:TextView Text="$contact.Position.Description" CssClass="main_row" Id="position"/>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

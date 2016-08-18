@@ -27,8 +27,10 @@ function OnLoad()
 		var isEditableContact = IsEditableContact($.ownerType);
 		if ($.owner.Text == "—" || !isEditableContact)
 		{
-			SetEnabledToContactScope(false);
-			SelectOwner($.contactOwner);
+			//SetEnabledToContactScope(false);
+			SetEnabledToContactScope(true);
+			$.owner.Text = Translate["#outlet#"];
+			//SelectOwner($.contactOwner);
 		}
 	}
 
@@ -199,10 +201,34 @@ function CheckAndFocus(editFieldName, isInputField){
 if (DateAddTru == false) {
 	if ($.owner.Text == "—")
 		Dialog.Message(Translate["#selectOwner#"]);
-	else
-		FocusOnEditText(editFieldName, isInputField);
+	else{
+		if (editFieldName == "position") {
+			ChoseFromCatalog(editFieldName)
+		}else {
+			FocusOnEditText(editFieldName, isInputField);
+		}
+	}
 }
 }
+
+function ChoseFromCatalog(Name){
+	var tabelName = "Catalog_ContacntDolzh";
+	var startKey = $.contact.Position;
+	//Dialog.Message(startKey);
+	var query = new Query("Select Id,Description From "+tabelName+" Order By Description");
+	Dialog.Choose("#select_answer#"
+	        , query.Execute()
+					,	startKey
+	        , SaveAnswerCatalog);
+}
+function SaveAnswerCatalog(state, args){
+	$.position.Text = args.Result.Description;
+	var refcontact = $.contact;
+	var obj = refcontact.GetObject();
+	obj.Position = args.Result;
+	obj.Save();
+}
+
 function FocusOnEditText1(editFieldName, isInputField){
 	if (DateAddTru == false) {
 		FocusOnEditText(editFieldName, isInputField);

@@ -15,7 +15,7 @@
 				<c:VerticalLayout OnClickAction="$ShowContractorsIfExists($workflow.outlet)" CssClass="trple">
 					<c:TextView Text="#history#" CssClass="trpl_left_tv"></c:TextView>
 				</c:VerticalLayout>
-				<c:VerticalLayout Id="btnContacts" OnClickAction="$DoAction(ShowContacts, $workflow.outlet)" CssClass="trple_center">
+				<c:VerticalLayout Id="btnContacts" OnClickAction="$DoAction(ShowContacts, $workflow.outlet, in)" CssClass="trple_center">
 					<c:TextView Text="#contacts#" CssClass="trpl_center_tv"></c:TextView>
 				</c:VerticalLayout>
 				<c:VerticalLayout Id="btnVisit" OnClickAction="$DoAction(Plans, $workflow.outlet)" CssClass="trple">
@@ -28,7 +28,7 @@
 				<c:VerticalLayout OnClickAction="$ShowContractorsIfExists($workflow.outlet)">
 					<c:TextView Text="#history#" CssClass="left_tv"></c:TextView>
 				</c:VerticalLayout>
-				<c:VerticalLayout Id="btnContacts" OnClickAction="$DoAction(ShowContacts, $workflow.outlet)">
+				<c:VerticalLayout Id="btnContacts" OnClickAction="$DoAction(ShowContacts, $workflow.outlet, in)">
 					<c:TextView Text="#contacts#" CssClass="right_tv"></c:TextView>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
@@ -54,9 +54,14 @@
 					<c:Image />
 					<c:TextView Text="@backvisit" />
 				</c:DockLayout>
-				<c:DockLayout OnEvent="Forward" CssClass="btn_forward" OnClickAction="$CheckNotNullAndForward($workflow.outlet, $workflow.visit)">
-					<c:TextView Id="btnForward" Text="#forward#" />
-				</c:DockLayout>
+				<s:If Test="@DateAddTru">
+					<c:HorizontalLayout CssClass="btn_forward" />
+				</s:If>
+				<s:Else>
+					<c:DockLayout OnEvent="Forward" CssClass="btn_forward" OnClickAction="$CheckNotNullAndForward($workflow.outlet, $workflow.visit)">
+						<c:TextView Id="btnForward" Text="#forward#" />
+					</c:DockLayout>
+				</s:Else>
 				<c:HorizontalLayout>
 					<c:TextView Text="#client#" />
 				</c:HorizontalLayout>
@@ -93,18 +98,34 @@
 			<c:HorizontalLine />
 			<s:If Test="$workflow.name=='Visit'">
 				<c:HorizontalLayout CssClass="grid">
-					<c:VerticalLayout OnClickAction="$SetDateplan()">
-						<c:TextView Text="#PlanDate#" CssClass="description_row"></c:TextView>
-						<c:TextView Id="PlanDate" CssClass="main_row_available"></c:TextView>
-					</c:VerticalLayout>
+					<s:If Test="$planVisit==null || @DateAddTru">
+						<c:VerticalLayout>
+							<c:TextView Text="#PlanDate#" CssClass="description_row"></c:TextView>
+							<c:TextView Id="PlanDate" Text="$filterDate($DatePlanVisit)" CssClass="not_available_basic"></c:TextView>
+						</c:VerticalLayout>
+					</s:If>
+					<s:Else>
+						<c:VerticalLayout OnClickAction="$SetDateplan($DatePlanVisit)">
+							<c:TextView Text="#PlanDate#" CssClass="description_row"></c:TextView>
+							<c:TextView Id="PlanDate" Text="$filterDate($DatePlanVisit)" CssClass="main_row_available"></c:TextView>
+						</c:VerticalLayout>
+					</s:Else>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
 
 			<c:HorizontalLayout CssClass="grid">
-				<c:VerticalLayout>
-					<c:TextView Text="#Goal#" CssClass="description_row"></c:TextView>
-					<c:EditText Id="Goal" CssClass="main_row"></c:EditText>
-				</c:VerticalLayout>
+				<s:If Test="$planVisit==null">
+					<c:VerticalLayout>
+						<c:TextView Text="#Goal#" CssClass="description_row"></c:TextView>
+						<c:EditText Id="Goal" CssClass="main_row" Placeholder="—"></c:EditText>
+					</c:VerticalLayout>
+				</s:If>
+				<s:Else>
+					<c:VerticalLayout>
+						<c:TextView Text="#Goal#" CssClass="description_row"></c:TextView>
+						<c:TextView Id="Goal" CssClass="not_available_basic"></c:TextView>
+					</c:VerticalLayout>
+				</s:Else>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
@@ -127,7 +148,7 @@
 			<c:HorizontalLine />
 
 			<c:HorizontalLayout CssClass="grid">
-				<c:VerticalLayout>
+				<c:VerticalLayout OnClickAction="$DoAction(ShowContacts, $workflow.outlet, out)">
 					<c:TextView Text="#contactName#" CssClass="description_row"></c:TextView>
 					<c:TextView Id="contactName" CssClass="main_row_available"></c:TextView>
 				</c:VerticalLayout>
@@ -135,7 +156,7 @@
 			<c:HorizontalLine />
 
 			<c:HorizontalLayout CssClass="grid">
-				<c:VerticalLayout>
+				<c:VerticalLayout OnClickAction="$ChoseFromCatalog(MaybeDeal)">
 					<c:TextView Text="#MaybeDeal#" CssClass="description_row"></c:TextView>
 					<c:TextView Id="MaybeDeal" CssClass="main_row_available"></c:TextView>
 				</c:VerticalLayout>

@@ -94,7 +94,7 @@
 					<s:Iterator Id="pOutlet" Value="$uncommitedVisits">
 						<s:Push Id="planOutlet" Value="$pOutlet.Outlet"></s:Push>
 
-						<c:DockLayout CssClass="grid" OnClickAction="$AddGlobalAndAction($pOutlet.Ref, $planOutlet, Select)">
+						<c:DockLayout CssClass="grid" OnClickAction="$AddGlobalAndAction($pOutlet.Ref, $planOutlet, Select,$pOutlet.DatePlan)">
 							<s:If Test="$pOutlet.OutletStatus == 0">
 								<c:Image CssClass="blue_mark" />
 							</s:If>

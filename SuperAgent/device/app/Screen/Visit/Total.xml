@@ -95,29 +95,12 @@
 				<c:HorizontalLine />
 			</s:If>
 
-			<c:HorizontalLayout CssClass="memo_block">
-				<c:HorizontalLayout CssClass="empty_side_wh"></c:HorizontalLayout>
-				<c:VerticalLayout>
-					<c:TextView Text="#commentary#" CssClass="description_row"></c:TextView>
-					<c:MemoEdit Value="$workflow.visit.Commentary" CssClass="main_row" Placeholder="—"></c:MemoEdit>
-				</c:VerticalLayout>
-			</c:HorizontalLayout>
-			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="caption_grid">
-				<c:TextView Text="#caps_summary#:"></c:TextView>
-			</c:HorizontalLayout>
-			<c:HorizontalLine />
+
+
 
 			<!-- <s:If Test="$NoTasks()"> -->
-				<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoAction(Total_Tasks)">
-					<s:Push Id="todoDone" Value="$CountDoneTasks($workflow.visit)"></s:Push>
-					<s:Push Id="todo" Value="$CountTasks($workflow.outlet)"></s:Push>
-					<c:Image></c:Image>
-					<c:TextView Text="#todoDone#"></c:TextView>
-					<c:TextView Text="{$todoDone} #of# {$todo}" CssClass="value"></c:TextView>
-				</c:DockLayout>
-				<c:HorizontalLine />
+
 			<!-- </s:If> -->
 
 			<s:If Test="$ShowQuestionnaires()">

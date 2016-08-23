@@ -194,7 +194,7 @@ function GetUncommitedScheduledVisits(searchText) {
 		search = "AND Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "') ";
 	}
 	q.Text = ("SELECT DISTINCT VP.Outlet, VP.Ref, " +
-			" CASE WHEN strftime('%H:%M', VP.Date)='00:00' THEN '' ELSE strftime('%H:%M', VP.Date) END AS Time, VP.Date AS DatePlan, " +
+			" CASE WHEN strftime('%H:%M', VP.Date)='00:00' THEN '' ELSE strftime('%H:%M', VP.Date) END AS Time, VP.Date AS DatePlan, VP.Meropr As Merop, " +
 			OutletStatusText() +
 			" FROM Catalog_Outlet O " +
 			" JOIN Document_VisitPlan_Outlets VP ON O.Id = VP.Outlet AND DATE(VP.Date)=DATE(@date) " +
@@ -344,11 +344,12 @@ function CountOutlets() {
 		return cnt;
 }
 
-function AddGlobalAndAction(planVisit, outlet, actionName,datePlan) {
+function AddGlobalAndAction(planVisit, outlet, actionName,datePlan,Merop) {
 	$.AddGlobal("planVisit", planVisit);
 	if (planVisit == null) {
 		$.AddGlobal("DatePlanVisit", DateTime.Now);
 	}else {
+		$.AddGlobal("MeropCur",Merop);
 		$.AddGlobal("DatePlanVisit", datePlan);
 	}
 	if (addDay!=null) {

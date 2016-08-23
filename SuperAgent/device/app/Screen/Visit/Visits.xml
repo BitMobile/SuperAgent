@@ -84,6 +84,7 @@
 				<c:ScrollView Id="grScrollView">
 					<s:Push Id="hasRow" Value="false" />
 
+
 					<c:HorizontalLayout CssClass="caption_grid">
 						<s:Push Id="uncommitedVisits" Value="$GetUncommitedScheduledVisits($search)"></s:Push>
 						<s:Push Id="sv" Value="$GetUncommitedScheduledVisitsCount($search)"></s:Push>
@@ -94,7 +95,7 @@
 					<s:Iterator Id="pOutlet" Value="$uncommitedVisits">
 						<s:Push Id="planOutlet" Value="$pOutlet.Outlet"></s:Push>
 
-						<c:DockLayout CssClass="grid" OnClickAction="$AddGlobalAndAction($pOutlet.Ref, $planOutlet, Select,$pOutlet.DatePlan)">
+						<c:DockLayout CssClass="grid" OnClickAction="$AddGlobalAndAction($pOutlet.Ref, $planOutlet, Select,$pOutlet.DatePlan,$pOutlet.Merop)">
 							<s:If Test="$pOutlet.OutletStatus == 0">
 								<c:Image CssClass="blue_mark" />
 							</s:If>

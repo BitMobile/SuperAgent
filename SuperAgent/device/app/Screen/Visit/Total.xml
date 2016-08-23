@@ -61,6 +61,25 @@
 					</c:VerticalLayout>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
+
+				<c:HorizontalLayout CssClass="grid" >
+					<c:HorizontalLayout CssClass="empty_side_wh"></c:HorizontalLayout>
+					<c:VerticalLayout>
+						<c:TextView Text="Цель следуюшего мероприятия" CssClass="description_row"></c:TextView>
+						<c:EditText Id="nextVisitGoal" Text="" CssClass="main_row"></c:EditText>
+					</c:VerticalLayout>
+				</c:HorizontalLayout>
+				<c:HorizontalLine />
+
+				<c:HorizontalLayout CssClass="grid" OnClickAction="$ChoseFromCatalog(nextVisitType)">
+					<c:HorizontalLayout CssClass="empty_side_wh"></c:HorizontalLayout>
+					<c:VerticalLayout>
+						<c:TextView Text="Тип следующего мероприятия" CssClass="description_row"></c:TextView>
+						<c:TextView Id="nextVisitType" Text="$FormatDate($nextVisit.PlanDate, dd.MM.yyyy HH:mm)" CssClass="main_row"></c:TextView>
+					</c:VerticalLayout>
+				</c:HorizontalLayout>
+				<c:HorizontalLine />
+
 			</s:If>
 
 			<s:If Test="@checkOrderReason">
@@ -102,6 +121,7 @@
 			<!-- <s:If Test="$NoTasks()"> -->
 
 			<!-- </s:If> -->
+
 
 			<s:If Test="$ShowQuestionnaires()">
 				<c:DockLayout CssClass="parameter_grid">

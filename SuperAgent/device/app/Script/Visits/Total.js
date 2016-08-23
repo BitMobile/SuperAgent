@@ -20,6 +20,20 @@ function OnLoading() {
 		checkVisitReason = true;
 }
 
+function ChoseFromCatalog(Name){
+	var tabelName = "";
+	var startKey = "";
+	tabelName = "Catalog_MeropType";
+	var query = new Query("Select Id,Description From "+tabelName);
+	Dialog.Choose("#select_answer#"
+	        , query.Execute()
+					,	startKey
+	        , SaveAnswerCatalog);
+}
+function SaveAnswerCatalog(state, args){
+	$.nextVisitType.Text = args.Result.Description;
+}
+
 function GetNextVisit(outlet){
 	var q = new Query("SELECT Id, PlanDate FROM Document_MobileAppPlanVisit WHERE Outlet=@outlet AND DATE(PlanDate)>=DATE(@date) AND Transformed=0 LIMIT 1");
 	q.AddParameter("outlet", outlet);

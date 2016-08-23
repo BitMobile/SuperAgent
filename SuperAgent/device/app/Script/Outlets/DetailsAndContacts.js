@@ -33,16 +33,24 @@ function OnLoad()
 			//SelectOwner($.contactOwner);
 		}
 	}
-
-	if ($.Exists("contractor")) //for Contractor screen
-	{
-		if (!$.sessionConst.contractorEditable)
-		{
-			SetEnabledToContractorScope(false);
-		}
-	}
+//	if ($.Exists("contractor")) //for Contractor screen
+//	{
+//		if (!$.sessionConst.contractorEditable)
+//		{
+//			SetEnabledToContractorScope(false);
+//		}
+//	}
 }
-
+function GoToHisVis(enter,visitHis){
+	Dialog.Message(visitHis);
+	$.AddGlobal("VisitHis", visitHis);
+	Workflow.Action("Select",[]);
+}
+function GetLastVisit(input){
+	var qui = new Query("Select Id,EndTime From Document_Visit Where Not Number IS NULL And Outlet = @outl");
+	qui.AddParameter("outl",$.workflow.outlet);
+	return qui.Execute();
+}
 
 //----------------------Contacts-------------------
 

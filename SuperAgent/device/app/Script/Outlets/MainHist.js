@@ -16,13 +16,7 @@ var OutNow;
 //"distributor" = "000000006"
 //"status"			= "000000007"
 //"snapshots"		= "000000008"
-function OnLoad(){
-	if ($.workflow.name=='Visit') {
-		//Dialog.Message($.MeropCur.WithRuk);
-		$.ChkBox.Checked = $.MeropCur.WithRuk;
 
-	}
-}
 function OnLoading() {
 
 	query = new Query("SELECT Editable, Code FROM Catalog_OutletsPrimaryParametersSettings");
@@ -937,6 +931,13 @@ function Back(outlet) {
 		Variables.Remove("outlet");
 		DoBackTo("List");
 	}
+}
+function BackFromHis(){
+
+	if (Variables.Exists("VisitHis"))
+		Variables.Remove("VisitHis");
+
+	DoBack();
 }
 
 function DeleteAndRollback(visit) {

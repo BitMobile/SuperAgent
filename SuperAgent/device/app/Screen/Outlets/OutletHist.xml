@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope" StyleSheet="Outlet.css">
+
+
+	<s:Push Id="workflow.visit" Value="$VisitHis" />
+
+	<s:Push Id="outletObj" Value="$LoadObject($workflow.outlet)" />
+	<s:Push Id="outletScreen" Value="true"></s:Push><!-- dirty hack, see Events.js OnApplicationRestore() -->
+
+	<c:DockLayout Id="vOutlet">
+
+		<c:HorizontalLine CssClass="b_line" />
+
+			<c:DockLayout CssClass="top_navigator">
+				<c:HorizontalLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$BackFromHis()">
+					<c:Image />
+					<c:TextView Text="#list#" />
+				</c:HorizontalLayout>
+				<c:HorizontalLayout CssClass="btn_forward" />
+				<c:HorizontalLayout>
+					<c:TextView Text="#client#" />
+				</c:HorizontalLayout>
+			</c:DockLayout>
+			<c:HorizontalLine />
+
+
+		<c:ScrollView Id="grScrollView">
+
+			<c:HorizontalLayout CssClass="caption_grid">
+				<c:TextView Text="#main#:"></c:TextView>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
+			<s:Push Id="snapshots" Value="$GetSnapshots($workflow.outlet)" />
+
+
+			<c:HorizontalLayout CssClass="grid">
+				<c:VerticalLayout>
+					<c:TextView Text="#descriptionFULL#" CssClass="description_row"></c:TextView>
+					<c:TextView Id="outletDescr" Text="$workflow.outlet.Description" CssClass="not_available_basic"></c:TextView>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
+			<c:HorizontalLayout CssClass="grid">
+				<c:VerticalLayout>
+					<c:TextView Text="#descriptionShort#" CssClass="description_row"></c:TextView>
+					<c:TextView Id="outletDescrShort" Text="$workflow.outlet.Description" CssClass="not_available_basic"></c:TextView>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
+				<c:HorizontalLayout CssClass="grid">
+						<c:VerticalLayout>
+							<c:TextView Text="#FactDate#" CssClass="description_row"></c:TextView>
+							<c:TextView Id="FactDate" Text="$workflow.visit.StartTime" CssClass="not_available_basic"></c:TextView>
+						</c:VerticalLayout>
+				</c:HorizontalLayout>
+				<c:HorizontalLine />
+
+			<c:HorizontalLayout CssClass="grid">
+
+					<c:VerticalLayout>
+						<c:TextView Text="#Goal#" CssClass="description_row"></c:TextView>
+						<c:TextView Id="Goal" CssClass="not_available_basic"></c:TextView>
+					</c:VerticalLayout>
+
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
+			<c:HorizontalLayout CssClass="grid1" OnClickAction="$ShowBool()">
+				<c:VerticalLayout CssClass="VLCheck">
+					<c:CheckBox Id="ChkBox" CssClass="ForChecbox"/>
+				</c:VerticalLayout>
+				<c:VerticalLayout CssClass="VLCheckName">
+					<c:TextView Text="Совместно с руководителем"/>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
+			<c:HorizontalLayout CssClass="grid">
+				<c:VerticalLayout>
+					<c:TextView Text="#TypeMer#" CssClass="description_row"></c:TextView>
+					<c:TextView Id="TypeMer" CssClass="main_row_available"></c:TextView>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
+			<c:HorizontalLayout CssClass="grid">
+				<c:VerticalLayout>
+					<c:TextView Text="#contactName#" CssClass="description_row"></c:TextView>
+					<c:TextView Id="contactName" CssClass="main_row_available"></c:TextView>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
+			<c:HorizontalLayout CssClass="grid">
+				<c:VerticalLayout>
+					<c:TextView Text="#MaybeDeal#" CssClass="description_row"></c:TextView>
+					<c:TextView Id="MaybeDeal" CssClass="main_row_available"></c:TextView>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
+			<c:HorizontalLayout CssClass="grid">
+				<c:VerticalLayout>
+					<c:TextView Text="#GoalContains#" CssClass="description_row"></c:TextView>
+					<c:TextView Id="GoalContains" CssClass="main_row_available"></c:TextView>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
+
+		</c:ScrollView>
+
+	</c:DockLayout>
+
+</c:Screen>

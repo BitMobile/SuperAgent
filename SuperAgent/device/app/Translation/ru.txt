@@ -370,3 +370,4 @@ Segment		Сегмент
 TypeOrg		Тип организации
 Profile		Профиль
 Newcontact		Новый контакт
+FactDate		Фактическая дата

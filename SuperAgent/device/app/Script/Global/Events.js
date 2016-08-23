@@ -58,14 +58,43 @@ function OnWorkflowStart(name) {
 }
 
 function OnWorkflowForward(name, lastStep, nextStep, parameters) {
+//	Dialog.Message(nextStep);
+//	if (name = "Visit" && lastStep == "Outlet")
+//		GPS.StopTracking();
+}
 
-	if (name = "Visit" && lastStep == "Outlet")
-		GPS.StopTracking();
+function ActualLocation(location){
+
+    var actualTime;
+    if (parseInt($.sessionConst.UserCoordinatesActualityTime)==parseInt(0)){
+        actualTime = true;
+    }
+    else{
+        var locTime = location.Time.ToLocalTime();
+        var maxTime = DateTime.Now.AddMinutes(-parseInt($.sessionConst.UserCoordinatesActualityTime));
+        actualTime = locTime > maxTime;
+    }
+
+    return (location.NotEmpty && actualTime);
 }
 
 function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 
-	if (workflowName == "Visit" && nextStep != "Outlet" && nextStep != "Total" && nextStep != "Total_Tasks")
+	if (workflowName == "Visit" && nextStep != "Outlet"){
+		DateAddTru = GlobalWorkflow.GetDateAdd();
+		var currentVisref = $.workflow.visit;
+		var currentVisObj = currentVisref.GetObject();
+		if (currentVisObj.Lattitude == null && currentVisObj.Longitude == null) {
+			var location = GPS.CurrentLocation;
+			if (ActualLocation(location) && DateAddTru == false){
+				currentVisObj.Lattitude = location.Latitude;
+				currentVisObj.Longitude = location.Longitude;
+				currentVisObj.Save();
+			}
+		}
+	}
+
+	if (workflowName == "Visit" && nextStep != "Outlet" && nextStep != "Total" && nextStep != "Total_Tasks" && nextStep != "OutletHist")
 	{
 		var standart = AlternativeStep(nextStep);
 		if (!standart)
@@ -162,6 +191,8 @@ function RemoveVariables(name){
 
 	if (name != "Main")
 	{
+		if (Variables.Exists("MeropCur"))
+			Variables.Remove("MeropCur");
 		if (Variables.Exists("planVisit"))
 			Variables.Remove("planVisit");
 		if (Variables.Exists("DatePlanVisit"))

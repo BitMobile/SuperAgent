@@ -181,8 +181,11 @@
 			<bp:Action Name="Select" NextStep="Contractor"></bp:Action>
 		</bp:Step>
 
-		<bp:Step Name="Contractor" Screen="Outlets\Contractor.xml" Controller="Outlets\DetailsAndContacts.js"></bp:Step>
-
+		<bp:Step Name="Contractor" Screen="Outlets\Contractor.xml" Controller="Outlets\DetailsAndContacts.js">
+			<bp:Action Name="Select" NextStep="OutletHist"></bp:Action>
+		</bp:Step>
+		<bp:Step Name="OutletHist" Screen="Outlets\OutletHist.xml" Controller="Outlets\MainHist.js">
+		</bp:Step>
 		<bp:Step Name="Contacts" Screen="ContactsList.xml" Controller="Outlets\DetailsAndContacts.js">
 			<bp:Action Name="Select" NextStep="Contact" />
 		</bp:Step>

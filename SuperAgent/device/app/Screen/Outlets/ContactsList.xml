@@ -65,7 +65,7 @@
 
 							<s:If Test="@DateAddTru == false">
 								<c:SwipeHorizontalLayout CssClass="swipe_layout">
-									<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoBack()">
+									<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoBackWithSaveMeropContact($contact.Id)">
 										<c:Image />
 										<c:TextView Text="$contact.ContactName"></c:TextView>
 									</c:DockLayout>
@@ -77,7 +77,7 @@
 								</c:SwipeHorizontalLayout>
 							</s:If>
 							<s:Else>
-								<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoAction(Select, $contact.Id, $contact.OutletContact)">
+								<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoBackWithSaveMeropContact($contact.Id)">
 									<c:Image />
 									<c:TextView Text="$contact.ContactName"></c:TextView>
 								</c:DockLayout>

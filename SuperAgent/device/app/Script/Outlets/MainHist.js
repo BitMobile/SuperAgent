@@ -8,6 +8,7 @@ var backvisit;
 var DateAddTru;
 var NameControl;
 var OutNow;
+
 //"description"	= "000000001"
 //"address"			= "000000002"
 //"coordinates" = "000000003"
@@ -17,6 +18,9 @@ var OutNow;
 //"status"			= "000000007"
 //"snapshots"		= "000000008"
 
+function OnLoad(){
+	$.ChkBox.Checked = $.Merop.WithRuk;
+}
 function OnLoading() {
 
 	query = new Query("SELECT Editable, Code FROM Catalog_OutletsPrimaryParametersSettings");

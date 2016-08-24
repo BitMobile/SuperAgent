@@ -41,6 +41,11 @@ function OnLoad()
 //		}
 //	}
 }
+function DoBackWithSaveMeropContact(contact){
+	var MeropObj = $.workflow.visit.FactMerop.GetObject();
+	MeropObj.ContactPerson = contact;
+	DoBack();
+}
 function GoToHisVis(enter,visitHis){
 	Dialog.Message(visitHis);
 	$.AddGlobal("VisitHis", visitHis);

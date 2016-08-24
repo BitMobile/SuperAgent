@@ -2,7 +2,7 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope" StyleSheet="Outlet.css">
 
 
-	<s:Push Id="workflow.visit" Value="$VisitHis" />
+	<s:Push Id="Merop" Value="$VisitHis.FactMerop" />
 
 	<s:Push Id="outletObj" Value="$LoadObject($workflow.outlet)" />
 	<s:Push Id="outletScreen" Value="true"></s:Push><!-- dirty hack, see Events.js OnApplicationRestore() -->
@@ -53,7 +53,7 @@
 				<c:HorizontalLayout CssClass="grid">
 						<c:VerticalLayout>
 							<c:TextView Text="#FactDate#" CssClass="description_row"></c:TextView>
-							<c:TextView Id="FactDate" Text="$workflow.visit.StartTime" CssClass="not_available_basic"></c:TextView>
+							<c:TextView Id="FactDate" Text="$VisitHis.StartTime" CssClass="not_available_basic"></c:TextView>
 						</c:VerticalLayout>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
@@ -62,13 +62,13 @@
 
 					<c:VerticalLayout>
 						<c:TextView Text="#Goal#" CssClass="description_row"></c:TextView>
-						<c:TextView Id="Goal" CssClass="not_available_basic"></c:TextView>
+						<c:TextView Id="Goal" Text="$Merop.Description" CssClass="not_available_basic"></c:TextView>
 					</c:VerticalLayout>
 
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid1" OnClickAction="$ShowBool()">
+			<c:HorizontalLayout CssClass="grid1">
 				<c:VerticalLayout CssClass="VLCheck">
 					<c:CheckBox Id="ChkBox" CssClass="ForChecbox"/>
 				</c:VerticalLayout>
@@ -81,7 +81,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#TypeMer#" CssClass="description_row"></c:TextView>
-					<c:TextView Id="TypeMer" CssClass="main_row_available"></c:TextView>
+					<c:TextView Id="TypeMer" Text="$Merop.TypeMeropr.Description" CssClass="not_available_basic"></c:TextView>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -89,7 +89,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#contactName#" CssClass="description_row"></c:TextView>
-					<c:TextView Id="contactName" CssClass="main_row_available"></c:TextView>
+					<c:TextView Id="contactName" Text="$Merop.ContactPerson.Description" CssClass="not_available_basic"></c:TextView>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -97,7 +97,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#MaybeDeal#" CssClass="description_row"></c:TextView>
-					<c:TextView Id="MaybeDeal" CssClass="main_row_available"></c:TextView>
+					<c:TextView Id="MaybeDeal" Text="$Merop.MayBeDeal.Description" CssClass="not_available_basic"></c:TextView>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -105,7 +105,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#GoalContains#" CssClass="description_row"></c:TextView>
-					<c:TextView Id="GoalContains" CssClass="main_row_available"></c:TextView>
+					<c:TextView Id="GoalContains" Text="$Merop.GoalContains" CssClass="not_available_basic"></c:TextView>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

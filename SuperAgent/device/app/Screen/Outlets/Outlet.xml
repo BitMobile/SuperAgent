@@ -7,7 +7,7 @@
 
 	<s:Push Id="outletObj" Value="$LoadObject($workflow.outlet)" />
 	<s:If Test="$workflow.name=='Visit'">
-		<s:Push Id="Merop" Value="$MeropCur" />
+		<s:Push Id="Merop" Value="$workflow.visit.FactMerop" />
 	</s:If>
 	<s:Push Id="outletScreen" Value="true"></s:Push><!-- dirty hack, see Events.js OnApplicationRestore() -->
 
@@ -120,7 +120,7 @@
 				<s:If Test="$planVisit==null">
 					<c:VerticalLayout>
 						<c:TextView Text="#Goal#" CssClass="description_row"></c:TextView>
-						<c:EditText Id="Goal" CssClass="main_row" Placeholder="—"></c:EditText>
+						<c:EditText Id="Goal" CssClass="main_row" Text="$Merop.Description" Placeholder="—" OnLostFocus="$SetGoalToMerop($Merop)"></c:EditText>
 					</c:VerticalLayout>
 				</s:If>
 				<s:Else>
@@ -132,7 +132,7 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid1" OnClickAction="$ShowBool()">
+			<c:HorizontalLayout CssClass="grid1" OnClickAction="$ShowBool($Merop)">
 				<c:VerticalLayout CssClass="VLCheck">
 					<c:CheckBox Id="ChkBox" CssClass="ForChecbox"/>
 				</c:VerticalLayout>
@@ -145,7 +145,12 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout OnClickAction="$ChoseFromCatalog(TypeMer)">
 					<c:TextView Text="#TypeMer#" CssClass="description_row"></c:TextView>
-					<c:TextView Id="TypeMer" Text="$Merop.TypeMeropr.Description" CssClass="main_row_available"></c:TextView>
+					<s:If Test="$ValueEmpty(TypeMer)">
+						<c:TextView Id="TypeMer" Text="—" CssClass="main_row_available"></c:TextView>
+					</s:If>
+					<s:Else>
+						<c:TextView Id="TypeMer" Text="$Merop.TypeMeropr.Description" CssClass="main_row_available"></c:TextView>
+					</s:Else>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -153,7 +158,12 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout OnClickAction="$DoAction(ShowContacts, $workflow.outlet, out)">
 					<c:TextView Text="#contactName#" CssClass="description_row"></c:TextView>
-					<c:TextView Id="contactName" Text="$Merop.ContactPerson.Description" CssClass="main_row_available"></c:TextView>
+					<s:If Test="$ValueEmpty(contactName)">
+						<c:TextView Id="contactName" Text="—" CssClass="main_row_available"></c:TextView>
+					</s:If>
+					<s:Else>
+						<c:TextView Id="contactName" Text="$Merop.ContactPerson.Description" CssClass="main_row_available"></c:TextView>
+					</s:Else>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -161,7 +171,12 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout OnClickAction="$ChoseFromCatalog(MaybeDeal)">
 					<c:TextView Text="#MaybeDeal#" CssClass="description_row"></c:TextView>
-					<c:TextView Id="MaybeDeal" Text="$Merop.MayBeDeal.Description" CssClass="main_row_available"></c:TextView>
+					<s:If Test="$ValueEmpty(MaybeDeal)">
+						<c:TextView Id="MaybeDeal" Text="—" CssClass="main_row_available"></c:TextView>
+					</s:If>
+					<s:Else>
+						<c:TextView Id="MaybeDeal" Text="$Merop.MayBeDeal.Description" CssClass="main_row_available"></c:TextView>
+					</s:Else>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -169,7 +184,12 @@
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$ShowGoalContains()">
 				<c:VerticalLayout>
 					<c:TextView Text="#GoalContains#" CssClass="description_row"></c:TextView>
-					<c:TextView Id="GoalContains" Text="$Merop.GoalContains" CssClass="main_row_available"></c:TextView>
+					<s:If Test="$ValueEmpty(GoalContains)">
+						<c:TextView Id="GoalContains" Text="—" CssClass="main_row_available"></c:TextView>
+					</s:If>
+					<s:Else>
+						<c:TextView Id="GoalContains" Text="$Merop.GoalContains" CssClass="main_row_available"></c:TextView>
+					</s:Else>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

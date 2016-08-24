@@ -39,12 +39,20 @@ body dl {
 	width: 100%;
 	vertical-align: central;
 }
-
+.description_rowForTypeMer {
+	width: 100%;
+	height: 23%;
+	white-space: normal;
+	font: 62% Arial;
+	color: #000000;
+}
 /*.description_row {
 	height: 40%;
 	font: 42% Arial;
 	color: #8e8e93;
 }
+
+
 
 .main_row {
 	height: 40%;

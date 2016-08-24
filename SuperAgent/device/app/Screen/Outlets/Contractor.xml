@@ -27,8 +27,9 @@
 			<s:Iterator Id="LastVisit" Value="$resLast">
 				<c:HorizontalLayout CssClass="grid" OnClick="$GoToHisVis($LastVisit.Id)">
 					<c:VerticalLayout>
-						<c:TextView Text="#description#" CssClass="description_row"></c:TextView>
-						<c:TextView Text="$LastVisit.EndTime" CssClass="main_row"/>
+						<c:TextView Text="$LastVisit.Id.FactMerop.Description" CssClass="main_row"></c:TextView>
+						<c:TextView Text="$LastVisit.Id.FactMerop.TypeMeropr.Description" CssClass="description_rowForTypeMer"></c:TextView>
+						<c:TextView Text="$LastVisit.EndTime" CssClass="description_row"/>
 					</c:VerticalLayout>
 				</c:HorizontalLayout>
 			<c:HorizontalLine />

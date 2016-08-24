@@ -4,7 +4,7 @@
 	<c:DockLayout>
 
 		<c:DockLayout CssClass="top_navigator">
-			<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoBack()">
+			<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$SaveAndBackGoal()">
 				<c:Image />
 				<c:TextView Text="#back#" />
 			</c:DockLayout>
@@ -16,7 +16,7 @@
 		<c:HorizontalLine />
 
 			<c:DockLayout>
-				<c:MemoEdit CssClass="BIGMemo"/>
+				<c:MemoEdit CssClass="BIGMemo" Text="$workflow.visit.FactMerop.GoalContains" Id="TextForGoalContains"/>
 			</c:DockLayout>
 
 	</c:DockLayout>

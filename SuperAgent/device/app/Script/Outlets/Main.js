@@ -19,7 +19,7 @@ var OutNow;
 function OnLoad(){
 	if ($.workflow.name=='Visit') {
 		//Dialog.Message($.MeropCur.WithRuk);
-		//$.ChkBox.Checked = $.MeropCur.WithRuk;
+		$.ChkBox.Checked = $.Merop.WithRuk;
 
 	}
 }
@@ -103,38 +103,88 @@ function ChoseFromCatalog(Name){
 	}
 	if (Name == "MaybeDeal") {
 		tabelName = "Catalog_MayBeDeal";
-//		startKey = OutNow.Profile;
+		startKey = $.workflow.visit.FactMerop.MayBeDeal;
 	}
 	if (Name == "TypeMer") {
 		tabelName = "Catalog_MeropType";
+		startKey = $.workflow.visit.FactMerop.TypeMeropr;
 	}
 
 //	var items = [];
 	if (Name == "MaybeDeal") {
-		var query = new Query("Select Id,Description From "+tabelName+" Where Outlet = @Outl");
+		var query = new Query("Select Id,Description From "+tabelName+" Where Outlet = @Outl UNION Select '@ref["+tabelName+"]:00000000-0000-0000-0000-000000000000','—'");
 		query.AddParameter("Outl",OutNow);
 	}else {
-		var query = new Query("Select Id,Description From "+tabelName);
+		var query = new Query("Select Id,Description From "+tabelName+" UNION Select '@ref["+tabelName+"]:00000000-0000-0000-0000-000000000000','—'");
 	}
 	Dialog.Choose("#select_answer#"
 	        , query.Execute()
 					,	startKey
 	        , SaveAnswerCatalog);
 }
+function ValueEmpty(NameVal){
+	if (NameVal == "contactName") {
+		if ($.Merop.ContactPerson == "@ref[Catalog_ContactPersons]:00000000-0000-0000-0000-000000000000") {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	if (NameVal == "MaybeDeal") {
+		if ($.Merop.MayBeDeal == "@ref[Catalog_MayBeDeal]:00000000-0000-0000-0000-000000000000") {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	if (NameVal == "TypeMer") {
+		if ($.Merop.TypeMeropr == "@ref[Catalog_MeropType]:00000000-0000-0000-0000-000000000000") {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	if (NameVal == "GoalContains") {
+		if ($.Merop.GoalContains == null) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+}
 function SaveAnswerCatalog(state, args){
 	//Dialog.Message(args.Result);
-	Variables[NameControl].Text = args.Result.Description;
-	var outletObj = OutNow.GetObject();
-	if (NameControl == "Segment") {
-		outletObj.Segment = args.Result;
+	if (args.Value == "—") {
+		Variables[NameControl].Text = "—";
+	}else {
+		Variables[NameControl].Text = args.Result.Description;
 	}
-	if (NameControl == "Profile") {
-		outletObj.Profile = args.Result;
+	if (NameControl == "TypeMer" || NameControl == "MaybeDeal") {
+		 var objMerop =	$.workflow.visit.FactMerop.GetObject();
+		 if (NameControl == "TypeMer") {
+			 objMerop.TypeMeropr = args.Result;
+			 objMerop.Save();
+		 }
+		 if (NameControl == "MaybeDeal") {
+			 objMerop.MayBeDeal = args.Result;
+			 objMerop.Save();
+		 }
+
+	}else {
+		var outletObj = OutNow.GetObject();
+		if (NameControl == "Segment") {
+			outletObj.Segment = args.Result;
+		}
+		if (NameControl == "Profile") {
+			outletObj.Profile = args.Result;
+		}
+		if (NameControl == "TypeOrg") {
+			outletObj.OrgType = args.Result;
+		}
+		outletObj.Save();
 	}
-	if (NameControl == "TypeOrg") {
-		outletObj.OrgType = args.Result;
-	}
-	outletObj.Save();
+
 }
 function GetOutlets(searchText) {
 	var search = "";
@@ -570,10 +620,13 @@ function filterDate(dt){
 		return "";
 	}
 }
-function ShowBool(){
+function ShowBool(Merop){
 	//Dialog.Message($.ChkBox.Checked);
 	var checed = $.ChkBox.Checked;
 	$.ChkBox.Checked = !checed;
+	var meropObj = Merop.GetObject();
+	meropObj.WithRuk = !checed;
+	meropObj.Save();
 }
 function GetStatusDescription(outlet) {
 	var query = new Query("SELECT Description FROM Enum_OutletStatus WHERE Id = @status");
@@ -700,16 +753,43 @@ function OutletSnapshotHandler(state, args) {
 }
 
 // --------------------------case Visits----------------------
+function SetGoalToMerop(input,Merop){
+	//Dialog.Message(Merop);
+	var MeropObj = Merop.GetObject();
+	MeropObj.Description = $.Goal.Text;
+	MeropObj.Save();
+}
 
 function CreateVisitIfNotExists(userRef, visit, planVisit) {
 //	Dialog.Message($.MeropCur);
 	if (visit == null) {
 		visit = DB.Create("Document.Visit");
 		//Dialog.Message(planVisit);
+		var meropFact = DB.Create("Catalog.Meropriyat");
+		meropFact.Description = $.MeropCur.Description;
+		if (planVisit != null && planVisit!=""){
+			meropFact.DateStart = $.MeropCur.DateStart;
+			meropFact.DateEnd = $.MeropCur.DateEnd;
+		}else {
+			meropFact.DateStart = DateTime.Now;
+			meropFact.DateEnd = DateTime.Now;
+		}
+		meropFact.GoalContains = $.MeropCur.GoalContains;
+		meropFact.MayBeDeal = $.MeropCur.MayBeDeal;
+		meropFact.ContactPerson = $.MeropCur.ContactPerson;
+		meropFact.TypeMeropr = $.MeropCur.TypeMeropr;
+		meropFact.DO = $.workflow.outlet;
+		if ($.MeropCur.WithRuk == null) {
+				meropFact.WithRuk = 0;
+		}else {
+			meropFact.WithRuk = $.MeropCur.WithRuk;
+		}
+		meropFact.Save();
 		if (planVisit != null && planVisit!=""){
 			visit.Plan = planVisit;
 			visit.PlanMerop = $.MeropCur;
 		}
+		visit.FactMerop = meropFact.Id;
 		var existorno = new Query("Select type From sqlite_master where name = 'UT_answerQuest' And type = 'table'");
 		var exorno = existorno.ExecuteCount();
 		visit.Outlet = $.workflow.outlet;

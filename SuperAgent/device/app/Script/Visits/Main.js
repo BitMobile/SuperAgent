@@ -416,7 +416,7 @@ function CountOutlets() {
 
 function AddGlobalAndAction(planVisit, outlet, actionName,datePlan,Merop) {
 	$.AddGlobal("planVisit", planVisit);
-	Dialog.Message(Merop);
+	//Dialog.Message(Merop);
 	if (planVisit == null) {
 		$.AddGlobal("DatePlanVisit", DateTime.Now);
 	}else {

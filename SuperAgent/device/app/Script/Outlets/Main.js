@@ -39,7 +39,7 @@ function OnLoading() {
 		if (counnurows>0) {
 			backvisit = Translate["#back#"];
 		}else {
-		backvisit = Translate["#" + Lower(GlobalWorkflow.GetMenuItem()) + "#"];			
+		backvisit = Translate["#" + Lower(GlobalWorkflow.GetMenuItem()) + "#"];
 		}
 	}
 	else {
@@ -514,7 +514,6 @@ function OutletSnapshotHandler(state, args) {
 // --------------------------case Visits----------------------
 
 function CreateVisitIfNotExists(userRef, visit, planVisit) {
-
 	if (visit == null) {
 		visit = DB.Create("Document.Visit");
 		//Dialog.Message(planVisit);
@@ -605,7 +604,6 @@ function CreateVisitIfNotExists(userRef, visit, planVisit) {
 }
 
 // -----------------------------------Coordinates--------------------------------
-
 function SetLocation(control, outlet) {
 	var location = GPS.CurrentLocation;
 	if (ActualLocation(location)) {
@@ -621,6 +619,19 @@ function SetLocation(control, outlet) {
 function CoordsChecked(visit) {
 
 	var location = GPS.CurrentLocation;
+// проверка на местополжение торговой точки+радиус отклонения = текущее местоположение
+	var outlet = outlet.GetObject();
+	var query = new Query("SELECT NumericValue FROM Catalog_MobileApplicationSettings WHERE Description = 'RadiusDeviation'");
+	var RadiusDeviation = query.ExecuteScalar();
+
+	if (parseInt(RadiusDeviation) !== parseInt(0) && ((parseInt(outlet.Lattitude) !== parseInt(0)) || (parseInt(outlet.Longitude)!== parseInt(0)))) {
+		var CurRadiusDeviation = CoordCheckOutletAndActuality(location, outlet);
+		if (parseInt(RadiusDeviation) <= parseInt(CurRadiusDeviation)) {
+			Dialog.Message(Translate["#impossibleOutletCoords#"]);
+			return false;
+		}
+	}
+//
 	if (ActualLocation(location)) {
 		var visitObj = visit.GetObject();
 		visitObj.Lattitude = location.Latitude;
@@ -843,5 +854,35 @@ function BackMenu(){
 function SnapshotExists(filename) {
 
 	return FileSystem.Exists(filename);
+
+}
+
+function CoordCheckOutletAndActuality(location, outlet) {
+	var R = 6372795;
+	var Pi = 3.14159265359;
+
+
+
+	var lat1 = location.Latitude * Math.PI / 180;
+	var lat2 = outlet.Lattitude * Math.PI / 180;
+	var long1 = location.Longitude * Math.PI / 180;
+	var long2 = outlet.Longitude * Math.PI / 180;
+
+
+	var cl1 = Math.cos(lat1);
+	var cl2 = Math.cos(lat2);
+	var sl1 = Math.sin(lat1);
+	var sl2 = Math.sin(lat2);
+	var delta = long2 - long1;
+	var cdelta = Math.cos(delta);
+	var sdelta = Math.sin(delta);
+
+	//calculate great circle distance
+	var y = Math.sqrt(Math.pow((cl2*sdelta),2) + Math.pow((cl1*sl2 - sl1*cl2*cdelta),2));
+	var x = sl1 * sl2 + cl1 * cl2 * cdelta;
+	var ad = 2 * Math.atan(y / (Math.sqrt(Math.pow(x,2) + Math.pow(y,2)) + x));
+	var dist = Round(ad * R);
+
+	return dist;
 
 }

@@ -107,6 +107,7 @@ imageNotAvailable	Image not available now
 impossibleToCreateVisit	Impossible to create plan visit until coordinates aren't set. Retry to get location?
 impossibleToDelete	Impossible to delete, order is already in base
 impossibleToEdit	Impossible to edit, order is already in base
+impossibleOutletCoords		It is impossible to start the visit because the device too far from the point of sale.
 incompletedVisits	INCOMPLETED VISITS
 incorrect		Incorrect
 info		About

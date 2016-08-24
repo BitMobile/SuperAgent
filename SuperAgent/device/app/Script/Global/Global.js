@@ -40,6 +40,7 @@ function SetSessionConstants() {
 	var saveQuest = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='UseSaveQuest'");
 	var DayPlanVisitCount = new Query("SELECT NumericValue FROM Catalog_MobileApplicationSettings WHERE Description='EndUploadPlanVisit'");
 	$.AddGlobal("sessionConst", new Dictionary());
+//	$.AddGlobal("WeNeedSync", false);
 	$.sessionConst.Add("UseSaveQuest", saveQuest.ExecuteScalar());
 	$.sessionConst.Add("solVersion", solVersion.ExecuteScalar());
 	$.sessionConst.Add("PlanEnbl", EvaluateBoolean(planEnbl.ExecuteScalar()));

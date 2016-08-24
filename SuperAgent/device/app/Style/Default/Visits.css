@@ -1,3 +1,10 @@
+.gridNoVis {
+	height: 0%;
+}
+.grid Indicator {
+	height: 100%;
+	color: #2d89cf;
+}
 .grid vl {
 	width: 83.3%;
 	height: 100%;

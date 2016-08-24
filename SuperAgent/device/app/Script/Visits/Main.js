@@ -1,10 +1,20 @@
 ﻿var addDay;
+var dontNeedSync;
 //var searchParam;
 // ------------------------ UI calls ------------------------
 
 function OnLoading(){
 	if (addDay == null) {
 		addDay = 0;
+	}
+	if (Variables.Exists("WeNeedSync")){
+		if ($.WeNeedSync == true) {
+			dontNeedSync = false;
+		}else {
+			dontNeedSync = true;
+		}
+	}else {
+		dontNeedSync = true;
 	}
 	SetListType();
 }
@@ -19,6 +29,66 @@ function OnLoad(){
 //	}
 	$.DateText.Text = filterDate(DateTime.Now.Date.AddDays(addDay));
 	//Dialog.Message(filterDate(DateTime.Now.Date.AddDays(addDay)));
+	if ($.visitsType=="planned") {
+		//$.grScrollView.refresh();
+		//var toappend = "<c:DockLayout CssClass=\"grid\" >" +
+		//	"</c:DockLayout><c:HorizontalLine />";
+		//	$.grScrollView.append(toappend);
+		//$.grScrollView.refresh();
+		if (dontNeedSync) {
+			//WithoutSync();
+		}else {
+			for (control in $.grScrollView.Controls) {
+				control.remove();
+			}
+			$.dataSyncIndicator.Start();
+			DB.Sync(SyncDataFinish);
+		}
+	}else {
+		if (dontNeedSync) {
+
+		}else {
+			$.dataSyncIndicatorForUnPlan.Start();
+			DB.Sync(SyncDataFinishForUnPlan);
+		}
+	}
+}
+//function WithoutSync(){
+//	RefreshScrolView();
+//}
+function SyncDataFinishForUnPlan() {
+			$.dataSyncIndicatorForUnPlan.Stop();
+			var message = "";
+			if (DB.SuccessSync) {
+				message = "Синхранизация завершилась успешно";
+			}else {
+				message = "Ошибка синхранизации";
+			}
+	LocalNotification.Notify("Синхронизация" , message);
+	//$.IndicatorLay.CssClass = "gridNoVis";
+	//$.IndicatorLay.Refresh();
+	dontNeedSync = true;
+	if (Variables.Exists("WeNeedSync"))
+		Variables.Remove("WeNeedSync");
+	//RefreshScrolView();
+	Workflow.Refresh([]);
+}
+
+function SyncDataFinish() {
+			$.dataSyncIndicator.Stop();
+			var message = "";
+			if (DB.SuccessSync) {
+				message = "Синхранизация завершилась успешно";
+			}else {
+				message = "Ошибка синхранизации";
+			}
+	LocalNotification.Notify("Синхронизация" , message);
+	$.IndicatorLay.CssClass = "gridNoVis";
+	$.IndicatorLay.Refresh();
+	dontNeedSync = true;
+	if (Variables.Exists("WeNeedSync"))
+		Variables.Remove("WeNeedSync");
+	RefreshScrolView();
 }
 function CheckDateAdd(){
 	if (addDay<=0) {
@@ -50,7 +120,7 @@ function RefreshScrolView(){
 	+ "<c:HorizontalLine />";
 	while (uncommitedVisits.Next()) {
 		var outletPlan = uncommitedVisits.Outlet;
-		toappend = toappend + "<c:DockLayout CssClass=\"grid\" OnClickAction=\"$AddGlobalAndAction('"+uncommitedVisits.Ref+"', '@ref[Catalog_Outlet]:"+outletPlan.Id+"', 'Select', "+uncommitedVisits.DatePlan+")\">";
+		toappend = toappend + "<c:DockLayout CssClass=\"grid\" OnClickAction=\"$AddGlobalAndAction('"+uncommitedVisits.Ref+"', '@ref[Catalog_Outlet]:"+outletPlan.Id+"', 'Select', "+uncommitedVisits.DatePlan+", '@ref[Catalog_Meropriyat]:"+uncommitedVisits.Merop.Id+"')\">";
 		if (uncommitedVisits.OutletStatus == 0) {
 			toappend = toappend + "<c:Image CssClass=\"blue_mark\" />";
 		}
@@ -346,10 +416,13 @@ function CountOutlets() {
 
 function AddGlobalAndAction(planVisit, outlet, actionName,datePlan,Merop) {
 	$.AddGlobal("planVisit", planVisit);
+	Dialog.Message(Merop);
 	if (planVisit == null) {
 		$.AddGlobal("DatePlanVisit", DateTime.Now);
 	}else {
-		$.AddGlobal("MeropCur",Merop);
+		var q = new Query("Select Id From Catalog_Meropriyat Where Id = @id");
+		q.AddParameter("id",Merop);
+		$.AddGlobal("MeropCur",q.ExecuteScalar());
 		$.AddGlobal("DatePlanVisit", datePlan);
 	}
 	if (addDay!=null) {

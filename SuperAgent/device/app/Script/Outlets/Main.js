@@ -19,7 +19,7 @@ var OutNow;
 function OnLoad(){
 	if ($.workflow.name=='Visit') {
 		//Dialog.Message($.MeropCur.WithRuk);
-		$.ChkBox.Checked = $.MeropCur.WithRuk;
+		//$.ChkBox.Checked = $.MeropCur.WithRuk;
 
 	}
 }
@@ -702,12 +702,14 @@ function OutletSnapshotHandler(state, args) {
 // --------------------------case Visits----------------------
 
 function CreateVisitIfNotExists(userRef, visit, planVisit) {
-
+//	Dialog.Message($.MeropCur);
 	if (visit == null) {
 		visit = DB.Create("Document.Visit");
 		//Dialog.Message(planVisit);
-		if (planVisit != null && planVisit!="")
+		if (planVisit != null && planVisit!=""){
 			visit.Plan = planVisit;
+			visit.PlanMerop = $.MeropCur;
+		}
 		var existorno = new Query("Select type From sqlite_master where name = 'UT_answerQuest' And type = 'table'");
 		var exorno = existorno.ExecuteCount();
 		visit.Outlet = $.workflow.outlet;

@@ -5,11 +5,13 @@ var returnEnabled;
 var encashmentEnabled;
 var forwardIsntAllowed;
 var obligateNumber;
+var WeSetNexVis;
+var CurrMerop;
 
 function OnLoading() {
 	checkOrderReason = false;
 	checkVisitReason = false;
-
+	WeSetNexVis	=	false;
 	orderEnabled = OptionAvailable("SkipOrder");
 	returnEnabled = OptionAvailable("SkipReturn");
 	encashmentEnabled = OptionAvailable("SkipEncashment") && $.sessionConst.encashEnabled;
@@ -20,22 +22,27 @@ function OnLoading() {
 		checkVisitReason = true;
 }
 
-function ChoseFromCatalog(Name){
+function ChoseFromCatalog(Name,NextVis){
 	var tabelName = "";
-	var startKey = "";
+	var startKey = NextVis.Merop.TypeMeropr;
 	tabelName = "Catalog_MeropType";
 	var query = new Query("Select Id,Description From "+tabelName);
-	Dialog.Choose("#select_answer#"
-	        , query.Execute()
-					,	startKey
-	        , SaveAnswerCatalog);
+	if (NextVis != null || WeSetNexVis) {
+		Dialog.Choose("#select_answer#"
+		        , query.Execute()
+						,	startKey
+		        , SaveAnswerCatalog);
+	}
 }
 function SaveAnswerCatalog(state, args){
+	objMerop = CurrMerop.GetObject();
+	objMerop.TypeMeropr = args.Result;
+	objMerop.Save();
 	$.nextVisitType.Text = args.Result.Description;
 }
 
 function GetNextVisit(outlet){
-	var q = new Query("SELECT Id, PlanDate FROM Document_MobileAppPlanVisit WHERE Outlet=@outlet AND DATE(PlanDate)>=DATE(@date) AND Transformed=0 LIMIT 1");
+	var q = new Query("SELECT Id, PlanDate, Merop FROM Document_MobileAppPlanVisit WHERE Outlet=@outlet AND DATE(PlanDate)>=DATE(@date) AND Transformed=0 LIMIT 1");
 	q.AddParameter("outlet", outlet);
 	q.AddParameter("date", DateTime.Now.Date);
 	var res = q.Execute();
@@ -194,6 +201,7 @@ function CheckAndCommit(state, args) {
 		if (exorno > 0) {
 			DB.TruncateTable("answerQuest");
 		}
+		$.AddGlobal("WeNeedSync",true);
     Workflow.Commit();
 	}
 }
@@ -205,20 +213,37 @@ function CheckAndCommit(state, args) {
 function NextDateHandler(state, args){
 
 	var newVistPlan = state[0];
+	if (args.Result > DateTime.Now) {
+		if (newVistPlan.Id==null && CurrMerop != null){
+			newVistPlan = DB.Create("Document.MobileAppPlanVisit");
+			newVistPlan.SR = $.common.UserRef;
+			newVistPlan.Outlet = $.workflow.outlet;
+			newVistPlan.Transformed = false;
+			newVistPlan.Date = DateTime.Now;
+			var newMerop = DB.Create("Catalog.Meropriyat");
+			newMerop.DO = $.workflow.outlet;
+			newMerop.DateStart = args.Result;
+			newMerop.DateEnd = args.Result;
+			newMerop.Save();
+			CurrMerop = newMerop.Id;
+			newVistPlan.Merop = newMerop.Id;
+		}
+		else
+			newVistPlan = newVistPlan.Id.GetObject();
 
-	if (newVistPlan.Id==null){
-		newVistPlan = DB.Create("Document.MobileAppPlanVisit");
-		newVistPlan.SR = $.common.UserRef;
-		newVistPlan.Outlet = $.workflow.outlet;
-		newVistPlan.Transformed = false;
-		newVistPlan.Date = DateTime.Now;
+		newVistPlan.PlanDate = args.Result;
+		newVistPlan.Save();
+		WeSetNexVis = true;
+	}else {
+		Dialog.Message("Невозможно запланировать мероприятие на прошедшие время");
 	}
-	else
-		newVistPlan = newVistPlan.Id.GetObject();
-	newVistPlan.PlanDate = args.Result;
-	newVistPlan.Save();
-
 	Workflow.Refresh([]);
+}
+
+function SetGoal(){
+	objMerop = CurrMerop.GetObject();
+	objMerop.Description = $.nextVisitGoal.Text;
+	objMerop.Save();
 }
 
 function DeliveryDateCallBack(state, args){

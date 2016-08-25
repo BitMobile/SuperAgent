@@ -62,13 +62,6 @@
 			<c:HorizontalLine />
 		</s:If>
 
-		<c:DockLayout Id="KPI" CssClass="{$styles.KPI}" OnClickAction="$SwitchScreen(KPI)">
-			<c:HorizontalLayout>
-				<c:Image CssClass="btn_kpi" />
-				<c:TextView Text="#kpi#"></c:TextView>
-			</c:HorizontalLayout>
-		</c:DockLayout>
-		<c:HorizontalLine />
 
 		<c:DockLayout Id="Sync" CssClass="{$styles.Sync}" OnClickAction="$SwitchScreen(Sync)">
 			<c:TextView Id="syncTitle" CssClass="menu_text" Text="$GetLastSyncTime()"></c:TextView>

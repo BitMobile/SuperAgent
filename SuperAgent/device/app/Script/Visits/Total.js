@@ -26,8 +26,8 @@ function ChoseFromCatalog(Name,NextVis){
 	var tabelName = "";
 	var startKey = NextVis.Merop.TypeMeropr;
 	tabelName = "Catalog_MeropType";
-	var query = new Query("Select Id,Description From "+tabelName);
-	if (NextVis != null || WeSetNexVis) {
+	var query = new Query("Select Id,Description From "+tabelName+" UNION Select '@ref["+tabelName+"]:00000000-0000-0000-0000-000000000000','—'");
+	if (NextVis != null) {
 		Dialog.Choose("#select_answer#"
 		        , query.Execute()
 						,	startKey
@@ -39,6 +39,7 @@ function SaveAnswerCatalog(state, args){
 	objMerop.TypeMeropr = args.Result;
 	objMerop.Save();
 	$.nextVisitType.Text = args.Result.Description;
+	Workflow.Refresh([]);
 }
 
 function GetNextVisit(outlet){
@@ -181,7 +182,18 @@ function GetReturnSum(returnDoc) {
 }
 
 function AskEndVisit(order, visit, wfName) {
-	Dialog.Alert(Translate["#visit_end_question#"], CheckAndCommit, [order, visit, wfName], Translate["#end#"], Translate["#go_back#"]);
+	if ($.nextVisit==null) {
+		Dialog.Alert(Translate["#visit_end_question#"], CheckAndCommit, [order, visit, wfName], Translate["#end#"], Translate["#go_back#"]);
+	}else {
+		//objMerop = CurrMerop.GetObject();
+		//Dialog.Message(CurrMerop.Description);
+		//Dialog.Message(CurrMerop.TypeMeropr);
+		if (CurrMerop.Description == null ||CurrMerop.Description == "" || CurrMerop.TypeMeropr == null || CurrMerop.TypeMeropr == "@ref[Catalog_MeropType]:00000000-0000-0000-0000-000000000000") {
+						Dialog.Message("Установите цель и тип следующего мероприятие");
+		}else {
+			Dialog.Alert(Translate["#visit_end_question#"], CheckAndCommit, [order, visit, wfName], Translate["#end#"], Translate["#go_back#"]);
+		}
+	}
 }
 
 function CheckAndCommit(state, args) {
@@ -211,7 +223,7 @@ function CheckAndCommit(state, args) {
 
 
 function NextDateHandler(state, args){
-
+	//Dialog.Message(args.Result);
 	var newVistPlan = state[0];
 	if (args.Result > DateTime.Now) {
 		if (newVistPlan.Id==null && CurrMerop != null){
@@ -244,6 +256,7 @@ function SetGoal(){
 	objMerop = CurrMerop.GetObject();
 	objMerop.Description = $.nextVisitGoal.Text;
 	objMerop.Save();
+	Workflow.Refresh([]);
 }
 
 function DeliveryDateCallBack(state, args){
@@ -252,10 +265,17 @@ function DeliveryDateCallBack(state, args){
 
 }
 
-function VisitIsChecked(visit) {
+function VisitIsChecked(visit,nextVisit) {
 
 	var result;
 	obligateNumber = parseInt(0);
+
+		if (nextVisit != null && (nextVisit.Merop.Description=="" || nextVisit.Merop.Description==null)) {
+			obligateNumber = obligateNumber + 1;
+		}
+		if (nextVisit != null && (nextVisit.Merop.TypeMeropr=="@ref[Catalog_MeropType]:00000000-0000-0000-0000-000000000000" || nextVisit.Merop.TypeMeropr==null)) {
+			obligateNumber = obligateNumber + 1;
+		}
 
     if (checkOrderReason && visit.ReasonForNotOfTakingOrder.EmptyRef()){
     	obligateNumber = obligateNumber + 1;

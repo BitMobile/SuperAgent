@@ -2,7 +2,7 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Visit_Total.css">
 
 	<s:Push Id="nextVisit" Value="$GetNextVisit($workflow.outlet)"></s:Push>
-	<s:Push Id="result" Value="$VisitIsChecked($workflow.visit)"></s:Push>
+	<s:Push Id="result" Value="$VisitIsChecked($workflow.visit,$nextVisit)"></s:Push>
 
 	<c:VerticalLayout>
 
@@ -63,24 +63,47 @@
 				<c:HorizontalLine />
 
 				<c:HorizontalLayout CssClass="grid" >
+					<s:If Test="$nextVisit != null">
+						<s:If Test="$IsEmptyValue($nextVisit.Merop.Description)">
+							<c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout>
+						</s:If>
+						<s:Else>
+							<c:HorizontalLayout CssClass="answered_side_wh"></c:HorizontalLayout>
+						</s:Else>
+					</s:If>
+
 					<c:HorizontalLayout CssClass="empty_side_wh"></c:HorizontalLayout>
 					<c:VerticalLayout>
 						<c:TextView Text="Цель следуюшего мероприятия" CssClass="description_row" ></c:TextView>
 						<s:If Test="$nextVisit != null">
-							<c:EditText Id="nextVisitGoal" Text="$nextVisit.Merop.Description" CssClass="main_row" OnLostFocus="$SetGoal()"></c:EditText>
+							<c:EditText Id="nextVisitGoal" Text="$nextVisit.Merop.Description" CssClass="main_row" Placeholder="—" OnLostFocus="$SetGoal()"></c:EditText>
 						</s:If>
 						<s:Else>
-							<c:EditText Id="nextVisitGoal" Text="$nextVisit.Merop.Description" CssClass="main_row" OnLostFocus="$SetGoal()"></c:EditText>
+							<c:TextView Id="nextVisitGoal" Text="$nextVisit.Merop.Description" CssClass="main_row"></c:TextView>
 						</s:Else>
 					</c:VerticalLayout>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
 
 				<c:HorizontalLayout CssClass="grid" OnClickAction="$ChoseFromCatalog(nextVisitType,$nextVisit)">
+					<s:If Test="$nextVisit != null">
+						<s:If Test="$IsEmptyValue($nextVisit.Merop.TypeMeropr)">
+							<c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout>
+						</s:If>
+						<s:Else>
+							<c:HorizontalLayout CssClass="answered_side_wh"></c:HorizontalLayout>
+						</s:Else>
+					</s:If>
+
 					<c:HorizontalLayout CssClass="empty_side_wh"></c:HorizontalLayout>
 					<c:VerticalLayout>
 						<c:TextView Text="Тип следующего мероприятия" CssClass="description_row"></c:TextView>
-						<c:TextView Id="nextVisitType" Text="$nextVisit.Merop.TypeMeropr.Description" CssClass="main_row"></c:TextView>
+						<s:If Test="$IsEmptyValue($nextVisit.Merop.TypeMeropr) &amp;&amp; $nextVisit != null">
+							<c:TextView Id="nextVisitType" Text="—" CssClass="main_row"></c:TextView>
+						</s:If>
+						<s:Else>
+							<c:TextView Id="nextVisitType" Text="$nextVisit.Merop.TypeMeropr.Description" CssClass="main_row"></c:TextView>
+						</s:Else>
 					</c:VerticalLayout>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />

@@ -142,7 +142,7 @@ function SetToday(){
 }
 function SetDateFiltr(){
 	var header = Translate["#enterDateTime#"];
-		Dialog.Date(header, SetDateNow);
+		Dialog.Date(header,DateTime.Now.Date.AddDays(addDay), SetDateNow);
 }
 function SetDateNow(state, args) {
 	var DiffResult = args.Result.Subtract(DateTime.Now.Date).TotalDays;

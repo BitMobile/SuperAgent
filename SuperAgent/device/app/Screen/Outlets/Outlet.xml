@@ -258,6 +258,38 @@
 			</c:DockLayout>
 			<c:HorizontalLine />
 
+			<c:HorizontalLayout CssClass="grid">
+				<c:VerticalLayout>
+					<c:TextView Text="#NormPassability#" CssClass="description_row"></c:TextView>
+						<c:TextView Id="outletNormPassability" Text="$workflow.outlet.NormPassability" CssClass="not_available_basic"></c:TextView>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
+			<c:HorizontalLayout CssClass="grid">
+				<c:VerticalLayout>
+					<c:TextView Text="#OverdueObligation#" CssClass="description_row"></c:TextView>
+						<c:TextView Id="outletOverdueObligation" Text="$workflow.outlet.OverdueObligation" CssClass="not_available_basic"></c:TextView>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
+			<c:HorizontalLayout CssClass="grid">
+				<c:VerticalLayout>
+					<c:TextView Text="#CommonObligation#" CssClass="description_row"></c:TextView>
+						<c:TextView Id="CommonObligation" Text="$workflow.outlet.CommonObligation" CssClass="not_available_basic"></c:TextView>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
+			<c:HorizontalLayout CssClass="grid">
+				<c:VerticalLayout>
+					<c:TextView Text="#Streams#" CssClass="description_row"></c:TextView>
+						<c:TextView Id="outletStreams" Text="$workflow.outlet.Streams" CssClass="not_available_basic"></c:TextView>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
 			<c:HorizontalLayout CssClass="caption_grid">
 				<c:TextView Text="#additionally#:"></c:TextView>
 			</c:HorizontalLayout>

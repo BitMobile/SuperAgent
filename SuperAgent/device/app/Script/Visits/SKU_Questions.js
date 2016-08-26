@@ -776,14 +776,14 @@ function GalleryCallBack(state, args) {
 //		Dialog.Message("control"+idPar)
 //		Variables["controlVert"+idPar].CssClass = "answer_snapshotVl";
 //		Variables["controlVert"+idPar].Refresh();
-	var weHaveIt = false;
-	for(control in Variables["controlVert"+idPar].Controls){
+	var weHaveIt = Variables.Exists("controlVert"+idPar);
+//	for(control in Variables["controlVert"+idPar].Controls){
 //		Dialog.Message(control.Id);
-		if (control.Id == "controlVertIn"+idPar) {
-				weHaveIt=true;
-				break;
-		}
-	}
+//		if (control.Id == "controlVertIn"+idPar) {
+//				weHaveIt=true;
+//				break;
+//		}
+//	}
 	if (weHaveIt) {
 		for(control in Variables["controlVertIn"+idPar].Controls)
         control.remove();
@@ -812,9 +812,11 @@ function GalleryCallBack(state, args) {
 			single_answ = single_answ + 1;
 		}
 	}
-	Variables["Req"+idPar].Refresh();
-	Variables["Req"+idPar].CssClass = "answered_side_gr";
-	Variables["Req"+idPar].Refresh();
+	if (Variables.Exists("Req"+idPar)) {
+		Variables["Req"+idPar].Refresh();
+		Variables["Req"+idPar].CssClass = "answered_side_gr";
+		Variables["Req"+idPar].Refresh();
+	}
 
 	parentCount.Text = answerednow + " " + Translate["#of#"] + " " + totalanswred;
 
@@ -854,13 +856,17 @@ var rez = obl.ExecuteCount();
 if (rez > 0) {
   //Dialog.Message("ParentReq"+idChail);
   //Variables["ParentReq"+idChail].Refresh();
-  Variables["ParentReq"+idChail].CssClass = "required_side_wh";
-  Variables["ParentReq"+idChail].Refresh();
+		if (Variables.Exists("ParentReq"+idChail)) {
+	  Variables["ParentReq"+idChail].CssClass = "required_side_wh";
+	  Variables["ParentReq"+idChail].Refresh();
+		}
 }
 if (rez == 0) {
-  Variables["ParentReq"+idChail].Refresh();
-  Variables["ParentReq"+idChail].CssClass = "answered_side_wh";
-  Variables["ParentReq"+idChail].Refresh();
+	if (Variables.Exists("ParentReq"+idChail)) {
+	  Variables["ParentReq"+idChail].Refresh();
+		Variables["ParentReq"+idChail].CssClass = "answered_side_wh";
+	  Variables["ParentReq"+idChail].Refresh();
+		}
 }
 
 
@@ -978,12 +984,13 @@ function DeleteFromTableSku(question, sku) {
 	q.AddParameter("answer", null);
 	q.AddParameter("question", question);
 	q.Execute();
-	Variables["control"+idPar].remove();
-	var textToAppend = "<c:VerticalLayout Id='controlVertIn"+idPar+"' CssClass='no_child_answer'>"
-	+"<c:Image Id='control"+idPar+"'/>"
-	+"</c:VerticalLayout>";
-	Variables["controlVert"+idPar].append(textToAppend).refresh();
-
+	if (Variables.Exists("control"+idPar)) {
+		Variables["control"+idPar].remove();
+		var textToAppend = "<c:VerticalLayout Id='controlVertIn"+idPar+"' CssClass='no_child_answer'>"
+		+"<c:Image Id='control"+idPar+"'/>"
+		+"</c:VerticalLayout>";
+		Variables["controlVert"+idPar].append(textToAppend).refresh();
+	}
 	var answerednow = answerinsku;
 	var totalanswred = totalanswerinsku;
 
@@ -995,9 +1002,11 @@ var parentCount = Variables["CountOnPar"+idChail];
 	}else {
 		single_answ = single_answ - 1;
 	}
-Variables["Req"+idPar].Refresh();
-Variables["Req"+idPar].CssClass = "required_side_gr";
-Variables["Req"+idPar].Refresh();
+	if (Variables.Exists("Req"+idPar)) {
+		Variables["Req"+idPar].Refresh();
+		Variables["Req"+idPar].CssClass = "required_side_gr";
+		Variables["Req"+idPar].Refresh();
+	}
 
 parentCount.Text = answerednow + " " + Translate["#of#"] + " " + totalanswred;
 
@@ -1037,13 +1046,17 @@ var rez = obl.ExecuteCount();
 if (rez > 0) {
   //Dialog.Message("ParentReq"+idChail);
   //Variables["ParentReq"+idChail].Refresh();
-  Variables["ParentReq"+idChail].CssClass = "required_side_wh";
-  Variables["ParentReq"+idChail].Refresh();
+	if (Variables.Exists("ParentReq"+idChail)) {
+	  Variables["ParentReq"+idChail].CssClass = "required_side_wh";
+	  Variables["ParentReq"+idChail].Refresh();
+	}
 }
 if (rez == 0) {
-  Variables["ParentReq"+idChail].Refresh();
-  Variables["ParentReq"+idChail].CssClass = "answered_side_wh";
-  Variables["ParentReq"+idChail].Refresh();
+	if (Variables.Exists("ParentReq"+idChail)) {
+	  Variables["ParentReq"+idChail].Refresh();
+	  Variables["ParentReq"+idChail].CssClass = "answered_side_wh";
+	  Variables["ParentReq"+idChail].Refresh();
+	}
 }
 
 

@@ -91,12 +91,17 @@
 					<s:Push Id="index" Value="{$statusCount.Index}"></s:Push>
 
 					<c:DockLayout Id="parent{$index}" CssClass="grid" OnClick="$CreateItemAndShow($sku.SKU, $index, $sku.ShowChild)">
-						<s:If Test="$sku.ObligateredLeft > 0">
-								<c:HorizontalLayout Id="ParentReq{$index}" CssClass="required_side_wh"></c:HorizontalLayout>
+						<s:If Test="$sku.Obligatoriness=='1'">
+							<s:If Test="$sku.ObligateredLeft > 0">
+									<c:HorizontalLayout Id="ParentReq{$index}" CssClass="required_side_wh"></c:HorizontalLayout>
+							</s:If>
+							<s:Else>
+									<c:HorizontalLayout Id="ParentReq{$index}" CssClass="answered_side_wh"></c:HorizontalLayout>
+							</s:Else>
 						</s:If>
 						<s:Else>
-								<c:HorizontalLayout Id="ParentReq{$index}" CssClass="answered_side_wh"></c:HorizontalLayout>
-						</s:Else>
+							<c:HorizontalLayout CssClass="empty_side_gr"></c:HorizontalLayout>
+						</s:Else>	
 						<c:DockLayout>
 							<s:If Test="$sku.BaseUnitQty != NULL">
 								<c:TextView Text="#recommended#" CssClass="single_rec"/>

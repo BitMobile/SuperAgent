@@ -115,12 +115,21 @@ function ChoseFromCatalog(Name){
 		var query = new Query("Select Id,Description From "+tabelName+" Where Outlet = @Outl UNION Select '@ref["+tabelName+"]:00000000-0000-0000-0000-000000000000','—'");
 		query.AddParameter("Outl",OutNow);
 	}else {
-		var query = new Query("Select Id,Description From "+tabelName+" UNION Select '@ref["+tabelName+"]:00000000-0000-0000-0000-000000000000','—'");
+		if (Name == "Profile") {
+			var query = new Query("Select CO.Id, CO.Description From Catalog_OrgType_Profile OP LEFT JOIN Catalog_Profile CO ON CO.Id = OP.Profile Where OP.Ref = @OrgTypeRef UNION Select '@ref["+tabelName+"]:00000000-0000-0000-0000-000000000000','—'");
+			query.AddParameter("OrgTypeRef",OutNow.OrgType);
+		}else {
+			var query = new Query("Select Id,Description From "+tabelName+" UNION Select '@ref["+tabelName+"]:00000000-0000-0000-0000-000000000000','—'");
+		}
 	}
-	Dialog.Choose("#select_answer#"
-	        , query.Execute()
-					,	startKey
-	        , SaveAnswerCatalog);
+	if (Name == "Profile" && OutNow.OrgType == "@ref[Catalog_OrgType]:00000000-0000-0000-0000-000000000000") {
+		Dialog.Message("Выберите сначала тип организации");
+	}else {
+		Dialog.Choose("#select_answer#"
+		, query.Execute()
+		,	startKey
+		, SaveAnswerCatalog);
+	}
 }
 function ValueEmpty(NameVal){
 	if (NameVal == "contactName") {
@@ -180,6 +189,8 @@ function SaveAnswerCatalog(state, args){
 			outletObj.Profile = args.Result;
 		}
 		if (NameControl == "TypeOrg") {
+			$.Profile.Text = "—";
+			outletObj.Profile = DB.EmptyRef("Catalog_Profile");
 			outletObj.OrgType = args.Result;
 		}
 		outletObj.Save();

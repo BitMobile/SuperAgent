@@ -154,22 +154,30 @@ function ChoseFromCatalog(Name){
 		tabelName = "Catalog_Profile";
 		startKey = $.outlet.Profile;
 	}
-
-	var query = new Query("Select Id,Description From "+tabelName+" UNION Select '@ref["+tabelName+"]:00000000-0000-0000-0000-000000000000','—'");
-
-	Dialog.Choose("#select_answer#"
-					, query.Execute()
-					,	startKey
-					, SaveAnswerCatalog
-					, Name);
+	if (Name == "Profile") {
+		var query = new Query("Select CO.Id, CO.Description From Catalog_OrgType_Profile OP LEFT JOIN Catalog_Profile CO ON CO.Id = OP.Profile Where OP.Ref = @OrgTypeRef UNION Select '@ref["+tabelName+"]:00000000-0000-0000-0000-000000000000','—'");
+		query.AddParameter("OrgTypeRef",$.outlet.OrgType);
+	}else {
+		var query = new Query("Select Id,Description From "+tabelName+" UNION Select '@ref["+tabelName+"]:00000000-0000-0000-0000-000000000000','—'");
+	}
+	if (Name == "Profile" && $.outlet.OrgType == "@ref[Catalog_OrgType]:00000000-0000-0000-0000-000000000000") {
+		Dialog.Message("Выберите сначала тип организации");
+	}else {
+		Dialog.Choose("#select_answer#"
+		, query.Execute()
+		,	startKey
+		, SaveAnswerCatalog
+		, Name);
+	}
 }
 function SaveAnswerCatalog(state, args){
-	Name = state;
+	var Name = state;
 	var outletObj = $.outlet.GetObject();
 	if (Name == "Segment") {
 		outletObj.Segment = args.Result;
 	}
 	if (Name == "TypeOrg") {
+		outletObj.Profile = DB.EmptyRef("Catalog_Profile");
 		outletObj.OrgType = args.Result;
 	}
 	if (Name == "Profile") {

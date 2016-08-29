@@ -260,16 +260,28 @@
 
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
-					<c:TextView Text="#NormPassability#" CssClass="description_row"></c:TextView>
-						<c:TextView Id="outletNormPassability" Text="$workflow.outlet.NormPassability" CssClass="not_available_basic"></c:TextView>
+					<s:If Test="$workflow.outlet.NormPassability &lt; 90">
+						<c:TextView Text="#NormPassability#" CssClass="red_description_row"></c:TextView>
+							<c:TextView Id="outletNormPassability" Text="$workflow.outlet.NormPassability" CssClass="red_not_available_basic"></c:TextView>
+					</s:If>
+					<s:Else>
+						<c:TextView Text="#NormPassability#" CssClass="description_row"></c:TextView>
+							<c:TextView Id="outletNormPassability" Text="$workflow.outlet.NormPassability" CssClass="not_available_basic"></c:TextView>
+					</s:Else>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
-					<c:TextView Text="#OverdueObligation#" CssClass="description_row"></c:TextView>
-						<c:TextView Id="outletOverdueObligation" Text="$workflow.outlet.OverdueObligation" CssClass="not_available_basic"></c:TextView>
+					<s:If Test="$workflow.outlet.OverdueObligation == ''">
+						<c:TextView Text="#OverdueObligation#" CssClass="description_row"></c:TextView>
+							<c:TextView Id="outletOverdueObligation" Text="$workflow.outlet.OverdueObligation" CssClass="not_available_basic"></c:TextView>
+					</s:If>
+					<s:Else>
+						<c:TextView Text="#OverdueObligation#" CssClass="red_description_row"></c:TextView>
+							<c:TextView Id="outletOverdueObligation" Text="$workflow.outlet.OverdueObligation" CssClass="red_not_available_basic"></c:TextView>
+					</s:Else>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -277,7 +289,7 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#CommonObligation#" CssClass="description_row"></c:TextView>
-						<c:TextView Id="CommonObligation" Text="$workflow.outlet.CommonObligation" CssClass="not_available_basic"></c:TextView>
+						<c:TextView Id="outletCommonObligation" Text="$workflow.outlet.CommonObligation" CssClass="not_available_basic"></c:TextView>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

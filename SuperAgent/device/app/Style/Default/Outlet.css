@@ -263,3 +263,20 @@
 .value{
 	placeholder-color: #8e8e93;
 }
+
+.red_description_row {
+	width: 100%;
+	height: 23%;
+	white-space: normal;
+	font: 62% Arial;
+	color: #f74747;
+}
+
+.red_not_available_basic{
+	width: 100%;
+	height: 40%;
+	white-space: normal;
+	placeholder-color: #f74747;
+	font: 42% Arial;
+	color: #f74747;
+}

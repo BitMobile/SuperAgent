@@ -588,7 +588,7 @@ function FocusIfHasEditText(fieldName, editOutletParameters, primaryParameterNam
 }
 
 function ShowGoalContains(){
-	Workflow.Action("ShowGoalContains", [])
+	Workflow.Action("ShowGoalContains", [$.Merop])
 }
 
 function DateHandler(state, args) {

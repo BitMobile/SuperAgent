@@ -223,7 +223,7 @@ function GetOutlets(searchText) {
 	else
 		outletStatus = " 3 AS OutletStatus";
 
-	q.Text = "SELECT O.Id, O.Description, O.Address, 'main_row' AS Style, " + outletStatus +
+	q.Text = "SELECT O.Id, O.Description, O.LegalName, 'main_row' AS Style, " + outletStatus +
 		" FROM Catalog_Outlet O " +
 		showOutlet + createOrder + createReturn + search + " ORDER BY O.Description LIMIT 500";
 
@@ -1078,9 +1078,11 @@ function CheckEmptyOutletFields(outlet) {
 	var correctAddr = CheckIfEmpty(outlet, "Address", "", "", false);
 	if (correctAddr) {
 		return true;
+	}else {
+		outletobj = outlet.GetObject();
+		outletobj.Address = "адрес";
 	}
-	Dialog.Message("#couldnt_be_cleaned#");
-	return false;
+	return true;
 }
 
 function CheckIfEmpty(entity, attribute, objectType, objectName, deleteIfEmpty) {

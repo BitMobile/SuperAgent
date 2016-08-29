@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Outlet.css">
 
+	<s:Push Id="Hist" Value="$param1" />
+
 	<c:DockLayout>
 
 		<c:DockLayout CssClass="top_navigator">
@@ -15,10 +17,16 @@
 		</c:DockLayout>
 		<c:HorizontalLine />
 
+		<s:If Test="$Hist == null">
 			<c:DockLayout>
 				<c:MemoEdit CssClass="BIGMemo" Text="$workflow.visit.FactMerop.GoalContains" Id="TextForGoalContains"/>
 			</c:DockLayout>
-
+		</s:If>
+		<s:Else>
+			<c:DockLayout>
+				<c:MemoEdit CssClass="BIGMemo" Text="$Hist.GoalContains" Id="TextForGoalContains" Enabled="False"/>
+			</c:DockLayout>
+		</s:Else>
 	</c:DockLayout>
 
 </c:Screen>

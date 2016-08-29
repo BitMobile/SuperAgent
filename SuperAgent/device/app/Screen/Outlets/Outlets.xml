@@ -75,7 +75,7 @@
 						</s:If>
 						<c:VerticalLayout>
 							<c:TextView Text="$outlet.Description" CssClass="$outlet.Style"></c:TextView>
-							<c:TextView Text="$outlet.Address" CssClass="description_row"></c:TextView>
+							<c:TextView Text="$outlet.LegalName" CssClass="description_row"></c:TextView>
 						</c:VerticalLayout>
 						<c:Image />
 					</c:DockLayout>

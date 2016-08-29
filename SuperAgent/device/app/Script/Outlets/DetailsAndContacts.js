@@ -47,7 +47,7 @@ function DoBackWithSaveMeropContact(contact){
 	DoBack();
 }
 function GoToHisVis(enter,visitHis){
-	Dialog.Message(visitHis);
+	//Dialog.Message(visitHis);
 	$.AddGlobal("VisitHis", visitHis);
 	Workflow.Action("Select",[]);
 }

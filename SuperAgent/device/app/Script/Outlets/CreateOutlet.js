@@ -1,4 +1,4 @@
-﻿
+
 var requiredLeft;
 
 function CreateOutlet(outlet) {
@@ -48,9 +48,11 @@ function SetSideStyles(outlet){
 
 	requiredLeft = parseInt(0);
 	sideStyle.Add("outletName", ClassValue(outlet.Description));
-	sideStyle.Add("outletAddress", ClassValue(outlet.Address));
-	sideStyle.Add("outletClass", ClassValue(outlet.Class));
-	sideStyle.Add("outletType", ClassValue(outlet.Type));
+	sideStyle.Add("outletNameFull", ClassValue(outlet.LegalName));
+	sideStyle.Add("Segment", ClassValue(outlet.Segment));
+	sideStyle.Add("TypeOrg", ClassValue(outlet.OrgType));
+
+//	Dialog.Message(outlet.LegalName);
 	return sideStyle;
 }
 
@@ -58,7 +60,7 @@ function ClassValue(value)
 {
 	requiredLeft = typeof requiredLeft == "undefined" ? parseInt(0) : requiredLeft;
 
-	if (value == "" || value=="—" || value == DB.EmptyRef("Catalog.OutletType") || value == DB.EmptyRef("Catalog.OutletClass"))
+	if (value == null || value == "" || value=="—" || value == "@ref[Catalog_BitSegment]:00000000-0000-0000-0000-000000000000" || value == "@ref[Catalog_OrgType]:00000000-0000-0000-0000-000000000000" || value == "@ref[Catalog_Profile]:00000000-0000-0000-0000-000000000000")
 	{
 		requiredLeft = requiredLeft + 1;
 		return "required_side_wh";
@@ -80,9 +82,8 @@ function SaveNewOutlet(outlet) {
 
 	outlet = outlet.GetObject();
 
-	if (outlet.Description != null && outlet.Address != null){
-		if (TrimAll(outlet.Description) != "" && TrimAll(outlet.Address) != "" && outlet.Class!=DB.EmptyRef("Catalog_OutletClass")
-				&& outlet.Type!=DB.EmptyRef("Catalog_OutletType") && $.territory!=null) {
+	if (outlet.Description != null){
+		if (TrimAll(outlet.Description) != "" && $.territory!=null) {
 
 			var to = DB.Create("Catalog.Territory_Outlets");
 			to.Ref = $.territory;
@@ -135,4 +136,46 @@ function TerritoryCallBack(state, args) {
 		$.territory = DB.EmptyRef("Catalog_Territory");
 		control.Text = String.IsNullOrEmpty(args.Result) ? "—" : args.Result;
 	}
+}
+
+function ChoseFromCatalog(Name){
+	//Dialog.Message(Name);
+	var tabelName = "";
+	var startKey = "";
+	if (Name == "Segment") {
+		tabelName = "Catalog_BitSegment";
+		startKey = $.outlet.Segment;
+	}
+	if (Name == "TypeOrg") {
+		tabelName = "Catalog_OrgType";
+		startKey = $.outlet.OrgType;
+	}
+	if (Name == "Profile") {
+		tabelName = "Catalog_Profile";
+		startKey = $.outlet.Profile;
+	}
+
+	var query = new Query("Select Id,Description From "+tabelName+" UNION Select '@ref["+tabelName+"]:00000000-0000-0000-0000-000000000000','—'");
+
+	Dialog.Choose("#select_answer#"
+					, query.Execute()
+					,	startKey
+					, SaveAnswerCatalog
+					, Name);
+}
+function SaveAnswerCatalog(state, args){
+	Name = state;
+	var outletObj = $.outlet.GetObject();
+	if (Name == "Segment") {
+		outletObj.Segment = args.Result;
+	}
+	if (Name == "TypeOrg") {
+		outletObj.OrgType = args.Result;
+	}
+	if (Name == "Profile") {
+		outletObj.Profile = args.Result;
+	}
+
+	outletObj.Save();
+	DoRefresh(null, outletObj.Id);
 }

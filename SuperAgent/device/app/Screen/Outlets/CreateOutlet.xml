@@ -50,6 +50,15 @@
 			</s:Else>
 			<c:HorizontalLine />
 
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(FullOutletName, 1)">
+				<c:HorizontalLayout CssClass="$sideStyle.outletNameFull"></c:HorizontalLayout>
+				<c:VerticalLayout>
+					<c:TextView Text="#descriptionFULL#" CssClass="description_row"></c:TextView>
+					<c:MemoEdit Id="FullOutletName" Value="$outlet.LegalName" Placeholder="—" CssClass="main_row" OnLostFocus="$DoRefresh($outlet)"/>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(outletName, 1)">
 				<c:HorizontalLayout CssClass="$sideStyle.outletName"></c:HorizontalLayout>
 				<c:VerticalLayout>
@@ -59,52 +68,50 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid" OnClick="$DoSelect($territory,Id,$outletTerritory,#outlet_territory#)">
+			<c:HorizontalLayout CssClass="grid" >
+				<c:HorizontalLayout CssClass="$sideStyle.Segment"></c:HorizontalLayout>
+				<c:VerticalLayout OnClickAction="$ChoseFromCatalog(Segment)">
+					<c:TextView Text="#Segment#" CssClass="description_row"></c:TextView>
+					<s:If Test="$IsEmptyValue($outlet.Segment)">
+						<c:TextView Id="Segment" Text="—" CssClass="main_row"/>
+					</s:If>
+					<s:Else>
+						<c:TextView Id="Segment" Text="$outlet.Segment.Description" CssClass="main_row"/>
+					</s:Else>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
+			<c:HorizontalLayout CssClass="grid" >
+				<c:HorizontalLayout CssClass="$sideStyle.TypeOrg"></c:HorizontalLayout>
+				<c:VerticalLayout OnClickAction="$ChoseFromCatalog(TypeOrg)">
+					<c:TextView Text="#TypeOrg#" CssClass="description_row"></c:TextView>
+					<s:If Test="$IsEmptyValue($outlet.OrgType)">
+						<c:TextView Id="TypeOrg" Text="—" CssClass="main_row"/>
+					</s:If>
+					<s:Else>
+						<c:TextView Id="TypeOrg" Text="$outlet.OrgType.Description" CssClass="main_row"/>
+					</s:Else>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
+			<c:HorizontalLayout CssClass="grid" >
 				<c:HorizontalLayout CssClass="empty_side_wh"></c:HorizontalLayout>
-				<c:VerticalLayout>
-					<c:TextView Text="#outlet_territory#" CssClass="description_row"></c:TextView>
-					<c:TextView Id="outletTerritory" Text="$territory.Description" CssClass="main_row" />
+				<c:VerticalLayout OnClickAction="$ChoseFromCatalog(Profile)">
+					<c:TextView Text="#Profile#" CssClass="description_row"></c:TextView>
+					<s:If Test="$IsEmptyValue($outlet.Profile)">
+						<c:TextView Id="Profile" Text="—" CssClass="main_row"/>
+					</s:If>
+					<s:Else>
+						<c:TextView Id="Profile" Text="$outlet.Profile.Description" CssClass="main_row"/>
+					</s:Else>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(outletAddress, 1)">
-				<c:HorizontalLayout CssClass="$sideStyle.outletAddress"></c:HorizontalLayout>
-				<c:VerticalLayout>
-					<c:TextView Text="#address#" CssClass="description_row"></c:TextView>
-					<c:MemoEdit Id="outletAddress" Value="$outlet.Address" Placeholder="—" CssClass="main_row" OnLostFocus="$DoRefresh($outlet)"/>
-				</c:VerticalLayout>
-			</c:HorizontalLayout>
-			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid" OnClick="$DoSelect($outlet,Class,$outletClass,#outlet_class#)">
-				<c:HorizontalLayout CssClass="$sideStyle.outletClass"></c:HorizontalLayout>
-				<c:VerticalLayout>
-					<c:TextView Text="#outlet_class#" CssClass="description_row"></c:TextView>
-					<c:EditText Id="outletClass" Text="$outlet.Class.Description" Placeholder="—" Enabled="False" CssClass="main_row" />
-				</c:VerticalLayout>
-			</c:HorizontalLayout>
-			<c:HorizontalLine />
-
-			<c:HorizontalLayout CssClass="grid" OnClick="$DoSelect($outlet,Type,$outletType,#outlet_type#)">
-				<c:HorizontalLayout CssClass="$sideStyle.outletType"></c:HorizontalLayout>
-				<c:VerticalLayout>
-					<c:TextView Text="#outlet_type#" CssClass="description_row"></c:TextView>
-					<c:EditText Id="outletType" Text="$outlet.Type.Description" Placeholder="—" Enabled="False" CssClass="main_row" />
-				</c:VerticalLayout>
-			</c:HorizontalLayout>
-			<c:HorizontalLine />
 			<s:Push Id="hasDistr" Value="$hasDistr()"></s:Push>
-			<s:If Test="$hasDistr">
-				<c:HorizontalLayout CssClass="grid" OnClick="$DoSelect($outlet,Distributor,$outletDistr,#partner#)">
-					<c:HorizontalLayout CssClass="empty_side_wh"></c:HorizontalLayout>
-					<c:VerticalLayout>
-						<c:TextView Text="#partner#" CssClass="description_row"></c:TextView>
-						<c:EditText Id="outletDistr" Text="$outlet.Distributor.Description" Placeholder="—" Enabled="False" CssClass="main_row" />
-					</c:VerticalLayout>
-				</c:HorizontalLayout>
-				<c:HorizontalLine />
-		  </s:If>
 
 			<c:HorizontalLayout CssClass="end_of_block" />
 		</c:ScrollView>

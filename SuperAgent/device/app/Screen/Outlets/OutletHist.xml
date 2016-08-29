@@ -73,7 +73,7 @@
 					<c:CheckBox Id="ChkBox" CssClass="ForChecbox"/>
 				</c:VerticalLayout>
 				<c:VerticalLayout CssClass="VLCheckName">
-					<c:TextView Text="Совместно с руководителем"/>
+					<c:TextView Text="Совместно с руководителем" CssClass="VLCheckNameNotAvail"/>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -102,7 +102,7 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid">
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$ShowGoalContains()">
 				<c:VerticalLayout>
 					<c:TextView Text="#GoalContains#" CssClass="description_row"></c:TextView>
 					<c:TextView Id="GoalContains" Text="$Merop.GoalContains" CssClass="not_available_basic"></c:TextView>

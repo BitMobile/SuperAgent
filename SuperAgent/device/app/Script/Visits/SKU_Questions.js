@@ -441,13 +441,16 @@ function RefreshScreen(control, search, sku, question, answerType, indexpar, ans
 		if (rez > 0) {
 			//Dialog.Message("ParentReq"+idChail);
 			//Variables["ParentReq"+idChail].Refresh();
-			Variables["ParentReq"+idChail].CssClass = "required_side_wh";
-			Variables["ParentReq"+idChail].Refresh();
+			if (Variables.Exists("ParentReq"+idChail)) {
+				Variables["ParentReq"+idChail].CssClass = "required_side_wh";
+				Variables["ParentReq"+idChail].Refresh();
+			}
 		}
 		if (rez == 0) {
-			Variables["ParentReq"+idChail].Refresh();
+			if (Variables.Exists("ParentReq"+idChail)) {
 			Variables["ParentReq"+idChail].CssClass = "answered_side_wh";
 			Variables["ParentReq"+idChail].Refresh();
+		}
 		}
 	}
 	//obligateredLeft = obligateredLeft - 1;
@@ -467,10 +470,10 @@ function RefreshScreen(control, search, sku, question, answerType, indexpar, ans
 			Variables["obligateredInfo"].Text = obligateredLeft;
 			Variables["obligateredButton"].Text = obligateredLeft+")";
 		}
-
-		Variables["Req"+idPar].Refresh();
-		Variables["Req"+idPar].CssClass = "answered_side_gr";
-		Variables["Req"+idPar].Refresh();
+		if (Variables.Exists("Req"+idPar)) {
+			Variables["Req"+idPar].CssClass = "answered_side_gr";
+			Variables["Req"+idPar].Refresh();
+		}
 		//Dialog.Message("ParentReq"+idChail);
 
 		//setScroll = true;
@@ -481,10 +484,10 @@ function RefreshScreen(control, search, sku, question, answerType, indexpar, ans
 		obligateredLeft = parseInt(obligateredLeft) + 1;
 		Variables["obligateredButton"].Text = obligateredLeft+")";
 		Variables["obligateredInfo"].Text = obligateredLeft;
-		//Dialog.Message("RED");
-		Variables["Req"+idPar].Refresh();
-		Variables["Req"+idPar].CssClass = "required_side_gr";
-		Variables["Req"+idPar].Refresh();
+		if (Variables.Exists("Req"+idPar)) {
+			Variables["Req"+idPar].CssClass = "required_side_gr";
+			Variables["Req"+idPar].Refresh();
+		}
 
 	}
 	//Workflow.Refresh([search]);
@@ -606,9 +609,10 @@ if (ShowDoch) {
 			}
 		}
 		if (weHaveObl) {
-			Variables["Req"+idPar].Refresh();
-			Variables["Req"+idPar].CssClass = "answered_side_gr";
-			Variables["Req"+idPar].Refresh();
+			if (Variables.Exists("Req"+idPar)) {
+				Variables["Req"+idPar].CssClass = "answered_side_gr";
+				Variables["Req"+idPar].Refresh();
+			}
 		}
 
 	}else {
@@ -622,9 +626,10 @@ if (ShowDoch) {
 		}
 		TempControl.Text = "—";
 		if (weHaveObl) {
-			Variables["Req"+idPar].Refresh();
-			Variables["Req"+idPar].CssClass = "required_side_gr";
-			Variables["Req"+idPar].Refresh();
+			if (Variables.Exists("Req"+idPar)) {
+				Variables["Req"+idPar].CssClass = "required_side_gr";
+				Variables["Req"+idPar].Refresh();
+			}
 		}
 	}
 
@@ -664,13 +669,16 @@ var rez = obl.ExecuteCount();
 if (rez > 0) {
   //Dialog.Message("ParentReq"+idChail);
   //Variables["ParentReq"+idChail].Refresh();
+	if (Variables.Exists("ParentReq"+idChail)) {
   Variables["ParentReq"+idChail].CssClass = "required_side_wh";
   Variables["ParentReq"+idChail].Refresh();
 }
+}
 if (rez == 0) {
-  Variables["ParentReq"+idChail].Refresh();
+if (Variables.Exists("ParentReq"+idChail)) {
   Variables["ParentReq"+idChail].CssClass = "answered_side_wh";
   Variables["ParentReq"+idChail].Refresh();
+}
 }
 
 
@@ -785,23 +793,36 @@ function GalleryCallBack(state, args) {
 //		}
 //	}
 	if (weHaveIt) {
-		for(control in Variables["controlVertIn"+idPar].Controls)
-        control.remove();
-		//		Dialog.Message()
-		Variables["controlVertIn"+idPar].after("<c:Image Id='control"+idPar+"' CssClass='answer_snapshot'></c:Image>").refresh();
-		Variables["controlVertIn"+idPar].remove();
+		if (Variables.Exists("controlVertIn"+idPar)) {
+			if (Variables.Exists("control"+idPar)) {
+				if (Variables["control"+idPar].CssClass == "answer_snapshot") {
+				}else {
+					for(control in Variables["controlVertIn"+idPar].Controls)
+					control.remove();
+					Variables["controlVertIn"+idPar].after("<c:Image Id='control"+idPar+"' CssClass='answer_snapshot'></c:Image>").refresh();
+					Variables["controlVertIn"+idPar].remove();
+				}
+			}else {
+				for(control in Variables["controlVertIn"+idPar].Controls)
+				control.remove();
+				Variables["controlVertIn"+idPar].after("<c:Image Id='control"+idPar+"' CssClass='answer_snapshot'></c:Image>").refresh();
+				Variables["controlVertIn"+idPar].remove();
+			}
+
+		}
 	}
+if (Variables.Exists("control"+idPar)) {
+	Variables["control"+idPar].CssClass = "answer_snapshot";
+	Variables["control"+idPar].Refresh();
+	Variables["control"+idPar].Source = newFile.FullFileName;
+	Variables["control"+idPar].Refresh();
+}
+if (Variables.Exists("controlVert"+idPar)) {
+	Variables["controlVert"+idPar].Refresh();
+}
 
-		Variables["control"+idPar].CssClass = "answer_snapshot";
-		Variables["control"+idPar].Refresh();
-		Variables["control"+idPar].Source = newFile.FullFileName;
-		Variables["control"+idPar].Refresh();
-		Variables["controlVert"+idPar].Refresh();
-
-		//Dialog.Message(relouded);
 		var answerednow = answerinsku;
 		var totalanswred = totalanswerinsku;
-
 
 		var parentCount = Variables["CountOnPar"+idChail];
 	if (buferansw) {
@@ -813,7 +834,6 @@ function GalleryCallBack(state, args) {
 		}
 	}
 	if (Variables.Exists("Req"+idPar)) {
-		Variables["Req"+idPar].Refresh();
 		Variables["Req"+idPar].CssClass = "answered_side_gr";
 		Variables["Req"+idPar].Refresh();
 	}

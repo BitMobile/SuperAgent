@@ -112,7 +112,7 @@ function ChoseFromCatalog(Name){
 
 //	var items = [];
 	if (Name == "MaybeDeal") {
-		var query = new Query("Select Id,Description From "+tabelName+" Where Outlet = @Outl UNION Select '@ref["+tabelName+"]:00000000-0000-0000-0000-000000000000','—'");
+		var query = new Query("Select CMD.Id,CMD.Description From Catalog_MayBeDeal_OutletIn CMO LEFT JOIN Catalog_MayBeDeal CMD ON CMD.Id = CMO.Ref Where CMO.OutletIn = @Outl UNION Select '@ref["+tabelName+"]:00000000-0000-0000-0000-000000000000','—'");
 		query.AddParameter("Outl",OutNow);
 	}else {
 		if (Name == "Profile") {

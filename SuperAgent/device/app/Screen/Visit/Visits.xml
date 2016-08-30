@@ -4,7 +4,7 @@
 	<s:Push Id="search" Value="$param1" />
 
 	<c:SwipeHorizontalLayout Id="swipe_layout" Index="1">
-		
+
 		<s:Include File="\Components\SideMenu.xml"/>
 
 		<c:VerticalLayout>
@@ -54,7 +54,7 @@
 				<c:DockLayout>
 					<c:Image />
 					<c:EditText Id="edtSearch" Text="$search" Placeholder="#search#"></c:EditText>
-				</c:DockLayout>			
+				</c:DockLayout>
 			</c:DockLayout>
 			<c:HorizontalLayout CssClass="shadowLine"></c:HorizontalLayout>
 
@@ -73,16 +73,16 @@
 						<s:Push Id="planOutlet" Value="$pOutlet.Outlet"></s:Push>
 
 						<c:DockLayout CssClass="grid" OnClickAction="$AddGlobalAndAction($pOutlet.Ref, $planOutlet, Select)">
-							<s:If Test="$pOutlet.OutletStatus == 0">
+							<s:If Test="$pOutlet.NPOO == 0">
 								<c:Image CssClass="blue_mark" />
 							</s:If>
-							<s:If Test="$pOutlet.OutletStatus == 1">
+							<s:If Test="$pOutlet.NPOO == 1">
 								<c:Image CssClass="yellow_mark" />
 							</s:If>
-							<s:If Test="$pOutlet.OutletStatus == 2">
+							<s:If Test="$pOutlet.NPOO == 2">
 								<c:Image CssClass="y_blue_mark" />
 							</s:If>
-							<s:If Test="$pOutlet.OutletStatus == 3">
+							<s:If Test="$pOutlet.NPOO == 3">
 								<c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
 							</s:If>
 							<c:Image />
@@ -95,7 +95,7 @@
 									<c:TextView Text="{$planOutlet.Address}" CssClass="description_row"></c:TextView>
 								</c:HorizontalLayout>
 							</c:VerticalLayout>
-							
+
 						</c:DockLayout>
 						<c:HorizontalLine />
 
@@ -116,16 +116,16 @@
 					<s:Iterator Id="pOutlet" Value="$commitedVisits">
 
 						<c:DockLayout CssClass="grid">
-							<s:If Test="$pOutlet.OutletStatus == 0">
+							<s:If Test="$pOutlet.NPOO == 0">
 								<c:Image CssClass="blue_mark" />
 							</s:If>
-							<s:If Test="$pOutlet.OutletStatus == 1">
+							<s:If Test="$pOutlet.NPOO == 1">
 								<c:Image CssClass="yellow_mark" />
 							</s:If>
-							<s:If Test="$pOutlet.OutletStatus == 2">
+							<s:If Test="$pOutlet.NPOO == 2">
 								<c:Image CssClass="y_blue_mark" />
 							</s:If>
-							<s:If Test="$pOutlet.OutletStatus == 3">
+							<s:If Test="$pOutlet.NPOO == 3">
 								<c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
 							</s:If>
 							<c:VerticalLayout>
@@ -150,23 +150,23 @@
 				<c:ScrollView Id="grScrollView">
 					<s:Iterator Id="uOutlet" Value="$unscheduledOutlets">
 						<c:DockLayout CssClass="grid" OnClickAction="$AddGlobalAndAction(null, $uOutlet.Outlet, Select)">
-							<s:If Test="$uOutlet.OutletStatus == 0">
+							<s:If Test="$uOutlet.NPOO == 0">
 								<c:Image CssClass="blue_mark" />
 							</s:If>
-							<s:If Test="$uOutlet.OutletStatus == 1">
+							<s:If Test="$uOutlet.NPOO == 1">
 								<c:Image CssClass="yellow_mark" />
 							</s:If>
-							<s:If Test="$uOutlet.OutletStatus == 2">
+							<s:If Test="$uOutlet.NPOO == 2">
 								<c:Image CssClass="y_blue_mark" />
 							</s:If>
-							<s:If Test="$uOutlet.OutletStatus == 3">
+							<s:If Test="$uOutlet.NPOO == 3">
 								<c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
 							</s:If>
 							<c:Image />
 							<c:VerticalLayout>
 								<c:TextView Text="$uOutlet.Description" CssClass="main_row"></c:TextView>
 								<c:TextView Text="{$uOutlet.Address}" CssClass="description_row"></c:TextView>
-							</c:VerticalLayout>						
+							</c:VerticalLayout>
 						</c:DockLayout>
 						<c:HorizontalLine />
 					</s:Iterator>

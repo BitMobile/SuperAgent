@@ -457,18 +457,26 @@ function RefreshScreen(control, search, sku, question, answerType, indexpar, ans
 	if (reqorno==1 && (buferansw && !havenewotv)) {
 		obligateredLeft = parseInt(obligateredLeft) - 1;
 		if (obligateredLeft==0) {
-			Variables["obligateredButton"].Text = "";
-			Variables["imagForw"].Refresh();
-			Variables["imagForw"].CssClass = "imgForw";
-			Variables["imagForw"].Refresh();
-			Variables["TextForw"].Text = Translate["#forward#"];
-			Variables["TextForw"].Refresh();
-			Variables["TextForw"].CssClass = "TextViewInTopNorm";
-			Variables["TextForw"].Refresh();
-
+			if (Variables.Exists("obligateredButton")) {
+				Variables["obligateredButton"].Text = "";
+			}
+			if (Variables.Exists("imagForw")) {
+				Variables["imagForw"].CssClass = "imgForw";
+				Variables["imagForw"].Refresh();
+			}
+			if (Variables.Exists("TextForw")) {
+				Variables["TextForw"].Text = Translate["#forward#"];
+				Variables["TextForw"].Refresh();
+				Variables["TextForw"].CssClass = "TextViewInTopNorm";
+				Variables["TextForw"].Refresh();
+			}
 		}else {
-			Variables["obligateredInfo"].Text = obligateredLeft;
+			if (Variables.Exists("obligateredInfo")) {
+				Variables["obligateredInfo"].Text = obligateredLeft;
+			}
+			if (Variables.Exists("obligateredButton")) {
 			Variables["obligateredButton"].Text = obligateredLeft+")";
+			}
 		}
 		if (Variables.Exists("Req"+idPar)) {
 			Variables["Req"+idPar].CssClass = "answered_side_gr";
@@ -482,8 +490,10 @@ function RefreshScreen(control, search, sku, question, answerType, indexpar, ans
 	}
 	if (reqorno==1 && (!buferansw && havenewotv)) {
 		obligateredLeft = parseInt(obligateredLeft) + 1;
-		Variables["obligateredButton"].Text = obligateredLeft+")";
-		Variables["obligateredInfo"].Text = obligateredLeft;
+		if (Variables.Exists("obligateredInfo")) {
+			Variables["obligateredButton"].Text = obligateredLeft+")";
+			Variables["obligateredInfo"].Text = obligateredLeft;
+		}
 		if (Variables.Exists("Req"+idPar)) {
 			Variables["Req"+idPar].CssClass = "required_side_gr";
 			Variables["Req"+idPar].Refresh();
@@ -649,18 +659,25 @@ var q = new Query("SELECT DISTINCT S.Question, S.Description, S.SKU " +
 q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 obligateredLeft = q.ExecuteCount().ToString();
 if (obligateredLeft==0) {
-  Variables["obligateredButton"].Text = "";
-  Variables["imagForw"].Refresh();
-  Variables["imagForw"].CssClass = "imgForw";
-  Variables["imagForw"].Refresh();
-  Variables["TextForw"].Text = Translate["#forward#"];
-  Variables["TextForw"].Refresh();
-  Variables["TextForw"].CssClass = "TextViewInTopNorm";
-  Variables["TextForw"].Refresh();
+	if (Variables.Exists("obligateredButton")) {
+		Variables["obligateredButton"].Text = "";
+	}
+	if (Variables.Exists("imagForw")) {
+	  Variables["imagForw"].CssClass = "imgForw";
+	  Variables["imagForw"].Refresh();
+	}
+	if (Variables.Exists("TextForw")) {
+		Variables["TextForw"].Text = Translate["#forward#"];
+		Variables["TextForw"].Refresh();
+		Variables["TextForw"].CssClass = "TextViewInTopNorm";
+		Variables["TextForw"].Refresh();
+	}
 
 }else {
-  Variables["obligateredInfo"].Text = obligateredLeft;
-  Variables["obligateredButton"].Text = obligateredLeft+")";
+	if (Variables.Exists("obligateredInfo")) {
+		Variables["obligateredInfo"].Text = obligateredLeft;
+		Variables["obligateredButton"].Text = obligateredLeft+")";
+	}
 }
 var obl =new Query("SELECT Question FROM USR_SKUQuestions WHERE Obligatoriness = @obl And SKU = @sku And Answer IS NULL");
 obl.AddParameter("obl",1);
@@ -856,18 +873,27 @@ if (Variables.Exists("controlVert"+idPar)) {
 q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 obligateredLeft = q.ExecuteCount().ToString();
 if (obligateredLeft==0) {
-  Variables["obligateredButton"].Text = "";
-  Variables["imagForw"].Refresh();
-  Variables["imagForw"].CssClass = "imgForw";
-  Variables["imagForw"].Refresh();
-  Variables["TextForw"].Text = Translate["#forward#"];
-  Variables["TextForw"].Refresh();
-  Variables["TextForw"].CssClass = "TextViewInTopNorm";
-  Variables["TextForw"].Refresh();
+	if (Variables.Exists("obligateredButton")) {
+		Variables["obligateredButton"].Text = "";
+	}
+  if (Variables.Exists("imagForw")) {
+		Variables["imagForw"].CssClass = "imgForw";
+		Variables["imagForw"].Refresh();
+  }
+	if (Variables.Exists("TextForw")) {
+		Variables["TextForw"].Text = Translate["#forward#"];
+		Variables["TextForw"].Refresh();
+		Variables["TextForw"].CssClass = "TextViewInTopNorm";
+		Variables["TextForw"].Refresh();
+	}
 
 }else {
-  Variables["obligateredInfo"].Text = obligateredLeft;
-  Variables["obligateredButton"].Text = obligateredLeft+")";
+	if (Variables.Exists("obligateredInfo")) {
+		Variables["obligateredInfo"].Text = obligateredLeft;
+	}
+	if (Variables.Exists("obligateredButton")) {
+		Variables["obligateredButton"].Text = obligateredLeft+")";
+	}
 }
 var obl =new Query("SELECT Question FROM USR_SKUQuestions WHERE Obligatoriness = @obl And SKU = @sku And Answer IS NULL");
 obl.AddParameter("obl",1);
@@ -1023,7 +1049,6 @@ var parentCount = Variables["CountOnPar"+idChail];
 		single_answ = single_answ - 1;
 	}
 	if (Variables.Exists("Req"+idPar)) {
-		Variables["Req"+idPar].Refresh();
 		Variables["Req"+idPar].CssClass = "required_side_gr";
 		Variables["Req"+idPar].Refresh();
 	}
@@ -1046,18 +1071,28 @@ var q = new Query("SELECT DISTINCT S.Question, S.Description, S.SKU " +
 q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 obligateredLeft = q.ExecuteCount().ToString();
 if (obligateredLeft==0) {
-  Variables["obligateredButton"].Text = "";
-  Variables["imagForw"].Refresh();
-  Variables["imagForw"].CssClass = "imgForw";
-  Variables["imagForw"].Refresh();
-  Variables["TextForw"].Text = Translate["#forward#"];
-  Variables["TextForw"].Refresh();
-  Variables["TextForw"].CssClass = "TextViewInTopNorm";
-  Variables["TextForw"].Refresh();
+	if (Variables.Exists("obligateredButton")) {
+		Variables["obligateredButton"].Text = "";
+	}
+	if (Variables.Exists("imagForw")) {
+		Variables["imagForw"].CssClass = "imgForw";
+		Variables["imagForw"].Refresh();
+	}
+
+	if (Variables.Exists("TextForw")) {
+		Variables["TextForw"].Text = Translate["#forward#"];
+		Variables["TextForw"].Refresh();
+		Variables["TextForw"].CssClass = "TextViewInTopNorm";
+		Variables["TextForw"].Refresh();
+	}
 
 }else {
-  Variables["obligateredInfo"].Text = obligateredLeft;
-  Variables["obligateredButton"].Text = obligateredLeft+")";
+	if (Variables.Exists("obligateredInfo")) {
+		Variables["obligateredInfo"].Text = obligateredLeft;
+	}
+	if (Variables.Exists("obligateredButton")) {
+		Variables["obligateredButton"].Text = obligateredLeft+")";
+	}
 }
 var obl =new Query("SELECT Question FROM USR_SKUQuestions WHERE Obligatoriness = @obl And SKU = @sku And Answer IS NULL");
 obl.AddParameter("obl",1);

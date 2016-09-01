@@ -767,8 +767,28 @@ function OutletSnapshotHandler(state, args) {
 function SetGoalToMerop(input,Merop){
 	//Dialog.Message(Merop);
 	var MeropObj = Merop.GetObject();
-	MeropObj.Description = $.Goal.Text;
+	if (TrimAll($.Goal.Text)=="") {
+			MeropObj.Description = "";
+			$.Goal.Text = "";
+	}else {
+		MeropObj.Description = $.Goal.Text;
+	}
 	MeropObj.Save();
+	if (Variables.Exists("RegGoal")) {
+		if (IsEmptyValue(MeropObj.Description)) {
+			$.RegGoal.CssClass = "required_side_wh";
+		}else {
+			$.RegGoal.CssClass = "answered_side_wh";
+		}
+		$.RegGoal.Refresh();
+	}
+	if (IsEmptyValue(MeropObj.Description) || IsEmptyValue(MeropObj.GoalContains)) {
+		$.DoForw.CssClass = "btn_forwardNo";
+		$.DoForw.Refresh();
+	}else {
+		$.DoForw.CssClass = "btn_forward";
+		$.DoForw.Refresh();
+	}
 }
 
 function CreateVisitIfNotExists(userRef, visit, planVisit) {

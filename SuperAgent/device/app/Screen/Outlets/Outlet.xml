@@ -58,9 +58,16 @@
 					<c:HorizontalLayout CssClass="btn_forward" />
 				</s:If>
 				<s:Else>
-					<c:DockLayout OnEvent="Forward" CssClass="btn_forward" OnClickAction="$CheckNotNullAndForward($workflow.outlet, $workflow.visit)">
-						<c:TextView Id="btnForward" Text="#forward#" />
-					</c:DockLayout>
+					<s:If Test="$IsEmptyValue($Merop.Description) || $IsEmptyValue($Merop.GoalContains)">
+						<c:DockLayout Id="DoForw" OnEvent="Forward" CssClass="btn_forwardNo" OnClickAction="$CheckNotNullAndForward($workflow.outlet, $workflow.visit)">
+							<c:TextView Id="btnForward" Text="#forward#" />
+						</c:DockLayout>
+					</s:If>
+					<s:Else>
+						<c:DockLayout Id="DoForw" OnEvent="Forward" CssClass="btn_forward" OnClickAction="$CheckNotNullAndForward($workflow.outlet, $workflow.visit)">
+							<c:TextView Id="btnForward" Text="#forward#" />
+						</c:DockLayout>
+					</s:Else>
 				</s:Else>
 				<c:HorizontalLayout>
 					<c:TextView Text="#client#" />
@@ -115,6 +122,12 @@
 
 			<c:HorizontalLayout CssClass="grid">
 				<s:If Test="$planVisit==null">
+					<s:If Test="$IsEmptyValue($Merop.Description)">
+						<c:HorizontalLayout CssClass="required_side_wh" Id="RegGoal"></c:HorizontalLayout>
+					</s:If>
+					<s:Else>
+						<c:HorizontalLayout CssClass="answered_side_wh" Id="RegGoal"></c:HorizontalLayout>
+					</s:Else>
 					<c:VerticalLayout>
 						<c:TextView Text="#Goal#" CssClass="description_row"></c:TextView>
 						<c:EditText Id="Goal" CssClass="main_row" Text="$Merop.Description" Placeholder="—" OnLostFocus="$SetGoalToMerop($Merop)"></c:EditText>
@@ -129,11 +142,11 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid1" OnClickAction="$ShowBool($Merop)">
+			<c:HorizontalLayout CssClass="grid1">
 				<c:VerticalLayout CssClass="VLCheck">
-					<c:CheckBox Id="ChkBox" CssClass="ForChecbox" Enabled="false"/>
+					<c:CheckBox Id="ChkBox" CssClass="ForChecbox"/>
 				</c:VerticalLayout>
-				<c:VerticalLayout CssClass="VLCheckName">
+				<c:VerticalLayout CssClass="VLCheckName" OnClickAction="$ShowBool($Merop)">
 					<c:TextView Text="Совместно с руководителем"/>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
@@ -179,6 +192,12 @@
 			<c:HorizontalLine />
 
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$ShowGoalContains()">
+				<s:If Test="$IsEmptyValue($Merop.GoalContains)">
+					<c:HorizontalLayout CssClass="required_side_wh" Id="RegGoal"></c:HorizontalLayout>
+				</s:If>
+				<s:Else>
+					<c:HorizontalLayout CssClass="answered_side_wh" Id="RegGoal"></c:HorizontalLayout>
+				</s:Else>
 				<c:VerticalLayout>
 					<c:TextView Text="#GoalContains#" CssClass="description_row"></c:TextView>
 					<s:If Test="$ValueEmpty(GoalContains)">

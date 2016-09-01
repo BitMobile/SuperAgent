@@ -131,7 +131,7 @@
 
 			<c:HorizontalLayout CssClass="grid1" OnClickAction="$ShowBool($Merop)">
 				<c:VerticalLayout CssClass="VLCheck">
-					<c:CheckBox Id="ChkBox" CssClass="ForChecbox"/>
+					<c:CheckBox Id="ChkBox" CssClass="ForChecbox" Enabled="false"/>
 				</c:VerticalLayout>
 				<c:VerticalLayout CssClass="VLCheckName">
 					<c:TextView Text="Совместно с руководителем"/>

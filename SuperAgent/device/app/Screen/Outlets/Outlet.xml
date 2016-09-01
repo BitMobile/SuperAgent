@@ -193,10 +193,10 @@
 
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$ShowGoalContains()">
 				<s:If Test="$IsEmptyValue($Merop.GoalContains)">
-					<c:HorizontalLayout CssClass="required_side_wh" Id="RegGoal"></c:HorizontalLayout>
+					<c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout>
 				</s:If>
 				<s:Else>
-					<c:HorizontalLayout CssClass="answered_side_wh" Id="RegGoal"></c:HorizontalLayout>
+					<c:HorizontalLayout CssClass="answered_side_wh"></c:HorizontalLayout>
 				</s:Else>
 				<c:VerticalLayout>
 					<c:TextView Text="#GoalContains#" CssClass="description_row"></c:TextView>

@@ -143,7 +143,7 @@
 			<c:HorizontalLine />
 
 			<c:HorizontalLayout CssClass="grid1">
-				<c:VerticalLayout CssClass="VLCheck">
+				<c:VerticalLayout CssClass="VLCheck" OnClickAction="$SetChkBool($Merop)">
 					<c:CheckBox Id="ChkBox" CssClass="ForChecbox"/>
 				</c:VerticalLayout>
 				<c:VerticalLayout CssClass="VLCheckName" OnClickAction="$ShowBool($Merop)">

@@ -379,15 +379,19 @@ function GetSnapshotText(text) {
 
 function CheckNotNullAndForward(outlet, visit) {
 	var c = CoordsChecked(visit);
-	if ((CheckEmptyOutletFields(outlet) && c) || DateAddTru == true) {
-		outlet.GetObject().Save();
-		ReviseParameters(outlet, false);
-		var NotExecutedTask = GetNotExecutedTasks();
-		//Dialog.Message(NotExecutedTask);
-		if (NotExecutedTask==0) {
-			Workflow.Action("SkipTask",[]);
-		}else {
-			Workflow.Forward([]);
+	var MeropObj = $.Merop.GetObject();
+	var canForward = !IsEmptyValue(MeropObj.Description) && !IsEmptyValue(MeropObj.GoalContains);
+	if (canForward) {
+		if ((CheckEmptyOutletFields(outlet) && c) || DateAddTru == true) {
+			outlet.GetObject().Save();
+			ReviseParameters(outlet, false);
+			var NotExecutedTask = GetNotExecutedTasks();
+			//Dialog.Message(NotExecutedTask);
+			if (NotExecutedTask==0) {
+				Workflow.Action("SkipTask",[]);
+			}else {
+				Workflow.Forward([]);
+			}
 		}
 	}
 }
@@ -638,6 +642,14 @@ function ShowBool(Merop){
 	var meropObj = Merop.GetObject();
 	meropObj.WithRuk = !checed;
 	meropObj.Save();
+}
+function SetChkBool(Merop){
+	var checed = $.ChkBox.Checked;
+	var meropObj = Merop.GetObject();
+	meropObj.WithRuk = !checed;
+	meropObj.Save();
+
+	//Dialog.Message($.ChkBox.Checked);
 }
 function GetStatusDescription(outlet) {
 	var query = new Query("SELECT Description FROM Enum_OutletStatus WHERE Id = @status");

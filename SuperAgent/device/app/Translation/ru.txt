@@ -365,7 +365,7 @@ PlanDate		Плановая дата
 Goal		Цель
 TypeMer		Тип мероприятия
 MaybeDeal		Возможная сделка
-GoalContains		Содержания
+GoalContains		Содержаниe
 Segment		Сегмент
 TypeOrg		Тип организации
 Profile		Профиль

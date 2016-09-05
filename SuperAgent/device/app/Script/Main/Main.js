@@ -195,3 +195,19 @@ function crutch(sender) {
 function Dummy() {
 
 }
+
+function GetAmountAlcoholDay() {
+	return Indicators.GetAmountAlcoholDay();
+}
+
+function GetAmountNoAlcoholDay() {
+	return Indicators.GetAmountNoAlcoholDay();
+}
+
+function GetAmountAlcoholMonth() {
+	return Indicators.GetAmountAlcoholMonth();
+}
+
+function GetAmountNoAlcoholMonth() {
+	return Indicators.GetAmountNoAlcoholMonth();
+}

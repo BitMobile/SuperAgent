@@ -6,10 +6,13 @@ addFromGallery	Выбрать из галереи
 additionally	ДОПОЛНИТЕЛЬНО
 address		Адрес
 agreement		Используя приложение вы принимаете условия лицензионного соглашения.
+Alcohol		Алкогольное
 allStocks	Все склады
 alreadyOrdered	уже в заказе
 alreadyReturned	уже в возврате
 amount		Итого
+SalesPerDay		Продажи за день
+SalesPerMonth		Продажи за месяц
 amountOfOrdersForToday	сумма заказов на сегодня
 answer		Ответ
 apply		Применить
@@ -35,6 +38,7 @@ client		Клиент
 clients		Клиенты
 Closed	Закрытая
 commentary	Комментарий
+CommonObligation		Общая задолженность
 completedVisits		ВЫПОЛНЕННЫЕ ВИЗИТЫ
 contact		Контакт
 contactName		Контактное лицо
@@ -134,6 +138,7 @@ legal_name	Юридическое лицо
 lessStart	Дата завершения не может быть меньше даты начала
 lessToday	Дата начала не может быть меньше текущей
 list	Список
+liter			л.
 location	Установить координаты торговой точки
 locationSetFailed	Не удалось получить координаты.
 logo		logoRu
@@ -170,6 +175,7 @@ no_orders		НЕТ ЗАКАЗОВ
 no_returns		НЕТ ВОЗВРАТОВ
 no_tasks	Задач нет
 no_visitPlans		Нет визитов для отображения
+NoAlcohol		Безалкогольное
 noContractors	Нет контрагентов
 noContractorsMessage	У данной торговой точки нет контрагентов
 noCoordinates	Координаты не установлены
@@ -181,6 +187,7 @@ nonregular	Единоразовые
 noNumber	Нет номера
 noOrder			Поле "Причина отсутствия заказа" должно быть заполнено
 noPriceLists	Нет прайс-листов
+NormPassability			Нормопроходимость
 noSnapshot	Нет фотоснимка
 noSuccess		Произошла ошибка во время отправки. Данные не отправлены
 notAvailable	Снимок прикреплен. Просмотр будет доступен после обработки сервером.
@@ -219,6 +226,7 @@ outletSnapshots	Фотографии торговой точки
 outletType	Тип торговой точки
 outOfStock	Наличие на складе
 overdue		Просрочено (руб.):
+OverdueObligation		Просроченная задолженность
 overdueSum	[просрочено]
 owner			Принадлежность контакта
 ownership		Тип собственности
@@ -309,6 +317,7 @@ status	Статус
 stock		Остатки
 stock		Остатки
 stockPlace	Склад
+Streams			Потоки
 success			Данные успешно отправлены
 sum			Сумма
 sumDiscount	Скидка, руб.

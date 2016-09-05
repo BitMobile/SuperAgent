@@ -11,10 +11,14 @@ var returnSum;
 var returnQty;
 var tasksSum;
 var tasksDone;
+var AmountAlcoholDay;
+var AmountNoAlcoholDay;
+var AmountAlcoholMonth;
+var AmountNoAlcoholMonth;
 
 function SetIndicators() {
 	SetCommitedScheduledVisits();
-	SetEncashmentSumm();
+	// SetEncashmentSumm();
 	SetOrderQty();
 	SetOrderSumm();
 	SetOutletsCount();
@@ -25,6 +29,8 @@ function SetIndicators() {
 	SetReturnQty();
 	SetTasksSum();
 	SetTasksDone();
+	SetAmountAlcohol();
+	SetAmountNoAlcohol();
 }
 
 function SetOutletsCount() {
@@ -190,10 +196,60 @@ function SetTasksDone(){
 	var q = new Query("SELECT COUNT(Id) FROM Document_Task " +
 		" WHERE Status=1 " +
 		" AND DATE(ExecutionDate)=DATE('now', 'localtime') ");
-	var cnt = q.ExecuteScalar();	
+	var cnt = q.ExecuteScalar();
 	tasksDone = cnt == null ? 0 : cnt;
 }
 
 function GetTasksDone(){
 	return tasksDone;
+}
+
+function SetAmountAlcohol(){
+
+	var q = new Query("SELECT SA.AmountDay AS AmountDay, SA.AmountMonth AS AmountMonth FROM Catalog_TypeSKU_SaleAlcohol AS SA WHERE SA.User=@UserRef");
+	q.AddParameter("UserRef", $.common.UserRef);
+	var cnt = q.Execute();
+
+	if (cnt.AmountDay == null)
+		AmountAlcoholDay = 0;
+	else
+		AmountAlcoholDay = cnt.AmountDay;
+
+	if (cnt.AmountMonth == null)
+		AmountAlcoholMonth = 0;
+	else
+		AmountAlcoholMonth = cnt.AmountMonth;
+}
+
+function SetAmountNoAlcohol(){
+
+	var q = new Query("SELECT SA.AmountDay AS AmountDay, SA.AmountMonth AS AmountMonth FROM Catalog_TypeSKU_SaleNoAlcohol AS SA WHERE SA.User=@UserRef");
+	q.AddParameter("UserRef", $.common.UserRef);
+	var cnt = q.Execute();
+
+	if (cnt.AmountDay == null)
+		AmountNoAlcoholDay = 0;
+	else
+		AmountNoAlcoholDay = cnt.AmountDay;
+
+	if (cnt.AmountMonth == null)
+		AmountNoAlcoholMonth = 0;
+	else
+		AmountNoAlcoholMonth = cnt.AmountMonth;
+}
+
+function GetAmountAlcoholDay(){
+	return AmountAlcoholDay;
+}
+
+function GetAmountNoAlcoholDay(){
+	return AmountNoAlcoholDay;
+}
+
+function GetAmountAlcoholMonth(){
+	return AmountAlcoholMonth;
+}
+
+function GetAmountNoAlcoholMonth(){
+	return AmountNoAlcoholMonth;
 }

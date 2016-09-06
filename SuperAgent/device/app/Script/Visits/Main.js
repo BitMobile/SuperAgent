@@ -48,6 +48,9 @@ function OnLoad(){
 		if (dontNeedSync) {
 
 		}else {
+			for (control in $.grScrollView.Controls) {
+				control.remove();
+			}
 			$.dataSyncIndicatorForUnPlan.Start();
 			DB.Sync(SyncDataFinishForUnPlan);
 		}

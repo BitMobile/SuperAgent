@@ -87,9 +87,11 @@
 					</c:DockLayout>
 				</s:If>
 				<s:Else>
-					<c:DockLayout CssClass="grid" Id="IndicatorLay">
-						<c:Indicator Id="dataSyncIndicator" />
-					</c:DockLayout>
+					<c:VerticalLayout CssClass="gridForAllScreen" Id="IndicatorLay">
+						<c:HorizontalLayout>
+							<c:Indicator Id="dataSyncIndicator" />
+						</c:HorizontalLayout>
+					</c:VerticalLayout>
 				</s:Else>
 				<c:ScrollView Id="grScrollView">
 					<s:Push Id="hasRow" Value="false" />
@@ -185,9 +187,11 @@
 					</c:DockLayout>
 				</s:If>
 				<s:Else>
-					<c:DockLayout CssClass="grid" Id="dataSyncIndicatorForUnPlanLay">
-						<c:Indicator Id="dataSyncIndicatorForUnPlan" />
-					</c:DockLayout>
+					<c:VerticalLayout CssClass="gridForAllScreen" Id="dataSyncIndicatorForUnPlanLay">
+						<c:HorizontalLayout>
+							<c:Indicator Id="dataSyncIndicatorForUnPlan" />
+						</c:HorizontalLayout>
+					</c:VerticalLayout>
 				</s:Else>
 
 				<s:Push Id="unscheduledOutlets" Value="$GetOutlets($search)"></s:Push>

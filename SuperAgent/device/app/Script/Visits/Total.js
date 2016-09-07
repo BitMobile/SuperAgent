@@ -166,10 +166,10 @@ function AskEndVisit(order, visit, wfName) {
 
 function CheckAndCommit(state, args) {
 	if (args.Result == 0) {
+		visit = state[1];
 		visit = visit.GetObject();
 		if (StrLen(visit.Commentary)<=500) {
 			order = state[0];
-			visit = state[1];
 			wfName = state[2];
 			visit.EndTime = DateTime.Now;
 			if (OrderExists(visit.Id)) {

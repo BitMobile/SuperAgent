@@ -226,6 +226,7 @@ packUnit	Ед. упаковки
 parameter	Параметр
 parameters	Параметры
 partner			Партнер
+PartnerSAP			Код партнера
 partnerContacts	КОНТАКТЫ ПАРТНЕРА
 password	Пароль
 pcs			шт.

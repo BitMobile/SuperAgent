@@ -232,6 +232,14 @@
 			</c:DockLayout>
 			<c:HorizontalLine />
 
+			<c:DockLayout CssClass="grid">
+				<c:VerticalLayout>
+					<c:TextView Text="#PartnerSAP#" CssClass="description_row"></c:TextView>
+					<c:TextView Id="outletPartnerSAP" Text="$GetDescr($workflow.outlet.Distributor.CodeSAP)" CssClass="not_available_basic"></c:TextView>
+				</c:VerticalLayout>
+			</c:DockLayout>
+			<c:HorizontalLine />
+
 			<c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet,Class,$outletClass,#outlet_class#, $sessionConst.editOutletParameters, 000000005)">
 				<c:VerticalLayout>
 					<c:TextView Text="#outlet_class#" CssClass="description_row"></c:TextView>

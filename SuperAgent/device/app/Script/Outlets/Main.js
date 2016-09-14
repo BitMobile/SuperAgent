@@ -318,20 +318,23 @@ function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParamete
 						listChoice = query.Execute();
 					}
 						ClearQuestionsAndSKUQuestions();
-						Dialogs.DoChoose(listChoice, outlet, attribute, control, null, title);
+						Dialogs.DoChoose(listChoice, outlet, attribute, control, CallBack, title);
+
 
 				} else {
 
 						Dialog.Ask(Translate["#ClearAnswer#"], ClearQuestionsAndSKUQuestions, true);
 
 		 		}
+
 		}
-	// }
+
 }
 
 function GetDescr(description){
 
 	return String.IsNullOrEmpty(description) ? "—" : description;
+
 }
 
 
@@ -921,4 +924,34 @@ function ClearQuestionsAndSKUQuestions() {
 		dropQS.Execute();
 	}
 
+}
+
+function CallBack(state, args) {
+	AssignDialogValue(state, args);
+	var control = state[2];
+	var attribute = state[1];
+	if (getType(args.Result)=="BitMobile.DbEngine.DbRef") {
+		if (attribute == "OutletStatus")
+			control.Text = Translate[String.Format("#{0}#", args.Result.Description)];
+
+		else{
+
+			if (Variables.Exists("outletPartnerSAP")) {
+				var codesap = args.Result.GetObject();
+				Variables["outletPartnerSAP"].Text = GetDescr(codesap.CodeSAP);
+			}
+			control.Text = Find(args.Result.ToString(), '00000000-0000-0000-0000-000000000000') != parseInt(0) ? "—" : args.Result.Description;
+
+		}
+	}
+	else
+		control.Text = String.IsNullOrEmpty(args.Result) ? "—" : args.Result;
+}
+
+function AssignDialogValue(state, args) {
+	var entity = state[0];
+	var attribute = state[1];
+	entity[attribute] = args.Result;
+	entity.GetObject().Save();
+	return entity;
 }

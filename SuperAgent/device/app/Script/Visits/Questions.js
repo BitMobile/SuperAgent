@@ -184,7 +184,6 @@ function CreateVisitQuestionValueIfNotExists(question, answer, dialogInput) {
 }
 
 function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer, questionDescription, editControl) {
-	// function GoToQuestionAction(control, answerType, question, editControl, currAnswer, title)
 	idPar = editControl;
 
 	var editControlName = "control"+editControl;
@@ -194,7 +193,6 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 	editControl.Enabled = "True";
 	var qForKol = new Query("Select Description From USR_Questions Where ParentQuestion==@quest");
 	 qForKol.AddParameter("quest", currAnswer);
-	 //qForKol.AddParameter("emptyPar",DB.EmptyRef("Catalog_Question"));
 	 kolDoch = qForKol.ExecuteCount();
 
 /////////////// if ValueList
@@ -225,14 +223,8 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 				 else {
 					buferansw = false;
 				 }
-				 Dialog.Debug(currAnswer);
 		var path = null;
 		AddQuestionSnapshot("USR_Questions", questionItem, currAnswer, true, questionDescription, GalleryCallBack);
-	// if (answerType == DB.Current.Constant.DataType.Snapshot)
-	//
-	// 	questionGl = questionItem;
-	// 	var path = null;
-	// 	Images.AddQuestionSnapshot("USR_Questions", questionItem, null, currAnswer, true, questionDescription, GalleryCallBack);
 /////////////// if DataTime
 	} else if (answerType == DB.Current.Constant.DataType.DateTime) {
 		TempControl = editControl;
@@ -260,7 +252,6 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 }
 
 function FormatAndRefresh(control, question, answerType, indexpar, reqorno){
-// function RefreshScreen(control, {search, sku,} question, answerType, indexpar, answerednow,totalanswred,reqorno)
 	var answer = control.Text;
 
 	if (!String.IsNullOrEmpty(answer) && answerType == DB.Current.Constant.DataType.Integer){
@@ -287,26 +278,6 @@ function FormatAndRefresh(control, question, answerType, indexpar, reqorno){
 
 		$.CountNoNRegAnswer.Text = Translate["#nonregular#"] + " (" +single_answ + " " + Translate["#of#"] + " " + single_total + ")";
 	}
-	// if (reqorno == 1) {
-	// 	var obl =new Query("SELECT Question FROM USR_Questions WHERE Obligatoriness = @obl And Answer IS NULL");
-	// 	obl.AddParameter("obl",1);
-	// 	var rez = obl.ExecuteCount();
-	// 	if (rez > 0) {
-	// 		//Dialog.Message("ParentReq"+idChail);
-	// 		//Variables["ParentReq"+idChail].Refresh();
-	// 		if (Variables.Exists("ParentReq"+idChail)) {
-	// 			Variables["ParentReq"+idChail].CssClass = "required_side_wh";
-	// 			Variables["ParentReq"+idChail].Refresh();
-	// 		}
-	// 	}
-	// 	if (rez == 0) {
-	// 		if (Variables.Exists("ParentReq"+idChail)) {
-	// 		Variables["ParentReq"+idChail].CssClass = "answered_side_wh";
-	// 		Variables["ParentReq"+idChail].Refresh();
-	// 	}
-	// 	}
-	// }
-	// obligateredLeft = obligateredLeft - 1;
 	if (reqorno==1 && (buferansw && !havenewotv)) {
 		obligateNumber = parseInt(obligateNumber) - 1;
 		if (obligateNumber==0) {
@@ -441,13 +412,9 @@ if (Variables.Exists("control"+idPar)) {
 if (Variables.Exists("controlVert"+idPar)) {
 	Variables["controlVert"+idPar].Refresh();
 }
-		//
-		// var answerednow = answerinsku;
-		// var totalanswred = totalanswerinsku;
-		//
-		// var parentCount = Variables["CountOnPar"+idChail];
+
 	if (buferansw) {
-		// answerednow = answerednow + 1;
+
 		if (regularAnswers) {
 			regular_answ = regular_answ + 1;
 		}else {
@@ -458,8 +425,6 @@ if (Variables.Exists("controlVert"+idPar)) {
 		Variables["Req"+idPar].CssClass = "answered_side_gr";
 		Variables["Req"+idPar].Refresh();
 	}
-
-	// parentCount.Text = answerednow + " " + Translate["#of#"] + " " + totalanswred;
 
 	if (regularAnswers) {
 		$.CountRegAnswer.Text = Translate["#regular#"] + " (" +regular_answ + " " + Translate["#of#"] + " " + regular_total + ")";

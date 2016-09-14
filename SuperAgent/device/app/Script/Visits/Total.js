@@ -166,26 +166,22 @@ function AskEndVisit(order, visit, wfName) {
 
 function CheckAndCommit(state, args) {
 	if (args.Result == 0) {
+		order = state[0];
 		visit = state[1];
-		visit = visit.GetObject();
-		if (StrLen(visit.Commentary)<=500) {
-			order = state[0];
-			wfName = state[2];
-			visit.EndTime = DateTime.Now;
-			if (OrderExists(visit.Id)) {
-				order.GetObject().Save();
-			}
-			CreateQuestionnaireAnswers();
-			visit.Save();
-			var existorno = new Query("Select type From sqlite_master where name = 'UT_answerQuest' And type = 'table'");
-			var exorno = existorno.ExecuteCount();
-			if (exorno > 0) {
-				DB.TruncateTable("answerQuest");
-			}
-			Workflow.Commit();
-		}else {
-			Dialog.Message("Введите в поле комментарий текст менее 500 символов");
+		wfName = state[2];
+	  visit = visit.GetObject();
+		visit.EndTime = DateTime.Now;
+    if (OrderExists(visit.Id)) {
+        order.GetObject().Save();
+    }
+    CreateQuestionnaireAnswers();
+    visit.Save();
+		var existorno = new Query("Select type From sqlite_master where name = 'UT_answerQuest' And type = 'table'");
+		var exorno = existorno.ExecuteCount();
+		if (exorno > 0) {
+			DB.TruncateTable("answerQuest");
 		}
+    Workflow.Commit();
 	}
 }
 

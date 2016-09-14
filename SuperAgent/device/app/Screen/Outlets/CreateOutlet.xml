@@ -62,7 +62,7 @@
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(outletName, 1)">
 				<c:HorizontalLayout CssClass="$sideStyle.outletName"></c:HorizontalLayout>
 				<c:VerticalLayout>
-					<c:TextView Text="#outlet_description#" CssClass="description_row"></c:TextView>
+					<c:TextView Text="#descriptionShort#" CssClass="description_row"></c:TextView>
 					<c:MemoEdit Id="outletName" Value="$outlet.Description" Placeholder="—" CssClass="main_row" OnLostFocus="$DoRefresh($outlet)"/>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>

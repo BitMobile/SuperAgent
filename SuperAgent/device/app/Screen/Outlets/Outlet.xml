@@ -58,7 +58,7 @@
 					<c:HorizontalLayout CssClass="btn_forward" />
 				</s:If>
 				<s:Else>
-					<s:If Test="$IsEmptyValue($Merop.Description) || $IsEmptyValue($Merop.GoalContains)">
+					<s:If Test="$IsEmptyValue($Merop.Description) || $IsEmptyValue($Merop.GoalContains) || $IsEmptyValue($Merop.TypeMeropr)">
 						<c:DockLayout Id="DoForw" OnEvent="Forward" CssClass="btn_forwardNo" OnClickAction="$CheckNotNullAndForward($workflow.outlet, $workflow.visit)">
 							<c:TextView Id="btnForward" Text="#forward#" />
 						</c:DockLayout>
@@ -91,7 +91,12 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#descriptionFULL#" CssClass="description_row"></c:TextView>
-					<c:TextView Id="outletDescr" Text="$workflow.outlet.LegalName" CssClass="not_available_basic"></c:TextView>
+					<s:If Test="$workflow.name=='Visit'">
+						<c:TextView Id="outletDescr" Text="$workflow.outlet.LegalName" CssClass="not_available_basic"></c:TextView>
+					</s:If>
+					<s:Else>
+						<c:EditText Id="outletDescr" Text="$workflow.outlet.LegalName" Placeholder="—" OnLostFocus="$SetLegelName()" CssClass="main_row"></c:EditText>
+					</s:Else>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -99,7 +104,12 @@
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
 					<c:TextView Text="#descriptionShort#" CssClass="description_row"></c:TextView>
-					<c:TextView Id="outletDescrShort" Text="$workflow.outlet.Description" CssClass="not_available_basic"></c:TextView>
+					<s:If Test="$workflow.name=='Visit'">
+						<c:TextView Id="outletDescrShort" Text="$workflow.outlet.Description" CssClass="not_available_basic"></c:TextView>
+					</s:If>
+					<s:Else>
+						<c:EditText Id="outletDescrShort" Text="$workflow.outlet.Description" Placeholder="—" OnLostFocus="$SetShortName()" CssClass="main_row"></c:EditText>
+					</s:Else>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -153,6 +163,12 @@
 			<c:HorizontalLine />
 
 			<c:HorizontalLayout CssClass="grid">
+				<s:If Test="$IsEmptyValue($Merop.TypeMeropr)">
+					<c:HorizontalLayout Id="RegTypeMer" CssClass="required_side_wh"></c:HorizontalLayout>
+				</s:If>
+				<s:Else>
+					<c:HorizontalLayout Id="RegTypeMer" CssClass="answered_side_wh"></c:HorizontalLayout>
+				</s:Else>
 				<c:VerticalLayout OnClickAction="$ChoseFromCatalog(TypeMer)">
 					<c:TextView Text="#TypeMer#" CssClass="description_row"></c:TextView>
 					<s:If Test="$ValueEmpty(TypeMer)">

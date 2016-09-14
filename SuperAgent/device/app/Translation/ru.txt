@@ -38,7 +38,7 @@ commentary	Комментарий
 completedVisits		ВЫПОЛНЕННЫЕ МЕРОПРИЯТИЯ
 contact		Контакт
 contactName		Контактное лицо
-contacts	Контакты
+contacts	Контактные лица
 contractor		Контрагент
 contractors		Контрагенты
 coordinates	Координаты
@@ -212,7 +212,7 @@ outlet_short	ДО
 outlet_territory	Территория
 outlet_type	Тип делового отношения
 outletClass	Класс делового отношение
-outletContacts	КОНТАКТЫ ДЕЛ. ОТНОШЕНИЯ
+outletContacts	КОНТ. ЛИЦА ДЕЛ. ОТНОШЕНИЯ
 outlets		Магазины
 outletSnapshots	Фотографии делового отношения
 outletType	Тип делового отношения
@@ -225,7 +225,7 @@ packUnit	Ед. упаковки
 parameter	Параметр
 parameters	Параметры
 partner			Партнер
-partnerContacts	КОНТАКТЫ ПАРТНЕРА
+partnerContacts	КОНТ. ЛИЦА ПАРТНЕРА
 password	Пароль
 pcs			шт.
 phone		Телефон

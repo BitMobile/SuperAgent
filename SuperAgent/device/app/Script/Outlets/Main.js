@@ -174,6 +174,26 @@ function SaveAnswerCatalog(state, args){
 		 if (NameControl == "TypeMer") {
 			 objMerop.TypeMeropr = args.Result;
 			 objMerop.Save();
+
+			 if (Variables.Exists("RegTypeMer")) {
+				 if (IsEmptyValue(objMerop.TypeMeropr)) {
+					 $.RegTypeMer.CssClass = "required_side_wh";
+				 }else {
+					 $.RegTypeMer.CssClass = "answered_side_wh";
+				 }
+				 $.RegTypeMer.Refresh();
+			 }
+
+			 if (IsEmptyValue(objMerop.Description) || IsEmptyValue(objMerop.GoalContains) || IsEmptyValue(objMerop.TypeMeropr)) {
+		 		$.DoForw.CssClass = "btn_forwardNo";
+		 		$.DoForw.Refresh();
+		 	}else {
+		 		$.DoForw.CssClass = "btn_forward";
+		 		$.DoForw.Refresh();
+		 	}
+
+
+
 		 }
 		 if (NameControl == "MaybeDeal") {
 			 objMerop.MayBeDeal = args.Result;
@@ -380,7 +400,7 @@ function GetSnapshotText(text) {
 function CheckNotNullAndForward(outlet, visit) {
 	var c = CoordsChecked(visit);
 	var MeropObj = $.Merop.GetObject();
-	var canForward = !IsEmptyValue(MeropObj.Description) && !IsEmptyValue(MeropObj.GoalContains);
+	var canForward = !IsEmptyValue(MeropObj.Description) && !IsEmptyValue(MeropObj.GoalContains) && !IsEmptyValue(MeropObj.TypeMeropr);
 	if (canForward) {
 		if ((CheckEmptyOutletFields(outlet) && c) || DateAddTru == true) {
 			outlet.GetObject().Save();
@@ -774,6 +794,28 @@ function OutletSnapshotHandler(state, args) {
 		Workflow.Refresh([]);
 	}
 }
+function SetLegelName(){
+	 var ref = $.workflow.outlet;
+	 var obj = ref.GetObject();
+	 if (TrimAll($.outletDescr.Text)=="") {
+		 $.outletDescr.Text = obj.LegalName;
+		 $.workflow.outlet.LegalName = obj.LegalName;
+	 }else {
+	 	obj.LegalName = $.outletDescr.Text;
+		obj.Save();
+	 }
+}
+function SetShortName(){
+	 var ref = $.workflow.outlet;
+	 var obj = ref.GetObject();
+	 if (TrimAll($.outletDescrShort.Text)=="") {
+		 $.outletDescrShort.Text = obj.LegalName;
+		 $.workflow.outlet.Description = obj.Description;
+	 }else {
+	 	obj.Description = $.outletDescrShort.Text;
+		obj.Save();
+	 }
+}
 
 // --------------------------case Visits----------------------
 function SetGoalToMerop(input,Merop){
@@ -794,7 +836,7 @@ function SetGoalToMerop(input,Merop){
 		}
 		$.RegGoal.Refresh();
 	}
-	if (IsEmptyValue(MeropObj.Description) || IsEmptyValue(MeropObj.GoalContains)) {
+	if (IsEmptyValue(MeropObj.Description) || IsEmptyValue(MeropObj.GoalContains) || IsEmptyValue(MeropObj.TypeMeropr)) {
 		$.DoForw.CssClass = "btn_forwardNo";
 		$.DoForw.Refresh();
 	}else {

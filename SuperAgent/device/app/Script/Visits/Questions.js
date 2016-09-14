@@ -378,30 +378,34 @@ function GalleryCallBack(state, args) {
 		AssignAnswer(null, questionGl, state[1]);
 
 		newFile = DB.Create("Document.Visit_Files");
+		// Dialog.Debug(state[0]);
 		newFile.Ref = state[0];
+		// Dialog.Debug(state[1]);
 		newFile.FileName = state[1];
+		// Dialog.Debug(state[2]);
 		newFile.FullFileName = state[2];
 		newFile.Save();
 	var weHaveIt = Variables.Exists("controlVert"+idPar);
 
 	if (weHaveIt) {
-		if (Variables.Exists("controlVertIn"+idPar)) {
-			if (Variables.Exists("control"+idPar)) {
-				if (Variables["control"+idPar].CssClass == "answer_snapshot") {
-				}else {
-					for(control in Variables["controlVertIn"+idPar].Controls)
-					control.remove();
-					Variables["controlVertIn"+idPar].after("<c:Image Id='control"+idPar+"' CssClass='answer_snapshot'></c:Image>").refresh();
-					Variables["controlVertIn"+idPar].remove();
-				}
-			}else {
-				for(control in Variables["controlVertIn"+idPar].Controls)
-				control.remove();
-				Variables["controlVertIn"+idPar].after("<c:Image Id='control"+idPar+"' CssClass='answer_snapshot'></c:Image>").refresh();
-				Variables["controlVertIn"+idPar].remove();
-			}
-
-		}
+		// if (Variables.Exists("controlVertIn"+idPar)) {
+		// 	if (Variables.Exists("control"+idPar)) {
+		// 		if (Variables["control"+idPar].CssClass == "answer_snapshot") {
+		// 		}else {
+		// 			for(control in Variables["controlVertIn"+idPar].Controls)
+		// 			control.remove();
+		// 			Variables["controlVertIn"+idPar].after("<c:Image Id='control"+idPar+"' CssClass='answer_snapshot'></c:Image>").refresh();
+		// 			Variables["controlVertIn"+idPar].remove();
+		//
+		// 		}
+		// 	}else {
+		// 		for(control in Variables["controlVertIn"+idPar].Controls)
+		// 		control.remove();
+		// 		Variables["controlVertIn"+idPar].after("<c:Image Id='control"+idPar+"' CssClass='answer_snapshot'></c:Image>").refresh();
+		// 		Variables["controlVertIn"+idPar].remove();
+		// 	}
+		//
+		// }
 	}
 if (Variables.Exists("control"+idPar)) {
 	Variables["control"+idPar].CssClass = "answer_snapshot";
@@ -673,7 +677,7 @@ function AddSnapshotHandler(state, args) {
 
 	if (parseInt(args.Result)==parseInt(2)){ 	//Delete answer
 		if (getType(valueRef)=="System.String") 	//for Questions, SKUQuestions
-			DeleteFromTableSku(state[4]);
+			DeleteFromTable(state[4]);
 		else
 			DeleteImageSku(valueRef); 		//common delete handler
 	}
@@ -689,10 +693,9 @@ function AddSnapshotHandler(state, args) {
 			if (valueRef!=null)
 				attr = parameters[valueRef.Metadata().TableName];
 		}
-
 		var arr = [path, valueRef, attr];
 		if (valueRef != null){
-			if (valueRef.Metadata().TableName=="Catalog_SKU")
+			if (valueRef.Metadata().TableName=="Catalog_Question")
 				arr = [path, valueRef, attr, true];
 		}
 
@@ -720,7 +723,7 @@ function DeleteImageSku(valueRef) {
 	}
 }
 
-function DeleteFromTableSku(question) {
+function DeleteFromTable(question) {
 	var answerString = "HistoryAnswer ";
 
 	var tableName = "USR_Questions";

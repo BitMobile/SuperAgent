@@ -189,7 +189,6 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 	var editControlName = "control"+editControl;
 	editControl = Variables["control"+editControl];
 
-
 	editControl.Enabled = "True";
 	var qForKol = new Query("Select Description From USR_Questions Where ParentQuestion==@quest");
 	 qForKol.AddParameter("quest", currAnswer);
@@ -258,8 +257,9 @@ function FormatAndRefresh(control, question, answerType, indexpar, reqorno){
 
 		control.Text = RoundToInt(answer);
 
-		AssignAnswer(control, question, answer, answerType);
+
 	}
+	AssignAnswer(control, question, answer, answerType);
 	var havenewotv = String.IsNullOrEmpty(answer);
 	if (!(havenewotv^buferansw)) {
 
@@ -329,7 +329,6 @@ function FormatAndRefresh(control, question, answerType, indexpar, reqorno){
 }
 
 function AssignAnswer(control, question, answer, answerType) {
-
 	if (control != null) {
 		answer = control.Text;
 	} else{
@@ -448,7 +447,7 @@ if (Variables.Exists("controlVert"+idPar)) {
 q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 obligateNumber = q.ExecuteCount().ToString();
 if (obligateNumber==0) {
-	Dialog.Debug(true);
+
 	if (Variables.Exists("obligateredAnsw")) {
 			Variables["obligateredAnsw"].CssClass = "margin_top";
 			Variables["obligateredAnsw"].Refresh();
@@ -640,8 +639,7 @@ function DialogCallBackBool(state, args){
 function BuferAns(control){
 	if (String.IsNullOrEmpty(control.Text)) {
 			 	buferansw = true;
-			 }
-			 else {
+			 } else {
 			 	buferansw = false;
 			 }
 }

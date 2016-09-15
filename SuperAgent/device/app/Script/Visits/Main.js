@@ -38,9 +38,9 @@ function OnLoad(){
 		if (dontNeedSync) {
 			//WithoutSync();
 		}else {
-			for (control in $.grScrollView.Controls) {
-				control.remove();
-			}
+	//		for (control in $.grScrollView.Controls) {
+	//			control.remove();
+	//		}
 			$.dataSyncIndicator.Start();
 			DB.Sync(SyncDataFinish);
 		}
@@ -48,9 +48,9 @@ function OnLoad(){
 		if (dontNeedSync) {
 
 		}else {
-			for (control in $.grScrollView.Controls) {
-				control.remove();
-			}
+//			for (control in $.grScrollView.Controls) {
+//				control.remove();
+//			}
 			$.dataSyncIndicatorForUnPlan.Start();
 			DB.Sync(SyncDataFinishForUnPlan);
 		}
@@ -67,7 +67,7 @@ function SyncDataFinishForUnPlan() {
 			}else {
 				message = "Ошибка синхранизации";
 			}
-	LocalNotification.Notify("Синхронизация" , message);
+	//LocalNotification.Notify("Синхронизация" , message);
 	//$.IndicatorLay.CssClass = "gridNoVis";
 	//$.IndicatorLay.Refresh();
 	dontNeedSync = true;

@@ -257,7 +257,6 @@ function FormatAndRefresh(control, question, answerType, indexpar, reqorno){
 
 		control.Text = RoundToInt(answer);
 
-
 	}
 	AssignAnswer(control, question, answer, answerType);
 	var havenewotv = String.IsNullOrEmpty(answer);
@@ -281,21 +280,38 @@ function FormatAndRefresh(control, question, answerType, indexpar, reqorno){
 	if (reqorno==1 && (buferansw && !havenewotv)) {
 		obligateNumber = parseInt(obligateNumber) - 1;
 		if (obligateNumber==0) {
+			if (Variables.Exists("obligateredAnsw")) {
+					Variables["obligateredAnsw"].CssClass = "margin_top";
+					Variables["obligateredAnsw"].Refresh();
+			}
 			if (Variables.Exists("obligateredButton")) {
 				Variables["obligateredButton"].Text = "";
 			}
+			if (Variables.Exists("obligateredInfo")) {
+				Variables["obligateredInfo"].Text = "";
+			}
 			if (Variables.Exists("imagForw")) {
+				Variables["imagForw"].CssClass = "imgForw";
 				Variables["imagForw"].Visible = false;
 				Variables["imagForw"].Refresh();
 			}
 			if (Variables.Exists("TextForw")) {
 				Variables["TextForw"].Text = Translate["#forward#"];
 				Variables["TextForw"].Refresh();
+				Variables["TextForw"].CssClass = "obligateButton";
+				Variables["TextForw"].Refresh();
+			}
+		}else {
+			if (Variables.Exists("obligateredAnsw")) {
+					Variables["obligateredAnsw"].CssClass = "required_grid";
+					Variables["obligateredAnsw"].Refresh();
+			}
+			if (Variables.Exists("TextForw")) {
+				Variables["TextForw"].Text = Translate["#forward#"]+"(";
+				Variables["TextForw"].Refresh();
 				Variables["TextForw"].CssClass = "TextViewInTopNorm";
 				Variables["TextForw"].Refresh();
 			}
-
-		}else {
 			if (Variables.Exists("imagForw")) {
 				Variables["imagForw"].Visible = true;
 				Variables["imagForw"].Refresh();
@@ -304,7 +320,7 @@ function FormatAndRefresh(control, question, answerType, indexpar, reqorno){
 				Variables["obligateredInfo"].Text = obligateNumber;
 			}
 			if (Variables.Exists("obligateredButton")) {
-			Variables["obligateredButton"].Text = obligateNumber+")";
+				Variables["obligateredButton"].Text = obligateNumber+")";
 			}
 		}
 		if (Variables.Exists("Req"+idPar)) {
@@ -316,16 +332,20 @@ function FormatAndRefresh(control, question, answerType, indexpar, reqorno){
 	if (reqorno==1 && (!buferansw && havenewotv)) {
 		obligateNumber = parseInt(obligateNumber) + 1;
 		if (Variables.Exists("obligateredInfo")) {
-			Variables["obligateredButton"].Text = obligateNumber+")";
 			Variables["obligateredInfo"].Text = obligateNumber;
+		}
+		if (Variables.Exists("obligateredButton")) {
+			Variables["obligateredButton"].Text = obligateNumber+")";
+		}
+		if (Variables.Exists("obligateredAnsw")) {
+				Variables["obligateredAnsw"].CssClass = "required_grid";
+				Variables["obligateredAnsw"].Refresh();
 		}
 		if (Variables.Exists("Req"+idPar)) {
 			Variables["Req"+idPar].CssClass = "required_side_gr";
 			Variables["Req"+idPar].Refresh();
 		}
-
 	}
-
 }
 
 function AssignAnswer(control, question, answer, answerType) {
@@ -447,11 +467,6 @@ if (Variables.Exists("controlVert"+idPar)) {
 q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 obligateNumber = q.ExecuteCount().ToString();
 if (obligateNumber==0) {
-
-	if (Variables.Exists("obligateredAnsw")) {
-			Variables["obligateredAnsw"].CssClass = "margin_top";
-			Variables["obligateredAnsw"].Refresh();
-	}
 	if (Variables.Exists("obligateredButton")) {
 		Variables["obligateredButton"].Text = "";
 	}
@@ -466,16 +481,18 @@ if (obligateNumber==0) {
 		Variables["TextForw"].CssClass = "TextViewInTopNorm";
 		Variables["TextForw"].Refresh();
 	}
-
-}else {
-
-	if (Variables.Exists("imagForw")) {
-		Variables["imagForw"].Visible = true;
-		Variables["imagForw"].Refresh();
+	if (Variables.Exists("obligateredAnsw")) {
+			Variables["obligateredAnsw"].CssClass = "margin_top";
+			Variables["obligateredAnsw"].Refresh();
 	}
+}else {
 	if (Variables.Exists("obligateredAnsw")) {
 			Variables["obligateredAnsw"].CssClass = "required_grid";
 			Variables["obligateredAnsw"].Refresh();
+	}
+	if (Variables.Exists("imagForw")) {
+		Variables["imagForw"].Visible = true;
+		Variables["imagForw"].Refresh();
 	}
 	if (Variables.Exists("obligateredInfo")) {
 		Variables["obligateredInfo"].Text = obligateNumber;
@@ -588,10 +605,6 @@ function DialogCallBackBool(state, args){
 		q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 		obligateNumber = q.ExecuteCount().ToString();
 		if (obligateNumber==0) {
-			if (Variables.Exists("obligateredAnsw")) {
-					Variables["obligateredAnsw"].CssClass = "margin_top";
-					Variables["obligateredAnsw"].Refresh();
-			}
 			if (Variables.Exists("obligateredButton")) {
 				Variables["obligateredButton"].Text = "";
 			}
@@ -606,8 +619,15 @@ function DialogCallBackBool(state, args){
 				Variables["TextForw"].CssClass = "obligateButton";
 				Variables["TextForw"].Refresh();
 			}
-
+			if (Variables.Exists("obligateredAnsw")) {
+					Variables["obligateredAnsw"].CssClass = "margin_top";
+					Variables["obligateredAnsw"].Refresh();
+			}
 		}else {
+			if (Variables.Exists("obligateredAnsw")) {
+					Variables["obligateredAnsw"].CssClass = "required_grid";
+					Variables["obligateredAnsw"].Refresh();
+			}
 			if (Variables.Exists("TextForw")) {
 				Variables["TextForw"].Text = Translate["#forward#"]+"(";
 				Variables["TextForw"].Refresh();
@@ -618,16 +638,10 @@ function DialogCallBackBool(state, args){
 				Variables["imagForw"].Visible = true;
 				Variables["imagForw"].Refresh();
 			}
-			if (Variables.Exists("obligateredAnsw")) {
-					Variables["obligateredAnsw"].CssClass = "required_grid";
-					Variables["obligateredAnsw"].Refresh();
-			}
 			if (Variables.Exists("obligateredInfo")) {
 				Variables["obligateredInfo"].Text = obligateNumber;
-
 			}
 			if (Variables.Exists("obligateredButton")) {
-
 				Variables["obligateredButton"].Text = obligateNumber+")";
 			}
 			$.btnForward.Refresh();
@@ -639,7 +653,8 @@ function DialogCallBackBool(state, args){
 function BuferAns(control){
 	if (String.IsNullOrEmpty(control.Text)) {
 			 	buferansw = true;
-			 } else {
+			 }
+			 else {
 			 	buferansw = false;
 			 }
 }
@@ -787,8 +802,15 @@ function DeleteFromTable(question) {
 			Variables["TextForw"].CssClass = "TextViewInTopNorm";
 			Variables["TextForw"].Refresh();
 		}
-
+		if (Variables.Exists("obligateredAnsw")) {
+				Variables["obligateredAnsw"].CssClass = "margin_top";
+				Variables["obligateredAnsw"].Refresh();
+		}
 	}else {
+		if (Variables.Exists("obligateredAnsw")) {
+				Variables["obligateredAnsw"].CssClass = "required_grid";
+				Variables["obligateredAnsw"].Refresh();
+		}
 		if (Variables.Exists("imagForw")) {
 			Variables["imagForw"].Visible = true;
 			Variables["imagForw"].Refresh();

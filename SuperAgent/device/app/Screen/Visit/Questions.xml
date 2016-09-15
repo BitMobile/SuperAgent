@@ -130,7 +130,7 @@
 									<c:TextView Text="$question.Description" CssClass="description_row"></c:TextView>
 									<s:If Test="$question.IsInputField=='1'">
 										<s:Push Id="submitCollectionString" Value="$AddToSubmitCollection($submitCollectionString, control{$index})"></s:Push>
-										<c:MemoEdit Id="control{$index}" Text="$question.Answer" Placeholder="—" OnGetFocus="$BuferAns()" OnChange="$AssignAnswer($question.Question, null, $question.AnswerType)" OnLostFocus="$FormatAndRefresh($question.Question, $question.AnswerType, $index, $question.Obligatoriness)" Keyboard="$question.KeyboardType" CssClass="answer_main_row" Length="140"></c:MemoEdit>
+										<c:EditText Id="control{$index}" Text="$question.Answer" Placeholder="—" OnGetFocus="$BuferAns()" OnChange="$AssignAnswer($question.Question, null, $question.AnswerType)" OnLostFocus="$FormatAndRefresh($question.Question, $question.AnswerType, $index, $question.Obligatoriness)" Keyboard="$question.KeyboardType" CssClass="answer_main_row" Length="140"></c:EditText>
 									</s:If>
 									<s:Else>
 										<c:TextView Id="control{$index}" Text="$question.AnswerOutput" CssClass="answer_main_row"></c:TextView>

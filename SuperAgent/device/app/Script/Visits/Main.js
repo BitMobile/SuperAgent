@@ -67,7 +67,7 @@ function SyncDataFinishForUnPlan() {
 			}else {
 				message = "Ошибка синхранизации";
 			}
-	//LocalNotification.Notify("Синхронизация" , message);
+	LocalNotification.Notify("Синхронизация" , message);
 	//$.IndicatorLay.CssClass = "gridNoVis";
 	//$.IndicatorLay.Refresh();
 	dontNeedSync = true;

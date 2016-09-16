@@ -62,10 +62,10 @@
 
 					<c:DockLayout CssClass="grid" OnClickAction="$AddGlobalAndAction($outlet.Id)">
 						<s:If Test="$outlet.OutletStatus == 0">
-							<c:Image CssClass="blue_mark" />
+							<c:Image CssClass="yellow_mark" />
 						</s:If>
 						<s:If Test="$outlet.OutletStatus == 1">
-							<c:Image CssClass="yellow_mark" />
+							<c:Image CssClass="blue_mark" />
 						</s:If>
 						<s:If Test="$outlet.OutletStatus == 2">
 							<c:Image CssClass="y_blue_mark" />

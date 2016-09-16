@@ -74,10 +74,10 @@
 
 						<c:DockLayout CssClass="grid" OnClickAction="$AddGlobalAndAction($pOutlet.Ref, $planOutlet, Select)">
 							<s:If Test="$pOutlet.NPOO == 0">
-								<c:Image CssClass="blue_mark" />
+								<c:Image CssClass="yellow_mark" />
 							</s:If>
 							<s:If Test="$pOutlet.NPOO == 1">
-								<c:Image CssClass="yellow_mark" />
+								<c:Image CssClass="blue_mark" />
 							</s:If>
 							<s:If Test="$pOutlet.NPOO == 2">
 								<c:Image CssClass="y_blue_mark" />
@@ -117,10 +117,10 @@
 
 						<c:DockLayout CssClass="grid">
 							<s:If Test="$pOutlet.NPOO == 0">
-								<c:Image CssClass="blue_mark" />
+								<c:Image CssClass="yellow_mark" />
 							</s:If>
 							<s:If Test="$pOutlet.NPOO == 1">
-								<c:Image CssClass="yellow_mark" />
+								<c:Image CssClass="blue_mark" />
 							</s:If>
 							<s:If Test="$pOutlet.NPOO == 2">
 								<c:Image CssClass="y_blue_mark" />
@@ -151,10 +151,10 @@
 					<s:Iterator Id="uOutlet" Value="$unscheduledOutlets">
 						<c:DockLayout CssClass="grid" OnClickAction="$AddGlobalAndAction(null, $uOutlet.Outlet, Select)">
 							<s:If Test="$uOutlet.NPOO == 0">
-								<c:Image CssClass="blue_mark" />
+								<c:Image CssClass="yellow_mark" />
 							</s:If>
 							<s:If Test="$uOutlet.NPOO == 1">
-								<c:Image CssClass="yellow_mark" />
+								<c:Image CssClass="blue_mark" />
 							</s:If>
 							<s:If Test="$uOutlet.NPOO == 2">
 								<c:Image CssClass="y_blue_mark" />

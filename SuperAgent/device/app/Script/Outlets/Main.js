@@ -95,15 +95,12 @@ function GetOutlets(searchText) {
 		createReturn = " JOIN Catalog_OutletsStatusesSettings OS ON OS.Status=O.OutletStatus AND CreateReturnInMA=1 ";
 	}
 
-	if ($.sessionConst.encashEnabled){
-		outletStatus = "(SELECT CASE WHEN COUNT(DISTINCT D.Overdue) = 2 THEN 2	WHEN COUNT(DISTINCT D.Overdue) = 0 THEN 3 " +
-		"ELSE (SELECT D1.Overdue FROM Document_AccountReceivable_ReceivableDocuments D1 " +
-		"JOIN Document_AccountReceivable A1 ON D1.Ref=A1.Id WHERE A1.Outlet = O.Id LIMIT 1) END AS st " +
-		"FROM Document_AccountReceivable_ReceivableDocuments D JOIN Document_AccountReceivable A ON D.Ref=A.Id " +
-		"WHERE A.Outlet=O.Id) AS OutletStatus";
-	}
-	else
-		outletStatus = " 3 AS OutletStatus";
+	// if ($.sessionConst.encashEnabled){
+		outletStatus = "CASE WHEN (O.OverdueObligation != '' AND O.NormPassability >= 90) THEN 0 "+
+		"WHEN (O.OverdueObligation = '' AND O.NormPassability < 90) THEN 1 WHEN (O.OverdueObligation != '' AND O.NormPassability < 90) THEN 2 ELSE 3 END AS OutletStatus";
+	// }
+	// else
+	// 	outletStatus = " 3 AS OutletStatus";
 
 	q.Text = "SELECT O.Id, O.Description, O.Address, 'main_row' AS Style, " + outletStatus +
 		" FROM Catalog_Outlet O " +

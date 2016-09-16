@@ -122,13 +122,9 @@
 							</s:If>
 							<c:Image />
 							<c:VerticalLayout>
-								<c:TextView Text="$planOutlet.Description" CssClass="main_row"></c:TextView>
-								<c:HorizontalLayout>
-									<s:If Test="$pOutlet.Time != ''">
-										<c:TextView Text="$pOutlet.Time" CssClass="bl_description_row" />
-									</s:If>
-									<c:TextView Text="{$planOutlet.Address}" CssClass="description_row"></c:TextView>
-								</c:HorizontalLayout>
+								<c:TextView Text="$planOutlet.Description" CssClass="description_rowDescription"></c:TextView>
+									<c:TextView Text="$pOutlet.Merop.TypeMeropr.Description" CssClass="description_rowForTypeMer"></c:TextView>
+									<c:TextView Text="$pOutlet.Merop.Description" CssClass="description_row"></c:TextView>
 							</c:VerticalLayout>
 
 						</c:DockLayout>
@@ -214,7 +210,7 @@
 							<c:Image />
 							<c:VerticalLayout>
 								<c:TextView Text="$uOutlet.Description" CssClass="main_row"></c:TextView>
-								<c:TextView Text="{$uOutlet.Address}" CssClass="description_row"></c:TextView>
+								<c:TextView Text="{$uOutlet.LegalName}" CssClass="description_row"></c:TextView>
 							</c:VerticalLayout>
 						</c:DockLayout>
 						<c:HorizontalLine />

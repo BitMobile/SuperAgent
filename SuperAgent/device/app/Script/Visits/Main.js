@@ -140,13 +140,10 @@ function RefreshScrolView(){
 		var desc = StrReplace(uncommitedVisits.Outlet.Description, '"', '\"');
 		toappend = toappend + "<c:Image />";
 		toappend = toappend + "<c:VerticalLayout>"
-		+ "<c:TextView Text=\'{"+desc+"}\' CssClass=\"main_row\"></c:TextView>"
-		+ "<c:HorizontalLayout>";
-		if (uncommitedVisits.Time != '') {
-			toappend = toappend + "<c:TextView Text=\""+uncommitedVisits.Time+"\" CssClass=\"bl_description_row\" />";
-		}
-		toappend = toappend + "<c:TextView Text=\"{"+uncommitedVisits.Outlet.Address+"}\" CssClass=\"description_row\"></c:TextView>"
-		+ "</c:HorizontalLayout></c:VerticalLayout></c:DockLayout><c:HorizontalLine />";
+		+ "<c:TextView Text=\'{"+desc+"}\' CssClass=\"description_rowDescription\"></c:TextView>";
+		toappend = toappend + "<c:TextView Text=\"{"+uncommitedVisits.Merop.TypeMeropr.Description+"}\" CssClass=\"description_rowForTypeMer\"></c:TextView>"
+		+	"<c:TextView Text=\"{"+uncommitedVisits.Merop.Description+"}\" CssClass=\"description_row\"></c:TextView>"
+		+ "</c:VerticalLayout></c:DockLayout><c:HorizontalLine />";
 	}
 	if (addDay <= 0) {
 		toappend = toappend +"<c:HorizontalLayout CssClass=\"end_of_block\" />"
@@ -399,7 +396,7 @@ function GetOutlets(searchText) {
 		search = "WHERE Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "')";
 	}
 
-	q.Text = "SELECT O.Id AS Outlet, O.Description, O.Address," + OutletStatusText() +
+	q.Text = "SELECT O.Id AS Outlet, O.Description,O.LegalName, O.Address," + OutletStatusText() +
 			"FROM Catalog_Outlet O " +
 			"JOIN Catalog_OutletsStatusesSettings OS ON OS.Status=O.OutletStatus AND OS.DoVisitInMA=1 AND OS.ShowOutletInMA=1 " +
 			search + " ORDER BY O.Description LIMIT 500";

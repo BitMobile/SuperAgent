@@ -81,11 +81,11 @@ function SyncDataFinish() {
 			$.dataSyncIndicator.Stop();
 			var message = "";
 			if (DB.SuccessSync) {
-				message = "Синхранизация завершилась успешно";
+				//message = "Синхранизация завершилась успешно";
 			}else {
 				message = "Ошибка синхранизации";
+				LocalNotification.Notify("Синхронизация" , message);
 			}
-	LocalNotification.Notify("Синхронизация" , message);
 	$.IndicatorLay.CssClass = "gridNoVis";
 	$.IndicatorLay.Refresh();
 	dontNeedSync = true;

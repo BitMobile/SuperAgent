@@ -85,7 +85,8 @@ function DeleteAndBack(entity) {
 function SaveNewOutlet(outlet) {
 
 	outlet = outlet.GetObject();
-
+	outlet.SR = $.common.UserRef;
+	outlet.Save();
 	if (outlet.Description != null){
 		if (TrimAll(outlet.Description) != "" && $.territory!=null) {
 

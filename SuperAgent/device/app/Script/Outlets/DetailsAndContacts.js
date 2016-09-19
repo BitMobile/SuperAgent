@@ -167,7 +167,9 @@ function SaveAndBack(entity, owner) {
 	if (ValidOwner()) // if (ValidEntity(entity) && ValidOwner())
 	{
 		EditOwner(entity, owner);
-		entity.GetObject().Save(false);
+		var en = entity.GetObject();
+		en.SR = $.common.UserRef;
+		en.Save(false);
 		Workflow.Back();
 	}
 }

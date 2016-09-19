@@ -234,8 +234,19 @@ function NextDateHandler(state, args){
 			newVistPlan.Date = DateTime.Now;
 			var newMerop = DB.Create("Catalog.Meropriyat");
 			newMerop.DO = $.workflow.outlet;
-			newMerop.DateStart = args.Result;
-			newMerop.DateEnd = args.Result;
+			//newMerop.DateStart = args.Result;
+			//newMerop.DateEnd = args.Result;
+			var q1 = new Query("Select Id From Enum_TypeMeropPlan Where Name = @planor");
+			if (IsEmptyValue($.workflow.visit.Plan)) {
+				q1.AddParameter("planor","UnPlan");
+			}else {
+				q1.AddParameter("planor","Plan");
+			}
+
+			newMerop.TypeMerop = q1.ExecuteScalar();
+			newMerop.DatePlan = args.Result;
+			newMerop.SR = $.common.UserRef;
+
 			newMerop.Save();
 			CurrMerop = newMerop.Id;
 			newVistPlan.Merop = newMerop.Id;

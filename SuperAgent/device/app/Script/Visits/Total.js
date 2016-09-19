@@ -236,12 +236,12 @@ function NextDateHandler(state, args){
 			newMerop.DO = $.workflow.outlet;
 			//newMerop.DateStart = args.Result;
 			//newMerop.DateEnd = args.Result;
-			var q1 = new Query("Select Id From Enum_TypeMeropPlan Where Name = @planor");
-			if (IsEmptyValue($.workflow.visit.Plan)) {
-				q1.AddParameter("planor","UnPlan");
-			}else {
+			var q1 = new Query("Select Id From Enum_TypeMeropPlan Where Name = 'Plan'");
+//			if (IsEmptyValue($.workflow.visit.Plan)) {
 				q1.AddParameter("planor","Plan");
-			}
+//			}else {
+//				q1.AddParameter("planor","UnPlan");
+//			}
 
 			newMerop.TypeMerop = q1.ExecuteScalar();
 			newMerop.DatePlan = args.Result;

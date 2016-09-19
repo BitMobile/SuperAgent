@@ -862,6 +862,8 @@ function CreateVisitIfNotExists(userRef, visit, planVisit) {
 		meropFact.GoalContains = $.MeropCur.GoalContains;
 		meropFact.MayBeDeal = $.MeropCur.MayBeDeal;
 		meropFact.ContactPerson = $.MeropCur.ContactPerson;
+		var q1 = new Query("Select Id From Enum_TypeMeropPlan Where Name = 'UnPlan'");
+		meropFact.TypeMerop = q1.ExecuteScalar();
 		meropFact.TypeMeropr = $.MeropCur.TypeMeropr;
 		meropFact.DO = $.workflow.outlet;
 		if ($.MeropCur.WithRuk == null) {

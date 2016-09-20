@@ -35,6 +35,7 @@ client		Client
 clients		Clients
 Closed	Closed
 commentary	Commentary
+CommonObligation		Common obligation
 completedVisits		COMPLETED VISITS
 contact		Contact
 contactName		Contact name
@@ -181,6 +182,7 @@ nonregular	Non-regular
 noNumber	No number
 noOrder			No order reason field should be filled
 noPriceLists	No Price Lists
+NormPassability			NormPassability
 noSnapshot	No snapshot
 noSuccess		An error has occurred while sending. The data is not sent
 notAvailable	Snapshot isnt't available
@@ -219,6 +221,7 @@ outletSnapshots	Outlet snapshots
 outletType	Outlet type
 outOfStock	Out Of Stock
 overdue		Overdue:
+OverdueObligation		Overdue obligation
 overdueSum	[overdue]
 owner			Contact owner
 ownership		Ownership type
@@ -309,6 +312,7 @@ status		Status
 stock		Stock
 stock		Stock
 stockPlace	Stock
+Streams			Streams
 success			Data successfully sent
 sum			Sum
 sumDiscount	Sum discount

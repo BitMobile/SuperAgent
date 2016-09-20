@@ -70,7 +70,7 @@
 					<c:DockLayout>
 						<c:DockLayout CssClass="grid">
 							<c:VerticalLayout>
-                <c:TextView Text="#SalesPerDay#" CssClass="description_row" />
+                <c:TextView Text="#SalesPerDay#" CssClass="descr_row" />
 								<c:HorizontalLayout CssClass="horizont_amount">
 									<c:VerticalLayout CssClass="vertical_amount">
 										<c:TextView Text="#Alcohol#" CssClass="description_row" />
@@ -86,7 +86,7 @@
 						<c:HorizontalLine />
             <c:DockLayout CssClass="grid">
               <c:VerticalLayout>
-                <c:TextView Text="#SalesPerMonth#" CssClass="description_row" />
+                <c:TextView Text="#SalesPerMonth#" CssClass="descr_row" />
 								<c:HorizontalLayout CssClass="horizont_amount">
 									<c:VerticalLayout CssClass="vertical_amount">
 										<c:TextView Text="#Alcohol#" CssClass="description_row" />

@@ -248,8 +248,8 @@ sv {
 
 .grid vl hl vl main_row {
 	height:40%;
-	width: 50%;
-	font: 85% Arial-BoldMT;
+	width: 49%;
+	font: 75% Arial-BoldMT;
 	color: #43acfd;
 	white-space: nowrap;
 }
@@ -261,7 +261,16 @@ sv {
 	margin-top: 0%;
 	margin-bottom: 0%;
 }
+.grid vl descr_row {
+	height: 23%;
+	width: 100%;
+	font: 80% arial;
+	color: #000;
+	horizontal-align: right;
+	margin-top: 0%;
+	margin-bottom: 0%;
 
+}
 .grid vl hl vl description_row {
 	height: 30%;
 	font: 80% arial;
@@ -421,5 +430,5 @@ sv {
 
 .vertical_amount {
 	height: auto;
-	width: 49%;
+	width: 50%;
 }

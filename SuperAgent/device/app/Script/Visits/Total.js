@@ -7,6 +7,7 @@ var forwardIsntAllowed;
 var obligateNumber;
 var WeSetNexVis;
 var CurrMerop;
+var IdNext;
 
 function OnLoading() {
 	checkOrderReason = false;
@@ -43,7 +44,8 @@ function SaveAnswerCatalog(state, args){
 }
 
 function GetNextVisit(outlet){
-	var q = new Query("SELECT Id, PlanDate, Merop FROM Document_MobileAppPlanVisit WHERE Outlet=@outlet AND DATE(PlanDate)>=DATE(@date) AND Transformed=0 LIMIT 1");
+	var q = new Query("SELECT Id, PlanDate, Merop FROM Document_MobileAppPlanVisit WHERE Outlet=@outlet AND DATE(PlanDate)>=DATE(@date) AND Id=@IdO AND Transformed=0 LIMIT 1");
+	q.AddParameter("IdO", IdNext);
 	q.AddParameter("outlet", outlet);
 	q.AddParameter("date", DateTime.Now.Date);
 	var res = q.Execute();
@@ -256,6 +258,7 @@ function NextDateHandler(state, args){
 
 		newVistPlan.PlanDate = args.Result;
 		newVistPlan.Save();
+		IdNext = newVistPlan.Id;
 		WeSetNexVis = true;
 	}else {
 		Dialog.Message("Невозможно запланировать мероприятие на прошедшие время");

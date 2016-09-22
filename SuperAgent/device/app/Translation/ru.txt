@@ -309,6 +309,7 @@ skuList			СПИСОК ТОВАРОВ
 snapshot	Фотоснимок
 snapshot			Фотография
 snapshotAttached	Снимок прикреплен
+Sort			Сорта
 spread		Распределить
 spreadOnDocuments	Распределить на документы
 startPlanTime	Плановая дата начала

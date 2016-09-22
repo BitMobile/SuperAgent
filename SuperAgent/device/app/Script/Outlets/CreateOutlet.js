@@ -88,6 +88,9 @@ function SaveNewOutlet(outlet) {
 			to.Ref = $.territory;
 			to.Outlet = outlet.Id;
 			to.Save();
+			outlet.NormPassability = parseInt(0);
+			outlet.OverdueObligation = '';
+			outlet.Sort = parseInt(0);
 
 			outlet.Lattitude = parseInt(0);
 			outlet.Longitude = parseInt(0);

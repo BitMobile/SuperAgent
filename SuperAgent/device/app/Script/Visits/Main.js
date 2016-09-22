@@ -33,7 +33,7 @@ function GetUncommitedScheduledVisits(searchText) {
 		search = "AND Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "') ";
 	}
 	q.Text = ("SELECT DISTINCT VP.Outlet, VP.Ref, " +
-			" CASE WHEN strftime('%H:%M', VP.Date)='00:00' THEN '' ELSE strftime('%H:%M', VP.Date) END AS Time, CASE WHEN (O.OverdueObligation != '' AND O.NormPassability >= 90) THEN 0 WHEN (O.OverdueObligation = '' AND O.NormPassability < 90) THEN 1 WHEN (O.OverdueObligation != '' AND O.NormPassability < 90) THEN 2 ELSE 3 END AS NPOO, " +
+			" CASE WHEN strftime('%H:%M', VP.Date)='00:00' THEN '' ELSE strftime('%H:%M', VP.Date) END AS Time, CASE WHEN ((O.OverdueObligation != '' AND O.OverdueObligation != 0)  AND O.NormPassability >= 90) THEN 0 WHEN ((O.OverdueObligation = '' OR O.OverdueObligation = 0)  AND O.NormPassability < 90) THEN 1 WHEN ((O.OverdueObligation != '' AND O.OverdueObligation != 0) AND O.NormPassability < 90) THEN 2 ELSE 3 END AS NPOO, " +
 			OutletStatusText() +
 			" FROM Catalog_Outlet O " +
 			" JOIN Document_VisitPlan_Outlets VP ON O.Id = VP.Outlet AND DATE(VP.Date)=DATE('now', 'localtime') " +
@@ -91,7 +91,7 @@ function GetCommitedVisits(searchText) {
 	}
 
 //	var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet WHERE V.Date >= @today AND V.Date < @tomorrow AND VP.Date >= @today AND VP.Date < @tomorrow " + search + " ORDER BY O.Description LIMIT 100");
-	var q = new Query("SELECT V.Outlet, O.Description, O.Address, CASE WHEN (O.OverdueObligation != '' AND O.NormPassability >= 90) THEN 0 WHEN (O.OverdueObligation = '' AND O.NormPassability < 90) THEN 1 WHEN (O.OverdueObligation != '' AND O.NormPassability < 90) THEN 2 ELSE 3 END AS NPOO, " + OutletStatusText() +
+	var q = new Query("SELECT V.Outlet, O.Description, O.Address, CASE WHEN ((O.OverdueObligation != '' AND O.OverdueObligation != 0)  AND O.NormPassability >= 90) THEN 0 WHEN ((O.OverdueObligation = '' OR O.OverdueObligation = 0)  AND O.NormPassability < 90) THEN 1 WHEN ((O.OverdueObligation != '' AND O.OverdueObligation != 0) AND O.NormPassability < 90) THEN 2 ELSE 3 END AS NPOO, " + OutletStatusText() +
 		"FROM Catalog_Outlet O JOIN Document_Visit V ON V.Outlet=O.Id AND V.Date >= @today AND V.Date < @tomorrow");
 	q.AddParameter("today", DateTime.Now.Date);
 	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
@@ -128,7 +128,7 @@ function GetOutlets(searchText) {
 		search = "WHERE Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "')";
 	}
 
-	q.Text = "SELECT O.Id AS Outlet, O.Description, O.Address, CASE WHEN (O.OverdueObligation != '' AND O.NormPassability >= 90) THEN 0 WHEN (O.OverdueObligation = '' AND O.NormPassability < 90) THEN 1 WHEN (O.OverdueObligation != '' AND O.NormPassability < 90) THEN 2 ELSE 3 END AS NPOO, " + OutletStatusText() +
+	q.Text = "SELECT O.Id AS Outlet, O.Description, O.Address, CASE WHEN ((O.OverdueObligation != '' AND O.OverdueObligation != 0)  AND O.NormPassability >= 90) THEN 0 WHEN ((O.OverdueObligation = '' OR O.OverdueObligation = 0)  AND O.NormPassability < 90) THEN 1 WHEN ((O.OverdueObligation != '' AND O.OverdueObligation != 0) AND O.NormPassability < 90) THEN 2 ELSE 3 END AS NPOO, " + OutletStatusText() +
 			"FROM Catalog_Outlet O " +
 			"JOIN Catalog_OutletsStatusesSettings OS ON OS.Status=O.OutletStatus AND OS.DoVisitInMA=1 AND OS.ShowOutletInMA=1 " +
 			search + " ORDER BY O.Description LIMIT 500";

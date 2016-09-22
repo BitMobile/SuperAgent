@@ -219,7 +219,7 @@
 			</c:DockLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet, Distributor, $outletDistr, #partner#, $sessionConst.editOutletParameters, 000000006)">
+			<!-- <c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet, Distributor, $outletDistr, #partner#, $sessionConst.editOutletParameters, 000000006)">
 				<c:VerticalLayout>
 					<c:TextView Text="#partner#" CssClass="description_row"></c:TextView>
 					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000006 == true &amp;&amp; $workflow.name != 'Visit'">
@@ -230,7 +230,7 @@
 					</s:Else>
 				</c:VerticalLayout>
 			</c:DockLayout>
-			<c:HorizontalLine />
+			<c:HorizontalLine /> -->
 
 			<c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet,Class,$outletClass,#outlet_class#, $sessionConst.editOutletParameters, 000000005)">
 				<c:VerticalLayout>
@@ -274,7 +274,15 @@
 
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
-					<s:If Test="$workflow.outlet.OverdueObligation == ''">
+						<c:TextView Text="#Sort#" CssClass="description_row"></c:TextView>
+						<c:TextView Id="Sort" Text="$workflow.outlet.Sort" CssClass="not_available_basic"></c:TextView>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
+			<c:HorizontalLayout CssClass="grid">
+				<c:VerticalLayout>
+					<s:If Test="$workflow.outlet.OverdueObligation == '' || $workflow.outlet.OverdueObligation == 0 ">
 						<c:TextView Text="#OverdueObligation#" CssClass="description_row"></c:TextView>
 							<c:TextView Id="outletOverdueObligation" Text="$workflow.outlet.OverdueObligation" CssClass="not_available_basic"></c:TextView>
 					</s:If>

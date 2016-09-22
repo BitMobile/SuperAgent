@@ -96,8 +96,8 @@ function GetOutlets(searchText) {
 	}
 
 	// if ($.sessionConst.encashEnabled){
-		outletStatus = "CASE WHEN (O.OverdueObligation != '' AND O.NormPassability >= 90) THEN 0 "+
-		"WHEN (O.OverdueObligation = '' AND O.NormPassability < 90) THEN 1 WHEN (O.OverdueObligation != '' AND O.NormPassability < 90) THEN 2 ELSE 3 END AS OutletStatus";
+		outletStatus = "CASE WHEN ((O.OverdueObligation != '' AND O.OverdueObligation != 0)  AND O.NormPassability >= 90) THEN 0 "+
+		"WHEN ((O.OverdueObligation = '' OR O.OverdueObligation = 0)  AND O.NormPassability < 90) THEN 1 WHEN ((O.OverdueObligation != '' AND O.OverdueObligation != 0) AND O.NormPassability < 90) THEN 2 ELSE 3 END AS OutletStatus";
 	// }
 	// else
 	// 	outletStatus = " 3 AS OutletStatus";

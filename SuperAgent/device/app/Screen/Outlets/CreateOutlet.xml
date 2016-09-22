@@ -94,7 +94,7 @@
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
-			<s:Push Id="hasDistr" Value="$hasDistr()"></s:Push>
+			<!-- <s:Push Id="hasDistr" Value="$hasDistr()"></s:Push>
 			<s:If Test="$hasDistr">
 				<c:HorizontalLayout CssClass="grid" OnClick="$DoSelect($outlet,Distributor,$outletDistr,#partner#)">
 					<c:HorizontalLayout CssClass="empty_side_wh"></c:HorizontalLayout>
@@ -104,7 +104,7 @@
 					</c:VerticalLayout>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
-		  </s:If>
+		  </s:If> -->
 
 			<c:HorizontalLayout CssClass="end_of_block" />
 		</c:ScrollView>

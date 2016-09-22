@@ -68,7 +68,7 @@
 
 					<s:If Test="@forwardIsntAllowed">
 						<c:HorizontalLayout Id="obligateredAnsw" CssClass="required_grid">
-							<c:TextView Text="#requiredLeft# "></c:TextView>
+							<c:TextView Id="requiredLeft" Text="#requiredLeft# "></c:TextView>
 							<c:Image />
 							<c:TextView Id="obligateredInfo" Text="@obligateNumber"></c:TextView>
 						</c:HorizontalLayout>

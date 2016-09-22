@@ -205,11 +205,16 @@ function CheckAndCommit(state, args) {
 		wfName = state[2];
 	  visit = visit.GetObject();
 		visit.EndTime = DateTime.Now;
+		var MeropRef = visit.FactMerop;
+		var MeropObj = MeropRef.GetObject();
+		MeropObj.DateStart = visit.StartTime;
+		MeropObj.DateEnd = visit.EndTime;
     if (OrderExists(visit.Id)) {
         order.GetObject().Save();
     }
     CreateQuestionnaireAnswers();
     visit.Save();
+		MeropObj.Save();
 		var existorno = new Query("Select type From sqlite_master where name = 'UT_answerQuest' And type = 'table'");
 		var exorno = existorno.ExecuteCount();
 		if (exorno > 0) {

@@ -138,6 +138,12 @@ function RefreshScrolView(){
 		}
 		var desc = StrReplace(uncommitedVisits.Outlet.Description, "'", "\'");
 		var desc = StrReplace(uncommitedVisits.Outlet.Description, '"', '\"');
+//		var TypeMerUn = StrReplace(uncommitedVisits.Merop.TypeMeropr.Description, "'", "\'");
+//		var TypeMerUn = StrReplace(uncommitedVisits.Merop.TypeMeropr.Description, '"', '\"');
+//		var MerDesc = StrReplace(uncommitedVisits.Merop.Description, "'", "\'");
+//		var MerDesc = StrReplace(uncommitedVisits.Merop.Description, '"', '\"');
+
+
 		toappend = toappend + "<c:Image />";
 		toappend = toappend + "<c:VerticalLayout>"
 		+ "<c:TextView Text=\'{"+desc+"}\' CssClass=\"description_rowDescription\"></c:TextView>";
@@ -167,12 +173,20 @@ function RefreshScrolView(){
 		}
 		var desc = StrReplace(commitedVisits.Description, "'", "\'");
 		var desc = StrReplace(commitedVisits.Description, '"', '\"');
+//		var  =
+
+		var TypemeropDesc = StrReplace(commitedVisits.Merop.TypeMeropr.Description, "'", "\'");
+		var TypemeropDesc = StrReplace(commitedVisits.Merop.TypeMeropr.Description, '"', '\"');
+		var MerDescCom = StrReplace(commitedVisits.Merop.Description, "'", "\'");
+		var MerDescCom = StrReplace(commitedVisits.Merop.Description, '"', '\"');
+
+
 		toappend = toappend + "<c:Image />";
 		toappend = toappend + "<c:VerticalLayout>"
-		+ "<c:TextView Text=\'{"+desc+"}\' CssClass=\"main_row\"></c:TextView>"
-		+ "<c:HorizontalLayout>";
-		toappend = toappend + "<c:TextView Text=\"{"+commitedVisits.Address+"}\" CssClass=\"description_row\"></c:TextView>"
-		+ "</c:HorizontalLayout></c:VerticalLayout></c:DockLayout><c:HorizontalLine />";
+		+ "<c:TextView Text=\'{"+desc+"}\' CssClass=\"description_rowDescription\"></c:TextView>";
+		toappend = toappend + "<c:TextView Text=\""+TypemeropDesc+"\" CssClass=\"description_rowForTypeMer\"></c:TextView>"
+		+ "<c:TextView Text=\""+MerDescCom+"\" CssClass=\"description_row\"></c:TextView>"
+		+ "</c:VerticalLayout></c:DockLayout><c:HorizontalLine />";
 
 		}
 	}
@@ -347,7 +361,7 @@ function GetCommitedVisits(searchText) {
 	}
 
 //	var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet WHERE V.Date >= @today AND V.Date < @tomorrow AND VP.Date >= @today AND VP.Date < @tomorrow " + search + " ORDER BY O.Description LIMIT 100");
-	var q = new Query("SELECT V.Outlet, O.Description, O.Address, " + OutletStatusText() +
+	var q = new Query("SELECT V.Outlet, O.Description, O.Address, V.FactMerop As Merop, " + OutletStatusText() +
 		"FROM Catalog_Outlet O JOIN Document_Visit V ON V.Outlet=O.Id AND V.Date >= @today AND V.Date < @tomorrow");
 		if (addDay == null || addDay == 0) {
 			addDay = 0;

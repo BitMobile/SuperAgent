@@ -160,8 +160,9 @@
 								<c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
 							</s:If>
 							<c:VerticalLayout>
-								<c:TextView Text="$pOutlet.Description" CssClass="main_row"></c:TextView>
-								<c:TextView Text="{$pOutlet.Address}" CssClass="description_row"></c:TextView>
+								<c:TextView Text="$pOutlet.Description" CssClass="description_rowDescription"></c:TextView>
+									<c:TextView Text="$pOutlet.Merop.TypeMeropr.Description" CssClass="description_rowForTypeMer"></c:TextView>
+									<c:TextView Text="$pOutlet.Merop.Description" CssClass="description_row"></c:TextView>
 							</c:VerticalLayout>
 						</c:DockLayout>
 						<c:HorizontalLine />

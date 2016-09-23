@@ -221,6 +221,7 @@ function CheckAndCommit(state, args) {
 			DB.TruncateTable("answerQuest");
 		}
 		$.AddGlobal("WeNeedSync",true);
+		IdNext = "";
     Workflow.Commit();
 	}
 }

@@ -358,10 +358,12 @@ function GoToParameterAction(typeDescription, parameterValue, value, outlet, par
 				Dialogs.DoChoose(q.Execute(), parameterValue, "Value", Variables[control], null, parameterDescription);
 			}
 			if (typeDescription == "DateTime") {  //---------DateTime-------
-				if (String.IsNullOrEmpty(parameterValue.Value))
-					Dialogs.ChooseDateTime(parameterValue, "Value", Variables[control], DateHandler, parameterDescription);
-				else
-					Dialog.Choose(parameterDescription, [[0, Translate["#clearValue#"]], [1, Translate["#setDate#"]]], DateHandler, [parameterValue, control, parameterDescription]);
+				if (String.IsNullOrEmpty(parameterValue.Value)) {
+						Dialogs.ChooseDateTime(parameterValue, "Value", Variables[control], DateHandler, parameterDescription);
+				}else{
+						Dialog.Choose(parameterDescription, [[0, Translate["#clearValue#"]], [1, Translate["#setDate#"]]], DateHandler, [parameterValue, control, parameterDescription]);
+				}
+
 			}
 			if (typeDescription == "Boolean") {  //----------Boolean--------
 				Dialogs.ChooseBool(parameterValue, "Value", Variables[control], null, parameterDescription);
@@ -396,10 +398,70 @@ function GetStatusDescription(outlet) {
 	return result;
 }
 
+function GetDateNextPayment(control, DateNextPayment, title, outlet) {
+	ChooseDateTime(outlet, "DateNextPayment", control, CallBack, title);
+}
+
 function FocusIfHasEditText(fieldName, editOutletParameters, primaryParameterName) {
 	if (editOutletParameters && $.primaryParametersSettings[primaryParameterName]) {
 		FocusOnEditText(fieldName, 1);
 	}
+}
+
+function ChooseDateTime(entity, attribute, control, func, title) {
+	var startKey;
+	var query = new Query("SELECT DATETIME(O.DateNextPayment) FROM Catalog_Outlet AS O WHERE O.Id=@ref");
+	query.AddParameter("ref", entity);
+
+
+	title = typeof title !== 'undefined' ? title : "#select_answer#";
+	// Dialog.Debug(entity);
+	if (attribute==null)
+		startKey = control.Text;
+	else
+		startKey = entity[attribute];
+
+	if (String.IsNullOrEmpty(startKey) || startKey=="—" || (query.ExecuteScalar() == '0001-01-01 00:00:00'))
+		startKey = DateTime.Now;
+
+	if (func == null)
+		func = CallBack;
+	Dialog.DateTime(title, startKey, func, [entity, attribute, control]);
+}
+
+function CallBack(state, args){ //call back for dates only
+
+	var outlet = state[0];
+	var attr = state[1];
+
+	var query = new Query("SELECT DATETIME(O.DateNextPayment) FROM Catalog_Outlet AS O WHERE O.Id=@ref");
+	query.AddParameter("ref", outlet);
+
+	var ranged;
+
+	if (!(query.ExecuteScalar() == '0001-01-01 00:00:00')){
+		ranged = Date(outlet.DateNextPayment).Date <= Date(args.Result).Date;
+	}else {
+		ranged = true;
+	}
+
+	if (ranged){
+		if (attr == "DateNextPayment" && Date(args.Result).Date < Date(DateTime.Now).Date)
+			Dialog.Message(Translate["#lessToday#"]);
+		else
+			AssignDialogValue(state, args);
+			Workflow.Refresh([]);
+	}
+	else
+		Dialog.Message(Translate["#lessDateNextPayment#"]);
+
+}
+
+function FormatDate(datetime, outlet) {
+	var query = new Query("SELECT DATETIME(O.DateNextPayment) FROM Catalog_Outlet AS O WHERE O.Id=@ref");
+	query.AddParameter("ref", outlet);
+	var q = query.ExecuteScalar();
+	return (q == '0001-01-01 00:00:00') ? "—" : Format("{0:d}", Date(q).Date);
 }
 
 function DateHandler(state, args) {

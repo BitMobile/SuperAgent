@@ -50,6 +50,7 @@ countPrice	Count price
 currency	CAD
 current		Current
 date		Date
+DateNextPayment		Date next payment
 debt	Debt
 delete	Delete
 deleteImage		Delete this image?

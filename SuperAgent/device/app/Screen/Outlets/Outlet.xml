@@ -310,6 +310,14 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$GetDateNextPayment(outletDateNextPayment, DateNextPayment, #DateNextPayment#, $workflow.outlet)">
+				<c:VerticalLayout>
+					<c:TextView Text="#DateNextPayment#" CssClass="description_row"></c:TextView>
+						<c:TextView Id="outletDateNextPayment" Text="$FormatDate($workflow.outlet.DateNextPayment, $workflow.outlet)" CssClass="not_available_basic"></c:TextView>
+					</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
 			<c:HorizontalLayout CssClass="caption_grid">
 				<c:TextView Text="#additionally#:"></c:TextView>
 			</c:HorizontalLayout>

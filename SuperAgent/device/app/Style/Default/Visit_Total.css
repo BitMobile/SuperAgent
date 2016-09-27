@@ -2,6 +2,9 @@
 	color: #000000;
 }
 
+.blueText {
+	color: #2d89cf;
+}
 .main_row{
 	color: #2d89cf;
 	height: 20%;
@@ -21,6 +24,24 @@
 	width: 1.2mm;
 	background-image: url(answered_side_wh.png);
 	dock-align: left;
+	padding-right: 0mm;
+}
+
+.required_side_wh_2{
+	height: 100%;
+	width: 1.2mm;
+	background-image: url(required_side_wh.png);
+	dock-align: left;
+	margin-left: 0px;
+	padding-right: 0mm;
+}
+
+.answered_side_wh_2{
+	height: 100%;
+	width: 1.2mm;
+	background-image: url(answered_side_wh.png);
+	dock-align: left;
+	margin-left: 0px;
 	padding-right: 0mm;
 }
 

@@ -6,14 +6,23 @@ var returnEnabled;
 var encashmentEnabled;
 var forwardIsntAllowed;
 var obligateNumber;
+var obligateredBallons;
+var obligateredKegs;
 
 function OnLoading() {
 	checkOrderReason = false;
 	checkVisitReason = false;
 
+	obligateredBallons = false;
+	obligateredKegs = false;
+
 	orderEnabled = OptionAvailable("SkipOrder");
 	returnEnabled = OptionAvailable("SkipReturn");
 	encashmentEnabled = OptionAvailable("SkipEncashment") && $.sessionConst.encashEnabled;
+
+
+	obligateredBallons = (String.IsNullOrEmpty($.workflow.visit.BallonsAmount));
+	obligateredKegs = (String.IsNullOrEmpty($.workflow.visit.KegsAmount));
 
 	if ($.sessionConst.NOR && NotEmptyRef($.workflow.visit.Plan) && OrderExists($.workflow.visit)==false && orderEnabled)
 		checkOrderReason = true;
@@ -30,7 +39,6 @@ function GetNextVisit(outlet){
 		return res;
 	else
 		return null;
-
 }
 
 function OrderCheckRequired(visit, wfName) {
@@ -185,6 +193,16 @@ function CheckAndCommit(state, args) {
 	}
 }
 
+function GetAccountingAndFact(outlet) {
+
+	var q = new Query("SELECT SUM((CASE WHEN LineNumber=1 THEN Amount ELSE 0 END)) AS KegsAmount, SUM((CASE WHEN LineNumber=2 THEN Amount ELSE 0 END)) AS BallonsAmount "+
+	" FROM Catalog_Outlet_RentSKU WHERE Ref=@Ref Group BY Ref");
+	q.AddParameter("Ref", outlet);
+	var amount = q.Execute();
+	return amount;
+
+}
+
 
 //--------------------------internal functions--------------
 
@@ -214,6 +232,53 @@ function DeliveryDateCallBack(state, args){
 
 }
 
+function SetBallonsFact(control, visit) {
+	var textcontrol = control.Text;
+	if (String.IsNullOrEmpty(textcontrol) || IsEmptyValue(textcontrol) || textcontrol == "." || textcontrol == "-"){
+		textcontrol = null;
+	}else{
+		textcontrol = RoundToInt(textcontrol);
+	}
+
+	var visit = visit.GetObject();
+
+	if (control.Id == "BallonsFact") {
+		visit.BallonsAmount = textcontrol;
+		obligateredBallons = textcontrol === null;
+
+		if (obligateredBallons) {
+			if (Variables.Exists("ObligateBallonsFact")) {
+				Variables["ObligateBallonsFact"].CssClass = "required_side_wh_2";
+				Variables["ObligateBallonsFact"].Refresh();
+			}
+		}else {
+			if (Variables.Exists("ObligateBallonsFact")) {
+				Variables["ObligateBallonsFact"].CssClass = "answered_side_wh_2";
+				Variables["ObligateBallonsFact"].Refresh();
+			}
+		}
+	}
+
+	if (control.Id == "KegsFact") {
+		visit.KegsAmount = textcontrol;
+		obligateredKegs = textcontrol === null;
+
+		if (obligateredKegs) {
+			if (Variables.Exists("ObligateKegsFact")) {
+				Variables["ObligateKegsFact"].CssClass = "required_side_wh_2";
+				Variables["ObligateKegsFact"].Refresh();
+			}
+		}else {
+			if (Variables.Exists("ObligateKegsFact")) {
+				Variables["ObligateKegsFact"].CssClass = "answered_side_wh_2";
+				Variables["ObligateKegsFact"].Refresh();
+			}
+		}
+	}
+	Workflow.Refresh([]);
+	visit.Save();
+}
+
 function VisitIsChecked(visit) {
 
 	var result;
@@ -225,6 +290,10 @@ function VisitIsChecked(visit) {
     if (checkVisitReason && visit.ReasonForVisit.EmptyRef()){
     	obligateNumber = obligateNumber + 1;
     }
+		if (obligateredBallons)
+			obligateNumber = obligateNumber + 1;
+		if (obligateredKegs)
+			obligateNumber = obligateNumber + 1;
     if (obligateNumber == 0)
         result= true;
     else

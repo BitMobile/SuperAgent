@@ -3,10 +3,11 @@
 
 	<s:Push Id="nextVisit" Value="$GetNextVisit($workflow.outlet)"></s:Push>
 	<s:Push Id="result" Value="$VisitIsChecked($workflow.visit)"></s:Push>
+	<s:Push Id="Amount" Value="$GetAccountingAndFact($workflow.outlet)"></s:Push>
 
 	<c:VerticalLayout>
 
-		<c:DockLayout CssClass="top_navigator">
+		<c:DockLayout Id="TopNav" CssClass="top_navigator">
 			<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoBack()">
 				<c:Image />
 				<c:TextView Text="#back#" />
@@ -114,7 +115,7 @@
 					<s:Push Id="todo" Value="$CountTasks($workflow.outlet)"></s:Push>
 					<c:Image></c:Image>
 					<c:TextView Text="#todoDone#"></c:TextView>
-					<c:TextView Text="{$todoDone} #of# {$todo}" CssClass="value"></c:TextView>					
+					<c:TextView Text="{$todoDone} #of# {$todo}" CssClass="value"></c:TextView>
 				</c:DockLayout>
 				<c:HorizontalLine />
 			<!-- </s:If> -->
@@ -152,6 +153,43 @@
 				</c:DockLayout>
 				<c:HorizontalLine />
 			</s:If>
+
+
+				<c:DockLayout CssClass="parameter_grid">
+					<c:TextView Text="{#ballon#, #accounting#}" CssClass="blackText"></c:TextView>
+					<c:TextView Text="{$Amount.BallonsAmount}" CssClass="value"></c:TextView>
+				</c:DockLayout>
+				<c:HorizontalLine />
+
+				<c:DockLayout CssClass="parameter_grid">
+				<s:If Test="@obligateredBallons">
+					<c:HorizontalLayout Id="ObligateBallonsFact" CssClass="required_side_wh_2"></c:HorizontalLayout>
+				</s:If>
+				<s:Else>
+					<c:HorizontalLayout Id="ObligateBallonsFact" CssClass="answered_side_wh_2"></c:HorizontalLayout>
+				</s:Else>
+					<c:TextView Text="{#ballon#, #fact#}" CssClass="blueText"></c:TextView>
+					<c:EditText Id="BallonsFact" Placeholder="-" Keyboard="numeric" Value="$workflow.visit.BallonsAmount" OnLostFocus="$SetBallonsFact($workflow.visit)" CssClass="value"></c:EditText>
+				</c:DockLayout>
+				<c:HorizontalLine />
+
+				<c:DockLayout CssClass="parameter_grid">
+					<c:TextView Text="{#kegs#, #accounting#}" CssClass="blackText"></c:TextView>
+					<c:TextView Text="{$Amount.KegsAmount}" CssClass="value"></c:TextView>
+				</c:DockLayout>
+				<c:HorizontalLine />
+
+				<c:DockLayout CssClass="parameter_grid">
+					<s:If Test="@obligateredKegs">
+						<c:HorizontalLayout Id="ObligateKegsFact" CssClass="required_side_wh_2"></c:HorizontalLayout>
+					</s:If>
+					<s:Else>
+						<c:HorizontalLayout Id="ObligateKegsFact" CssClass="answered_side_wh_2"></c:HorizontalLayout>
+					</s:Else>
+					<c:TextView Text="{#kegs#, #fact#}" CssClass="blueText"></c:TextView>
+					<c:EditText Id="KegsFact" Placeholder="-" Keyboard="numeric" Value="$workflow.visit.KegsAmount" OnLostFocus="$SetBallonsFact($workflow.visit)" CssClass="value"></c:EditText>
+				</c:DockLayout>
+				<c:HorizontalLine />
 
 		</c:ScrollView>
 

@@ -211,7 +211,7 @@
 						</c:HorizontalLayout>
 					</s:If>
 					<s:Else>
-						<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000003 == true">
+						<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000003 == true &amp;&amp; @DateAddTru == false">
 							<c:Button OnClick="$SetLocation($workflow.outlet)" Text="#set#" CssClass="coordButton" />
 						</s:If>
 					</s:Else>

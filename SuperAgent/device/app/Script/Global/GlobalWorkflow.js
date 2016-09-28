@@ -8,6 +8,13 @@ function GetMenuItem(){
 	return currentMenuItem;
 }
 
+var dateAddNumber;
+function SetDateAddNumber(addDay){
+	dateAddNumber = addDay;
+}
+function GetDateAddNumber(){
+	return dateAddNumber;
+}
 
 var outlet;
 
@@ -17,6 +24,16 @@ function SetOutlet(value){
 
 function GetOutlet(){
 	return outlet;
+}
+
+var dateAdd;
+
+function SetDateAdd(value){
+	dateAdd = value;
+}
+
+function GetDateAdd(){
+	return dateAdd;
 }
 
 var currentTask;
@@ -54,7 +71,7 @@ function GetMassDiscount(order){
 			" WHERE Ref=@ref");
 		q.AddParameter("ref", order);
 		var discounts = q.ExecuteScalar();
-	
+
 		if (parseInt(discounts)==parseInt(1))
 		{
 			var q = new Query("SELECT Discount " +

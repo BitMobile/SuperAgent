@@ -26,9 +26,15 @@
 						<c:Image />
 						<c:TextView Text="#back#" />
 					</c:DockLayout>
-					<c:DockLayout OnEvent="Forward" CssClass="btn_forward" OnClickAction="$Workflow.DoForward()">
-						<c:TextView Id="btnForward" Text="#forward#" />
-					</c:DockLayout>
+					<s:If Test="@DateAddTru == false">
+						<c:DockLayout OnEvent="Forward" CssClass="btn_forward" OnClickAction="$Workflow.DoForward()">
+								<c:TextView Id="btnForward" Text="#forward#" />
+						</c:DockLayout>
+					</s:If>
+					<s:Else>
+						<c:DockLayout OnEvent="Forward" CssClass="btn_forward">
+						</c:DockLayout>
+					</s:Else>
 					<c:HorizontalLayout>
 						<c:TextView Text="#tasks#" />
 					</c:HorizontalLayout>

@@ -5,6 +5,7 @@ var title;
 var back;
 var outletDesc;
 var backvisit;
+var DateAddTru;
 
 //"description"	= "000000001"
 //"address"			= "000000002"
@@ -46,6 +47,12 @@ function OnLoading() {
 		backvisit = Translate["#" + Lower(GlobalWorkflow.GetMenuItem()) + "#"];
 	}
 	title = Translate["#outlet#"];
+	if ($.workflow.name=='Visit') {
+		DateAddTru = GlobalWorkflow.GetDateAdd();
+	}
+	else {
+		DateAddTru = false;
+	}
 
 }
 
@@ -247,10 +254,15 @@ function GetSnapshotText(text) {
 
 function CheckNotNullAndForward(outlet, visit) {
 	var c = CoordsChecked(visit);
-	if (CheckEmptyOutletFields(outlet) && c) {
+	if ((CheckEmptyOutletFields(outlet) && c) || DateAddTru == true) {
 		outlet.GetObject().Save();
+
+
+
 		ReviseParameters(outlet, false);
-		Workflow.Forward([]);
+		// 	Global.CreateTableQuestions(outlet);
+
+		Workflow.Forward([null, true]);
 	}
 }
 
@@ -346,7 +358,7 @@ function AssignParameterValue(control, typeDescription, parameterValue, value, o
 
 function GoToParameterAction(typeDescription, parameterValue, value, outlet, parameter, control, parameterDescription, editable, index, isEditText) {
 
-	if (editable) {
+	if (editable && DateAddTru == false) {
 
 		if ($.sessionConst.editOutletParameters) {
 			parameterValue = CreateOutletParameterValue(outlet, parameter, parameterValue, parameterValue, isEditText);
@@ -403,7 +415,7 @@ function GetDateNextPayment(control, DateNextPayment, title, outlet) {
 }
 
 function FocusIfHasEditText(fieldName, editOutletParameters, primaryParameterName) {
-	if (editOutletParameters && $.primaryParametersSettings[primaryParameterName]) {
+	if (editOutletParameters && $.primaryParametersSettings[primaryParameterName] && DateAddTru == false) {
 		FocusOnEditText(fieldName, 1);
 	}
 }
@@ -531,7 +543,7 @@ function GetImagePath(objectID, pictID, pictExt) {
 }
 
 function ImageActions(control, valueRef, imageControl, outlet, filename) {
-	if ($.sessionConst.editOutletParameters && $.primaryParametersSettings["000000008"]) {
+	if ($.sessionConst.editOutletParameters && $.primaryParametersSettings["000000008"] && DateAddTru == false) {
 		parameterValueC = valueRef;
 		Images.AddSnapshot($.workflow.outlet, valueRef, OutletSnapshotHandler, Translate["#snapshot#"], Variables[imageControl].Source);
 	} else {
@@ -691,7 +703,7 @@ function CoordsChecked(visit) {
 		}
 	}
 //
-	if (ActualLocation(location)) {
+	if (ActualLocation(location) && DateAddTru == false) {
 		var visitObj = visit.GetObject();
 		visitObj.Lattitude = location.Latitude;
 		visitObj.Longitude = location.Longitude;
@@ -709,7 +721,7 @@ function CoordsChecked(visit) {
 			else
 				var s = false;
 		}
-		if (s && visit.Lattitude == null && visit.Longitude == null) {
+		if (s && visit.Lattitude == null && visit.Longitude == null && DateAddTru == false) {
 			Dialog.Question(Translate["#impossibleToCreateVisit#"], VisitCoordsHandler, visit);
 			return false;
 		}
@@ -737,7 +749,7 @@ function NoLocationHandler(descriptor) {
 }
 
 function ShowCoordOptions(control, outlet, editOutletParameters) {
-	if (editOutletParameters && $.primaryParametersSettings["000000003"]) {
+	if (editOutletParameters && $.primaryParametersSettings["000000003"] && DateAddTru == false) {
 		Dialog.Choose("#coordinates#", [[0,Translate["#clear_coord#"]], [1,Translate["#refresh#"]], [2,Translate["#copy#"]]], ChooseHandler, outlet);
 	}
 }
@@ -853,6 +865,7 @@ function DoRollbackAction(){
 	DoRollback();
 }
 function SaveAndBack(outlet) {
+	GlobalWorkflow.SetDateAdd(false);
 	if (CheckEmptyOutletFields(outlet)) {
 		outlet.GetObject().Save();
 		ReviseParameters(outlet, true);

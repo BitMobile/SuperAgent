@@ -210,6 +210,7 @@ function CheckAndCommit(state, args) {
 		MeropObj.DateStart = visit.StartTime;
 		MeropObj.DateEnd = visit.EndTime;
 		MeropObj.Coord = visit.Lattitude + " " + visit.Longitude;
+		MeropObj.PlanOsn = visit.Plan;
     if (OrderExists(visit.Id)) {
         order.GetObject().Save();
     }

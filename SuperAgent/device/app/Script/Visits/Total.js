@@ -5,15 +5,20 @@ var orderEnabled;
 var returnEnabled;
 var encashmentEnabled;
 var forwardIsntAllowed;
+var commentaryObligate;
 var obligateNumber;
 
 function OnLoading() {
 	checkOrderReason = false;
 	checkVisitReason = false;
+  commentaryObligate = false;
+
+  commentaryObligate = IsEmptyValue($.workflow.visit.Commentary);
 
 	orderEnabled = OptionAvailable("SkipOrder");
 	returnEnabled = OptionAvailable("SkipReturn");
 	encashmentEnabled = OptionAvailable("SkipEncashment") && $.sessionConst.encashEnabled;
+
 
 	if ($.sessionConst.NOR && NotEmptyRef($.workflow.visit.Plan) && OrderExists($.workflow.visit)==false && orderEnabled)
 		checkOrderReason = true;
@@ -219,6 +224,10 @@ function VisitIsChecked(visit) {
 	var result;
 	obligateNumber = parseInt(0);
 
+    if (commentaryObligate) {
+      obligateNumber = obligateNumber + 1;
+    }
+
     if (checkOrderReason && visit.ReasonForNotOfTakingOrder.EmptyRef()){
     	obligateNumber = obligateNumber + 1;
     }
@@ -269,7 +278,9 @@ function FormatOutput(value) {
 		return value;
 }
 
-
+function SetCommentary(control, visit) {
+  Workflow.Refresh([]);
+}
 //------------------------------Questionnaires handlers------------------
 
 

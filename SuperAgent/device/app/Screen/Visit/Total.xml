@@ -94,11 +94,16 @@
 				<c:HorizontalLine />
 			</s:If>
 
-			<c:HorizontalLayout CssClass="memo_block">
-				<c:HorizontalLayout CssClass="empty_side_wh"></c:HorizontalLayout>
+			<c:HorizontalLayout CssClass="grid">
+				<s:If Test="$IsEmptyValue($workflow.visit.Commentary)">
+					<c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout>
+				</s:If>
+				<s:Else>
+					<c:HorizontalLayout CssClass="answered_side_wh"></c:HorizontalLayout>
+				</s:Else>
 				<c:VerticalLayout>
 					<c:TextView Text="#commentary#" CssClass="description_row"></c:TextView>
-					<c:MemoEdit Value="$workflow.visit.Commentary" CssClass="main_row" Placeholder="—"></c:MemoEdit>
+					<c:MemoEdit Id="Commentary" Value="$workflow.visit.Commentary" CssClass="main_row" Placeholder="—" OnLostFocus="$SetCommentary($workflow.visit)"></c:MemoEdit>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
@@ -114,7 +119,7 @@
 					<s:Push Id="todo" Value="$CountTasks($workflow.outlet)"></s:Push>
 					<c:Image></c:Image>
 					<c:TextView Text="#todoDone#"></c:TextView>
-					<c:TextView Text="{$todoDone} #of# {$todo}" CssClass="value"></c:TextView>					
+					<c:TextView Text="{$todoDone} #of# {$todo}" CssClass="value"></c:TextView>
 				</c:DockLayout>
 				<c:HorizontalLine />
 			<!-- </s:If> -->

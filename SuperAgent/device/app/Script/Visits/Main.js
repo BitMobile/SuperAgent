@@ -113,10 +113,11 @@ function RefreshScrolView(){
 		control.remove();
 	}
 	var uncommitedVisits = GetUncommitedScheduledVisits(null);
+	var sv1 = GetScheduledVisitsCount(null);
 	var sv = GetUncommitedScheduledVisitsCount(null);
 	var commitedVisits = GetCommitedVisits(null);
 	var cv = GetCommitedScheduledVisitsCount(null);
-	$.plannedText.Text = Translate["#planVisit#"] + " (" + sv.ToString() + ")";
+	$.plannedText.Text = Translate["#planVisit#"] + " (" + sv1.ToString() + ")";
 	var toappend = "<c:HorizontalLayout CssClass=\"caption_grid\">"
 	+ "<c:TextView Text=\"#incompletedVisits# ({"+ sv.ToString() +"}):\"></c:TextView>"
 	+ "</c:HorizontalLayout>"
@@ -339,11 +340,13 @@ function GetScheduledVisitsCount() {
 		addDay = 0;
 		q.AddParameter("today", DateTime.Now.Date);
 		q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
+//		Dialog.Message(q.ExecuteScalar());
 	}else {
 		q.AddParameter("today", DateTime.Now.Date.AddDays(addDay));
 		q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1));
 	}
 	var cnt = q.ExecuteScalar();
+//	Dialog.Message("ForAll:"+q.ExecuteScalar())
 	if (cnt == null)
 		return 0;
 	else
@@ -393,8 +396,11 @@ function GetCommitedScheduledVisitsCount(searchText) {
 			q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
 		}else {
 			q.AddParameter("today", DateTime.Now.Date.AddDays(addDay));
+			//Dialog.Message(DateTime.Now.Date.AddDays(addDay));
+			//Dialog.Message(DateTime.Now.Date.AddDays(addDay+1));
 			q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1));
 		}
+		//Dialog.Message(DateTime.Now.Date.AddDays(addDay))
 	return q.ExecuteScalar();
 }
 

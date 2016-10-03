@@ -76,7 +76,7 @@
 						</c:DockLayout>
 					</s:If>
 
-					<s:If Test="$sessionConst.encashEnabled">
+					<!-- <s:If Test="$sessionConst.encashEnabled">
 						<c:DockLayout>
 							<c:DockLayout CssClass="grid">
 								<c:VerticalLayout>
@@ -92,7 +92,7 @@
 								</c:VerticalLayout>
 							</c:DockLayout>
 						</c:DockLayout>
-					</s:If>
+					</s:If> -->
 
 				</c:VerticalLayout>
 

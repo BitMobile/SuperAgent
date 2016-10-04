@@ -173,7 +173,7 @@ function EditOwner(contact, owner){
 
 		if (ownerInput==Translate["#partner#"]){
 			newOwner = DB.Create("Catalog.Distributor_Contacts");
-			newOwner.Ref = $.workflow.outlet.Distributor;			
+			newOwner.Ref = $.workflow.outlet.Distributor;
 		}
 		else{
 			newOwner = DB.Create("Catalog.Outlet_Contacts");
@@ -295,7 +295,7 @@ function GetOutlets(searchText){
 	}
 
 	var outletObj = $.workflow.outlet.GetObject();
-	if (outletObj.Distributor==DB.EmptyRef("Catalog_Distributor")){
+	//if (outletObj.Distributor==DB.EmptyRef("Catalog_Distributor")){
 		var q = new Query("SELECT C.Id, C.Description, C.LegalAddress AS Address, '3' AS OutletStatus, " +
 			"CASE WHEN IsDefault=1 THEN 'main_row_bold' ELSE 'main_row' END AS Style " +
 			"FROM Catalog_Outlet_Contractors O " +
@@ -303,23 +303,43 @@ function GetOutlets(searchText){
 			"WHERE O.Ref=@outlet " + search + "ORDER BY IsDefault desc, C.Description");
 		q.AddParameter("outlet", $.workflow.outlet);
 		var result = q.Execute();
-	}
-	else{
-		var q = new Query("SELECT  C.Id, C.Description, C.LegalAddress AS Address, '3' AS OutletStatus, " +
-			" CASE WHEN IsDefault=1 THEN 'main_row_bold' ELSE 'main_row' END AS Style " +
+	//}
+	//else{
+	//	var q = new Query("SELECT  C.Id, C.Description, C.LegalAddress AS Address, '3' AS OutletStatus, " +
+	//		" CASE WHEN IsDefault=1 THEN 'main_row_bold' ELSE 'main_row' END AS Style " +
 
+	//		" FROM Catalog_Distributor_Contractors DC " +
+	//		" JOIN Catalog_Territory_Contractors TC ON DC.Contractor=TC.Contractor " +
+	//		" JOIN Catalog_Territory_Outlets T ON TC.Ref=T.Ref AND T.Outlet=@outlet " +
+	//		" JOIN Catalog_Contractors C ON C.Id=TC.Contractor " +
+
+	//		" WHERE DC.Ref=@distr " + search + "ORDER BY IsDefault desc, C.Description");
+	//	q.AddParameter("distr", outletObj.Distributor);
+	//	q.AddParameter("outlet", outletObj.Id);
+	//	var result = q.Execute();
+	//}
+
+	return result;
+}
+
+function AddContractor(){
+		var outletObj = $.workflow.outlet.GetObject();
+		var q = new Query("SELECT  C.Id, C.Description" +
 			" FROM Catalog_Distributor_Contractors DC " +
 			" JOIN Catalog_Territory_Contractors TC ON DC.Contractor=TC.Contractor " +
 			" JOIN Catalog_Territory_Outlets T ON TC.Ref=T.Ref AND T.Outlet=@outlet " +
 			" JOIN Catalog_Contractors C ON C.Id=TC.Contractor " +
 
-			" WHERE DC.Ref=@distr " + search + "ORDER BY IsDefault desc, C.Description");
+			" WHERE DC.Ref=@distr ORDER BY IsDefault desc, C.Description");
 		q.AddParameter("distr", outletObj.Distributor);
 		q.AddParameter("outlet", outletObj.Id);
 		var result = q.Execute();
-	}
+		Dialog.Choose("Выберите заказчика",result,AddContactorCallBack);
 
-	return result;
+}
+
+function AddContactorCallBack(state, args){
+
 }
 
 function SaveContractorAndBack(entity){
@@ -351,7 +371,9 @@ function BackMenu(){
 function CreateOutletEnabled(){
 	return false;
 }
-
+function CreateContactorsFromDist(){
+	return true;
+}
 function AddGlobalAndAction(contractor){
 	DoAction("Select", contractor, false);
 }

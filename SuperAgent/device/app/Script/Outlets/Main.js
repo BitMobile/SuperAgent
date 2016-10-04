@@ -39,7 +39,7 @@ function OnLoading() {
 		if (counnurows>0) {
 			backvisit = Translate["#back#"];
 		}else {
-		backvisit = Translate["#" + Lower(GlobalWorkflow.GetMenuItem()) + "#"];			
+		backvisit = Translate["#" + Lower(GlobalWorkflow.GetMenuItem()) + "#"];
 		}
 	}
 	else {
@@ -725,13 +725,16 @@ function ShowContractorsIfExists(outlet) {
 			q.AddParameter("ref", outletObj.Distributor);
 			contractor = q.ExecuteScalar();
 		}
-		DoAction('Contractor', contractor, true);
+		DoAction('ShowContractors');
+		//DoAction('Contractor', contractor, true);
 	}
 
 	else if (con > parseInt(1))
 		DoAction('ShowContractors');
 }
-
+function CreateContactorsFromDist(){
+	return false;
+}
 function HasContractors(outlet){
 
 	var res;

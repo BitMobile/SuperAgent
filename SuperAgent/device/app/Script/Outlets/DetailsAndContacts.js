@@ -329,8 +329,8 @@ function AddContractor(){
 			" JOIN Catalog_Territory_Contractors TC ON DC.Contractor=TC.Contractor " +
 			" JOIN Catalog_Territory_Outlets T ON TC.Ref=T.Ref AND T.Outlet=@outlet " +
 			" JOIN Catalog_Contractors C ON C.Id=TC.Contractor " +
-
-			" WHERE DC.Ref=@distr ORDER BY IsDefault desc, C.Description");
+			" Left JOIN Catalog_Outlet_Contractors O ON O.Contractor = C.Id AND O.Ref=@outlet " +
+			" WHERE DC.Ref=@distr AND O.Id IS NULL");
 		q.AddParameter("distr", outletObj.Distributor);
 		q.AddParameter("outlet", outletObj.Id);
 		var result = q.Execute();
@@ -339,7 +339,13 @@ function AddContractor(){
 }
 
 function AddContactorCallBack(state, args){
-
+	//Dialog.Message(args.Result);
+	var obj = DB.Create("Catalog.Outlet_Contractors");
+	var outletObj = $.workflow.outlet.GetObject();
+	obj.Ref = outletObj.Id;
+	obj.Contractor = args.Result;
+	obj.Save();
+	Workflow.Refresh([]);
 }
 
 function SaveContractorAndBack(entity){

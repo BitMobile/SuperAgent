@@ -8,6 +8,5 @@
 	</client>
 	<server>
     <filterShared value="yes" />
-		<supportedMeta version="1.13.2.706" />
   </server>
 </configuration>

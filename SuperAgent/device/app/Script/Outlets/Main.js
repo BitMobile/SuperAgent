@@ -299,10 +299,66 @@ function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParamete
 				query.AddParameter("emptyRef", DB.EmptyRef("Catalog.Distributor"));
 				listChoice = query.Execute();
 			}
-
-			Dialogs.DoChoose(listChoice, outlet, attribute, control, null, title);
+			var q = new Query("Select Id, Ref From Catalog_Outlet_Contractors Where Ref = @ref");
+			q.AddParameter("ref",$.workflow.outlet);
+			var count = q.ExecuteCount();
+			//Dialog.Message(count);
+			if (count>0) {
+				Dialog.Ask("После смены клиента, заказчики объекта будут очищены. Продолжить?",PositivCallBackWarn,[listChoice, outlet, attribute, control, title],NegativeCallBackWarn);
+			}else {
+				Dialogs.DoChoose(listChoice, outlet, attribute, control, CallBackPart, title);
+			}
 		}
 	}
+}
+
+function PositivCallBackWarn(state, args){
+	listChoice = state[0];
+	outlet = state[1];
+	attribute = state[2];
+	control = state[3];
+	title = state[4];
+	Dialogs.DoChoose(listChoice, outlet, attribute, control, CallBackPart, title);
+}
+
+function NegativeCallBackWarn(state, args){
+
+}
+
+function CallBackPart(state, args) {
+	AssignDialogValue(state, args);
+
+
+	var control = state[2];
+	var attribute = state[1];
+	if (getType(args.Result)=="BitMobile.DbEngine.DbRef") {
+		if (attribute == "OutletStatus")
+			control.Text = Translate[String.Format("#{0}#", args.Result.Description)];
+		else{
+			control.Text = Find(args.Result.ToString(), '00000000-0000-0000-0000-000000000000') != parseInt(0) ? "—" : args.Result.Description;
+
+		}
+	}
+	else
+		control.Text = String.IsNullOrEmpty(args.Result) ? "—" : args.Result;
+}
+
+function AssignDialogValue(state, args) {
+	var entity = state[0];
+	var attribute = state[1];
+	if (entity[attribute] == args.Result) {
+	}
+	else {
+		var q = new Query("Select Id, Ref From Catalog_Outlet_Contractors Where Ref = @ref");
+		q.AddParameter("ref",$.workflow.outlet);
+		var rez = q.Execute();
+		while (rez.Next()) {
+			DB.Delete(rez.Id);
+		}
+	}
+	entity[attribute] = args.Result;
+	entity.GetObject().Save();
+	return entity;
 }
 
 function GetDescr(description){

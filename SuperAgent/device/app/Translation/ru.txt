@@ -169,7 +169,7 @@ no_orders		НЕТ ЗАКАЗОВ
 no_returns		НЕТ ВОЗВРАТОВ
 no_tasks	Задач нет
 no_visitPlans		Нет визитов для отображения
-noContractors	Нет Заказчиков
+noContractors	Нет заказчиков
 noContractorsMessage	У данной объект нет заказчиков
 noCoordinates	Координаты не установлены
 noDescriGiven	(описание отсутствует)

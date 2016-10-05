@@ -298,15 +298,17 @@ function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParamete
 				query.AddParameter("outlet", outlet);
 				query.AddParameter("emptyRef", DB.EmptyRef("Catalog.Distributor"));
 				listChoice = query.Execute();
-			}
-			var q = new Query("Select Id, Ref From Catalog_Outlet_Contractors Where Ref = @ref");
-			q.AddParameter("ref",$.workflow.outlet);
-			var count = q.ExecuteCount();
-			//Dialog.Message(count);
-			if (count>0) {
-				Dialog.Ask("После смены клиента, заказчики объекта будут очищены. Продолжить?",PositivCallBackWarn,[listChoice, outlet, attribute, control, title],NegativeCallBackWarn);
+				var q = new Query("Select Id, Ref From Catalog_Outlet_Contractors Where Ref = @ref");
+				q.AddParameter("ref",$.workflow.outlet);
+				var count = q.ExecuteCount();
+				//Dialog.Message(count);
+				if (count>0) {
+					Dialog.Ask("После смены клиента, заказчики объекта будут очищены. Продолжить?",PositivCallBackWarn,[listChoice, outlet, attribute, control, title],NegativeCallBackWarn);
+				}else {
+					Dialogs.DoChoose(listChoice, outlet, attribute, control, CallBackPart, title);
+				}
 			}else {
-				Dialogs.DoChoose(listChoice, outlet, attribute, control, CallBackPart, title);
+			Dialogs.DoChoose(listChoice, outlet, attribute, control, null, title); 	
 			}
 		}
 	}

@@ -257,10 +257,7 @@ function CheckNotNullAndForward(outlet, visit) {
 	if ((CheckEmptyOutletFields(outlet) && c) || DateAddTru == true) {
 		outlet.GetObject().Save();
 
-
-
 		ReviseParameters(outlet, false);
-		// 	Global.CreateTableQuestions(outlet);
 
 		Workflow.Forward([null, true]);
 	}
@@ -692,16 +689,18 @@ function CoordsChecked(visit) {
 	var location = GPS.CurrentLocation;
 // проверка на местополжение торговой точки+радиус отклонения = текущее местоположение
 	var outlet = outlet.GetObject();
-	var query = new Query("SELECT NumericValue FROM Catalog_MobileApplicationSettings WHERE Description = 'RadiusDeviation'");
-	var RadiusDeviation = query.ExecuteScalar();
-
-	if (parseInt(RadiusDeviation) !== parseInt(0) && ((parseInt(outlet.Lattitude) !== parseInt(0)) || (parseInt(outlet.Longitude)!== parseInt(0)))) {
-		var CurRadiusDeviation = CoordCheckOutletAndActuality(location, outlet);
-		if (parseInt(RadiusDeviation) <= parseInt(CurRadiusDeviation)) {
-			Dialog.Message(Translate["#impossibleOutletCoords#"]);
-			return false;
+	if (parseInt($.sessionConst.RadiusDeviation) != parseInt(0)) {
+		if ((parseInt(outlet.Lattitude) != parseInt(0)) || (parseInt(outlet.Longitude) != parseInt(0))) {
+			if (ActualLocation(location)) {
+				var CurRadiusDeviation = CoordCheckOutletAndActuality(location, outlet);
+				if (parseInt($.sessionConst.RadiusDeviation) <= parseInt(CurRadiusDeviation)) {
+					Dialog.Message(Translate["#impossibleOutletCoords#"]);
+					return false;
+				}
+			}
 		}
 	}
+
 //
 	if (ActualLocation(location) && DateAddTru == false) {
 		var visitObj = visit.GetObject();

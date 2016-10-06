@@ -10,7 +10,7 @@
 			<c:Button Id="btnBack" CssClass="btn_back" />
 			<c:Button Id="btnForward" CssClass="btn_forward" />
 			<c:HorizontalLayout>
-				<c:TextView Text="#filter#" />
+				<c:TextView Text="#groups#" />
 			</c:HorizontalLayout>
 		</c:DockLayout>
 
@@ -24,7 +24,7 @@
 		</c:HorizontalLayout>
 		<c:HorizontalLine CssClass="b_line" />
 
-		<c:VerticalLayout CssClass="aligner">
+		<!-- <c:VerticalLayout CssClass="aligner">
 			<c:HorizontalLayout CssClass="small_grid">
 				<s:Push Id="groupFilter" Value="$GetLeftFilterStyle(group)"></s:Push>
 				<s:Push Id="brandFilter" Value="$GetRightFilterStyle(brand)"></s:Push>
@@ -33,14 +33,14 @@
 						<c:TextView Text="#groups#"></c:TextView>
 					</c:HorizontalLayout>
 				</c:HorizontalLayout>
-				<!-- <c:HorizontalLayout CssClass="$brandFilter">
+				 <c:HorizontalLayout CssClass="$brandFilter">
 					<c:HorizontalLayout CssClass="select_zone" OnClickAction="$ChangeFilterAndRefresh(brand)">
 						<c:TextView Text="#brands#"></c:TextView>
 					</c:HorizontalLayout>
-				</c:HorizontalLayout> -->
+				</c:HorizontalLayout>
 			</c:HorizontalLayout>
 		</c:VerticalLayout>
-		<c:HorizontalLine />
+		<c:HorizontalLine /> -->
 
 		<c:ScrollView Id="grScrollView">
 

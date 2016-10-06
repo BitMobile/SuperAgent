@@ -60,9 +60,9 @@ details		Реквизиты
 developer	РАЗРАБОТЧИК РЕШЕНИЯ
 discard		Сбросить
 discount	Скидка, %
-distribution	Дистрибуция
-distributor	Дистрибьютор
-distributor	Дистрибьютор
+distribution	Вопросы по зонам
+distributor	Допросы по зонам
+distributor	опросы по зонам
 docNumber	Номер документа
 document	Документ
 documentSum	Сумма документа
@@ -99,7 +99,7 @@ firstBIT	Первый БИТ — эффективные решения для в
 forward		Далее
 further	еще
 go_back	Вернуться
-groups	Группы
+groups	Категории зон проверки
 hideImage	Скрыть фото
 icons		При создании приложения использованы иконки Icons8. Сайт разработчика icons8.com
 idea		Предложить идею

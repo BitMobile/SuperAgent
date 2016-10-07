@@ -206,8 +206,9 @@ function GetTasksDone(){
 
 function SetAmountAlcohol(){
 
-	var q = new Query("SELECT SUM(CASE WHEN SA.LineNumber=1 THEN SA.Amount ELSE 0 END) AS AmountDayAlcohol, SUM(CASE WHEN SA.LineNumber=2 THEN SA.Amount ELSE 0 END) AS AmountDayNoAlcohol FROM Catalog_TypeSKU_SaleDay AS SA WHERE SA.User=@UserRef GROUP BY SA.User");
+	var q = new Query("SELECT SUM(CASE WHEN SA.LineNumber=1 THEN SA.Amount ELSE 0 END) AS AmountDayAlcohol, SUM(CASE WHEN SA.LineNumber=2 THEN SA.Amount ELSE 0 END) AS AmountDayNoAlcohol FROM Catalog_TypeSKU_SaleDay AS SA WHERE Date(SA.Period)=Date(@Period) AND SA.User=@UserRef GROUP BY SA.User");
 	q.AddParameter("UserRef", $.common.UserRef);
+	q.AddParameter("Period", DateTime.Now.Date);
 	var cnt = q.Execute();
 
 	if (cnt.AmountDayAlcohol == null)

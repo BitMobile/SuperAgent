@@ -19,7 +19,7 @@
 				</c:DockLayout>
 			</s:If>
 			<s:Else>
-				<c:DockLayout Id="btnForward" CssClass="forward" OnEvent="Forward" OnClickAction="$CountResultAndForward()">
+				<c:DockLayout Id="btn_forward" CssClass="forward" OnEvent="Forward" OnClickAction="$CountResultAndForward()">
 					<c:VerticalLayout></c:VerticalLayout>
 					<c:TextView Id="obligateredButton" Text="{@obligateredLeft})" />
 					<c:Image Id="imagForw"/>
@@ -61,36 +61,29 @@
 		<c:Image CssClass="4_scroll"></c:Image>
 		<c:HorizontalLine />
 
+<s:If Test="$HasQuestions()">
+	<c:DockLayout CssClass="search">
+		<c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoSearch($edtSearch.Text)"></c:Button>
+		<c:DockLayout>
+			<c:Image />
+			<c:EditText Id="edtSearch" Text="$search" Placeholder="#search#"></c:EditText>
+		</c:DockLayout>
+	</c:DockLayout>
+	<c:HorizontalLine />
+	<c:DockLayout Id="btn_filters" CssClass="parameter_grid" OnClickAction="$Workflow.DoAction(ShowFilters1, Questionnaire)">
+		<c:TextView Text="#filter#"></c:TextView>
+		<c:Image></c:Image>
+	</c:DockLayout>
+	<c:HorizontalLine />
+
+	<c:HorizontalLayout Id="obligatorTop" CssClass="margin_top1">
+		</c:HorizontalLayout>
+	<c:HorizontalLine />
+</s:If>
+
 		<c:ScrollView Id="grScrollView">
 
 			<s:If Test="$HasQuestions()">
-
-				<c:DockLayout CssClass="search">
-					<c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoSearch($edtSearch.Text)"></c:Button>
-					<c:DockLayout>
-						<c:Image />
-						<c:EditText Id="edtSearch" Text="$search" Placeholder="#search#"></c:EditText>
-					</c:DockLayout>
-				</c:DockLayout>
-				<c:HorizontalLine />
-
-				<c:DockLayout Id="btn_filters" CssClass="parameter_grid" OnClickAction="$Workflow.DoAction(ShowFilters1, Questionnaire)">
-					<c:TextView Text="#filter#"></c:TextView>
-					<c:Image></c:Image>
-				</c:DockLayout>
-				<c:HorizontalLine />
-
-				<s:If Test="@forwardAllowed">
-					<c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
-				</s:If>
-				<s:Else>
-					<c:HorizontalLayout CssClass="required_grid">
-						<c:TextView Text="#requiredLeft# "></c:TextView>
-						<c:Image />
-						<c:TextView Id="obligateredInfo" Text="{@obligateredLeft}"></c:TextView>
-					</c:HorizontalLayout>
-				</s:Else>
-				<c:HorizontalLine />
 
 				<s:Iterator Id="sku" Value="$SKUs" Status="statusCount">
 					<s:Push Id="index" Value="{$statusCount.Index}"></s:Push>

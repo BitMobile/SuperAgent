@@ -75,7 +75,10 @@ function SetScrollIndex() {
 		//	var s1 = (parseInt(scrollIndex1) * parseInt(2)) + parseInt(6);
 		//	$.grScrollView.Index = s1;
 		//}
-			var s = (parseInt(scrollIndex) * parseInt(2)) + parseInt(6);
+			var s = (parseInt(scrollIndex) * parseInt(2)) - 2;
+			if (s<0) {
+				s=0;
+			}
 			$.grScrollView.Index = s;
 			//for(control in $.grScrollView.Controls){
       //  control.Visible = true;
@@ -471,9 +474,9 @@ function RefreshScreen(control, search, sku, question, answerType, indexpar, ans
 				Variables["TextForw"].Refresh();
 			}
 		}else {
-			if (Variables.Exists("obligateredInfo")) {
-				Variables["obligateredInfo"].Text = obligateredLeft;
-			}
+			//if (Variables.Exists("obligateredInfo")) {
+			//	Variables["obligateredInfo"].Text = obligateredLeft;
+			//}
 			if (Variables.Exists("obligateredButton")) {
 			Variables["obligateredButton"].Text = obligateredLeft+")";
 			}
@@ -490,10 +493,10 @@ function RefreshScreen(control, search, sku, question, answerType, indexpar, ans
 	}
 	if (reqorno==1 && (!buferansw && havenewotv)) {
 		obligateredLeft = parseInt(obligateredLeft) + 1;
-		if (Variables.Exists("obligateredInfo")) {
-			Variables["obligateredButton"].Text = obligateredLeft+")";
-			Variables["obligateredInfo"].Text = obligateredLeft;
-		}
+		//if (Variables.Exists("obligateredInfo")) {
+		//	Variables["obligateredButton"].Text = obligateredLeft+")";
+		//	Variables["obligateredInfo"].Text = obligateredLeft;
+		//}
 		if (Variables.Exists("Req"+idPar)) {
 			Variables["Req"+idPar].CssClass = "required_side_gr";
 			Variables["Req"+idPar].Refresh();
@@ -589,8 +592,9 @@ function DialogCallBackBool(state, args){
 	}
 if (ShowDoch) {
 	setScroll = true;
-	scrollIndex = parseInt(idChail);
-	scrollIndex1= parseInt(idChail);
+	scrollIndex = parseInt(idPar)+parseInt(idChail)+1;
+	scrollIndex1= parseInt(idPar);
+	//Dialog.Message(scrollIndex);
 	inref = true;
 	Workflow.Refresh([$.search]);
 
@@ -659,34 +663,41 @@ var q = new Query("SELECT DISTINCT S.Question, S.Description, S.SKU " +
 q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 obligateredLeft = q.ExecuteCount().ToString();
 if (obligateredLeft==0) {
-	if (Variables.Exists("obligateredButton")) {
-		Variables["obligateredButton"].Text = "";
+	Variables["btn_forward"].CssClass = "btn_forward";
+	Variables["btn_forward"].Refresh();
+	for (control in $.btn_forward.Controls) {
+		control.remove();
 	}
-	if (Variables.Exists("imagForw")) {
-	  Variables["imagForw"].CssClass = "imgForw";
-	  Variables["imagForw"].Refresh();
-	}
-	if (Variables.Exists("TextForw")) {
-		Variables["TextForw"].Text = Translate["#forward#"];
-		Variables["TextForw"].Refresh();
-		Variables["TextForw"].CssClass = "TextViewInTopNorm";
-		Variables["TextForw"].Refresh();
-	}
+	var toappend = "<c:TextView Id=\"btnForward\" Text=\"" + Translate["#forward#"]+"\" />";
+	$.btn_forward.append(toappend);
+	$.btn_forward.refresh();
 
 }else {
-	if (Variables.Exists("obligateredInfo")) {
-		Variables["obligateredInfo"].Text = obligateredLeft;
-		Variables["obligateredButton"].Text = obligateredLeft+")";
-	}
+		Variables["btn_forward"].CssClass = "forward";
+		Variables["btn_forward"].Refresh();
+
+		for (control in $.btn_forward.Controls) {
+			control.remove();
+		}
+		var toappend ="<c:VerticalLayout></c:VerticalLayout>" +
+		"<c:TextView Id=\"obligateredButton\" Text=\""+obligateredLeft+")\" />" +
+		"<c:Image Id=\"imagForw\"/>" +
+		"<c:TextView Id=\"btnForward\" Text=\"" + Translate["#forward#"]+" (\" />" ;
+		$.btn_forward.append(toappend);
+		$.btn_forward.refresh();
+//	}
 }
-var obl =new Query("SELECT Question FROM USR_SKUQuestions WHERE Obligatoriness = @obl And SKU = @sku And Answer IS NULL");
+var obl =new Query("SELECT S.Question FROM USR_SKUQuestions S WHERE S.Obligatoriness = @obl And S.SKU = @sku And S.Answer IS NULL AND" +
+" (S.ParentQuestion=@emptyRef OR S.ParentQuestion IN (SELECT Question FROM USR_SKUQuestions SS " +
+	"WHERE SS.SKU=S.SKU AND (SS.Answer='Yes' OR SS.Answer='Да')))" );
+obl.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 obl.AddParameter("obl",1);
 obl.AddParameter("sku",skuValueGl);
 var rez = obl.ExecuteCount();
 if (rez > 0) {
   //Dialog.Message("ParentReq"+idChail);
   //Variables["ParentReq"+idChail].Refresh();
-	if (Variables.Exists("ParentReq"+idChail)) {
+if (Variables.Exists("ParentReq"+idChail)) {
   Variables["ParentReq"+idChail].CssClass = "required_side_wh";
   Variables["ParentReq"+idChail].Refresh();
 }
@@ -710,6 +721,15 @@ if (Variables.Exists("ParentReq"+idChail)) {
 	//Workflow.Refresh([$.search]);
 	//idChail = idChail;
 
+}
+}
+
+function GetCssClasForOblTop(){
+	if (forwardAllowed) {
+		return "margin_top";
+	}else {
+		return "required_grid";
+	}
 }
 
 function DialogCallBack(state, args){
@@ -785,7 +805,7 @@ function DialogCallBack(state, args){
 }
 
 
-}
+
 
 
 function GalleryCallBack(state, args) {
@@ -873,6 +893,10 @@ if (Variables.Exists("controlVert"+idPar)) {
 q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 obligateredLeft = q.ExecuteCount().ToString();
 if (obligateredLeft==0) {
+	if (Variables.Exists("btn_forward")) {
+		Variables["btn_forward"].CssClass = "btn_forward";
+		Variables["btn_forward"].Refresh();
+	}
 	if (Variables.Exists("obligateredButton")) {
 		Variables["obligateredButton"].Text = "";
 	}
@@ -882,15 +906,15 @@ if (obligateredLeft==0) {
   }
 	if (Variables.Exists("TextForw")) {
 		Variables["TextForw"].Text = Translate["#forward#"];
-		Variables["TextForw"].Refresh();
+		//Variables["TextForw"].Refresh();
 		Variables["TextForw"].CssClass = "TextViewInTopNorm";
 		Variables["TextForw"].Refresh();
 	}
 
 }else {
-	if (Variables.Exists("obligateredInfo")) {
-		Variables["obligateredInfo"].Text = obligateredLeft;
-	}
+	//if (Variables.Exists("obligateredInfo")) {
+	//	Variables["obligateredInfo"].Text = obligateredLeft;
+	//}
 	if (Variables.Exists("obligateredButton")) {
 		Variables["obligateredButton"].Text = obligateredLeft+")";
 	}
@@ -985,7 +1009,7 @@ function AddSnapshotHandlerSku(state, args) {
 		var arr = [path, valueRef, attr];
 		if (valueRef != null){
 			if (valueRef.Metadata().TableName=="Catalog_SKU")
-				arr = [path, valueRef, attr, true];
+				arr = [path, valueRef, attr, false];
 		}
 
 		Workflow.Action("ShowImage", arr);
@@ -1087,9 +1111,9 @@ if (obligateredLeft==0) {
 	}
 
 }else {
-	if (Variables.Exists("obligateredInfo")) {
-		Variables["obligateredInfo"].Text = obligateredLeft;
-	}
+	//if (Variables.Exists("obligateredInfo")) {
+	//	Variables["obligateredInfo"].Text = obligateredLeft;
+	//}
 	if (Variables.Exists("obligateredButton")) {
 		Variables["obligateredButton"].Text = obligateredLeft+")";
 	}

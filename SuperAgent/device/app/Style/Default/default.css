@@ -365,6 +365,12 @@ MemoEdit {
 	dock-align: top;
 }
 
+.margin_top1 {
+	height: 1mm;
+	background-color: #efeff4;
+	dock-align: top;
+}
+
 .end_of_block {
 	height: 3.3mm;
 	selected-color: #bacdce;

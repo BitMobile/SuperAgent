@@ -15,7 +15,10 @@
 	padding-left: 2.4mm;
 	padding-right: 2.4mm;
 }
-
+.imgForw {
+	height: 100%;
+	width: 1%;
+}
 .parameter_grid TextView {
 	width: 74%;
 }

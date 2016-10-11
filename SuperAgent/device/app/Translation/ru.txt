@@ -55,7 +55,7 @@ countPrice	Пересчитать цену
 currency	руб.
 current		Текущие
 date		Дата
-DateNextPayment		Дата следующего платежа
+DateNextPayment		Дата погашения задолженности
 debt	Долг
 delete	Удалить
 deleteImage		Удалить изображение?
@@ -140,7 +140,7 @@ leadPhone	+7-812-320-65-66
 leadMail	mobilespb@1cbit.ru
 legal_address	Юридический адрес
 legal_name	Юридическое лицо
-lessDateNextPayment	Дата следующего платежа не может быть меньше текущего значения
+lessDateNextPayment	Дата погашения задолженности не может быть меньше текущего значения
 lessStart	Дата завершения не может быть меньше даты начала
 lessToday	Дата начала не может быть меньше текущей
 list	Список

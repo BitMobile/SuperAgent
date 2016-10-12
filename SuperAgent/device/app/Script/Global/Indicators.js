@@ -29,8 +29,8 @@ function SetIndicators() {
 	SetReturnQty();
 	SetTasksSum();
 	SetTasksDone();
-	SetAmountAlcohol();
-	SetAmountNoAlcohol();
+	SetDayAmount();
+	SetMonthAmount();
 }
 
 function SetOutletsCount() {
@@ -204,9 +204,11 @@ function GetTasksDone(){
 	return tasksDone;
 }
 
-function SetAmountAlcohol(){
+function SetDayAmount(){
 
-	var q = new Query("SELECT SUM(CASE WHEN SA.LineNumber=1 THEN SA.Amount ELSE 0 END) AS AmountDayAlcohol, SUM(CASE WHEN SA.LineNumber=2 THEN SA.Amount ELSE 0 END) AS AmountDayNoAlcohol FROM Catalog_TypeSKU_SaleDay AS SA WHERE Date(SA.Period)=Date(@Period) AND SA.User=@UserRef GROUP BY SA.User");
+	var q = new Query("SELECT SUM(CASE WHEN SA.LineNumber=1 THEN SA.Amount ELSE 0 END) AS AmountDayAlcohol, SUM(CASE WHEN SA.LineNumber=2 THEN SA.Amount ELSE 0 END) AS AmountDayNoAlcohol " +
+		" FROM Catalog_TypeSKU_SaleDay AS SA " +
+		" WHERE Date(SA.Period)=Date(@Period) AND SA.User=@UserRef GROUP BY SA.User");
 	q.AddParameter("UserRef", $.common.UserRef);
 	q.AddParameter("Period", DateTime.Now.Date);
 	var cnt = q.Execute();
@@ -223,10 +225,13 @@ function SetAmountAlcohol(){
 
 }
 
-function SetAmountNoAlcohol(){
+function SetMonthAmount(){
 
-	var q = new Query("SELECT SUM(CASE WHEN SA.LineNumber=1 THEN SA.Amount ELSE 0 END) AS AmountMonthAlcohol, SUM(CASE WHEN SA.LineNumber=2 THEN SA.Amount ELSE 0 END) AS AmountMonthNoAlcohol FROM Catalog_TypeSKU_SaleMonth AS SA WHERE SA.User=@UserRef GROUP BY SA.User");
+	var q = new Query("SELECT SUM(CASE WHEN SA.LineNumber=1 THEN SA.Amount ELSE 0 END) AS AmountMonthAlcohol, SUM(CASE WHEN SA.LineNumber=2 THEN SA.Amount ELSE 0 END) AS AmountMonthNoAlcohol " +
+		" FROM Catalog_TypeSKU_SaleMonth AS SA " +
+		" WHERE Date(SA.Period, 'start of month') <= Date(@Period) AND Date(SA.Period, 'start of month', '+1 months') > Date(@Period) AND SA.User=@UserRef GROUP BY SA.User");
 	q.AddParameter("UserRef", $.common.UserRef);
+	q.AddParameter("Period", DateTime.Now.Date);
 	var cnt = q.Execute();
 
 	if (cnt.AmountMonthAlcohol == null)

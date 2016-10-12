@@ -15,7 +15,7 @@
 
 .grid vl hl Indicator {
 	height: 100%;
-	color: #2d89cf;
+	color: #FF7C4A;
 }
 
 .grid vl hl TextView {
@@ -24,7 +24,7 @@
 	margin-top: 10%;
 	margin-left: 2%;
 	font: 80% Arial-ItalicMT;
-	color: #2d89cf;
+	color: #FF7C4A;
 }
 
 .main_row {

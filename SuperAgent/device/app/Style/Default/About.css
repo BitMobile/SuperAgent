@@ -36,12 +36,12 @@
 
 .image_block super_agent{
 	background-image: url(logo_superagent.png);
-	height: 6.7mm;
+	height: 8.7mm;
 }
 
 .image_block firstBIT{
 	background-image: url(logo_firstbit.png);
-	height: 6.7mm;
+	height: 8.7mm;
 }
 
 .extra_padding{
@@ -49,6 +49,7 @@
 	height: 6.7mm auto;
 	padding-top: 1.7mm;
 	padding-bottom: 1.7mm;
+	horizontal-align: center;
 	background-color: none;
 }
 
@@ -73,16 +74,16 @@
 	margin-right: -24.7mm;
 	border-style : solid;
 	border-width: 1px;
-	border-color: #43acfd;
+	border-color: #FF7C4A;
 	border-radius: 5px;
-	color: #2d89cf;
+	color: #FF7C4A;
 	text-align: center;
 	font: 52% arial;
 }
 
 .sync Indicator {
 	height: 4mm;
-	color: #2d89cf;
+	color: #FF7C4A;
 	vertical-align: central;
 }
 
@@ -99,6 +100,6 @@
 	margin-top: 10%;
 	margin-left: 2mm;
 	font: 30% Arial-ItalicMT;
-	color: #2d89cf;
+	color: #FF7C4A;
 	/*background-color: #ddff66;*/
 }

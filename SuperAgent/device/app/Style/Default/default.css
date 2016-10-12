@@ -1,5 +1,6 @@
 body {
-	background-color: #f8f8f8;
+	background-color: #4A4C60;
+	color: #ffffff;
 }
 
 line {
@@ -71,7 +72,7 @@ TextView {
 
 Button {
 	selected-color: #b2b2b7;
-	color: #2d89cf;
+	color: #FF7C4A;
 }
 
 WebMapGoogle{
@@ -80,14 +81,14 @@ WebMapGoogle{
 }
 
 MemoEdit {
-	color: #2d89cf;
+	color: #FF7C4A;
 	background-color: #ffffff;
 }
 
 .top_navigator {
 	height: 6.7mm;
 	dock-align: top;
-	background-color: #ffffff;
+	background-color: #4a4c60;
 }
 
 .top_navigator Button {
@@ -108,7 +109,7 @@ MemoEdit {
 	padding-top: 26%;
 	horizontal-align: central;
 	text-align: center;
-	color: #000000;
+	color: #ffffff;
 	font: 39.5% arial;
 	selected-color: #D3D3D3;
 }
@@ -134,7 +135,7 @@ MemoEdit {
 	margin-right: 1mm;
 	padding-top: 26%;
 	text-align: right;
-	color: #2d89cf;
+	color: #FF7C4A;
 	font: 39.5% arial;
 }
 
@@ -151,7 +152,7 @@ MemoEdit {
 	padding-top: 26%;
 	text-align: left;
 	dock-align: left;
-	color: #2d89cf;
+	color: #FF7C4A;
 	font: 39.5% arial;
 }
 
@@ -195,7 +196,7 @@ MemoEdit {
 }
 
 .mode_left_button_on select_zone {
-	selected-color: #43acfd;
+	selected-color: #FF7C4A;
 }
 
 .mode_left_button_on select_zone TextView {
@@ -211,7 +212,7 @@ MemoEdit {
 }
 
 .mode_right_button_off select_zone TextView {
-	color: #2d89cf;
+	color: #FF7C4A;
 }
 
 .mode_right_button_on {
@@ -223,7 +224,7 @@ MemoEdit {
 }
 
 .mode_right_button_on select_zone {
-	selected-color: #43acfd;
+	selected-color: #FF7C4A;
 }
 
 .mode_right_button_on select_zone TextView {
@@ -240,7 +241,7 @@ MemoEdit {
 }
 
 .mode_left_button_off select_zone TextView {
-	color: #2d89cf;
+	color: #FF7C4A;
 }
 
 .small_grid {
@@ -249,6 +250,7 @@ MemoEdit {
 	selected-color: #bacdce;
 	dock-align: top;
 	horizontal-align: central;
+	background-color: #4A4C60;
 }
 
 .small_grid hl select_zone {
@@ -268,7 +270,7 @@ MemoEdit {
 
 .search {
 	height: 6.7mm;
-	/*background-color: #d6d9dd;*/
+	background-color: #ffffff;
 	dock-align: top;
 }
 
@@ -298,6 +300,12 @@ MemoEdit {
 	dock-align: left;
 }
 
+.VertDisp{
+	height: 6.7mm;
+	width: 100%;
+	background-color: #4A4C60;
+}
+
 .search Button {
 	margin-left: 1.7mm;
 	margin-top: 18%;
@@ -305,11 +313,11 @@ MemoEdit {
 	width: 10mm;
 	height: 65%;
 	dock-align: right;
-	background-color: #43acfd;
+	background-color: #ff7c4a;
 	color: #f8f8f8;
 	border-style: solid;
 	border-width: 1px;
-	border-color: #43acfd;
+	border-color: #FF7C4A;
 	border-radius: 1mm;
 	font: 55% arial;
 }
@@ -342,7 +350,7 @@ MemoEdit {
 	margin-top: 50%;
 	white-space: nowrap;
 	font: 60% arial;
-	color: #4d4d4d;
+	color: #8E8E93;
 }
 
 .required{
@@ -412,14 +420,14 @@ MemoEdit {
 	height: 40%;
 	width: 90%;
 	font: 45% Arial;
-	placeholder-color: #2d89cf;
+	placeholder-color: #FF7C4A;
 }
 
 .grid vl EditText {
 	height: 40%;
 	width: 90%;
 	font: 45% Arial;
-	color: #2d89cf;
+	color: #FF7C4A;
 }
 
 .grid vl dl {
@@ -446,9 +454,9 @@ MemoEdit {
 	margin-top: 0%;
 	border-style: solid;
 	border-width: 1px;
-	border-color: #43acfd;
+	border-color: #FF7C4A;
 	border-radius: 5px;
-	color: #2d89cf;
+	color: #FF7C4A;
 	text-align: center;
 	font: 65% arial;
 }
@@ -457,8 +465,9 @@ MemoEdit {
 	width: 100%;
 	height: 40%;
 	white-space: normal;
-	placeholder-color: #2d89cf;
+	placeholder-color: #FF7C4A;
 	font: 42% Arial;
+	color: #495052;
 }
 
 .description_row {
@@ -490,7 +499,7 @@ MemoEdit {
 	vertical-align: central;
 	white-space: nowrap;
 	font: 80% Arial;
-	color: #2d89cf;
+	color: #FF7C4A;
 }
 
 .half_grid hlf_value {
@@ -598,6 +607,7 @@ MemoEdit {
 	width: 100%;
 	height: 6.7mm;
 	dock-align: top;
+	background-color: #FFFFFF;
 }
 
 .parameter_grid TextView {
@@ -606,7 +616,7 @@ MemoEdit {
 	padding-top: 30%;
 	vertical-align: central;
 	margin-left: 2.7mm;
-	color: #2d89cf;
+	color: #FF7C4A;
 	dock-align: left;
 	font: 36% arial;
 }
@@ -624,12 +634,12 @@ MemoEdit {
 .parameter_grid EditText {
 	width: 50%;
 	height: 100%;
-	color: #2d89cf;
+	color: #FF7C4A;
 	padding-top: 30%;
 	margin-left: 2.7mm;
 	dock-align: left;
 	font: 37% arial;
-	placeholder-color: #2d89cf;
+	placeholder-color: #FF7C4A;
 }
 
 .parameter_grid hl {
@@ -642,7 +652,7 @@ MemoEdit {
 	width: 100%;
 	height: 100%;
 	padding-top: 30%;
-	color: #2d89cf;
+	color: #FF7C4A;
 	font: 36% arial;
 }
 
@@ -688,7 +698,7 @@ MemoEdit {
 	width: 25%;
 	height: 100%;
 	margin-left: 3.5%;
-	color: #2d89cf;
+	color: #FF7C4A;
 	dock-align: left;
 	font: 37% arial;
 }
@@ -700,9 +710,9 @@ MemoEdit {
 	margin-left: 5%;
 	border-width: 1px;
 	border-style: solid;
-	border-color: #43acfd;
+	border-color: #FF7C4A;
 	border-radius: 5px;
-	color: #2d89cf;
+	color: #FF7C4A;
 	text-align: center;
 	font: 63% arial;
 }
@@ -749,7 +759,7 @@ MemoEdit {
 	height: 100%;
 	text-align: center;
 	padding-top: 25%;
-	color: #2d89cf;
+	color: #FF7C4A;
 	font: 37% arial;
 }
 
@@ -770,7 +780,7 @@ MemoEdit {
 	width: 100%;
 	height: 100%;
 	text-align: center;
-	color: #2d89cf;
+	color: #FF7C4A;
 	font: 37% arial;
 }
 
@@ -780,7 +790,7 @@ MemoEdit {
 	text-align: left;
 	padding-top: 25%;
 	padding-left: 2.4mm;
-	color: #2d89cf;
+	color: #FF7C4A;
 	font: 37% arial;
 }
 
@@ -790,7 +800,7 @@ MemoEdit {
 	text-align: right;
 	padding-top: 25%;
 	padding-right: 2.4mm;
-	color: #2d89cf;
+	color: #FF7C4A;
 	font: 37% arial;
 }
 
@@ -862,18 +872,18 @@ MemoEdit {
 
 .menu {
 	padding-top: 2%;
-	background-color: #2d89cf;
+	background-color: #2E2F3C;
 	width: 43.4mm;
 }
 
 .menu line {
 	margin-left: 1.4mm;
-	background-color: #43acfd;
+	background-color: #3A3B47;
 }
 
 .menu dl {
 	height: 6.9mm;
-	selected-color: #5ea6dc;
+	selected-color: #5D5D71;
 }
 
 .menu_text {
@@ -885,7 +895,7 @@ MemoEdit {
 	margin-top: 30%;
 	margin-right: 2mm;
 	margin-left: 0.5mm;
-	color: #c5e3f7;
+	color: #c1c1c5;
 	font: 90% arial;
 }
 
@@ -904,12 +914,12 @@ MemoEdit {
 	height: 40%;
 	margin-left: 1.4mm;
 	vertical-align: central;
-	color: #ffffff;
+	color: #c1c1c5;
 	font: 90% arial;
 }
 
 .header {
-	background-color: #43acfd;
+	background-color: #696A87;
 	margin-left: 0mm;
 }
 

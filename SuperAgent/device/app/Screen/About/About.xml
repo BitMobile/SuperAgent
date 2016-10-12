@@ -21,9 +21,6 @@
 
 			<c:ScrollView Id="grScrollView">
 
-				<c:HorizontalLayout CssClass="caption_grid">
-					<c:TextView Text="#about#:" />
-				</c:HorizontalLayout>
 
 				<c:VerticalLayout CssClass="extra_padding">
 					<c:HorizontalLayout CssClass="image_block">
@@ -78,7 +75,7 @@
 					</c:HorizontalLayout>
 				</c:VerticalLayout>
 
-				<c:TextView	Text="#firstBIT#" CssClass="description_row" />
+
 				<c:HorizontalLayout CssClass="end_of_block" />
 
 				<!-- <c:HorizontalLine/>

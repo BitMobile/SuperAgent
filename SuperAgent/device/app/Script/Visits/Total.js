@@ -168,7 +168,11 @@ function GetReturnSum(returnDoc) {
 }
 
 function AskEndVisit(order, visit, wfName) {
-	Dialog.Alert(Translate["#visit_end_question#"], CheckAndCommit, [order, visit, wfName], Translate["#end#"], Translate["#go_back#"]);
+	if (obligateNumber==0) {
+			Dialog.Alert(Translate["#visit_end_question#"], CheckAndCommit, [order, visit, wfName], Translate["#end#"], Translate["#go_back#"]);
+	}else {
+		Dialog.Message(Translate["#AlertObligateNumber#"]);
+	}
 }
 
 function CheckAndCommit(state, args) {
@@ -278,6 +282,7 @@ function SetBallonsFact(control, visit) {
 
 	 if (obligateNumber==0) {
 	  Variables["btnForward"].CssClass = "btn_forward";
+		Variables["btnForward"].OnEvent = "Forward";
 	  Variables["btnForward"].Refresh();
 	  for (control in $.btnForward.Controls) {
 	    control.remove();
@@ -300,7 +305,7 @@ function SetBallonsFact(control, visit) {
 	    $.btnForward.append(toappend);
 	    $.btnForward.refresh();
 	}
-	
+
 	visit.Save();
 }
 

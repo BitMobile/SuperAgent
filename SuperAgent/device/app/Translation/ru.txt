@@ -374,3 +374,4 @@ webSite		Сайт разработчика
 YES		Да
 ZAO				ЗАО
 today		Сегодня
+AlertObligateNumber		Пожалуйста, заполните все обязательные поля

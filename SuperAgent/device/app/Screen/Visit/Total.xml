@@ -19,7 +19,7 @@
 				</c:DockLayout>
 			</s:If>
 			<s:Else>
-				<c:DockLayout Id="btnForward" CssClass="forward">
+				<c:DockLayout Id="btnForward" CssClass="forward" OnEvent="Forward" OnClickAction="$AskEndVisit($workflow.order, $workflow.visit, $workflow.name)">
 					<c:VerticalLayout></c:VerticalLayout>
 					<c:TextView Id="obligateredButton" Text="{@obligateNumber})" />
 					<c:Image />

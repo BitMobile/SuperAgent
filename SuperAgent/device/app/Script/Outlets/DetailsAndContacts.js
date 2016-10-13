@@ -230,7 +230,7 @@ function ChoseFromCatalog(Name){
 	var tabelName = "Catalog_ContacntDolzh";
 	var startKey = $.contact.Position;
 	//Dialog.Message(startKey);
-	var query = new Query("Select Id,Description From "+tabelName+" Order By Description");
+	var query = new Query("Select Id,Description From "+tabelName+"");
 	Dialog.Choose("#select_answer#"
 	        , query.Execute()
 					,	startKey

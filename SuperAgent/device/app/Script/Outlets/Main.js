@@ -691,12 +691,10 @@ function CoordsChecked(visit) {
 	var outlet = outlet.GetObject();
 	if (parseInt($.sessionConst.RadiusDeviation) != parseInt(0)) {
 		if ((parseInt(outlet.Lattitude) != parseInt(0)) || (parseInt(outlet.Longitude) != parseInt(0))) {
-			if (ActualLocation(location)) {
-				var CurRadiusDeviation = CoordCheckOutletAndActuality(location, outlet);
-				if (parseInt($.sessionConst.RadiusDeviation) <= parseInt(CurRadiusDeviation)) {
-					Dialog.Message(Translate["#impossibleOutletCoords#"]);
-					return false;
-				}
+			var CurRadiusDeviation = CoordCheckOutletAndActuality(location, outlet);
+			if (parseInt($.sessionConst.RadiusDeviation) <= parseInt(CurRadiusDeviation)) {
+				Dialog.Message(Translate["#impossibleOutletCoords#"]);
+				return false;
 			}
 		}
 	}

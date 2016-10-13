@@ -1,5 +1,4 @@
-﻿
-var checkOrderReason;
+﻿var checkOrderReason;
 var checkVisitReason;
 var orderEnabled;
 var returnEnabled;
@@ -275,7 +274,33 @@ function SetBallonsFact(control, visit) {
 			}
 		}
 	}
-	Workflow.Refresh([]);
+	VisitIsChecked(visit);
+
+	 if (obligateNumber==0) {
+	  Variables["btnForward"].CssClass = "btn_forward";
+	  Variables["btnForward"].Refresh();
+	  for (control in $.btnForward.Controls) {
+	    control.remove();
+	  }
+	  var toappend = "<c:TextView Id=\"btn_Forward\" Text=\"" + Translate["#ready#"]+"\" />";
+	  $.btnForward.append(toappend);
+	  $.btnForward.refresh();
+
+	}else {
+	    Variables["btnForward"].CssClass = "forward";
+	    Variables["btnForward"].Refresh();
+
+	    for (control in $.btnForward.Controls) {
+	      control.remove();
+	    }
+	    var toappend ="<c:VerticalLayout></c:VerticalLayout>" +
+	    "<c:TextView Id=\"obligateredButton\" Text=\""+obligateNumber+")\" />" +
+	    "<c:Image Id=\"imagForw\"/>" +
+	    "<c:TextView Id=\"btn_Forward\" Text=\"" + Translate["#forward#"]+" (\" />" ;
+	    $.btnForward.append(toappend);
+	    $.btnForward.refresh();
+	}
+	
 	visit.Save();
 }
 

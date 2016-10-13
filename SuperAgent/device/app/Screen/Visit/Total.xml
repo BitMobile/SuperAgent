@@ -12,9 +12,10 @@
 				<c:Image />
 				<c:TextView Text="#back#" />
 			</c:DockLayout>
+<!--  -->
 			<s:If Test="$result">
-				<c:DockLayout CssClass="btn_forward" OnEvent="Forward" OnClickAction="$AskEndVisit($workflow.order, $workflow.visit, $workflow.name)" >
-					<c:TextView Id="btnForward" Text="#ready#" />
+				<c:DockLayout Id="btnForward"  CssClass="btn_forward" OnEvent="Forward" OnClickAction="$AskEndVisit($workflow.order, $workflow.visit, $workflow.name)" >
+					<c:TextView Id="btn_Forward" Text="#ready#" />
 				</c:DockLayout>
 			</s:If>
 			<s:Else>
@@ -22,7 +23,7 @@
 					<c:VerticalLayout></c:VerticalLayout>
 					<c:TextView Id="obligateredButton" Text="{@obligateNumber})" />
 					<c:Image />
-					<c:TextView Text="#forward# (" />
+					<c:TextView Id="btn_Forward" Text="#forward# (" />
 				</c:DockLayout>
 			</s:Else>
 
@@ -169,7 +170,7 @@
 					<c:HorizontalLayout Id="ObligateBallonsFact" CssClass="answered_side_wh_2"></c:HorizontalLayout>
 				</s:Else>
 					<c:TextView Text="{#ballon#, #fact#}" CssClass="blueText"></c:TextView>
-					<c:EditText Id="BallonsFact" Placeholder="-" Keyboard="numeric" Value="$workflow.visit.BallonsAmount" OnLostFocus="$SetBallonsFact($workflow.visit)" CssClass="value"></c:EditText>
+					<c:EditText Id="BallonsFact" Placeholder="-" Keyboard="numeric" Value="$workflow.visit.BallonsAmount" OnChange="$SetBallonsFact($workflow.visit)" CssClass="value"></c:EditText>
 				</c:DockLayout>
 				<c:HorizontalLine />
 
@@ -187,7 +188,7 @@
 						<c:HorizontalLayout Id="ObligateKegsFact" CssClass="answered_side_wh_2"></c:HorizontalLayout>
 					</s:Else>
 					<c:TextView Text="{#kegs#, #fact#}" CssClass="blueText"></c:TextView>
-					<c:EditText Id="KegsFact" Placeholder="-" Keyboard="numeric" Value="$workflow.visit.KegsAmount" OnLostFocus="$SetBallonsFact($workflow.visit)" CssClass="value"></c:EditText>
+					<c:EditText Id="KegsFact" Placeholder="-" Keyboard="numeric" Value="$workflow.visit.KegsAmount" OnChange="$SetBallonsFact($workflow.visit)" CssClass="value"></c:EditText>
 				</c:DockLayout>
 				<c:HorizontalLine />
 

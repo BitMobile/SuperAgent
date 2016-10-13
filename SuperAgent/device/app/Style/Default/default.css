@@ -806,6 +806,7 @@ MemoEdit {
 
 .memo_block {
 	height: 18mm;
+	selected-color: #bacdce;
 }
 
 .memo_block vl {
@@ -825,6 +826,7 @@ MemoEdit {
 	width: 100%;
 	margin-left: 0%;
 	font: 20% Arial;
+	white-space: normal;
 }
 
 .no_image{

@@ -409,10 +409,13 @@ function GalleryCallBack(state, args) {
 	var weHaveIt = Variables.Exists("controlVert"+idPar);
 
 	if (weHaveIt) {
+		//Dialog.Message("We IN");
 		if (Variables.Exists("controlVertIn"+idPar)) {
 			if (Variables.Exists("control"+idPar)) {
 				if (Variables["control"+idPar].CssClass == "answer_snapshot") {
 				}else {
+					//Dialog.Message("We IN An");
+
 					for(control in Variables["controlVertIn"+idPar].Controls)
 					control.remove();
 					Variables["controlVertIn"+idPar].after("<c:Image Id='control"+idPar+"' CssClass='answer_snapshot'></c:Image>").refresh();
@@ -426,6 +429,17 @@ function GalleryCallBack(state, args) {
 			}
 
 		}
+		Variables["controlVert"+idPar].refresh();
+		Variables["controlVert"+idPar].Refresh();
+		for(control in Variables["controlVert"+idPar].Controls){
+			control.refresh();
+			control.Refresh();
+			}
+			$.grScrollView.refresh();
+			$.grScrollView.Refresh()
+		Variables["HorControl"+idPar].refresh();
+		Variables["HorControl"+idPar].Refresh();
+
 	}
 if (Variables.Exists("control"+idPar)) {
 	Variables["control"+idPar].CssClass = "answer_snapshot";
@@ -680,11 +694,25 @@ function DeleteFromTable(question) {
 	q.AddParameter("question", question);
 	q.Execute();
 	if (Variables.Exists("control"+idPar)) {
-		Variables["control"+idPar].remove();
-		var textToAppend = "<c:VerticalLayout Id='controlVertIn"+idPar+"' CssClass='no_child_answer'>"
+		for(control in Variables["controlVert"+idPar].Controls)
+		control.remove();
+
+	//	Variables["control"+idPar].remove();
+		var textToAppend = "<c:VerticalLayout Id=\"controlVertIn{$index}\" CssClass=\"no_answer\">"
 		+"<c:Image Id='control"+idPar+"'/>"
 		+"</c:VerticalLayout>";
 		Variables["controlVert"+idPar].append(textToAppend).refresh();
+		Variables["controlVert"+idPar].refresh();
+		Variables["controlVert"+idPar].Refresh();
+		for(control in Variables["controlVert"+idPar].Controls){
+			control.refresh();
+			control.Refresh();
+			}
+			$.grScrollView.refresh();
+			$.grScrollView.Refresh()
+		Variables["HorControl"+idPar].refresh();
+		Variables["HorControl"+idPar].Refresh();
+
 	}
 
 		if (regularAnswers) {

@@ -19,7 +19,7 @@
 				</c:DockLayout>
 			</s:If>
 			<s:Else>
-				<c:DockLayout Id="btnForward" CssClass="forward" OnEvent="Forward" OnClickAction="$CountResultAndForward()">
+				<c:DockLayout Id="btn_forward" CssClass="forward" OnEvent="Forward" OnClickAction="$CountResultAndForward()">
 					<c:VerticalLayout></c:VerticalLayout>
 					<c:TextView Id="obligateredButton" Text="{@obligateredLeft})" />
 					<c:Image Id="imagForw"/>
@@ -31,66 +31,64 @@
 			</c:HorizontalLayout>
 		</c:DockLayout>
 
-		<c:HorizontalLayout CssClass="small_grid">
-			<s:If Test="@regularAnswers">
-				<c:HorizontalLayout CssClass="mode_left_button_on">
-					<c:HorizontalLayout Id="regular" CssClass="select_zone" OnClick="$ChangeListAndRefresh(1)">
-						<c:TextView Id="CountRegAnswer" Text="#regular# ({@regular_answ} #of# {@regular_total})"></c:TextView>
-					</c:HorizontalLayout>
+		<c:HorizontalLayout CssClass="VertDisp">
+			<c:VerticalLayout>
+				<c:HorizontalLayout CssClass="small_grid">
+					<s:If Test="@regularAnswers">
+						<c:HorizontalLayout CssClass="mode_left_button_on">
+							<c:HorizontalLayout Id="regular" CssClass="select_zone" OnClick="$ChangeListAndRefresh(1)">
+								<c:TextView Id="CountRegAnswer" Text="#regular# ({@regular_answ} #of# {@regular_total})"></c:TextView>
+							</c:HorizontalLayout>
+						</c:HorizontalLayout>
+						<c:HorizontalLayout CssClass="mode_right_button_off">
+							<c:HorizontalLayout Id="nonregular" CssClass="select_zone" OnClick="$ChangeListAndRefresh(0)">
+								<c:TextView Text="#nonregular# ({@single_answ} #of# {@single_total})"></c:TextView>
+							</c:HorizontalLayout>
+						</c:HorizontalLayout>
+					</s:If>
+					<s:Else>
+						<c:HorizontalLayout CssClass="mode_left_button_off">
+							<c:HorizontalLayout Id="regular" CssClass="select_zone" OnClick="$ChangeListAndRefresh(1)">
+								<c:TextView Text="#regular# ({@regular_answ} #of# {@regular_total})"></c:TextView>
+							</c:HorizontalLayout>
+						</c:HorizontalLayout>
+						<c:HorizontalLayout CssClass="mode_right_button_on">
+							<c:HorizontalLayout Id="nonregular" CssClass="select_zone" OnClick="$ChangeListAndRefresh(0)">
+								<c:TextView Id="CountNoNRegAnswer" Text="#nonregular# ({@single_answ} #of# {@single_total})"></c:TextView>
+							</c:HorizontalLayout>
+						</c:HorizontalLayout>
+					</s:Else>
 				</c:HorizontalLayout>
-				<c:HorizontalLayout CssClass="mode_right_button_off">
-					<c:HorizontalLayout Id="nonregular" CssClass="select_zone" OnClick="$ChangeListAndRefresh(0)">
-						<c:TextView Text="#nonregular# ({@single_answ} #of# {@single_total})"></c:TextView>
-					</c:HorizontalLayout>
-				</c:HorizontalLayout>
-			</s:If>
-			<s:Else>
-				<c:HorizontalLayout CssClass="mode_left_button_off">
-					<c:HorizontalLayout Id="regular" CssClass="select_zone" OnClick="$ChangeListAndRefresh(1)">
-						<c:TextView Text="#regular# ({@regular_answ} #of# {@regular_total})"></c:TextView>
-					</c:HorizontalLayout>
-				</c:HorizontalLayout>
-				<c:HorizontalLayout CssClass="mode_right_button_on">
-					<c:HorizontalLayout Id="nonregular" CssClass="select_zone" OnClick="$ChangeListAndRefresh(0)">
-						<c:TextView Id="CountNoNRegAnswer" Text="#nonregular# ({@single_answ} #of# {@single_total})"></c:TextView>
-					</c:HorizontalLayout>
-				</c:HorizontalLayout>
-			</s:Else>
+			</c:VerticalLayout>
 		</c:HorizontalLayout>
+
 
 		<c:Image CssClass="4_scroll"></c:Image>
 		<c:HorizontalLine />
 
+<s:If Test="$HasQuestions()">
+	<c:DockLayout CssClass="search">
+		<c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoSearch($edtSearch.Text)"></c:Button>
+		<c:DockLayout>
+			<c:Image />
+			<c:EditText Id="edtSearch" Text="$search" Placeholder="#search#"></c:EditText>
+		</c:DockLayout>
+	</c:DockLayout>
+	<c:HorizontalLine />
+	<c:DockLayout Id="btn_filters" CssClass="parameter_grid" OnClickAction="$Workflow.DoAction(ShowFilters1, Questionnaire)">
+		<c:TextView Text="#filter#"></c:TextView>
+		<c:Image></c:Image>
+	</c:DockLayout>
+	<c:HorizontalLine />
+
+	<c:HorizontalLayout Id="obligatorTop" CssClass="margin_top1">
+		</c:HorizontalLayout>
+	<c:HorizontalLine />
+</s:If>
+
 		<c:ScrollView Id="grScrollView">
 
 			<s:If Test="$HasQuestions()">
-
-				<c:DockLayout CssClass="search">
-					<c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoSearch($edtSearch.Text)"></c:Button>
-					<c:DockLayout>
-						<c:Image />
-						<c:EditText Id="edtSearch" Text="$search" Placeholder="#search#"></c:EditText>
-					</c:DockLayout>
-				</c:DockLayout>
-				<c:HorizontalLine />
-
-				<c:DockLayout Id="btn_filters" CssClass="parameter_grid" OnClickAction="$Workflow.DoAction(ShowFilters1, Questionnaire)">
-					<c:TextView Text="#filter#"></c:TextView>
-					<c:Image></c:Image>
-				</c:DockLayout>
-				<c:HorizontalLine />
-
-				<s:If Test="@forwardAllowed">
-					<c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout>
-				</s:If>
-				<s:Else>
-					<c:HorizontalLayout CssClass="required_grid">
-						<c:TextView Text="#requiredLeft# "></c:TextView>
-						<c:Image />
-						<c:TextView Id="obligateredInfo" Text="{@obligateredLeft}"></c:TextView>
-					</c:HorizontalLayout>
-				</s:Else>
-				<c:HorizontalLine />
 
 				<s:Iterator Id="sku" Value="$SKUs" Status="statusCount">
 					<s:Push Id="index" Value="{$statusCount.Index}"></s:Push>

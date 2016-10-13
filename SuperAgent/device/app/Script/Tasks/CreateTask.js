@@ -1,7 +1,13 @@
 
 var task;
 var requiredLeft;
-
+function OnLoad(){
+	//$.textTaskET.Text = "dD6ZR3FFWVoOE94pUcoxUzSzCFecsRbETfK0iZy6iE388cERXHDvYLR9wMTZO2K8I9ldmPk2vVabLCiJHLu16vmjY1nOBvmVVJaV0eNdwHTOkH90XbW95RHLoLSACjqDZaIgDmOlAANQuISn24Zg55KiUsNpB50g5d6Pegw54BIiT0TBEMiLcEjsIMsZW4L2YzucnYnnM8QohvuqyM7PHgDbmCM4H9e9YUYWeTc6bhJzNpj3NJnvnqb4PXX";
+	//task = GlobalWorkflow.GetCurrentTask();
+	//var taskObj = task.GetObject();
+	//taskObj.TextTask = $.textTaskET.Text;
+	//taskObj.Save();
+}
 function GetTask(){
 	task = GlobalWorkflow.GetCurrentTask();
 
@@ -19,7 +25,7 @@ function CreateNewTask(){
 	taskObj.CreatedAtMA = true;
 	taskObj.Responsible = $.common.UserRef;
 	taskObj.PlanExecutor = $.common.UserRef;
-	taskObj.Status = false;	
+	taskObj.Status = false;
 	if ($.workflow.name=="Visit")
 		taskObj.Outlet = GlobalWorkflow.GetOutlet();
 	taskObj.Save();
@@ -34,7 +40,7 @@ function SetSideStyles(){
 
 	var taskRef = task.GetObject();
 
-	requiredLeft = parseInt(0);	
+	requiredLeft = parseInt(0);
 
 	// sideStyle.Add("startPlanDate", ClassValue(taskRef.StartPlanDate));
 	// sideStyle.Add("endPlanDate", ClassValue(taskRef.EndPlanDate));
@@ -111,17 +117,22 @@ function SaveAndRefresh(sender){
 }
 
 function CompleteTask(){
-	GlobalWorkflow.SetCurrentTask(null);
-	if ($.workflow.name == 'Visit')
+//	Dialog.Message(task.Text.length);
+	if (task.TextTask.length > 250) {
+		$.textTaskET.SetFocus();
+	}else {
+		GlobalWorkflow.SetCurrentTask(null);
+		if ($.workflow.name == 'Visit')
 		DoBack();
-	else
+		else
 		DoCommit();
+	}
 }
 
 function RollbackTask(task){
 	GlobalWorkflow.SetCurrentTask(null);
 	if ($.workflow.name == 'Visit'){
-		DB.Delete(task);		
+		DB.Delete(task);
 		DoBack();
 	}
 	else

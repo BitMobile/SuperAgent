@@ -46,7 +46,7 @@ coordinatesAreSet	Координаты установлены
 copy		Скопировать
 couldnt_be_cleaned	Поле не может быть очищено
 countPrice	Пересчитать цену
-currency	руб.
+currency	₽
 current		Текущие
 date		Дата
 debt	Долг
@@ -358,3 +358,5 @@ YES		Да
 ZAO				ЗАО
 OutWhatEver		Последняя синхронизация не была выполнена. При выходе все данные будут потеряны! Выйти?
 today		Сегодня
+agentLogo		super_agent
+TooMoreLetter		Длина текста превышает допустимое значение.

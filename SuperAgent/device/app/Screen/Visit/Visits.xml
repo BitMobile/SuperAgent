@@ -19,33 +19,37 @@
 				</c:HorizontalLayout>
 			</c:DockLayout>
 
-			<c:HorizontalLayout CssClass="small_grid">
-				<s:Push Id="sv" Value="$GetScheduledVisitsCount()"></s:Push>
-				<s:Push Id="usv" Value="$CountOutlets()"></s:Push>
-				<s:If Test="$visitsType=='planned'">
-					<c:HorizontalLayout CssClass="mode_left_button_on">
-						<c:HorizontalLayout Id="planned" CssClass="select_zone" OnClickAction="$ChangeListAndRefresh(planned)">
-							<c:TextView Id="plannedText" Text="#planVisit# ({$sv})"></c:TextView>
-						</c:HorizontalLayout>
+			<c:HorizontalLayout CssClass="VertDisp">
+				<c:VerticalLayout>
+					<c:HorizontalLayout CssClass="small_grid">
+						<s:Push Id="sv" Value="$GetScheduledVisitsCount()"></s:Push>
+						<s:Push Id="usv" Value="$CountOutlets()"></s:Push>
+						<s:If Test="$visitsType=='planned'">
+							<c:HorizontalLayout CssClass="mode_left_button_on">
+								<c:HorizontalLayout Id="planned" CssClass="select_zone" OnClickAction="$ChangeListAndRefresh(planned)">
+									<c:TextView Id="plannedText" Text="#planVisit# ({$sv})"></c:TextView>
+								</c:HorizontalLayout>
+							</c:HorizontalLayout>
+							<c:HorizontalLayout CssClass="mode_right_button_off">
+								<c:HorizontalLayout Id="unPlanned" CssClass="select_zone" OnClickAction="$ChangeListAndRefresh(unPlanned)">
+									<c:TextView Text="#unplanned# ({$usv})"></c:TextView>
+								</c:HorizontalLayout>
+							</c:HorizontalLayout>
+						</s:If>
+						<s:Else>
+							<c:HorizontalLayout CssClass="mode_left_button_off">
+								<c:HorizontalLayout Id="planned" CssClass="select_zone" OnClickAction="$ChangeListAndRefresh(planned)">
+									<c:TextView Id="plannedText" Text="#planVisit# ({$sv})"></c:TextView>
+								</c:HorizontalLayout>
+							</c:HorizontalLayout>
+							<c:HorizontalLayout CssClass="mode_right_button_on">
+								<c:HorizontalLayout Id="unPlanned" CssClass="select_zone" OnClickAction="$ChangeListAndRefresh(unPlanned)">
+									<c:TextView Text="#unplanned# ({$usv})"></c:TextView>
+								</c:HorizontalLayout>
+							</c:HorizontalLayout>
+						</s:Else>
 					</c:HorizontalLayout>
-					<c:HorizontalLayout CssClass="mode_right_button_off">
-						<c:HorizontalLayout Id="unPlanned" CssClass="select_zone" OnClickAction="$ChangeListAndRefresh(unPlanned)">
-							<c:TextView Text="#unplanned# ({$usv})"></c:TextView>
-						</c:HorizontalLayout>
-					</c:HorizontalLayout>
-				</s:If>
-				<s:Else>
-					<c:HorizontalLayout CssClass="mode_left_button_off">
-						<c:HorizontalLayout Id="planned" CssClass="select_zone" OnClickAction="$ChangeListAndRefresh(planned)">
-							<c:TextView Id="plannedText" Text="#planVisit# ({$sv})"></c:TextView>
-						</c:HorizontalLayout>
-					</c:HorizontalLayout>
-					<c:HorizontalLayout CssClass="mode_right_button_on">
-						<c:HorizontalLayout Id="unPlanned" CssClass="select_zone" OnClickAction="$ChangeListAndRefresh(unPlanned)">
-							<c:TextView Text="#unplanned# ({$usv})"></c:TextView>
-						</c:HorizontalLayout>
-					</c:HorizontalLayout>
-				</s:Else>
+				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
@@ -59,7 +63,7 @@
 			<c:HorizontalLayout CssClass="shadowLine"></c:HorizontalLayout>
 
 			<s:If Test="$visitsType=='planned'">
-				<c:DockLayout CssClass="searchDate">
+<!---				<c:DockLayout CssClass="searchDate">
 					<s:If Test="$sessionConst.DayPlanVisitCount == @addDay">
 						<c:Button Id="btnDateForward" CssClass="ForwardButtOff" OnClick="$GoForwardDate()"></c:Button>
 					</s:If>
@@ -79,7 +83,7 @@
 					<c:VerticalLayout  CssClass="DateTextStyle" OnClick="$SetDateFiltr()">
 						<c:TextView Id="DateText"/>
 					</c:VerticalLayout>
-				</c:DockLayout>
+				</c:DockLayout>-->
 				<c:HorizontalLayout CssClass="shadowLine"></c:HorizontalLayout>
 				<c:ScrollView Id="grScrollView">
 					<s:Push Id="hasRow" Value="false" />

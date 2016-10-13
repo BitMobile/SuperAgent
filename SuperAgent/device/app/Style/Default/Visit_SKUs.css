@@ -15,7 +15,10 @@
 	padding-left: 2.4mm;
 	padding-right: 2.4mm;
 }
-
+.imgForw {
+	height: 100%;
+	width: 1%;
+}
 .parameter_grid TextView {
 	width: 74%;
 }
@@ -106,7 +109,7 @@
 	height: 40%;
 	width: 90%;
 	font: 45% Arial;
-	color: #2d89cf;
+	color: #FF7C4A;
 }
 
 .child_grid hl {
@@ -125,8 +128,8 @@
 	margin-top: 5%;
 	white-space: normal;
 	font: 42% Arial;
-	color: #2D89CF;
-	placeholder-color: #2D89CF;
+	color: #FF7C4A;
+	placeholder-color: #FF7C4A;
 }
 
 .child_main_row {
@@ -135,8 +138,8 @@
 	margin-top: 5%;
 	white-space: normal;
 	font: 42% Arial;
-	color: #2D89CF;
-	placeholder-color: #2D89CF;
+	color: #FF7C4A;
+	placeholder-color: #FF7C4A;
 }
 
 .answer_snapshot {

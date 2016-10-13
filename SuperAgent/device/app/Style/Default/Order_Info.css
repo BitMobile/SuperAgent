@@ -3,7 +3,7 @@
 }
 
 .main_row{
-	color: #2d89cf;
+	color: #FF7C4A;
 }
 
 .value{
@@ -11,10 +11,10 @@
 }
 
 .main_row_price_list {
-	color: #2d89cf;
+	color: #FF7C4A;
 	width: 100%;
 	height: 40%;
 	white-space: nowrap;
-	placeholder-color: #2d89cf;
+	placeholder-color: #FF7C4A;
 	font: 42% Arial;
 }

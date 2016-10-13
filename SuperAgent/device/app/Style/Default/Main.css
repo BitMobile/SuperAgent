@@ -9,6 +9,7 @@
 	background-color: #11aaaa;
 }*/
 
+
 sv {
 	background-color: #7fc8fd;
 }
@@ -60,7 +61,7 @@ sv {
 	width: 45mm;
 	height: 8mm;
 	margin-top: 1mm;
-	border-color: #43acfd;
+	border-color: #FF7C4A;
 	border-radius: 16px;
 	border-width: 2px;
 	border-style: solid;
@@ -103,7 +104,7 @@ sv {
 	height: 60%;
 	width: 80%;
 	font: 60% Arial;
-	color: #2d89cf;
+	color: #FF7C4A;
 	vertical-align: center;
 	placeholder-color: #b7b7b7;
 }
@@ -184,7 +185,7 @@ sv {
 	border-style: solid;
 	font: 40% arial;
 	color: #ffffff;
-	background-color: #43acfd;
+	background-color: #FF7C4A;
 }
 
 .register_button_blocked {
@@ -209,7 +210,7 @@ sv {
 	height: 60%;
 	width: 80%;
 	font: 60% Arial;
-	color: #2d89cf;
+	color: #FF7C4A;
 	vertical-align: center;
 	placeholder-color: #b7b7b7;
 	color: #b2b2b7;
@@ -233,14 +234,14 @@ sv {
 
 .grid vl main_row {
 	font: 95% Arial-BoldMT;
-	color: #43acfd;
+	color: #FF7C4A;
 	white-space: nowrap;
 }
 
 .grid vl description_row {
 	height: 23%;
 	font: 80% arial;
-	color: #000;
+	color: #8E8E93;
 	margin-top: 10%;
 	margin-bottom: 0%;
 }
@@ -249,7 +250,7 @@ sv {
 	width: 100%;
 	height: 100%;
 	padding-top: 2%;
-	background-image: url(summary.png);
+	background-color: #4a4c60;
 }
 
 .blue dl {
@@ -325,7 +326,7 @@ sv {
 	margin-left: 2%;
 	text-align: left;
 	font: 95% Arial-BoldMT;
-	color: #43acfd;
+	color: #FF7C4A;
 	dock-align: left;
 }
 
@@ -348,6 +349,7 @@ sv {
 .simple TextView {
 	height: 15%;
 	width: 100%;
+	color: #495052;
 }
 
 .simple hl {
@@ -358,13 +360,14 @@ sv {
 .simple hl TextView {
 	width: 100%;
 	height: 100%;
-	font: 80% Arial-BoldMT;
+	font: 82% Arial;
 	color: #000;
 }
 
 .simple hl descr {
 	width: 33%;
 	font: 80% Arial;
+	color: #495052;
 }
 
 .simple hl mark {
@@ -386,5 +389,5 @@ sv {
 .navy {
 	width: 100%;
 	height: 1px;
-	background-color: #3384b8;
+	background-color: #4a4c60;
 }

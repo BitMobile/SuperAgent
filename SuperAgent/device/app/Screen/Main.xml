@@ -43,6 +43,7 @@
 								</c:HorizontalLayout>
 								<c:TextView Text="#scheduled#" CssClass="descr" />
 							</c:VerticalLayout>
+
 						</c:VerticalLayout>
 
 						<c:VerticalLayout CssClass="right">

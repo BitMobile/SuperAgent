@@ -170,7 +170,7 @@
 					<c:HorizontalLayout Id="ObligateBallonsFact" CssClass="answered_side_wh_2"></c:HorizontalLayout>
 				</s:Else>
 					<c:TextView Text="{#ballon#, #fact#}" CssClass="blueText"></c:TextView>
-					<c:EditText Id="BallonsFact" Placeholder="-" Keyboard="numeric" Value="$workflow.visit.BallonsAmount" OnChange="$SetBallonsFact($workflow.visit)" CssClass="value"></c:EditText>
+					<c:EditText Id="BallonsFact" Placeholder="-" Keyboard="numeric" Value="$workflow.visit.BallonsAmount" OnChange="$SetBallonsFact($workflow.visit)" CssClass="value" Length="8"></c:EditText>
 				</c:DockLayout>
 				<c:HorizontalLine />
 
@@ -188,7 +188,7 @@
 						<c:HorizontalLayout Id="ObligateKegsFact" CssClass="answered_side_wh_2"></c:HorizontalLayout>
 					</s:Else>
 					<c:TextView Text="{#kegs#, #fact#}" CssClass="blueText"></c:TextView>
-					<c:EditText Id="KegsFact" Placeholder="-" Keyboard="numeric" Value="$workflow.visit.KegsAmount" OnChange="$SetBallonsFact($workflow.visit)" CssClass="value"></c:EditText>
+					<c:EditText Id="KegsFact" Placeholder="-" Keyboard="numeric" Value="$workflow.visit.KegsAmount" OnChange="$SetBallonsFact($workflow.visit)" CssClass="value" Length="8"></c:EditText>
 				</c:DockLayout>
 				<c:HorizontalLine />
 

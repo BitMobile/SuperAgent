@@ -172,7 +172,9 @@ function AskEndVisit(order, visit, wfName) {
 			Dialog.Alert(Translate["#visit_end_question#"], CheckAndCommit, [order, visit, wfName], Translate["#end#"], Translate["#go_back#"]);
 	}else {
 		Dialog.Message(Translate["#AlertObligateNumber#"]);
+
 	}
+
 }
 
 function CheckAndCommit(state, args) {
@@ -234,9 +236,17 @@ function DeliveryDateCallBack(state, args){
 	$.deliveryDate.Text = Format("{0:D}", Date(args.Result));
 
 }
+//
+// function fn(i){
+//
+//
+//
+// 		alert("Длина равна " + x.length); // 6
+//
+// }
 
 function SetBallonsFact(control, visit) {
-	var textcontrol = control.Text;
+	var textcontrol = control.Text.substring(0, 9);
 	if (String.IsNullOrEmpty(textcontrol) || IsEmptyValue(textcontrol) || textcontrol == "." || textcontrol == "-"){
 		textcontrol = null;
 	}else{
@@ -331,6 +341,108 @@ function VisitIsChecked(visit) {
 
     return result;
 }
+//
+// function SetBallonsFact(control, visit) {
+// 	var textcontrol = control.Text;
+// 	if (String.IsNullOrEmpty(textcontrol) || IsEmptyValue(textcontrol) || textcontrol == "." || textcontrol == "-"){
+// 		textcontrol = null;
+// 	}else{
+// 		textcontrol = RoundToInt(textcontrol);
+// 	}
+//
+// 	if (control.Id == "BallonsFact") {
+// 		visit.BallonsAmount = textcontrol;
+// 		obligateredBallons = textcontrol === null;
+// 	}
+//
+// 	if (control.Id == "KegsFact") {
+// 		visit.KegsAmount = textcontrol;
+// 		obligateredKegs = textcontrol === null;
+// 	}
+// }
+//
+// function ObligateLostFocus(control, visit) {
+// 	var visit = visit.GetObject();
+//
+// 	if (obligateredBallons) {
+// 		if (Variables.Exists("ObligateBallonsFact")) {
+// 			Variables["ObligateBallonsFact"].CssClass = "required_side_wh_2";
+// 			Variables["ObligateBallonsFact"].Refresh();
+// 		}
+// 	}else {
+// 		if (Variables.Exists("ObligateBallonsFact")) {
+// 			Variables["ObligateBallonsFact"].CssClass = "answered_side_wh_2";
+// 			Variables["ObligateBallonsFact"].Refresh();
+// 		}
+// 	}
+//
+// 	if (obligateredKegs) {
+// 		if (Variables.Exists("ObligateKegsFact")) {
+// 			Variables["ObligateKegsFact"].CssClass = "required_side_wh_2";
+// 			Variables["ObligateKegsFact"].Refresh();
+// 		}
+// 	}else {
+// 		if (Variables.Exists("ObligateKegsFact")) {
+// 			Variables["ObligateKegsFact"].CssClass = "answered_side_wh_2";
+// 			Variables["ObligateKegsFact"].Refresh();
+// 		}
+// 	}
+// 	VisitIsChecked(visit);
+//
+// 	if (obligateNumber==0) {
+// 		Variables["btnForward"].CssClass = "btn_forward";
+// 		Variables["btnForward"].OnEvent = "Forward";
+// 		Variables["btnForward"].Refresh();
+// 		for (control in $.btnForward.Controls) {
+// 			control.remove();
+// 		}
+// 		var toappend = "<c:TextView Id=\"btn_Forward\" Text=\"" + Translate["#ready#"]+"\" />";
+// 		$.btnForward.append(toappend);
+// 		$.btnForward.refresh();
+//
+// 	}else {
+// 			Variables["btnForward"].CssClass = "forward";
+// 			Variables["btnForward"].Refresh();
+//
+// 			for (control in $.btnForward.Controls) {
+// 				control.remove();
+// 			}
+// 			var toappend ="<c:VerticalLayout></c:VerticalLayout>" +
+// 			"<c:TextView Id=\"obligateredButton\" Text=\""+obligateNumber+")\" />" +
+// 			"<c:Image Id=\"imagForw\"/>" +
+// 			"<c:TextView Id=\"btn_Forward\" Text=\"" + Translate["#forward#"]+" (\" />" ;
+// 			$.btnForward.append(toappend);
+// 			$.btnForward.refresh();
+// 	}
+//
+// 	visit.Save();
+//
+// }
+
+// function VisitIsChecked(visit) {
+//
+// 	var result;
+// 	obligateNumber = parseInt(0);
+//
+//     if (checkOrderReason && visit.ReasonForNotOfTakingOrder.EmptyRef()){
+//     	obligateNumber = obligateNumber + 1;
+//     }
+//     if (checkVisitReason && visit.ReasonForVisit.EmptyRef()){
+//     	obligateNumber = obligateNumber + 1;
+//     }
+// 		if (obligateredBallons)
+// 			obligateNumber = obligateNumber + 1;
+// 		if (obligateredKegs)
+// 			obligateNumber = obligateNumber + 1;
+//     if (obligateNumber == 0)
+//         result= true;
+//     else
+//     	result = false;
+//
+//     return result;
+// }
+
+
 
 function DialogCallBack(control, key){
 	control.Text = key;

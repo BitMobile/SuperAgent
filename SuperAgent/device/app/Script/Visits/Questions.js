@@ -279,7 +279,7 @@ function FormatAndRefresh(control, question, answerType, indexpar, reqorno){
 		answer = "";
 		control.Text = "";
 	}
-	Dialog.Message(answerType);
+	//Dialog.Message(answerType);
 	if (!String.IsNullOrEmpty(answer) && answerType == DB.Current.Constant.DataType.Integer){
 
 		control.Text = RoundToInt(answer);
@@ -290,7 +290,7 @@ function FormatAndRefresh(control, question, answerType, indexpar, reqorno){
 		var frstLetter = Left(answer,1);
 		if (frstLetter == "," || frstLetter == ".") {
 			answer = "0"+ answer;
-			control.Text = answer; 
+			control.Text = answer;
 		}
 	}
 

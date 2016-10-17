@@ -294,7 +294,7 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 		Dialogs.DoChoose(q.Execute(), question, null, editControl, DialogCallBack, title);
 	}
 
-	if (answerType == DB.Current.Constant.DataType.Snapshot) {		
+	if (answerType == DB.Current.Constant.DataType.Snapshot) {
 		questionValueGl = question;
 
 		var path = null;
@@ -350,7 +350,8 @@ function GetActionAndBack() {
 	if (step==null)
 		Workflow.BackTo("Outlet");
 	else
-		Workflow.BackTo(step);
+		Workflow.Back();
+		//Workflow.BackTo(step);
 }
 
 function DoSearch(searcText) {
@@ -375,8 +376,8 @@ function AssignSubmitScope(){
 	$.regular.SubmitScope = $.submitCollectionString;
 	$.nonregular.SubmitScope = $.submitCollectionString;
 	$.btnSearch.SubmitScope = $.submitCollectionString;
-	$.btn_filters.SubmitScope = $.submitCollectionString;	
-	
+	$.btn_filters.SubmitScope = $.submitCollectionString;
+
 	for (control in $.grScrollView.Controls){
 		control.SubmitScope = $.submitCollectionString;
 	}

@@ -460,15 +460,20 @@ function RefreshScreen(control, search, sku, question, answerType, indexpar, ans
 	}
 	if (buferansw && !havenewotv) {
 		//Dialog.Message("add");
-		single_answ = parseInt(single_answ) + 1;
-		regular_answ = parseInt(regular_answ) + 1;
+		if (regularAnswers) {
+			regular_answ = parseInt(regular_answ) + 1;
+		}else {
+			single_answ = parseInt(single_answ) + 1;
+		}
 		answerednow = parseInt(answerednow) + 1;
 	}
 	if (!buferansw && havenewotv) {
 		//Dialog.Message("minus");
-
-		single_answ = parseInt(single_answ) - 1;
-		regular_answ = parseInt(regular_answ) - 1;
+		if (regularAnswers) {
+			regular_answ = parseInt(regular_answ) - 1;
+		}else {
+			single_answ = parseInt(single_answ) - 1;
+		}
 		answerednow = parseInt(answerednow) - 1;
 	}
 	//Dialog.Message(answerednow);

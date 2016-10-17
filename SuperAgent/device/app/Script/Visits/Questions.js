@@ -299,8 +299,8 @@ function FormatAndRefresh(control, question, answerType, indexpar, reqorno){
 			single_answ = parseInt(single_answ) - 1;
 		}
 	}
-	Dialog.Message("Singl:"+single_answ);
-	Dialog.Message("Reg:"+single_answ);
+	//Dialog.Message("Singl:"+single_answ);
+	//Dialog.Message("Reg:"+single_answ);
 
 
 	if (regularAnswers) {
@@ -760,10 +760,10 @@ function CountResultAndForward() {
 
 	var a = regular_answ + single_answ;
 	$.workflow.Add("questions_answ", a);
-	Dialog.Message("reg:"+regular_answ);
-	Dialog.Message("singl:"+single_answ);
+	//Dialog.Message("reg:"+regular_answ);
+	//Dialog.Message("singl:"+single_answ);
 
 	if (obligateNumber==0) {
-		//Workflow.Forward([]);
+		Workflow.Forward([]);
 }
 }

@@ -275,11 +275,25 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 function FormatAndRefresh(control, question, answerType, indexpar, reqorno){
 	var answer = control.Text;
 
+	if (TrimAll(answer)=="") {
+		answer = "";
+		control.Text = "";
+	}
+	Dialog.Message(answerType);
 	if (!String.IsNullOrEmpty(answer) && answerType == DB.Current.Constant.DataType.Integer){
 
 		control.Text = RoundToInt(answer);
-
+		answer = control.Text;
 	}
+
+	if (answerType == DB.Current.Constant.DataType.Decimal) {
+		var frstLetter = Left(answer,1);
+		if (frstLetter == "," || frstLetter == ".") {
+			answer = "0"+ answer;
+			control.Text = answer; 
+		}
+	}
+
 	AssignAnswer(control, question, answer, answerType);
 	var havenewotv = String.IsNullOrEmpty(answer);
 	if (!(havenewotv^buferansw)) {

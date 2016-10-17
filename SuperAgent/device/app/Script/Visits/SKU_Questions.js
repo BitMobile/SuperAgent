@@ -444,15 +444,28 @@ function RefreshScreen(control, search, sku, question, answerType, indexpar, ans
 	//answerednow = parseInt(totalanswred) - parseInt(notanswer);
 	var parentCount = Variables["CountOnPar"+indexpar];
 	var answer = control.Text;
+	if (TrimAll(answer)=="") {
+		answer = "";
+		control.Text = "";
+	}
+
 	//var SkuObj = sku.GetObject();
 
 	if (!String.IsNullOrEmpty(answer) && answerType == DB.Current.Constant.DataType.Integer){
 
 		control.Text = RoundToInt(answer);
+		answer = control.Text;
 
 		AssignAnswer(control, question, sku, answer, answerType);
 	}
 	//Dialog.Message(answerednow);
+	if (answerType == DB.Current.Constant.DataType.Decimal) {
+		var frstLetter = Left(answer,1);
+		if (frstLetter == "," || frstLetter == ".") {
+			answer = "0"+ answer;
+			control.Text = answer; 
+		}
+	}
 
 	var havenewotv = String.IsNullOrEmpty(answer);
 	if (!(havenewotv^buferansw)) {

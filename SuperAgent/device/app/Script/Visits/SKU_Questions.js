@@ -463,7 +463,7 @@ function RefreshScreen(control, search, sku, question, answerType, indexpar, ans
 		var frstLetter = Left(answer,1);
 		if (frstLetter == "," || frstLetter == ".") {
 			answer = "0"+ answer;
-			control.Text = answer; 
+			control.Text = answer;
 		}
 	}
 
@@ -645,6 +645,11 @@ if (ShowDoch) {
 	setScroll = true;
 	scrollIndex = parseInt(idPar)+parseInt(idChail)+1;
 	scrollIndex1= parseInt(idPar);
+	if (args.Result == "Нет" || args.Result == "No" || args.Result =="-" || args.Result =="—") {
+		var qForChl = new Query("UPDATE USR_Questions SET Answer='' Where ParentQuestion=@Parent");
+		qForChl.AddParameter("Parent",entity);
+		qForChl.Execute();
+	}
 	//Dialog.Message(scrollIndex);
 	inref = true;
 	Workflow.Refresh([$.search]);

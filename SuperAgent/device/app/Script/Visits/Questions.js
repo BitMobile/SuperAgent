@@ -545,7 +545,11 @@ function DialogCallBackBool(state, args){
 		setScroll = true;
 		scrollIndex = parseInt(idPar)+1;
 		//scrollIndex1= parseInt(idPar);
-
+		if (args.Result == "Нет" || args.Result == "No" || args.Result =="-" || args.Result =="—") {
+			var qForChl = new Query("UPDATE USR_Questions SET Answer='' Where ParentQuestion=@Parent");
+			qForChl.AddParameter("Parent",entity);
+			qForChl.Execute();
+		}
 		Workflow.Refresh([]);
 
 	}else {

@@ -64,8 +64,11 @@ function RefreshScrolView(){
 
 		var desc = StrReplace(uncommitedVisits.Outlet.Description, '"', '\"');
 	 	desc = StrReplace(desc, "'", '\"');
+		desc = StrReplace(desc, "&", "&amp;");
 		var adress = StrReplace(uncommitedVisits.Outlet.Address, '"', '\"');
 		adress = StrReplace(adress, "'", '\"');
+		adress = StrReplace(adress, "&", "&amp;");
+
 
 		toappend = toappend + "<c:Image />";
 		toappend = toappend + "<c:VerticalLayout>"
@@ -99,8 +102,10 @@ function RefreshScrolView(){
 		}
 		var desc = StrReplace(commitedVisits.Description, '"', '\"');
 		desc = StrReplace(desc, "'", '\"');
+		desc = StrReplace(desc, "&", "&amp;");
 		var adress = StrReplace(commitedVisits.Address, '"', '\"');
 		adress = StrReplace(adress, "'", '\"');
+		adress = StrReplace(adress, "&", "&amp;");
 
 		toappend = toappend + "<c:Image />";
 		toappend = toappend + "<c:VerticalLayout>"

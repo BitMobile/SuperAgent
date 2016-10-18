@@ -61,8 +61,12 @@ function RefreshScrolView(){
 		if (uncommitedVisits.OutletStatus == 3) {
 			toappend = toappend + "<c:VerticalLayout CssClass=\"no_mark\"></c:VerticalLayout>";
 		}
-		var desc = StrReplace(uncommitedVisits.Outlet.Description, "'", "\'");
+
 		var desc = StrReplace(uncommitedVisits.Outlet.Description, '"', '\"');
+	 	desc = StrReplace(desc, "'", '\"');
+		var adress = StrReplace(uncommitedVisits.Outlet.Address, '"', '\"');
+		adress = StrReplace(adress, "'", '\"');
+
 		toappend = toappend + "<c:Image />";
 		toappend = toappend + "<c:VerticalLayout>"
 		+ "<c:TextView Text=\'{"+desc+"}\' CssClass=\"main_row\"></c:TextView>"
@@ -70,7 +74,7 @@ function RefreshScrolView(){
 		if (uncommitedVisits.Time != '') {
 			toappend = toappend + "<c:TextView Text=\""+uncommitedVisits.Time+"\" CssClass=\"bl_description_row\" />";
 		}
-		toappend = toappend + "<c:TextView Text=\"{"+uncommitedVisits.Outlet.Address+"}\" CssClass=\"description_row\"></c:TextView>"
+		toappend = toappend + "<c:TextView Text=\'{"+adress+"}\' CssClass=\"description_row\"></c:TextView>"
 		+ "</c:HorizontalLayout></c:VerticalLayout></c:DockLayout><c:HorizontalLine />";
 	}
 	if (addDay <= 0) {
@@ -93,13 +97,16 @@ function RefreshScrolView(){
 		if (commitedVisits.OutletStatus == 3) {
 			toappend = toappend + "<c:VerticalLayout CssClass=\"no_mark\"></c:VerticalLayout>";
 		}
-		var desc = StrReplace(commitedVisits.Description, "'", "\'");
 		var desc = StrReplace(commitedVisits.Description, '"', '\"');
+		desc = StrReplace(desc, "'", '\"');
+		var adress = StrReplace(commitedVisits.Address, '"', '\"');
+		adress = StrReplace(adress, "'", '\"');
+
 		toappend = toappend + "<c:Image />";
 		toappend = toappend + "<c:VerticalLayout>"
 		+ "<c:TextView Text=\'{"+desc+"}\' CssClass=\"main_row\"></c:TextView>"
 		+ "<c:HorizontalLayout>";
-		toappend = toappend + "<c:TextView Text=\"{"+commitedVisits.Address+"}\" CssClass=\"description_row\"></c:TextView>"
+		toappend = toappend + "<c:TextView Text=\'{"+adress+"}\' CssClass=\"description_row\"></c:TextView>"
 		+ "</c:HorizontalLayout></c:VerticalLayout></c:DockLayout><c:HorizontalLine />";
 
 		}

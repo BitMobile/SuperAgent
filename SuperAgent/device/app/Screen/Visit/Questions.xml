@@ -41,14 +41,14 @@
 						</c:HorizontalLayout>
 						<c:HorizontalLayout CssClass="mode_right_button_off">
 							<c:HorizontalLayout Id="nonregular" CssClass="select_zone" OnClick="$ChangeListAndRefresh(0)">
-								<c:TextView Text="#nonregular# ({@single_answ} #of# {@single_total})"></c:TextView>
+								<c:TextView Id="CountNoNRegAnswer" Text="#nonregular# ({@single_answ} #of# {@single_total})"></c:TextView>
 							</c:HorizontalLayout>
 						</c:HorizontalLayout>
 					</s:If>
 					<s:Else>
 						<c:HorizontalLayout CssClass="mode_left_button_off">
 							<c:HorizontalLayout Id="regular" CssClass="select_zone" OnClick="$ChangeListAndRefresh(1)">
-								<c:TextView Text="#regular# ({@regular_answ} #of# {@regular_total})"></c:TextView>
+								<c:TextView Id="CountRegAnswer" Text="#regular# ({@regular_answ} #of# {@regular_total})"></c:TextView>
 							</c:HorizontalLayout>
 						</c:HorizontalLayout>
 						<c:HorizontalLayout CssClass="mode_right_button_on">

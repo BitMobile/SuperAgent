@@ -315,14 +315,14 @@ function FormatAndRefresh(control, question, answerType, indexpar, reqorno){
 	}
 	//Dialog.Message("Singl:"+single_answ);
 	//Dialog.Message("Reg:"+single_answ);
+	SetIndiactors();
 
-
-	if (regularAnswers) {
+	//if (regularAnswers) {
 		$.CountRegAnswer.Text = Translate["#regular#"] + " (" +regular_answ + " " + Translate["#of#"] + " " + regular_total + ")";
-	}else {
+	//}else {
 
 		$.CountNoNRegAnswer.Text = Translate["#nonregular#"] + " (" +single_answ + " " + Translate["#of#"] + " " + single_total + ")";
-	}
+	//}
 	if (reqorno==1 && (buferansw && !havenewotv)) {
 		obligateNumber = parseInt(obligateNumber) - 1;
 		checkAndFormNextButton(obligateNumber);
@@ -486,13 +486,12 @@ if (Variables.Exists("controlVert"+idPar)) {
 		Variables["Req"+idPar].CssClass = "answered_side_gr";
 		Variables["Req"+idPar].Refresh();
 	}
-
-	if (regularAnswers) {
+	SetIndiactors();
+	//if (regularAnswers) {
 		$.CountRegAnswer.Text = Translate["#regular#"] + " (" +regular_answ + " " + Translate["#of#"] + " " + regular_total + ")";
-	}else {
-
+	//}else {
 		$.CountNoNRegAnswer.Text = Translate["#nonregular#"] + " (" +single_answ + " " + Translate["#of#"] + " " + single_total + ")";
-	}
+	//}
 
  	var q = new Query("SELECT DISTINCT S.Question, S.Description " +
     "FROM USR_Questions S " +
@@ -597,14 +596,13 @@ function DialogCallBackBool(state, args){
 				}
 			}
 		}
+		SetIndiactors()
 
-
-		if (regularAnswers) {
+		//if (regularAnswers) {
 			$.CountRegAnswer.Text = Translate["#regular#"] + " (" +regular_answ + " " + Translate["#of#"] + " " + regular_total + ")";
-		}else {
-
+		//}else {
 			$.CountNoNRegAnswer.Text = Translate["#nonregular#"] + " (" +single_answ + " " + Translate["#of#"] + " " + single_total + ")";
-		}
+		//}
 		var q = new Query("SELECT DISTINCT S.Question, S.Description " +
 		    "FROM USR_Questions S " +
 		    "WHERE (RTRIM(Answer)='' OR S.Answer IS NULL) AND S.Obligatoriness=1 " +
@@ -751,13 +749,13 @@ function DeleteFromTable(question) {
 			Variables["Req"+idPar].CssClass = "required_side_gr";
 			Variables["Req"+idPar].Refresh();
 		}
-
-	if (regularAnswers) {
+		SetIndiactors()
+	//if (regularAnswers) {
 		$.CountRegAnswer.Text = Translate["#regular#"] + " (" +regular_answ + " " + Translate["#of#"] + " " + regular_total + ")";
-	}else {
+	//}else {
 
 		$.CountNoNRegAnswer.Text = Translate["#nonregular#"] + " (" +single_answ + " " + Translate["#of#"] + " " + single_total + ")";
-	}
+	//}
 
 	var q = new Query("SELECT DISTINCT S.Question, S.Description " +
 	    "FROM USR_Questions S " +

@@ -492,16 +492,16 @@ function RefreshScreen(control, search, sku, question, answerType, indexpar, ans
 	//Dialog.Message(answerednow);
 //	var q1 = new Query()
 
-
+	SetIndicators();
 //		Dialog.Message(q2.ExecuteCount());
 
 	parentCount.Text = answerednow + " " + Translate["#of#"] + " " + totalanswred;
-	if (regularAnswers) {
+//	if (regularAnswers) {
 		$.CountRegAnswer.Text = Translate["#regular#"] + " (" +regular_answ + " " + Translate["#of#"] + " " + regular_total + ")";
-	}else {
+//	}else {
 
 		$.CountNoNRegAnswer.Text = Translate["#nonregular#"] + " (" +single_answ + " " + Translate["#of#"] + " " + single_total + ")";
-	}
+//	}
 	answerinsku = answerednow;
 	//Dialog.Message(answerinsku);
 	totalanswerinsku = totalanswred;
@@ -702,15 +702,14 @@ if (ShowDoch) {
 			}
 		}
 	}
-
+	SetIndicators();
 	parentCount.Text = answerednow + " " + Translate["#of#"] + " " + totalanswred;
 
-	if (regularAnswers) {
+//	if (regularAnswers) {
 		$.CountRegAnswer.Text = Translate["#regular#"] + " (" +regular_answ + " " + Translate["#of#"] + " " + regular_total + ")";
-	}else {
-
+//	}else {
 		$.CountNoNRegAnswer.Text = Translate["#nonregular#"] + " (" +single_answ + " " + Translate["#of#"] + " " + single_total + ")";
-	}
+//	}
 var q = new Query("SELECT DISTINCT S.Question, S.Description, S.SKU " +
     "FROM USR_SKUQuestions S " +
     "WHERE (RTRIM(Answer)='' OR S.Answer IS NULL) AND S.Obligatoriness=1 " +
@@ -821,15 +820,15 @@ function DialogCallBack(state, args){
 			Variables["Req"+idPar].Refresh();
 		}
 	}
+	SetIndicators();
 
 	parentCount.Text = answerednow + " " + Translate["#of#"] + " " + totalanswred;
 
-	if (regularAnswers) {
+//	if (regularAnswers) {
 		$.CountRegAnswer.Text = Translate["#regular#"] + " (" +regular_answ + " " + Translate["#of#"] + " " + regular_total + ")";
-	}else {
-
+//	}else {
 		$.CountNoNRegAnswer.Text = Translate["#nonregular#"] + " (" +single_answ + " " + Translate["#of#"] + " " + single_total + ")";
-	}
+//	}
 	answerinsku = answerednow;
 	relouded = false;
 	totalanswerinsku = totalanswred;
@@ -906,15 +905,15 @@ if (Variables.Exists("controlVert"+idPar)) {
 		Variables["Req"+idPar].CssClass = "answered_side_gr";
 		Variables["Req"+idPar].Refresh();
 	}
+	SetIndicators();
 
 	parentCount.Text = answerednow + " " + Translate["#of#"] + " " + totalanswred;
 
-	if (regularAnswers) {
+//	if (regularAnswers) {
 		$.CountRegAnswer.Text = Translate["#regular#"] + " (" +regular_answ + " " + Translate["#of#"] + " " + regular_total + ")";
-	}else {
-
+//	}else {
 		$.CountNoNRegAnswer.Text = Translate["#nonregular#"] + " (" +single_answ + " " + Translate["#of#"] + " " + single_total + ")";
-	}
+//	}
 	answerinsku = answerednow;
 	relouded = false;
  	var q = new Query("SELECT DISTINCT S.Question, S.Description, S.SKU " +
@@ -1085,15 +1084,16 @@ var parentCount = Variables["CountOnPar"+idChail];
 		Variables["Req"+idPar].CssClass = "required_side_gr";
 		Variables["Req"+idPar].Refresh();
 	}
+	SetIndicators();
 
 parentCount.Text = answerednow + " " + Translate["#of#"] + " " + totalanswred;
 
-if (regularAnswers) {
+//if (regularAnswers) {
 	$.CountRegAnswer.Text = Translate["#regular#"] + " (" +regular_answ + " " + Translate["#of#"] + " " + regular_total + ")";
-}else {
+//}else {
 
 	$.CountNoNRegAnswer.Text = Translate["#nonregular#"] + " (" +single_answ + " " + Translate["#of#"] + " " + single_total + ")";
-}
+//}
 answerinsku = answerednow;
 relouded = false;
 var q = new Query("SELECT DISTINCT S.Question, S.Description, S.SKU " +

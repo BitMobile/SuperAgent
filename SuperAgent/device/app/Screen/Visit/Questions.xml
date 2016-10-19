@@ -57,8 +57,6 @@
 			</s:Else>
 		</c:HorizontalLayout>
 
-
-		<!-- progress picture -->
 		<c:Image CssClass="3_scroll"></c:Image>
 		<c:HorizontalLine />
 
@@ -78,7 +76,7 @@
 						<c:HorizontalLayout Id="obligateredAnsw" CssClass="margin_top"></c:HorizontalLayout>
 					</s:Else>
 					<c:HorizontalLine />
-<!--отсюда пошли   -->
+
 					<s:Iterator Id="question" Value="$questions" Status="statusCount">
 
 						<s:Push Id="index" Value="{$statusCount.Index}"></s:Push>

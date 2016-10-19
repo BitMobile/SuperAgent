@@ -6,24 +6,25 @@
 
 	<c:VerticalLayout>
 
-		<c:DockLayout CssClass="top_navigator">
-			<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoBack()">
-				<c:Image />
-				<c:TextView Text="#back#" />
+		<c:DockLayout Id="TopNav" CssClass="top_navigator">
+		<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoBack()">
+			<c:Image />
+			<c:TextView Text="#back#" />
+		</c:DockLayout>
+
+		<s:If Test="$result">
+			<c:DockLayout Id="btnForward"  CssClass="btn_forward" OnEvent="Forward" OnClickAction="$AskEndVisit($workflow.order, $workflow.visit, $workflow.name)" >
+				<c:TextView Id="btn_Forward" Text="#ready#" />
 			</c:DockLayout>
-			<s:If Test="$result">
-				<c:DockLayout CssClass="btn_forward" OnEvent="Forward" OnClickAction="$AskEndVisit($workflow.order, $workflow.visit, $workflow.name)" >
-					<c:TextView Id="btnForward" Text="#ready#" />
-				</c:DockLayout>
-			</s:If>
-			<s:Else>
-				<c:DockLayout Id="btnForward" CssClass="forward">
-					<c:VerticalLayout></c:VerticalLayout>
-					<c:TextView Id="obligateredButton" Text="{@obligateNumber})" />
-					<c:Image />
-					<c:TextView Text="#forward# (" />
-				</c:DockLayout>
-			</s:Else>
+		</s:If>
+		<s:Else>
+			<c:DockLayout Id="btnForward" CssClass="forward" OnEvent="Forward" OnClickAction="$AskEndVisit($workflow.order, $workflow.visit, $workflow.name)">
+				<c:VerticalLayout></c:VerticalLayout>
+				<c:TextView Id="obligateredButton" Text="{@obligateNumber})" />
+				<c:Image />
+				<c:TextView Id="btn_Forward" Text="#forward# (" />
+			</c:DockLayout>
+		</s:Else>
 
 			<c:HorizontalLayout>
 				<c:TextView Text="#visitTotal#" />
@@ -95,11 +96,11 @@
 			</s:If>
 
 			<c:HorizontalLayout CssClass="grid">
-				<s:If Test="$IsEmptyValue($workflow.visit.Commentary)">
-					<c:HorizontalLayout CssClass="required_side_wh"></c:HorizontalLayout>
+				<s:If Test="@commentaryObligate">
+					<c:HorizontalLayout Id="ObligateCommentary" CssClass="required_side_wh"></c:HorizontalLayout>
 				</s:If>
 				<s:Else>
-					<c:HorizontalLayout CssClass="answered_side_wh"></c:HorizontalLayout>
+					<c:HorizontalLayout Id="ObligateCommentary" CssClass="answered_side_wh"></c:HorizontalLayout>
 				</s:Else>
 				<c:VerticalLayout>
 					<c:TextView Text="#commentary#" CssClass="description_row"></c:TextView>
@@ -113,16 +114,14 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<!-- <s:If Test="$NoTasks()"> -->
-				<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoAction(Total_Tasks)">
-					<s:Push Id="todoDone" Value="$CountDoneTasks($workflow.visit)"></s:Push>
-					<s:Push Id="todo" Value="$CountTasks($workflow.outlet)"></s:Push>
-					<c:Image></c:Image>
-					<c:TextView Text="#todoDone#"></c:TextView>
-					<c:TextView Text="{$todoDone} #of# {$todo}" CssClass="value"></c:TextView>
-				</c:DockLayout>
-				<c:HorizontalLine />
-			<!-- </s:If> -->
+			<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoAction(Total_Tasks)">
+				<s:Push Id="todoDone" Value="$CountDoneTasks($workflow.visit)"></s:Push>
+				<s:Push Id="todo" Value="$CountTasks($workflow.outlet)"></s:Push>
+				<c:Image></c:Image>
+				<c:TextView Text="#todoDone#"></c:TextView>
+				<c:TextView Text="{$todoDone} #of# {$todo}" CssClass="value"></c:TextView>
+			</c:DockLayout>
+			<c:HorizontalLine />
 
 			<s:If Test="$ShowQuestionnaires()">
 				<c:DockLayout CssClass="parameter_grid">

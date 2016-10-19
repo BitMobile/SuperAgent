@@ -13,7 +13,12 @@ function OnLoading() {
 	checkVisitReason = false;
   commentaryObligate = false;
 
-  commentaryObligate = IsEmptyValue($.workflow.visit.Commentary);
+	if (IsNullOrEmpty($.workflow.visit.Commentary)){
+		commentaryObligate = true;
+	} else{
+		commentaryObligate = IsEmptyValue(TrimAll($.workflow.visit.Commentary));
+	}
+  
 
 	orderEnabled = OptionAvailable("SkipOrder");
 	returnEnabled = OptionAvailable("SkipReturn");
@@ -166,7 +171,12 @@ function GetReturnSum(returnDoc) {
 }
 
 function AskEndVisit(order, visit, wfName) {
-	Dialog.Alert(Translate["#visit_end_question#"], CheckAndCommit, [order, visit, wfName], Translate["#end#"], Translate["#go_back#"]);
+	if (obligateNumber==0) {
+			Dialog.Alert(Translate["#visit_end_question#"], CheckAndCommit, [order, visit, wfName], Translate["#end#"], Translate["#go_back#"]);
+	}else {
+		Dialog.Message(Translate["#AlertObligateNumber#"]);
+
+	}
 }
 
 function CheckAndCommit(state, args) {
@@ -279,7 +289,43 @@ function FormatOutput(value) {
 }
 
 function SetCommentary(control, visit) {
-  Workflow.Refresh([]);
+
+	commentaryObligate = IsEmptyValue(TrimAll(visit.Commentary));
+
+	VisitIsChecked(visit);
+
+	 if (obligateNumber==0) {
+
+		Variables["ObligateCommentary"].CssClass="answered_side_wh";
+ 		Variables["ObligateCommentary"].Refresh();
+
+	  Variables["btnForward"].CssClass = "btn_forward";
+		Variables["btnForward"].OnEvent = "Forward";
+	  Variables["btnForward"].Refresh();
+	  for (control in $.btnForward.Controls) {
+	    control.remove();
+	  }
+	  var toappend = "<c:TextView Id=\"btn_Forward\" Text=\"" + Translate["#ready#"]+"\" />";
+	  $.btnForward.append(toappend);
+	  $.btnForward.refresh();
+
+	}else {
+		Variables["ObligateCommentary"].CssClass="required_side_wh";
+		Variables["ObligateCommentary"].Refresh();
+
+    Variables["btnForward"].CssClass = "forward";
+    Variables["btnForward"].Refresh();
+
+    for (control in $.btnForward.Controls) {
+      control.remove();
+    }
+    var toappend ="<c:VerticalLayout></c:VerticalLayout>" +
+    "<c:TextView Id=\"obligateredButton\" Text=\""+obligateNumber+")\" />" +
+    "<c:Image Id=\"imagForw\"/>" +
+    "<c:TextView Id=\"btn_Forward\" Text=\"" + Translate["#forward#"]+" (\" />" ;
+    $.btnForward.append(toappend);
+    $.btnForward.refresh();
+	}
 }
 //------------------------------Questionnaires handlers------------------
 

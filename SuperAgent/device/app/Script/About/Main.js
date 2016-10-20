@@ -1,4 +1,9 @@
-﻿
+
+function OnLoading(){
+	//$.logoSup.CssClass=Translate["#agentLogo#"];
+	//$.logoSup.Refresh();
+}
+
 function SendLog(){
 	// $.sendButton.Visible = false;
 	// $.dataSyncLayout.Visible = true;
@@ -8,7 +13,7 @@ function SendLog(){
 
 	// $.sendButton.Visible = true;
 	// $.dataSyncLayout.Visible = false;
-	// $.dataSyncIndicator.Stop();	
+	// $.dataSyncIndicator.Stop();
 
 	if (result)
 		Dialog.Message(Translate["#success#"]);

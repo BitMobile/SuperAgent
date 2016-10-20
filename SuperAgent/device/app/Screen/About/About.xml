@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="About.css">
-	
+
 	<c:SwipeHorizontalLayout Id="swipe_layout" Index="1">
 
 		<s:Include File="\Components\SideMenu.xml"/>
@@ -21,9 +21,6 @@
 
 			<c:ScrollView Id="grScrollView">
 
-				<c:HorizontalLayout CssClass="caption_grid">
-					<c:TextView Text="#about#:" />
-				</c:HorizontalLayout>
 
 				<c:VerticalLayout CssClass="extra_padding">
 					<c:HorizontalLayout CssClass="image_block">
@@ -37,10 +34,10 @@
 				<c:VerticalLayout CssClass="extra_padding">
 					<c:HorizontalLine/>
 						<c:DockLayout CssClass="parameter_grid">
-							
+
 							<c:HorizontalLayout Id="dataSyncLayout" Visible="false" CssClass="sync">
-								<c:Indicator Id="dataSyncIndicator"/>							
-								<c:TextView Text="#sending#..." />							
+								<c:Indicator Id="dataSyncIndicator"/>
+								<c:TextView Text="#sending#..." />
 							</c:HorizontalLayout>
 
 							<c:Button Id="sendButton" OnClick="$SendLog()" Text="#send#" CssClass="add_button" />
@@ -51,7 +48,7 @@
 
 				<!-- <c:HorizontalLayout CssClass="end_of_block" />
 				<c:HorizontalLine/>
-				
+
 				<c:DockLayout CssClass="parameter_grid">
 					<c:TextView Text="#support#"></c:TextView>
 					<c:Image />
@@ -62,25 +59,25 @@
 					<c:Image />
 				</c:DockLayout>
 				<c:HorizontalLine/>
-				
+
 				<c:HorizontalLayout CssClass="end_of_block" /> -->
-				
+
 				<c:TextView	Text="#agreement#" CssClass="description_row" />
 				<c:TextView	Text="#icons#" CssClass="description_row" />
 
 				<c:HorizontalLayout CssClass="caption_grid">
 					<c:TextView Text="#developer#:" />
 				</c:HorizontalLayout>
-				
+
 				<c:VerticalLayout CssClass="extra_padding">
 					<c:HorizontalLayout CssClass="image_block">
 						<c:Image CssClass="firstBIT"/>
 					</c:HorizontalLayout>
 				</c:VerticalLayout>
 
-				<c:TextView	Text="#firstBIT#" CssClass="description_row" />
+
 				<c:HorizontalLayout CssClass="end_of_block" />
-				
+
 				<!-- <c:HorizontalLine/>
 				<c:DockLayout CssClass="parameter_grid">
 					<c:TextView Text="#webSite#"></c:TextView>
@@ -92,9 +89,9 @@
 					<c:Image />
 				</c:DockLayout>
 				<c:HorizontalLine/>
-				
+
 				<c:HorizontalLayout CssClass="margin_top"></c:HorizontalLayout> -->
-				
+
 			</c:ScrollView>
 
 		</c:VerticalLayout>

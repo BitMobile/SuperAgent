@@ -11,7 +11,7 @@ function OnLoading(){
 	else{
 		listTitle = Translate["#returns#"];
 		no_docs = Translate["#no_returns#"];
-	}	
+	}
 
 	var menuItem = GlobalWorkflow.GetMenuItem();
 	back = (menuItem == "Orders" || menuItem == "Returns" ? Translate["#clients#"] : Translate["#back#"]);
@@ -21,11 +21,11 @@ function OnLoading(){
 
 //---------------------------UI calls----------------
 
-function NoOrders(){	
+function NoOrders(){
 
 	if ($.workflow.step=='OrderList') {
 		var q = new Query("SELECT COUNT(DO.Id) " +
-			" FROM Document_Order DO ");		
+			" FROM Document_Order DO ");
 	}
 	else{
 		var q = new Query("SELECT COUNT(DO.Id) " +
@@ -82,4 +82,3 @@ function AssignNumberIfNotExist(number) {
 	return number;
 
 }
-

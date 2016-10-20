@@ -46,7 +46,7 @@ coordinatesAreSet	Coordinates Are Set
 copy		Copy
 couldnt_be_cleaned	Field couldn't be cleaned
 countPrice	Count price
-currency	CAD
+currency	$
 current		Current
 date		Date
 debt	Debt
@@ -340,7 +340,7 @@ unplanned	Unplanned
 untill			untill
 username	User name
 valueList	Value list
-version		Версия
+version		Version
 visit		Visit
 visit_end_question	After visit ends you will not be allowed to edit it
 visitdate		Visit date
@@ -356,3 +356,7 @@ web_site	Web-site
 webSite		Website Developer
 YES		Yes
 ZAO				ZAO
+OutWhatEver		Synchronization wasn't completed last time. All data will be lost. Quit?
+today		Today
+agentLogo		super_agent_En
+TooMoreLetter		The number of symbols is not available.

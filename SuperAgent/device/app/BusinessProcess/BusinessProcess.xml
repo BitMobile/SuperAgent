@@ -144,7 +144,9 @@
 		</bp:Step>
 		<bp:Step Name="SelectTaskText" Screen="ShowText.xml" Controller="Tasks\ShowText.js"></bp:Step>
 		<bp:Step Name="CreateTask" Screen="Tasks\CreateTask.xml" Controller="Tasks\CreateTask.js">
+			<bp:Action Name="SetText" NextStep="SetText"></bp:Action>
 		</bp:Step>
+		<bp:Step Name="SetText" Screen="SetText.xml" Controller="Tasks\SetText.js"></bp:Step>
 
 		<bp:Step Name="Filters1" Screen="Filters.xml" Controller="Order\Order_SKUs.js">
 			<bp:Action Name="Forward" NextStep="SKUs"></bp:Action>
@@ -204,8 +206,11 @@
 	<bp:Workflow Name="CreateTask">
 		<bp:Step Name="CreateTask" Screen="Tasks\CreateTask.xml" Controller="Tasks\CreateTask.js">
 			<bp:Action Name="SelectOutlet" NextStep="SelectOutlet"></bp:Action>
+			<bp:Action Name="SetText" NextStep="SetText"></bp:Action>
 		</bp:Step>
 		<bp:Step Name="SelectOutlet" Screen="Outlets.xml" Controller="Tasks\SelectOutlet.js"></bp:Step>
+		<bp:Step Name="SetText" Screen="SetText.xml" Controller="Tasks\SetText.js"></bp:Step>
+
 	</bp:Workflow>
 
 	<bp:Workflow Name="Return" Controller="Order\Order.js">

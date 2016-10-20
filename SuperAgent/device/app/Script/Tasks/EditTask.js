@@ -1,4 +1,12 @@
-
+var DateAddTru;
+function OnLoading(){
+	if ($.workflow.name=='Visit') {
+		DateAddTru = GlobalWorkflow.GetDateAdd();
+	}
+	else {
+		DateAddTru = false;
+	}
+}
 function GetCurrentTask(){
 	return GlobalWorkflow.GetCurrentTask();
 }

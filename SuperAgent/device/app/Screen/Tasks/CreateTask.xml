@@ -63,11 +63,16 @@
 				</c:HorizontalLayout>
 				<c:HorizontalLine />
 
-				<c:HorizontalLayout CssClass="memo_block" OnClickAction="$FocusOnEditText(textTaskET, 1)">
+				<c:HorizontalLayout CssClass="memo_block" OnClickAction="$DoAction(SetText)">
 					<c:HorizontalLayout CssClass="$sideStyle.textTask"></c:HorizontalLayout>
 					<c:VerticalLayout>
 						<c:TextView Text="#target#" CssClass="description_row"></c:TextView>
-						<c:MemoEdit Id="textTaskET" Text="$task.TextTask" CssClass="main_row" Placeholder="—" OnLostFocus="$SaveAndRefresh()"></c:MemoEdit>
+						<s:If Test="$IsEmptyValue($task.TextTask)">
+							<c:TextView Id="textTaskET" Text="—" CssClass="main_row"></c:TextView>
+						</s:If>
+						<s:Else>
+							<c:TextView Id="textTaskET" Text="$task.TextTask" CssClass="main_row"></c:TextView>
+						</s:Else>
 					</c:VerticalLayout>
 				</c:HorizontalLayout>
 				<c:HorizontalLine />

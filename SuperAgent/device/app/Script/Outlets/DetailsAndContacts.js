@@ -5,10 +5,18 @@ var hasOutletContacts;
 var newContact;
 var c_ownerType;
 var back;
+var DateAddTru;
 
 function OnLoading(){
 	title = Translate["#contractors#"];
 	back = Translate["#outlet_short#"];
+	if ($.workflow.name=='Visit') {
+		DateAddTru = GlobalWorkflow.GetDateAdd();
+	}
+	else {
+		DateAddTru = false;
+	}
+	//Dialog.Message(DateAddTru);
 }
 
 function OnLoad()
@@ -113,7 +121,7 @@ function GetOwnerType(owner)
 function SelectOwner(owner)
 {
 	if ($.sessionConst.outletContactEditable && $.sessionConst.partnerContactEditable
-		&& $.workflow.outlet.Distributor != DB.EmptyRef("Catalog_Distributor_Contacts"))
+		&& $.workflow.outlet.Distributor != DB.EmptyRef("Catalog_Distributor_Contacts") && DateAddTru == false)
 	{
 		Dialog.Choose(Translate["#owner#"], [[0, Translate["#partner#"]], [1, Translate["#outlet#"]]], OwnerCallBack);
 	}
@@ -173,7 +181,7 @@ function EditOwner(contact, owner){
 
 		if (ownerInput==Translate["#partner#"]){
 			newOwner = DB.Create("Catalog.Distributor_Contacts");
-			newOwner.Ref = $.workflow.outlet.Distributor;			
+			newOwner.Ref = $.workflow.outlet.Distributor;
 		}
 		else{
 			newOwner = DB.Create("Catalog.Outlet_Contacts");
@@ -188,12 +196,18 @@ function EditOwner(contact, owner){
 }
 
 function CheckAndFocus(editFieldName, isInputField){
+if (DateAddTru == false) {
 	if ($.owner.Text == "—")
 		Dialog.Message(Translate["#selectOwner#"]);
 	else
 		FocusOnEditText(editFieldName, isInputField);
 }
-
+}
+function FocusOnEditText1(editFieldName, isInputField){
+	if (DateAddTru == false) {
+		FocusOnEditText(editFieldName, isInputField);
+	}
+}
 function HasContacts(outlet){
 	hasOutletContacts = HasOutletContacts(outlet);
 	hasPartnerContacts = HasPartnerContacts(outlet);
@@ -245,6 +259,7 @@ function DeleteContact(ref) {
 }
 
 function SelectOwnership(control, contractor) {
+if (DateAddTru == false) {
 	var q = new Query();
 	// q.Text = "SELECT Id, Description FROM Enum_OwnershipType UNION SELECT @emptyRef, '—' ORDER BY Description desc";// UNION SELECT NULL, '—' ORDER BY Description";
 	// q.AddParameter("emptyRef",  DB.EmptyRef("Enum_OwnershipType"));
@@ -260,7 +275,7 @@ function SelectOwnership(control, contractor) {
 	}
 
 	Dialogs.DoChoose(arr, contractor, "OwnershipType", control, OwnTypeCallBack, Translate["#ownership#"]);
-
+}
 }
 
 

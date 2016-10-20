@@ -212,8 +212,8 @@ function GetChilds(sku) {
 		single = 0;
 
 var q = new Query("SELECT DISTINCT S.Description, S.Obligatoriness, S.AnswerType, S.Question, S.Answer, S.IsInputField, S.KeyboardType, " +
-			"CASE WHEN IsInputField='1' THEN Answer ELSE " +
-				"CASE WHEN (RTRIM(Answer)!='' AND Answer IS NOT NULL) THEN CASE WHEN AnswerType=@snapshot THEN @attached ELSE Answer END ELSE '—' END END AS AnswerOutput, " +
+		//	"CASE WHEN IsInputField='1' THEN Answer ELSE " +
+				"CASE WHEN (RTRIM(Answer)!='' AND Answer IS NOT NULL) THEN CASE WHEN AnswerType=@snapshot THEN @attached ELSE Answer END ELSE '—' END AS AnswerOutput, " +
 				"CASE WHEN S.AnswerType=@snapshot THEN 1 END AS IsSnapshot, " +
 			"CASE WHEN S.AnswerType=@snapshot THEN " +
 				" CASE WHEN TRIM(IFNULL(VFILES.FullFileName, '')) != '' THEN LOWER(VFILES.FullFileName) ELSE " +
@@ -221,8 +221,8 @@ var q = new Query("SELECT DISTINCT S.Description, S.Obligatoriness, S.AnswerType
 			"FROM USR_SKUQuestions S " +
 			"LEFT JOIN Document_Visit_Files VFILES ON VFILES.FileName = S.Answer AND VFILES.Ref = @visit " +
 			"LEFT JOIN Catalog_Outlet_Files OFILES ON OFILES.FileName = S.Answer AND OFILES.Ref = @outlet " +
-			"WHERE S.SKU=@sku AND S.Single=@single AND (S.ParentQuestion=@emptyRef OR S.ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +
-			"WHERE SKU=S.SKU AND (Answer='Yes' OR Answer='Да'))) " +
+			"WHERE S.SKU=@sku AND S.Single=@single AND (S.ParentQuestion=@emptyRef) OR S.VersionAnswerValueQuestion IN (SELECT AnswerId FROM USR_SKUQuestions) " +
+		//	"WHERE SKU=S.SKU AND (Answer='Yes' OR Answer='Да'))) " +
 			"ORDER BY S.DocDate, S.QuestionOrder ");
 	q.AddParameter("sku", sku);
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
@@ -289,12 +289,12 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 
 	if (answerType == DB.Current.Constant.DataType.ValueList) {
 		var q = new Query();
-		q.Text = "SELECT Value, Value FROM Catalog_Question_ValueList WHERE Ref=@ref UNION SELECT '', '—' ORDER BY Value";
+		q.Text = "SELECT Id, Value FROM Catalog_Question_ValueList WHERE Ref=@ref UNION SELECT '', '—' ";
 		q.AddParameter("ref", question);
 		Dialogs.DoChoose(q.Execute(), question, null, editControl, DialogCallBack, title);
 	}
 
-	if (answerType == DB.Current.Constant.DataType.Snapshot) {		
+	if (answerType == DB.Current.Constant.DataType.Snapshot) {
 		questionValueGl = question;
 
 		var path = null;
@@ -318,7 +318,15 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 	setScroll = false;
 }
 
-function AssignAnswer(control, question, sku, answer, answerType) {
+function AssignAnswer(control, question, sku, answer, answerType, idanswer) {
+
+	var uidans = '';
+	if (idanswer != null){
+		var qidans =	new Query("select idvalue from Catalog_Question_ValueList WHERE Id = @question");
+		qidans.AddParameter("question", idanswer);
+		uidans = qidans.ExecuteScalar();
+
+		}
 
 	if (control != null) {
 		answer = control.Text;
@@ -335,7 +343,7 @@ function AssignAnswer(control, question, sku, answer, answerType) {
 	else
 		answerString = "@answer ";
 
-	var q =	new Query("UPDATE USR_SKUQuestions SET Answer=" + answerString + ", AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question AND SKU=@sku");
+	var q =	new Query("UPDATE USR_SKUQuestions SET Answer=" + answerString + ", AnswerId='" + uidans + "', AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question AND SKU=@sku");
 	q.AddParameter("answer", (question.AnswerType == DB.Current.Constant.DataType.DateTime ? Format("{0:dd.MM.yyyy HH:mm}", Date(answer)) : answer));
 	q.AddParameter("sku", sku);
 	q.AddParameter("question", question);
@@ -375,8 +383,8 @@ function AssignSubmitScope(){
 	$.regular.SubmitScope = $.submitCollectionString;
 	$.nonregular.SubmitScope = $.submitCollectionString;
 	$.btnSearch.SubmitScope = $.submitCollectionString;
-	$.btn_filters.SubmitScope = $.submitCollectionString;	
-	
+	$.btn_filters.SubmitScope = $.submitCollectionString;
+
 	for (control in $.grScrollView.Controls){
 		control.SubmitScope = $.submitCollectionString;
 	}
@@ -385,7 +393,7 @@ function AssignSubmitScope(){
 
 function DialogCallBack(state, args){
 	var entity = state[0];
-	AssignAnswer(null, entity, skuValueGl, args.Result);
+	AssignAnswer(null, entity, skuValueGl, args.Value, null, args.Result.ToString());
 
 	Workflow.Refresh([$.search]);
 }

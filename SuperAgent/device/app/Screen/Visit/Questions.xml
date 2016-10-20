@@ -3,7 +3,8 @@
 
 	<s:Push Id="outlet" Value="$workflow.outlet"></s:Push>
 	<s:Push Id="visit" Value="$workflow.visit"></s:Push>
-	<s:Push Id="questions" Value="$GetQuestionsByQuestionnaires($outlet)"></s:Push>
+	<s:Push Id="questions" Value="$GetQuestionsByQuestionnaires($outlet, null)"></s:Push>
+
 
 	<c:VerticalLayout>
 
@@ -145,7 +146,6 @@
 							</s:Else>
 						</c:DockLayout>
 						<c:HorizontalLine />
-
 					</s:Iterator>
 
 					<c:HorizontalLayout CssClass="end_of_block" />

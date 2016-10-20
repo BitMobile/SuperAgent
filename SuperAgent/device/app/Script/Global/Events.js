@@ -541,7 +541,9 @@ function CreateQuestionsTable(outlet) {
 	var query = new Query(tableCommand +
 		"SELECT " +
 			"D.Date AS DocDate, " +
+
 			"Q.ChildQuestion AS Question, " +
+
 			"Q.ChildDescription AS Description, " +
 			"Q.ChildType AS AnswerType, " +
 			"Q.ParentQuestion AS ParentQuestion, " +
@@ -552,8 +554,10 @@ function CreateQuestionsTable(outlet) {
 			"MAX(CAST(Q.Obligatoriness AS int)) AS Obligatoriness, " +
 			"A.Answer AS Answer, " +
 			"A.Answer AS HistoryAnswer, " +
-			"A.AnswerDate AS AnswerDate " +
-
+			"A.AnswerDate AS AnswerDate, " +
+	"'' AS AnswerId, " +
+		"'' AS AnswerRef, " +
+		"Q.VersionAnswerValueQuestion AS VersionAnswerValueQuestion " +
 		"FROM _Document_Questionnaire_Questions Q INDEXED BY IND_QSKUQ " +
 		"JOIN USR_Questionnaires D ON Q.Ref=D.Id " +
 		"LEFT JOIN _Catalog_Outlet_AnsweredQuestions A INDEXED BY IND_AQ ON A.IsTombstone = 0 AND A.Ref = @outlet AND A.Questionaire = D.Id " +
@@ -562,6 +566,7 @@ function CreateQuestionsTable(outlet) {
 																						"AND (DATE(A.AnswerDate) <= DATE(D.EndAnswerPeriod) OR A.AnswerDate = '0001-01-01 00:00:00') " +
 		"WHERE Q.IsTombstone = 0 " +
 		"GROUP BY Q.ChildQuestion, " +
+	"Q.VersionAnswerValueQuestion, " +
 			"D.Date, " +
 			"Q.ParentQuestion, " +
 			"Q.ChildDescription, " +
@@ -572,7 +577,18 @@ function CreateQuestionsTable(outlet) {
 			"CASE WHEN Q.ChildType = @integer OR Q.ChildType = @decimal OR Q.ChildType = @string THEN 1 ELSE NULL END, " +
 			"CASE WHEN Q.ChildType = @integer OR Q.ChildType = @decimal THEN 'numeric' ELSE 'auto' END; " +
 			"CREATE INDEX IF NOT EXISTS IND_Q ON USR_Questions(ParentQuestion)");
-
+			// Console.WriteLine("*************-------------");
+			// 	Console.WriteLine("emptySKU");
+			// 		Console.WriteLine(DB.EmptyRef("Catalog_SKU"));
+			// Console.WriteLine("integer");
+			// Console.WriteLine(DB.Current.Constant.DataType.Integer);
+			// Console.WriteLine("decimal");
+			// Console.WriteLine(DB.Current.Constant.DataType.Decimal);
+			// Console.WriteLine("string");
+			// Console.WriteLine(DB.Current.Constant.DataType.String);
+			// Console.WriteLine("outlet");
+			// Console.WriteLine(outlet);
+			// Console.WriteLine("*=====================");
 	query.AddParameter("emptySKU", DB.EmptyRef("Catalog_SKU"));
 	query.AddParameter("integer", DB.Current.Constant.DataType.Integer);
 	query.AddParameter("decimal", DB.Current.Constant.DataType.Decimal);
@@ -604,8 +620,10 @@ function CreateSKUQuestionsTable(outlet) {
 			"SK.Brand AS Brand, " +
 			"A.Answer AS Answer, " +
 			"A.Answer AS HistoryAnswer, " +
-			"A.AnswerDate AS AnswerDate " +
-
+			"A.AnswerDate AS AnswerDate, " +
+			"'' AS AnswerId, " +
+				"'' AS AnswerRef, " +
+				"Q.VersionAnswerValueQuestion AS VersionAnswerValueQuestion " +
 		"FROM _Document_Questionnaire_SKUQuestions Q INDEXED BY IND_QSKUSQ " +
 		"JOIN _Document_Questionnaire_SKUs S INDEXED BY IND_QSKU ON S.IsTombstone = 0 AND Q.Ref=S.Ref " +
 		"JOIN USR_Questionnaires D ON Q.Ref=D.Id " +
@@ -617,6 +635,7 @@ function CreateSKUQuestionsTable(outlet) {
 
     "WHERE Q.IsTombstone = 0 " +
 		"GROUP BY Q.ChildQuestion, " +
+			"Q.VersionAnswerValueQuestion, " +
 			"Q.ChildDescription, " +
 			"Q.ChildType, " +
 			"Q.ParentQuestion, " +

@@ -42,7 +42,7 @@ function ChangeListAndRefresh(control, param) {
 function GetQuestionsByQuestionnaires(outlet) {
 
 	var oblQuest = new Query("SELECT COUNT(DISTINCT Question) FROM USR_Questions WHERE Obligatoriness=1 AND TRIM(IFNULL(Answer, '')) = '' " +
-			"AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_Questions " +
+	 	"AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_Questions " +
 			"WHERE (Answer='Yes' OR Answer='Да')))");
 	oblQuest.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 
@@ -69,16 +69,16 @@ function GetQuestionsByQuestionnaires(outlet) {
 function GetQuestions(single) {
 
 	var q = new Query("SELECT DISTINCT UQ.Answer, UQ.AnswerType , UQ.Question, UQ.Description, UQ.Obligatoriness, UQ.IsInputField, UQ.KeyboardType, " +
-			"CASE WHEN UQ.IsInputField='1' THEN UQ.Answer ELSE " +
-				"CASE WHEN TRIM(IFNULL(UQ.Answer, '')) != '' THEN UQ.Answer ELSE '—' END END AS AnswerOutput, " +
+	//		"CASE WHEN UQ.IsInputField='1' THEN UQ.Answer ELSE " +
+				"CASE WHEN TRIM(IFNULL(UQ.Answer, '')) != '' THEN UQ.Answer ELSE '—' END AS AnswerOutput, " +
 			"CASE WHEN UQ.AnswerType=@snapshot THEN " +
 				"CASE WHEN TRIM(IFNULL(VFILES.FullFileName, '')) != '' THEN LOWER(VFILES.FullFileName) ELSE " +
 					"CASE WHEN TRIM(IFNULL(OFILES.FullFileName, '')) != '' THEN LOWER(OFILES.FullFileName) ELSE '/shared/result.jpg' END END ELSE NULL END AS FullFileName " +
 			"FROM USR_Questions UQ " +
 			"LEFT JOIN Document_Visit_Files VFILES ON VFILES.FileName = UQ.Answer AND VFILES.Ref = @visit " +
 			"LEFT JOIN Catalog_Outlet_Files OFILES ON OFILES.FileName = UQ.Answer AND OFILES.Ref = @outlet " +
-			"WHERE UQ.Single=@single AND (UQ.ParentQuestion=@emptyRef OR UQ.ParentQuestion IN (SELECT Question FROM USR_Questions " +
-			"WHERE (Answer='Yes' OR Answer='Да'))) " +
+			"WHERE UQ.Single=@single AND (UQ.ParentQuestion=@emptyRef) AND (UQ.ParentQuestion=@emptyRef)  OR UQ.VersionAnswerValueQuestion IN (SELECT AnswerId FROM USR_Questions )" +
+			//"WHERE (Answer='Yes' OR Answer='Да') " +
 			"ORDER BY UQ.DocDate, UQ.QuestionOrder ");
 
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
@@ -184,7 +184,7 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 	if (answerType == DB.Current.Constant.DataType.ValueList) {
 
 		var q = new Query();
-		q.Text = "SELECT Value, Value FROM Catalog_Question_ValueList WHERE Ref=@ref UNION SELECT '', '—' ORDER BY Value";
+		q.Text = "SELECT Id, Value FROM Catalog_Question_ValueList WHERE Ref=@ref UNION SELECT '', '—'";
 		q.AddParameter("ref", questionItem);
 
 		Dialogs.DoChoose(q.Execute(), questionItem, null, Variables[control], DialogCallBack, questionDescription);
@@ -223,7 +223,17 @@ function FormatAndRefresh(control, question, answerType){
 
 }
 
-function AssignAnswer(control, question, answer, answerType) {
+function AssignAnswer(control, question, answer, answerType, idanswer) {
+
+var uidans = '';
+if (idanswer != null){
+
+	var qidans =	new Query("select idvalue from Catalog_Question_ValueList WHERE Id = @question");
+	qidans.AddParameter("question", idanswer);
+	uidans = qidans.ExecuteScalar();
+
+}
+
 
 	if (control != null) {
 		answer = control.Text;
@@ -260,7 +270,7 @@ function AssignAnswer(control, question, answer, answerType) {
 			}
 
 		}
-	var q =	new Query("UPDATE USR_Questions SET Answer=" + answerString + ", AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question");
+	var q =	new Query("UPDATE USR_Questions SET Answer=" + answerString + ", AnswerId='" + uidans + "', AnswerDate=DATETIME('now', 'localtime') WHERE Question=@question");
 	q.AddParameter("answer", (question.AnswerType == DB.Current.Constant.DataType.DateTime ? Format("{0:dd.MM.yyyy HH:mm}", Date(answer)) : answer));
 	q.AddParameter("question", question);
 	q.Execute();
@@ -269,7 +279,8 @@ function AssignAnswer(control, question, answer, answerType) {
 
 function DialogCallBack(state, args) {
 	var entity = state[0];
-	AssignAnswer(null, entity, args.Result);
+
+	AssignAnswer(null, entity, args.Value, null, args.Result.ToString());
 
 	Workflow.Refresh([]);
 }

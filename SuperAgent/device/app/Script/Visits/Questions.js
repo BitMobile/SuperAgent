@@ -187,7 +187,7 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 		q.Text = "SELECT Id, Value FROM Catalog_Question_ValueList WHERE Ref=@ref UNION SELECT '', '—'";
 		q.AddParameter("ref", questionItem);
 
-		Dialogs.DoChoose(q.Execute(), questionItem, null, Variables[control], DialogCallBack, questionDescription);
+		Dialogs.DoChoose(q.Execute(), questionItem, null, Variables[control], DialogCallBack2, questionDescription);
 
 	} else if (answerType == DB.Current.Constant.DataType.Snapshot) {
 
@@ -277,10 +277,18 @@ if (idanswer != null){
 
 }
 
-function DialogCallBack(state, args) {
+function DialogCallBack2(state, args) {
 	var entity = state[0];
 
 	AssignAnswer(null, entity, args.Value, null, args.Result.ToString());
+
+	Workflow.Refresh([]);
+}
+
+function DialogCallBack(state, args) {
+	var entity = state[0];
+
+	AssignAnswer(null, entity, args.Result);
 
 	Workflow.Refresh([]);
 }

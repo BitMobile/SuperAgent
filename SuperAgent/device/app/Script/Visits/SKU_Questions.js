@@ -291,7 +291,7 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 		var q = new Query();
 		q.Text = "SELECT Id, Value FROM Catalog_Question_ValueList WHERE Ref=@ref UNION SELECT '', '—' ";
 		q.AddParameter("ref", question);
-		Dialogs.DoChoose(q.Execute(), question, null, editControl, DialogCallBack, title);
+		Dialogs.DoChoose(q.Execute(), question, null, editControl, DialogCallBack2, title);
 	}
 
 	if (answerType == DB.Current.Constant.DataType.Snapshot) {
@@ -392,6 +392,13 @@ function AssignSubmitScope(){
 //------------------------------internal-----------------------------------
 
 function DialogCallBack(state, args){
+	var entity = state[0];
+	AssignAnswer(null, entity, skuValueGl, args.Result);
+
+	Workflow.Refresh([$.search]);
+}
+
+function DialogCallBack2(state, args){
 	var entity = state[0];
 	AssignAnswer(null, entity, skuValueGl, args.Value, null, args.Result.ToString());
 

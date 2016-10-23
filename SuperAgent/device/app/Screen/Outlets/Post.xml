@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Visit_SKUs.css">
+
+	<s:Push Id="outlet" Value="$param1"></s:Push>
+	<s:Push Id="BoolEditList" Value="$param2"></s:Push>
+
+	<c:DockLayout>
+
+		<c:DockLayout CssClass="top_navigator">
+			<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$BackCon()">
+				<c:Image />
+				<c:TextView Text="@back" />
+			</c:DockLayout>
+			<c:DockLayout Id="btnForward" CssClass="btn_forward" />
+			<c:HorizontalLayout>
+				<c:TextView Text="#positions#" />
+			</c:HorizontalLayout>
+		</c:DockLayout>
+
+		<c:HorizontalLine />
+
+		<c:DockLayout CssClass="search">
+			<c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoRefresh($edtSearch.Text)"></c:Button>
+			<c:DockLayout>
+				<c:Image />
+				<c:EditText Id="edtSearch" Text="" Placeholder="#search#"></c:EditText>
+			</c:DockLayout>
+		</c:DockLayout>
+		<c:HorizontalLine />
+
+		<c:ScrollView Id="grScrollView">
+
+				<s:If Test="$HasContacts()">
+					<s:Iterator Id="contact" Value="$GetOutletContacts($outlet)" Status="statusCount">
+
+								<c:DockLayout CssClass="parameter_grid" OnClickAction="$SaveAndBack(Select, $contact.Id, $outlet)">
+									<c:Image />
+									<c:TextView Text="$contact.Description"></c:TextView>
+								</c:DockLayout>
+
+						<c:HorizontalLine />
+					</s:Iterator>
+				</s:If>
+
+			<s:Else>
+				<c:HorizontalLayout CssClass="margin_top" />
+				<c:TextView Text="#NotPosition#" CssClass="no_items" />
+			</s:Else>
+
+			<c:HorizontalLayout CssClass="end_of_block" />
+
+		</c:ScrollView>
+
+	</c:DockLayout>
+
+</c:Screen>

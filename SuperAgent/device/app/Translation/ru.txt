@@ -234,6 +234,8 @@ plandate	Плановый срок
 planned	плановых
 planVisit	Плановые
 position		Должность
+positions		Должности
+NotPosition		Нет должностей
 Potential	Потенциальная
 price		Цена
 price		Цена

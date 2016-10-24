@@ -174,6 +174,19 @@ function SaveAndBack(entity, owner) {
 	}
 }
 
+
+ function SaveAndNext(entity, owner, o2, o3) {
+	if (ValidOwner()) // if (ValidEntity(entity) && ValidOwner())
+	{
+		if (getType(entity.GetObject()) == "DefaultScope.Catalog.ContacntDolzh"){
+			DoAction("Select", o2, o3);
+
+		}else{
+
+		EditOwner(entity, owner);
+		DoAction("Select", o2, o3);
+}}}
+
 function ValidOwner(){
 	if ($.owner.Text == "—"){
 		Dialog.Message(Translate["#emptyContactOwner#"]);

@@ -79,7 +79,7 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid" OnClickAction="$DoAction(Select, $contact.Id, $contact.OutletContact)">
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$SaveAndNext($contact, $contactOwner, $contact.Id, $contact.OutletContact)">
 				<c:VerticalLayout>
 					<c:TextView Text="#position#" CssClass="description_row"></c:TextView>
 						<c:TextView Text="$contact.Position.Description" CssClass="main_row" Id="position"/>

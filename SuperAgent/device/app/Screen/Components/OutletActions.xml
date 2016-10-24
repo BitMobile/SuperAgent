@@ -30,7 +30,13 @@
 
 	<bp:Step Name="Plans" Screen="PlanList.xml" Controller="Outlets\DetailsAndContacts.js"></bp:Step>
 
-	<bp:Step Name="Contact" Screen="Contact.xml" Controller="Outlets\DetailsAndContacts.js"></bp:Step>
+	<bp:Step Name="Contact" Screen="Contact.xml" Controller="Outlets\DetailsAndContacts.js">
+		<bp:Action Name="Select" NextStep="Post" />
+		</bp:Step>
+
+		<bp:Step Name="Post" Screen="Post.xml" Controller="Outlets\Post.js">
+
+		</bp:Step>
 
 	<bp:Step Name="Image" Screen="Image.xml" Controller="Outlets\Image.js"></bp:Step>
 

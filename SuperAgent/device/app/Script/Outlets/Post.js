@@ -75,11 +75,11 @@ if(contact == true) {
 function GetOutletContacts(outlet) {
 
 if(contact == true) {
-	var q = new Query("Select Id,Description From Catalog_ContacntDolzh  Order By Description");
+	var q = new Query("Select Id,Description From Catalog_ContacntDolzh  Order By Description Limit 100");
 
 }else{
-	
-	var q = new Query("Select Id,Description From Catalog_ContacntDolzh WHERE Description Like @outlet Order By Description");
+
+	var q = new Query("Select Id,Description From Catalog_ContacntDolzh WHERE Description Like @outlet Order By Description Limit 100");
 	q.AddParameter("outlet", "%"+contactRef+"%");
 
 }

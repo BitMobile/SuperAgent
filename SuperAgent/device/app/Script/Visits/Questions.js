@@ -77,8 +77,9 @@ function GetQuestions(single) {
 			"FROM USR_Questions UQ " +
 			"LEFT JOIN Document_Visit_Files VFILES ON VFILES.FileName = UQ.Answer AND VFILES.Ref = @visit " +
 			"LEFT JOIN Catalog_Outlet_Files OFILES ON OFILES.FileName = UQ.Answer AND OFILES.Ref = @outlet " +
-			"WHERE UQ.Single=@single AND (UQ.ParentQuestion=@emptyRef) AND (UQ.ParentQuestion=@emptyRef)  OR UQ.VersionAnswerValueQuestion IN (SELECT AnswerId FROM USR_Questions )" +
-			//"WHERE (Answer='Yes' OR Answer='Да') " +
+			"WHERE UQ.Single=@single AND (UQ.ParentQuestion=@emptyRef  OR UQ.VersionAnswerValueQuestion IN (SELECT AnswerId FROM USR_Questions ) OR UQ.ParentQuestion IN (SELECT Question FROM USR_Questions " +
+	"WHERE (Answer='Yes' OR Answer='Да'))) " +
+
 			"ORDER BY UQ.DocDate, UQ.QuestionOrder ");
 
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
@@ -99,8 +100,7 @@ function SetIndiactors() {
 			"SUM(CASE WHEN Single = 1 AND TRIM(IFNULL(Answer, '')) != '' THEN 1 ELSE 0 END) AS SingleAnsw " +
 			"FROM (SELECT DISTINCT Question, Single, Answer " +
 				"FROM USR_Questions " +
-				"WHERE ParentQuestion=@emptyRef OR ParentQuestion IN " +
-					"(SELECT Question FROM USR_Questions WHERE (Answer='Yes' OR Answer='Да')))");
+				"WHERE ParentQuestion=@emptyRef )");
 
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 

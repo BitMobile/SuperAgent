@@ -285,7 +285,7 @@ function CreateQuestionnaireAnswers() {
 			"AND A.Ref=@outlet " +
 			"WHERE Q.Answer!='' AND RTRIM(Q.Answer) IS NOT NULL " +
 	//		"AND (Q.ParentQuestion='@ref[Catalog_Question]:00000000-0000-0000-0000-000000000000' " +
-		//	"OR Q.ParentQuestion IN (SELECT Question FROM USR_SKUQuestions WHERE (Answer='Yes' OR Answer='Да')))" +
+			"AND (Q.ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'')  AND Q.VersionAnswerValueQuestion IN (SELECT AnswerId FROM USR_Questions WHERE AnswerId <>'') OR Q.ParentQuestion IN (SELECT Question FROM USR_SKUQuestions WHERE (Answer='Yes' OR Answer='Да')))" +
 			"UNION " +
 			"SELECT DISTINCT Q.Question, NULL AS SKU, Q.Description, Q.Answer, Q.HistoryAnswer, Q.AnswerDate" +
 			", D.Number, D.Id AS Questionnaire, D.Single, A.Id AS AnswerId " +
@@ -293,11 +293,11 @@ function CreateQuestionnaireAnswers() {
 			"JOIN Document_Questionnaire_Questions DQ ON Q.Question=DQ.ChildQuestion " +
 			"JOIN USR_Questionnaires D ON DQ.Ref=D.Id AND D.Single=Q.Single " +
 			"LEFT JOIN Catalog_Outlet_AnsweredQuestions A ON A.Question=Q.Question AND A.Questionaire=DQ.Ref " +
-		//	"AND A.SKU='@ref[Catalog_SKU]:00000000-0000-0000-0000-000000000000'" +
+//			"AND A.SKU='@ref[Catalog_SKU]:00000000-0000-0000-0000-000000000000'" +
 			"AND A.Ref=@outlet " +
-			"WHERE Q.Answer!='' AND RTRIM(Q.Answer) IS NOT NULL ");
+			"WHERE Q.Answer!='' AND RTRIM(Q.Answer) IS NOT NULL " +
 		//	"AND (Q.ParentQuestion='@ref[Catalog_Question]:00000000-0000-0000-0000-000000000000' " +
-//			"AND Q.ParentQuestion IN (SELECT Question FROM USR_Questions WHERE (Answer='Yes' OR Answer='Да')))");
+			"AND( Q.ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'')  AND Q.VersionAnswerValueQuestion IN (SELECT AnswerId FROM USR_Questions WHERE AnswerId <>'') OR Q.ParentQuestion IN (SELECT Question FROM USR_Questions WHERE (Answer='Yes' OR Answer='Да')))");
 	q.AddParameter("outlet", $.workflow.outlet);
 	var answers = q.Execute();
 

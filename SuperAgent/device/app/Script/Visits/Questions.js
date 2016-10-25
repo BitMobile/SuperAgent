@@ -289,6 +289,13 @@ function DialogCallBack2(state, args) {
 function DialogCallBack(state, args) {
 	var entity = state[0];
 
+// 	var q = new Query("select Id from Catalog_ContactPersons WHERE Description = ''");
+// +		 var tables = q.Execute();
+// +
+// +		 while (tables.Next()){
+// +		 DB.Delete(tables.Id, false);
+// +		 }
+
 	AssignAnswer(null, entity, args.Result);
 
 	Workflow.Refresh([]);

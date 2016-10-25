@@ -138,7 +138,7 @@ function GetSKUsFromQuesionnaires(search) {
 			"FROM USR_SKUQuestions S " +
 
 			"WHERE S.Single=@single AND " + searchString + filterString +
-			" (S.ParentQuestion=@emptyRef OR S.ParentQuestion IN (SELECT Question FROM USR_SKUQuestions SS " +
+			" (S.ParentQuestion=@emptyRef OR S.ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'') OR S.ParentQuestion IN (SELECT Question FROM USR_SKUQuestions SS " +
 				"WHERE SS.SKU=S.SKU AND (SS.Answer='Yes' OR SS.Answer='Да')))" +
 			"GROUP BY S.SKU, S.SKUDescription " +
 			" ORDER BY BaseUnitQty DESC, S.SKUDescription ";
@@ -162,7 +162,7 @@ function SetIndicators() {
 
 		"FROM (SELECT DISTINCT Question, SKU, Single, Answer " +
 			"FROM USR_SKUQuestions U1 " +
-			"WHERE ParentQuestion=@emptyRef OR ParentQuestion IN " +
+			"WHERE ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'') OR ParentQuestion IN " +
 				"(SELECT Question FROM USR_SKUQuestions U2 WHERE (Answer='Yes' OR Answer='Да') AND U1.SKU=U2.SKU))");
 
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
@@ -221,7 +221,7 @@ var q = new Query("SELECT DISTINCT S.Description, S.Obligatoriness, S.AnswerType
 			"FROM USR_SKUQuestions S " +
 			"LEFT JOIN Document_Visit_Files VFILES ON VFILES.FileName = S.Answer AND VFILES.Ref = @visit " +
 			"LEFT JOIN Catalog_Outlet_Files OFILES ON OFILES.FileName = S.Answer AND OFILES.Ref = @outlet " +
-			"WHERE S.SKU=@sku AND S.Single=@single AND (S.ParentQuestion=@emptyRef OR UQ.ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'')  OR S.ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +
+			"WHERE S.SKU=@sku AND S.Single=@single AND (S.ParentQuestion=@emptyRef OR S.ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'')  OR S.ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +
 			"WHERE SKU=S.SKU AND (Answer='Yes' OR Answer='Да'))) " +
 			"ORDER BY S.DocDate, S.QuestionOrder ");
 	q.AddParameter("sku", sku);

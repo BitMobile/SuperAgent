@@ -221,8 +221,8 @@ var q = new Query("SELECT DISTINCT S.Description, S.Obligatoriness, S.AnswerType
 			"FROM USR_SKUQuestions S " +
 			"LEFT JOIN Document_Visit_Files VFILES ON VFILES.FileName = S.Answer AND VFILES.Ref = @visit " +
 			"LEFT JOIN Catalog_Outlet_Files OFILES ON OFILES.FileName = S.Answer AND OFILES.Ref = @outlet " +
-			"WHERE S.SKU=@sku AND S.Single=@single AND (S.ParentQuestion=@emptyRef) OR S.VersionAnswerValueQuestion IN (SELECT AnswerId FROM USR_SKUQuestions) " +
-		//	"WHERE SKU=S.SKU AND (Answer='Yes' OR Answer='Да'))) " +
+			"WHERE S.SKU=@sku AND S.Single=@single AND (S.ParentQuestion=@emptyRef OR UQ.ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'')  OR S.ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +
+			"WHERE SKU=S.SKU AND (Answer='Yes' OR Answer='Да'))) " +
 			"ORDER BY S.DocDate, S.QuestionOrder ");
 	q.AddParameter("sku", sku);
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));

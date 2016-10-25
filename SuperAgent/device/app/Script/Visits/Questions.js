@@ -42,7 +42,7 @@ function ChangeListAndRefresh(control, param) {
 function GetQuestionsByQuestionnaires(outlet) {
 
 	var oblQuest = new Query("SELECT COUNT(DISTINCT Question) FROM USR_Questions WHERE Obligatoriness=1 AND TRIM(IFNULL(Answer, '')) = '' " +
-	 	"AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_Questions " +
+	 	"AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'') OR ParentQuestion IN (SELECT Question FROM USR_Questions " +
 			"WHERE (Answer='Yes' OR Answer='Да')))");
 	oblQuest.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 
@@ -77,7 +77,8 @@ function GetQuestions(single) {
 			"FROM USR_Questions UQ " +
 			"LEFT JOIN Document_Visit_Files VFILES ON VFILES.FileName = UQ.Answer AND VFILES.Ref = @visit " +
 			"LEFT JOIN Catalog_Outlet_Files OFILES ON OFILES.FileName = UQ.Answer AND OFILES.Ref = @outlet " +
-			"WHERE UQ.Single=@single AND (UQ.ParentQuestion=@emptyRef) AND (UQ.ParentQuestion=@emptyRef)  OR UQ.ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'')" +
+			"WHERE UQ.Single=@single AND (UQ.ParentQuestion=@emptyRef) AND (UQ.ParentQuestion=@emptyRef)  OR UQ.ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'') OR (UQ.ParentQuestion=@emptyRef OR UQ.ParentQuestion IN (SELECT Question FROM USR_Questions " +
+			"WHERE (Answer='Yes' OR Answer='Да')))" +
 			//"WHERE (Answer='Yes' OR Answer='Да') " +
 			"ORDER BY UQ.DocDate, UQ.QuestionOrder ");
 
@@ -99,7 +100,7 @@ function SetIndiactors() {
 			"SUM(CASE WHEN Single = 1 AND TRIM(IFNULL(Answer, '')) != '' THEN 1 ELSE 0 END) AS SingleAnsw " +
 			"FROM (SELECT DISTINCT Question, Single, Answer " +
 				"FROM USR_Questions " +
-				"WHERE ParentQuestion=@emptyRef OR ParentQuestion IN " +
+				"WHERE ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'') OR ParentQuestion IN " +
 					"(SELECT Question FROM USR_Questions WHERE (Answer='Yes' OR Answer='Да')))");
 
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
@@ -187,7 +188,7 @@ function GoToQuestionAction(answerType, visit, control, questionItem, currAnswer
 		q.Text = "SELECT Id, Value FROM Catalog_Question_ValueList WHERE Ref=@ref UNION SELECT '', '—'";
 		q.AddParameter("ref", questionItem);
 
-		Dialogs.DoChoose(q.Execute(), questionItem, null, Variables[control], DialogCallBack, questionDescription);
+		Dialogs.DoChoose(q.Execute(), questionItem, null, Variables[control], DialogCallBack2, questionDescription);
 
 	} else if (answerType == DB.Current.Constant.DataType.Snapshot) {
 
@@ -277,10 +278,18 @@ if (idanswer != null){
 
 }
 
-function DialogCallBack(state, args) {
+function DialogCallBack2(state, args) {
 	var entity = state[0];
 
 	AssignAnswer(null, entity, args.Value, null, args.Result.ToString());
+
+	Workflow.Refresh([]);
+}
+
+function DialogCallBack(state, args) {
+	var entity = state[0];
+
+	AssignAnswer(null, entity, args.Result);
 
 	Workflow.Refresh([]);
 }

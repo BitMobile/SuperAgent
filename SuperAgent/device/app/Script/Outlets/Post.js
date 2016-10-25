@@ -38,8 +38,9 @@ function BackCon(){
 function SaveAndBack(entity, owner, contactг) {
 
 		 	var en = linkcont.GetObject();
+			if(en != null){
 		 	en.Position = owner;
-		 	en.Save(true);
+		 	en.Save(true);}
 			sear="";
 			GlobalWorkflow.SetOwn(owner);
 			Workflow.Back();

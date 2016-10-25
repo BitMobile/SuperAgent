@@ -35,6 +35,40 @@ function GetOwn(){
 	return own;
 }
 
+
+var con;
+
+function SetOcon(value){
+	con = value;
+}
+
+function GetOcon(){
+	return con;
+}
+
+
+var otel;
+
+function SetOtel(value){
+	otel = value;
+}
+
+function GetOtel(){
+	return otel;
+}
+
+
+var oemail;
+
+function SetOemail(value){
+	oemail = value;
+}
+
+function GetOemail(){
+	return oemail;
+}
+
+
 var dateAdd;
 
 function SetDateAdd(value){

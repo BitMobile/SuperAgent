@@ -34,6 +34,24 @@ function OnLoad()
 }
 
 
+var GetOconG =  GlobalWorkflow.GetOcon();
+if (GetOconG != null){
+
+$.contact_name.Text = GetOconG;
+}
+
+var GetOtelG =  GlobalWorkflow.GetOtel();
+if (GetOtelG != null){
+
+$.phone_number.Text = GetOtelG;
+}
+
+var GetOemailG =  GlobalWorkflow.GetOemail();
+if (GetOemailG != null){
+
+$.email.Text = GetOemailG;
+}
+
 
 var GetOwnG =  GlobalWorkflow.GetOwn();
 if (GetOwnG != null){
@@ -202,6 +220,9 @@ function SaveAndBack(entity, owner) {
 	}
 		en.Save(false);
 		GlobalWorkflow.SetOwn(null);
+		GlobalWorkflow.GetOcon(null);
+GlobalWorkflow.GetOtel(null);
+ GlobalWorkflow.GetOemail(null);
 		Workflow.Back();
 	}
 }
@@ -210,6 +231,12 @@ function SaveAndBack(entity, owner) {
  function SaveAndNext(entity, owner, o2, o3) {
 	if (ValidOwner()) // if (ValidEntity(entity) && ValidOwner())
 	{
+		GlobalWorkflow.GetOcon($.contact_name.Text);
+GlobalWorkflow.GetOtel($.phone_number.Text);
+ GlobalWorkflow.GetOemail($.email.Text);
+
+
+
 		if (getType(entity.GetObject()) == "DefaultScope.Catalog.ContacntDolzh"){
 			DoAction("Select", o2, o3);
 

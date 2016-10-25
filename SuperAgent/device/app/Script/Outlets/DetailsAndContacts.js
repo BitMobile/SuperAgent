@@ -26,10 +26,10 @@ function OnLoad()
 	var GetOwnG =  GlobalWorkflow.GetOwn();
 	if (GetOwnG != null){
 	var GetOwnGG = GetOwnG.GetObject();
-	Console.WriteLine("***+++===");
-	Console.WriteLine(GlobalWorkflow.GetOwn());
-	Console.WriteLine(GetOwnGG.Description);
-	Console.WriteLine("***+++===");
+	// Console.WriteLine("***+++===");
+	// Console.WriteLine(GlobalWorkflow.GetOwn());
+	// Console.WriteLine(GetOwnGG.Description);
+	// Console.WriteLine("***+++===");
 	$.position.Text = GetOwnGG.Description;
 }
 
@@ -51,23 +51,23 @@ if (GetOemailG != null){
 
 $.email.Text = GetOemailG;
 }
-Console.WriteLine("***+++===");
-Console.WriteLine("***+++===");
-Console.WriteLine("***+++===");
-Console.WriteLine(GetOconG);
-Console.WriteLine(GetOtelG);
-Console.WriteLine(GetOemailG);
-Console.WriteLine("***+++===");
-Console.WriteLine("***+++===");
-Console.WriteLine("***+++===");
+// Console.WriteLine("***+++===");
+// Console.WriteLine("***+++===");
+// Console.WriteLine("***+++===");
+// Console.WriteLine(GetOconG);
+// Console.WriteLine(GetOtelG);
+// Console.WriteLine(GetOemailG);
+// Console.WriteLine("***+++===");
+// Console.WriteLine("***+++===");
+// Console.WriteLine("***+++===");
 
 var GetOwnG =  GlobalWorkflow.GetOwn();
 if (GetOwnG != null){
 var GetOwnGG = GetOwnG.GetObject();
-Console.WriteLine("***+++===");
-Console.WriteLine(GlobalWorkflow.GetOwn());
-Console.WriteLine(GetOwnGG.Description);
-Console.WriteLine("***+++===");
+// Console.WriteLine("***+++===");
+// Console.WriteLine(GlobalWorkflow.GetOwn());
+// Console.WriteLine(GetOwnGG.Description);
+// Console.WriteLine("***+++===");
 $.position.Text = GetOwnGG.Description;
 }
 

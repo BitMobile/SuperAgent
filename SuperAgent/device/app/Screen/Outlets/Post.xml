@@ -34,7 +34,7 @@
 					<s:Iterator Id="contact" Value="$GetOutletContacts($outlet)" Status="statusCount">
 
 								<c:DockLayout CssClass="parameter_grid" OnClickAction="$SaveAndBack(Select, $contact.Id, $outlet)">
-									<c:Image />
+
 									<c:TextView Text="$contact.Description"></c:TextView>
 								</c:DockLayout>
 

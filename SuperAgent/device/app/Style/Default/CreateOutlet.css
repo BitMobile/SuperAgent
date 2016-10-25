@@ -17,6 +17,16 @@ body dl {
 	margin-top: 10%;
 }
 
+.grid img{
+	background-image: url(required_h_gr.png);
+	width: 0%;
+	height: 25%;
+	margin-top: 44%;
+	margin-left: 0.5%;
+	margin-right: 0.5%;
+}
+
+
 .partialW {
 	width: 80%;
 	height: 100%;
@@ -39,6 +49,22 @@ body dl {
 	width: 100%;
 	vertical-align: central;
 }
+
+.nex {
+	width: 3.5mm;
+	height: 100%;
+	/*margin-top: 37%;*/
+	margin-right: 3mm;
+	dock-align: right;
+}
+
+.nex vl{
+	background-image: url(arrow_right.png);
+	height: 0%;
+	width: 50%;
+	vertical-align: central;
+}
+
 .description_rowForTypeMer {
 	width: 100%;
 	height: 23%;

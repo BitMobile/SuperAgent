@@ -25,6 +25,16 @@ function GetOutlet(){
 	return outlet;
 }
 
+var own;
+
+function SetOwn(value){
+	own = value;
+}
+
+function GetOwn(){
+	return own;
+}
+
 var dateAdd;
 
 function SetDateAdd(value){

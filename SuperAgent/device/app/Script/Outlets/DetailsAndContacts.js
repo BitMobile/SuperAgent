@@ -8,6 +8,8 @@ var back;
 var DateAddTru;
 
 function OnLoading(){
+
+
 	title = Translate["#contractors#"];
 	back = Translate["#outlet_short#"];
 	if ($.workflow.name=='Visit') {
@@ -21,6 +23,29 @@ function OnLoading(){
 
 function OnLoad()
 {
+	var GetOwnG =  GlobalWorkflow.GetOwn();
+	if (GetOwnG != null){
+	var GetOwnGG = GetOwnG.GetObject();
+	Console.WriteLine("***+++===");
+	Console.WriteLine(GlobalWorkflow.GetOwn());
+	Console.WriteLine(GetOwnGG.Description);
+	Console.WriteLine("***+++===");
+	$.position.Text = GetOwnGG.Description;
+}
+
+
+
+var GetOwnG =  GlobalWorkflow.GetOwn();
+if (GetOwnG != null){
+var GetOwnGG = GetOwnG.GetObject();
+Console.WriteLine("***+++===");
+Console.WriteLine(GlobalWorkflow.GetOwn());
+Console.WriteLine(GetOwnGG.Description);
+Console.WriteLine("***+++===");
+$.position.Text = GetOwnGG.Description;
+}
+
+
 	outlet = $.param1;
 	if ($.Exists("contactOwner")) //for Contact screen
 	{
@@ -159,6 +184,7 @@ function SetEnabledToContactScope(value){
 
 function DeleteAndBack(contact){
 	DB.Delete(contact, false);
+	GlobalWorkflow.SetOwn(null);
 	DoBack();
 }
 
@@ -169,7 +195,13 @@ function SaveAndBack(entity, owner) {
 		EditOwner(entity, owner);
 		var en = entity.GetObject();
 		en.SR = $.common.UserRef;
+		var GetOwnG =  GlobalWorkflow.GetOwn();
+		if (GetOwnG != null){
+		var GetOwnGG = GetOwnG.GetObject();
+	en.Position = GetOwnGG.Id;
+	}
 		en.Save(false);
+		GlobalWorkflow.SetOwn(null);
 		Workflow.Back();
 	}
 }
@@ -183,7 +215,7 @@ function SaveAndBack(entity, owner) {
 
 		}else{
 
-		EditOwner(entity, owner);
+	//	EditOwner(entity, owner);
 		DoAction("Select", o2, o3);
 }}}
 

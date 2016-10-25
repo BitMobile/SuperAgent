@@ -41,6 +41,7 @@ function SaveAndBack(entity, owner, contactг) {
 		 	en.Position = owner;
 		 	en.Save(true);
 			sear="";
+			GlobalWorkflow.SetOwn(owner);
 			Workflow.Back();
 
 }

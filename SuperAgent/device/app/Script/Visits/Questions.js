@@ -42,7 +42,7 @@ function ChangeListAndRefresh(control, param) {
 function GetQuestionsByQuestionnaires(outlet) {
 
 	var oblQuest = new Query("SELECT COUNT(DISTINCT Question) FROM USR_Questions WHERE Obligatoriness=1 AND TRIM(IFNULL(Answer, '')) = '' " +
-	 	"AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'') OR ParentQuestion IN (SELECT Question FROM USR_Questions " +
+	 	"AND (ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'') AND VersionAnswerValueQuestion IN (SELECT AnswerId FROM USR_Questions WHERE AnswerId <>'') OR ParentQuestion IN (SELECT Question FROM USR_Questions " +
 			"WHERE (Answer='Yes' OR Answer='Да')))");
 	oblQuest.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 
@@ -77,7 +77,10 @@ function GetQuestions(single) {
 			"FROM USR_Questions UQ " +
 			"LEFT JOIN Document_Visit_Files VFILES ON VFILES.FileName = UQ.Answer AND VFILES.Ref = @visit " +
 			"LEFT JOIN Catalog_Outlet_Files OFILES ON OFILES.FileName = UQ.Answer AND OFILES.Ref = @outlet " +
-			"WHERE UQ.Single=@single AND (UQ.ParentQuestion=@emptyRef) AND (UQ.ParentQuestion=@emptyRef)  OR UQ.ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'')  AND UQ.VersionAnswerValueQuestion IN (SELECT AnswerId FROM USR_Questions WHERE AnswerId <>'') OR (UQ.ParentQuestion=@emptyRef OR UQ.ParentQuestion IN (SELECT Question FROM USR_Questions " +
+			"WHERE UQ.Single=@single AND (UQ.ParentQuestion=@emptyRef) AND (UQ.ParentQuestion=@emptyRef)" +
+			"  OR UQ.ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'') " +
+			"  AND UQ.VersionAnswerValueQuestion IN (SELECT AnswerId FROM USR_Questions WHERE AnswerId <>'') " +
+			"OR (UQ.ParentQuestion=@emptyRef OR UQ.ParentQuestion IN (SELECT Question FROM USR_Questions " +
 			"WHERE (Answer='Yes' OR Answer='Да')))" +
 			//"WHERE (Answer='Yes' OR Answer='Да') " +
 			"ORDER BY UQ.DocDate, UQ.QuestionOrder ");
@@ -100,7 +103,7 @@ function SetIndiactors() {
 			"SUM(CASE WHEN Single = 1 AND TRIM(IFNULL(Answer, '')) != '' THEN 1 ELSE 0 END) AS SingleAnsw " +
 			"FROM (SELECT DISTINCT Question, Single, Answer " +
 				"FROM USR_Questions " +
-				"WHERE ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'') OR ParentQuestion IN " +
+				"WHERE ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'') AND VersionAnswerValueQuestion IN (SELECT AnswerId FROM USR_Questions WHERE AnswerId <>'')  OR ParentQuestion IN " +
 					"(SELECT Question FROM USR_Questions WHERE (Answer='Yes' OR Answer='Да')))");
 
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));

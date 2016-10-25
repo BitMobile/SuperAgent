@@ -102,7 +102,7 @@ function GetSKUsFromQuesionnaires(search) {
 	var q = new Query("SELECT DISTINCT S.Question, S.Description, S.SKU " +
 			"FROM USR_SKUQuestions S " +
 			"WHERE (RTRIM(Answer)='' OR S.Answer IS NULL) AND S.Obligatoriness=1 " +
-			"AND (S.ParentQuestion=@emptyRef OR S.ParentQuestion IN (SELECT SS.Question FROM USR_SKUQuestions SS " +
+			"AND (S.ParentQuestion=@emptyRef OR S.ParentQuestion IN (SELECT Question FROM USR_SKUQuestions WHERE AnswerId <>'') AND S.VersionAnswerValueQuestion IN (SELECT AnswerId FROM USR_SKUQuestions WHERE AnswerId <>'') OR S.ParentQuestion IN (SELECT SS.Question FROM USR_SKUQuestions SS " +
 				"WHERE SS.SKU=S.SKU AND (SS.Answer='Yes' OR SS.Answer='Да')))");
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	obligateredLeft = q.ExecuteCount().ToString();
@@ -138,7 +138,10 @@ function GetSKUsFromQuesionnaires(search) {
 			"FROM USR_SKUQuestions S " +
 
 			"WHERE S.Single=@single AND " + searchString + filterString +
-			" (S.ParentQuestion=@emptyRef OR S.ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'') OR S.ParentQuestion IN (SELECT Question FROM USR_SKUQuestions SS " +
+			" (S.ParentQuestion=@emptyRef) AND  (S.ParentQuestion=@emptyRef)  " +
+			"OR  S.ParentQuestion IN (SELECT Question FROM USR_SKUQuestions WHERE AnswerId <>'') " +
+			"AND S.VersionAnswerValueQuestion IN (SELECT AnswerId FROM USR_SKUQuestions WHERE AnswerId <>'') " +
+			"OR (S.ParentQuestion=@emptyRef  OR S.ParentQuestion IN (SELECT Question FROM USR_SKUQuestions SS " +
 				"WHERE SS.SKU=S.SKU AND (SS.Answer='Yes' OR SS.Answer='Да')))" +
 			"GROUP BY S.SKU, S.SKUDescription " +
 			" ORDER BY BaseUnitQty DESC, S.SKUDescription ";
@@ -162,7 +165,7 @@ function SetIndicators() {
 
 		"FROM (SELECT DISTINCT Question, SKU, Single, Answer " +
 			"FROM USR_SKUQuestions U1 " +
-			"WHERE ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'') OR ParentQuestion IN " +
+			"WHERE ParentQuestion=@emptyRef OR ParentQuestion IN (SELECT Question FROM USR_SKUQuestions WHERE AnswerId <>'') AND VersionAnswerValueQuestion IN (SELECT AnswerId FROM USR_SKUQuestions WHERE AnswerId <>'')  OR ParentQuestion IN " +
 				"(SELECT Question FROM USR_SKUQuestions U2 WHERE (Answer='Yes' OR Answer='Да') AND U1.SKU=U2.SKU))");
 
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
@@ -221,7 +224,10 @@ var q = new Query("SELECT DISTINCT S.Description, S.Obligatoriness, S.AnswerType
 			"FROM USR_SKUQuestions S " +
 			"LEFT JOIN Document_Visit_Files VFILES ON VFILES.FileName = S.Answer AND VFILES.Ref = @visit " +
 			"LEFT JOIN Catalog_Outlet_Files OFILES ON OFILES.FileName = S.Answer AND OFILES.Ref = @outlet " +
-			"WHERE S.SKU=@sku AND S.Single=@single AND (S.ParentQuestion=@emptyRef OR S.ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'')  AND S.VersionAnswerValueQuestion IN (SELECT AnswerId FROM USR_Questions WHERE AnswerId <>'') OR S.ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +
+			"WHERE S.SKU=@sku AND S.Single=@single AND S.ParentQuestion IN (SELECT Question FROM USR_SKUQuestions WHERE AnswerId <>'') " +
+			" AND S.VersionAnswerValueQuestion IN (SELECT AnswerId FROM USR_SKUQuestions WHERE AnswerId <>'') " +
+			"OR (S.ParentQuestion=@emptyRef " +
+			"OR S.ParentQuestion IN (SELECT Question FROM USR_SKUQuestions " +
 			"WHERE SKU=S.SKU AND (Answer='Yes' OR Answer='Да'))) " +
 			"ORDER BY S.DocDate, S.QuestionOrder ");
 	q.AddParameter("sku", sku);
@@ -291,7 +297,7 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 		var q = new Query();
 		q.Text = "SELECT Id, Value FROM Catalog_Question_ValueList WHERE Ref=@ref UNION SELECT '', '—' ";
 		q.AddParameter("ref", question);
-		Dialogs.DoChoose(q.Execute(), question, null, editControl, DialogCallBack, title);
+		Dialogs.DoChoose(q.Execute(), question, null, editControl, DialogCallBack2, title);
 	}
 
 	if (answerType == DB.Current.Constant.DataType.Snapshot) {
@@ -391,11 +397,28 @@ function AssignSubmitScope(){
 }
 //------------------------------internal-----------------------------------
 
-function DialogCallBack(state, args){
+
+function DialogCallBack2(state, args) {
 	var entity = state[0];
+
 	AssignAnswer(null, entity, skuValueGl, args.Value, null, args.Result.ToString());
 
-	Workflow.Refresh([$.search]);
+	Workflow.Refresh([]);
+}
+
+function DialogCallBack(state, args) {
+	var entity = state[0];
+
+// 	var q = new Query("select Id from Catalog_ContactPersons WHERE Description = ''");
+// +		 var tables = q.Execute();
+// +
+// +		 while (tables.Next()){
+// +		 DB.Delete(tables.Id, false);
+// +		 }
+
+	AssignAnswer(null, entity, skuValueGl, args.Result);
+
+	Workflow.Refresh([]);
 }
 
 function GalleryCallBack(state, args) {

@@ -77,7 +77,7 @@ function GetQuestions(single) {
 			"FROM USR_Questions UQ " +
 			"LEFT JOIN Document_Visit_Files VFILES ON VFILES.FileName = UQ.Answer AND VFILES.Ref = @visit " +
 			"LEFT JOIN Catalog_Outlet_Files OFILES ON OFILES.FileName = UQ.Answer AND OFILES.Ref = @outlet " +
-			"WHERE UQ.Single=@single AND (UQ.ParentQuestion=@emptyRef) AND (UQ.ParentQuestion=@emptyRef)  OR UQ.VersionAnswerValueQuestion IN (SELECT AnswerId FROM USR_Questions )" +
+			"WHERE UQ.Single=@single AND (UQ.ParentQuestion=@emptyRef) AND (UQ.ParentQuestion=@emptyRef)  OR UQ.ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'')" +
 			//"WHERE (Answer='Yes' OR Answer='Да') " +
 			"ORDER BY UQ.DocDate, UQ.QuestionOrder ");
 

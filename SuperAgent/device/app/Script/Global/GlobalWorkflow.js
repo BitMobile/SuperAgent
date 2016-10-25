@@ -36,6 +36,17 @@ function GetOwn(){
 }
 
 
+var NewCon;
+
+function SetNewCon(value){
+	NewCon = value;
+}
+
+function GetNewCon(){
+	return NewCon;
+}
+
+
 var con;
 
 function SetOcon(value){

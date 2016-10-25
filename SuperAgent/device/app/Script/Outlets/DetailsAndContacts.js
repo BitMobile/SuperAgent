@@ -51,7 +51,15 @@ if (GetOemailG != null){
 
 $.email.Text = GetOemailG;
 }
-
+Console.WriteLine("***+++===");
+Console.WriteLine("***+++===");
+Console.WriteLine("***+++===");
+Console.WriteLine(GetOconG);
+Console.WriteLine(GetOtelG);
+Console.WriteLine(GetOemailG);
+Console.WriteLine("***+++===");
+Console.WriteLine("***+++===");
+Console.WriteLine("***+++===");
 
 var GetOwnG =  GlobalWorkflow.GetOwn();
 if (GetOwnG != null){
@@ -112,10 +120,19 @@ function AddEnabled(){
 function CreateContactIfNotExist(contact, owner) {
 
 	if (contact == null) {
+	// if (GlobalWorkflow.GetNewCon() != null) {
 		newContact = true;
 		contact = DB.Create("Catalog.ContactPersons");
 		contact.Save(false);
-		return contact.Id;
+return contact.Id;
+		//  GlobalWorkflow.SetNewCon(contact.Id);
+		// return contact.Id;} else {
+		// 		newContact = true;
+		// 		obj = GlobalWorkflow.GetNewCon();
+		// 	return obj;
+		// }
+
+
 	} else{
 		newContact = false;
 		contact.LoadObject();
@@ -202,12 +219,28 @@ function SetEnabledToContactScope(value){
 
 function DeleteAndBack(contact){
 	DB.Delete(contact, false);
+
+	var q = new Query("select Id from Catalog_ContactPersons WHERE Description = ''");
+			var tables = q.Execute();
+
+			while (tables.Next()){
+			DB.Delete(tables.Id, false);
+			}
+GlobalWorkflow.SetNewCon(null);
 	GlobalWorkflow.SetOwn(null);
+	GlobalWorkflow.SetOcon(null);
+GlobalWorkflow.SetOtel(null);
+GlobalWorkflow.SetOemail(null);
 	DoBack();
 }
 
 function SaveAndBack(entity, owner) {
-
+	var i1 = $.contact_name.Text;
+	var i2 = $.phone_number.Text;
+	var i3 = $.email.Text;
+	GlobalWorkflow.SetOcon(i1);
+GlobalWorkflow.SetOtel(i2);
+GlobalWorkflow.SetOemail(i3);
 	if (ValidOwner()) // if (ValidEntity(entity) && ValidOwner())
 	{
 		EditOwner(entity, owner);
@@ -217,12 +250,28 @@ function SaveAndBack(entity, owner) {
 		if (GetOwnG != null){
 		var GetOwnGG = GetOwnG.GetObject();
 	en.Position = GetOwnGG.Id;
+
 	}
+
+	if (GlobalWorkflow.GetOcon() != null){
+	en.Description =  GlobalWorkflow.GetOcon();
+}
+if (GlobalWorkflow.GetOtel() != null){
+	en.PhoneNumber =  GlobalWorkflow.GetOtel();}
+	if (GlobalWorkflow.GetOemail() != null){
+			en.Email = GlobalWorkflow.GetOemail();}
 		en.Save(false);
+		GlobalWorkflow.SetNewCon(null);
 		GlobalWorkflow.SetOwn(null);
-		GlobalWorkflow.GetOcon(null);
-GlobalWorkflow.GetOtel(null);
- GlobalWorkflow.GetOemail(null);
+		GlobalWorkflow.SetOcon(null);
+GlobalWorkflow.SetOtel(null);
+ GlobalWorkflow.SetOemail(null);
+ var q = new Query("select Id from Catalog_ContactPersons WHERE Description = ''");
+		 var tables = q.Execute();
+
+		 while (tables.Next()){
+		 DB.Delete(tables.Id, false);
+		 }
 		Workflow.Back();
 	}
 }
@@ -231,10 +280,30 @@ GlobalWorkflow.GetOtel(null);
  function SaveAndNext(entity, owner, o2, o3) {
 	if (ValidOwner()) // if (ValidEntity(entity) && ValidOwner())
 	{
-		GlobalWorkflow.GetOcon($.contact_name.Text);
-GlobalWorkflow.GetOtel($.phone_number.Text);
- GlobalWorkflow.GetOemail($.email.Text);
+		Console.WriteLine($.contact_name.Text);
+		Console.WriteLine($.phone_number.Text);
+		Console.WriteLine($.email.Text);
+		var i1 = $.contact_name.Text;
+		var i2 = $.phone_number.Text;
+		var i3 = $.email.Text;
+		GlobalWorkflow.SetOcon(i1);
+GlobalWorkflow.SetOtel(i2);
+ GlobalWorkflow.SetOemail(i3);
+ var GetOconG =  GlobalWorkflow.GetOcon();
 
+ var GetOtelG =  GlobalWorkflow.GetOtel();
+
+
+ var GetOemailG =  GlobalWorkflow.GetOemail();
+ Console.WriteLine("!***+++===");
+ Console.WriteLine("!***+++===");
+ Console.WriteLine("!***+++===");
+ Console.WriteLine(GetOconG);
+ Console.WriteLine(GetOtelG);
+ Console.WriteLine(GetOemailG);
+ Console.WriteLine("!***+++===");
+ Console.WriteLine("!***+++===");
+ Console.WriteLine("!***+++===");
 
 
 		if (getType(entity.GetObject()) == "DefaultScope.Catalog.ContacntDolzh"){

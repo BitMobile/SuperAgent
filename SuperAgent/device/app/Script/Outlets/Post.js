@@ -21,6 +21,22 @@ function OnLoading(){
 		Console.WriteLine("false one");
 }
 
+var GetOconG =  GlobalWorkflow.GetOcon();
+
+var GetOtelG =  GlobalWorkflow.GetOtel();
+
+
+var GetOemailG =  GlobalWorkflow.GetOemail();
+Console.WriteLine("2***+++===");
+Console.WriteLine("2***+++===");
+Console.WriteLine("2***+++===");
+Console.WriteLine(GetOconG);
+Console.WriteLine(GetOtelG);
+Console.WriteLine(GetOemailG);
+Console.WriteLine("2***+++===");
+Console.WriteLine("2***+++===");
+Console.WriteLine("2***+++===");
+
 }
 
 function OnLoad(){
@@ -37,12 +53,13 @@ function BackCon(){
 
 function SaveAndBack(entity, owner, contactг) {
 
-		 	var en = linkcont.GetObject();
-			if(en != null){
-		 	en.Position = owner;
-		 	en.Save(true);}
-			sear="";
+			// 	var en = linkcont.GetObject();
+			// if(en != null){
+			// 	en.Position = owner;
+			// 	en.Save(true);}
+			// sear="";
 			GlobalWorkflow.SetOwn(owner);
+//			GlobalWorkflow.SetNewCon(true);
 			Workflow.Back();
 
 }

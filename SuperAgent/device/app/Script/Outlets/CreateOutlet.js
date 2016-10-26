@@ -1,5 +1,6 @@
 ﻿
 var requiredLeft;
+var terr;
 
 function CreateOutlet(outlet) {
 
@@ -30,12 +31,16 @@ function hasDistr(){
 }
 
 function GetTerritory() {
+	if ($.territory != "territory") return terr;
+	Dialog.Message($.territory);
 	var q = new Query("SELECT Id From Catalog_Territory LIMIT 1");
 	var territory = q.ExecuteScalar();
 	if (territory == null) {
+		terr = territoryEmptyRef;
 		return  territoryEmptyRef;
 	}
 	else {
+		terr = territoryEmptyRef;
 		return territory;
 	}
 	return territory || territoryEmptyRef;
@@ -128,6 +133,7 @@ function TerritoryCallBack(state, args) {
 	var control = state[2];
 	var attribute = state[1];
 	if (getType(args.Result)=="BitMobile.DbEngine.DbRef") {
+		terr = args.Result;
 		$.territory = args.Result;
 		control.Text = args.Result.Description;
 	}

@@ -103,7 +103,7 @@ function GoToHisVis(enter,visitHis){
 	Workflow.Action("Select",[]);
 }
 function GetLastVisit(input){
-	var qui = new Query("Select Id,EndTime From Document_Visit Where Not Number IS NULL And Outlet = @outl");
+	var qui = new Query("Select Id,EndTime From Document_Visit Where Not Number IS NULL And Outlet = @outl Order By EndTime DESC");
 	qui.AddParameter("outl",$.workflow.outlet);
 	return qui.Execute();
 }

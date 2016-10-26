@@ -161,7 +161,11 @@ function GetReturnSum(returnDoc) {
 }
 
 function AskEndVisit(order, visit, wfName) {
-	Dialog.Alert(Translate["#visit_end_question#"], CheckAndCommit, [order, visit, wfName], Translate["#end#"], Translate["#go_back#"]);
+	if (StrLen(visit.Commentary)>200) {
+		Dialog.Message(Translate["#TooMoreLetter#"]);
+	}else {
+		Dialog.Alert(Translate["#visit_end_question#"], CheckAndCommit, [order, visit, wfName], Translate["#end#"], Translate["#go_back#"]);
+	}
 }
 
 function CheckAndCommit(state, args) {

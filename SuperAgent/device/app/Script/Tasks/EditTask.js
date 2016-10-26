@@ -61,6 +61,11 @@ function IsEditable(task){
 
 function SaveComment(control, task){
 	var taskObj = task.GetObject();
-	taskObj.Result = control.Text;
+	if (StrLen(control.Text)>500) {
+		Dialog.Message(Translate["#TooMoreLetter#"]);
+		taskObj.Result = Left(control.Text,500);
+	}else {
+		taskObj.Result = control.Text;		
+	}
 	taskObj.Save();
 }

@@ -69,19 +69,20 @@ function GetQuestionsByQuestionnaires(outlet) {
 function GetQuestions(single) {
 
 	var q = new Query("SELECT DISTINCT UQ.Answer, UQ.AnswerType , UQ.Question, UQ.Description, UQ.Obligatoriness, UQ.IsInputField, UQ.KeyboardType, " +
-	//		"CASE WHEN UQ.IsInputField='1' THEN UQ.Answer ELSE " +
-				"CASE WHEN TRIM(IFNULL(UQ.Answer, '')) != '' THEN UQ.Answer ELSE '—' END AS AnswerOutput, " +
+			"CASE WHEN UQ.IsInputField='1' THEN UQ.Answer ELSE " +
+				"CASE WHEN TRIM(IFNULL(UQ.Answer, '')) != '' THEN UQ.Answer ELSE '—' END END AS AnswerOutput, " +
 			"CASE WHEN UQ.AnswerType=@snapshot THEN " +
 				"CASE WHEN TRIM(IFNULL(VFILES.FullFileName, '')) != '' THEN LOWER(VFILES.FullFileName) ELSE " +
 					"CASE WHEN TRIM(IFNULL(OFILES.FullFileName, '')) != '' THEN LOWER(OFILES.FullFileName) ELSE '/shared/result.jpg' END END ELSE NULL END AS FullFileName " +
 			"FROM USR_Questions UQ " +
 			"LEFT JOIN Document_Visit_Files VFILES ON VFILES.FileName = UQ.Answer AND VFILES.Ref = @visit " +
 			"LEFT JOIN Catalog_Outlet_Files OFILES ON OFILES.FileName = UQ.Answer AND OFILES.Ref = @outlet " +
-			"WHERE UQ.Single=@single AND (UQ.ParentQuestion=@emptyRef) AND (UQ.ParentQuestion=@emptyRef)" +
-			"  OR UQ.ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'') " +
-			"  AND UQ.VersionAnswerValueQuestion IN (SELECT AnswerId FROM USR_Questions WHERE AnswerId <>'') " +
-			"OR (UQ.ParentQuestion=@emptyRef OR UQ.ParentQuestion IN (SELECT Question FROM USR_Questions " +
+			"WHERE UQ.Single=@single "+
+			"AND (UQ.ParentQuestion=@emptyRef  OR UQ.ParentQuestion IN (SELECT Question FROM USR_Questions " +
 			"WHERE (Answer='Yes' OR Answer='Да')))" +
+		"OR (UQ.Single=@single AND UQ.ParentQuestion=@emptyRef" +
+			"  OR UQ.ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'' AND Single=@single) " +
+			"  OR UQ.VersionAnswerValueQuestion IN (SELECT AnswerId FROM USR_Questions WHERE AnswerId <>'' AND Single=@single)) " +
 			//"WHERE (Answer='Yes' OR Answer='Да') " +
 			"ORDER BY UQ.DocDate, UQ.QuestionOrder ");
 
@@ -90,6 +91,18 @@ function GetQuestions(single) {
 	q.AddParameter("snapshot", DB.Current.Constant.DataType.Snapshot);
 	q.AddParameter("visit", $.workflow.visit);
 	q.AddParameter("outlet", $.workflow.outlet);
+Console.WriteLine("******---====");
+Console.WriteLine("emptyRef");
+Console.WriteLine(DB.EmptyRef("Catalog_Question"));
+Console.WriteLine("single");
+Console.WriteLine(single);
+Console.WriteLine("snapshot");
+Console.WriteLine(DB.Current.Constant.DataType.Snapshot);
+Console.WriteLine("visit");
+Console.WriteLine($.workflow.visit);
+	Console.WriteLine("outlet");
+	Console.WriteLine($.workflow.outlet);
+	Console.WriteLine("******---====");
 
 	return q.Execute();
 

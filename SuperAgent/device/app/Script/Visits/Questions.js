@@ -80,9 +80,9 @@ function GetQuestions(single) {
 			"WHERE UQ.Single=@single "+
 			"AND (UQ.ParentQuestion=@emptyRef  OR UQ.ParentQuestion IN (SELECT Question FROM USR_Questions " +
 			"WHERE (Answer='Yes' OR Answer='Да')))" +
-		"OR (UQ.Single=@single AND UQ.ParentQuestion=@emptyRef" +
-			"  OR UQ.ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'' AND Single=@single) " +
-			"  OR UQ.VersionAnswerValueQuestion IN (SELECT AnswerId FROM USR_Questions WHERE AnswerId <>'' AND Single=@single)) " +
+		"OR ( UQ.Single=@single  " +
+			"  AND UQ.ParentQuestion IN (SELECT Question FROM USR_Questions WHERE AnswerId <>'' AND Single=@single) " +
+			"  AND UQ.VersionAnswerValueQuestion IN (SELECT AnswerId FROM USR_Questions WHERE AnswerId <>'' AND Single=@single)) " +
 			//"WHERE (Answer='Yes' OR Answer='Да') " +
 			"ORDER BY UQ.DocDate, UQ.QuestionOrder ");
 

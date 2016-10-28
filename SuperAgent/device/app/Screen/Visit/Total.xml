@@ -95,7 +95,7 @@
 				<c:HorizontalLine />
 			</s:If>
 
-			<c:HorizontalLayout CssClass="grid">
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$DoAction(ShowCommentary, $workflow.visit)">
 				<s:If Test="@commentaryObligate">
 					<c:HorizontalLayout Id="ObligateCommentary" CssClass="required_side_wh"></c:HorizontalLayout>
 				</s:If>
@@ -104,7 +104,7 @@
 				</s:Else>
 				<c:VerticalLayout>
 					<c:TextView Text="#commentary#" CssClass="description_row"></c:TextView>
-					<c:MemoEdit Id="Commentary" Value="$workflow.visit.Commentary" CssClass="main_row" Placeholder="—" OnLostFocus="$SetCommentary($workflow.visit)"></c:MemoEdit>
+					<c:MemoEdit Id="Commentary" Value="$workflow.visit.Commentary" CssClass="main_row" Placeholder="—" ></c:MemoEdit>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

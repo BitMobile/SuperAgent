@@ -39,7 +39,7 @@
 			<c:Mixin File="Mixins\DB.js" Target="*.js" />
 
 		</c:Mixins>
-		
+
 	</c:Script>
 
 </c:Configuration>

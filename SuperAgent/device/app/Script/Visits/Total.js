@@ -11,14 +11,14 @@ var obligateNumber;
 function OnLoading() {
 	checkOrderReason = false;
 	checkVisitReason = false;
-  commentaryObligate = false;
+  commentaryObligate = true;
 
 	if (IsNullOrEmpty($.workflow.visit.Commentary)){
 		commentaryObligate = true;
 	} else{
 		commentaryObligate = IsEmptyValue(TrimAll($.workflow.visit.Commentary));
 	}
-  
+
 
 	orderEnabled = OptionAvailable("SkipOrder");
 	returnEnabled = OptionAvailable("SkipReturn");
@@ -290,7 +290,7 @@ function FormatOutput(value) {
 
 function SetCommentary(control, visit) {
 
-	commentaryObligate = IsEmptyValue(TrimAll(visit.Commentary));
+	commentaryObligate = IsEmptyValue(TrimAll(control.Text));
 
 	VisitIsChecked(visit);
 

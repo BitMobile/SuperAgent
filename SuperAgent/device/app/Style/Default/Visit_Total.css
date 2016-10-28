@@ -30,6 +30,14 @@
 	dock-align: left;
 }
 
+.caption{
+height: 100% auto;
+width: 100%;
+font: 4% Arial;
+white-space: normal;
+color: #000000
+}
+
 .forward{
 	width: 16.3mm;
 	height: 100%;

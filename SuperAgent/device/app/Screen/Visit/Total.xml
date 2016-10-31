@@ -104,8 +104,9 @@
 				</s:Else>
 				<c:VerticalLayout>
 					<c:TextView Text="#commentary#" CssClass="description_row"></c:TextView>
-					<c:MemoEdit Id="Commentary" Value="$workflow.visit.Commentary" CssClass="main_row" Placeholder="—" ></c:MemoEdit>
+					<c:TextView Id="Commentary" Text="$workflow.visit.Commentary" CssClass="main_row_com" ></c:TextView>
 				</c:VerticalLayout>
+				<c:Image />
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 

@@ -167,7 +167,7 @@ function GetEncashmentSumm(){
 }
 
 function SetReceivablesSumm() {
-	var q = new Query("SELECT SUM(RD.DocumentSum) FROM Document_AccountReceivable_ReceivableDocuments RD JOIN Document_AccountReceivable AR ON AR.Id = RD.Ref");
+	var q = new Query("SELECT SUM(RD.DocumentSum) FROM Document_AccountReceivable_ReceivableDocuments RD JOIN Document_AccountReceivable AR ON AR.Id = RD.Ref WHERE RD.Overdue=1");
 	var cnt = q.ExecuteScalar();
 	if (cnt == null)
 		receivablesSumm = 0;

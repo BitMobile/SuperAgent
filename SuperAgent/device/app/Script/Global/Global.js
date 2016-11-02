@@ -25,6 +25,7 @@ function SetSessionConstants() {
 	var saveQuest = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='UseSaveQuest'");
 	var DayPlanVisitCount = new Query("SELECT NumericValue FROM Catalog_MobileApplicationSettings WHERE Description='EndUploadPlanVisit'");
 	var RadiusDeviation = new Query("SELECT NumericValue FROM Catalog_MobileApplicationSettings WHERE Description='RadiusDeviation'");
+	
 	$.AddGlobal("sessionConst", new Dictionary());
 	$.sessionConst.Add("UseSaveQuest", saveQuest.ExecuteScalar());
 	$.sessionConst.Add("solVersion", solVersion.ExecuteScalar());

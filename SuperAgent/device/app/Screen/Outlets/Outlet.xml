@@ -260,7 +260,7 @@
 
 			<c:HorizontalLayout CssClass="grid">
 				<c:VerticalLayout>
-					<s:If Test="$workflow.outlet.NormPassability &lt; 90">
+					<s:If Test="$workflow.outlet.Streams &gt; 0 &amp;&amp; $workflow.outlet.NormPassability &lt; 90">
 						<c:TextView Text="#NormPassability#" CssClass="red_description_row"></c:TextView>
 							<c:TextView Id="outletNormPassability" Text="$workflow.outlet.NormPassability" CssClass="red_not_available_basic"></c:TextView>
 					</s:If>

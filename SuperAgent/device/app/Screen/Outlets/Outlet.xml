@@ -201,7 +201,7 @@
 				<c:VerticalLayout>
 					<c:TextView Text="#coordinates#" CssClass="description_row"></c:TextView>
 					<s:If Test="$EmptyCoordinates($workflow.outlet)">
-						<c:HorizontalLayout OnClick="$ShowCoordOptions($workflow.outlet, $sessionConst.editOutletParameters)">
+						<c:HorizontalLayout > <!-- OnClick="$ShowCoordOptions($workflow.outlet, $sessionConst.editOutletParameters)" -->
 							<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000003 == true &amp;&amp; @DateAddTru == false">
 								<c:TextView Id="outletCoord" Text="{$workflow.outlet.Lattitude}; {$workflow.outlet.Longitude}" CssClass="main_row_available"></c:TextView>
 							</s:If>

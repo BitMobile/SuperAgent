@@ -91,6 +91,7 @@ function SaveNewOutlet(outlet) {
 			outlet.NormPassability = parseInt(0);
 			outlet.OverdueObligation = '';
 			outlet.Sort = parseInt(0);
+			outlet.Streams = parseInt(0);
 			outlet.DateNextPayment = Date('0001-01-01 00:00:00');
 			outlet.Lattitude = parseInt(0);
 			outlet.Longitude = parseInt(0);

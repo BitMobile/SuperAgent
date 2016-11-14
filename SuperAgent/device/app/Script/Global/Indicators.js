@@ -61,11 +61,11 @@ function GetCommitedScheduledVisits() {
 
 
 function SetUnscheduledVisits() {
-	var q = new Query("SELECT COUNT (Id) FROM Document_Visit WHERE Plan=@emptyRef AND Date >= @today AND Date < @tomorrow");
+	var q = new Query("SELECT Id FROM Document_Visit WHERE Plan=@emptyRef AND Date >= @today AND Date < @tomorrow");
 	q.AddParameter("today", DateTime.Now.Date);
 	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
 	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));
-	unscheduledVisits = q.ExecuteScalar();
+	unscheduledVisits = q.ExecuteCount();
 }
 
 function GetUnscheduledVisits() {
@@ -74,9 +74,9 @@ function GetUnscheduledVisits() {
 
 
 function SetPlannedVisits() {
-	var q = new Query("SELECT COUNT(*) FROM Document_VisitPlan_Outlets VPO JOIN Document_VisitPlan DP ON VPO.Ref = DP.Id JOIN Catalog_Outlet O ON VPO.Outlet=O.Id JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus=OSS.Status AND OSS.ShowOutletInMA=1 AND OSS.DoVisitInMA=1 WHERE DATE(VPO.Date)=DATE(@date) AND NOT OSS.Status IS NULL");
+	var q = new Query("SELECT * FROM Document_VisitPlan_Outlets VPO JOIN Document_VisitPlan DP ON VPO.Ref = DP.Id JOIN Catalog_Outlet O ON VPO.Outlet=O.Id JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus=OSS.Status AND OSS.ShowOutletInMA=1 AND OSS.DoVisitInMA=1 WHERE DATE(VPO.Date)=DATE(@date) AND NOT OSS.Status IS NULL");
 	q.AddParameter("date", DateTime.Now.Date);
-	plannedVisits = q.ExecuteScalar();
+	plannedVisits = q.ExecuteCount();
 }
 
 function GetPlannedVisits() {

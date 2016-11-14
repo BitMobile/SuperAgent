@@ -8,7 +8,6 @@ function OnLoading() {
 }
 
 function GetVisit(visit){
-	// Dialog.Debug(visit);
 	return visit.GetObject();
 }
 
@@ -16,17 +15,28 @@ function SetCommentary(sender, param1){
 	Commentary = sender.Text;
 }
 
+function SetFocus() {
+	$.DlComment.CssClass = "caption_keyboard";
+	$.DlComment.Refresh();
+}
+
+function LostFocus(){
+	$.DlComment.CssClass = "caption";
+	$.DlComment.Refresh();
+}
+
+
 function AskEndVisit(visit) {
 	if (IsNullOrEmpty(Commentary)) {
-		visit.Commentary = Commentary;
-		visit.Save();
 		DoBack();
 	} else {
 		Commentary = TrimAll(Commentary);
 		if (501 <= StrLen(Commentary)){
 			Dialog.Message(Translate["#HigthCommentaryCount#"]);
 		}else {
+			var visObj = visit.Id.GetObject();
 			visit.Commentary = Commentary;
+
 			visit.Save();
 			DoBack();
 		}

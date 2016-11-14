@@ -31,13 +31,22 @@
 }
 
 .caption{
-height: 100% auto;
-width: 100%;
-font: 4% Arial;
-white-space: normal;
-color: #000000
+	height: 100%;
+	width: 100%;
 }
 
+.caption_keyboard{
+	height: 42%;
+	width: 100%;
+}
+
+.commentary{
+	height: 100%;
+	width: 100%;
+	font: 4% Arial;
+	white-space: normal;
+	color: #000000;
+}
 .forward{
 	width: 16.3mm;
 	height: 100%;

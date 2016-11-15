@@ -203,7 +203,8 @@ function GetUncommitedScheduledVisitsCount(searchText) {
 			" FROM Catalog_Outlet O " +
 			" JOIN Document_VisitPlan_Outlets VP ON O.Id = VP.Outlet AND DATE(VP.Date)=DATE(@date) " +
 			" JOIN Document_VisitPlan DV ON VP.Ref = DV.Id " +
-			" LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet AND DATE(V.Date) >= DATE(@today) AND DATE(V.Date) < DATE(@tomorrow) AND V.Plan<>@emptyRef LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA=1 " +
+			" LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet AND DATE(V.Date) >= DATE(@today) AND DATE(V.Date) < DATE(@tomorrow) AND V.Plan<>@emptyRef " +
+			" LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA=1 " +
 			" WHERE V.Id IS NULL AND NOT OSS.Status IS NULL " + search + "");
 			if (addDay == null || addDay == 0) {
 				addDay = 0;
@@ -222,20 +223,42 @@ function GetUncommitedScheduledVisitsCount(searchText) {
 }
 
 function GetScheduledVisitsCount() {
-	var q = new Query("SELECT VPO.Id FROM Document_VisitPlan_Outlets VPO JOIN Document_VisitPlan DV ON VPO.Ref = DV.Id LEFT JOIN Catalog_Outlet O ON VPO.Outlet = O.Id LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA = 1 WHERE DATE(VPO.Date) >= DATE(@today) AND DATE(VPO.Date) < DATE(@tomorrow) AND NOT OSS.Status IS NULL");
+	var q = new Query("SELECT DISTINCT VP.Outlet " +
+			" FROM Catalog_Outlet O " +
+			" JOIN Document_VisitPlan_Outlets VP ON O.Id = VP.Outlet AND DATE(VP.Date)=DATE(@date) " +
+			" JOIN Document_VisitPlan DV ON VP.Ref = DV.Id " +
+			" LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet AND DATE(V.Date) >= DATE(@today) AND DATE(V.Date) < DATE(@tomorrow) AND V.Plan<>@emptyRef " +
+			" LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA=1 " +
+			" WHERE V.Id IS NULL AND NOT OSS.Status IS NULL ");
+
 	if (addDay == null || addDay == 0) {
 		addDay = 0;
+		q.AddParameter("date", DateTime.Now.Date);
 		q.AddParameter("today", DateTime.Now.Date);
 		q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
 	}else {
+		q.AddParameter("date", DateTime.Now.Date.AddDays(addDay));
 		q.AddParameter("today", DateTime.Now.Date.AddDays(addDay));
 		q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1));
 	}
-	var cnt = q.ExecuteCount();
-	if (cnt == null)
-		return 0;
-	else
-		return cnt;
+	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));
+	// var q = new Query("SELECT VPO.Id " +
+	// " FROM Document_VisitPlan_Outlets VPO " +
+	// " JOIN Document_VisitPlan DV ON VPO.Ref = DV.Id " +
+	// " LEFT JOIN Catalog_Outlet O ON VPO.Outlet = O.Id " +
+	// " LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA = 1 " +
+	// " WHERE DATE(VPO.Date) >= DATE(@today) AND DATE(VPO.Date) < DATE(@tomorrow) AND NOT OSS.Status IS NULL");
+	// if (addDay == null || addDay == 0) {
+	// 	addDay = 0;
+	// 	q.AddParameter("today", DateTime.Now.Date);
+	// 	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
+	// }else {
+	//
+	// 	q.AddParameter("today", DateTime.Now.Date.AddDays(addDay));
+	// 	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1));
+	// }
+
+	return q.ExecuteCount();
 }
 
 function GetCommitedVisits(searchText) {

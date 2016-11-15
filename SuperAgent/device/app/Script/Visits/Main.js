@@ -203,8 +203,8 @@ function GetUncommitedScheduledVisitsCount(searchText) {
 			" FROM Catalog_Outlet O " +
 			" JOIN Document_VisitPlan_Outlets VP ON O.Id = VP.Outlet AND DATE(VP.Date)=DATE(@date) " +
 			" JOIN Document_VisitPlan DV ON VP.Ref = DV.Id " +
-			" LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet AND V.Date >= @today AND V.Date < @tomorrow AND V.Plan<>@emptyRef LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA=1 " +
-			" WHERE V.Id IS NULL AND NOT OSS.Status IS NULL " + search + " ORDER BY O.Description LIMIT 100");
+			" LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet AND DATE(V.Date) >= DATE(@today) AND DATE(V.Date) < DATE(@tomorrow) AND V.Plan<>@emptyRef LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA=1 " +
+			" WHERE V.Id IS NULL AND NOT OSS.Status IS NULL " + search + "");
 			if (addDay == null || addDay == 0) {
 				addDay = 0;
 				q.AddParameter("date", DateTime.Now.Date);
@@ -222,7 +222,7 @@ function GetUncommitedScheduledVisitsCount(searchText) {
 }
 
 function GetScheduledVisitsCount() {
-	var q = new Query("SELECT VPO.Id FROM Document_VisitPlan_Outlets VPO JOIN Document_VisitPlan DV ON VPO.Ref = DV.Id LEFT JOIN Catalog_Outlet O ON VPO.Outlet = O.Id LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA = 1 WHERE VPO.Date >= @today AND VPO.Date < @tomorrow AND NOT OSS.Status IS NULL");
+	var q = new Query("SELECT VPO.Id FROM Document_VisitPlan_Outlets VPO JOIN Document_VisitPlan DV ON VPO.Ref = DV.Id LEFT JOIN Catalog_Outlet O ON VPO.Outlet = O.Id LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA = 1 WHERE DATE(VPO.Date) >= DATE(@today) AND DATE(VPO.Date) < DATE(@tomorrow) AND NOT OSS.Status IS NULL");
 	if (addDay == null || addDay == 0) {
 		addDay = 0;
 		q.AddParameter("today", DateTime.Now.Date);
@@ -278,14 +278,14 @@ function GetCommitedScheduledVisitsCount(searchText) {
 
 //	var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet WHERE V.Date >= @today AND V.Date < @tomorrow AND VP.Date >= @today AND VP.Date < @tomorrow " + search + " ORDER BY O.Description LIMIT 100");
 	var q = new Query("SELECT V.Outlet " +
-		"FROM Catalog_Outlet O JOIN Document_Visit V ON V.Outlet=O.Id AND V.Date >= @today AND V.Date < @tomorrow");
+		"FROM Catalog_Outlet O JOIN Document_Visit V ON V.Outlet=O.Id AND DATE(V.Date) >= DATE(@today) AND DATE(V.Date) < DATE(@tomorrow)");
 		if (addDay == null || addDay == 0) {
 			addDay = 0;
-			q.AddParameter("today",  FormatDate(DateTime.Now.Date));
-			q.AddParameter("tomorrow", FormatDate(DateTime.Now.Date.AddDays(1)));
+			q.AddParameter("today",  DateTime.Now.Date);
+			q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
 		}else {
-			q.AddParameter("today", FormatDate(DateTime.Now.Date.AddDays(addDay)));
-			q.AddParameter("tomorrow", FormatDate(DateTime.Now.Date.AddDays(addDay+1)));
+			q.AddParameter("today", DateTime.Now.Date.AddDays(addDay));
+			q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1));
 		}
 		// Dialog.Debug(5);
 	return q.ExecuteCount();

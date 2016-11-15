@@ -48,7 +48,7 @@ function GetOutletsCount(){
 
 
 function SetCommitedScheduledVisits(){
-	var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet JOIN Document_VisitPlan DV ON VP.Ref = DV.Id WHERE V.Date >= @today AND V.Date < @tomorrow AND DATE(VP.Date) >= DATE(@today) AND DATE(VP.Date) < DATE(@tomorrow) AND V.Plan <> @emptyRef ORDER BY O.Description LIMIT 100");
+	var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet JOIN Document_VisitPlan DV ON VP.Ref = DV.Id WHERE DATE(V.Date) >= DATE(@today) AND DATE(V.Date) < DATE(@tomorrow) AND DATE(VP.Date) >= DATE(@today) AND DATE(VP.Date) < DATE(@tomorrow) AND V.Plan <> @emptyRef");
 	q.AddParameter("today", FormatDate(DateTime.Now.Date));
 	q.AddParameter("tomorrow", FormatDate(DateTime.Now.Date.AddDays(1)));
 	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));
@@ -61,7 +61,7 @@ function GetCommitedScheduledVisits() {
 
 
 function SetUnscheduledVisits() {
-	var q = new Query("SELECT Id FROM Document_Visit WHERE Plan=@emptyRef AND Date >= @today AND Date < @tomorrow");
+	var q = new Query("SELECT Id FROM Document_Visit WHERE Plan=@emptyRef AND DATE(Date) >= DATE(@today) AND DATE(Date) < DATE(@tomorrow)");
 	q.AddParameter("today", FormatDate(DateTime.Now.Date));
 	q.AddParameter("tomorrow", FormatDate(DateTime.Now.Date.AddDays(1)));
 	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));

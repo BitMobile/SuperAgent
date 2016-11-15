@@ -232,7 +232,6 @@ function GetScheduledVisitsCount() {
 		q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1));
 	}
 	var cnt = q.ExecuteCount();
-	// Dialog.Debug(3);
 	if (cnt == null)
 		return 0;
 	else
@@ -278,18 +277,18 @@ function GetCommitedScheduledVisitsCount(searchText) {
 	}
 
 //	var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet WHERE V.Date >= @today AND V.Date < @tomorrow AND VP.Date >= @today AND VP.Date < @tomorrow " + search + " ORDER BY O.Description LIMIT 100");
-	var q = new Query("SELECT COUNT(V.Outlet) " +
+	var q = new Query("SELECT V.Outlet " +
 		"FROM Catalog_Outlet O JOIN Document_Visit V ON V.Outlet=O.Id AND V.Date >= @today AND V.Date < @tomorrow");
 		if (addDay == null || addDay == 0) {
 			addDay = 0;
-			q.AddParameter("today", DateTime.Now.Date);
-			q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
+			q.AddParameter("today",  FormatDate(DateTime.Now.Date));
+			q.AddParameter("tomorrow", FormatDate(DateTime.Now.Date.AddDays(1)));
 		}else {
-			q.AddParameter("today", DateTime.Now.Date.AddDays(addDay));
-			q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1));
+			q.AddParameter("today", FormatDate(DateTime.Now.Date.AddDays(addDay)));
+			q.AddParameter("tomorrow", FormatDate(DateTime.Now.Date.AddDays(addDay+1)));
 		}
 		// Dialog.Debug(5);
-	return q.ExecuteScalar();
+	return q.ExecuteCount();
 }
 
 function GetOutlets(searchText) {
@@ -363,4 +362,9 @@ function OutletStatusText(){
 		os = " 3 AS OutletStatus ";
 
 	return os;
+}
+
+function FormatDate(datetime) {
+
+    return Format("{0:d}", Date(datetime).Date);
 }

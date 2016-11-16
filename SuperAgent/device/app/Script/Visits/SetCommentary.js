@@ -8,6 +8,7 @@ function OnLoading() {
 }
 
 function GetVisit(visit){
+	Commentary = visit.Commentary;
 	return visit.GetObject();
 }
 

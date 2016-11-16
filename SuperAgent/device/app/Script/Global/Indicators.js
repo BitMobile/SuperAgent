@@ -42,7 +42,7 @@ function GetOutletsCount(){
 
 
 function SetCommitedScheduledVisits(){
-	var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet JOIN Document_VisitPlan DV ON VP.Ref = DV.Id WHERE V.Date >= @today AND V.Date < @tomorrow AND DATE(VP.Date) >= DATE(@today) AND DATE(VP.Date) < DATE(@tomorrow) AND V.Plan <> @emptyRef ORDER BY O.Description LIMIT 100");
+	var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet JOIN Document_VisitPlan DV ON VP.Ref = DV.Id WHERE DATE(V.Date) >= DATE(@today) AND DATE(V.Date) < DATE(@tomorrow) AND DATE(VP.Date) >= DATE(@today) AND DATE(VP.Date) < DATE(@tomorrow) AND V.Plan <> @emptyRef");
 	q.AddParameter("today", DateTime.Now.Date);
 	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
 	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));
@@ -190,7 +190,7 @@ function SetTasksDone(){
 	var q = new Query("SELECT COUNT(Id) FROM Document_Task " +
 		" WHERE Status=1 " +
 		" AND DATE(ExecutionDate)=DATE('now', 'localtime') ");
-	var cnt = q.ExecuteScalar();	
+	var cnt = q.ExecuteScalar();
 	tasksDone = cnt == null ? 0 : cnt;
 }
 

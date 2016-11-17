@@ -30,6 +30,16 @@
 	dock-align: left;
 }
 
+.caption{
+	height: 100%;
+	width: 100%;
+}
+
+.caption_keyboard{
+	height: 42%;
+	width: 100%;
+}
+
 .commentary{
 	height: 100%;
 	width: 100%;
@@ -37,7 +47,6 @@
 	white-space: normal;
 	color: #000000;
 }
-
 .forward{
 	width: 16.3mm;
 	height: 100%;

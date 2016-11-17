@@ -16,10 +16,7 @@
     </c:DockLayout>
       <c:HorizontalLine />
       <c:ScrollView Id="grScrollView">
-        <c:DockLayout Id="DlComment" CssClass="caption" OnClickAction="$FocusOnEditText(TextCommentary, 1)">
-          <c:MemoEdit Id="TextCommentary" Text="$visit.Commentary" CssClass="commentary" OnGetFocus="$SetFocus()" OnLostFocus="$LostFocus()" OnChange="$SetCommentary()" AutoFocus="True"/>
-        </c:DockLayout>
+        <c:MemoEdit Id="TextCommentary" Text="$visit.Commentary" CssClass="commentary" OnChange="$SetCommentary()"/>
       </c:ScrollView>
   </c:DockLayout>
 </c:Screen>
- <!-- " -->

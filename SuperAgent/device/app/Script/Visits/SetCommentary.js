@@ -12,20 +12,9 @@ function GetVisit(visit){
 	return visit.GetObject();
 }
 
-function SetCommentary(sender, param1){
+function SetCommentary(sender){
 	Commentary = sender.Text;
 }
-
-function SetFocus(sender) {
-	$.DlComment.CssClass = "caption_keyboard";
-	$.DlComment.Refresh();
-}
-
-function LostFocus(sender){
-	$.DlComment.CssClass = "caption";
-	$.DlComment.Refresh();
-}
-
 
 function AskEndVisit(visit) {
 	if (IsNullOrEmpty(Commentary)) {

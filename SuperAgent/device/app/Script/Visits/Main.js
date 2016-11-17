@@ -62,16 +62,24 @@ function RefreshScrolView(){
 			toappend = toappend + "<c:VerticalLayout CssClass=\"no_mark\"></c:VerticalLayout>";
 		}
 
+		if (IsEmptyValue(uncommitedVisits.Distributor)){
+			var distr = "";
+		}else {
+			var distr = StrReplace(uncommitedVisits.Distributor, '"', '\"');
+			distr = StrReplace(distr, "'", '\"');
+			distr = StrReplace(distr, "&", "&amp;");
+		}
 		var desc = StrReplace(uncommitedVisits.Outlet.Description, '"', '\"');
 	 	desc = StrReplace(desc, "'", '\"');
 		desc = StrReplace(desc, "&", "&amp;");
+
 		var adress = StrReplace(uncommitedVisits.Outlet.Address, '"', '\"');
 		adress = StrReplace(adress, "'", '\"');
 		adress = StrReplace(adress, "&", "&amp;");
 
-
 		toappend = toappend + "<c:Image />";
 		toappend = toappend + "<c:VerticalLayout>"
+		+ "<c:TextView Text=\'{"+distr+"}\' CssClass=\"distributor\"></c:TextView>"
 		+ "<c:TextView Text=\'{"+desc+"}\' CssClass=\"main_row\"></c:TextView>"
 		+ "<c:HorizontalLayout>";
 		if (uncommitedVisits.Time != '') {
@@ -100,15 +108,26 @@ function RefreshScrolView(){
 		if (commitedVisits.OutletStatus == 3) {
 			toappend = toappend + "<c:VerticalLayout CssClass=\"no_mark\"></c:VerticalLayout>";
 		}
+
+		if (IsEmptyValue(commitedVisits.Distributor)){
+			var distr = "";
+		}else {
+			var distr = StrReplace(commitedVisits.Distributor, '"', '\"');
+			distr = StrReplace(distr, "'", '\"');
+			distr = StrReplace(distr, "&", "&amp;");
+		}
+
 		var desc = StrReplace(commitedVisits.Description, '"', '\"');
 		desc = StrReplace(desc, "'", '\"');
 		desc = StrReplace(desc, "&", "&amp;");
+		
 		var adress = StrReplace(commitedVisits.Address, '"', '\"');
 		adress = StrReplace(adress, "'", '\"');
 		adress = StrReplace(adress, "&", "&amp;");
 
 		toappend = toappend + "<c:Image />";
 		toappend = toappend + "<c:VerticalLayout>"
+		+ "<c:TextView Text=\'{"+distr+"}\' CssClass=\"distributor\"></c:TextView>"
 		+ "<c:TextView Text=\'{"+desc+"}\' CssClass=\"main_row\"></c:TextView>"
 		+ "<c:HorizontalLayout>";
 		toappend = toappend + "<c:TextView Text=\'{"+adress+"}\' CssClass=\"description_row\"></c:TextView>"
@@ -205,7 +224,7 @@ function GetUncommitedScheduledVisitsCount(searchText) {
 		searchText = StrReplace(searchText, "'", "''");
 		search = "AND Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "') Or Contains(D.Description, '" + searchText + "') ";
 	}
-	q.Text = ("SELECT COUNT(DISTINCT VP.Outlet) " +
+	q.Text = ("SELECT DISTINCT VP.Outlet " +
 			" FROM Catalog_Outlet O " +
 			" LEFT JOIN Catalog_Distributor D ON O.Distributor = D.Id " +
 			" JOIN Document_VisitPlan_Outlets VP ON O.Id = VP.Outlet AND DATE(VP.Date)=DATE(@date) " +
@@ -224,26 +243,32 @@ function GetUncommitedScheduledVisitsCount(searchText) {
 			}
 	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));
 	// Dialog.Debug(2);
-	return q.ExecuteScalar();
+	return q.ExecuteCount();
 
 }
 
 function GetScheduledVisitsCount() {
-	var q = new Query("SELECT COUNT(VPO.Id) FROM Document_VisitPlan_Outlets VPO JOIN Document_VisitPlan DV ON VPO.Ref = DV.Id LEFT JOIN Catalog_Outlet O ON VPO.Outlet = O.Id LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA = 1 WHERE VPO.Date >= @today AND VPO.Date < @tomorrow AND NOT OSS.Status IS NULL");
+
+	var q = new Query("SELECT DISTINCT VP.Outlet " +
+			" FROM Catalog_Outlet O " +
+			" LEFT JOIN Catalog_Distributor D ON O.Distributor = D.Id " +
+			" JOIN Document_VisitPlan_Outlets VP ON O.Id = VP.Outlet AND DATE(VP.Date)=DATE(@date) " +
+			" JOIN Document_VisitPlan DV ON VP.Ref = DV.Id " +
+			" LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet AND V.Date >= @today AND V.Date < @tomorrow AND V.Plan<>@emptyRef LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA=1 " +
+			" WHERE V.Id IS NULL AND NOT OSS.Status IS NULL");
 	if (addDay == null || addDay == 0) {
 		addDay = 0;
+		q.AddParameter("date", DateTime.Now.Date);
 		q.AddParameter("today", DateTime.Now.Date);
 		q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
 	}else {
+		q.AddParameter("date", DateTime.Now.Date.AddDays(addDay));
 		q.AddParameter("today", DateTime.Now.Date.AddDays(addDay));
 		q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1));
 	}
-	var cnt = q.ExecuteScalar();
-	// Dialog.Debug(3);
-	if (cnt == null)
-		return 0;
-	else
-		return cnt;
+	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));
+
+	return q.ExecuteCount();
 }
 
 function GetCommitedVisits(searchText) {

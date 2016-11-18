@@ -62,16 +62,33 @@ function RefreshScrolView(){
 			toappend = toappend + "<c:VerticalLayout CssClass=\"no_mark\"></c:VerticalLayout>";
 		}
 
+
+		if (IsNullOrEmpty(uncommitedVisits.Distributor)){
+			var distr = "";
+		}else{
+			var distr = StrReplace(uncommitedVisits.Distributor, '"', '\"');
+		 	distr = StrReplace(distr, "'", '\"');
+			distr = StrReplace(distr, "&", "&amp;");
+			distr = StrReplace(distr, "<", "&lt;");
+			distr = StrReplace(distr, ">", "&gt;");
+		}
+
 		var desc = StrReplace(uncommitedVisits.Outlet.Description, '"', '\"');
 	 	desc = StrReplace(desc, "'", '\"');
 		desc = StrReplace(desc, "&", "&amp;");
+		desc = StrReplace(desc, "<", "&lt;");
+		desc = StrReplace(desc, ">", "&gt;");
+
 		var adress = StrReplace(uncommitedVisits.Outlet.Address, '"', '\"');
 		adress = StrReplace(adress, "'", '\"');
 		adress = StrReplace(adress, "&", "&amp;");
+		adress = StrReplace(adress, "<", "&lt;");
+		adress = StrReplace(adress, ">", "&gt;");
 
 
 		toappend = toappend + "<c:Image />";
 		toappend = toappend + "<c:VerticalLayout>"
+		+ "<c:TextView Text=\'{"+distr+"}\' CssClass=\"distributor\"></c:TextView>"
 		+ "<c:TextView Text=\'{"+desc+"}\' CssClass=\"main_row\"></c:TextView>"
 		+ "<c:HorizontalLayout>";
 		if (uncommitedVisits.Time != '') {
@@ -100,15 +117,32 @@ function RefreshScrolView(){
 		if (commitedVisits.OutletStatus == 3) {
 			toappend = toappend + "<c:VerticalLayout CssClass=\"no_mark\"></c:VerticalLayout>";
 		}
+
+		if (IsNullOrEmpty(commitedVisits.Distributor)){
+			var distr = "";
+		}else{
+			var distr = StrReplace(commitedVisits.Distributor, '"', '\"');
+		 	distr = StrReplace(distr, "'", '\"');
+			distr = StrReplace(distr, "&", "&amp;");
+			distr = StrReplace(distr, "<", "&lt;");
+			distr = StrReplace(distr, ">", "&gt;");
+		}
+
 		var desc = StrReplace(commitedVisits.Description, '"', '\"');
 		desc = StrReplace(desc, "'", '\"');
 		desc = StrReplace(desc, "&", "&amp;");
+		desc = StrReplace(desc, "<", "&lt;");
+		desc = StrReplace(desc, ">", "&gt;");
+
 		var adress = StrReplace(commitedVisits.Address, '"', '\"');
 		adress = StrReplace(adress, "'", '\"');
 		adress = StrReplace(adress, "&", "&amp;");
+		adress = StrReplace(adress, "<", "&lt;");
+		adress = StrReplace(adress, ">", "&gt;");
 
-		toappend = toappend + "<c:Image />";
+		// toappend = toappend + "<c:Image />";
 		toappend = toappend + "<c:VerticalLayout>"
+		+ "<c:TextView Text=\'{"+distr+"}\' CssClass=\"distributor\"></c:TextView>"
 		+ "<c:TextView Text=\'{"+desc+"}\' CssClass=\"main_row\"></c:TextView>"
 		+ "<c:HorizontalLayout>";
 		toappend = toappend + "<c:TextView Text=\'{"+adress+"}\' CssClass=\"description_row\"></c:TextView>"

@@ -12,7 +12,7 @@ function GetVisit(visit){
 	return visit.GetObject();
 }
 
-function SetCommentary(sender, param1){
+function SetCommentary(sender){
 	Commentary = sender.Text;
 }
 

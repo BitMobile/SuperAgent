@@ -42,8 +42,8 @@ function GetOutletsCount(){
 
 
 function SetCommitedScheduledVisits(){
-	var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet JOIN Document_VisitPlan DV ON VP.Ref = DV.Id WHERE DATE(V.Date) >= DATE(@today) AND DATE(V.Date) < DATE(@tomorrow) AND DATE(VP.Date) >= DATE(@today) AND DATE(VP.Date) < DATE(@tomorrow) AND V.Plan <> @emptyRef");
-	q.AddParameter("today", DateTime.Now.Date);
+	var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet JOIN Document_VisitPlan DV ON VP.Ref = DV.Id WHERE V.Date >= @today AND V.Date < @tomorrow AND DATE(VP.Date) >= DATE(@today) AND DATE(VP.Date) < DATE(@tomorrow) AND V.Plan <> @emptyRef ORDER BY O.Description LIMIT 100");
+	q.AddParameter("today", DateTime.Now.Date.ToString("yyyy-MM-dd"));
 	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
 	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));
 	scheduledVisits = q.ExecuteCount();
@@ -69,7 +69,7 @@ function GetUnscheduledVisits() {
 
 function SetPlannedVisits() {
 	var q = new Query("SELECT COUNT(*) FROM Document_VisitPlan_Outlets VPO JOIN Document_VisitPlan DP ON VPO.Ref = DP.Id JOIN Catalog_Outlet O ON VPO.Outlet=O.Id JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus=OSS.Status AND OSS.ShowOutletInMA=1 AND OSS.DoVisitInMA=1 WHERE DATE(VPO.Date)=DATE(@date) AND NOT OSS.Status IS NULL");
-	q.AddParameter("date", DateTime.Now.Date);
+	q.AddParameter("date", DateTime.Now.Date.ToString("yyyy-MM-dd"));
 	plannedVisits = q.ExecuteScalar();
 }
 

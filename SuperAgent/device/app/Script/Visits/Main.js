@@ -219,7 +219,7 @@ function GetUncommitedScheduledVisits(searchText) {
 			}
 	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));
 	countPlanVisit = q.ExecuteCount();
-	$.plannedText.Text = Translate["#planVisit#"] + " " +" ("+countPlanVisit+")";
+	//$.plannedText.Text = Translate["#planVisit#"] + " " +" ("+countPlanVisit+")";
 	StrForPlanVip = Translate["#incompletedVisits#"] + " " +"(" +countPlanVisit+ "):";
 	return q.Execute();
 

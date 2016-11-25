@@ -688,18 +688,23 @@ function SetLocation(control, outlet) {
 function CoordsChecked(visit) {
 
 	var location = GPS.CurrentLocation;
+	var llocal = parseInt($.sessionConst.RadiusDeviation);
+	if (parseInt(GPS.Accuracy) > parseInt(llocal)) {
+		llocal = parseInt(GPS.Accuracy);
+	}
+
+
 // проверка на местополжение торговой точки+радиус отклонения = текущее местоположение
 	var outlet = outlet.GetObject();
-	if (parseInt($.sessionConst.RadiusDeviation) != parseInt(0)) {
+	if (parseInt(llocal) != parseInt(0)) {
 		if ((parseInt(outlet.Lattitude) != parseInt(0)) || (parseInt(outlet.Longitude) != parseInt(0))) {
 			var CurRadiusDeviation = CoordCheckOutletAndActuality(location, outlet);
-			if (parseInt($.sessionConst.RadiusDeviation) <= parseInt(CurRadiusDeviation)) {
+			if (parseInt(llocal) < parseInt(CurRadiusDeviation)) {
 				Dialog.Message(Translate["#impossibleOutletCoords#"]);
 				return false;
 			}
 		}
 	}
-
 //
 	if (ActualLocation(location) && DateAddTru == false) {
 		var visitObj = visit.GetObject();

@@ -703,7 +703,7 @@ function CoordsChecked(visit) {
 				var CurRadiusDeviation = CoordCheckOutletAndActuality(location, outlet);
 				if (parseInt(llocal) < parseInt(CurRadiusDeviation)) {
 					var ImposMeter = parseInt(CurRadiusDeviation) - parseInt(llocal);
-					Dialog.Message(messageImpossibleOutletCoords + " " + Impos + " " + Translate["#meter#"]);
+					Dialog.Message(messageImpossibleOutletCoords + " " + ImposMeter + " " + Translate["#meter#"]);
 					return false;
 				}
 			}

@@ -687,33 +687,31 @@ function SetLocation(control, outlet) {
 
 function CoordsChecked(visit) {
 	var location = GPS.CurrentLocation;
-	var llocal = parseInt($.sessionConst.RadiusDeviation);
+	var RadiusDeviation = parseInt($.sessionConst.RadiusDeviation);
 	var messageImpossibleOutletCoords = Translate["#impossibleOutletCoords#"];
 
-	if (parseInt(GPS.Accuracy)<=parseInt(1000)){
+  if (parseInt(RadiusDeviation) != parseInt(0)) {
+		if (parseInt(GPS.Accuracy) <= parseInt(1000)){
+			if (parseInt(GPS.Accuracy) > parseInt(RadiusDeviation)) {
+				messageImpossibleOutletCoords = Translate["#impossibleGPSCoords#"];
+				RadiusDeviation = parseInt(GPS.Accuracy);
+			}
+			// проверка на местополжение торговой точки+радиус отклонения = текущее местоположение
+			var outlet = outlet.GetObject();
 
-		if (parseInt(GPS.Accuracy) > parseInt(llocal)) {
-			messageImpossibleOutletCoords = Translate["#impossibleGPSCoords#"];
-			llocal = parseInt(GPS.Accuracy);
-		}
-	// проверка на местополжение торговой точки+радиус отклонения = текущее местоположение
-		var outlet = outlet.GetObject();
-		if (parseInt(llocal) != parseInt(0)) {
 			if ((parseInt(outlet.Lattitude) != parseInt(0)) || (parseInt(outlet.Longitude) != parseInt(0))) {
 				var CurRadiusDeviation = CoordCheckOutletAndActuality(location, outlet);
-				if (parseInt(llocal) < parseInt(CurRadiusDeviation)) {
-					var ImposMeter = parseInt(CurRadiusDeviation) - parseInt(llocal);
+				if (parseInt(RadiusDeviation) < parseInt(CurRadiusDeviation)) {
+					var ImposMeter = parseInt(CurRadiusDeviation) - parseInt(RadiusDeviation);
 					Dialog.Message(messageImpossibleOutletCoords + " " + ImposMeter + " " + Translate["#meter#"]);
 					return false;
 				}
 			}
+		}else{
+			Dialog.Message(Translate["#NotCurrentSignalGPS#"]);
+			return false;
 		}
-	}else{
-		Dialog.Message(Translate["#NotCurrentSignalGPS#"]);
-		return false;
 	}
-
-
 //
 	if (ActualLocation(location) && DateAddTru == false) {
 		var visitObj = visit.GetObject();

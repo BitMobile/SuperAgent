@@ -689,7 +689,9 @@ function CoordsChecked(visit) {
 
 	var location = GPS.CurrentLocation;
 	var llocal = parseInt($.sessionConst.RadiusDeviation);
+	var messageImpossibleOutletCoords = Translate["#impossibleOutletCoords#"];
 	if (parseInt(GPS.Accuracy) > parseInt(llocal)) {
+		messageImpossibleOutletCoords = Translate["#impossibleGPSCoords#"];
 		llocal = parseInt(GPS.Accuracy);
 	}
 
@@ -700,7 +702,8 @@ function CoordsChecked(visit) {
 		if ((parseInt(outlet.Lattitude) != parseInt(0)) || (parseInt(outlet.Longitude) != parseInt(0))) {
 			var CurRadiusDeviation = CoordCheckOutletAndActuality(location, outlet);
 			if (parseInt(llocal) < parseInt(CurRadiusDeviation)) {
-				Dialog.Message(Translate["#impossibleOutletCoords#"]);
+				var Impos = parseInt(CurRadiusDeviation)- parseInt(llocal);
+				Dialog.Message(messageImpossibleOutletCoords + Impos + " " + Translate["#metr#"]);
 				return false;
 			}
 		}

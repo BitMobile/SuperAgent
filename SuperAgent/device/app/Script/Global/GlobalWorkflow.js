@@ -56,6 +56,18 @@ function GetOutletIsCreated(){
 	return outletIsCreated;
 }
 
+var GPSAccyracy;
+
+function SetGPSAccyracy(value){
+	GPSAccyracy = value;
+}
+
+function GetGPSAccyracy(){
+		return GPSAccyracy;
+}
+function CurrentAccuracy(GPSAccyracy){
+	return !(parseFloat(GPSAccyracy) == parseFloat(0));
+}
 
 var massDiscount;
 

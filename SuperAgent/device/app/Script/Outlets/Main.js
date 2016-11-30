@@ -254,7 +254,7 @@ function GetSnapshotText(text) {
 }
 
 function CheckNotNullAndForward(outlet, visit) {
-	var c = CoordsChecked(visit);
+	var c = CoordsChecked(outlet, visit);
 	if ((CheckEmptyOutletFields(outlet) && c) || DateAddTru == true) {
 		outlet.GetObject().Save();
 
@@ -685,28 +685,32 @@ function SetLocation(control, outlet) {
 		NoLocationHandler(SetLocation, outlet);
 }
 
-function CoordsChecked(visit) {
+function CoordsChecked(outlet, visit) {
 	var location = GPS.CurrentLocation;
-	var RadiusDeviation = parseFloat($.sessionConst.RadiusDeviation);
-	var messageImpossibleOutletCoords = Translate["#impossibleOutletCoords#"];
-	var accuracy = GPS.Accuracy;
-
-	Dialog.Debug(accuracy);
-	if (ActualLocation(location) && DateAddTru == false) {
-		var visitObj = visit.GetObject();
-		visitObj.Lattitude = location.Latitude;
-		visitObj.Longitude = location.Longitude;
-		visitObj.Save();
+	GlobalWorkflow.SetGPSAccyracy(GPS.Accuracy);
+	if (ActualLocation(location)) {
+		if (GlobalWorkflow.CurrentAccuracy()) {
+			var accuracy = parseFloat(GlobalWorkflow.GetGPSAccyracy());
+		}else{
+			Dialog.Question(Translate["#NotCurrentSignalGPS#"], CoordsHandler, [visit, outlet]);
+			return false;
+		}
+	}else {
+		Dialog.Question(Translate["#NotCurrentSignalGPS#"], CoordsHandler, [visit, outlet]);
+		return false;
 	}
 
-  if (RadiusDeviation != parseFloat(0)) {
+	var RadiusDeviation = parseFloat($.sessionConst.RadiusDeviation);
+	var messageImpossibleOutletCoords = Translate["#impossibleOutletCoords#"];+
+
+
+	Dialog.Debug(accuracy);
+// Если настройка в 1с установлена
+	if (RadiusDeviation != parseFloat(0)) {
+		// Если координаты в GPS.Accuracy не 0 и меньше 1000
 		if (parseFloat(accuracy) !== parseFloat(0) && parseFloat(accuracy) <= parseFloat(1000)){
 			messageImpossibleOutletCoords = (parseFloat(accuracy) > parseFloat(RadiusDeviation)) ? Translate["#impossibleGPSCoords#"] : Translate["#impossibleOutletCoords#"];
-			RadiusDeviation = (parseFloat(accuracy) > parseFloat(RadiusDeviation))  ? parseFloat(GPS.Accuracy) : parseFloat($.sessionConst.RadiusDeviation);
-			// if (parseFloat(GPS.Accuracy) > parseFloat(RadiusDeviation)) {
-				// messageImpossibleOutletCoords = Translate["#impossibleGPSCoords#"];
-				// RadiusDeviation = parseInt(GPS.Accuracy);
-			// }
+			RadiusDeviation = (parseFloat(accuracy) > parseFloat(RadiusDeviation)) ? parseFloat(GPS.Accuracy) : parseFloat($.sessionConst.RadiusDeviation);
 			// проверка на местополжение торговой точки+радиус отклонения = текущее местоположение
 			var outlet = outlet.GetObject();
 
@@ -719,9 +723,16 @@ function CoordsChecked(visit) {
 				}
 			}
 		}else{
-			Dialog.Message(Translate["#NotCurrentSignalGPS#"]);
+			Dialog.Question(Translate["#NotCurrentSignalGPS#"], CoordsHandler, [visit, outlet]);
 			return false;
 		}
+	}
+
+	if (ActualLocation(location) && DateAddTru == false) {
+		var visitObj = visit.GetObject();
+		visitObj.Lattitude = location.Latitude;
+		visitObj.Longitude = location.Longitude;
+		visitObj.Save();
 	}
 
 	if (Variables["workflow"]["name"] == "Visit" && NotEmptyRef(visit.Plan)) {
@@ -755,6 +766,19 @@ function VisitCoordsHandler(answ, visit) {
 			Dialog.Message("#coordinatesAreSet#");
 		} else
 			NoLocationHandler(SetLocation);
+	}
+}
+
+function CoordsHandler(answ, mass) {
+
+	visit = $.workflow.visit;
+	if (answ == DialogResult.Yes) {
+		var location = GPS.CurrentLocation;
+		if (ActualLocation(location)) {
+			CheckNotNullAndForward(mass[1], mass[0]);
+		} else{
+			Dialog.Question(Translate["#NotCurrentSignalGPS#"], CoordsHandler, [mass[0], mass[1]]);
+		}
 	}
 }
 

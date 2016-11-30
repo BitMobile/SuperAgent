@@ -66,7 +66,8 @@ function GetGPSAccyracy(){
 		return GPSAccyracy;
 }
 function CurrentAccuracy(GPSAccyracy){
-	return !(parseFloat(GPSAccyracy) == parseFloat(0));
+
+	return !((parseFloat(GPSAccyracy) == parseFloat(0)) || (parseFloat(GPSAccyracy) > parseFloat(1000)));
 }
 
 var massDiscount;

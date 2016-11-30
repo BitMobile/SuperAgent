@@ -686,31 +686,18 @@ function SetLocation(control, outlet) {
 }
 
 function CoordsChecked(outlet, visit) {
+	
 	var location = GPS.CurrentLocation;
-	GlobalWorkflow.SetGPSAccyracy(GPS.Accuracy);
-	if (ActualLocation(location)) {
-		if (GlobalWorkflow.CurrentAccuracy()) {
-			var accuracy = parseFloat(GlobalWorkflow.GetGPSAccyracy());
-		}else{
-			Dialog.Question(Translate["#NotCurrentSignalGPS#"], CoordsHandler, [visit, outlet]);
-			return false;
-		}
-	}else {
-		Dialog.Question(Translate["#NotCurrentSignalGPS#"], CoordsHandler, [visit, outlet]);
-		return false;
-	}
-
 	var RadiusDeviation = parseFloat($.sessionConst.RadiusDeviation);
-	var messageImpossibleOutletCoords = Translate["#impossibleOutletCoords#"];+
+	var messageImpossibleOutletCoords = Translate["#impossibleOutletCoords#"];
 
+	if (RadiusDeviation !== parseFloat(0) && DateAddTru == false) {
+		GlobalWorkflow.SetGPSAccyracy(GPS.Accuracy);
+		if (ActualLocation(location) && GlobalWorkflow.CurrentAccuracy()) {
+			var accuracy = parseFloat(GlobalWorkflow.GetGPSAccyracy());
 
-	Dialog.Debug(accuracy);
-// Если настройка в 1с установлена
-	if (RadiusDeviation != parseFloat(0)) {
-		// Если координаты в GPS.Accuracy не 0 и меньше 1000
-		if (parseFloat(accuracy) !== parseFloat(0) && parseFloat(accuracy) <= parseFloat(1000)){
-			messageImpossibleOutletCoords = (parseFloat(accuracy) > parseFloat(RadiusDeviation)) ? Translate["#impossibleGPSCoords#"] : Translate["#impossibleOutletCoords#"];
-			RadiusDeviation = (parseFloat(accuracy) > parseFloat(RadiusDeviation)) ? parseFloat(GPS.Accuracy) : parseFloat($.sessionConst.RadiusDeviation);
+			messageImpossibleOutletCoords = (accuracy > RadiusDeviation) ? Translate["#impossibleGPSCoords#"] : Translate["#impossibleOutletCoords#"];
+			RadiusDeviation = (accuracy > RadiusDeviation) ? accuracy : parseFloat($.sessionConst.RadiusDeviation);
 			// проверка на местополжение торговой точки+радиус отклонения = текущее местоположение
 			var outlet = outlet.GetObject();
 
@@ -722,7 +709,7 @@ function CoordsChecked(outlet, visit) {
 					return false;
 				}
 			}
-		}else{
+		}else {
 			Dialog.Question(Translate["#NotCurrentSignalGPS#"], CoordsHandler, [visit, outlet]);
 			return false;
 		}
@@ -771,7 +758,6 @@ function VisitCoordsHandler(answ, visit) {
 
 function CoordsHandler(answ, mass) {
 
-	visit = $.workflow.visit;
 	if (answ == DialogResult.Yes) {
 		var location = GPS.CurrentLocation;
 		if (ActualLocation(location)) {
@@ -779,7 +765,10 @@ function CoordsHandler(answ, mass) {
 		} else{
 			Dialog.Question(Translate["#NotCurrentSignalGPS#"], CoordsHandler, [mass[0], mass[1]]);
 		}
+	} else{
+		NoLocationHandler(SetLocation);
 	}
+
 }
 
 function NoLocationHandler(descriptor) {

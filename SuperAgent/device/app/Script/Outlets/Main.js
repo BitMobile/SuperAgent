@@ -686,31 +686,30 @@ function SetLocation(control, outlet) {
 }
 
 function CoordsChecked(outlet, visit) {
-	
+
 	var location = GPS.CurrentLocation;
 	var RadiusDeviation = parseFloat($.sessionConst.RadiusDeviation);
 	var messageImpossibleOutletCoords = Translate["#impossibleOutletCoords#"];
+	var outlet = outlet.GetObject();
+	if (RadiusDeviation != parseFloat(0) && DateAddTru == false && ((parseInt(outlet.Lattitude) != parseInt(0)) || (parseInt(outlet.Longitude) != parseInt(0)))) {
 
-	if (RadiusDeviation !== parseFloat(0) && DateAddTru == false) {
 		GlobalWorkflow.SetGPSAccyracy(GPS.Accuracy);
+
 		if (ActualLocation(location) && GlobalWorkflow.CurrentAccuracy()) {
+
 			var accuracy = parseFloat(GlobalWorkflow.GetGPSAccyracy());
 
 			messageImpossibleOutletCoords = (accuracy > RadiusDeviation) ? Translate["#impossibleGPSCoords#"] : Translate["#impossibleOutletCoords#"];
 			RadiusDeviation = (accuracy > RadiusDeviation) ? accuracy : parseFloat($.sessionConst.RadiusDeviation);
 			// проверка на местополжение торговой точки+радиус отклонения = текущее местоположение
-			var outlet = outlet.GetObject();
-
-			if ((parseInt(outlet.Lattitude) != parseInt(0)) || (parseInt(outlet.Longitude) != parseInt(0))) {
-				var CurRadiusDeviation = CoordCheckOutletAndActuality(location, outlet);
-				if (parseFloat(RadiusDeviation) < parseFloat(CurRadiusDeviation)) {
-					var ImposMeter = parseFloat(CurRadiusDeviation) - parseFloat(RadiusDeviation);
-					Dialog.Message(messageImpossibleOutletCoords + " " + ImposMeter + " " + Translate["#meter#"]);
-					return false;
-				}
+			var CurRadiusDeviation = CoordCheckOutletAndActuality(location, outlet);
+			if (parseFloat(RadiusDeviation) < parseFloat(CurRadiusDeviation)) {
+				var ImposMeter = parseFloat(CurRadiusDeviation) - parseFloat(RadiusDeviation);
+				Dialog.Message(messageImpossibleOutletCoords + " " + ImposMeter + " " + Translate["#meter#"]);
+				return false;
 			}
 		}else {
-			Dialog.Question(Translate["#NotCurrentSignalGPS#"], CoordsHandler, [visit, outlet]);
+			Dialog.Alert(Translate["#NotCurrentSignalGPS#"], CoordsHandler, [visit, outlet],  Translate["#repeat#"], Translate["#false#"]);
 			return false;
 		}
 	}
@@ -756,20 +755,21 @@ function VisitCoordsHandler(answ, visit) {
 	}
 }
 
-function CoordsHandler(answ, mass) {
+function CoordsHandler(state, args) {
 
-	if (answ == DialogResult.Yes) {
+	if (args.Result == 0) {
 		var location = GPS.CurrentLocation;
 		if (ActualLocation(location)) {
-			CheckNotNullAndForward(mass[1], mass[0]);
+			CheckNotNullAndForward(state[1], state[0]);
 		} else{
-			Dialog.Question(Translate["#NotCurrentSignalGPS#"], CoordsHandler, [mass[0], mass[1]]);
+			Dialog.Alert(Translate["#NotCurrentSignalGPS#"], CoordsHandler, [state[1], state[0]],  Translate["#repeat#"], Translate["#false#"]);
 		}
 	} else{
 		NoLocationHandler(SetLocation);
 	}
 
 }
+
 
 function NoLocationHandler(descriptor) {
 	Dialog.Message("#locationSetFailed#");

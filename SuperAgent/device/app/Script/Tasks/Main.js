@@ -72,12 +72,12 @@ function GetNotExecutedTasks() {
 if ($.workflow.name == "Visit") {
 	var dateAddNumber = GlobalWorkflow.GetDateAddNumber();
 	q.Text = "SELECT O.Description AS Outlet, DT.Id, DT.TextTask " +
-		" , CASE WHEN DT.EndPlanDate='0001-01-01 00:00:00' OR DT.StartPlanDate IS NULL THEN 2 ELSE 1 END AS DateOrder " +
-		" , CASE WHEN DT.EndPlanDate='0001-01-01 00:00:00' OR DT.EndPlanDate IS NULL THEN @notLimited ELSE DT.EndPlanDate END AS EndPlanDate " +
+		" , CASE WHEN DATE(DT.EndPlanDate)=DATE('0001-01-01 00:00:00') OR DT.StartPlanDate IS NULL THEN 2 ELSE 1 END AS DateOrder " +
+		" , CASE WHEN DATE(DT.EndPlanDate)=DATE('0001-01-01 00:00:00') OR DT.EndPlanDate IS NULL THEN @notLimited ELSE DT.EndPlanDate END AS EndPlanDate " +
 		" FROM Document_Task DT " +
 		" JOIN Catalog_Outlet O ON DT.Outlet=O.Id " +
 		" WHERE DT.Status=0 " +
-		" AND (DT.StartPlanDate<=@dayPlanVis OR DT.StartPlanDate IS NULL) " + outlet +
+		" AND (DATE(DT.StartPlanDate)<=DATE(@dayPlanVis) OR DT.StartPlanDate IS NULL) " + outlet +
 		" ORDER BY DateOrder, DT.EndPlanDate, O.Description";
 		q.AddParameter("dayPlanVis", DateTime.Now.Date.AddDays(dateAddNumber));
 		//Dialog.Message(DateTime.Now.Date.AddDays(dateAddNumber));

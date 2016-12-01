@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Sync.css">
-	
+
 	<c:SwipeHorizontalLayout Id="swipe_layout" Index="1">
 
 		<s:Include File="\Components\SideMenu.xml"/>
@@ -53,7 +53,7 @@
 				<c:VerticalLayout>
 					<c:DockLayout>
 						<c:TextView Text="#lastSync#" />
-						<c:Button Text="#synchronize#" OnClick="$SyncFtp()" />
+						<c:Button Text="#synchronize#" OnClick="$SyncFtp(1)" />
 					</c:DockLayout>
 
 					<c:TextView Id="ftpSyncReport" CssClass="main_row" />
@@ -73,5 +73,5 @@
 		</c:VerticalLayout>
 
 	</c:SwipeHorizontalLayout>
-	
+
 </c:Screen>

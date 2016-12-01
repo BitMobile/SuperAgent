@@ -12,7 +12,7 @@ function SyncData() {
 	$.dataSyncIndicator.Start();
 
 	DB.Sync(SyncDataFinish);
-	SyncFtp();
+	SyncFtp(0);
 }
 
 function SyncDataFinish() {
@@ -45,12 +45,13 @@ function DrawDataReport() {
 
 // -------------------- Sync Ftp ------------
 
-function SyncFtp() {
-	$.ftpSyncReport.Visible = false;
-	$.ftpSyncError.Visible = false;
-	$.ftpSyncLayout.Visible = true;
-	$.ftpSyncIndicator.Start();
-
+function SyncFtp(val) {
+	if (ConvertToBoolean1(val)){
+		$.ftpSyncReport.Visible = false;
+		$.ftpSyncError.Visible = false;
+		$.ftpSyncLayout.Visible = true;
+		$.ftpSyncIndicator.Start();
+	}
 	FileSystem.UploadPrivate(UploadPrivateCallback);
 }
 

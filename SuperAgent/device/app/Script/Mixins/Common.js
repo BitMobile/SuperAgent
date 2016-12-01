@@ -271,6 +271,7 @@ function ActualLocation(location){
 
     var actualTime;
     if (parseInt($.sessionConst.UserCoordinatesActualityTime)==parseInt(0)){
+
         actualTime = true;
     }
     else{

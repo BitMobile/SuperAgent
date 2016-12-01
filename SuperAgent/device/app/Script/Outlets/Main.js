@@ -49,11 +49,11 @@ function OnLoading() {
 	title = Translate["#outlet#"];
 	if ($.workflow.name=='Visit') {
 		DateAddTru = GlobalWorkflow.GetDateAdd();
+		GlobalWorkflow.GPSAccuracy = 0;
 	}
 	else {
 		DateAddTru = false;
 	}
-
 }
 
 function LoadObject(val){
@@ -583,6 +583,8 @@ function OutletSnapshotHandler(state, args) {
 // --------------------------case Visits----------------------
 
 function CreateVisitIfNotExists(userRef, visit, planVisit) {
+
+
 	if (visit == null) {
 		visit = DB.Create("Document.Visit");
 		//Dialog.Message(planVisit);
@@ -632,6 +634,7 @@ function CreateVisitIfNotExists(userRef, visit, planVisit) {
 				if (ActualLocation(location)) {
 					visit.Lattitude = location.Latitude;
 					visit.Longitude = location.Longitude;
+
 				}
 			}
 		}else {
@@ -639,6 +642,7 @@ function CreateVisitIfNotExists(userRef, visit, planVisit) {
 			if (ActualLocation(location)) {
 				visit.Lattitude = location.Latitude;
 				visit.Longitude = location.Longitude;
+
 			}
 		}
 		visit.Status = DB.Current.Constant.VisitStatus.Processing;
@@ -675,6 +679,7 @@ function CreateVisitIfNotExists(userRef, visit, planVisit) {
 // -----------------------------------Coordinates--------------------------------
 function SetLocation(control, outlet) {
 	var location = GPS.CurrentLocation;
+
 	if (ActualLocation(location)) {
 		outlet = outlet.GetObject();
 		outlet.Lattitude = location.Latitude;
@@ -688,37 +693,50 @@ function SetLocation(control, outlet) {
 function CoordsChecked(outlet, visit) {
 
 	var location = GPS.CurrentLocation;
-	var RadiusDeviation = parseFloat($.sessionConst.RadiusDeviation);
-	var messageImpossibleOutletCoords = Translate["#impossibleOutletCoords#"];
-	var outlet = outlet.GetObject();
-	if (RadiusDeviation != parseFloat(0) && DateAddTru == false && ((parseInt(outlet.Lattitude) != parseInt(0)) || (parseInt(outlet.Longitude) != parseInt(0)))) {
-
-		GlobalWorkflow.SetGPSAccyracy(GPS.Accuracy);
-
-		if (ActualLocation(location) && GlobalWorkflow.CurrentAccuracy()) {
-
-			var accuracy = parseFloat(GlobalWorkflow.GetGPSAccyracy());
-
-			messageImpossibleOutletCoords = (accuracy > RadiusDeviation) ? Translate["#impossibleGPSCoords#"] : Translate["#impossibleOutletCoords#"];
-			RadiusDeviation = (accuracy > RadiusDeviation) ? accuracy : parseFloat($.sessionConst.RadiusDeviation);
-			// проверка на местополжение торговой точки+радиус отклонения = текущее местоположение
-			var CurRadiusDeviation = CoordCheckOutletAndActuality(location, outlet);
-			if (parseFloat(RadiusDeviation) < parseFloat(CurRadiusDeviation)) {
-				var ImposMeter = parseFloat(CurRadiusDeviation) - parseFloat(RadiusDeviation);
-				Dialog.Message(messageImpossibleOutletCoords + " " + ImposMeter + " " + Translate["#meter#"]);
-				return false;
-			}
-		}else {
-			Dialog.Alert(Translate["#NotCurrentSignalGPS#"], CoordsHandler, [visit, outlet],  Translate["#repeat#"], Translate["#false#"]);
-			return false;
-		}
-	}
 
 	if (ActualLocation(location) && DateAddTru == false) {
 		var visitObj = visit.GetObject();
 		visitObj.Lattitude = location.Latitude;
 		visitObj.Longitude = location.Longitude;
 		visitObj.Save();
+	}
+
+	var RadiusDeviation = parseFloat($.sessionConst.RadiusDeviation);
+	var messageImpossibleOutletCoords = Translate["#impossibleOutletCoords#"];
+	var outlet = outlet.GetObject();
+	if (RadiusDeviation != parseFloat(0) && DateAddTru == false && ((parseInt(outlet.Lattitude) != parseInt(0)) || (parseInt(outlet.Longitude) != parseInt(0)))) {
+		// if parseFloat(GPS.Accuracy) != ParseFloat(0) && parseFloat(GlobalWorkflow.GetGPSAccyracy())
+		GlobalWorkflow.SetGPSAccuracy(GPS.Accuracy);
+
+		if (GlobalWorkflow.CurrentAccuracy()){
+			var accuracy = parseFloat(GlobalWorkflow.GetGPSAccuracy());
+
+			messageImpossibleOutletCoords = (accuracy > RadiusDeviation) ? Translate["#impossibleGPSCoords#"] : Translate["#impossibleOutletCoords#"];
+			RadiusDeviation = (accuracy > RadiusDeviation) ? accuracy : parseFloat($.sessionConst.RadiusDeviation);
+			// проверка на местополжение торговой точки+радиус отклонения = текущее местоположение
+
+			if (ActualLocation(location)){
+				var CurRadiusDeviation = CoordCheckOutletAndActuality([location, 0], outlet);
+				// Dialog.Debug("location");
+				// Dialog.Debug(CurRadiusDeviation);
+			}else if(!(visit.Lattitude == null && visit.Longitude == null)){
+				var CurRadiusDeviation = CoordCheckOutletAndActuality([visit, 1], outlet);
+				// Dialog.Debug("visit");
+				// Dialog.Debug(CurRadiusDeviation);
+			}else{
+				Dialog.Alert(Translate["#NotCurrentSignalGPS#"], CoordsHandler, [outlet, visit],  Translate["#repeat#"], Translate["#false#"]);
+				return false;
+			}
+			if (parseFloat(RadiusDeviation) < parseFloat(CurRadiusDeviation)) {
+				var ImposMeter = parseFloat(CurRadiusDeviation) - parseFloat(RadiusDeviation);
+				Dialog.Message(messageImpossibleOutletCoords + " " + ImposMeter + " " + Translate["#meter#"]);
+				return false;
+			}
+
+		}else {
+			Dialog.Alert(Translate["#NotCurrentSignalGPS#"], CoordsHandler, [outlet, visit],  Translate["#repeat#"], Translate["#false#"]);
+			return false;
+		}
 	}
 
 	if (Variables["workflow"]["name"] == "Visit" && NotEmptyRef(visit.Plan)) {
@@ -760,9 +778,9 @@ function CoordsHandler(state, args) {
 	if (args.Result == 0) {
 		var location = GPS.CurrentLocation;
 		if (ActualLocation(location)) {
-			CheckNotNullAndForward(state[1], state[0]);
+			CheckNotNullAndForward(state[0], state[1]);
 		} else{
-			Dialog.Alert(Translate["#NotCurrentSignalGPS#"], CoordsHandler, [state[1], state[0]],  Translate["#repeat#"], Translate["#false#"]);
+			Dialog.Alert(Translate["#NotCurrentSignalGPS#"], CoordsHandler, [state[0], state[1]],  Translate["#repeat#"], Translate["#false#"]);
 		}
 	} else{
 		NoLocationHandler(SetLocation);
@@ -956,15 +974,22 @@ function SnapshotExists(filename) {
 
 }
 
-function CoordCheckOutletAndActuality(location, outlet) {
+function CoordCheckOutletAndActuality(mass, outlet) {
 	var R = 6372795;
 	var Pi = 3.14159265359;
 
+	if (mass[1]==0){
+		var lat1 = mass[0].Latitude * Math.PI / 180;
+		var long1 = mass[0].Longitude * Math.PI / 180;
+	}else if(mass[1]==1){
+		var visitObj = mass[0].GetObject();
+		var lat1 = visitObj.Lattitude * Math.PI / 180;
+		var long1 = visitObj.Longitude * Math.PI / 180;
+	}
 
 
-	var lat1 = location.Latitude * Math.PI / 180;
+
 	var lat2 = outlet.Lattitude * Math.PI / 180;
-	var long1 = location.Longitude * Math.PI / 180;
 	var long2 = outlet.Longitude * Math.PI / 180;
 
 

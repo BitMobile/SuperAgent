@@ -56,18 +56,30 @@ function GetOutletIsCreated(){
 	return outletIsCreated;
 }
 
-var GPSAccyracy;
+var GPSAccuracy;
 
-function SetGPSAccyracy(value){
-	GPSAccyracy = value;
+function SetGPSAccuracy(value){
+	if ((parseFloat(value) !== parseFloat(0)) && (parseFloat(value) < parseFloat(1000))){
+		GPSAccuracy = value;
+	}else if ((parseFloat(GPSAccuracy) !== parseFloat(0)) && (parseFloat(GPSAccuracy) < parseFloat(1000))) {
+		GPSAccuracy = GPSAccuracy;
+	}else {
+		GPSAccuracy = 0;
+	}
 }
 
-function GetGPSAccyracy(){
-		return GPSAccyracy;
+function GetGPSAccuracy(){
+		return GPSAccuracy;
 }
-function CurrentAccuracy(GPSAccyracy){
+function CurrentAccuracy(){
+	if (parseFloat(GPSAccuracy) == parseFloat(0)){
+		return false;
+	}else if (parseFloat(GPSAccuracy) > parseFloat(1000)){
+		return false;
+	}else{
+		return true;
+	}
 
-	return !((parseFloat(GPSAccyracy) == parseFloat(0)) || (parseFloat(GPSAccyracy) > parseFloat(1000)));
 }
 
 var massDiscount;

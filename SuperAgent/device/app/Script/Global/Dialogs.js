@@ -69,9 +69,11 @@ function CallBack(state, args) {
 			control.Text = Find(args.Result.ToString(), '00000000-0000-0000-0000-000000000000') != parseInt(0) ? "—" : args.Result.Description;
 
 		}
+
 	}
-	else
-		control.Text = String.IsNullOrEmpty(args.Result) ? "—" : args.Result;
+	else{
+		control.Text = String.IsNullOrEmpty(args.Result) ? "—" : args.Result;}
+		Workflow.Refresh([]);
 }
 
 function AssignDialogValue(state, args) {

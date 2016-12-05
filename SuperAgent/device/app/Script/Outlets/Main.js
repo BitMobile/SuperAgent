@@ -308,8 +308,14 @@ function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParamete
 			}
 
 			Dialogs.DoChoose(listChoice, outlet, attribute, control, null, title);
+
 		}
 	}
+
+}
+
+function RefWork(outlet){
+
 }
 
 function GetDescr(outlet){

@@ -12,26 +12,39 @@
 
 		<s:If Test="$CreateVisitEnable()">
 			<c:HorizontalLayout Id="btnDetails" CssClass="bottom_btn">
-				<c:VerticalLayout OnClickAction="$ShowContractorsIfExists($workflow.outlet)" CssClass="trple">
+				<!-- <c:VerticalLayout OnClickAction="$ShowContractorsIfExists($workflow.outlet)" CssClass="trple">
 					<c:TextView Text="#contractors#" CssClass="trpl_left_tv"></c:TextView>
-				</c:VerticalLayout>
+				</c:VerticalLayout> -->
 				<c:VerticalLayout Id="btnContacts" OnClickAction="$DoAction(ShowContacts, $workflow.outlet)" CssClass="trple_center">
-					<c:TextView Text="#contacts#" CssClass="trpl_center_tv"></c:TextView>
+					<c:TextView Text="#contacts#" CssClass="left_tv"></c:TextView>
 				</c:VerticalLayout>
 				<c:VerticalLayout Id="btnVisit" OnClickAction="$DoAction(Plans, $workflow.outlet)" CssClass="trple">
-					<c:TextView Text="#visits#" CssClass="trpl_right_tv"></c:TextView>
+					<c:TextView Text="#visits#" CssClass="right_tv"></c:TextView>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 		</s:If>
 		<s:Else>
-			<c:HorizontalLayout Id="btnDetails" CssClass="bottom_btn">
-				<c:VerticalLayout OnClickAction="$ShowContractorsIfExists($workflow.outlet)">
+					<s:If Test="$workflow.outlet.Type.Description == 'Врач' ">
+
+
+						<c:HorizontalLayout Id="btnDetails" CssClass="bottom_btn">
+										<c:VerticalLayout OnClickAction="$DoAction(LPY, $workflow.outlet)" >
+											<c:TextView Text="#mwork#" CssClass="left_tv"></c:TextView>
+										</c:VerticalLayout>
+										<c:VerticalLayout Id="btnContacts" OnClickAction="$DoAction(ShowContacts, $workflow.outlet)">
+											<c:TextView Text="#contacts#" CssClass="right_tv"></c:TextView>
+										</c:VerticalLayout>
+									</c:HorizontalLayout>
+					</s:If>
+					<s:Else>
+
+			<c:HorizontalLayout Id="btnDetails"  OnClickAction="$DoAction(ShowContacts, $workflow.outlet)" CssClass="bottom_btn">
+				<!-- <c:VerticalLayout OnClickAction="$ShowContractorsIfExists($workflow.outlet)">
 					<c:TextView Text="#contractors#" CssClass="left_tv"></c:TextView>
-				</c:VerticalLayout>
-				<c:VerticalLayout Id="btnContacts" OnClickAction="$DoAction(ShowContacts, $workflow.outlet)">
-					<c:TextView Text="#contacts#" CssClass="right_tv"></c:TextView>
-				</c:VerticalLayout>
-			</c:HorizontalLayout>
+				</c:VerticalLayout> -->
+					<c:TextView Text="#contacts#"></c:TextView>
+
+			</c:HorizontalLayout>	</s:Else>
 		</s:Else>
 		<c:HorizontalLine CssClass="b_line" />
 
@@ -219,7 +232,7 @@
 			</c:DockLayout>
 			<c:HorizontalLine />
 
-			<c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet, Distributor, $outletDistr, #partner#, $sessionConst.editOutletParameters, 000000006)">
+			<!-- <c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet, Distributor, $outletDistr, #partner#, $sessionConst.editOutletParameters, 000000006)">
 				<c:VerticalLayout>
 					<c:TextView Text="#partner#" CssClass="description_row"></c:TextView>
 					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000006 == true &amp;&amp; $workflow.name != 'Visit'">
@@ -230,7 +243,7 @@
 					</s:Else>
 				</c:VerticalLayout>
 			</c:DockLayout>
-			<c:HorizontalLine />
+			<c:HorizontalLine /> -->
 
 			<c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet,Class,$outletClass,#outlet_class#, $sessionConst.editOutletParameters, 000000005)">
 				<c:VerticalLayout>
@@ -245,6 +258,8 @@
 			</c:DockLayout>
 			<c:HorizontalLine />
 
+
+
 			<c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet,Type,$outletType,#outlet_type#, $sessionConst.editOutletParameters, 000000004)">
 				<c:VerticalLayout>
 					<c:TextView Text="#outlet_type#" CssClass="description_row"></c:TextView>
@@ -257,6 +272,38 @@
 				</c:VerticalLayout>
 			</c:DockLayout>
 			<c:HorizontalLine />
+
+			<s:If Test="$workflow.outlet.Type.Description == 'Врач' ">
+			<c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet,Specialization,$outlet_special,#outlet_special#, $sessionConst.editOutletParameters, 000000004)">
+				<c:VerticalLayout>
+					<c:TextView Text="#outlet_special#" CssClass="description_row"></c:TextView>
+					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000004 == true &amp;&amp; $workflow.name != 'Visit' ">
+						<c:TextView Id="outlet_special" Text="$workflow.outlet.Specialization.Description" CssClass="main_row_available"></c:TextView>
+					</s:If>
+					<s:Else>
+						<c:TextView Id="outlet_special" Text="$workflow.outlet.Specialization.Description" CssClass="not_available_basic"></c:TextView>
+					</s:Else>
+				</c:VerticalLayout>
+			</c:DockLayout>
+			<c:HorizontalLine />
+		</s:If>
+
+		<s:If Test="$workflow.outlet.Type.Description == 'ЛПУ' ">
+		<c:DockLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet,TypeLPY,$outlet_lpy,#outlet_lpy#, $sessionConst.editOutletParameters, 000000004)">
+			<c:VerticalLayout>
+				<c:TextView Text="#outlet_lpy#" CssClass="description_row"></c:TextView>
+				<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000004 == true &amp;&amp; $workflow.name != 'Visit' ">
+					<c:TextView Id="outlet_lpy" Text="$workflow.outlet.TypeLPY.Description" CssClass="main_row_available"></c:TextView>
+				</s:If>
+				<s:Else>
+					<c:TextView Id="outlet_lpy" Text="$workflow.outlet.TypeLPY.Description" CssClass="not_available_basic"></c:TextView>
+				</s:Else>
+			</c:VerticalLayout>
+		</c:DockLayout>
+		<c:HorizontalLine />
+	</s:If>
+
+
 
 			<c:HorizontalLayout CssClass="caption_grid">
 				<c:TextView Text="#additionally#:"></c:TextView>

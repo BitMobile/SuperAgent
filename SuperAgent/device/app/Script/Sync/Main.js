@@ -6,25 +6,27 @@
 
 // -------------------- Sync Data ------------
 function SyncData() {
+	$.swipe_layout.Scrollable = false;
 	$.dataSyncReport.Visible = false;
 	$.dataSyncError.Visible = false;
 	$.dataSyncLayout.Visible = true;
 	$.dataSyncIndicator.Start();
 
 	DB.Sync(SyncDataFinish);
-	SyncFtp(0);
+
 }
 
 function SyncDataFinish() {
-	$.dataSyncIndicator.Stop();
-	$.dataSyncLayout.Visible = false;
-
-	DrawDataReport();
-
-	$.Remove("sessionConst");
-	Global.SetSessionConstants();
-	Indicators.SetIndicators();
-	Workflow.Refresh([]);
+	SyncFtp(null,0);
+	// $.dataSyncIndicator.Stop();
+	// $.dataSyncLayout.Visible = false;
+	//
+	// DrawDataReport();
+	//
+	// $.Remove("sessionConst");
+	// Global.SetSessionConstants();
+	// Indicators.SetIndicators();
+	// Workflow.Refresh([]);
 }
 
 function DrawDataReport() {
@@ -45,24 +47,30 @@ function DrawDataReport() {
 
 // -------------------- Sync Ftp ------------
 
-function SyncFtp(val) {
+function SyncFtp(control,val) {
+	// Dialog.Message(val);
 	if (ConvertToBoolean1(val)){
+		$.swipe_layout.Scrollable = false;
 		$.ftpSyncReport.Visible = false;
 		$.ftpSyncError.Visible = false;
 		$.ftpSyncLayout.Visible = true;
 		$.ftpSyncIndicator.Start();
+
+		FileSystem.UploadPrivate(UploadPrivateCallback,[val]);
+	}else {
+		FileSystem.UploadPrivate(UploadPrivateCallback,[val]);
 	}
-	FileSystem.UploadPrivate(UploadPrivateCallback);
 }
 
 function UploadPrivateCallback(args) {
+
 	if (args.Result) {
 		// Remove private files
-		FileSystem.ClearPrivate();
-		FileSystem.SyncShared(SyncSharedCallback);
+				FileSystem.ClearPrivate();
+				FileSystem.SyncShared(SyncSharedCallback,[args.State[0]]);
 	} else {
 		FileSystem.HandleLastError();
-		SyncFtpFinish();
+		SyncFtpFinish([args.State[0]]);
 	}
 }
 
@@ -71,14 +79,28 @@ function SyncSharedCallback(args) {
 		FileSystem.HandleLastError();
 	}
 
-	SyncFtpFinish();
+	SyncFtpFinish([args.State[0]]);
 }
 
-function SyncFtpFinish() {
-	$.ftpSyncIndicator.Stop();
-	$.ftpSyncLayout.Visible = false;
+function SyncFtpFinish(state) {
 
-	DrawFtpReport();
+	if (ConvertToBoolean(state[0])) {
+
+			$.ftpSyncIndicator.Stop();
+			$.ftpSyncLayout.Visible = false;
+			$.swipe_layout.Scrollable = true;
+			DrawFtpReport();
+	}
+	else {
+		 $.dataSyncIndicator.Stop();
+		 $.dataSyncLayout.Visible = false;
+		 $.swipe_layout.Scrollable = true;
+		 DrawDataReport();
+		 $.Remove("sessionConst");
+		 Global.SetSessionConstants();
+		 Indicators.SetIndicators();
+		 //Workflow.Refresh([]);
+	}
 }
 
 function DrawFtpReport() {

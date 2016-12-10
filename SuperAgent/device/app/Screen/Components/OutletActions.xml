@@ -6,6 +6,8 @@
 		<bp:Action Name="Contractor" NextStep="Contractor" />
 		<bp:Action Name="ShowContacts" NextStep="Contacts" />
 		<bp:Action Name="ShowMap" NextStep="ShowMap"></bp:Action>
+		<bp:Action Name="ShowHistory" NextStep="ShowHistory"></bp:Action>
+		<bp:Action Name="Commentary" NextStep="Commentary"></bp:Action>
 		<bp:Action Name="Plans" NextStep="Plans" />
 		<bp:Action Name="ShowImage" NextStep="Image" />
 	</bp:Step>
@@ -21,6 +23,13 @@
 	</bp:Step>
 
 	<bp:Step Name="ShowMap" Screen="Outlet_Map.xml" Controller="Visits\Outlet_Map.js">
+	</bp:Step>
+
+	<bp:Step Name="ShowHistory" Screen="Outlet_History.xml" Controller="Outlets\ShowHistory.js">
+		<bp:Action Name="Commentary" NextStep="Commentary" />
+	</bp:Step>
+
+	<bp:Step Name="Commentary" Screen="Commentary.xml" Controller="Outlets\ShowHistory.js">
 	</bp:Step>
 
 	<bp:Step Name="Plans" Screen="PlanList.xml" Controller="Outlets\DetailsAndContacts.js"></bp:Step>

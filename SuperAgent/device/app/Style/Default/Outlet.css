@@ -93,6 +93,24 @@
 	font: 60% arial;
 }
 
+.historyButton {
+	width: 15mm;
+	height: 4.1mm;
+	vertical-align: central;
+	margin-top: 10%;
+	border-style : solid;
+	border-width: 1px;
+	border-color: #43acfd;
+	border-radius: 5px;
+	color: #2d89cf;
+	text-align: center;
+	dock-align: right;
+	font: 60% arial;
+	background-image: none;
+}
+
+
+
 .add_button{
 	width: 13.5mm;
 	height: 4.1mm;
@@ -234,7 +252,7 @@
 }
 
 .not_available_basic{
-	width: 100%;
+	width: 70%;
 	height: 40%;
 	white-space: normal;
 	placeholder-color: #000000;
@@ -263,3 +281,15 @@
 .value{
 	placeholder-color: #8e8e93;
 }
+
+/*.description_row {
+	height: 2.1mm auto;
+	width: 70%;
+	padding-top: 1.7mm;
+	margin-top: 0%;
+	padding-left: 2.7mm;
+	padding-right: 2.7mm;
+	white-space: normal;
+	color: #8e8e93;
+	font: 100% Arial;
+}*/

@@ -149,7 +149,8 @@
 				</s:If>
 			</s:Else>
 
-			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusIfHasEditText(outletDescr, $sessionConst.editOutletParameters, 000000001)">
+			<c:DockLayout CssClass="grid" OnClickAction="$FocusIfHasEditText(outletDescr, $sessionConst.editOutletParameters, 000000001)">
+				<c:Button OnClickAction="$OpenHistory(ShowHistory, $workflow.outlet)" Text="#History#" CssClass="historyButton" />
 				<c:VerticalLayout>
 					<c:TextView Text="#description#" CssClass="description_row"></c:TextView>
 					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000001 == true &amp;&amp; @DateAddTru == false">
@@ -158,9 +159,12 @@
 					<s:Else>
 						<c:TextView Id="outletDescr" Text="$workflow.outlet.Description" CssClass="not_available_basic"></c:TextView>
 					</s:Else>
+
 				</c:VerticalLayout>
-			</c:HorizontalLayout>
+			</c:DockLayout>
 			<c:HorizontalLine />
+
+
 
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet, OutletStatus, $status, #status#, $sessionConst.editOutletParameters, 000000007)">
 				<c:VerticalLayout>

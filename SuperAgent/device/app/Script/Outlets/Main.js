@@ -955,3 +955,93 @@ function AssignDialogValue(state, args) {
 	entity.GetObject().Save();
 	return entity;
 }
+
+function OpenHistory(ShowHistory, outlet){
+	var id = outlet.GetObject().Id;
+	var q = new Query();
+	q.Text = "SELECT Id FROM Catalog_Outlet WHERE Id=@ref AND IsDirty=0";
+	q.AddParameter("ref", id);
+	var s = q.ExecuteCount();
+	if (parseInt(s)==parseInt(1)){
+
+		var q = new Query();
+		q.Text = "SELECT Id FROM Catalog_Outlet WHERE Id=@ref";
+		q.AddParameter("ref", id);
+		var s = q.ExecuteScalar();
+
+		var req = Web.Request();
+		// req.Host = "http://192.168.1.175/";
+		req.Host = "http://superagent.itelis.ru/";
+		req.UserName="admin";
+		req.Password="";
+		req.Timeout = "00:00:05";
+		req.AddHeader("Outlet", s);
+
+		try {
+
+			// var a=req.Post("/InfoBase9/hs/GetVisit/", "", FormVisits, [ShowHistory, outlet]);
+			var a=req.Post("/DV_SuperAgent/hs/GetVisit/", "", FormVisits, [ShowHistory, outlet]);
+
+		}
+			catch (e) {
+				Dialog.Message("#ThisNewClient#");
+		}
+
+	}else {
+		Dialog.Message(Translate["#ThisNewClient#"]);
+	}
+}
+
+function FormVisits(state, args){
+	if (args.Success) {
+
+		var qs = new Query("SELECT * FROM sqlite_master WHERE type='table' AND name='USR_History'");
+		var check = qs.ExecuteCount();
+
+		if (parseInt(check) == parseInt(1)) {
+			var dropQS = new Query("DELETE FROM USR_History");
+			dropQS.Execute();
+		} else {
+			var q = new Query("CREATE TABLE " + " USR_History (User, Date, Commentary)");
+			q.Execute();
+		}
+
+		var User = "";
+		var resultDate = "";
+		var Commentary = "";
+
+		var i = 1;
+
+		while (true){
+			var usr = args.Result.indexOf("_" + i + "User_");
+			var dt = args.Result.indexOf("_" + i + "Date_");
+			var comm = args.Result.indexOf("_" + i + "Commentary_");
+			var end = args.Result.indexOf("_" + i + "End_");
+			if (end == -1) {
+				break;
+			}
+			User = args.Result.substring(usr+7, dt);
+			resultDate = args.Result.substring(dt+7, comm);
+			Commentary = args.Result.substring(comm+13, end);
+			var q = new Query("INSERT INTO USR_History VALUES (@User, @resultDate, @Commentary)");
+			q.AddParameter("User", User);
+			q.AddParameter("resultDate", resultDate);
+			q.AddParameter("Commentary", Commentary);
+			q.Execute();
+			i = i+1;
+		}
+		DoAction(state[0], state[1]);
+
+	}else{
+		var WebEx = args.Error;
+		if (WebEx.StatusCode==-1) {
+			Dialog.Message(Translate["#ConnectFailure#"]);
+		}else{
+			Dialog.Message(WebEx.Message);
+		}
+
+
+
+
+	}
+}

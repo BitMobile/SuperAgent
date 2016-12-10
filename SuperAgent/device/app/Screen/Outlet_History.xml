@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope"  StyleSheet="History.css">
+
+	<s:Push Id="outlet" Value="$param1"></s:Push>
+
+	<c:VerticalLayout>
+		<c:DockLayout CssClass="top_navigator">
+			<c:DockLayout CssClass="btn_back" OnClickAction="$DoBack()">
+				<c:Image />
+				<c:TextView Text="#back#" />
+			</c:DockLayout>
+			<c:HorizontalLayout CssClass="btn_forward" />
+
+		</c:DockLayout>
+		<c:HorizontalLine CssClass="b_line" />
+
+		<c:ScrollView Id="grScrollView">
+
+			<s:Iterator Id="VisComment" Value="$GetVisitsAndCommentary()">
+				<s:Push Id="User" Value="$VisComment.User"></s:Push>
+				<s:Push Id="VData" Value="$VisComment.Date"></s:Push>
+				<s:Push Id="Commentary" Value="$VisComment.Commentary"></s:Push>
+				<c:DockLayout CssClass="grid" OnClickAction="$DoAction(Commentary, $Commentary)">
+					<c:Image />
+					<c:VerticalLayout>
+						<c:TextView Text="{$Commentary}" CssClass="main_row"></c:TextView>
+						<c:TextView Text="$User" CssClass="description_row"></c:TextView>
+						<c:TextView Text="$VData" CssClass="description_row_2"></c:TextView>
+					</c:VerticalLayout>
+				</c:DockLayout>
+
+				<c:HorizontalLine />
+			</s:Iterator>
+			<c:HorizontalLayout CssClass="end_of_block" />
+
+		</c:ScrollView>
+
+
+	</c:VerticalLayout>
+
+</c:Screen>

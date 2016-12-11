@@ -190,6 +190,11 @@ function CheckForNullDesc(sender,tempoutlet){
 	//Workflow.Refresh([]);
 	}
 
+function CashCity(sender,tempoutlet){
+	var outlet=tempoutlet.GetObject();
+	outletCity=outlet.City;
+}
+
 function SaveValue(control, ref) {
 	var outlet = ref.GetObject();
 	outlet.Address = control.Text;
@@ -280,21 +285,9 @@ function ReviseParameters(outlet, save) {
 //---------------------------header parameters dialog.choose--------------------
 
 function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParameters, primaryParameterName) {
-	if ($.workflow.name != "Visit") {
-		if (editOutletParameters && $.primaryParametersSettings[primaryParameterName]) {
-
-			var listChoice = null;
-
-			if (title == Translate["#status#"]) {
-				var query = new Query("SELECT Id, Description FROM Enum_OutletStatus");
-				listChoice = query.Execute();
-				var table = [];
-				while (listChoice.Next()) {
-					table.push([listChoice["Id"], Translate[String.Format("#{0}#", listChoice.Description)]]);
-				}
-				listChoice = table;
-			}
-
+	if (editOutletParameters && $.primaryParametersSettings[primaryParameterName]) {
+		var listChoice = null;
+		if ($.workflow.name != "Visit") {
 			if (title == Translate["#partner#"]){
 				var query = new Query("SELECT DISTINCT D.Id, D.Description " +
 					" FROM Catalog_Distributor D " +
@@ -306,10 +299,37 @@ function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParamete
 				query.AddParameter("emptyRef", DB.EmptyRef("Catalog.Distributor"));
 				listChoice = query.Execute();
 			}
+		} 
 
+		//DoChoice for OutletStatus and DegreeOfPotentiality 
+		if (title == Translate["#status#"]) {
+			var query = new Query("SELECT Id, Description FROM Enum_OutletStatus");
+			listChoice = query.Execute();
+			var table = [];
+			while (listChoice.Next()) {
+				table.push([listChoice["Id"], Translate[String.Format("#{0}#", listChoice.Description)]]);
+			}
+			listChoice = table;
+		}
+
+		if (title == Translate["#DegreeOfPotentiality#"]) {
+			var query = new Query("SELECT Id, Description FROM Enum_DegreeOfPotentiality");
+			listChoice = query.Execute();
+			var table = [];
+			while (listChoice.Next()) {
+				table.push([listChoice["Id"], Translate[String.Format("#{0}#", listChoice.Description)]]);
+			}
+			listChoice = table;
+		}
+
+		if (title == Translate["#status#"]) {
+			Dialogs.DoChoose(listChoice, outlet, attribute, control, null, title, arguments[6]);
+		} else if (title == Translate["#DegreeOfPotentiality#"] && outlet.OutletStatus.Description != "Potential"){
+			
+		} else {
 			Dialogs.DoChoose(listChoice, outlet, attribute, control, null, title);
 		}
-	}
+	} 
 }
 
 function GetDescr(outlet){
@@ -434,6 +454,21 @@ function GetStatusDescription(outlet) {
 	query.AddParameter("status", outlet.OutletStatus);
 	queryResult = query.ExecuteScalar();
 	result = Translate[String.Format("#{0}#", queryResult)]
+	return result;
+}
+
+function GetDegreeOfPotentiality(outlet) {
+	if (outlet.DegreeOfPotentiality == DB.EmptyRef("Enum.DegreeOfPotentiality")){
+		result = "-";
+	} 
+	else{
+		// Dialog.Message("Not empty");
+		var query = new Query("SELECT Description FROM Enum_DegreeOfPotentiality WHERE Id = @degree");
+		query.AddParameter("degree", outlet.DegreeOfPotentiality);		
+		queryResult = query.ExecuteScalar();
+		result = Translate[String.Format("#{0}#", queryResult)];
+	}
+
 	return result;
 }
 

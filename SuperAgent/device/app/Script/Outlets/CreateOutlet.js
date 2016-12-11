@@ -49,6 +49,7 @@ function SetSideStyles(outlet){
 	requiredLeft = parseInt(0);
 	sideStyle.Add("outletName", ClassValue(outlet.Description));
 	sideStyle.Add("outletAddress", ClassValue(outlet.Address));
+	sideStyle.Add("outletCity", ClassValue(outlet.City));
 	sideStyle.Add("outletClass", ClassValue(outlet.Class));
 	sideStyle.Add("outletType", ClassValue(outlet.Type));
 	return sideStyle;

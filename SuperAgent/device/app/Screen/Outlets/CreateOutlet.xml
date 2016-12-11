@@ -77,6 +77,15 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(outletCity, 1)">
+				<c:HorizontalLayout CssClass="$sideStyle.outletCity"></c:HorizontalLayout>
+				<c:VerticalLayout>
+					<c:TextView Text="#city#" CssClass="description_row"></c:TextView>
+					<c:EditText Id="outletCity" Value="$outlet.City" Placeholder="—" CssClass="main_row" OnLostFocus="$DoRefresh($outlet)"/>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
 			<c:HorizontalLayout CssClass="grid" OnClick="$DoSelect($outlet,Class,$outletClass,#outlet_class#)">
 				<c:HorizontalLayout CssClass="$sideStyle.outletClass"></c:HorizontalLayout>
 				<c:VerticalLayout>

@@ -360,3 +360,8 @@ OutWhatEver		Synchronization wasn't completed last time. All data will be lost. 
 today		Today
 agentLogo		super_agent_En
 TooMoreLetter		The number of symbols is not available.
+city	City
+DegreeOfPotentiality	Degree of potentiality
+Attracted	Attracted
+NotAttracted	Not attracted
+emptyDegreeOfPotentiality	Degree of potentiality field is empty

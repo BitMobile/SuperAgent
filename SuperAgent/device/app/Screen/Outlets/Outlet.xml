@@ -162,14 +162,27 @@
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
-			<c:HorizontalLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet, OutletStatus, $status, #status#, $sessionConst.editOutletParameters, 000000007)">
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet, OutletStatus, $status, #status#, $sessionConst.editOutletParameters, 000000007, $DegreeOfPotentiality)">
 				<c:VerticalLayout>
 					<c:TextView Text="#status#" CssClass="description_row" />
-					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000007 == true &amp;&amp; $workflow.name != 'Visit'">
+					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000007 == true">
 						<c:TextView Id="status" Text="$GetStatusDescription($workflow.outlet)" CssClass="main_row_available" />
 					</s:If>
 					<s:Else>
 						<c:TextView Id="status" Text="$GetStatusDescription($workflow.outlet)" CssClass="not_available_basic" />
+					</s:Else>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet, DegreeOfPotentiality, $DegreeOfPotentiality, #DegreeOfPotentiality#, $sessionConst.editOutletParameters, 000000010)">
+				<c:VerticalLayout>
+					<c:TextView Text="#DegreeOfPotentiality#" CssClass="description_row" />
+					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000010 == true &amp;&amp; $status.Text == #Potential#">
+						<c:TextView Id="DegreeOfPotentiality" Text="$GetDegreeOfPotentiality($workflow.outlet)" CssClass="main_row_available" />
+					</s:If>
+					<s:Else>
+						<c:TextView Id="DegreeOfPotentiality" Text="$GetDegreeOfPotentiality($workflow.outlet)" CssClass="not_available_basic" />
 					</s:Else>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
@@ -189,6 +202,18 @@
 			</c:DockLayout>
 			<c:HorizontalLine />
 
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusIfHasEditText(outletCity, $sessionConst.editOutletParameters, 000000009)">
+				<c:VerticalLayout>
+					<c:TextView Text="#city#" CssClass="description_row"></c:TextView>
+					<s:If Test="$sessionConst.editOutletParameters == true &amp;&amp; $primaryParametersSettings.000000009 == true &amp;&amp; @DateAddTru == false">
+						<c:EditText Id="outletCity" Value="$workflow.outlet.City" OnGetFocus="$CashCity($workflow.outlet)" CssClass="main_row"></c:EditText>
+					</s:If>
+					<s:Else>
+						<c:TextView Id="outletCity" Text="$workflow.outlet.City" CssClass="not_available_basic"></c:TextView>
+					</s:Else>	
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
 
 			<c:DockLayout CssClass="grid">
 				<!-- <s:If Test="$workflow.outlet != null &amp;&amp; $workflow.outlet.Lattitude != 0 &amp;&amp; $workflow.outlet.Longitude != 0"> -->

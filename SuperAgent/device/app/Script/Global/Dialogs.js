@@ -17,7 +17,12 @@
 	if (func == null)
 		func = CallBack;
 
-	Dialog.Choose(title, listChoice, startKey, func, [entity, attribute, control]);
+	if (arguments.length == 7){
+		Dialog.Choose(title, listChoice, startKey, func, [entity, attribute, control, arguments[6]]);
+	} else {
+		Dialog.Choose(title, listChoice, startKey, func, [entity, attribute, control]);
+	}
+	
 }
 
 function ChooseDateTime(entity, attribute, control, func, title) {
@@ -62,9 +67,26 @@ function CallBack(state, args) {
 	AssignDialogValue(state, args);
 	var control = state[2];
 	var attribute = state[1];
+	var entity = state[0];
 	if (getType(args.Result)=="BitMobile.DbEngine.DbRef") {
-		if (attribute == "OutletStatus")
+		if (attribute == "OutletStatus"){
 			control.Text = Translate[String.Format("#{0}#", args.Result.Description)];
+
+			var control2 = state[3];
+			//Dialog.Message(args.Result.Description);
+			if (args.Result.Description == "Potential") {
+				// Dialog.Message("Potential");
+				// Dialog.Message(control2.Css);
+				// control2.Css = "main_row_available";
+			} else {
+				//Dialog.Message(entity['DegreeOfPotentiality']);
+				entity['DegreeOfPotentiality'] = DB.EmptyRef("Enum.DegreeOfPotentiality");
+				control2.Text = '-';
+				// control2.Css = "not_available_basic";
+			}
+		} else if (attribute == "DegreeOfPotentiality"){
+			control.Text = Translate[String.Format("#{0}#", args.Result.Description)];
+		}
 		else{
 			control.Text = Find(args.Result.ToString(), '00000000-0000-0000-0000-000000000000') != parseInt(0) ? "—" : args.Result.Description;
 

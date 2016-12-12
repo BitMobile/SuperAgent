@@ -75,14 +75,10 @@ function CallBack(state, args) {
 			var control2 = state[3];
 			//Dialog.Message(args.Result.Description);
 			if (args.Result.Description == "Potential") {
-				// Dialog.Message("Potential");
-				// Dialog.Message(control2.Css);
-				// control2.Css = "main_row_available";
+
 			} else {
-				//Dialog.Message(entity['DegreeOfPotentiality']);
-				entity['DegreeOfPotentiality'] = DB.EmptyRef("Enum.DegreeOfPotentiality");
+				entity['DegreeOfPotentiality'] = DB.EmptyRef("Enum_DegreeOfPotentiality");
 				control2.Text = '-';
-				// control2.Css = "not_available_basic";
 			}
 		} else if (attribute == "DegreeOfPotentiality"){
 			control.Text = Translate[String.Format("#{0}#", args.Result.Description)];

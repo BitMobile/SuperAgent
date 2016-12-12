@@ -458,7 +458,7 @@ function GetStatusDescription(outlet) {
 }
 
 function GetDegreeOfPotentiality(outlet) {
-	if (outlet.DegreeOfPotentiality == DB.EmptyRef("Enum.DegreeOfPotentiality")){
+	if (outlet.DegreeOfPotentiality == DB.EmptyRef("Enum_DegreeOfPotentiality")){
 		result = "-";
 	} 
 	else{

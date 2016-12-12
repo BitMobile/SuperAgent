@@ -78,7 +78,10 @@ function CallBack(state, args) {
 
 			} else {
 				entity['DegreeOfPotentiality'] = DB.EmptyRef("Enum_DegreeOfPotentiality");
+				// entity['DegreeOfPotentiality'] = '@ref[Enum_DegreeOfPotentiality]:00000000-0000-0000-0000-000000000000';
 				control2.Text = '-';
+				entity.GetObject().Save();
+				// Dialog.Message(entity['DegreeOfPotentiality']);
 			}
 		} else if (attribute == "DegreeOfPotentiality"){
 			control.Text = Translate[String.Format("#{0}#", args.Result.Description)];

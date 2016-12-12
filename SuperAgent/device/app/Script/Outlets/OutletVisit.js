@@ -283,7 +283,7 @@ if (DateAddTru == false) {
 
 
 function GetPlans(outlet, sr) {
-	var q = new Query("select PW.Id, PWW.Description, PWW.Address from Catalog_Outlet_PlacesWork PW LEFT JOIN Catalog_Outlet PWW ON PW.PlaceWork=PWW.Id WHERE PW.Ref=@outlet");
+	var q = new Query("select PW.Id, PW.Date, PW.Number, PW.Commentary from _Document_Visit PW LEFT JOIN _Document_Order PWW ON PW.Id=PWW.Visit WHERE PW.Outlet=@outlet");
 	q.AddParameter("outlet", outlet);
 //	Dialog.Debug(outlet);
 //	q.AddParameter("sr", $.common.UserRef);

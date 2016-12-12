@@ -193,7 +193,7 @@ function GetUncommitedScheduledVisits(searchText) {
 		searchText = StrReplace(searchText, "'", "''");
 		search = "AND Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "') ";
 	}
-	q.Text = ("SELECT DISTINCT VP.Outlet, VP.Ref, " +
+	q.Text = ("SELECT DISTINCT VP.Outlet, VP.Ref, VP.VisitPlan,  O.Type, " +
 			" CASE WHEN strftime('%H:%M', VP.Date)='00:00' THEN '' ELSE strftime('%H:%M', VP.Date) END AS Time, " +
 			OutletStatusText() +
 			" FROM Catalog_Outlet O " +

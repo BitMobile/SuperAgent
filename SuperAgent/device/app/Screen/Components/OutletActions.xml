@@ -8,6 +8,7 @@
 		<bp:Action Name="ShowMap" NextStep="ShowMap"></bp:Action>
 		<bp:Action Name="Plans" NextStep="Plans" />
 			<bp:Action Name="LPY" NextStep="LPY" />
+				<bp:Action Name="OutletVisit" NextStep="OutletVisit" />
 		<bp:Action Name="ShowImage" NextStep="Image" />
 	</bp:Step>
 
@@ -27,6 +28,7 @@
 	<bp:Step Name="Plans" Screen="PlanList.xml" Controller="Outlets\DetailsAndContacts.js"></bp:Step>
 
 		<bp:Step Name="LPY" Screen="LPYList.xml" Controller="Outlets\LPYList.js"></bp:Step>
+				<bp:Step Name="OutletVisit" Screen="OutletVisit.xml" Controller="Outlets\OutletVisit.js"></bp:Step>
 
 	<bp:Step Name="Contact" Screen="Contact.xml" Controller="Outlets\DetailsAndContacts.js"></bp:Step>
 

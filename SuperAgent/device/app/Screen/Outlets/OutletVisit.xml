@@ -7,7 +7,7 @@
 
 		<c:DockLayout CssClass="top_navigator">
 			<c:HorizontalLayout>
-				<c:TextView Text="#mwork#" />
+				<c:TextView Text="#История визитов#" />
 			</c:HorizontalLayout>
 		</c:DockLayout>
 
@@ -33,8 +33,8 @@
 				<c:HorizontalLayout CssClass="grid">
 							<c:VerticalLayout>
 					<c:TextView Text="#description#" CssClass="description_row"></c:TextView>
-					<c:TextView Text="$plan.Description" CssClass="not_available_basic"></c:TextView>
-					<c:TextView Text="$plan.Address" CssClass="not_available_basic"></c:TextView>
+					<c:TextView Text="$plan.Date" CssClass="not_available_basic"></c:TextView>
+					<c:TextView Text="$plan.Commentary" CssClass="not_available_basic"></c:TextView>
 							</c:VerticalLayout>
 				</c:HorizontalLayout>
 

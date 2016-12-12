@@ -70,12 +70,17 @@
 			<bp:Action Name="EditParameter" NextStep="EditOutletParameter"></bp:Action>
 			<bp:Action Name="EditAddParameter" NextStep="EditOutletAddParameter"></bp:Action>
 			<bp:Action Name="ShowMap" NextStep="ShowMap"></bp:Action>
+			<bp:Action Name="LPY" NextStep="LPY" />
+			<bp:Action Name="OutletVisit" NextStep="OutletVisit" />
 			<bp:Action Name="ShowContractors" NextStep="Contractors" />
 			<bp:Action Name="Contractor" NextStep="Contractor" />
 			<bp:Action Name="ShowContacts" NextStep="Contacts" />
 			<bp:Action Name="ShowImage" NextStep="Image" />
 		</bp:Step>
 
+			<bp:Step Name="LPY" Screen="LPYList.xml" Controller="Outlets\LPYList.js"></bp:Step>
+			<bp:Step Name="OutletVisit" Screen="OutletVisit.xml" Controller="Outlets\OutletVisit.js"></bp:Step>
+			
 		<bp:Step Name="Visit_Tasks" Screen="Tasks\Tasks.xml" Controller="Tasks\Main.js">
 			<bp:Action Name="Forward" NextStep="Questions"></bp:Action>
 			<bp:Action Name="CreateTask" NextStep="CreateTask"></bp:Action>

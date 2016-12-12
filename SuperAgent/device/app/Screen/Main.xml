@@ -66,34 +66,7 @@
 
 					</c:DockLayout>
 
-					<s:If Test="$sessionConst.orderEnabled">
-						<c:DockLayout CssClass="short_panel">
-							<c:DockLayout CssClass="grid">
-								<c:VerticalLayout>
-									<c:TextView Text="{$GetOrderSumm()} #currency#" CssClass="main_row"></c:TextView>
-									<c:TextView Text="#amountOfOrdersForToday#" CssClass="description_row" />
-								</c:VerticalLayout>
-							</c:DockLayout>
-						</c:DockLayout>
-					</s:If>
-
-					<s:If Test="$sessionConst.encashEnabled">
-						<c:DockLayout>
-							<c:DockLayout CssClass="grid">
-								<c:VerticalLayout>
-									<c:TextView Text="{$FormatValue($encashmentSumm)} #currency#" CssClass="main_row"></c:TextView>
-									<c:TextView Text="#programmingCollectionForToday#" CssClass="description_row" />
-								</c:VerticalLayout>
-							</c:DockLayout>
-							<c:HorizontalLine />
-							<c:DockLayout CssClass="grid">
-								<c:VerticalLayout>
-									<c:TextView Text="{$FormatValue($receivablesSumm)} #currency#" CssClass="main_row"></c:TextView>
-									<c:TextView Text="#accountsReceivables#" CssClass="description_row" />
-								</c:VerticalLayout>
-							</c:DockLayout>
-						</c:DockLayout>
-					</s:If>
+				
 
 				</c:VerticalLayout>
 

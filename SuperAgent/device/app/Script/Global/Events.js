@@ -265,7 +265,7 @@ function SetSteps(outlet) {
 
 	var skipQuest = false;
 
-	var hasContractors = HasContractors(outlet);
+	var hasContractors = true;
 
 	var q = new Query("SELECT CreateOrderInMA, FillQuestionnaireInMA, DoEncashmentInMA, CreateReturnInMA FROM Catalog_OutletsStatusesSettings WHERE Status=@status");
 	q.AddParameter("status", outlet.OutletStatus);

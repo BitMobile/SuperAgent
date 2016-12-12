@@ -98,6 +98,9 @@
 					<s:Iterator Id="pOutlet" Value="$uncommitedVisits">
 						<s:Push Id="planOutlet" Value="$pOutlet.Outlet"></s:Push>
 
+						<s:Push Id="planType" Value="$pOutlet.VisitPlan"></s:Push>
+
+
 						<c:DockLayout CssClass="grid" OnClickAction="$AddGlobalAndAction($pOutlet.Ref, $planOutlet, Select)">
 							<s:If Test="$pOutlet.OutletStatus == 0">
 								<c:Image CssClass="blue_mark" />
@@ -114,11 +117,21 @@
 							<c:Image />
 							<c:VerticalLayout>
 								<c:TextView Text="$planOutlet.Description" CssClass="main_row"></c:TextView>
+									
 								<c:HorizontalLayout>
 									<s:If Test="$pOutlet.Time != ''">
 										<c:TextView Text="$pOutlet.Time" CssClass="bl_description_row" />
 									</s:If>
+									<s:If Test="{$planType.Description} != ''">
+										<c:TextView Text="#Тип визита:# {$planType.Description}" CssClass="bl_description_row"></c:TextView>
+	</s:If>
+					<s:Else>
+<s:Push Id="planTV" Value="$pOutlet.Type"></s:Push>
+		<c:TextView Text="#Тип визита:# {$planTV.Description}" CssClass="bl_description_row"></c:TextView>
+										</s:Else>
+								
 									<c:TextView Text="{$planOutlet.Address}" CssClass="description_row"></c:TextView>
+								
 								</c:HorizontalLayout>
 							</c:VerticalLayout>
 

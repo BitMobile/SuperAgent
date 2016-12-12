@@ -127,15 +127,15 @@ function AddGlobalAndAction(outlet) {
 	if (curr=="Outlets")
 		actionName = "Select";
 	else{
-		if (HasContractors1(outlet)){
+		// if (HasContractors1(outlet)){
 			if (curr == "Orders")
 				actionName = "CreateOrder";
 			if (curr == "Returns")
 				actionName = "CreateReturn";
-		}
-		else{
-			Dialog.Message(Translate["#noContractorsMessage#"]);
-		}
+		// }
+		// else{
+		// 	Dialog.Message(Translate["#noContractorsMessage#"]);
+		// }
 	}
 
 	if (actionName != ""){
@@ -280,8 +280,8 @@ function ReviseParameters(outlet, save) {
 //---------------------------header parameters dialog.choose--------------------
 
 function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParameters, primaryParameterName) {
-	if ($.workflow.name != "Visit") {
-		if (editOutletParameters && $.primaryParametersSettings[primaryParameterName]) {
+//	if ($.workflow.name != "Visit") {
+//		if (editOutletParameters && $.primaryParametersSettings[primaryParameterName]) {
 
 			var listChoice = null;
 
@@ -309,8 +309,8 @@ function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParamete
 
 			Dialogs.DoChoose(listChoice, outlet, attribute, control, null, title);
 
-		}
-	}
+	//	}
+	//}
 
 }
 

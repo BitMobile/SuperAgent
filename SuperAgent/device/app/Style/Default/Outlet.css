@@ -69,7 +69,12 @@
 	height: 65%;
 	vertical-align: central;
 }
-
+.grid vl MemoEdit {
+	height: 45%;
+	width: 90%;
+	font: 40% Arial;
+	placeholder-color: #FF7C4A;
+}
 .grid Button {
 	width: 10.3mm;
 	height: 9mm;

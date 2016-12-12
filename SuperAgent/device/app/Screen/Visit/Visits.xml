@@ -91,7 +91,7 @@
 					<c:HorizontalLayout CssClass="caption_grid">
 						<s:Push Id="uncommitedVisits" Value="$GetUncommitedScheduledVisits($search)"></s:Push>
 						<s:Push Id="sv" Value="$GetUncommitedScheduledVisitsCount($search)"></s:Push>
-						<c:TextView Text="#incompletedVisits# ({$sv}):"></c:TextView>
+						<c:TextView Id="incompletedSheldueVisitsCounText" Text="@StrForPlanVip"></c:TextView>
 					</c:HorizontalLayout>
 					<c:HorizontalLine />
 

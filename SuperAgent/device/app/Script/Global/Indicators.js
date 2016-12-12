@@ -42,9 +42,9 @@ function GetOutletsCount(){
 
 
 function SetCommitedScheduledVisits(){
-	var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet JOIN Document_VisitPlan DV ON VP.Ref = DV.Id WHERE V.Date >= @today AND V.Date < @tomorrow AND DATE(VP.Date) >= DATE(@today) AND DATE(VP.Date) < DATE(@tomorrow) AND V.Plan <> @emptyRef ORDER BY O.Description LIMIT 100");
-	q.AddParameter("today", DateTime.Now.Date);
-	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
+	var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet JOIN Document_VisitPlan DV ON VP.Ref = DV.Id WHERE V.Date >= @today AND Date(V.Date) < Date(@tomorrow) AND DATE(VP.Date) >= DATE(@today) AND DATE(VP.Date) < DATE(@tomorrow) AND V.Plan <> @emptyRef ORDER BY O.Description LIMIT 100");
+	q.AddParameter("today", DateTime.Now.Date.ToString("yyyy-MM-dd"));
+	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1).ToString("yyyy-MM-dd"));
 	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));
 	scheduledVisits = q.ExecuteCount();
 }
@@ -55,9 +55,9 @@ function GetCommitedScheduledVisits() {
 
 
 function SetUnscheduledVisits() {
-	var q = new Query("SELECT COUNT (Id) FROM Document_Visit WHERE Plan=@emptyRef AND Date >= @today AND Date < @tomorrow");
-	q.AddParameter("today", DateTime.Now.Date);
-	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
+	var q = new Query("SELECT COUNT (Id) FROM Document_Visit WHERE Plan=@emptyRef AND Date(Date) >= Date(@today) AND Date(Date) < Date(@tomorrow)");
+	q.AddParameter("today", DateTime.Now.Date.ToString("yyyy-MM-dd"));
+	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1).ToString("yyyy-MM-dd"));
 	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));
 	unscheduledVisits = q.ExecuteScalar();
 }
@@ -69,7 +69,7 @@ function GetUnscheduledVisits() {
 
 function SetPlannedVisits() {
 	var q = new Query("SELECT COUNT(*) FROM Document_VisitPlan_Outlets VPO JOIN Document_VisitPlan DP ON VPO.Ref = DP.Id JOIN Catalog_Outlet O ON VPO.Outlet=O.Id JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus=OSS.Status AND OSS.ShowOutletInMA=1 AND OSS.DoVisitInMA=1 WHERE DATE(VPO.Date)=DATE(@date) AND NOT OSS.Status IS NULL");
-	q.AddParameter("date", DateTime.Now.Date);
+	q.AddParameter("date", DateTime.Now.Date.ToString("yyyy-MM-dd"));
 	plannedVisits = q.ExecuteScalar();
 }
 
@@ -105,9 +105,9 @@ function GetOrderSumm() {
 
 
 function SetOrderQty() {
-	var q = new Query("SELECT COUNT(Id) FROM Document_Order WHERE Date >= @today AND Date < @tomorrow");
-	q.AddParameter("today", DateTime.Now.Date);
-	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
+	var q = new Query("SELECT COUNT(Id) FROM Document_Order WHERE Date(Date) >= Date(@today) AND Date(Date) < Date(@tomorrow)");
+	q.AddParameter("today", DateTime.Now.Date.ToString("yyyy-MM-dd"));
+	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1).ToString("yyyy-MM-dd"));
 	var cnt = q.ExecuteScalar();
 	if (cnt == null)
 		orderQty = 0;
@@ -120,9 +120,9 @@ function GetOrderQty(){
 }
 
 function SetReturnSum(){
-	var q = new Query("SELECT SUM(S.Qty * S.Total) FROM Document_Return_SKUs S LEFT JOIN Document_Return O ON (O.Id = S.Ref) WHERE O.Date >= @today AND O.Date < @tomorrow");
-	q.AddParameter("today", DateTime.Now.Date);
-	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
+	var q = new Query("SELECT SUM(S.Qty * S.Total) FROM Document_Return_SKUs S LEFT JOIN Document_Return O ON (O.Id = S.Ref) WHERE Date(O.Date) >= Date(@today) AND Date(O.Date) < Date(@tomorrow)");
+	q.AddParameter("today", DateTime.Now.Date.ToString("yyyy-MM-dd"));
+	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1).ToString("yyyy-MM-dd"));
 	var cnt = q.ExecuteScalar();
 	if (cnt == null)
 		returnSum = 0;
@@ -133,9 +133,9 @@ function SetReturnSum(){
 function GetReturnSum(){ return returnSum };
 
 function SetReturnQty() {
-	var q = new Query("SELECT COUNT(Id) FROM Document_Return WHERE Date >= @today AND Date < @tomorrow");
-	q.AddParameter("today", DateTime.Now.Date);
-	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
+	var q = new Query("SELECT COUNT(Id) FROM Document_Return WHERE Date(Date) >= Date(@today) AND Date(Date) < Date(@tomorrow)");
+	q.AddParameter("today", DateTime.Now.Date.ToString("yyyy-MM-dd"));
+	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1).ToString("yyyy-MM-dd"));
 	var cnt = q.ExecuteScalar();
 	if (cnt == null)
 		returnQty = 0;
@@ -146,9 +146,9 @@ function SetReturnQty() {
 function GetReturnQty(){ return returnQty; }
 
 function SetEncashmentSumm() {
-	var q = new Query("SELECT SUM(EncashmentAmount) FROM Document_Encashment WHERE Date >= @today AND Date < @tomorrow");
-	q.AddParameter("today", DateTime.Now.Date);
-	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
+	var q = new Query("SELECT SUM(EncashmentAmount) FROM Document_Encashment WHERE Date(Date) >= Date(@today) AND Date(Date) < Date(@tomorrow)");
+	q.AddParameter("today", DateTime.Now.Date.ToString("yyyy-MM-dd"));
+	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1).ToString("yyyy-MM-dd"));
 	var cnt = q.ExecuteScalar();
 	if (cnt == null)
 		encashmentSumm = 0;
@@ -190,7 +190,7 @@ function SetTasksDone(){
 	var q = new Query("SELECT COUNT(Id) FROM Document_Task " +
 		" WHERE Status=1 " +
 		" AND DATE(ExecutionDate)=DATE('now', 'localtime') ");
-	var cnt = q.ExecuteScalar();	
+	var cnt = q.ExecuteScalar();
 	tasksDone = cnt == null ? 0 : cnt;
 }
 

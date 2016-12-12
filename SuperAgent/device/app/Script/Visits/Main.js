@@ -1,8 +1,11 @@
 ﻿var addDay;
+var countPlanVisit;
+var StrForPlanVip;
 //var searchParam;
 // ------------------------ UI calls ------------------------
 
 function OnLoading(){
+	countPlanVisit = 0;
 	if (addDay == null) {
 		addDay = 0;
 	}
@@ -200,21 +203,24 @@ function GetUncommitedScheduledVisits(searchText) {
 			" JOIN Document_VisitPlan_Outlets VP ON O.Id = VP.Outlet AND DATE(VP.Date)=DATE(@date) " +
 			" JOIN Document_VisitPlan DV ON DV.Id=VP.Ref " +
 			" LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet " +
-				" AND V.Date >= @today AND V.Date < @tomorrow " +
+				" AND Date(V.Date) >= Date(@today) AND Date(V.Date) < Date(@tomorrow) " +
 				" AND V.Plan<>@emptyRef " +
 			" LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA=1 " +
 			" WHERE V.Id IS NULL AND NOT OSS.Status IS NULL " + search + " ORDER BY VP.Date, O.Description LIMIT 100");
 			if (addDay == null || addDay == 0) {
 				addDay = 0;
-				q.AddParameter("date", DateTime.Now.Date);
-				q.AddParameter("today", DateTime.Now.Date);
-				q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
+				q.AddParameter("date", DateTime.Now.Date.ToString("yyyy-MM-dd"));
+				q.AddParameter("today", DateTime.Now.Date.ToString("yyyy-MM-dd"));
+				q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1).ToString("yyyy-MM-dd"));
 			}else {
-				q.AddParameter("date", DateTime.Now.Date.AddDays(addDay));
-				q.AddParameter("today", DateTime.Now.Date.AddDays(addDay));
-				q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1));
+				q.AddParameter("date", DateTime.Now.Date.AddDays(addDay).ToString("yyyy-MM-dd"));
+				q.AddParameter("today", DateTime.Now.Date.AddDays(addDay).ToString("yyyy-MM-dd"));
+				q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1).ToString("yyyy-MM-dd"));
 			}
 	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));
+	countPlanVisit = q.ExecuteCount();
+	//$.plannedText.Text = Translate["#planVisit#"] + " " +" ("+countPlanVisit+")";
+	StrForPlanVip = Translate["#incompletedVisits#"] + " " +"(" +countPlanVisit+ "):";
 	return q.Execute();
 
 }
@@ -230,17 +236,17 @@ function GetUncommitedScheduledVisitsCount(searchText) {
 	q.Text = ("SELECT COUNT(DISTINCT VP.Outlet) " +
 			" FROM Catalog_Outlet O JOIN Document_VisitPlan_Outlets VP ON O.Id = VP.Outlet AND DATE(VP.Date)=DATE(@date) " +
 			" JOIN Document_VisitPlan DV ON VP.Ref = DV.Id " +
-			" LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet AND V.Date >= @today AND V.Date < @tomorrow AND V.Plan<>@emptyRef LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA=1 " +
+			" LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet AND Date(V.Date) >= Date(@today) AND Date(V.Date) < Date(@tomorrow) AND V.Plan<>@emptyRef LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA=1 " +
 			" WHERE V.Id IS NULL AND NOT OSS.Status IS NULL " + search + " ORDER BY O.Description LIMIT 100");
 			if (addDay == null || addDay == 0) {
 				addDay = 0;
-				q.AddParameter("date", DateTime.Now.Date);
-				q.AddParameter("today", DateTime.Now.Date);
-				q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
+				q.AddParameter("date", DateTime.Now.Date.ToString("yyyy-MM-dd"));
+				q.AddParameter("today", DateTime.Now.Date.ToString("yyyy-MM-dd"));
+				q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1).ToString("yyyy-MM-dd"));
 			}else {
-				q.AddParameter("date", DateTime.Now.Date.AddDays(addDay));
-				q.AddParameter("today", DateTime.Now.Date.AddDays(addDay));
-				q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1));
+				q.AddParameter("date", DateTime.Now.Date.AddDays(addDay).ToString("yyyy-MM-dd"));
+				q.AddParameter("today", DateTime.Now.Date.AddDays(addDay).ToString("yyyy-MM-dd"));
+				q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1).ToString("yyyy-MM-dd"));
 			}
 	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));
 	return q.ExecuteScalar();
@@ -248,14 +254,14 @@ function GetUncommitedScheduledVisitsCount(searchText) {
 }
 
 function GetScheduledVisitsCount() {
-	var q = new Query("SELECT COUNT(VPO.Id) FROM Document_VisitPlan_Outlets VPO JOIN Document_VisitPlan DV ON VPO.Ref = DV.Id LEFT JOIN Catalog_Outlet O ON VPO.Outlet = O.Id LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA = 1 WHERE VPO.Date >= @today AND VPO.Date < @tomorrow AND NOT OSS.Status IS NULL");
+	var q = new Query("SELECT COUNT(VPO.Id) FROM Document_VisitPlan_Outlets VPO JOIN Document_VisitPlan DV ON VPO.Ref = DV.Id LEFT JOIN Catalog_Outlet O ON VPO.Outlet = O.Id LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA = 1 WHERE VPO.Date >= @today AND Date(VPO.Date) < Date(@tomorrow) AND NOT OSS.Status IS NULL");
 	if (addDay == null || addDay == 0) {
 		addDay = 0;
-		q.AddParameter("today", DateTime.Now.Date);
-		q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
+		q.AddParameter("today", DateTime.Now.Date.ToString("yyyy-MM-dd"));
+		q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1).ToString("yyyy-MM-dd"));
 	}else {
-		q.AddParameter("today", DateTime.Now.Date.AddDays(addDay));
-		q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1));
+		q.AddParameter("today", DateTime.Now.Date.AddDays(addDay).ToString("yyyy-MM-dd"));
+		q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1).ToString("yyyy-MM-dd"));
 	}
 	var cnt = q.ExecuteScalar();
 	if (cnt == null)
@@ -276,14 +282,14 @@ function GetCommitedVisits(searchText) {
 
 //	var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet WHERE V.Date >= @today AND V.Date < @tomorrow AND VP.Date >= @today AND VP.Date < @tomorrow " + search + " ORDER BY O.Description LIMIT 100");
 	var q = new Query("SELECT V.Outlet, O.Description, O.Address, " + OutletStatusText() +
-		"FROM Catalog_Outlet O JOIN Document_Visit V ON V.Outlet=O.Id AND V.Date >= @today AND V.Date < @tomorrow");
+		"FROM Catalog_Outlet O JOIN Document_Visit V ON V.Outlet=O.Id AND Date(V.Date) >= Date(@today) AND Date(V.Date) < Date(@tomorrow)");
 		if (addDay == null || addDay == 0) {
 			addDay = 0;
-			q.AddParameter("today", DateTime.Now.Date);
-			q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
+			q.AddParameter("today", DateTime.Now.Date.ToString("yyyy-MM-dd"));
+			q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1).ToString("yyyy-MM-dd"));
 		}else {
-			q.AddParameter("today", DateTime.Now.Date.AddDays(addDay));
-			q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1));
+			q.AddParameter("today", DateTime.Now.Date.AddDays(addDay).ToString("yyyy-MM-dd"));
+			q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1).ToString("yyyy-MM-dd"));
 		}
 	return q.Execute();
 
@@ -300,14 +306,14 @@ function GetCommitedScheduledVisitsCount(searchText) {
 
 //	var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet WHERE V.Date >= @today AND V.Date < @tomorrow AND VP.Date >= @today AND VP.Date < @tomorrow " + search + " ORDER BY O.Description LIMIT 100");
 	var q = new Query("SELECT COUNT(V.Outlet) " +
-		"FROM Catalog_Outlet O JOIN Document_Visit V ON V.Outlet=O.Id AND V.Date >= @today AND V.Date < @tomorrow");
+		"FROM Catalog_Outlet O JOIN Document_Visit V ON V.Outlet=O.Id AND Date(V.Date) >= Date(@today) AND Date(V.Date) < Date(@tomorrow)");
 		if (addDay == null || addDay == 0) {
 			addDay = 0;
-			q.AddParameter("today", DateTime.Now.Date);
-			q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
+			q.AddParameter("today", DateTime.Now.Date.ToString("yyyy-MM-dd"));
+			q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1).ToString("yyyy-MM-dd"));
 		}else {
-			q.AddParameter("today", DateTime.Now.Date.AddDays(addDay));
-			q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1));
+			q.AddParameter("today", DateTime.Now.Date.AddDays(addDay).ToString("yyyy-MM-dd"));
+			q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1).ToString("yyyy-MM-dd"));
 		}
 	return q.ExecuteScalar();
 }

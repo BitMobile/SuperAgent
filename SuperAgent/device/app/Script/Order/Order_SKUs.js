@@ -1,5 +1,6 @@
 ﻿var defFeature;
 var defPack;
+var defMultiplier;
 var packDescription;
 var swipedRow;
 var rec_order;
@@ -158,7 +159,7 @@ function GetSKUAndGroups(searchText, thisDoc) {
     }
 
     query.AddParameter("Ref", priceList);
-    Console.WriteLine(query.Text);
+
     return query.Execute();
 
 }
@@ -188,29 +189,39 @@ function GetQuickOrder(control, skuId, itemPrice, packField, editField, textView
         else
             query.AddParameter("pack", recUnitId);
         var quickOrderItem =  query.Execute();
-        if ($.sessionConst.SKUFeaturesRegistration){
+
         defFeature = quickOrderItem.DefaultFeature;
-        }
-        else {
-        defFeature = null;
-        }
         if (doRecommend && recUnit!=null){ //&& parseInt(quickOrderItem.Qty)==parseInt(0)) {
             defPack = recUnitId;
             packDescription = recUnit;
+            defMultiplier = quickOrderItem.Multiplier;
             Variables[editField].Text = recOrder;
 
         } else {
             defPack = quickOrderItem.DefaultUnit;
             packDescription = quickOrderItem.Pack;
+            defMultiplier = quickOrderItem.Multiplier;
         }
 
-        Variables[packField].Text = packDescription;
         Variables[textViewField].Text = quickOrderItem.Qty + " " + packDescription + " " + alreadyOrdered;
         multiplier = quickOrderItem.Multiplier;
 
     }
 
     swipedRow = control;
+}
+
+function SelectSKU(sku, price, recOrder, unit, thisDoc){
+    var args = new Dictionary();
+    args.Add("SKU", sku);
+    args.Add("basePrice", price);
+    args.Add("recOrder", recOrder);
+    args.Add("Units", unit);
+    args.Add("Ref", thisDoc);
+
+    OrderItem.InitItem(args);
+
+    DoAction('SelectSKU');
 }
 
 function AddToOrder(control, editFieldName) {
@@ -235,12 +246,17 @@ function CreateOrderItem(control, editFieldName, textFieldName, packField, sku, 
                 p.Ref = $.workflow.Return;
             p.SKU = sku;
             p.Feature = defFeature;
-            p.Price = price;
+            p.Price = price * defMultiplier;
             p.Qty = Converter.ToDecimal(Variables[editFieldName].Text);
-            p.Total = p.Price * multiplier;
+
+            var d = GlobalWorkflow.GetMassDiscount(thisDoc);
+            p.Discount = String.IsNullOrEmpty(d) ? 0 : d;
+            var LineNumberQuery=new Query("SELECT Max(LineNumber) FROM Document_" + $.workflow.currentDoc + "_SKUs WHERE Ref=@ref");
+            LineNumberQuery.AddParameter("ref", p.Ref);
+            p.LineNumber=LineNumberQuery.ExecuteScalar() + 1;
+            p.Total = p.Price * (1 + p.Discount/100);
             p.Amount = p.Total * p.Qty;
             p.Units = defPack;
-            p.Discount = 0;
             p.Save();
 
             Global.FindTwinAndUnite(p);

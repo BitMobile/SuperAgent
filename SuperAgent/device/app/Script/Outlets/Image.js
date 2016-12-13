@@ -34,7 +34,7 @@ function Reshoot(control) {
 			Images.AddSnapshot(c_object, c_entity, SaveSnapshot, null, null, true);
 	}
 	else{
-		var obj = c_questionnaire ? $.workflow.visit : $.outlet;
+		var obj = c_questionnaire ? $.workflow.visit : $.workflow.outlet;
 		Images.MakeSnapshot(obj, callback);
 	}		
 }

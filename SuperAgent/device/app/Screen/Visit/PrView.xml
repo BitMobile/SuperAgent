@@ -6,6 +6,8 @@
 	test
 -->
    <s:Push Id="report" Value="$param1" />
+   <s:Push Id="SlideNumberst" Value="@SlideNumbers" />
+
 	<c:VerticalLayout>
 
 		<c:DockLayout CssClass="top_navigator">
@@ -17,7 +19,7 @@
 
 			<c:HorizontalLayout CssClass="btn_forwardPr">
 
-				<c:TextView Text="#showinfo#" />
+			<c:TextView Text="#showinfo#" />
 	<!--	<c:TextView Text="$result" />-->
 			</c:HorizontalLayout>
 		</c:DockLayout>
@@ -25,11 +27,11 @@
 
 		<c:HorizontalLine />
 
-    <c:SwipeHorizontalLayout Id="snapshotLayout3"  CssClass="carousel">
+    <c:SwipeHorizontalLayout Id="snapshotLayout3"  CssClass="carousel" Index="$SlideNumberst">
 
       <s:Iterator Id="snapshot2" Value="$GetSnapShots2()" Status="statusCount">
                       <s:Push Id="index" Value="$statusCount.Index" />
-                        <c:HorizontalLayout CssClass="memo_pick">
+                        <c:HorizontalLayout CssClass="memo_pick" >
 
                             <c:VerticalLayout OnClickAction="$CheckPr()">
                               <s:Push Id="path3" Value="$GetPrivateImage5($snapshot2.Slide, $snapshot2)" />

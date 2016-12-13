@@ -11,10 +11,10 @@
 
 		<s:If Test="@newContact">
 			<c:HorizontalLayout Id="btnDone" CssClass="bottom_btn">
-				<c:VerticalLayout OnClickAction="$DoBack()">
+				<c:VerticalLayout OnClickAction="$DeleteAndBack($contact)">
 					<c:TextView Text="#cancel#" CssClass="left_tv"></c:TextView>
 				</c:VerticalLayout>
-				<c:VerticalLayout OnClickAction="$SaveAndBack($contact, $contactOwner)" SubmitScope="contact_name;specialty;phone_number;email">
+				<c:VerticalLayout OnClickAction="$SaveAndBack($contact, $contactOwner)" SubmitScope="contact_name;phone_number;email">
 					<c:TextView Text="#save#" CssClass="right_tv"></c:TextView>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
@@ -23,7 +23,7 @@
 
 		<s:Else>
 			<c:DockLayout CssClass="top_navigator">
-				<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$SaveAndBack($contact, $contactOwner)" SubmitScope="contact_name;specialty;phone_number;email">
+				<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$SaveAndBack($contact, $contactOwner)" SubmitScope="contact_name;phone_number;email">
 					<c:Image />
 					<c:TextView Text="#list#" />
 				</c:DockLayout>
@@ -66,14 +66,6 @@
 				<c:VerticalLayout>
 					<c:TextView Text="#position#" CssClass="description_row"></c:TextView>
 					<c:EditText Value="$contact.Position" Placeholder="—" CssClass="main_row" Id="position"/>
-				</c:VerticalLayout>
-			</c:HorizontalLayout>
-			<c:HorizontalLine />
-			
-			<c:HorizontalLayout CssClass="grid" OnClickAction="$CheckAndFocus(specialty, 1)">
-				<c:VerticalLayout>
-					<c:TextView Text="#specialty#" CssClass="description_row"></c:TextView>
-					<c:EditText Value="$contact.Specialty" Placeholder="—" CssClass="main_row" Id="specialty"/>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />

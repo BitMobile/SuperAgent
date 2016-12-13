@@ -12,11 +12,28 @@ var PathForPick;
 var GetPreset;
 var report;
 var StartTime;
+var SlideNumbers;
 
 function OnLoad(){
-	//Dialog.Debug($.param2);
-//Dialog.Debug($.param1);
 StartTime = DateTime.Now;
+
+
+
+
+}
+
+function OnLoading(){
+	var q = new Query("SELECT V.Id, V.Ref, V.Slide, V.LineNumber from Catalog_Presentations_Slides V WHERE V.Ref = @Ref AND V.Slide = @numb");
+	q.AddParameter("Ref", $.param1);
+	q.AddParameter("numb", "@ref[Catalog_Slides]:"+$.param2.ToString());
+
+
+	var res = q.Execute();
+		if (res.Next()){
+			 SlideNumbers = ToInteger(res.LineNumber)-1;
+			//Dialog.Debug(SlideNumber);
+
+			}
 
 }
 
@@ -88,15 +105,50 @@ function CheckPr(){
 		checkVisitReason = true;
 }
 
+function ScrollTo(scrollview) {
+    Dialog.Message(currItem);
+    scrollview.Index = currItem;
+}
+
+
+
 function GetSnapShots2() {
-		var q = new Query("SELECT V.Id, V.Ref, V.Slide from Catalog_Presentations_Slides V WHERE V.Ref = @Ref ORDER BY V.LineNumber");
-  //  WHERE V.Ref=@Ref");
-	q.AddParameter("Ref", $.param1);
-			return q.Execute();
-			if (res.Next()){
-					return q.Execute();}
-			else {
-				return null;}
+
+	var slide = "";
+
+
+
+
+
+///////////////////////////////////////
+//////////////////////////////////////
+
+var q = new Query("SELECT V.Id, V.Ref, V.Slide, V.LineNumber from Catalog_Presentations_Slides V WHERE V.Ref = @Ref ORDER BY V.LineNumber");
+//  WHERE V.Ref=@Ref");
+q.AddParameter("Ref", $.param1);
+
+
+
+return q.Execute();
+
+
+///////////////////////////////////////
+////////////////////////////
+
+
+// if (slide!=undefined)){
+//
+// 	var createTable = new Query("CREATE TABLE IF NOT EXISTS USR_Filters(Id Text, FilterType Text); " +
+// 															"CREATE INDEX IF NOT EXISTS IND_FILTERS ON USR_Filters(FilterType)");
+//
+// 			createTable.Execute();
+//
+// }
+// else {
+// 	Dialog.Debug("that null?!?!?!?");
+// }
+
+
 }
 
 function OnVPresentation(){

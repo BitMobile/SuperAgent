@@ -8,13 +8,11 @@ var single_answ;
 var single_total;
 var scrollIndex;
 var setScroll;
-var bool_answer;
-var curr_item;
 var curr_sku;
 var skuValueGl;
 var questionValueGl;
 var forwardAllowed;
-
+var parents;
 
 //
 //-------------------------------Header handlers-------------------------
@@ -22,6 +20,7 @@ var forwardAllowed;
 
 function OnLoading(){
 	obligateredLeft = '0';
+	parents = [];
 	SetIndicators();
 	SetListType();
 	if (String.IsNullOrEmpty(setScroll))
@@ -35,6 +34,7 @@ function OnLoading(){
 function OnLoad() {
 	if (setScroll)
 		SetScrollIndex();
+	AssignSubmitScope();
 }
 
 function SetListType(){
@@ -192,6 +192,11 @@ function AddFilter(filterString, filterName, condition, connector) {
 
 }
 
+function AddToParents(fieldName){
+	parents.push(fieldName);
+	return parents;
+}
+
 function ShowChilds(index) {
 	var s = "p" + index;
 	if (s == parentId)
@@ -206,7 +211,7 @@ function GetChilds(sku) {
 	if (regularAnswers)
 		single = 0;
 
-var q = new Query("SELECT S.Description, S.Obligatoriness, S.AnswerType, S.Question, S.Answer, S.IsInputField, S.KeyboardType, " +
+var q = new Query("SELECT DISTINCT S.Description, S.Obligatoriness, S.AnswerType, S.Question, S.Answer, S.IsInputField, S.KeyboardType, " +
 			"CASE WHEN IsInputField='1' THEN Answer ELSE " +
 				"CASE WHEN (RTRIM(Answer)!='' AND Answer IS NOT NULL) THEN CASE WHEN AnswerType=@snapshot THEN @attached ELSE Answer END ELSE '—' END END AS AnswerOutput, " +
 				"CASE WHEN S.AnswerType=@snapshot THEN 1 END AS IsSnapshot, " +
@@ -280,40 +285,31 @@ function GoToQuestionAction(control, answerType, question, sku, editControl, cur
 
 	editControlName = editControl;
 	editControl = Variables[editControl];
-	curr_sku = sku;
+	skuValueGl = sku;
 
-	if ((answerType).ToString() == (DB.Current.Constant.DataType.ValueList).ToString()) {
+	if (answerType == DB.Current.Constant.DataType.ValueList) {
 		var q = new Query();
 		q.Text = "SELECT Value, Value FROM Catalog_Question_ValueList WHERE Ref=@ref UNION SELECT '', '—' ORDER BY Value";
 		q.AddParameter("ref", question);
-		//Dialogs.DoChoose(q.Execute(), question, null, editControl, DialogCallBack);
-		DoChoose(q.Execute(), question, null, editControl, DialogCallBack, title);
+		Dialogs.DoChoose(q.Execute(), question, null, editControl, DialogCallBack, title);
 	}
 
-	if ((answerType).ToString() == (DB.Current.Constant.DataType.Snapshot).ToString()) {
-		skuValueGl = sku;
+	if (answerType == DB.Current.Constant.DataType.Snapshot) {		
 		questionValueGl = question;
 
-		//AddSnapshot($.workflow.visit, null, GalleryCallBack, listChoice, "document.visit", title);
 		var path = null;
-//		if (String.IsNullOrEmpty(currAnswer)==false)
-//			path = Images.FindImage($.visit, currAnswer, ".jpg");
 		Images.AddQuestionSnapshot("USR_SKUQuestions", question, sku, currAnswer, true, title, GalleryCallBack);
 	}
 
-	if ((answerType).ToString() == (DB.Current.Constant.DataType.DateTime).ToString()) {
-		//Dialogs.ChooseDateTime(question, null, editControl, DialogCallBack);
-		ChooseDateTime(question, null, editControl, DialogCallBack, title);
+	if (answerType == DB.Current.Constant.DataType.DateTime) {
+		Dialogs.ChooseDateTime(question, null, editControl, DialogCallBack, title);
 	}
 
-	if ((answerType).ToString() == (DB.Current.Constant.DataType.Boolean).ToString()) {
-		bool_answer = currAnswer;
-		curr_item = sku;
-		//Dialogs.ChooseBool(question, null, editControl, DialogCallBack);
-		ChooseBool(question, null, editControl, DialogCallBack, title);
+	if (answerType == DB.Current.Constant.DataType.Boolean) {
+		Dialogs.ChooseBool(question, null, editControl, DialogCallBack, title);
 	}
 
-	if (((answerType).ToString() == (DB.Current.Constant.DataType.String).ToString()) ||
+	if ((answerType == DB.Current.Constant.DataType.String) ||
 	   ((answerType).ToString() == (DB.Current.Constant.DataType.Integer).ToString()) ||
 		 ((answerType).ToString() == (DB.Current.Constant.DataType.Decimal).ToString())) {
 		FocusOnEditText(editControlName, '1');
@@ -346,25 +342,6 @@ function AssignAnswer(control, question, sku, answer, answerType) {
 	q.Execute();
 }
 
-function GetCameraObject(entity) {
-	FileSystem.CreateDirectory("/private/document.visit");
-	//var guid = Global.GenerateGuid();
-	var guid = GenerateGuid();
-	//Variables.Add("guid", guid);
-	var path = String.Format("/private/document.visit/{0}/{1}.jpg", entity.Id, guid);
-	Camera.Size = 300;
-	Camera.Path = path;
-	return guid;
-}
-
-function ObligatedAnswered(answer, obligatoriness) {
-	if (parseInt(obligatoriness)==parseInt(1)){
-		if (String.IsNullOrEmpty(answer)==false & answer!="—")
-			return true;
-	}
-	return false;
-}
-
 function GetActionAndBack() {
 	var q = new Query("SELECT NextStep " +
 		" FROM USR_WorkflowSteps" +
@@ -387,11 +364,28 @@ function ClearIndex() {
 	setScroll = null;
 }
 
+function AddToSubmitCollection(submitCollectionString, fieldName){
+	submitCollectionString = String.IsNullOrEmpty(submitCollectionString) ? fieldName : (submitCollectionString + ";" + fieldName);
+
+	return submitCollectionString;
+}
+
+function AssignSubmitScope(){
+	$.btn_forward.SubmitScope = $.submitCollectionString; //all the magic is in this strings
+	$.regular.SubmitScope = $.submitCollectionString;
+	$.nonregular.SubmitScope = $.submitCollectionString;
+	$.btnSearch.SubmitScope = $.submitCollectionString;
+	$.btn_filters.SubmitScope = $.submitCollectionString;	
+	
+	for (control in $.grScrollView.Controls){
+		control.SubmitScope = $.submitCollectionString;
+	}
+}
 //------------------------------internal-----------------------------------
 
 function DialogCallBack(state, args){
 	var entity = state[0];
-	AssignAnswer(null, entity, curr_sku, args.Result);
+	AssignAnswer(null, entity, skuValueGl, args.Result);
 
 	Workflow.Refresh([$.search]);
 }
@@ -414,124 +408,4 @@ function DeleteAnswers(recordset) {
 	while (recordset.Next()){
 		DB.Delete(recordset.Id);
 	}
-}
-
-//-------------------------------Gallery handler-----------------------------------
-
-function AddSnapshot(objectRef, valueRef, func, listChoice, objectType, title) {
-	title = typeof title !== 'undefined' ? title : "#select_answer#";
-	Dialog.Choose(title, listChoice, AddSnapshotHandler, [objectRef,func,valueRef,objectType]);
-}
-
-function AddSnapshotHandler(state, args) {
-	var objRef = state[0];
-	var func = state[1];
-	var valueRef = state[2];
-	var objectType = state[3];
-
-	if (parseInt(args.Result)==parseInt(0)){
-		var pictId = GenerateGuid();
-		var path = GetPrivateImagePath(objectType, objRef, pictId, ".jpg");
-		Gallery.Size = 300;
-		Gallery.Copy(path, func, [objRef, pictId]);
-	}
-
-	if (parseInt(args.Result)==parseInt(1)){
-		var pictId = GetCameraObject(objRef);
-		var path = GetPrivateImagePath(objectType, objRef, pictId, ".jpg");
-		Camera.MakeSnapshot(path, 300, func, [ objRef, pictId]);
-	}
-
-	if (parseInt(args.Result)==parseInt(2)){
-		AssignAnswer(null, questionValueGl, skuValueGl, null);
-		Workflow.Refresh([]);
-	}
-}
-
-//------------------------------Temporary, from dialogs----------------
-
-function DoChoose(listChoice, entity, attribute, control, func, title) {
-
-	title = typeof title !== 'undefined' ? title : "#select_answer#";
-
-	if (attribute==null)
-		var startKey = control.Text;
-	else
-		var startKey = entity[attribute];
-
-	if (listChoice==null){
-		var tableName = entity[attribute].Metadata().TableName;
-		var query = new Query();
-		query.Text = "SELECT Id, Description FROM " + tableName;
-		listChoice = query.Execute();
-	}
-
-	if (func == null)
-		func = CallBack;
-
-	Dialog.Choose(title, listChoice, startKey, func, [entity, attribute, control]);
-}
-
-function ChooseDateTime(entity, attribute, control, func, title) {
-	var startKey;
-
-	title = typeof title !== 'undefined' ? title : "#select_answer#";
-
-	if (attribute==null)
-		startKey = control.Text;
-	else
-		startKey = entity[attribute];
-
-	if (String.IsNullOrEmpty(startKey) || startKey=="—")
-		startKey = DateTime.Now;
-
-	if (func == null)
-		func = CallBack;
-	Dialog.DateTime(title, startKey, func, [entity, attribute, control]);
-}
-
-function ChooseBool(entity, attribute, control, func, title) {
-
-	title = typeof title !== 'undefined' ? title : "#select_answer#";
-
-	if (attribute==null)
-		var startKey = control.Text;
-	else
-		var startKey = entity[attribute];
-
-	var listChoice = [[ "—", "-" ], [Translate["#YES#"], Translate["#YES#"]], [Translate["#NO#"], Translate["#NO#"]]];
-	if (func == null)
-		func = CallBack;
-	Dialog.Choose(title, listChoice, startKey, func, [entity, attribute, control]);
-}
-
-function CallBack(state, args) {
-	AssignDialogValue(state, args);
-	var control = state[2];
-	if (getType(args.Result)=="BitMobile.DbEngine.DbRef")
-		control.Text = args.Result.Description;
-	else
-		control.Text = args.Result;
-}
-
-function AssignDialogValue(state, args) {
-	var entity = state[0];
-	var attribute = state[1];
-	entity[attribute] = args.Result;
-	entity.GetObject().Save();
-	return entity;
-}
-
-//------------------------------Temporary, from global----------------
-
-function GenerateGuid() {
-
-	return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
-
-}
-
-function S4() {
-
-	return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-
 }

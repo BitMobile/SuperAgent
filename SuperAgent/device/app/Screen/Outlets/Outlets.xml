@@ -15,10 +15,10 @@
 				<c:DockLayout CssClass="top_navigator">
 					<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$DoBack()">
 						<c:Image />
-						<c:TextView Text="#back#" />
+						<c:TextView Text="@back" />
 					</c:DockLayout>
 					<c:DockLayout Id="btnForward" CssClass="btn_forward" />
-					<c:HorizontalLayout>
+					<c:HorizontalLayout Id="titleForward">
 						<c:TextView Text="@title" />
 					</c:HorizontalLayout>
 				</c:DockLayout>
@@ -41,7 +41,7 @@
 				<c:DockLayout>
 					<c:Image />
 					<c:EditText Id="edtSearch" Text="$search" Placeholder="#search#"></c:EditText>
-				</c:DockLayout>			
+				</c:DockLayout>
 			</c:DockLayout>
 			<c:HorizontalLine />
 
@@ -72,12 +72,12 @@
 						</s:If>
 						<s:If Test="$outlet.OutletStatus == 3">
 							<c:VerticalLayout CssClass="no_mark"></c:VerticalLayout>
-						</s:If>			
+						</s:If>
 						<c:VerticalLayout>
 							<c:TextView Text="$outlet.Description" CssClass="$outlet.Style"></c:TextView>
 							<c:TextView Text="$outlet.Address" CssClass="description_row"></c:TextView>
 						</c:VerticalLayout>
-						<c:Image />							
+						<c:Image />
 					</c:DockLayout>
 					<c:HorizontalLine />
 

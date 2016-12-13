@@ -73,7 +73,7 @@
 												<s:Push Id="index" Value="$statusCount.Index" />
 													<c:HorizontalLayout CssClass="memo_pick4">
 														<s:If Test="$OnVPresentation()">
-															<c:VerticalLayout OnClick="$ActionGetIm2($snapshot2.Slide, $snapshot2.Slide)">
+															<c:VerticalLayout OnClick="$ActionGetIm2($snapshot2.Slide, $snapshot2.Slide, $snapshot2.LineNumber)">
 																<s:Push Id="path3" Value="$GetPrivateImage5($snapshot2.Slide, $snapshot2)" />
 																<c:Image Id="imageold" Source="$path3" />
 
@@ -88,7 +88,7 @@
 
 			<c:VerticalLayout  CssClass="memo_head4" Id="snapshotLayout5">
 
-				<c:HorizontalLayout CssClass="memo_pick3"  Id="grScrollView3" OnClickAction="$OpenViewPres(View, $GetDocFor, $snapshot.Id)">
+				<c:HorizontalLayout CssClass="memo_pick3"  Id="grScrollView3" OnClickAction="$OpenViewPres(View, $GetDocFor, $snapshot.Id, $snapshot2.id)">
 					<c:HorizontalLayout CssClass="empty_side_wh"></c:HorizontalLayout>
 					<c:VerticalLayout CssClass="memo_picks_v" >
 						<s:Push Id="path2" Value="$GetImgF($snapshot2.Id)" />

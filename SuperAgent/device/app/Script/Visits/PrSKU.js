@@ -20,6 +20,7 @@ var DocumentsPr;
 var obligateNumberStart;
 var nstep;
 var pictID2;
+var pictID3;
 
 
 function OnLoad(){
@@ -129,8 +130,9 @@ $.obligateredButton.Text = obligateNumber+')';
 }
 
 
-function ActionGetIm2(sender, pictID) {
+function ActionGetIm2(sender, pictID, pictIDG, pictIDF) {
 	pictID2 = pictID;
+  pictID3= pictIDF;
 PathForPick = pictID2.ToString();
 $.imageindexon.Source = PathForPick;
 Workflow.Refresh([$.grScrollView3]);
@@ -281,7 +283,7 @@ Workflow.Refresh([]);
 }
 
 
-function OpenViewPres(par1, par2){
+function OpenViewPres(par1, par2, par3){
 if(SlidesPick !=undefined){
 
 
@@ -297,7 +299,7 @@ var NextSrinTime = DateTime.Now;
 
     ETach.Save();}
 
-  DoAction(par1, par2);
+  DoAction(par1, par2, SlidesPick.Id);
 }
 
 }
@@ -341,7 +343,7 @@ function GetSnapShots() {
 
 /////////////////
 
-		var q = new Query("SELECT Df.Id, V.Slide  from   Catalog_Presentations_Slides V  INNER JOIN Catalog_Presentations Df  ON  Df.Id = V.Ref INNER JOIN Document_SetPresentations_Presentations Dm  ON  Df.Id = Dm.Presentation INNER JOIN USR_SelectedPres Dk ON Dm.Ref = Dk.Id INNER JOIN Document_SetPresentations Dkk ON Dkk.Id = Dk.Id WHERE Dk.Selected == 1 AND Dkk.Display = @filt GROUP BY Df.Id ORDER BY V.LineNumber");
+		var q = new Query("SELECT Df.Id, V.Slide  from   Catalog_Presentations_Slides V  INNER JOIN Catalog_Presentations Df  ON  Df.Id = V.Ref INNER JOIN Document_SetPresentations_Presentations Dm  ON  Df.Id = Dm.Presentation INNER JOIN USR_SelectedPres Dk ON Dm.Ref = Dk.Id INNER JOIN Document_SetPresentations Dkk ON Dkk.Id = Dk.Id WHERE Dkk.MostActive== 1 AND Dk.Selected == 1 AND Dkk.Display = @filt GROUP BY Df.Id ORDER BY V.LineNumber");
 //    if($.workflow.currentDoc=='Pr2'){
 		q.AddParameter("filt", DB.Current.Constant.DisplayPresentations.Manageress);
   //}
@@ -361,7 +363,7 @@ return q.Execute();
 }
 
 function GetSnapShots2() {
-		var q = new Query("SELECT V.Id, V.Ref, V.Slide from Catalog_Presentations_Slides V WHERE V.Ref=@Ref ORDER BY V.LineNumber");
+		var q = new Query("SELECT V.Id, V.Ref, V.Slide, V.LineNumber from Catalog_Presentations_Slides V WHERE V.Ref=@Ref ORDER BY V.LineNumber");
 	q.AddParameter("Ref", GetPreset);
 			return q.Execute();
 			if (res.Next()){

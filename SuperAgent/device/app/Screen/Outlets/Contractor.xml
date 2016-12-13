@@ -2,13 +2,19 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="CreateOutlet.css">
 
 	<s:Push Id="contractor" Value="$param1"></s:Push>
+	<s:Push Id="single" Value="$param2"></s:Push>
 
 	<c:DockLayout>
 
 		<c:DockLayout CssClass="top_navigator">
-			<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$SaveContractorAndBack($contractor)" SubmitScope="INN;KPP;phone_number;email">
+			<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$SaveContractorAndBack($contractor)" SubmitScope="description;INN;KPP;phone_number;email">
 				<c:Image />
-				<c:TextView Text="#list#" />
+				<s:If Test="$single">
+					<c:TextView Text="@back" />
+				</s:If>
+				<s:Else>
+					<c:TextView Text="#list#" />
+				</s:Else>
 			</c:DockLayout>
 			<c:DockLayout Id="btnForward" CssClass="btn_forward" />
 			<c:HorizontalLayout>
@@ -21,6 +27,14 @@
 		<c:ScrollView Id="grScrollView">
 
 			<c:HorizontalLayout CssClass="margin_top" />
+			<c:HorizontalLine />
+
+			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(legal_name, 1)">
+				<c:VerticalLayout>
+					<c:TextView Text="#description#" CssClass="description_row"></c:TextView>
+					<c:EditText Value="$contractor.Description" Placeholder="—" CssClass="main_row" Id="description" Required="true"/>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$FocusOnEditText(legal_name, 1)">
@@ -43,7 +57,7 @@
 				<c:VerticalLayout Id="ownership_vl" OnClickAction="$SelectOwnership($OwnershipType, $contractor)">
 					<c:TextView Text="#ownership#" CssClass="description_row"></c:TextView>
 					<s:If Test="$NotEmptyRef($contractor.OwnershipType)">
-						<c:TextView Id="OwnershipType" Text="#{$contractor.OwnershipType.Description}#" CssClass="main_row"/>
+						<c:TextView Id="OwnershipType" Text="$TranslateString($contractor.OwnershipType.Description)" CssClass="main_row"/>
 					</s:If>
 					<s:Else>
 						<c:TextView Id="OwnershipType" Text="—" CssClass="main_row"/>
@@ -91,6 +105,8 @@
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
+
+			<c:HorizontalLayout CssClass="end_of_block" />
 
 		</c:ScrollView>
 

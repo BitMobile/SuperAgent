@@ -21,7 +21,7 @@
 				</c:DockLayout>
 			</s:If>
 			<s:Else>
-				<c:DockLayout CssClass="btn_forward" OnEvent="Forward" OnClickAction="$DoForward()" >
+				<c:DockLayout Id="btn_forward" CssClass="btn_forward" OnEvent="Forward" OnClickAction="$DoForward()">
 					<c:TextView Id="btnForward" Text="#forward#" />
 				</c:DockLayout>
 			</s:Else>
@@ -135,7 +135,8 @@
 								<c:VerticalLayout OnClickAction="$GoToQuestionAction($question.AnswerType, $visit, control{$index}, $question.Question, $question.Answer, $question.Description)">
 									<c:TextView Text="$question.Description" CssClass="description_row"></c:TextView>
 									<s:If Test="$question.IsInputField=='1'">
-										<c:MemoEdit Id="control{$index}" Text="$question.Answer" Placeholder="—" OnChange="$AssignAnswer($question.Question, null, $question.AnswerType)" OnLostFocus="$FormatAndRefresh($question.Question, $question.AnswerType)" Keyboard="$question.KeyboardType" CssClass="answer_main_row"></c:MemoEdit>
+										<s:Push Id="submitCollectionString" Value="$AddToSubmitCollection($submitCollectionString, control{$index})"></s:Push>
+										<c:MemoEdit Id="control{$index}" Text="$question.Answer" Placeholder="—" OnChange="$AssignAnswer($question.Question, null, $question.AnswerType)" OnLostFocus="$FormatAndRefresh($question.Question, $question.AnswerType)" Keyboard="$question.KeyboardType" CssClass="answer_main_row" Length="140"></c:MemoEdit>
 									</s:If>
 									<s:Else>
 										<c:TextView Id="control{$index}" Text="$question.AnswerOutput" CssClass="answer_main_row"></c:TextView>
@@ -147,11 +148,13 @@
 
 					</s:Iterator>
 
+					<c:HorizontalLayout CssClass="end_of_block" />
+
 				</s:If>
 
 				<s:Else>
 					<c:HorizontalLayout CssClass="margin_top" />
-					<c:TextView Text="#no_questions_list#" CssClass="no_contacts" />
+					<c:TextView Text="#no_questions_list#" CssClass="no_items" />
 				</s:Else>
 
 			</c:ScrollView>

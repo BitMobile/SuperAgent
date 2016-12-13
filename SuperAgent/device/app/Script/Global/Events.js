@@ -14,7 +14,7 @@ function OnApplicationRestore(name){
 
 	Indicators.SetIndicators();
 
-	if ((name=="Visit" && $.Exists('outletScreen')) || name=="Outlet" || name=="Order" || name=="Return")
+	if ((name=="Visit" && $.Exists('outletScreen')) || name=="Outlet" || name=="CreateOutlet" || ((name=="Order" || name=="Return") && !$.Exists('executedOrder')))
 		GPS.StartTracking();
 
 }
@@ -22,6 +22,7 @@ function OnApplicationRestore(name){
 function OnApplicationBackground(name){
 	GPS.StopTracking();
 }
+
 
 // ------------------------ Events ------------------------
 
@@ -32,9 +33,10 @@ function OnWorkflowStart(name) {
 	Variables.AddGlobal("workflow", new Dictionary());
 	Variables["workflow"].Add("name", name);
 
-	if (name == "Visit" || name == "Outlet" || name=="Order" || name=="Return")
+	if (name == "Visit" || name == "Outlet" || name=="CreateOutlet" || ((name=="Order" || name=="Return") && !$.Exists('executedOrder')))
 	{
 		StartTracking();
+		$.workflow.Add("outlet", GlobalWorkflow.GetOutlet());
 	}
 
 	if (name=="Visit" || name=="Order" || name=="Return")
@@ -44,24 +46,28 @@ function OnWorkflowStart(name) {
 
 	if (name == "Visit")
 	{
-		CreateQuestionnareTable($.outlet);
-		CreateQuestionsTable($.outlet);
-		CreateSKUQuestionsTable($.outlet);
-		CreatePresTable($.outlet);
 
-		SetSteps($.outlet);
+		var outlet = $.workflow.outlet;
+
+		CreateQuestionnareTable(outlet);
+		CreateQuestionsTable(outlet);
+		CreateSKUQuestionsTable(outlet);
+		CreatePresTable(outlet);
+
+		SetSteps(outlet);
 	}
 
 }
 
 function OnWorkflowForward(name, lastStep, nextStep, parameters) {
+
 	if (name = "Visit" && lastStep == "Outlet")
 		GPS.StopTracking();
 }
 
 function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 
-	if (workflowName == "Visit" && nextStep != "Outlet" && nextStep != "Total")
+	if (workflowName == "Visit" && nextStep != "Outlet" && nextStep != "Total" && nextStep != "Total_Tasks")
 	{
 		var standart = AlternativeStep(nextStep);
 		if (!standart)
@@ -76,14 +82,17 @@ function OnWorkflowForwarding(workflowName, lastStep, nextStep, parameters) {
 	if (NextDoc(lastStep, nextStep)) //between Return and Order
 	{
 		Global.ClearFilter();
+		GlobalWorkflow.SetMassDiscount(null);
 	}
 
 	WriteScreenName(nextStep);
 
+	if ($.workflow.HasValue("curentStep"))
+		$.workflow.Remove("curentStep");
+	$.workflow.Add("curentStep", nextStep);
+
 	return true;
 }
-
-// function OnWorkflowBack(name, lastStep, nextStep) {}
 
 function OnWorkflowFinish(name, reason) {
 
@@ -97,6 +106,12 @@ function OnWorkflowFinish(name, reason) {
 	if (name=="Visit" || name=="Order" || name=="Return")
 	{
 		Global.ClearFilter();
+		GlobalWorkflow.SetMassDiscount(null);
+	}
+
+	if (name=="Visit")
+	{
+		ClearUSRTables();
 	}
 }
 
@@ -105,6 +120,10 @@ function OnWorkflowFinished(name, reason){
 }
 
 function OnWorkflowBack(workflow, lastStep, nextStep){
+
+	if ($.workflow.HasValue("curentStep"))
+		$.workflow.Remove("curentStep");
+	$.workflow.Add("curentStep", nextStep);
 
 	if (name = "Visit" && nextStep == "Outlet")
 		GPS.StartTracking();
@@ -116,15 +135,12 @@ function OnWorkflowBack(workflow, lastStep, nextStep){
 		Global.ClearFilter();
 	}
 
-	if (lastStep=="Image" && nextStep=="EditSKU")  //Diarty hack, if remove, will be created new orderItem
-	{
-		$.AddGlobal("orderitemAlt", $.entity);
-	}
 }
 
 function OnWorkflowPause(name) {
 	Variables.Remove("workflow");
 }
+
 
 // ------------------------ Functions ------------------------
 
@@ -135,12 +151,12 @@ function StartTracking(){
 
 function RemoveVariables(name){
 
+	GlobalWorkflow.ClearVariables();
+
 	Variables.Remove("workflow");
 
 	if (name != "Main")
 	{
-		if (Variables.Exists("outlet"))
-			Variables.Remove("outlet");
 		if (Variables.Exists("planVisit"))
 			Variables.Remove("planVisit");
 		if (Variables.Exists("steps"))
@@ -258,9 +274,9 @@ function SetSteps(outlet) {
 	var statusValues = q.Execute();
 	while (statusValues.Next()) {
 		if (EvaluateBoolean(statusValues.CreateOrderInMA) && $.sessionConst.orderEnabled && hasContractors)
-			InsertIntoSteps("5", "SkipOrder", false, "Order", "PrSKU");
+			InsertIntoSteps("5", "SkipOrder", false, "Order", "SKUs");
 		else
-			InsertIntoSteps("5", "SkipOrder", true, "Order", "PrSKU");
+			InsertIntoSteps("5", "SkipOrder", true, "Order", "SKUs");
 		if (EvaluateBoolean(statusValues.CreateReturnInMA) && $.sessionConst.returnEnabled && hasContractors) {
 			InsertIntoSteps("6", "SkipReturn", false, "Return", "Order");
 		}
@@ -272,19 +288,18 @@ function SetSteps(outlet) {
 			InsertIntoSteps("7", "SkipEncashment", true, "Receivables", "Return");
 			////////
 		if (parseInt(GetPresCountPer()) == parseInt(0) && $.sessionConst.PrEnabled){
-				InsertIntoSteps("8", "SkipPrPer", true, "PrOrder", "Receivables");}
+				InsertIntoSteps("8", "SkipPrPer", false, "PrOrder", "Receivables");}
 				else {
-			InsertIntoSteps("8", "SkipPrPer", false, "PrOrder", "Receivables");
+			InsertIntoSteps("8", "SkipPrPer", true, "PrOrder", "Receivables");
 				}
 			//////
-
 		if (EvaluateBoolean(statusValues.FillQuestionnaireInMA))
 			skipQuest = false;
 		else
 			skipQuest = true;
 	}
 
-	if (parseInt(GetTasksCount()) != parseInt(0))
+	if (parseInt(GetTasksCount(outlet)) != parseInt(0))
 		InsertIntoSteps("1", "SkipTask", false, "Visit_Tasks", "Outlet");
 	else
 		InsertIntoSteps("1", "SkipTask", true, "Visit_Tasks", "Outlet");
@@ -298,15 +313,31 @@ function SetSteps(outlet) {
 		InsertIntoSteps("3", "SkipSKUs", true, "SKUs", "Questions");
 	else
 		InsertIntoSteps("3", "SkipSKUs", false, "SKUs", "Questions");
-	////////
-if (parseInt(GetPresCount()) == parseInt(0) && $.sessionConst.PrEnabled){
-		InsertIntoSteps("4", "SkipPr", true, "PrSKU", "SKUs");}
-		else {
-	InsertIntoSteps("4", "SkipPr", false, "PrSKU", "SKUs");
-		}
-	//////
-
+		////////
+	if (parseInt(GetPresCount()) == parseInt(0) && $.sessionConst.PrEnabled){
+			InsertIntoSteps("4", "SkipPr", true, "PrSKU", "SKUs");}
+			else {
+		InsertIntoSteps("4", "SkipPr", false, "PrSKU", "SKUs");
+			}
+		//////
 }
+
+
+///////////////////
+function GetPresCount() {
+	var query = new Query("SELECT COUNT(V.Id) from USR_SelectedPres V LEFT JOIN Document_SetPresentations D ON V.Id=D.Id WHERE D.Display=@manager AND V.Selected = 1 AND D.MostActive = 1 LIMIT 1");
+	query.AddParameter("manager", DB.Current.Constant.DisplayPresentations.Manageress);
+	var res = query.ExecuteScalar();
+	return res;
+}
+
+function GetPresCountPer() {
+	var query = new Query("SELECT COUNT(V.Id) from USR_SelectedPres V LEFT JOIN Document_SetPresentations D ON V.Id=D.Id WHERE D.Display=@manager AND V.Selected = 1 AND D.MostActive = 1 LIMIT 1");
+	query.AddParameter("manager", DB.Current.Constant.DisplayPresentations.Pervostolnik);
+	var res = query.ExecuteScalar();
+	return res;
+}
+///////////////////////////
 
 function InsertIntoSteps(stepOrder, skip, value, action, previousStep) {
 	var q = new Query("INSERT INTO USR_WorkflowSteps VALUES (@stepOrder, @skip, @value, @action, @previousStep)");
@@ -322,7 +353,7 @@ function HasContractors(outlet){
 
 	var res;
 
-	var outletObj = $.outlet.GetObject();
+	var outletObj = outlet.GetObject();
 	if (outletObj.Distributor==DB.EmptyRef("Catalog_Distributor"))
 		res = HasOutletContractors(outlet);
 	else
@@ -382,12 +413,19 @@ function PrepareScheduledVisits_Map() {
 	}
 }
 
-function GetTasksCount() {
-	var taskQuery = new Query("SELECT COUNT(Id) FROM Document_Task WHERE PlanDate >= date('now','start of day', 'localtime') AND Outlet=@outlet");
-	taskQuery.AddParameter("outlet", $.outlet);
-	return taskQuery.ExecuteScalar();
+function GetTasksCount(outlet) {
+	// var taskQuery = new Query("SELECT COUNT(Id) FROM Document_Task " +
+	// 	"WHERE (Status=0 AND DATE(StartPlanDate)<=DATE('now', 'localtime')) " +
+	// 	" OR " +
+	// 	" (Status=1 AND DATE(ExecutionDate)=DATE('now', 'localtime')) " +
+	// 	" AND Outlet=@outlet");
+	// taskQuery.AddParameter("outlet", outlet);
+	// return taskQuery.ExecuteScalar();
+	return parseInt(1);
+
 }
 
+//////////////////////
 
 function CreatePresTable(outlet) {
 
@@ -494,6 +532,7 @@ function CreatePresTable(outlet) {
 	query.Execute();
 
 }
+////////////////
 //-----Questionnaire selection-------
 
 function GetRegionQueryText1() {
@@ -788,20 +827,6 @@ function GetSKUQuestionsCount() {
 	return res;
 }
 
-function GetPresCount() {
-	var query = new Query("SELECT COUNT(V.Id) from USR_SelectedPres V LEFT JOIN Document_SetPresentations D ON V.Id=D.Id WHERE D.Display=@manager AND V.Selected = 1 LIMIT 1");
-	query.AddParameter("manager", DB.Current.Constant.DisplayPresentations.Manageress);
-	var res = query.ExecuteScalar();
-	return res;
-}
-
-function GetPresCountPer() {
-	var query = new Query("SELECT COUNT(V.Id) from USR_SelectedPres V LEFT JOIN Document_SetPresentations D ON V.Id=D.Id WHERE D.Display=@manager AND V.Selected = 1 LIMIT 1");
-	query.AddParameter("manager", DB.Current.Constant.DisplayPresentations.Pervostolnik);
-	var res = query.ExecuteScalar();
-	return res;
-}
-
 function CreateCondition(list) {
 	var str = "";
 	var notEmpty = false;
@@ -827,4 +852,15 @@ function DeleteFromList(item, collection) {
             list.Add(i);
     }
     return list;
+}
+
+function ClearUSRTables(){
+	var q = new Query("DELETE FROM USR_Questionnaires");
+	q.Execute();
+
+	var q = new Query("DELETE FROM USR_Questions");
+	q.Execute();
+
+	var q = new Query("DELETE FROM USR_SKUQuestions");
+	q.Execute();
 }

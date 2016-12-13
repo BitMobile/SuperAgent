@@ -9,11 +9,6 @@ function CreateOutlet(outlet) {
 	{
 		outlet = DB.Create("Catalog.Outlet");
 		outlet.OutletStatus = DB.Current.Constant.OutletStatus.Potential;
-		
-		var q = new Query("SELECT Id From Catalog_OutletClass ORDER BY Code LIMIT 1");
-		var outletClass = q.ExecuteScalar();
-		outlet.Class = outletClass;		
-		
 		outlet.Save();
 		return outlet.Id;
 	}
@@ -87,11 +82,13 @@ function SaveNewOutlet(outlet) {
 			outlet.Lattitude = parseInt(0);
 			outlet.Longitude = parseInt(0);
 			outlet.Save();
-			Variables.AddGlobal("outlet", outlet.Id);
 
 			GlobalWorkflow.SetOutletIsCreated(true);
 			GlobalWorkflow.SetOutlet(outlet.Id);
-			Workflow.Commit();
+
+			$.workflow.Add("outlet", GlobalWorkflow.GetOutlet());
+
+			Workflow.Action('OpenOutlet', []);
 
 			return null;
 		}

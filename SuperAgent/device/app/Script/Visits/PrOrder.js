@@ -20,6 +20,7 @@ var DocumentsPr;
 var obligateNumberStart;
 var nstep;
 var pictID2;
+var numberslide;
 
 
 function OnLoad(){
@@ -281,7 +282,7 @@ Workflow.Refresh([]);
 }
 
 
-function OpenViewPres(par1, par2){
+function OpenViewPres(par1, par2, par3){
 if(SlidesPick !=undefined){
 
 
@@ -297,7 +298,7 @@ var NextSrinTime = DateTime.Now;
 
     ETach.Save();}
 
-  DoAction(par1, par2);
+  DoAction(par1, par2, SlidesPick.Id);
 }
 
 }
@@ -341,7 +342,7 @@ function GetSnapShots() {
 
 /////////////////
 
-		var q = new Query("SELECT Df.Id, V.Slide  from   Catalog_Presentations_Slides V  INNER JOIN Catalog_Presentations Df  ON  Df.Id = V.Ref INNER JOIN Document_SetPresentations_Presentations Dm  ON  Df.Id = Dm.Presentation INNER JOIN USR_SelectedPres Dk ON Dm.Ref = Dk.Id INNER JOIN Document_SetPresentations Dkk ON Dkk.Id = Dk.Id WHERE Dk.Selected == 1 AND Dkk.Display = @filt GROUP BY Df.Id ORDER BY V.LineNumber");
+		var q = new Query("SELECT Df.Id, V.Slide  from   Catalog_Presentations_Slides V  INNER JOIN Catalog_Presentations Df  ON  Df.Id = V.Ref INNER JOIN Document_SetPresentations_Presentations Dm  ON  Df.Id = Dm.Presentation INNER JOIN USR_SelectedPres Dk ON Dm.Ref = Dk.Id INNER JOIN Document_SetPresentations Dkk ON Dkk.Id = Dk.Id WHERE Dkk.MostActive = 1 AND Dk.Selected == 1 AND Dkk.Display = @filt GROUP BY Df.Id ORDER BY V.LineNumber");
 
       q.AddParameter("filt", DB.Current.Constant.DisplayPresentations.Pervostolnik);
 
@@ -356,7 +357,7 @@ function GetSnapShots() {
 }
 
 function GetSnapShots2() {
-		var q = new Query("SELECT V.Id, V.Ref, V.Slide from Catalog_Presentations_Slides V WHERE V.Ref=@Ref ORDER BY V.LineNumber");
+		var q = new Query("SELECT V.Id, V.Ref, V.Slide,  V.LineNumber from Catalog_Presentations_Slides V WHERE V.Ref=@Ref ORDER BY V.LineNumber");
 	q.AddParameter("Ref", GetPreset);
 			return q.Execute();
 			if (res.Next()){

@@ -38,12 +38,12 @@ function ValidateEncashments() {
 }
 
 function GetAmount(outlet) {
-	var receivables = new Query("SELECT SUM(RD.DocumentSum) " +
+	var receivables = new Query("SELECT FormatNumber(\"{0:F2}\",SUM(RD.DocumentSum)) " +
 			" FROM Document_AccountReceivable_ReceivableDocuments RD " +
 			" JOIN Document_AccountReceivable AR ON AR.Id=RD.Ref AND AR.Outlet = @outlet" +
 			" ORDER BY RD.LineNumber");
 	receivables.AddParameter("outlet", outlet);
-	amount = FormatValue(receivables.ExecuteScalar());
+	amount = receivables.ExecuteScalar() || 0;
 }
 
 function RefreshAmount(control, encashment, encasmentItem, receivableDoc) {
@@ -60,12 +60,12 @@ function RefreshAmount(control, encashment, encasmentItem, receivableDoc) {
 			encasmentItem.EncashmentSum = parseFloat(control.Text);
 		encasmentItem.Save();
 
-		var q = new Query("SELECT SUM(EncashmentSum) FROM Document_Encashment_EncashmentDocuments WHERE Ref=@ref");
+		var q = new Query("SELECT FormatNumber(\"{0:F2}\",SUM(EncashmentSum)) FROM Document_Encashment_EncashmentDocuments WHERE Ref=@ref");
 		q.AddParameter("ref", encashment);
 		var s = q.ExecuteScalar();
 
 		encashment = encashment.GetObject();
-		encashment.EncashmentAmount = FormatValue(s);
+		encashment.EncashmentAmount = s || 0;
 		encashment.Save();
 		//$.encAmount.Text = FormatValue(s);
 		//Workflow.Refresh([]);
@@ -106,7 +106,7 @@ function CreateEncashmentItem(encashment, receivableDoc) {
 
 function SpreadEncasmentAndRefresh(encashment, outlet, receivables) {
 
-	SaveSum();
+	SaveSum($.encAmount);
 	receivables = GetReceivables(outlet);
 
 	var sumToSpread = encashment.EncashmentAmount;
@@ -158,13 +158,13 @@ function ClearEmptyRecDocs(encashment) {
 }
 
 function GetOverdueAmount(outlet) {
-	var q = new Query("SELECT SUM(R.DocumentSum) " +
+	var q = new Query("SELECT FormatNumber(\"{0:F2}\",SUM(R.DocumentSum)) " +
 			" FROM Document_AccountReceivable_ReceivableDocuments R " +
 			" JOIN Document_AccountReceivable A ON A.Id=R.Ref AND A.Outlet = @outlet" +
 			" WHERE Overdue=1");
 	q.AddParameter("outlet", outlet);
 
-	overdueAmount = FormatValue(q.ExecuteScalar());
+	overdueAmount = q.ExecuteScalar() || 0;
 }
 
 function FormatSum(control, value) {
@@ -183,14 +183,17 @@ function FormatAmount(control) {
 		control.Text = String.Format("{0:F2}", control.Text);
 }
 
-function SaveSum(control) {
+function SaveSum(sender) {
 	var enc = $.workflow.encashment.GetObject();
-	if ($.encAmount.Text == '.') {
-		$.encAmount.Text = '';
+	if (sender.Text == '.') {
+		sender.Text = '';
+	}
+	else if (TrimAll(sender.Text) == TrimAll('-')){
+		sender.Text = "";
 	}
 	else {
-		enc.EncashmentAmount = ToDecimal($.encAmount.Text);
-		$.encAmount.Text = enc.EncashmentAmount;
+		enc.EncashmentAmount = ToDecimal(sender.Text);
+		sender.Text = enc.EncashmentAmount;
 		enc.Save();
 	}
 }

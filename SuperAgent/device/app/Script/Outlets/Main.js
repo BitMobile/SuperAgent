@@ -2,6 +2,8 @@
 var singlePicture;
 var parameterValueC;
 var title;
+var back;
+var outletDesc;
 
 //"description"	= "000000001"
 //"address"			= "000000002"
@@ -28,8 +30,14 @@ function OnLoading() {
 
 	$.Add("primaryParametersSettings", primaryParametersSettings);
 
+	back = Translate["#" + Lower(GlobalWorkflow.GetMenuItem()) + "#"];
+
 	title = Translate["#outlet#"];
 
+}
+
+function LoadObject(val){
+	return val.LoadObject();
 }
 
 function HasMenu(){
@@ -47,9 +55,9 @@ function GetOutlets(searchText) {
 
 	if (String.IsNullOrEmpty(searchText)==false) { //search processing
 		searchText = StrReplace(searchText, "'", "''");
-		search = "WHERE Contains(O.Description, '" + searchText + "') ";
+		search = "WHERE Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "')";
 	}
-	
+
 	var currentDoc = GlobalWorkflow.GetMenuItem();
 
 	if (currentDoc=="Outlets") {  //ShowOutletInMA for Outlets.xml at Outlets workflow
@@ -107,12 +115,6 @@ function AddGlobalAndAction(outlet) {
 
 }
 
-function GetOutletObject(){
-	if (!$.Exists("outlet"))
-		$.AddGlobal("outlet", GlobalWorkflow.GetOutlet());
-	return GetObject($.outlet);
-}
-
 function CreateOutletAndForward() {
 	var p = DB.Create("Catalog.Outlet");
 	p.Lattitude = 0;
@@ -136,6 +138,32 @@ function CreateOutletEnabled(){
 	else
 		return false;
 
+}
+
+function EmptyCoordinates(outlet){
+	return !!(outlet != null && Converter.ToDecimal(outlet.Lattitude)!= Converter.ToDecimal(outlet.Longitude));
+}
+function CashDesc(sender,tempoutlet){
+	var outlet=tempoutlet.GetObject();
+	outletDesc=outlet.Description;
+}
+function CheckForNullDesc(sender,tempoutlet){
+	var outlet=tempoutlet.GetObject();
+	var descString=TrimAll(outlet.Description);
+	if (IsNullOrEmpty(descString)){
+		outlet.Description=outletDesc;
+		$.outletDescr.Text=outletDesc;
+		outlet.Save();
+	}
+	//$.outletDescr.CssClass="main_row";
+	//$.outletDescr.Refresh();
+	//Workflow.Refresh([]);
+	}
+
+function SaveValue(control, ref) {
+	var outlet = ref.GetObject();
+	outlet.Address = control.Text;
+	outlet.Save();
 }
 
 function GetOutletParameters(outlet) {
@@ -226,7 +254,6 @@ function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParamete
 		if (editOutletParameters && $.primaryParametersSettings[primaryParameterName]) {
 
 			var listChoice = null;
-			var func = null;
 
 			if (title == Translate["#status#"]) {
 				var query = new Query("SELECT Id, Description FROM Enum_OutletStatus");
@@ -250,7 +277,7 @@ function SelectIfNotAVisit(outlet, attribute, control, title, editOutletParamete
 				listChoice = query.Execute();
 			}
 
-			Dialogs.DoChoose(listChoice, outlet, attribute, control, func, title);
+			Dialogs.DoChoose(listChoice, outlet, attribute, control, null, title);
 		}
 	}
 }
@@ -424,7 +451,7 @@ function GetImagePath(objectID, pictID, pictExt) {
 function ImageActions(control, valueRef, imageControl, outlet, filename) {
 	if ($.sessionConst.editOutletParameters && $.primaryParametersSettings["000000008"]) {
 		parameterValueC = valueRef;
-		Images.AddSnapshot($.outlet, valueRef, OutletSnapshotHandler, Translate["#snapshot#"], Variables[imageControl].Source);
+		Images.AddSnapshot($.workflow.outlet, valueRef, OutletSnapshotHandler, Translate["#snapshot#"], Variables[imageControl].Source);
 	} else {
 		Workflow.Action("ShowImage", [GetImagePath(outlet, filename, ".jpg"), valueRef, "Value", true])
 	}
@@ -463,13 +490,13 @@ function OutletSnapshotHandler(state, args) {
 
 // --------------------------case Visits----------------------
 
-function CreateVisitIfNotExists(outlet, userRef, visit, planVisit) {
+function CreateVisitIfNotExists(userRef, visit, planVisit) {
 
 	if (visit == null) {
 		visit = DB.Create("Document.Visit");
 		if (planVisit != null)
 			visit.Plan = planVisit;
-		visit.Outlet = outlet;
+		visit.Outlet = $.workflow.outlet;
 		visit.SR = userRef;
 		visit.Date = DateTime.Now;
 		visit.StartTime = DateTime.Now;
@@ -511,7 +538,7 @@ function CoordsChecked(visit) {
 		visitObj.Longitude = location.Longitude;
 		visitObj.Save();
 	}
-	
+
 	if (Variables["workflow"]["name"] == "Visit" && NotEmptyRef(visit.Plan)) {
 		var query = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='CoordinateControlEnabled'");
 		var coordControl = query.ExecuteScalar();
@@ -599,7 +626,7 @@ function ShowContractorsIfExists(outlet) {
 			q.AddParameter("ref", outletObj.Distributor);
 			contractor = q.ExecuteScalar();
 		}
-		DoAction('Contractor', contractor);
+		DoAction('Contractor', contractor, true);
 	}
 
 	else if (con > parseInt(1))
@@ -706,27 +733,8 @@ function BackMenu(){
 		return true;
 }
 
-function CommitAndBack(){
-	DB.Commit();
-	Workflow.Rollback();
-}
-
 function SnapshotExists(filename) {
 
 	return FileSystem.Exists(filename);
 
-}
-
-function GetNextVisit(outlet){
-	var q = new Query("SELECT strftime('%d.%m.%Y',VP.Date) AS PlanDate " +
-			"FROM Document_VisitPlan_Outlets VP " +
-			"LEFT JOIN Document_Visit V ON V.Plan = VP.Ref AND V.Outlet = VP.Outlet AND date(V.Date) = date(VP.Date) AND date(V.Date) >= date('now') " +
-			"WHERE VP.Outlet=@outlet AND date(VP.Date) >= date('now') AND V.Id Is Null LIMIT 1");
-	q.AddParameter("outlet", outlet);
-	q.AddParameter("date", DateTime.Now);
-	var res = q.ExecuteScalar();
-	if (res != null)
-		return res;
-	else
-		return null;
 }

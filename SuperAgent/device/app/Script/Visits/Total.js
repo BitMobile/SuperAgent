@@ -25,6 +25,23 @@ function OnLoad(){
 	GetPresentPodshet();
 }
 
+function GetPresentPodshet(){
+
+var visit = $.workflow.visit;
+//Dialog.Debug(visit);
+
+var query = new Query("SELECT Id FROM Document_Visit_ResultPresent WHERE Ref=@ref AND EnableIniciativ==1");
+query.AddParameter("ref", visit);
+var visitgetini = query.ExecuteCount();
+$.initiatives.Text = 	visitgetini;
+
+//Dialog.Debug(visitgetini);
+var query = new Query("SELECT Id FROM Document_Visit_ResultPresent WHERE Ref=@ref AND EnableTeach==1");
+query.AddParameter("ref", visit);
+var conducttraining = query.ExecuteCount();
+$.conducttraining.Text = 	conducttraining;
+//Dialog.Debug(visitgetini);
+}
 
 function GetNextVisit(outlet){
 	var q = new Query("SELECT Id, PlanDate FROM Document_MobileAppPlanVisit WHERE Outlet=@outlet AND DATE(PlanDate)>=DATE(@date) AND Transformed=0 LIMIT 1");
@@ -110,120 +127,81 @@ function GetOrderControlValue() {
     }
 }
 
-function CheckRecOrder(InOrder,RecOrderIn){
-
-return Converter.ToDecimal(InOrder) < Converter.ToDecimal(RecOrderIn);
-
-}
-
 function CountDoneTasks(visit) {
-    var query = new Query("SELECT Id FROM Document_Visit_Task WHERE Ref=@ref AND Result=@result");
-    query.AddParameter("ref", visit);
-    query.AddParameter("result", true);
-    return query.ExecuteCount();
+	var query = new Query;
+
+	var outlet = "";
+
+	if ($.workflow.name == "Visit"){
+		query.AddParameter("outlet", GlobalWorkflow.GetOutlet());
+		outlet = " AND DT.Outlet=@outlet ";
+	}
+
+	query.Text = "SELECT O.Description AS Outlet, DT.Id, DT.TextTask, DT.EndPlanDate, DT.ExecutionDate " +
+		" FROM Document_Task DT " +
+		" JOIN Catalog_Outlet O ON DT.Outlet=O.Id " +
+		" WHERE DT.Status=1 " +
+		" AND DATE(ExecutionDate)=DATE('now', 'localtime') " + outlet +
+		" ORDER BY DT.ExecutionDate desc, O.Description";
+
+	return query.ExecuteCount();
 }
 
 function CountTasks(outlet) {
-    var query = new Query("SELECT Id FROM Document_Task WHERE PlanDate >= @planDate AND Outlet = @outlet");
-    query.AddParameter("outlet", outlet);
-    query.AddParameter("planDate", DateTime.Now.Date);
-    return query.ExecuteCount();
+	var q = new Query;
+
+	var outlet = "";
+
+	if ($.workflow.name == "Visit"){
+		q.AddParameter("outlet", GlobalWorkflow.GetOutlet());
+		outlet = " AND DT.Outlet=@outlet ";
+	}
+
+	q.Text = "SELECT O.Description AS Outlet, DT.Id, DT.TextTask, DT.EndPlanDate " +
+		" FROM Document_Task DT " +
+		" JOIN Catalog_Outlet O ON DT.Outlet=O.Id " +
+		" WHERE ((Status=0 AND DATE(StartPlanDate)<=DATE('now', 'localtime')) " +
+		" OR " +
+		" (Status=1 AND DATE(ExecutionDate)=DATE('now', 'localtime'))) " + outlet +
+		" ORDER BY DT.EndPlanDate, O.Description";
+
+	return q.ExecuteCount();
 }
 
 function GetOrderSUM(order) {
-    var query = new Query("SELECT SUM(Qty*Total) FROM Document_Order_SKUs WHERE Ref = @Ref");
+    var query = new Query("SELECT FormatNumber(\"{0:F2}\",SUM(Qty*Total)) FROM Document_Order_SKUs WHERE Ref = @Ref");
     query.AddParameter("Ref", order);
-    var sum = query.ExecuteScalar();
-    return FormatValue(sum);
+    var sum = query.ExecuteScalar() || 0;
+    return sum;
 }
 
 function GetReturnSum(returnDoc) {
-	var query = new Query("SELECT SUM(Qty*Total) FROM Document_Return_SKUs WHERE Ref = @Ref");
+	var query = new Query("SELECT FormatNumber(\"{0:F2}\",SUM(Qty*Total)) FROM Document_Return_SKUs WHERE Ref = @Ref");
 	query.AddParameter("Ref", returnDoc);
-	var sum = query.ExecuteScalar();
-	return FormatValue(sum);
+	var sum = query.ExecuteScalar() || 0;
+	return sum;
 }
 
-function CheckAndCommit(order, visit, wfName) {
+function AskEndVisit(order, visit, wfName) {
+	Dialog.Alert(Translate["#visit_end_question#"], CheckAndCommit, [order, visit, wfName], Translate["#end#"], Translate["#go_back#"]);
+}
 
-    visit = visit.GetObject();
-	visit.EndTime = DateTime.Now;
-
+function CheckAndCommit(state, args) {
+	if (args.Result == 0) {
+		order = state[0];
+		visit = state[1];
+		wfName = state[2];
+	  visit = visit.GetObject();
+		visit.EndTime = DateTime.Now;
     if (OrderExists(visit.Id)) {
         order.GetObject().Save();
     }
-
     CreateQuestionnaireAnswers();
-
     visit.Save();
     Workflow.Commit();
-
+	}
 }
 
-function GetOrderTable(order, outlet, visit) {
-    /*var query = new Query("SELECT O.SKU, O.Qty, AMS.Qty FROM Document_Order_SKUs O " +
-    		"FULL JOIN Catalog_AssortmentMatrix_SKUs AMS ON O.SKU = AMS.SKU " +
-    		"JOIN Catalog_AssortmentMatrix_Outlets AMO ON AMO.Id = AMS.Ref AND AMO.Outlet = @Outlet " +
-    		"WHERE Ref = @Ref");*/
-
-	var query = new Query("SELECT I.OSKU AS OSKU, SUM(I.Qty) AS Qty, I.AMSSKU AS AMSSKU, I.RecOrder AS RecOrder FROM("+
-						"SELECT O.SKU AS OSKU, Sum(ifnull(O.Qty, 0)) AS Qty, AMS.Id AS AMSSKU " +
-						", CASE WHEN ifnull(AMS.RecOrder, 0) < 0 THEN 0 ELSE ifnull(AMS.RecOrder, 0) END AS RecOrder " +
-						" FROM Document_Order_SKUs O " +
-						"LEFT JOIN " +
-
-						"	(SELECT DISTINCT S.Id" +
-						"		, S.Description" +
-						"		, S.CommonStock AS CommonStock" +
-						"		, CASE WHEN V.Answer IS NULL THEN U.Description ELSE UB.Description END AS RecUnit" +
-						"		, CASE WHEN V.Answer IS NULL THEN U.Id ELSE UB.Id END AS UnitId" +
-						"		, CASE WHEN V.Answer IS NULL THEN MS.Qty ELSE (MS.BaseUnitQty-V.Answer) END AS RecOrder" +
-						"		, CASE WHEN MS.Qty IS NULL THEN 0 ELSE CASE WHEN (MS.BaseUnitQty-V.Answer)>0 OR (V.Answer IS NULL AND MS.Qty>0) THEN 2 ELSE 1 END END AS OrderRecOrder" +
-
-						"	FROM _Catalog_SKU S " +
-						"		JOIN Catalog_UnitsOfMeasure UB ON S.BaseUnit=UB.Id" +
-						"		LEFT JOIN Catalog_AssortmentMatrix_Outlets O ON O.Outlet=@outlet" +
-						"		JOIN Catalog_AssortmentMatrix_SKUs MS ON S.Id=MS.SKU AND MS.BaseUnitQty IN  (SELECT MAX(SS.BaseUnitQty) FROM Catalog_AssortmentMatrix_SKUs SS  JOIN Catalog_AssortmentMatrix_Outlets OO ON SS.Ref=OO.Ref     WHERE Outlet=@outlet AND SS.SKU=MS.SKU LIMIT 1)" +
-						"		LEFT JOIN Catalog_UnitsOfMeasure U ON MS.Unit=U.Id" +
-						"		LEFT JOIN USR_SKUQuestions V ON MS.SKU=V.SKU AND V.Question IN (SELECT Id FROM Catalog_Question CQ WHERE CQ.Assignment=@stock)" +
-
-						"	WHERE S.IsTombstone = 0  ORDER BY  OrderRecOrder DESC,  S.Description LIMIT 100) AS AMS ON AMS.Id = O.SKU " +
-
-						"WHERE Ref = @Ref GROUP BY O.SKU, ifnull(O.Qty, 0), AMS.Id, ifnull(AMS.RecOrder, 0) " +
-
-						"UNION " +
-
-						"SELECT O.SKU AS OSKU, Sum(ifnull(O.Qty, 0)) AS Qty, AMS.Id  AS AMSSKU" +
-						", CASE WHEN ifnull(AMS.RecOrder, 0) < 0 THEN 0 ELSE ifnull(AMS.RecOrder, 0) END AS RecOrder " +
-						" FROM (SELECT DISTINCT S.Id" +
-						"		, S.Description" +
-						"		, S.CommonStock AS CommonStock" +
-						"		, CASE WHEN V.Answer IS NULL THEN U.Description ELSE UB.Description END AS RecUnit" +
-						"		, CASE WHEN V.Answer IS NULL THEN U.Id ELSE UB.Id END AS UnitId" +
-						"		, CASE WHEN V.Answer IS NULL THEN MS.Qty ELSE (MS.BaseUnitQty-V.Answer) END AS RecOrder" +
-						"		, CASE WHEN MS.Qty IS NULL THEN 0 ELSE CASE WHEN (MS.BaseUnitQty-V.Answer)>0 OR (V.Answer IS NULL AND MS.Qty>0) THEN 2 ELSE 1 END END AS OrderRecOrder" +
-
-						"	FROM _Catalog_SKU S " +
-						"		JOIN Catalog_UnitsOfMeasure UB ON S.BaseUnit=UB.Id" +
-						"		LEFT JOIN Catalog_AssortmentMatrix_Outlets O ON O.Outlet=@outlet" +
-						"		JOIN Catalog_AssortmentMatrix_SKUs MS ON S.Id=MS.SKU AND MS.BaseUnitQty IN  (SELECT MAX(SS.BaseUnitQty) FROM Catalog_AssortmentMatrix_SKUs SS  JOIN Catalog_AssortmentMatrix_Outlets OO ON SS.Ref=OO.Ref     WHERE Outlet=@outlet AND SS.SKU=MS.SKU LIMIT 1)" +
-						"		LEFT JOIN Catalog_UnitsOfMeasure U ON MS.Unit=U.Id" +
-						"		LEFT JOIN USR_SKUQuestions V ON MS.SKU=V.SKU AND V.Question IN (SELECT Id FROM Catalog_Question CQ WHERE CQ.Assignment=@stock)" +
-
-						"	WHERE S.IsTombstone = 0  ORDER BY  OrderRecOrder DESC,  S.Description LIMIT 100) AS AMS " +
-						"LEFT JOIN " +
-						"Document_Order_SKUs O ON AMS.Id = O.SKU AND Ref = @Ref " +
-						"GROUP BY O.SKU, ifnull(O.Qty, 0), AMS.Id, ifnull(AMS.RecOrder, 0) "+
-						") I GROUP BY I.OSKU, I.AMSSKU, I.RecOrder ");
-
-    query.AddParameter("Ref", order);
-    query.AddParameter("outlet", outlet);
-    query.AddParameter("stock", DB.Current.Constant.SKUQuestions.Stock);
-    query.AddParameter("visit", visit);
-
-    var sum = query.Execute();
-    return sum;
-}
 
 //--------------------------internal functions--------------
 
@@ -306,24 +284,6 @@ function FormatOutput(value) {
 		return "—";
 	else
 		return value;
-}
-
-function GetPresentPodshet(){
-
-var visit = $.workflow.visit;
-//Dialog.Debug(visit);
-
-var query = new Query("SELECT Id FROM Document_Visit_ResultPresent WHERE Ref=@ref AND EnableIniciativ==1");
-query.AddParameter("ref", visit);
-var visitgetini = query.ExecuteCount();
-$.initiatives.Text = 	visitgetini;
-
-//Dialog.Debug(visitgetini);
-var query = new Query("SELECT Id FROM Document_Visit_ResultPresent WHERE Ref=@ref AND EnableTeach==1");
-query.AddParameter("ref", visit);
-var conducttraining = query.ExecuteCount();
-$.conducttraining.Text = 	conducttraining;
-//Dialog.Debug(visitgetini);
 }
 
 

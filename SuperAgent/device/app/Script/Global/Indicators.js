@@ -9,6 +9,8 @@ var encashmentSumm;
 var receivablesSumm;
 var returnSum;
 var returnQty;
+var tasksSum;
+var tasksDone;
 
 function SetIndicators() {
 	SetCommitedScheduledVisits();
@@ -21,6 +23,8 @@ function SetIndicators() {
 	SetUnscheduledVisits();
 	SetReturnSum();
 	SetReturnQty();
+	SetTasksSum();
+	SetTasksDone();
 }
 
 function SetOutletsCount() {
@@ -38,7 +42,7 @@ function GetOutletsCount(){
 
 
 function SetCommitedScheduledVisits(){
-	var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet WHERE V.Date >= @today AND V.Date < @tomorrow AND DATE(VP.Date) >= DATE(@today) AND DATE(VP.Date) < DATE(@tomorrow) AND V.Plan <> @emptyRef ORDER BY O.Description LIMIT 100");
+	var q = new Query("SELECT DISTINCT VP.Outlet FROM Document_Visit V JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet JOIN Catalog_Outlet O ON O.Id = VP.Outlet JOIN Document_VisitPlan DV ON VP.Ref = DV.Id WHERE V.Date >= @today AND V.Date < @tomorrow AND DATE(VP.Date) >= DATE(@today) AND DATE(VP.Date) < DATE(@tomorrow) AND V.Plan <> @emptyRef ORDER BY O.Description LIMIT 100");
 	q.AddParameter("today", DateTime.Now.Date);
 	q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1));
 	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));
@@ -64,7 +68,7 @@ function GetUnscheduledVisits() {
 
 
 function SetPlannedVisits() {
-	var q = new Query("SELECT COUNT(*) FROM Document_VisitPlan_Outlets VPO JOIN Catalog_Outlet O ON VPO.Outlet=O.Id JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus=OSS.Status AND OSS.ShowOutletInMA=1 AND OSS.DoVisitInMA=1 WHERE DATE(Date)=DATE(@date) AND NOT OSS.Status IS NULL");
+	var q = new Query("SELECT COUNT(*) FROM Document_VisitPlan_Outlets VPO JOIN Document_VisitPlan DP ON VPO.Ref = DP.Id JOIN Catalog_Outlet O ON VPO.Outlet=O.Id JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus=OSS.Status AND OSS.ShowOutletInMA=1 AND OSS.DoVisitInMA=1 WHERE DATE(VPO.Date)=DATE(@date) AND NOT OSS.Status IS NULL");
 	q.AddParameter("date", DateTime.Now.Date);
 	plannedVisits = q.ExecuteScalar();
 }
@@ -156,8 +160,6 @@ function GetEncashmentSumm(){
 	return encashmentSumm;
 }
 
-
-
 function SetReceivablesSumm() {
 	var q = new Query("SELECT SUM(RD.DocumentSum) FROM Document_AccountReceivable_ReceivableDocuments RD JOIN Document_AccountReceivable AR ON AR.Id = RD.Ref");
 	var cnt = q.ExecuteScalar();
@@ -169,4 +171,29 @@ function SetReceivablesSumm() {
 
 function GetReceivablesSumm() {
 	return receivablesSumm;
+}
+
+function SetTasksSum(){
+	var q = new Query("SELECT COUNT(Id) FROM Document_Task " +
+		"WHERE (Status=0 AND DATE(StartPlanDate)<=DATE('now', 'localtime')) " +
+		" OR " +
+		" (Status=1 AND DATE(ExecutionDate)=DATE('now', 'localtime')) ");
+	var cnt = q.ExecuteScalar();
+	tasksSum = cnt == null ? 0 : cnt;
+}
+
+function GetTasksSum(){
+	return tasksSum;
+}
+
+function SetTasksDone(){
+	var q = new Query("SELECT COUNT(Id) FROM Document_Task " +
+		" WHERE Status=1 " +
+		" AND DATE(ExecutionDate)=DATE('now', 'localtime') ");
+	var cnt = q.ExecuteScalar();	
+	tasksDone = cnt == null ? 0 : cnt;
+}
+
+function GetTasksDone(){
+	return tasksDone;
 }

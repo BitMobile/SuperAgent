@@ -16,6 +16,7 @@ function ToString(val) {
 }
 
 function ToDecimal(val) {
+    val = TrimAll(val);
 	if (String.IsNullOrEmpty(val))
 		return Converter.ToDecimal(0);
 	else
@@ -185,7 +186,7 @@ function FormatOutput(value) {
 
 function RoundToInt(val){ 
     
-     var string = val;
+    var string = val;
     var resultString = "";
     
     if (typeof string != "string")
@@ -207,6 +208,17 @@ function RoundToInt(val){
         return Round(resultString, 0);
 }
 
+function CheckUserInput(sender){
+    if (TrimAll(sender.Text) == '.' || TrimAll(sender.Text) == ',')
+    {
+        sender.Text = '0,';
+    }                       
+}
+
+function TranslateString(val){
+    return Translate["#" + val + "#"];
+}
+
 //--------------------Clear Button part----------------------
 
 function ShowClearButton(source, button) {
@@ -218,7 +230,7 @@ function HideClearButton(source, button) {
 }
 
 function ClearField(source, field, objectRef, attribute) {
-	field.Text = "";
+    field.Text = "";
 	var object = objectRef.GetObject();
 	object[attribute] = "";
 	object.Save();

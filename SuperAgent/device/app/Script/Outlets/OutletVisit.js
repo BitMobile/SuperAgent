@@ -282,9 +282,30 @@ if (DateAddTru == false) {
 //----------------------Planning--------------
 
 
-function GetPlans(outlet, sr) {
-	var q = new Query("select PW.Id, PW.Date, PW.Number, PW.Commentary from _Document_Visit PW LEFT JOIN _Document_Order PWW ON PW.Id=PWW.Visit WHERE PW.Outlet=@outlet");
-	q.AddParameter("outlet", outlet);
+function GetPlans(outlet, visit) {
+
+//	Dialog.Debug(outlet);
+ if ($.workflow.name=='Visit') {
+	var visits = $.workflow.visit;
+var q = new Query("select  PW.Id, PW.Date, PW.Number, PW.Commentary, PW.Outlet from Document_Visit PW WHERE PW.Outlet=@outlet AND PW.Id <> @visit ORDER BY PW.Date DESC");
+//var q = new Query("select  PW.Id, PW.Date, PW.Number, PW.Commentary, PW.Outlet from Document_Visit PW WHERE PW.Outlet=@outlet ORDER BY PW.Date DESC");
+q.AddParameter("outlet", outlet);
+	q.AddParameter("visit", visits);
+//Dialog.Debug(visits);
+ }
+ else {
+	 var q = new Query("select  PW.Id, PW.Date, PW.Number, PW.Commentary, PW.Outlet from Document_Visit PW WHERE PW.Outlet=@outlet ORDER BY PW.Date DESC");
+	 q.AddParameter("outlet", outlet);
+ }
+
+
+
+	return q.Execute();
+}
+
+function GetSKUS(visit) {
+	var q = new Query("select SK.SKU, SK.Qty from Document_Order_SKUs SK LEFT JOIN Document_Order DO ON SK.Ref=DO.Id WHERE DO.Visit = @visit");
+	q.AddParameter("visit", visit);
 //	Dialog.Debug(outlet);
 //	q.AddParameter("sr", $.common.UserRef);
 	return q.Execute();

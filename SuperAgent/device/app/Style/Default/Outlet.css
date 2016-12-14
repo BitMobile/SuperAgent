@@ -248,6 +248,14 @@
 	font: 42% Arial;
 }
 
+.not_available_basic5{
+	width: 100%;
+	height: 20%;
+	white-space: normal;
+	placeholder-color: #000000;
+	font: 42% Arial;
+}
+
 .not_available {
 	width: 50% auto;
 	height: 100%;

@@ -373,6 +373,12 @@ MemoEdit {
 	dock-align: top;
 }
 
+.margin_top5 {
+	height: 5.3mm;
+	background-color: #efeff4;
+	dock-align: top;
+}
+
 .margin_top1 {
 	height: 1mm;
 	background-color: #efeff4;
@@ -461,6 +467,83 @@ MemoEdit {
 	font: 65% arial;
 }
 
+
+.grid5 {
+	height: 23.8mm;
+	width: 100%;
+	background-color: #ffffff;
+	selected-color: #bacdce;
+}
+
+.grid5 line {
+	width: 100%;
+	height: 1px;
+	background-color: #c8c7cc;
+}
+
+.grid5 img {
+	height: 1.9mm;
+	width: 1.3mm;
+	margin-top: 16%;
+	dock-align: right;
+	margin-right: 2.4mm;
+	background-image: url(arrow.png);
+}
+
+.grid5 vl {
+	width: 100%;
+	height: 100%;
+	dock-align: left;
+	padding-top: 11%;
+	padding-left: 2.4mm;
+}
+
+.grid5 vl MemoEdit {
+	height: 10%;
+	width: 90%;
+	font: 15% Arial;
+	placeholder-color: #FF7C4A;
+}
+
+.grid5 vl EditText {
+	height: 10%;
+	width: 90%;
+	font: 15% Arial;
+	color: #FF7C4A;
+}
+
+.grid5 vl dl {
+	height: 11%;
+	width: 100%;
+}
+
+.grid5 vl dl TextView {
+	width: 100%;
+	height: 100%;
+	margin-top: 5%;
+	white-space: normal;
+	font: 20% Arial;
+	color: #8e8e93;
+	dock-align: left;
+}
+
+.grid5 vl dl Button {
+	width: 13.5mm;
+	height: 100%;
+	dock-align: right;
+	margin-left: -32%;
+	margin-right: 3%;
+	margin-top: 0%;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #FF7C4A;
+	border-radius: 5px;
+	color: #FF7C4A;
+	text-align: center;
+	font: 30% arial;
+}
+
+
 .main_row {
 	width: 100%;
 	height: 40%;
@@ -473,6 +556,14 @@ MemoEdit {
 .description_row {
 	width: 100%;
 	height: 23%;
+	white-space: normal;
+	font: 62% Arial;
+	color: #8e8e93;
+}
+
+.description_row5 {
+	width: 100%;
+	height: 15%;
 	white-space: normal;
 	font: 62% Arial;
 	color: #8e8e93;

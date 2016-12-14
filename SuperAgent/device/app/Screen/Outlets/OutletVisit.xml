@@ -25,16 +25,25 @@
 
 		<c:ScrollView Id="grScrollView">
 
-			<c:HorizontalLayout CssClass="margin_top" />
+			<c:HorizontalLayout CssClass="margin_top5" />
 			<c:HorizontalLine />
 
 			<s:Iterator Id="plan" Value="$GetPlans($outlet)" Status="statusCount">
 
-				<c:HorizontalLayout CssClass="grid">
+				<c:HorizontalLayout CssClass="grid5">
 							<c:VerticalLayout>
-					<c:TextView Text="#description#" CssClass="description_row"></c:TextView>
-					<c:TextView Text="$plan.Date" CssClass="not_available_basic"></c:TextView>
-					<c:TextView Text="$plan.Commentary" CssClass="not_available_basic"></c:TextView>
+			<!--		<c:TextView Text="$plan.Outlet.Description" CssClass="description_row"></c:TextView>-->
+					<c:TextView Text="$FormatDate($plan.Date)" CssClass="description_row5"></c:TextView>
+					<c:TextView Text="$plan.Commentary" CssClass="not_available_basic5"></c:TextView>
+
+
+					<s:Iterator Id="skuss" Value="$GetSKUS($plan.Id)" >
+
+							<c:TextView Text="#sku# {$skuss.SKU.Description} " CssClass="not_available_basic5"></c:TextView>
+								<c:TextView Text="#quantity# {$skuss.Qty}" CssClass="not_available_basic5"></c:TextView>
+
+					</s:Iterator>
+
 							</c:VerticalLayout>
 				</c:HorizontalLayout>
 

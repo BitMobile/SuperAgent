@@ -164,8 +164,6 @@
 			</c:DockLayout>
 			<c:HorizontalLine />
 
-
-
 			<c:HorizontalLayout CssClass="grid" OnClickAction="$SelectIfNotAVisit($workflow.outlet, OutletStatus, $status, #status#, $sessionConst.editOutletParameters, 000000007)">
 				<c:VerticalLayout>
 					<c:TextView Text="#status#" CssClass="description_row" />

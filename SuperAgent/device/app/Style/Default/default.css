@@ -298,6 +298,12 @@ MemoEdit {
 	dock-align: left;
 }
 
+.VertDisp{
+	height: 6.7mm;
+	width: 100%;
+	background-color: #ffffff;
+}
+
 .search Button {
 	margin-left: 1.7mm;
 	margin-top: 18%;

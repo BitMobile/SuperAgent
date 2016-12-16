@@ -970,11 +970,12 @@ function OpenHistory(ShowHistory, outlet){
 		var s = q.ExecuteScalar();
 
 		var req = Web.Request();
-		// req.Host = "http://192.168.1.175/";
+		// req.Host = "http://192.168.1.170/";
+		// req.Host = "http://10.5.170.155/";
 		req.Host = "http://superagent.itelis.ru/";
 		req.UserName="admin";
 		req.Password="";
-		req.Timeout = "00:00:05";
+		req.Timeout = "00:00:10";
 		req.AddHeader("Outlet", s);
 
 		try {
@@ -1039,9 +1040,5 @@ function FormVisits(state, args){
 		}else{
 			Dialog.Message(WebEx.Message);
 		}
-
-
-
-
 	}
 }

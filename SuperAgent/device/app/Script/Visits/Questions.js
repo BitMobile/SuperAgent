@@ -348,7 +348,7 @@ function AssignAnswer(control, question, answer, answerType) {
 		if (answer!=null)
 			answer = answer.ToString();
 	}
-	if (answer == "—" || answer == "-")
+	if (answer == "—" || answer == "-"  || TrimAll(answer) == "")
 		answer = null;
 
 	var answerString;

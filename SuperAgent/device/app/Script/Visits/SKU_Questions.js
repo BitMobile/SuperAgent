@@ -573,7 +573,7 @@ function AssignAnswer(control, question, sku, answer, answerType) {
 		if (answer!=null)
 			answer = answer.ToString();
 	}
-	if (answer == "—" || answer == "" || answer=="-")
+	if (answer == "—" || TrimAll(answer) == "" || answer=="-")
 		answer = null;
 
 	var answerString;

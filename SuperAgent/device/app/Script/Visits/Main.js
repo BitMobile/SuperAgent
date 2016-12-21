@@ -31,12 +31,15 @@ function CheckDateAdd(){
 	}
 }
 function GoForwardDate(){
+	//Dialog.Message($.sessionConst.DayPlanVisitCount);
 	if (parseInt($.sessionConst.DayPlanVisitCount)>=parseInt(addDay+1)) {
+//		if (parseInt(30)>=parseInt(addDay+1)) {
 		addDay = addDay+1;
 		$.DateText.Text = filterDate(DateTime.Now.Date.AddDays(addDay));
 		RefreshScrolView();
 	}
 }
+
 function RefreshScrolView(){
 	$.edtSearch.Text="";
 	for (control in $.grScrollView.Controls) {

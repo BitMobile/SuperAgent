@@ -63,7 +63,7 @@
 			<c:HorizontalLayout CssClass="shadowLine"></c:HorizontalLayout>
 
 			<s:If Test="$visitsType=='planned'">
-<!---				<c:DockLayout CssClass="searchDate">
+				<c:DockLayout CssClass="searchDate">
 					<s:If Test="$sessionConst.DayPlanVisitCount == @addDay">
 						<c:Button Id="btnDateForward" CssClass="ForwardButtOff" OnClick="$GoForwardDate()"></c:Button>
 					</s:If>
@@ -83,7 +83,7 @@
 					<c:VerticalLayout  CssClass="DateTextStyle" OnClick="$SetDateFiltr()">
 						<c:TextView Id="DateText"/>
 					</c:VerticalLayout>
-				</c:DockLayout>-->
+				</c:DockLayout>
 				<c:HorizontalLayout CssClass="shadowLine"></c:HorizontalLayout>
 				<c:ScrollView Id="grScrollView">
 					<s:Push Id="hasRow" Value="false" />

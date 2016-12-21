@@ -23,7 +23,7 @@ function SetSessionConstants() {
 	var coordActuality = new Query("SELECT NumericValue FROM Catalog_MobileApplicationSettings WHERE Description='UserCoordinatesActualityTime'");
 	var autoFillOrder = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='UseAutoFillForRecOrder'");
 	var saveQuest = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='UseSaveQuest'");
-	//var DayPlanVisitCount = new Query("SELECT NumericValue FROM Catalog_MobileApplicationSettings WHERE Description='EndUploadPlanVisit'");
+	var DayPlanVisitCount = new Query("SELECT NumericValue FROM Catalog_MobileApplicationSettings WHERE Description='EndUploadPlanVisit'");
 	$.AddGlobal("sessionConst", new Dictionary());
 	$.sessionConst.Add("UseSaveQuest", saveQuest.ExecuteScalar());
 	$.sessionConst.Add("solVersion", solVersion.ExecuteScalar());
@@ -37,7 +37,11 @@ function SetSessionConstants() {
 	$.sessionConst.Add("SKUFeaturesRegistration", SKUFeaturesRegistration.ExecuteScalar());
 	$.sessionConst.Add("UserCoordinatesActualityTime", coordActuality.ExecuteScalar());
 	$.sessionConst.Add("UseAutoFillForRecOrder", autoFillOrder.ExecuteScalar());
-	//$.sessionConst.Add("DayPlanVisitCount", DayPlanVisitCount.ExecuteScalar());
+	var countDayPlanEnd = DayPlanVisitCount.ExecuteScalar();
+	if (countDayPlanEnd == null) {
+		countDayPlanEnd = 0;
+	}
+	$.sessionConst.Add("DayPlanVisitCount", countDayPlanEnd);
 	var q = new Query("SELECT U.AccessRight, A.Id, A.Code FROM Catalog_MobileAppAccessRights A " +
 		" LEFT JOIN Catalog_User_UserRights U ON U.AccessRight=A.Id ");
 	var rights = q.Execute();

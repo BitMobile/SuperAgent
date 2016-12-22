@@ -876,8 +876,15 @@ function GalleryCallBack(state, args) {
 				Variables["controlVertIn"+idPar].after("<c:Image Id='control"+idPar+"' CssClass='answer_snapshot'></c:Image>").refresh();
 				Variables["controlVertIn"+idPar].remove();
 			}
-
 		}
+		Variables["controlVert"+idPar].refresh();
+		Variables["controlVert"+idPar].Refresh();
+		for(control in Variables["controlVert"+idPar].Controls){
+			control.refresh();
+			control.Refresh();
+			}
+			$.grScrollView.refresh();
+			$.grScrollView.Refresh();
 	}
 if (Variables.Exists("control"+idPar)) {
 	Variables["control"+idPar].CssClass = "answer_snapshot";
@@ -931,6 +938,8 @@ obl.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 obl.AddParameter("obl",1);
 obl.AddParameter("sku",skuValueGl);
 var rez = obl.ExecuteCount();
+
+
 if (rez > 0) {
   //Dialog.Message("ParentReq"+idChail);
   //Variables["ParentReq"+idChail].Refresh();

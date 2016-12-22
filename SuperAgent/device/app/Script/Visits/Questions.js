@@ -462,7 +462,6 @@ function GalleryCallBack(state, args) {
 			$.grScrollView.Refresh()
 		Variables["HorControl"+idPar].refresh();
 		Variables["HorControl"+idPar].Refresh();
-
 	}
 if (Variables.Exists("control"+idPar)) {
 	Variables["control"+idPar].CssClass = "answer_snapshot";

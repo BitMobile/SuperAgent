@@ -152,8 +152,8 @@
 												</s:Else>
 											</s:If>
 											<s:Else>
-												<c:VerticalLayout>
-													<c:VerticalLayout CssClass="no_child_image">
+												<c:VerticalLayout Id="controlVert{$indexCh}">
+													<c:VerticalLayout Id="controlVertIn{$indexCh}" CssClass="no_child_image">
 														<c:Image Id="control{$indexCh}" />
 													</c:VerticalLayout>
 												</c:VerticalLayout>

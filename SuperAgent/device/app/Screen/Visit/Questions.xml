@@ -110,7 +110,7 @@
 										</s:If>
 										<s:Else>
 											<c:VerticalLayout Id="controlVert{$index}">
-												<c:VerticalLayout CssClass="no_image">
+												<c:VerticalLayout Id="controlVertIn{$index}" CssClass="no_image">
 													<c:Image Id="control{$index}" />
 												</c:VerticalLayout>
 											</c:VerticalLayout>

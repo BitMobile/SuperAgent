@@ -24,6 +24,8 @@ function CreateNewTask(){
 	taskObj.Date = DateTime.Now;
 	taskObj.CreatedAtMA = true;
 	taskObj.Responsible = $.common.UserRef;
+	//taskObj.StartPlanDate = "0001-01-01 00:00:00.0000000";
+	//taskObj.EndPlanDate = "0001-01-01 00:00:00.0000000";
 	taskObj.PlanExecutor = $.common.UserRef;
 	taskObj.Status = false;
 	if ($.workflow.name=="Visit")
@@ -121,6 +123,14 @@ function CompleteTask(){
 	if (task.TextTask.length > 250) {
 		$.textTaskET.SetFocus();
 	}else {
+		var taskObj = task.GetObject();
+		if (String.IsNullOrEmpty(taskObj.EndPlanDate)){
+			taskObj.EndPlanDate = "0001-01-01 00:00:00.0000000";
+	  }
+		if (String.IsNullOrEmpty(taskObj.StartPlanDate)){
+			taskObj.StartPlanDate = "0001-01-01 00:00:00.0000000";
+		}
+		taskObj.Save();
 		GlobalWorkflow.SetCurrentTask(null);
 		if ($.workflow.name == 'Visit')
 		DoBack();

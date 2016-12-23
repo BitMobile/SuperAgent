@@ -860,8 +860,16 @@ function GalleryCallBack(state, args) {
 //				break;
 //		}
 //	}
+var WeHaveControlVertIn = false;
+for(control in Variables["controlVert"+idPar].Controls){
+	// Dialog.Message(control.Id);
+	if (control.Id == "controlVertIn"+idPar) {
+		WeHaveControlVertIn = true;
+		break;
+	}
+}
 	if (weHaveIt) {
-		if (Variables.Exists("controlVertIn"+idPar)) {
+		if (WeHaveControlVertIn) {
 			if (Variables.Exists("control"+idPar)) {
 				if (Variables["control"+idPar].CssClass == "answer_snapshot") {
 				}else {

@@ -429,11 +429,19 @@ function GalleryCallBack(state, args) {
 		newFile.FileName = state[1];
 		newFile.FullFileName = state[2];
 		newFile.Save();
-	var weHaveIt = Variables.Exists("controlVert"+idPar);
-
+		// Dialog.Message(idPar);
+		var weHaveIt = Variables.Exists("controlVert"+idPar);
+		var WeHaveControlVertIn = false;
+		for(control in Variables["controlVert"+idPar].Controls){
+			// Dialog.Message(control.Id);
+			if (control.Id == "controlVertIn"+idPar) {
+				WeHaveControlVertIn = true;
+				break;
+			}
+		}
 	if (weHaveIt) {
-		//Dialog.Message("We IN");
-		if (Variables.Exists("controlVertIn"+idPar)) {
+		// Dialog.Message("We IN");
+		if (WeHaveControlVertIn) {
 			if (Variables.Exists("control"+idPar)) {
 				if (Variables["control"+idPar].CssClass == "answer_snapshot") {
 				}else {
@@ -722,7 +730,7 @@ function DeleteFromTable(question) {
 		control.remove();
 
 	//	Variables["control"+idPar].remove();
-		var textToAppend = "<c:VerticalLayout Id=\"controlVertIn{$index}\" CssClass=\"no_answer\">"
+		var textToAppend = "<c:VerticalLayout Id=\"controlVertIn"+idPar+"\" CssClass=\"no_answer\">"
 		+"<c:Image Id='control"+idPar+"'/>"
 		+"</c:VerticalLayout>";
 		Variables["controlVert"+idPar].append(textToAppend).refresh();

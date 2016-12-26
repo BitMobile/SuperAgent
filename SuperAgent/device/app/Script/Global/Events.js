@@ -539,7 +539,7 @@ function CreateQuestionsTable(outlet) {
 
 	var query = new Query(tableCommand +
 		"SELECT " +
-			"D.Date AS DocDate, " +
+			"MAX(D.Date) AS DocDate, " +
 			"Q.ChildQuestion AS Question, " +
 			"Q.ChildDescription AS Description, " +
 			"Q.ChildType AS AnswerType, " +
@@ -561,7 +561,6 @@ function CreateQuestionsTable(outlet) {
 																						"AND (DATE(A.AnswerDate) <= DATE(D.EndAnswerPeriod) OR A.AnswerDate = '0001-01-01 00:00:00') " +
 		"WHERE Q.IsTombstone = 0 " +
 		"GROUP BY Q.ChildQuestion, " +
-			"D.Date, " +
 			"Q.ParentQuestion, " +
 			"Q.ChildDescription, " +
 			"Q.ChildType, " +

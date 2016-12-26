@@ -105,7 +105,7 @@ function GetQuestions(single) {
 			"LEFT JOIN Catalog_Outlet_Files OFILES ON OFILES.FileName = UQ.Answer AND OFILES.Ref = @outlet " +
 			"WHERE UQ.Single=@single AND (UQ.ParentQuestion=@emptyRef OR UQ.ParentQuestion IN (SELECT Question FROM USR_Questions " +
 			"WHERE (Answer='Yes' OR Answer='Да'))) " +
-			"ORDER BY UQ.DocDate, UQ.QuestionOrder ");
+			"ORDER BY UQ.DocDate, UQ.QuestionOrder" );
 
 	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 	q.AddParameter("single", single);

@@ -32,7 +32,7 @@ function hasDistr(){
 
 function GetTerritory() {
 	if ($.territory != "territory") return terr;
-	Dialog.Message($.territory);
+//	Dialog.Message($.territory);
 	var q = new Query("SELECT Id From Catalog_Territory LIMIT 1");
 	var territory = q.ExecuteScalar();
 	if (territory == null) {

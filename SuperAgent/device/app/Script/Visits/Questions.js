@@ -99,7 +99,8 @@ function GetQuestions(single) {
 				"CASE WHEN TRIM(IFNULL(UQ.Answer, '')) != '' THEN UQ.Answer ELSE '—' END END AS AnswerOutput, " +
 			"CASE WHEN UQ.AnswerType=@snapshot THEN " +
 				"CASE WHEN TRIM(IFNULL(VFILES.FullFileName, '')) != '' THEN LOWER(VFILES.FullFileName) ELSE " +
-					"CASE WHEN TRIM(IFNULL(OFILES.FullFileName, '')) != '' THEN LOWER(OFILES.FullFileName) ELSE '/shared/result.jpg' END END ELSE NULL END AS FullFileName " +
+					"CASE WHEN TRIM(IFNULL(OFILES.FullFileName, '')) != '' THEN LOWER(OFILES.FullFileName) ELSE '/shared/result.jpg' END END ELSE NULL END AS FullFileName , "+
+					"UQ.ParentQuestion " +
 			"FROM USR_Questions UQ " +
 			"LEFT JOIN Document_Visit_Files VFILES ON VFILES.FileName = UQ.Answer AND VFILES.Ref = @visit " +
 			"LEFT JOIN Catalog_Outlet_Files OFILES ON OFILES.FileName = UQ.Answer AND OFILES.Ref = @outlet " +
@@ -107,7 +108,7 @@ function GetQuestions(single) {
 			"WHERE (Answer='Yes' OR Answer='Да'))) " +
 			"ORDER BY UQ.DocDate, UQ.QuestionOrder" );
 
-	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
+	q.AddParameter("emptyRef", "@ref[Catalog_Question]:00000000-0000-0000-0000-000000000000");//DB.EmptyRef("Catalog_Question"));
 	q.AddParameter("single", single);
 	q.AddParameter("snapshot", DB.Current.Constant.DataType.Snapshot);
 	q.AddParameter("visit", $.workflow.visit);

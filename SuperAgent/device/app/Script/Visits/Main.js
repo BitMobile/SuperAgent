@@ -393,3 +393,21 @@ function OutletStatusText(){
 
 	return os;
 }
+
+function GpsStart() {
+	if ($.sessionConst.GPSStarted){
+		GPSTracking.Stop();
+		Variables["sessionConst"]["GPSStarted"] = false;
+		$.GpsImage.CssClass = "gpsIconStart";
+		$.GpsImage.Refresh();
+	}
+	else {
+		GPSTracking.IsBestAccuracy = true;
+		GPSTracking.MinInterval = $.sessionConst.GPSTrackWrite * 60;
+		GPSTracking.SendInterval = $.sessionConst.GPSTrackSend * 60;
+		GPSTracking.Start();
+		Variables["sessionConst"]["GPSStarted"] = true;
+		$.GpsImage.CssClass = "gpsIconEnd";
+		$.GpsImage.Refresh();
+	}
+}

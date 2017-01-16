@@ -20,7 +20,7 @@ function OnApplicationRestore(name){
 }
 
 function OnApplicationBackground(name){
-	GPS.StopTracking();
+	//GPS.StopTracking();
 }
 
 
@@ -98,7 +98,7 @@ function OnWorkflowFinish(name, reason) {
 
 	if (name != "Main")
 	{
-		GPS.StopTracking();
+		//GPS.StopTracking();
 	}
 
 	if (name=="Visit" || name=="Order" || name=="Return")

@@ -13,9 +13,23 @@
 				<c:DockLayout Id="btnMenu" CssClass="btn_menu" OnEvent="Back" OnClickAction="$OpenMenu($swipe_layout)">
 					<c:Image CssClass="menuIcon" />
 				</c:DockLayout>
-				<c:DockLayout Id="btnForward" CssClass="btn_space" />
+				<s:If Test="$sessionConst.GPSTrack == true">
+					<s:If Test="$sessionConst.GPSStarted == true">
+						<c:DockLayout CssClass="gpsDL" OnClickAction="$GpsStart()">
+								<c:Image Id="GpsImage" CssClass="gpsIconEnd" />
+						</c:DockLayout>
+					</s:If>
+					<s:Else>
+						<c:DockLayout CssClass="gpsDL" OnClickAction="$GpsStart()">
+								<c:Image Id="GpsImage" CssClass="gpsIconStart" />
+						</c:DockLayout>
+					</s:Else>
+				</s:If>
+				<s:Else>
+					<c:DockLayout CssClass="gpsDL" />
+				</s:Else>
 				<c:HorizontalLayout>
-					<c:TextView Text="#visits#" />
+				<c:TextView Text="#visits#" CssClass="visitText" />
 				</c:HorizontalLayout>
 			</c:DockLayout>
 

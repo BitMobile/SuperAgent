@@ -405,6 +405,8 @@ function GpsStart() {
 		GPSTracking.IsBestAccuracy = true;
 		GPSTracking.MinInterval = $.sessionConst.GPSTrackWrite * 60;
 		GPSTracking.SendInterval = $.sessionConst.GPSTrackSend * 60;
+		GPSTracking.MinDistance = 0;
+    GPSTracking.DistanceFilter = 200;
 		GPSTracking.Start();
 		Variables["sessionConst"]["GPSStarted"] = true;
 		$.GpsImage.CssClass = "gpsIconEnd";

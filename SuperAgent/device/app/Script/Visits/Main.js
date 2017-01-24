@@ -239,13 +239,13 @@ function GetUncommitedScheduledVisitsCount(searchText) {
 		searchText = StrReplace(searchText, "'", "''");
 		search = "AND Contains(O.Description, '" + searchText + "') Or Contains(O.Address, '" + searchText + "') Or Contains(D.Description, '" + searchText + "') ";
 	}
-	q.Text = ("SELECT COUNT(DISTINCT VP.Outlet) " +
+	q.Text = ("SELECT DISTINCT VP.Outlet " +
 			" FROM Catalog_Outlet O " +
 			" LEFT JOIN Catalog_Distributor D ON O.Distributor = D.Id " +
 			" JOIN Document_VisitPlan_Outlets VP ON O.Id = VP.Outlet AND DATE(VP.Date)=DATE(@date) " +
 			" JOIN Document_VisitPlan DV ON VP.Ref = DV.Id " +
-			" LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet AND V.Date >= @today AND V.Date < @tomorrow AND V.Plan<>@emptyRef LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA=1 " +
-			" WHERE V.Id IS NULL AND NOT OSS.Status IS NULL " + search + " ORDER BY D.Description, O.Description LIMIT 100");
+			" LEFT JOIN Document_Visit V ON VP.Outlet=V.Outlet AND DATE(V.Date) >= DATE(@today) AND DATE(V.Date) < DATE(@tomorrow) AND V.Plan<>@emptyRef LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA=1 " +
+			" WHERE V.Id IS NULL AND NOT OSS.Status IS NULL " + search + "");
 			if (addDay == null || addDay == 0) {
 				addDay = 0;
 				q.AddParameter("date", DateTime.Now.Date);
@@ -258,12 +258,12 @@ function GetUncommitedScheduledVisitsCount(searchText) {
 			}
 	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));
 	// Dialog.Debug(2);
-	return q.ExecuteScalar();
+	return q.ExecuteCount();
 
 }
 
 function GetScheduledVisitsCount() {
-	var q = new Query("SELECT COUNT(VPO.Id) FROM Document_VisitPlan_Outlets VPO JOIN Document_VisitPlan DV ON VPO.Ref = DV.Id LEFT JOIN Catalog_Outlet O ON VPO.Outlet = O.Id LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA = 1 WHERE VPO.Date >= @today AND VPO.Date < @tomorrow AND NOT OSS.Status IS NULL");
+	var q = new Query("SELECT VPO.Id FROM Document_VisitPlan_Outlets VPO JOIN Document_VisitPlan DV ON VPO.Ref = DV.Id LEFT JOIN Catalog_Outlet O ON VPO.Outlet = O.Id LEFT JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus = OSS.Status AND OSS.DoVisitInMA = 1 WHERE DATE(VPO.Date) >= DATE(@today) AND DATE(VPO.Date) < DATE(@tomorrow) AND NOT OSS.Status IS NULL");
 	if (addDay == null || addDay == 0) {
 		addDay = 0;
 		q.AddParameter("today", DateTime.Now.Date);
@@ -272,7 +272,7 @@ function GetScheduledVisitsCount() {
 		q.AddParameter("today", DateTime.Now.Date.AddDays(addDay));
 		q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(addDay+1));
 	}
-	var cnt = q.ExecuteScalar();
+	var cnt = q.ExecuteCount();
 	// Dialog.Debug(3);
 	if (cnt == null)
 		return 0;

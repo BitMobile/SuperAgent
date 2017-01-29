@@ -973,8 +973,8 @@ function OpenHistory(ShowHistory, outlet){
 		// req.Host = "http://192.168.1.175/";
 		// req.Host = "http://10.5.170.241/";
 		req.Host = "http://superagent.itelis.ru/";
-		req.UserName="admin";
-		req.Password="";
+		req.UserName="Admin";
+		req.Password="zoWGmyC6";
 		req.Timeout = "00:01:00";
 		req.AddHeader("Outlet", s);
 

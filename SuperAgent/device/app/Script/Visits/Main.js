@@ -406,7 +406,7 @@ function GpsStart() {
 		GPSTracking.MinInterval = $.sessionConst.GPSTrackWrite * 60;
 		GPSTracking.SendInterval = $.sessionConst.GPSTrackSend * 60;
 		GPSTracking.MinDistance = 0;
-    GPSTracking.DistanceFilter = 200;
+    GPSTracking.DistanceFilter = 50;
 		GPSTracking.Start();
 		Variables["sessionConst"]["GPSStarted"] = true;
 		$.GpsImage.CssClass = "gpsIconEnd";

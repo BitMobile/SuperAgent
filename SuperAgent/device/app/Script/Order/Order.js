@@ -70,8 +70,9 @@ function OnLoad(){
 
 function AutoFill(state, args){
 
-	var q = new Query(" SELECT SKU, Unit, BaseUnitQty, Price, Qty, UnitId, RecUnit " +
-		GetAutoOrderText()
+	var q = new Query(" SELECT SKU, Unit, BaseUnitQty, SUM(Price) AS Price, SUM(Qty) AS Qty, UnitId, RecUnit " +
+		GetAutoOrderText() +
+		" GROUP BY SKU"
 		);
 	q.AddParameter("outlet", GlobalWorkflow.GetOutlet());
 	q.AddParameter("priceList", $.workflow.order.PriceList);

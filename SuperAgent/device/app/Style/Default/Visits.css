@@ -28,7 +28,7 @@
 }
 
 .DateTextStyle {
-	width: 20% ;
+	width: 40% ;
 	height: 100%;
 	margin-left: 13%;
 	margin-top: 27%;
@@ -39,8 +39,8 @@
 	height: 100%;
 	color: #000000;
 	font: 50% Arial;
-	horizontal-align: center;
-	text-align: center;
+	horizontal-align: left;
+	text-align: left;
 }
 .TodayTextStyle {
 	width: 20%;
@@ -96,4 +96,36 @@
 	color: #FF7C4A;
 	font: 42% Arial;
 	/*background-color: #bbaa00;*/
+}
+
+
+.gpsIconEnd {
+	background-image: url(gps_end.png);
+	height: 60%;
+	margin-top: 23.5%;
+	margin-right: 10%;
+	margin-left: 5%;
+	dock-align: right;
+}
+.gpsIconStart {
+	background-image: url(gps_start.png);
+	height: 60%;
+	margin-top: 23.5%;
+	margin-right: 10%;
+	margin-left: 5%;
+	dock-align: right;
+}
+.visitText {
+	width: 100%;
+	height: 100%;
+	margin-right: 3.5%;
+	padding-top: 30%;
+	color: #FFFFFF;
+	text-align: right;
+	font: 39.5% arial;
+}
+.gpsDL {
+	width: 40%;
+	height: 100%;
+	dock-align: right;
 }

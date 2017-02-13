@@ -99,15 +99,16 @@ function GetQuestions(single) {
 				"CASE WHEN TRIM(IFNULL(UQ.Answer, '')) != '' THEN UQ.Answer ELSE '—' END END AS AnswerOutput, " +
 			"CASE WHEN UQ.AnswerType=@snapshot THEN " +
 				"CASE WHEN TRIM(IFNULL(VFILES.FullFileName, '')) != '' THEN LOWER(VFILES.FullFileName) ELSE " +
-					"CASE WHEN TRIM(IFNULL(OFILES.FullFileName, '')) != '' THEN LOWER(OFILES.FullFileName) ELSE '/shared/result.jpg' END END ELSE NULL END AS FullFileName " +
+					"CASE WHEN TRIM(IFNULL(OFILES.FullFileName, '')) != '' THEN LOWER(OFILES.FullFileName) ELSE '/shared/result.jpg' END END ELSE NULL END AS FullFileName , "+
+					"UQ.ParentQuestion " +
 			"FROM USR_Questions UQ " +
 			"LEFT JOIN Document_Visit_Files VFILES ON VFILES.FileName = UQ.Answer AND VFILES.Ref = @visit " +
 			"LEFT JOIN Catalog_Outlet_Files OFILES ON OFILES.FileName = UQ.Answer AND OFILES.Ref = @outlet " +
 			"WHERE UQ.Single=@single AND (UQ.ParentQuestion=@emptyRef OR UQ.ParentQuestion IN (SELECT Question FROM USR_Questions " +
 			"WHERE (Answer='Yes' OR Answer='Да'))) " +
-			"ORDER BY UQ.DocDate, UQ.QuestionOrder ");
+			"ORDER BY UQ.DocDate, UQ.QuestionOrder" );
 
-	q.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
+	q.AddParameter("emptyRef", "@ref[Catalog_Question]:00000000-0000-0000-0000-000000000000");//DB.EmptyRef("Catalog_Question"));
 	q.AddParameter("single", single);
 	q.AddParameter("snapshot", DB.Current.Constant.DataType.Snapshot);
 	q.AddParameter("visit", $.workflow.visit);
@@ -348,7 +349,7 @@ function AssignAnswer(control, question, answer, answerType) {
 		if (answer!=null)
 			answer = answer.ToString();
 	}
-	if (answer == "—" || answer == "-")
+	if (answer == "—" || answer == "-"  || TrimAll(answer) == "")
 		answer = null;
 
 	var answerString;
@@ -429,11 +430,19 @@ function GalleryCallBack(state, args) {
 		newFile.FileName = state[1];
 		newFile.FullFileName = state[2];
 		newFile.Save();
-	var weHaveIt = Variables.Exists("controlVert"+idPar);
-
+		// Dialog.Message(idPar);
+		var weHaveIt = Variables.Exists("controlVert"+idPar);
+		var WeHaveControlVertIn = false;
+		for(control in Variables["controlVert"+idPar].Controls){
+			// Dialog.Message(control.Id);
+			if (control.Id == "controlVertIn"+idPar) {
+				WeHaveControlVertIn = true;
+				break;
+			}
+		}
 	if (weHaveIt) {
-		//Dialog.Message("We IN");
-		if (Variables.Exists("controlVertIn"+idPar)) {
+		// Dialog.Message("We IN");
+		if (WeHaveControlVertIn) {
 			if (Variables.Exists("control"+idPar)) {
 				if (Variables["control"+idPar].CssClass == "answer_snapshot") {
 				}else {
@@ -462,7 +471,6 @@ function GalleryCallBack(state, args) {
 			$.grScrollView.Refresh()
 		Variables["HorControl"+idPar].refresh();
 		Variables["HorControl"+idPar].Refresh();
-
 	}
 if (Variables.Exists("control"+idPar)) {
 	Variables["control"+idPar].CssClass = "answer_snapshot";
@@ -723,7 +731,7 @@ function DeleteFromTable(question) {
 		control.remove();
 
 	//	Variables["control"+idPar].remove();
-		var textToAppend = "<c:VerticalLayout Id=\"controlVertIn{$index}\" CssClass=\"no_answer\">"
+		var textToAppend = "<c:VerticalLayout Id=\"controlVertIn"+idPar+"\" CssClass=\"no_answer\">"
 		+"<c:Image Id='control"+idPar+"'/>"
 		+"</c:VerticalLayout>";
 		Variables["controlVert"+idPar].append(textToAppend).refresh();

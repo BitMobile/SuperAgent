@@ -11,10 +11,17 @@
 	color: #FF7C4A;
 }
 
+.grid {
+	width: 100%;
+	background-color: #ffffff;
+	selected-color: #ffffff;
+}
+
 .description_row {
 	height: 34%;
 	padding-top: 10%;
 	font: 43% Arial;
+	background-color: #ffffff;
 }
 
 .total_grid {

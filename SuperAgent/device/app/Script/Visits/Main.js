@@ -31,12 +31,15 @@ function CheckDateAdd(){
 	}
 }
 function GoForwardDate(){
+	//Dialog.Message($.sessionConst.DayPlanVisitCount);
 	if (parseInt($.sessionConst.DayPlanVisitCount)>=parseInt(addDay+1)) {
+//		if (parseInt(30)>=parseInt(addDay+1)) {
 		addDay = addDay+1;
 		$.DateText.Text = filterDate(DateTime.Now.Date.AddDays(addDay));
 		RefreshScrolView();
 	}
 }
+
 function RefreshScrolView(){
 	$.edtSearch.Text="";
 	for (control in $.grScrollView.Controls) {
@@ -389,4 +392,24 @@ function OutletStatusText(){
 		os = " 3 AS OutletStatus ";
 
 	return os;
+}
+
+function GpsStart() {
+	if ($.sessionConst.GPSStarted){
+		GPSTracking.Stop();
+		Variables["sessionConst"]["GPSStarted"] = false;
+		$.GpsImage.CssClass = "gpsIconStart";
+		$.GpsImage.Refresh();
+	}
+	else {
+		GPSTracking.IsBestAccuracy = true;
+		GPSTracking.MinInterval = $.sessionConst.GPSTrackWrite * 60;
+		GPSTracking.SendInterval = $.sessionConst.GPSTrackSend * 60;
+		GPSTracking.MinDistance = 0;
+    GPSTracking.DistanceFilter = 0;
+		GPSTracking.Start();
+		Variables["sessionConst"]["GPSStarted"] = true;
+		$.GpsImage.CssClass = "gpsIconEnd";
+		$.GpsImage.Refresh();
+	}
 }

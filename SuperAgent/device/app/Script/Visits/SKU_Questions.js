@@ -573,7 +573,7 @@ function AssignAnswer(control, question, sku, answer, answerType) {
 		if (answer!=null)
 			answer = answer.ToString();
 	}
-	if (answer == "—" || answer == "" || answer=="-")
+	if (answer == "—" || TrimAll(answer) == "" || answer=="-")
 		answer = null;
 
 	var answerString;
@@ -860,8 +860,16 @@ function GalleryCallBack(state, args) {
 //				break;
 //		}
 //	}
+var WeHaveControlVertIn = false;
+for(control in Variables["controlVert"+idPar].Controls){
+	// Dialog.Message(control.Id);
+	if (control.Id == "controlVertIn"+idPar) {
+		WeHaveControlVertIn = true;
+		break;
+	}
+}
 	if (weHaveIt) {
-		if (Variables.Exists("controlVertIn"+idPar)) {
+		if (WeHaveControlVertIn) {
 			if (Variables.Exists("control"+idPar)) {
 				if (Variables["control"+idPar].CssClass == "answer_snapshot") {
 				}else {
@@ -876,8 +884,15 @@ function GalleryCallBack(state, args) {
 				Variables["controlVertIn"+idPar].after("<c:Image Id='control"+idPar+"' CssClass='answer_snapshot'></c:Image>").refresh();
 				Variables["controlVertIn"+idPar].remove();
 			}
-
 		}
+		Variables["controlVert"+idPar].refresh();
+		Variables["controlVert"+idPar].Refresh();
+		for(control in Variables["controlVert"+idPar].Controls){
+			control.refresh();
+			control.Refresh();
+			}
+			$.grScrollView.refresh();
+			$.grScrollView.Refresh();
 	}
 if (Variables.Exists("control"+idPar)) {
 	Variables["control"+idPar].CssClass = "answer_snapshot";
@@ -931,6 +946,8 @@ obl.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
 obl.AddParameter("obl",1);
 obl.AddParameter("sku",skuValueGl);
 var rez = obl.ExecuteCount();
+
+
 if (rez > 0) {
   //Dialog.Message("ParentReq"+idChail);
   //Variables["ParentReq"+idChail].Refresh();

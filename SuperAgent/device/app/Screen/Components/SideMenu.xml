@@ -31,6 +31,14 @@
 		</c:DockLayout>
 		<c:HorizontalLine />
 
+		<c:DockLayout Id="Odometer" CssClass="{$styles.Odometer}" OnClickAction="$SwitchScreen(Odometer)">
+			<c:HorizontalLayout>
+				<c:Image CssClass="btn_odometer" />
+				<c:TextView Text="#Odometer#"></c:TextView>
+			</c:HorizontalLayout>
+		</c:DockLayout>
+		<c:HorizontalLine />
+		
 		<c:DockLayout Id="Tasks" CssClass="{$styles.Tasks}" OnClickAction="$SwitchScreen(Tasks)">
 			<c:TextView CssClass="menu_text" Text="{$GetTasksDone()} | {$GetTasksSum()}" />
 			<c:HorizontalLayout>

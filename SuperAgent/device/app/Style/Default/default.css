@@ -965,6 +965,10 @@ MemoEdit {
 	background-image: url(Menu_12.png);
 }
 
+.btn_odometer {
+	background-image: url(Menu_02.png);
+}
+
 .no_items {
 	height: 5.5mm;
 	width: 100%;

@@ -5,6 +5,7 @@ function GetItemsStyles(){
 	styles.Add("Summary", IsCurrent("Summary"));
 	styles.Add("Visits", IsCurrent("Visits"));
 	styles.Add("Outlets", IsCurrent("Outlets"));
+	styles.Add("Odometer", IsCurrent("Odometer"));	
 	styles.Add("Tasks", IsCurrent("Tasks"));
 	styles.Add("Orders", IsCurrent("Orders"));
 	styles.Add("Returns", IsCurrent("Returns"));

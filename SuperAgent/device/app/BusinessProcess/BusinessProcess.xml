@@ -35,6 +35,10 @@
 			<s:Include File="\Components\SideMenuActions.xml"/>
 		</bp:Step>
 
+		<bp:Step Name="Odometer" Screen="Odometer\Odometer.xml" Controller="Odometer\Main.js">
+			<s:Include File="\Components\SideMenuActions.xml"/>
+		</bp:Step>
+		
 		<bp:Step Name="Tasks" Screen="Tasks\Tasks.xml" Controller="Tasks\Main.js">
 			<bp:Action Name="Select" NextWorkflow="Task" />
 			<bp:Action Name="CreateTask" NextWorkflow="CreateTask"></bp:Action>

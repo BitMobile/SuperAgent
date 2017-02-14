@@ -1,19 +1,57 @@
-function PlanVisitsKPI(){
-	var q = new Query("SELECT COUNT(VP.Outlet) " +
-		" FROM Document_Visit V " +
-		" JOIN Document_VisitPlan_Outlets VP ON VP.Outlet=V.Outlet AND DATE(V.Date)=DATE(VP.Date) " +
-		" JOIN Document_VisitPlan DV ON VP.Ref = DV.Id " +
-		" WHERE DATE(V.Date) >= DATE('now', 'start of month', 'localtime') AND V.Plan <> @emptyRef ");
-	q.AddParameter("emptyRef", DB.EmptyRef("Document_VisitPlan"));
-	var executed = q.ExecuteScalar();		
+var changed;
 
-	var q = new Query("SELECT COUNT(VPO.Outlet) " +
-		" FROM Document_VisitPlan_Outlets VPO " +
-		" JOIN Document_VisitPlan DP ON VPO.Ref = DP.Id " +
-		" JOIN Catalog_Outlet O ON VPO.Outlet=O.Id " +
-		" JOIN Catalog_OutletsStatusesSettings OSS ON O.OutletStatus=OSS.Status AND OSS.ShowOutletInMA=1 AND OSS.DoVisitInMA=1 " +
-		" WHERE DATE(VPO.Date)>=DATE('now', 'start of month', 'localtime') AND DATE(VPO.Date)<=DATE('now', 'localtime') AND NOT OSS.Status IS NULL");
-	var planned = q.ExecuteScalar();
+function OnLoad(){
+	changed = false;
+}
 
-	return parseFloat(planned)==parseFloat(0) ? "0" : String.Format("{0:F0}", (executed * 100 / planned) || 0);
+function Modified(sender){
+	if (!changed) {
+		$.title.Text = $.title.Text + "*";
+		changed = true;
+	}
+}
+
+function ValidateValue(sender, docObj){
+	ValueBegOfDay = String.IsNullOrEmpty($.ValueBegOfDay.Text) ? 0 : parseInt($.ValueBegOfDay.Text);
+	ValueEndOfDay = String.IsNullOrEmpty($.ValueEndOfDay.Text) ? 0 : parseInt($.ValueEndOfDay.Text);
+
+	if (sender === $.ValueBegOfDay) {
+		docObj.DateBegOfTheDay = CurrentDate();
+	} else if (sender === $.ValueEndOfDay) {
+		if(ValueBegOfDay == 0){
+			Dialog.Message("Заполните показания на начало дня.");
+		}
+
+		docObj.DateEndOfTheDay = CurrentDate();
+	}
+
+	if(!String.IsNullOrEmpty($.ValueEndOfDay.Text) && ValueBegOfDay > ValueEndOfDay){
+		Dialog.Message("Показания на конец дня не могут быть меньше, чем на начало.");
+	}
+}
+
+function CreateOdometerDoc(){	
+	var query = new Query("SELECT Id From Document_OdometerValue WHERE DATE(Date)=DATE('now', 'localtime')");
+	var docref = query.ExecuteScalar();
+
+	if (String.IsNullOrEmpty(docref))
+	{
+		docObj = DB.Create("Document.OdometerValue");	
+		docObj.Date = CurrentDate();
+		docObj.SR = $.common.UserRef;
+		return docObj;
+	}
+	else
+	{
+		docObj = docref.GetObject();
+		return docObj;
+	}
+}
+
+function SaveNewDoc(docObj){
+	docObj.Save();
+	DB.Save();
+
+	changed = false;
+	$.title.Text = Translate["#Odometer#"];
 }

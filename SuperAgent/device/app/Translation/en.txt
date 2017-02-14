@@ -360,3 +360,5 @@ OutWhatEver		Synchronization wasn't completed last time. All data will be lost. 
 today		Today
 agentLogo		super_agent_En
 TooMoreLetter		The number of symbols is not available.
+BegOfDay	Begin of the day
+EndOfDay	End of the day

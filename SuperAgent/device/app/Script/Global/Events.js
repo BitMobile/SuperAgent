@@ -324,7 +324,7 @@ function HasContractors(outlet){
 		var existorno = new Query("Select type From sqlite_master where name = 'UT_answerQuest' And type = 'table'");
 		var exorno = existorno.ExecuteCount();
 		if (exorno > 0) {
-			var checkansquest = new Query("Select outlet From UT_answerQuest");0
+			var checkansquest = new Query("Select outlet From UT_answerQuest");
 			var outletref = checkansquest.ExecuteScalar();
 			var outletObj = outletref.GetObject()
 		}

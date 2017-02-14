@@ -6,7 +6,7 @@
 }
 
 .blue dl {
-	height: 35%;
+	height: 40%;
 	width: 96%;
 	margin-top: 2%;
 	margin-left: 2%;
@@ -18,7 +18,7 @@
 }
 
 .blue dl grid {
-	margin-left: 11%;
+	margin-left: 2%;
 	margin-top: 2%;
 	margin-right: 2%;
 	margin-bottom: 2%;
@@ -34,9 +34,9 @@
 }
 
 .short_panel grid {
-	height: 92%;
-	margin-top: 4%;
-	margin-bottom: 4%;
+	height: 94%;
+	margin-top: 3%;
+	margin-bottom: 3%;
 }
 
 .grid {
@@ -45,15 +45,19 @@
 }
 
 .grid vl main_row {
-	font: 95% Arial-BoldMT;
+	height: 55%;
+	font: 91% Arial-BoldMT;
 	color: #FF7C4A;
 	white-space: nowrap;
+	background-color: #ffffff;
+	margin-right: 2%;
 }
 
 .grid vl description_row {
 	height: 23%;
 	font: 80% arial;
-	color: #000;
-	margin-top: 10%;
+	color: #8e8e93;
+	margin-top: 0%;
 	margin-bottom: 0%;
 }
+

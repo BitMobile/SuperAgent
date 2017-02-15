@@ -1,6 +1,7 @@
 ﻿var addDay;
 var countPlanVisit;
 var StrForPlanVip;
+var HaveOdometerValue;
 //var searchParam;
 // ------------------------ UI calls ------------------------
 
@@ -352,6 +353,13 @@ function CountOutlets() {
 }
 
 function AddGlobalAndAction(planVisit, outlet, actionName) {
+	if (!HaveOdometerValue) {
+		actionName = "Odometer";
+		Dialog.Message("Перед началом работы укажите текущий показатель одометра.");
+		Workflow.Action(actionName, []);
+		return;
+	}
+
 	$.AddGlobal("planVisit", planVisit);
 	if (addDay!=null) {
 		var q = new Query("Select Id From Catalog_Outlet Where Id = @id");
@@ -371,6 +379,7 @@ function AddGlobalAndAction(planVisit, outlet, actionName) {
 	//Dialog.Message(planVisit);
 	//Dialog.Message(actionName);
 	//$.workflow.outlet = outlet;
+
 	Workflow.Action(actionName, []);
 }
 
@@ -412,4 +421,19 @@ function GpsStart() {
 		$.GpsImage.CssClass = "gpsIconEnd";
 		$.GpsImage.Refresh();
 	}
+}
+
+function CheckOdometerValue(){
+	var query = new Query("SELECT ValueBegOfTheDay From Document_OdometerValue WHERE DATE(Date)=DATE('now', 'localtime')");
+	var ValueBegOfTheDay = query.ExecuteScalar();
+
+	//Dialog.Message(ValueBegOfTheDay);
+
+	if (String.IsNullOrEmpty(ValueBegOfTheDay) || ValueBegOfTheDay == 0){
+		HaveOdometerValue = false;
+	} else {
+		HaveOdometerValue = true;
+	}
+
+	return HaveOdometerValue;
 }

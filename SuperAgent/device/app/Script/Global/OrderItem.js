@@ -16,9 +16,9 @@ function SetItemValue(args){ //attr - dictionary
     var orderItemObj = orderItem.GetObject();
 
     if (args.HasValue("Units"))
-    {        
+    {
         multiplier = parseFloat(args.Multiplier)==parseFloat(0) ? 1 : args.Multiplier;
-        
+
         orderItemObj.Units = args.Units;
         orderItemObj = CalculateItem(orderItemObj);
     }
@@ -32,19 +32,19 @@ function SetItemValue(args){ //attr - dictionary
     {
         baseTotalDiscount = 0;
         totalDiscount = 0;
-        orderItemObj.Discount = args.Discount;        
+        orderItemObj.Discount = args.Discount;
         orderItemObj = CalculateItem(orderItemObj);
     }
 
     if (args.HasValue("TotalDiscount"))
-    {        
+    {
         baseTotalDiscount = args.TotalDiscount / multiplier;
         orderItemObj.Discount = 0;
         CalculateItem(orderItemObj);
     }
 
     if (args.HasValue("Total"))
-    {        
+    {
         totalDiscount = args.Total - basePrice * multiplier;
         baseTotalDiscount = totalDiscount / multiplier;
         orderItemObj.Discount = 0;
@@ -77,7 +77,7 @@ function ClearItem(){
 
 //-----------internal handlers------------
 
-function CalculateItem(orderItemObj){   
+function CalculateItem(orderItemObj){
 
     orderItemObj.Price = basePrice * multiplier;
     totalDiscount = baseTotalDiscount * multiplier;
@@ -101,10 +101,10 @@ function CreateOrderItem(args){//order, sku, orderItem, price, features, recOrde
         p = DB.Create("Document." + $.workflow.currentDoc + "_SKUs");
         p.Ref = args.Ref;
         p.SKU = args.SKU;
-        p.Feature = GetNewFeature(args.SKU);    
+        p.Feature = GetNewFeature(args.SKU);
         p.Units = GetDefaultUnit(args.SKU, args.Units);
-        
-        var d = GlobalWorkflow.GetMassDiscount(p.Ref);    
+
+        var d = GlobalWorkflow.GetMassDiscount(p.Ref);
         p.Discount = String.IsNullOrEmpty(d) ? '0' : d;
 
         p.Qty = GetFromRecOrder(args.recOrder);
@@ -117,13 +117,13 @@ function CreateOrderItem(args){//order, sku, orderItem, price, features, recOrde
     else{
         p = (args.Id).GetObject();
         GetDefaultUnit(args.SKU, args.Units);
-        totalDiscount = parseInt(p.Discount) == parseInt(0) 
+        totalDiscount = parseInt(p.Discount) == parseInt(0)
                         ? p.Total - basePrice * multiplier
                         : 0;
         baseTotalDiscount = totalDiscount / multiplier;
     }
 
-    
+
     orderItem = p.Id;
 
 }
@@ -143,7 +143,7 @@ function GetNewFeature(sku){
 }
 
 function GetFromRecOrder(recOrder){
-    
+
     if (recOrder!=null){
         if (recOrder<0)
             recOrder = 0;

@@ -68,7 +68,7 @@ function ChangeListAndRefresh(control, param) {
 function SetScrollIndex() {
 
 	if (String.IsNullOrEmpty(scrollIndex)){
-		$.grScrollView.Index = parseInt(4);
+		$.grScrollView.Index = parseInt(0);
 	}
 	else{
 		//if (inref) {

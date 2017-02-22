@@ -156,6 +156,11 @@ function GetFromRecOrder(recOrder){
 
 function GetDefaultUnit(sku, unit){
     // getting a unit
+		var q = new Query("SELECT BaseUnit FROM Catalog_SKU WHERE Id=@ref");
+		q.AddParameter("ref", sku);
+		var defaultUnit = q.Execute();
+		unit = defaultUnit.BaseUnit;
+
     if (unit==null){
         var q = new Query("SELECT Pack, Multiplier FROM Catalog_SKU_Packing WHERE Ref=@ref AND LineNumber=1");
         q.AddParameter("ref", sku);

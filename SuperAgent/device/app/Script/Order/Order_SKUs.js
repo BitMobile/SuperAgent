@@ -182,7 +182,7 @@ function GetQuickOrder(control, skuId, itemPrice, packField, editField, textView
         query.AddParameter("order", ($.workflow.currentDoc == "Order" ? $.workflow.order : $.workflow.Return));
         query.AddParameter("sku", skuId);
         if (recUnit==null){
-            var q = new Query("SELECT Pack FROM Catalog_SKU_Packing WHERE Ref=@ref AND LineNumber=1");
+            var q = new Query("SELECT BaseUnit FROM Catalog_SKU WHERE Id=@ref");
             q.AddParameter("ref", skuId);
             query.AddParameter("pack", q.ExecuteScalar());
         }
@@ -203,7 +203,17 @@ function GetQuickOrder(control, skuId, itemPrice, packField, editField, textView
             defMultiplier = quickOrderItem.Multiplier;
         }
 
-        Variables[textViewField].Text = quickOrderItem.Qty + " " + packDescription + " " + alreadyOrdered;
+       var query = new Query("SELECT Qty FROM Document_" + $.workflow.currentDoc + "_SKUs WHERE Ref=@ref AND SKU=@sku  AND Units=@units");
+        query.AddParameter("ref", ($.workflow.currentDoc == "Order" ? $.workflow.order : $.workflow.Return));
+        query.AddParameter("sku", skuId);
+        query.AddParameter("units", defPack);
+        var qty = query.ExecuteScalar();
+
+        if(qty == null){
+          qty = 0;
+        }
+
+        Variables[textViewField].Text = qty + " " + packDescription + " " + alreadyOrdered;
         multiplier = quickOrderItem.Multiplier;
 
     }

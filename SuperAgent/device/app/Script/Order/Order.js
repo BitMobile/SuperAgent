@@ -58,6 +58,11 @@ function OnLoad(){
 		q.AddParameter("priceList", $.workflow.order.PriceList);
 		q.AddParameter("assignment", DB.Current.Constant.SKUQuestions.Stock);
 		q.AddParameter("atVisit", $.workflow.name=='Visit');
+
+		if ($.workflow.order.Stock.ToString() != '@ref[Catalog_Stock]:00000000-0000-0000-0000-000000000000'){
+			q.AddParameter("stock", $.workflow.order.Stock);
+		}
+
 		var hasSKUs = q.ExecuteScalar();
 
 		if ($.sessionConst.UseAutoFillForRecOrder && parseInt(hasSKUs) != parseInt(0)){
@@ -78,6 +83,10 @@ function AutoFill(state, args){
 	q.AddParameter("priceList", $.workflow.order.PriceList);
 	q.AddParameter("assignment", DB.Current.Constant.SKUQuestions.Stock);
 	q.AddParameter("atVisit", $.workflow.name=='Visit');
+
+	if ($.workflow.order.Stock.ToString() != "@ref[Catalog_Stock]:00000000-0000-0000-0000-000000000000"){
+		q.AddParameter("stock", $.workflow.order.Stock);
+	}
 
 	var skus  = q.Execute();
 
@@ -101,6 +110,12 @@ function AutoFill(state, args){
 }
 
 function GetAutoOrderText(){
+
+	StockQuery = "";
+	if ($.workflow.order.Stock.ToString() != '@ref[Catalog_Stock]:00000000-0000-0000-0000-000000000000'){
+		StockQuery = " INNER JOIN Catalog_SKU_Stocks SS ON SS.Ref=S.SKU AND SS.Stock = @stock ";
+	}
+
 	return " FROM (" +
 		" SELECT DISTINCT S.SKU, S.Unit, S.BaseUnitQty, P.Price, " +
 		" CASE WHEN @atVisit THEN (CASE WHEN Q.Answer IS NULL THEN S.Qty ELSE (S.BaseUnitQty - Q.Answer) END) ELSE (CASE WHEN VA.Answer IS NULL THEN S.Qty ELSE (S.BaseUnitQty - VA.Answer) END)  END AS Qty, " +
@@ -112,6 +127,7 @@ function GetAutoOrderText(){
 		" JOIN Document_PriceList_Prices P ON P.SKU=S.SKU AND P.Ref=@priceList " +
 		" JOIN Catalog_SKU CS ON S.SKU=CS.Id " +
 		" JOIN Catalog_UnitsOfMeasure UB ON CS.BaseUnit=UB.Id " +
+		StockQuery +
 		" LEFT JOIN Catalog_UnitsOfMeasure U ON S.Unit=U.Id " +
 		" LEFT JOIN USR_SKUQuestions Q ON Q.SKU=S.SKU AND Q.Question IN (SELECT Id FROM Catalog_Question CQ WHERE CQ.Assignment=@assignment " +
 		" LIMIT 1) " +

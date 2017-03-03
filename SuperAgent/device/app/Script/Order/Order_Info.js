@@ -187,7 +187,7 @@ function StockSelectHandler(state, args) {
 	else
 		control.Text = args.Result.Description;
 
-	Dialog.Message($.workflow.currentDoc);
+	//Dialog.Message($.workflow.currentDoc);
 	if ($.workflow.currentDoc == 'Order')
 		ReviseSKUs($.workflow.order, $.workflow.order.PriceList, args.Result);
 	else

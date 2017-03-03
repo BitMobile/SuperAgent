@@ -186,7 +186,13 @@ function StockSelectHandler(state, args) {
 		control.Text = Translate["#allStocks#"];
 	else
 		control.Text = args.Result.Description;
-	ReviseSKUs($.workflow.order, $.workflow.order.PriceList, args.Result);
+
+	Dialog.Message($.workflow.currentDoc);
+	if ($.workflow.currentDoc == 'Order')
+		ReviseSKUs($.workflow.order, $.workflow.order.PriceList, args.Result);
+	else
+		ReviseSKUs($.workflow.Return, $.workflow.Return.PriceList, args.Result);
+	//Dialog.Message(args.Result);
 	return;
 }
 
@@ -391,15 +397,15 @@ function MassDiscount(thisDoc){
 	return output;
 }
 
-function SetMassDiscount(sender, thisDoc){  
-	
+function SetMassDiscount(sender, thisDoc){
+
 	var massDisc = MassDiscount(thisDoc);
 
 	if (parseFloat(massDisc)!=parseFloat(sender.Text)){
 		if (String.IsNullOrEmpty(sender.Text))
 			sender.Text = '0';
 
-		var t = new Query("SELECT MAX " + 
+		var t = new Query("SELECT MAX " +
 			"(CASE WHEN Price=Total THEN 0 " +
 				" ELSE 1 " +
 				" END ) " +
@@ -411,7 +417,7 @@ function SetMassDiscount(sender, thisDoc){
 			Dialog.Message(Translate["#orderDiscountReset#"]);
 
 		var discount = sender.Text;
-		GlobalWorkflow.SetMassDiscount(discount); 
+		GlobalWorkflow.SetMassDiscount(discount);
 		var q = new Query("SELECT Id, Price, Total " +
 			" FROM Document_"+ $.workflow.currentDoc +"_SKUs " +
 			" WHERE Ref=@ref");
@@ -429,7 +435,7 @@ function SetMassDiscount(sender, thisDoc){
 		}
 
 		$.massDiscountDescription.Text = OrderDiscountDescription(discount);
-	}	
+	}
 }
 
 function OrderDiscountDescription(value){
@@ -447,7 +453,7 @@ function ConvertDiscount(control, thisDoc) {
 }
 
 function ApplyDiscount(sender){
-	
+
 	CheckUserInput(sender);
 
     if (Math.abs(parseFloat(sender.Text)) > 100)

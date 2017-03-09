@@ -260,6 +260,7 @@ function CreateOrderItem(control, editFieldName, textFieldName, packField, sku, 
             p.Qty = Converter.ToDecimal(Variables[editFieldName].Text);
 
             var d = GlobalWorkflow.GetMassDiscount(thisDoc);
+            //Dialog.Message(d);
             p.Discount = String.IsNullOrEmpty(d) ? 0 : d;
             var LineNumberQuery=new Query("SELECT Max(LineNumber) FROM Document_" + $.workflow.currentDoc + "_SKUs WHERE Ref=@ref");
             LineNumberQuery.AddParameter("ref", p.Ref);

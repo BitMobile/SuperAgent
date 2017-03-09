@@ -360,3 +360,7 @@ OutWhatEver		Synchronization wasn't completed last time. All data will be lost. 
 today		Today
 agentLogo		super_agent_En
 TooMoreLetter		The number of symbols is not available.
+vpUnplannedMainScreen		unplanned
+vpplannedMainScreen		planned
+vpVisitsMainScreen		visits
+plannedMainSkree			visits

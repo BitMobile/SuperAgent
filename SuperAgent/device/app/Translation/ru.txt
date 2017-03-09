@@ -360,3 +360,7 @@ OutWhatEver		Последняя синхронизация не была вып�
 today		Сегодня
 agentLogo		super_agent
 TooMoreLetter		Длина текста превышает допустимое значение.
+vpUnplannedMainScreen		внеплановых
+vpplannedMainScreen		плановых
+vpVisitsMainScreen		визитов
+plannedMainSkree			визитов

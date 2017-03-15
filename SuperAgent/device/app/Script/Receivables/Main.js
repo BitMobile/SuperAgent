@@ -80,7 +80,7 @@ function CreateEncashmentIfNotExist(visit) {// , textValue) {
 	if (encashment == null) {
 		encashment = DB.Create("Document.Encashment");
 		encashment.Visit = visit;
-		encashment.Date = DateTime.Now;
+		encashment.Date = DateTime.Now.ToString();
 		encashment.EncashmentAmount = parseInt(0);
 		encashment.Save();
 		encashment = encashment.Id;

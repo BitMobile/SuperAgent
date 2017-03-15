@@ -179,7 +179,7 @@ function CheckAndCommit(state, args) {
 		visit = state[1];
 		wfName = state[2];
 	  visit = visit.GetObject();
-		visit.EndTime = DateTime.Now;
+		visit.EndTime = DateTime.Now.ToString();
     if (OrderExists(visit.Id)) {
         order.GetObject().Save();
     }

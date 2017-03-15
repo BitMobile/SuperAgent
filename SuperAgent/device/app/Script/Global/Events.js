@@ -513,7 +513,7 @@ function CreateQuestionnareTable(outlet) {
 			"USR_SelectedQuestionnaires SQ " +
 			"JOIN Document_Questionnaire Q ON SQ.Id=Q.Id " +
 			"JOIN _Document_Questionnaire_Schedule S INDEXED BY IND_QSCHEDULE ON SQ.Id=S.Ref AND S.IsTombstone=0 " +
-			"WHERE Q.Status=@active AND date(S.Date)=date('now', 'start of day') " +
+			"WHERE Q.Status=@active AND date(S.Date)=date('now', 'localtime') " +
 			"GROUP BY Q.Id, Q.Number, Q.Date, Q.Single, S.BeginAnswerPeriod, S.EndAnswerPeriod; " +
 			"DELETE FROM USR_Questionnaires WHERE Selected=0";
 

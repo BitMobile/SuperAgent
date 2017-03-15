@@ -89,8 +89,10 @@ function SetOrderSumm() {
 	var q = new Query("SELECT SUM(S.Qty * S.Total) " +
 		" FROM Document_Order_SKUs S " +
 		" LEFT JOIN Document_Order O ON (O.Id = S.Ref) " +
-		" WHERE date(O.Date) >= date('now','start of day', 'localtime') " +
-		" AND date(O.Date) < date('now', 'start of day', '+1 day', 'localtime')");
+		" WHERE date(O.Date) >= Date(@today)  " +
+		" AND date(O.Date) < Date(@tomorrow)");
+		q.AddParameter("today", DateTime.Now.Date.ToString("yyyy-MM-dd"));
+		q.AddParameter("tomorrow", DateTime.Now.Date.AddDays(1).ToString("yyyy-MM-dd"));
 	var cnt = q.ExecuteScalar();
 	if (cnt == null)
 		orderSum = 0;

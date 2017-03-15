@@ -374,7 +374,8 @@ function CreateDocumentIfNotExists(executedOrder, visitId) {
 				order = DB.Create("Document.Return");
 
 
-			order.Date = DateTime.Now;
+			order.Date = DateTime.Now.ToString();
+			//Dialog.Message(DateTime.Now.ToString());
 			order.Outlet = outlet;
 			order.SR = userRef;
 			order.DeliveryDate = DateTime.Now.AddDays(1);

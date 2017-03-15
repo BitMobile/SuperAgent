@@ -392,6 +392,7 @@ function ReviseSKUs(order, priceList, stock) {
 
 function MassDiscount(thisDoc){
 	var d = GlobalWorkflow.GetMassDiscount(thisDoc);
+	//Dialog.Message(d);
 	var output = String.IsNullOrEmpty(d) ? '0' : d.ToString();
 	$.massDiscountDescription.Text = OrderDiscountDescription(output);
 	return output;

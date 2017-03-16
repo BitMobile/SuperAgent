@@ -562,7 +562,7 @@ function CreateVisitIfNotExists(userRef, visit, planVisit) {
 		var exorno = existorno.ExecuteCount();
 		visit.Outlet = $.workflow.outlet;
 		visit.SR = userRef;
-		visit.Date = DateTime.Now;
+		visit.Date = DateTime.Now.ToString();
 		if (exorno > 0) {
 			var checkansquest = new Query("Select id From UT_answerQuest");
 			var counnurows = checkansquest.ExecuteCount();

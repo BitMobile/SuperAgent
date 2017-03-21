@@ -3,6 +3,7 @@
 function OnApplicationInit() {
 
 	Global.SetSessionConstants();
+	Global.SetWorkPeriodConstants();
 
 	Indicators.SetIndicators();
 

@@ -395,9 +395,9 @@ function OutletStatusText(){
 }
 
 function GpsStart() {
-	if ($.sessionConst.GPSStarted){
+	if ($.workConst.GPSStarted){
 		GPSTracking.Stop();
-		Variables["sessionConst"]["GPSStarted"] = false;
+		Variables["workConst"]["GPSStarted"] = false;
 		$.GpsImage.CssClass = "gpsIconStart";
 		$.GpsImage.Refresh();
 	}
@@ -408,7 +408,7 @@ function GpsStart() {
 		GPSTracking.MinDistance = 0;
     GPSTracking.DistanceFilter = 0;
 		GPSTracking.Start();
-		Variables["sessionConst"]["GPSStarted"] = true;
+		Variables["workConst"]["GPSStarted"] = true;
 		$.GpsImage.CssClass = "gpsIconEnd";
 		$.GpsImage.Refresh();
 	}

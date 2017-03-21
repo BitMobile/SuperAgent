@@ -14,7 +14,7 @@
 					<c:Image CssClass="menuIcon" />
 				</c:DockLayout>
 				<s:If Test="$sessionConst.GPSTrack == true">
-					<s:If Test="$sessionConst.GPSStarted == true">
+					<s:If Test="$workConst.GPSStarted == true">
 						<c:DockLayout CssClass="gpsDL" OnClickAction="$GpsStart()">
 								<c:Image Id="GpsImage" CssClass="gpsIconEnd" />
 						</c:DockLayout>

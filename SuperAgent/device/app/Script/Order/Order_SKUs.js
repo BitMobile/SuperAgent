@@ -62,9 +62,10 @@ function GetSKUAndGroups(searchText, thisDoc) {
         searchText = StrReplace(searchText, "'", "''");
         searchString = " AND Contains(S.Description, '" + searchText + "') ";
     }
-
+    //Dialog.Message($.workflow.currentDoc);
+    //Dialog.Message(DoRecommend());
     if (doRecommend && $.workflow.currentDoc=="Order"){
-
+    //  Dialog.Message('67');
         var recOrderFields = ", CASE WHEN V.Answer IS NULL THEN U.Description ELSE UB.Description END AS RecUnit " +
                              ", CASE WHEN V.Answer IS NULL THEN U.Id ELSE UB.Id END AS UnitId " +
                              ", CASE WHEN V.Answer IS NULL THEN MS.Qty ELSE (MS.BaseUnitQty-V.Answer) END AS RecOrder " +
@@ -84,28 +85,28 @@ function GetSKUAndGroups(searchText, thisDoc) {
 
         var recOrderSort = " OrderRecOrder DESC, ";
 
-    } else if ($.workflow.name=='Order'){
-
-        var recOrderFields = ", NULL AS RecUnit " +
-                             ", NULL AS UnitId " +
-                             ", 0 AS RecOrder " +
-                             ", CASE WHEN MS.Qty IS NULL THEN 0 ELSE 1 END AS OrderRecOrder "
-
-        var recOrderStr =  "LEFT JOIN (SELECT SS.Ref, SS.SKU, SS.Qty, SS.Unit, SS.BaseUnitQty FROM Catalog_AssortmentMatrix_SKUs SS " +
-                                     " JOIN _Catalog_AssortmentMatrix_Outlets OO INDEXED BY IND_AMREFOUTLET ON SS.Ref=OO.Ref " +
-                                     " WHERE OO.Outlet=@outlet AND OO.IsTombstone = 0) MS ON S.Id=MS.SKU ";
-
-        query.AddParameter("outlet", $.workflow.outlet);
-        query.AddParameter("visit", $.workflow.visit);
-
-        var recOrderSort = " OrderRecOrder DESC, ";
+    // } else if ($.workflow.name=='Order'){
+    //     Dialog.Message('88');
+    //     var recOrderFields = ", NULL AS RecUnit " +
+    //                          ", NULL AS UnitId " +
+    //                          ", 0 AS RecOrder " +
+    //                          ", CASE WHEN MS.Qty IS NULL THEN 0 ELSE 1 END AS OrderRecOrder "
+    //
+    //     var recOrderStr =  "LEFT JOIN (SELECT SS.Ref, SS.SKU, SS.Qty, SS.Unit, SS.BaseUnitQty FROM Catalog_AssortmentMatrix_SKUs SS " +
+    //                                  " JOIN _Catalog_AssortmentMatrix_Outlets OO INDEXED BY IND_AMREFOUTLET ON SS.Ref=OO.Ref " +
+    //                                  " WHERE OO.Outlet=@outlet AND OO.IsTombstone = 0) MS ON S.Id=MS.SKU ";
+    //
+    //     query.AddParameter("outlet", $.workflow.outlet);
+    //     query.AddParameter("visit", $.workflow.visit);
+    //
+    //     var recOrderSort = " OrderRecOrder DESC, ";
     }
     else{
         var recOrderFields = ", NULL AS RecUnit " +
                      ", NULL AS UnitId " +
                      ", 0 AS RecOrder " +
                      ", 0 AS OrderRecOrder ";
-
+                    // Dialog.Message('108');
         var recOrderStr = "";
 
         var recOrderSort = "";
@@ -354,8 +355,10 @@ function DoGroupping() {
 }
 
 function DoRecommend() {
-
-    if ($.workflow.name=="Visit" && $.sessionConst.OrderCalc)
+  //Dialog.Message($.workflow.name);
+  //Dialog.Message($.sessionConst.OrderCalc);
+  //  if ($.workflow.name=="Visit" && $.sessionConst.OrderCalc)
+  if ($.sessionConst.OrderCalc)
         return true;
     else
         return false;

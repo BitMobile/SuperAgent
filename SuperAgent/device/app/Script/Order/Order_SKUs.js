@@ -244,8 +244,8 @@ function AddToOrder(control, editFieldName) {
 
 function CreateOrderItem(control, editFieldName, textFieldName, packField, sku, price, swiped_rowName, recOrder, recUnitId) {
 
-	if (swipedRow!=Variables[swiped_rowName])
-		GetQuickOrder(Variables[swiped_rowName], sku, price, packField, editFieldName, textViewField, recOrder, recUnitId, recUnit);
+	// if (swipedRow!=Variables[swiped_rowName])
+	// 	GetQuickOrder(Variables[swiped_rowName], sku, price, packField, editFieldName, textViewField, recOrder, recUnitId, recUnit);
 
     if (String.IsNullOrEmpty(Variables[editFieldName].Text) == false) {
         if (Converter.ToDecimal(Variables[editFieldName].Text) != Converter.ToDecimal(0)) {

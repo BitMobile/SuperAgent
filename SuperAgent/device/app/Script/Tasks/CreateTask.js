@@ -21,7 +21,7 @@ function GetTask(){
 
 function CreateNewTask(){
 	var taskObj = DB.Create("Document.Task");
-	taskObj.Date = DateTime.Now;
+	taskObj.Date = DateTime.Now.ToString();
 	taskObj.CreatedAtMA = true;
 	taskObj.Responsible = $.common.UserRef;
 	//taskObj.StartPlanDate = "0001-01-01 00:00:00.0000000";
@@ -100,7 +100,7 @@ function CallBack(state, args){ //call back for dates only
 
 
 	if (ranged){
-		if (attr == "StartPlanDate" && Date(args.Result).Date < Date(DateTime.Now).Date)
+		if (attr == "StartPlanDate" && Date(args.Result).Date < Date(DateTime.Now.ToString()).Date)
 			Dialog.Message(Translate["#lessToday#"]);
 		else
 			AssignDialogValue(state, args);

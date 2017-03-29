@@ -349,3 +349,7 @@ ZAO				ZAO
 OutWhatEver		Poslední synchronizace nebyla dokončena. Všechna data budou ztracena. Pokračovat?
 today			Dnes
 TooMoreLetter			Délka textu překračuje limit.
+vpUnplannedMainScreen		návštěv
+vpplannedMainScreen		návštěv
+vpVisitsMainScreen		(mimo plán)
+plannedMainSkree			(dle plánu)

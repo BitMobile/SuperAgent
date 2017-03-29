@@ -88,7 +88,7 @@ function ApplyDiscount(sender, orderitem) {
 }
 
 function RefreshDiscount(sender, param1, orderitem){
-    
+
     sender.Text = String.IsNullOrEmpty(sender.Text) ? '0' : sender.Text;
 
     if (parseFloat(sender.Text) != parseFloat(orderitem.Discount))
@@ -100,8 +100,8 @@ function RefreshDiscount(sender, param1, orderitem){
 
 function SendDiscountMap(discount){
     var d = new Dictionary();
-    d.Add("Discount", String.IsNullOrEmpty(discount) 
-                            ? parseFloat(0) 
+    d.Add("Discount", String.IsNullOrEmpty(discount)
+                            ? parseFloat(0)
                             : parseFloat(discount));
     OrderItem.SetItemValue(d);
 }
@@ -128,7 +128,7 @@ function ApplyTotalDiscount(sender, orderitem){
     if (!String.IsNullOrEmpty(sender.Text)){
         if (sender.Text < -orderitem.Price)
             sender.Text = -orderitem.Price;
-    }    
+    }
 }
 
 function RefreshTotalDiscount(sender, param1){
@@ -137,22 +137,22 @@ function RefreshTotalDiscount(sender, param1){
 
     if (parseFloat(sender.Text) != parseFloat(OrderItem.GetTotalDiscount()))
     {
-        SendTotalDiscountMap(sender.Text);        
+        SendTotalDiscountMap(sender.Text);
         DoRefresh(param1);
     }
-    
+
 }
 
 function SendTotalDiscountMap(discount){
     var d = new Dictionary();
-    d.Add("TotalDiscount", String.IsNullOrEmpty(discount) 
-                            ? parseFloat(0) 
+    d.Add("TotalDiscount", String.IsNullOrEmpty(discount)
+                            ? parseFloat(0)
                             : parseFloat(discount));
     OrderItem.SetItemValue(d);
 }
 
 function GetTotalDiscountDescription(){
-    
+
     var value = OrderItem.GetTotalDiscount();
 
     if (parseFloat(value) == parseFloat(0)
@@ -162,7 +162,7 @@ function GetTotalDiscountDescription(){
         return Translate["#sumMarkUp#"];
 }
 
-function ConvertTotalDiscount(control, orderitem){    
+function ConvertTotalDiscount(control, orderitem){
     SendTotalDiscountMap(-1 * control.Text);
     DoRefresh($.showimage);
 }
@@ -263,7 +263,7 @@ function ChangeUnit(sku, orderitem) {
     OrderItem.SetItemValue(args);
     orderitem = OrderItem.GetItem();
 
-    // $.itemUnits.Text = orderitem.Units.Description;    
+    // $.itemUnits.Text = orderitem.Units.Description;
     // $.orderItemTotalId.Text = FormatValue(orderitem.Total);
     // $.totalEdit.Text = FormatValue(orderitem.Total);
 
@@ -339,14 +339,14 @@ function RepeatOrder(orderitem, qty, discount, baseUnit, baseUnitDescr, price, t
     var totalDiscount = total - price;
 
     var d = new Dictionary();
-    
+
     d.Add("Qty", qty);
 
-    if (parseFloat(discount)!=parseFloat(0))
-        d.Add("Discount", discount);
-    else if (totalDiscount != 0)
+    d.Add("Discount", discount);
+
+    if ((totalDiscount != 0) && (parseFloat(discount) == parseFloat(0)))
         d.Add("TotalDiscount", totalDiscount);
-    
+
     d.Add("Units", baseUnit);
 
     d.Add("Multiplier", 1);

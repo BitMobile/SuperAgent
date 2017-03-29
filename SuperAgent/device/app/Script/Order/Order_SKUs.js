@@ -62,9 +62,10 @@ function GetSKUAndGroups(searchText, thisDoc) {
         searchText = StrReplace(searchText, "'", "''");
         searchString = " AND Contains(S.Description, '" + searchText + "') ";
     }
-
+    //Dialog.Message($.workflow.currentDoc);
+    //Dialog.Message(DoRecommend());
     if (doRecommend && $.workflow.currentDoc=="Order"){
-
+    //  Dialog.Message('67');
         var recOrderFields = ", CASE WHEN V.Answer IS NULL THEN U.Description ELSE UB.Description END AS RecUnit " +
                              ", CASE WHEN V.Answer IS NULL THEN U.Id ELSE UB.Id END AS UnitId " +
                              ", CASE WHEN V.Answer IS NULL THEN MS.Qty ELSE (MS.BaseUnitQty-V.Answer) END AS RecOrder " +
@@ -84,28 +85,28 @@ function GetSKUAndGroups(searchText, thisDoc) {
 
         var recOrderSort = " OrderRecOrder DESC, ";
 
-    } else if ($.workflow.name=='Order'){
-
-        var recOrderFields = ", NULL AS RecUnit " +
-                             ", NULL AS UnitId " +
-                             ", 0 AS RecOrder " +
-                             ", CASE WHEN MS.Qty IS NULL THEN 0 ELSE 1 END AS OrderRecOrder "
-
-        var recOrderStr =  "LEFT JOIN (SELECT SS.Ref, SS.SKU, SS.Qty, SS.Unit, SS.BaseUnitQty FROM Catalog_AssortmentMatrix_SKUs SS " +
-                                     " JOIN _Catalog_AssortmentMatrix_Outlets OO INDEXED BY IND_AMREFOUTLET ON SS.Ref=OO.Ref " +
-                                     " WHERE OO.Outlet=@outlet AND OO.IsTombstone = 0) MS ON S.Id=MS.SKU ";
-
-        query.AddParameter("outlet", $.workflow.outlet);
-        query.AddParameter("visit", $.workflow.visit);
-
-        var recOrderSort = " OrderRecOrder DESC, ";
+    // } else if ($.workflow.name=='Order'){
+    //     Dialog.Message('88');
+    //     var recOrderFields = ", NULL AS RecUnit " +
+    //                          ", NULL AS UnitId " +
+    //                          ", 0 AS RecOrder " +
+    //                          ", CASE WHEN MS.Qty IS NULL THEN 0 ELSE 1 END AS OrderRecOrder "
+    //
+    //     var recOrderStr =  "LEFT JOIN (SELECT SS.Ref, SS.SKU, SS.Qty, SS.Unit, SS.BaseUnitQty FROM Catalog_AssortmentMatrix_SKUs SS " +
+    //                                  " JOIN _Catalog_AssortmentMatrix_Outlets OO INDEXED BY IND_AMREFOUTLET ON SS.Ref=OO.Ref " +
+    //                                  " WHERE OO.Outlet=@outlet AND OO.IsTombstone = 0) MS ON S.Id=MS.SKU ";
+    //
+    //     query.AddParameter("outlet", $.workflow.outlet);
+    //     query.AddParameter("visit", $.workflow.visit);
+    //
+    //     var recOrderSort = " OrderRecOrder DESC, ";
     }
     else{
         var recOrderFields = ", NULL AS RecUnit " +
                      ", NULL AS UnitId " +
                      ", 0 AS RecOrder " +
                      ", 0 AS OrderRecOrder ";
-
+                    // Dialog.Message('108');
         var recOrderStr = "";
 
         var recOrderSort = "";
@@ -182,7 +183,7 @@ function GetQuickOrder(control, skuId, itemPrice, packField, editField, textView
         query.AddParameter("order", ($.workflow.currentDoc == "Order" ? $.workflow.order : $.workflow.Return));
         query.AddParameter("sku", skuId);
         if (recUnit==null){
-            var q = new Query("SELECT Pack FROM Catalog_SKU_Packing WHERE Ref=@ref AND LineNumber=1");
+            var q = new Query("SELECT BaseUnit FROM Catalog_SKU WHERE Id=@ref");
             q.AddParameter("ref", skuId);
             query.AddParameter("pack", q.ExecuteScalar());
         }
@@ -203,7 +204,17 @@ function GetQuickOrder(control, skuId, itemPrice, packField, editField, textView
             defMultiplier = quickOrderItem.Multiplier;
         }
 
-        Variables[textViewField].Text = quickOrderItem.Qty + " " + packDescription + " " + alreadyOrdered;
+       var query = new Query("SELECT Qty FROM Document_" + $.workflow.currentDoc + "_SKUs WHERE Ref=@ref AND SKU=@sku  AND Units=@units");
+        query.AddParameter("ref", ($.workflow.currentDoc == "Order" ? $.workflow.order : $.workflow.Return));
+        query.AddParameter("sku", skuId);
+        query.AddParameter("units", defPack);
+        var qty = query.ExecuteScalar();
+
+        if(qty == null){
+          qty = 0;
+        }
+
+        Variables[textViewField].Text = qty + " " + packDescription + " " + alreadyOrdered;
         multiplier = quickOrderItem.Multiplier;
 
     }
@@ -233,8 +244,8 @@ function AddToOrder(control, editFieldName) {
 
 function CreateOrderItem(control, editFieldName, textFieldName, packField, sku, price, swiped_rowName, recOrder, recUnitId) {
 
-	if (swipedRow!=Variables[swiped_rowName])
-		GetQuickOrder(Variables[swiped_rowName], sku, price, packField, editFieldName, textViewField, recOrder, recUnitId, recUnit);
+	// if (swipedRow!=Variables[swiped_rowName])
+	// 	GetQuickOrder(Variables[swiped_rowName], sku, price, packField, editFieldName, textViewField, recOrder, recUnitId, recUnit);
 
     if (String.IsNullOrEmpty(Variables[editFieldName].Text) == false) {
         if (Converter.ToDecimal(Variables[editFieldName].Text) != Converter.ToDecimal(0)) {
@@ -250,6 +261,7 @@ function CreateOrderItem(control, editFieldName, textFieldName, packField, sku, 
             p.Qty = Converter.ToDecimal(Variables[editFieldName].Text);
 
             var d = GlobalWorkflow.GetMassDiscount(thisDoc);
+            //Dialog.Message(d);
             p.Discount = String.IsNullOrEmpty(d) ? 0 : d;
             var LineNumberQuery=new Query("SELECT Max(LineNumber) FROM Document_" + $.workflow.currentDoc + "_SKUs WHERE Ref=@ref");
             LineNumberQuery.AddParameter("ref", p.Ref);
@@ -343,8 +355,10 @@ function DoGroupping() {
 }
 
 function DoRecommend() {
-
-    if ($.workflow.name=="Visit" && $.sessionConst.OrderCalc)
+  //Dialog.Message($.workflow.name);
+  //Dialog.Message($.sessionConst.OrderCalc);
+  //  if ($.workflow.name=="Visit" && $.sessionConst.OrderCalc)
+  if ($.sessionConst.OrderCalc)
         return true;
     else
         return false;

@@ -50,16 +50,16 @@
 							<c:DockLayout CssClass="grid">
 								<c:VerticalLayout>
 									<c:TextView Text="$GetCommitedScheduledVisits()" CssClass="main_row"></c:TextView>
-									<c:TextView Text="#planned#" CssClass="description_row" />
-									<c:TextView Text="#vpVisits#" CssClass="description_row" />
+									<c:TextView Text="#vpplannedMainScreen#" CssClass="description_row" />
+									<c:TextView Text="#plannedMainSkree#" CssClass="description_row" />
 								</c:VerticalLayout>
 							</c:DockLayout>
 							<c:HorizontalLine />
 							<c:DockLayout CssClass="grid">
 								<c:VerticalLayout>
 									<c:TextView Text="$unscheduledVisits" CssClass="main_row"></c:TextView>
-									<c:TextView Text="#vpUnplanned#" CssClass="description_row" />
-									<c:TextView Text="#vpVisits#" CssClass="description_row" />
+									<c:TextView Text="#vpUnplannedMainScreen#" CssClass="description_row" />
+									<c:TextView Text="#vpVisitsMainScreen#" CssClass="description_row" />
 								</c:VerticalLayout>
 							</c:DockLayout>
 						</c:VerticalLayout>

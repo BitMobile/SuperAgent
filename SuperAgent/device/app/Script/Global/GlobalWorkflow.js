@@ -63,10 +63,12 @@ function SetMassDiscount(discount){
 }
 
 function GetMassDiscount(order){
+	//Dialog.Message($.workflow.currentDoc);
 	if (String.IsNullOrEmpty(massDiscount))
 	{
 		var q = new Query("SELECT COUNT(DISTINCT Discount) " +
-			" FROM Document_Order_SKUs " +
+//			" FROM Document_Order_SKUs " +
+			" FROM Document_" + $.workflow.currentDoc + "_SKUs " +
 			" WHERE Ref=@ref");
 		q.AddParameter("ref", order);
 		var discounts = q.ExecuteScalar();
@@ -74,7 +76,7 @@ function GetMassDiscount(order){
 		if (parseInt(discounts)==parseInt(1))
 		{
 			var q = new Query("SELECT Discount " +
-				" FROM Document_Order_SKUs WHERE Ref=@ref LIMIT 1");
+				" FROM Document_" + $.workflow.currentDoc + "_SKUs WHERE Ref=@ref LIMIT 1");
 			q.AddParameter("ref", order);
 
 			massDiscount = q.ExecuteScalar();

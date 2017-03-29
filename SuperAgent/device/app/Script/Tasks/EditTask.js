@@ -36,7 +36,7 @@ function RetrieveTask(task){
 function CompleteTheTask(task){
 	var taskObj = task.GetObject();
 	taskObj.Status = true;
-	taskObj.ExecutionDate = DateTime.Now;
+	taskObj.ExecutionDate = DateTime.Now.ToString();
 	taskObj.FactExecutor = $.common.UserRef;
 	taskObj.Result = $.result.Text;
 	taskObj.Save();
@@ -65,7 +65,7 @@ function SaveComment(control, task){
 		Dialog.Message(Translate["#TooMoreLetter#"]);
 		taskObj.Result = Left(control.Text,500);
 	}else {
-		taskObj.Result = control.Text;		
+		taskObj.Result = control.Text;
 	}
 	taskObj.Save();
 }

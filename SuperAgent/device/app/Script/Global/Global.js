@@ -27,6 +27,7 @@ function SetSessionConstants() {
 	var GPSTrack = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='GPSSource'");
 	var GPSTrackSend = new Query("SELECT NumericValue FROM Catalog_MobileApplicationSettings WHERE Description='GPSTrackSendFrequency'");
 	var GPSTrackWrite = new Query("SELECT NumericValue FROM Catalog_MobileApplicationSettings WHERE Description='GPSTrackWriteFrequency'");
+	//Dialog.Message(GPSStarted);
   var GPSStarted = false;
 	$.AddGlobal("sessionConst", new Dictionary());
 	$.sessionConst.Add("UseSaveQuest", saveQuest.ExecuteScalar());
@@ -135,6 +136,27 @@ function SetSessionConstants() {
 				$.sessionConst.Add("editTasksWithoutVisit", true);
 			}
 		}
+	}
+}
+
+function SetWorkPeriodConstants() {
+  var GPSStarted = false;
+	$.AddGlobal("workConst", new Dictionary());
+	$.workConst.Add("GPSStarted", GPSStarted);
+}
+
+function SetGps() {
+	if (!$.sessionConst.GPSTrack){
+		GPSTracking.Stop();
+		Variables["workConst"]["GPSStarted"] = false;
+	}
+	if ($.workConst.GPSStarted){
+		GPSTracking.IsBestAccuracy = true;
+		GPSTracking.MinInterval = $.sessionConst.GPSTrackWrite * 60;
+		GPSTracking.SendInterval = $.sessionConst.GPSTrackSend * 60;
+		GPSTracking.MinDistance = 0;
+    GPSTracking.DistanceFilter = 0;
+		GPSTracking.Start();
 	}
 }
 

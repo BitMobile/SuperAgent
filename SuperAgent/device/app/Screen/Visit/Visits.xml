@@ -14,14 +14,21 @@
 					<c:Image CssClass="menuIcon" />
 				</c:DockLayout>
 				<s:If Test="$sessionConst.GPSTrack == true">
-					<s:If Test="$workConst.GPSStarted == true">
-						<c:DockLayout CssClass="gpsDL" OnClickAction="$GpsStart()">
+					<s:If Test="$sessionConst.GPSPredefined == false">
+						<s:If Test="$workConst.GPSStarted == true">
+							<c:DockLayout CssClass="gpsDL" OnClickAction="$GpsStart()">
 								<c:Image Id="GpsImage" CssClass="gpsIconEnd" />
-						</c:DockLayout>
+							</c:DockLayout>
+						</s:If>
+						<s:Else>
+							<c:DockLayout CssClass="gpsDL" OnClickAction="$GpsStart()">
+								<c:Image Id="GpsImage" CssClass="gpsIconStart" />
+							</c:DockLayout>
+						</s:Else>
 					</s:If>
 					<s:Else>
-						<c:DockLayout CssClass="gpsDL" OnClickAction="$GpsStart()">
-								<c:Image Id="GpsImage" CssClass="gpsIconStart" />
+						<c:DockLayout CssClass="gpsDL">
+							<c:Image Id="GpsImage" CssClass="gpsIconPlay" />
 						</c:DockLayout>
 					</s:Else>
 				</s:If>

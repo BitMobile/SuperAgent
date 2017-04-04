@@ -400,6 +400,7 @@ function GpsStart() {
 		Variables["workConst"]["GPSStarted"] = false;
 		$.GpsImage.CssClass = "gpsIconStart";
 		$.GpsImage.Refresh();
+		//Dialog.Message("Stop 403");
 	}
 	else {
 		GPSTracking.IsBestAccuracy = true;
@@ -408,6 +409,7 @@ function GpsStart() {
 		GPSTracking.MinDistance = 0;
     GPSTracking.DistanceFilter = 0;
 		GPSTracking.Start();
+		//Dialog.Message("Stop 412");
 		Variables["workConst"]["GPSStarted"] = true;
 		$.GpsImage.CssClass = "gpsIconEnd";
 		$.GpsImage.Refresh();

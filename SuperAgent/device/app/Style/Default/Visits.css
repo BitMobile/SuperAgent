@@ -107,6 +107,15 @@
 	margin-left: 5%;
 	dock-align: right;
 }
+
+.gpsIconPlay {
+	background-image: url(gps_play.png);
+	height: 60%;
+	margin-top: 23.5%;
+	margin-right: 10%;
+	margin-left: 5%;
+	dock-align: right;
+}
 .gpsIconStart {
 	background-image: url(gps_start.png);
 	height: 60%;

@@ -3,8 +3,8 @@
 function OnApplicationInit() {
 
 	Global.SetSessionConstants();
-	Global.SetGps();
 	Global.SetWorkPeriodConstants();
+	Global.SetGps();
 
 	Indicators.SetIndicators();
 

@@ -35,7 +35,7 @@
 				<c:HorizontalLayout CssClass="bottom_btn">
 					<c:TextView Text="#calculatePayment#"></c:TextView>
 				</c:HorizontalLayout>
-				<c:HorizontalLine CssClass="b_line" />		
+				<c:HorizontalLine CssClass="b_line" />
 		</s:If>
 		<s:Else >
 				<c:HorizontalLayout CssClass="bottom_btn_shadow">
@@ -68,9 +68,10 @@
 					<c:TextView Id="skuTitleTV" Text="{@skuTitle}:"></c:TextView>
 				<s:If Test="$IsNew($thisDoc)">
 					<s:If Test="$NotEmptyRef($thisDoc.PriceList)">
-						<c:DockLayout CssClass="space"/>
+						<c:DockLayout>
 						<c:DockLayout Id="btnAdd" CssClass="plusIconDL" OnEvent="Back" OnClickAction="$DoAction(Add, null, $thisDoc)">
 							<c:Image Id="PlusIson" CssClass="plusIcon"/>
+						</c:DockLayout>
 						</c:DockLayout>
 					</s:If>
 				</s:If>

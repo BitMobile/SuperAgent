@@ -38,3 +38,43 @@
 	placeholder-color: #FF7C4A;
 	font: 42% Arial;
 }
+
+.plusIconDL {
+	width: 100%;
+	height: 100%;
+
+	dock-align: right;
+}
+
+.plusIcon {
+	background-image: url(Plus.png);
+	width: 4.3mm;
+	height: 63%;
+	margin-right: 2.5mm;
+	margin-left: 0%;
+	margin-top: 29%;
+	dock-align: right;
+}
+
+.space {
+	width: 32%;
+	height: 100%;
+	dock-align: right;
+}
+
+.bottom_btn_shadow {
+	width: 100%;
+	height: 6.7mm;
+	dock-align: bottom;
+	selected-color: #bacdce;
+	background-color: #fff;
+}
+
+.bottom_btn_shadow TextView {
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	padding-top: 25%;
+	color: #8E8E93;;
+	font: 37% arial;
+}

@@ -364,3 +364,5 @@ vpUnplannedMainScreen		unplanned
 vpplannedMainScreen		planned
 vpVisitsMainScreen		visits
 plannedMainSkree			visits
+сurrency		usd
+calculatePayment		Calculate payment

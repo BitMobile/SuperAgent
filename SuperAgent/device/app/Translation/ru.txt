@@ -364,3 +364,5 @@ vpUnplannedMainScreen		внеплановых
 vpplannedMainScreen		плановых
 vpVisitsMainScreen		визитов
 plannedMainSkree			визитов
+сurrency		руб.
+calculatePayment		Рассчитать оплату

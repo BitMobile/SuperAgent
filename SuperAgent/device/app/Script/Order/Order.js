@@ -184,6 +184,21 @@ function GetOrderedSKUs(order) {
 	return r;
 }
 
+function CountOrderedSKUs(order) {
+
+	var doc;
+	if ($.workflow.currentDoc=="Order")
+		doc = "Order";
+	else
+		doc = "Return";
+
+	var query = new Query();
+	query.Text = "SELECT Id, SKU FROM Document_" + doc + "_SKUs WHERE Ref = @Ref";
+	query.AddParameter("Ref", order);
+	r = query.ExecuteCount();
+	return r;
+}
+
 function GetOrderSUM(order) {
 
 	var doc;

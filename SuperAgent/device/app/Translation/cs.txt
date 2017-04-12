@@ -355,3 +355,12 @@ vpVisitsMainScreen		(mimo plán)
 plannedMainSkree			(dle plánu)
 сurrency		czk
 calculatePayment		Vypočítat platby
+fr		Terminál
+reg		Zapisovač
+сommunication		Spojení navázáno
+Connect		Připojit
+cashHistori		Transakční historie
+dontSend		neodeslané
+printZ		Print Z-report
+printX		Print X-report
+AskPrintZ		Tisk Z-report zavře aktuální posun. Chcete pokračovat?

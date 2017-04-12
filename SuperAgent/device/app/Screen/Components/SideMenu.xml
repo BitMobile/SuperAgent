@@ -70,6 +70,14 @@
 		</c:DockLayout>
 		<c:HorizontalLine />
 
+		<c:DockLayout Id="FR" CssClass="{$styles.FR}" OnClickAction="$SwitchScreen(FR)">
+			<c:HorizontalLayout>
+				<c:Image CssClass="btn_fr" />
+				<c:TextView Text="#fr#"></c:TextView>
+			</c:HorizontalLayout>
+		</c:DockLayout>
+		<c:HorizontalLine />
+
 		<c:DockLayout Id="Sync" CssClass="{$styles.Sync}" OnClickAction="$SwitchScreen(Sync)">
 			<c:TextView Id="syncTitle" CssClass="menu_text" Text="$GetLastSyncTime()"></c:TextView>
 			<c:HorizontalLayout>

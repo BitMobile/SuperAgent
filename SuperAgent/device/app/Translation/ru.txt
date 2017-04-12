@@ -366,3 +366,12 @@ vpVisitsMainScreen		визитов
 plannedMainSkree			визитов
 сurrency		руб.
 calculatePayment		Рассчитать оплату
+fr		Терминал
+reg		Регистратор
+сommunication		Связь установлена
+Connect		Соединиться
+cashHistori		История операций
+dontSend		НЕОТПРАВЛЕННЫЕ ЧЕКИ
+printZ		Напечатать Z-отчет
+printX		Напечатать X-отчет
+AskPrintZ		Печать Z-отчета закроет текущую смену. Продолжить?

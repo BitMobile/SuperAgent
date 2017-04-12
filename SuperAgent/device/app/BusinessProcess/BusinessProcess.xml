@@ -45,6 +45,10 @@
 			<s:Include File="\Components\SideMenuActions.xml"/>
 		</bp:Step>
 
+		<bp:Step Name="FR" Screen="FR\FR.xml" Controller="FR\Main.js">
+			<s:Include File="\Components\SideMenuActions.xml"/>
+		</bp:Step>
+
 		<bp:Step Name="Sync" Screen="Sync\Sync.xml" Controller="Sync\Main.js">
 			<s:Include File="\Components\SideMenuActions.xml"/>
 		</bp:Step>

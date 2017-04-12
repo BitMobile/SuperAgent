@@ -9,6 +9,7 @@ function GetItemsStyles(){
 	styles.Add("Orders", IsCurrent("Orders"));
 	styles.Add("Returns", IsCurrent("Returns"));
 	styles.Add("KPI", IsCurrent("KPI"));
+	styles.Add("FR", IsCurrent("FR"));
 	styles.Add("Sync", IsCurrent("Sync"));
 	styles.Add("About", IsCurrent("About"));
 
@@ -104,7 +105,7 @@ function Logout() {
 			if (DB.SuccessSync) {
 				Dialog.Message("#noLogout#", GoToSync);
 			}else {
-				Dialog.Ask("#OutWhatEver#",LogoutCallbackWhatEver,"",GoToSync);				
+				Dialog.Ask("#OutWhatEver#",LogoutCallbackWhatEver,"",GoToSync);
 			}
 		}
 		else{

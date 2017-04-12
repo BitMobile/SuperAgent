@@ -366,3 +366,12 @@ vpVisitsMainScreen		visits
 plannedMainSkree			visits
 сurrency		usd
 calculatePayment		Calculate payment
+fr		Terminal
+reg		Registrar
+сommunication		Communication established
+Connect		Connect
+cashHistori		Operations history
+dontSend		Don't send
+printZ		Print Z-report
+printX		Print X-report
+AskPrintZ		Printing a Z-report will close the current shift. Continue?

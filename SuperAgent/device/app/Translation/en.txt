@@ -375,3 +375,8 @@ dontSend		Don't send
 printZ		Print Z-report
 printX		Print X-report
 AskPrintZ		Printing a Z-report will close the current shift. Continue?
+Payments		Payment
+PaymentsType		PAYMENT METHODS
+NeedPay		More to payment
+PushPay		Surrender:
+NoPay		No change

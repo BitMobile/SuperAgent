@@ -375,3 +375,8 @@ dontSend		НЕОТПРАВЛЕННЫЕ ЧЕКИ
 printZ		Напечатать Z-отчет
 printX		Напечатать X-отчет
 AskPrintZ		Печать Z-отчета закроет текущую смену. Продолжить?
+Payments		Оплата
+PaymentsType		СПОСОБЫ ОПЛАТЫ
+NeedPay		Еще к оплате 
+PushPay		Сдача:
+NoPay		Без сдачи

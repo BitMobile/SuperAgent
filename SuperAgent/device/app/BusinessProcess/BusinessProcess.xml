@@ -112,6 +112,7 @@
 
 		<bp:Step Name="Order" Screen="Order\Order.xml" Controller="Order\Order.js">
 			<bp:Action Name="Add" NextStep="AddSKU"></bp:Action>
+			<bp:Action Name="Pay" NextStep="OrderPay"></bp:Action>
 			<bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
 			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
 			<bp:Action Name="Forward" NextStep="Return"></bp:Action>
@@ -163,6 +164,10 @@
 			<bp:Action Name="SetFilter" NextStep="Filters"></bp:Action>
 			<bp:Action Name="SelectSKU" NextStep="EditSKU"></bp:Action>
 			<bp:Action Name="Order" NextStep="Order"></bp:Action>
+		</bp:Step>
+
+		<bp:Step Name="OrderPay" Screen="Order\Order_Pay.xml" Controller="Order\Order_Pay.js">
+
 		</bp:Step>
 
 		<bp:Step Name="Filters" Screen="Filters.xml" Controller="Order\Order_SKUs.js">
@@ -222,6 +227,7 @@
 		<bp:Step Name="Return" Screen="Order\Order.xml" Controller="Order\Order.js">
 			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
 			<bp:Action Name="Add" NextStep="AddSKU"></bp:Action>
+			<bp:Action Name="Pay" NextStep="OrderPay"></bp:Action>
 			<bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
 		</bp:Step>
 
@@ -231,6 +237,10 @@
 		<bp:Step Name="AddSKU" Screen="Order_SKUs.xml" Controller="Order\Order_SKUs.js">
 			<bp:Action Name="SetFilter" NextStep="Filters"></bp:Action>
 			<bp:Action Name="SelectSKU" NextStep="EditSKU"></bp:Action>
+		</bp:Step>
+
+		<bp:Step Name="OrderPay" Screen="Order_Pay.xml" Controller="Order_Pay.js">
+
 		</bp:Step>
 
 		<bp:Step Name="EditSKU" Screen="Order_EditSKU.xml" Controller="Order\Order_EditSKU.js">
@@ -252,6 +262,7 @@
 		<bp:Step Name="Order" Screen="Order.xml" Controller="Order\Order.js">
 			<bp:Action Name="Add" NextStep="AddSKU"></bp:Action>
 			<bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
+			<bp:Action Name="Pay" NextStep="OrderPay"></bp:Action>
 			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
 		</bp:Step>
 
@@ -259,6 +270,11 @@
 			<bp:Action Name="SetFilter" NextStep="Filters"></bp:Action>
 			<bp:Action Name="SelectSKU" NextStep="EditSKU"></bp:Action>
 		</bp:Step>
+
+		<bp:Step Name="OrderPay" Screen="Order_Pay.xml" Controller="Order\Order_Pay.js">
+
+		</bp:Step>
+
 
 		<bp:Step Name="Filters" Screen="Filters.xml" Controller="Order\Order_SKUs.js">
 			<bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>

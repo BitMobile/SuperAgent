@@ -364,3 +364,8 @@ dontSend		neodeslané
 printZ		Print Z-report
 printX		Print X-report
 AskPrintZ		Tisk Z-report zavře aktuální posun. Chcete pokračovat?
+Payments		Platby
+PaymentsType		PLATBA
+NeedPay		Více zaplatit
+PushPay		Delivery:
+NoPay		Aniž by

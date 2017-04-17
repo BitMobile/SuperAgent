@@ -301,6 +301,31 @@ function OrderBack() {
 	}
 }
 
+function OrderPay() {
+	//Workflow.Action("Pay",[]);
+	// if ($.workflow.name == "Order" || $.workflow.name == "Return")
+		Workflow.Action("Pay",[]);
+
+	// else {
+	// 	ClearFilters();
+	//
+	// 	var stepNumber;
+	// 	if ($.workflow.currentDoc=="Order")
+	// 		stepNumber = '4';
+	// 	else
+	// 		stepNumber = '5';
+	//
+	// 	var q = new Query("SELECT NextStep FROM USR_WorkflowSteps WHERE StepOrder<@stepNumber AND Value=0 ORDER BY StepOrder DESC");
+	// 	q.AddParameter("stepNumber", stepNumber);
+	// 	var step = q.ExecuteScalar();
+	// 	if (step==null) {
+	// 		Workflow.BackTo("Outlet");
+	// 	}
+	// 	else
+	// 		Workflow.BackTo(step);
+	// }
+}
+
 function ClearFilters() {
 	var checkDropF = new Query("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='USR_Filters'");
 	var checkDropFResult = checkDropF.ExecuteScalar();

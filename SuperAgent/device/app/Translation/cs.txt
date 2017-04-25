@@ -369,3 +369,19 @@ PaymentsType		PLATBA
 NeedPay		Více zaplatit
 PushPay		Delivery:
 NoPay		Aniž by
+TakeChek		Získat kontrolní
+ChangeScreenPay		Se částka příspěvku dost platit za
+Check		zaslání šeku
+OrderDescript		podrobnosti objednat
+PushPayShort		Delivery
+TakeMoney		Přijaté
+TotalPay		Total zaplatit
+CalcAddress		Výpočet adresa
+KKTNumber		Číslo CCV
+Sms		SMS
+Email		E-mail
+PayDiscount		Sleva
+Print		Print
+PaidOrder		Order zaplatil
+CalcDate		datu vypořádání
+ContactAddress		Kontakt poslat šek

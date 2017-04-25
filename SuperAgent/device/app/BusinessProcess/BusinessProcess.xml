@@ -167,7 +167,17 @@
 		</bp:Step>
 
 		<bp:Step Name="OrderPay" Screen="Order\Order_Pay.xml" Controller="Order\Order_Pay.js">
+			<bp:Action Name="Chek" NextStep="OrderChek"></bp:Action>
+		</bp:Step>
 
+		<bp:Step Name="OrderChek" Screen="Order_Chek.xml" Controller="Order_Chek.js">
+			<bp:Action Name="ChekEnd" NextStep="OrderChekEnd"></bp:Action>
+		</bp:Step>
+
+		<bp:Step Name="OrderChekEnd" Screen="Order_ChekEnd.xml" Controller="Order_ChekEnd.js">
+			<bp:Action Name="Forward" NextStep="Return"></bp:Action>
+			<bp:Action Name="SkipReturn" NextStep="Receivables" />
+			<bp:Action Name="SkipEncashment" NextStep="Total"/>
 		</bp:Step>
 
 		<bp:Step Name="Filters" Screen="Filters.xml" Controller="Order\Order_SKUs.js">
@@ -240,7 +250,14 @@
 		</bp:Step>
 
 		<bp:Step Name="OrderPay" Screen="Order_Pay.xml" Controller="Order_Pay.js">
+			<bp:Action Name="Chek" NextStep="OrderChek"></bp:Action>
+		</bp:Step>
 
+		<bp:Step Name="OrderChek" Screen="Order_Chek.xml" Controller="Order_Chek.js">
+			<bp:Action Name="ChekEnd" NextStep="OrderChekEnd"></bp:Action>
+		</bp:Step>
+
+		<bp:Step Name="OrderChekEnd" Screen="Order_ChekEnd.xml" Controller="Order_ChekEnd.js">
 		</bp:Step>
 
 		<bp:Step Name="EditSKU" Screen="Order_EditSKU.xml" Controller="Order\Order_EditSKU.js">
@@ -272,9 +289,15 @@
 		</bp:Step>
 
 		<bp:Step Name="OrderPay" Screen="Order_Pay.xml" Controller="Order\Order_Pay.js">
-
+			<bp:Action Name="Chek" NextStep="OrderChek"></bp:Action>
 		</bp:Step>
 
+		<bp:Step Name="OrderChek" Screen="Order_Chek.xml" Controller="Order_Chek.js">
+			<bp:Action Name="ChekEnd" NextStep="OrderChekEnd"></bp:Action>
+		</bp:Step>
+
+		<bp:Step Name="OrderChekEnd" Screen="Order_ChekEnd.xml" Controller="Order_ChekEnd.js">
+		</bp:Step>
 
 		<bp:Step Name="Filters" Screen="Filters.xml" Controller="Order\Order_SKUs.js">
 			<bp:Action Name="Forward" NextStep="AddSKU"></bp:Action>

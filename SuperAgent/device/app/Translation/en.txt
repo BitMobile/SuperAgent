@@ -380,3 +380,20 @@ PaymentsType		PAYMENT METHODS
 NeedPay		More to payment
 PushPay		Surrender:
 NoPay		No change
+TakeChek		Receive a receipt
+ChangeScreenPay		Amount invoiced is not enough to pay
+Check		Check
+CheckSend		SEND CHECK
+OrderDescript		ORDER DETAILS
+PushPayShort		Surrender
+TakeMoney		Received
+TotalPay		Total for payment
+CalcAddress		Calculation address
+KKTNumber		KKT Number
+Sms		SMS
+Email		E-mail
+PayDiscount		Discount
+Print		Print
+PaidOrder		Order paid
+CalcDate		Calculation Date
+ContactAddress		Contact for sending a check

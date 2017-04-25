@@ -1,4 +1,6 @@
-﻿function OnLoad() {
+var fptr;
+
+function OnLoad() {
 	DrawDataReport();
 
 	DrawFtpReport();
@@ -108,7 +110,8 @@ function OpenSettings() {
 
 	// var _fptr = ClientModel3.MD.FiscalRegistrator.GetProviderInstance();
   // _fptr.Initialize();
-	var fptr = FiscalRegistrator.GetInstance();
+	fptr = FiscalRegistrator.GetProviderInstance();
+	fptr.Initialize();
 	fptr.OpenSettings();
 	//Dialog.Message('qwe');
 
@@ -132,4 +135,23 @@ function PrintZ(state, args) {
 	Dialog.Message('Печатаю Z отчет');
 	}
 
+}
+
+function Connect(){
+
+	//if (FptrInstance.Instance.CurrentStatus >= 0)
+                  //  {
+                      //  status_CV = true;
+                      //  FptrInstance.Instance.Beep();
+                      //  ChangeLayoutsAsync();
+                  //  }
+                  //  else
+                  //  {
+                      //  status_CV = false;
+                        fptr.PutDeviceSettings(fptr.Settings);
+                        fptr.PutDeviceEnabled(true);
+												fptr.Beep();
+                      //  ChangeLayoutsAsync();
+                      //  Utils.TraceMessage($"{nameof(FptrInstance.Instance.CurrentStatus)}: {FptrInstance.Instance.CurrentStatus}");
+                  //  }
 }

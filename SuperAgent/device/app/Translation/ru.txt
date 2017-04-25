@@ -377,6 +377,23 @@ printX		Напечатать X-отчет
 AskPrintZ		Печать Z-отчета закроет текущую смену. Продолжить?
 Payments		Оплата
 PaymentsType		СПОСОБЫ ОПЛАТЫ
-NeedPay		Еще к оплате 
+NeedPay		Еще к оплате
 PushPay		Сдача:
 NoPay		Без сдачи
+TakeChek		Получить чек
+ChangeScreenPay		Вносимой суммы недостаточно для оплаты
+Check		Чек
+CheckSend		ОТПРАВКА ЧЕКА
+OrderDescript		ПОДРОБНОСТИ ЗАКАЗА
+PushPayShort		Сдача
+TakeMoney		Получено
+TotalPay		Итого к оплате
+CalcAddress		Адрес расчета
+KKTNumber		Номер ККТ
+Sms		SMS
+Email		E-mail
+PayDiscount		Скидка
+Print		Напечатать
+PaidOrder		Заказ оплачен
+CalcDate		Дата расчета
+ContactAddress		Контакт для отправки чека

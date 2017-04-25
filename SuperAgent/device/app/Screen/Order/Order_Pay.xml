@@ -5,18 +5,27 @@
 
 	<c:SwipeHorizontalLayout Id="swipe_layout" Index="1">
 
-		<c:VerticalLayout Id="VLayout" CssClass="bodyPay">
+		<c:DockLayout Id="VLayout" CssClass="bodyPay">
 
 			<c:DockLayout CssClass="top_navigatorOr">
 				<c:DockLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$GoBackTo()">
 					<c:Image />
 					<c:TextView Text="#order#" />
 				</c:DockLayout>
-				<c:DockLayout CssClass="btn_space" />
+				<c:DockLayout CssClass="btn_space">
+				</c:DockLayout>
 				<c:HorizontalLayout>
 					<c:TextView Text="#Payments#" />
 				</c:HorizontalLayout>
 			</c:DockLayout>
+
+
+			<c:HorizontalLayout CssClass="bottom_btn" OnEvent="OrderPay" OnClickAction="$ScreenChek()">
+				<c:TextView Text="#Print#"></c:TextView>
+			</c:HorizontalLayout>
+			<c:HorizontalLine CssClass="b_line" />
+
+
 
 			<c:HorizontalLayout CssClass="gridOR">
 				<c:VerticalLayout>
@@ -53,7 +62,8 @@
 
 			</s:Iterator>
 		</c:ScrollView>
-		</c:VerticalLayout>
+
+		</c:DockLayout>
 
 	</c:SwipeHorizontalLayout>
 

@@ -36,7 +36,26 @@ function OnLoad() {
 
 // -------------------- Sync Data ------------
 function GoBackTo(){
-    Workflow.BackTo($.workflow.currentDoc);
+
+  if ($.workflow.chek != null){
+    var dropSKU = new Query("SELECT Id FROM Document_Check_SKUs WHERE Ref=@ref");
+    dropSKU.AddParameter("ref", chek);
+    var resultSKU = dropSKU.Execute();
+    while (resultSKU.Next()) {
+      DB.Delete(resultSKU["Id"]);
+    }
+
+    var dropPay = new Query("SELECT Id FROM Document_Check_Payments WHERE Ref=@ref");
+    dropPay.AddParameter("ref", chek);
+    var resultPay = dropPay.Execute();
+    while (resultPay.Next()) {
+      DB.Delete(resultPay["Id"]);
+    }
+
+    //DB.Delete($.workflow.chek);
+  }
+
+  Workflow.BackTo($.workflow.currentDoc);
 }
 
 function GetPayments() {
@@ -128,7 +147,7 @@ function ScreenChek() {
     order = thisDoc.GetObject();
 
     chek.Date = DateTime.Now.ToString();
-    chek.OwnerDocument = thisDoc;
+    chek.OwnerDocument = order.Id;
     chek.Type = true;
     chek.Outlet = order.Outlet;
     chek.User = order.SR;

@@ -30,6 +30,7 @@
 			<c:Module Name="Dialogs" File="Global\Dialogs.js" />
 			<c:Module Name="GlobalWorkflow" File="Global\GlobalWorkflow.js" />
 			<c:Module Name="OrderItem" File="Global\OrderItem.js" />
+			<c:Module Name="Fiscal" File="Global\Fiscal.js" />
 		</c:GlobalModules>
 
 		<c:Mixins>
@@ -39,7 +40,7 @@
 			<c:Mixin File="Mixins\DB.js" Target="*.js" />
 
 		</c:Mixins>
-		
+
 	</c:Script>
 
 </c:Configuration>

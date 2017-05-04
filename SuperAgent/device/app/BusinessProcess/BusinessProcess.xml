@@ -18,12 +18,14 @@
 		<bp:Step Name="OrderList" Screen="Order\OrderList.xml" Controller="Order\Main.js">
 			<bp:Action Name="Create" NextStep="Outlets"></bp:Action>
 			<bp:Action Name="Edit" NextWorkflow="Order"></bp:Action>
+			<bp:Action Name="ChekEnd" NextWorkflow="ChekEnd"></bp:Action>
 			<s:Include File="\Components\SideMenuActions.xml"/>
 		</bp:Step>
 
 		<bp:Step Name="ReturnList" Screen="Order\OrderList.xml" Controller="Order\Main.js">
 			<bp:Action Name="Create" NextStep="Outlets"></bp:Action>
 			<bp:Action Name="Edit" NextWorkflow="Return"></bp:Action>
+			<bp:Action Name="ChekEnd" NextWorkflow="ChekEnd"></bp:Action>
 			<s:Include File="\Components\SideMenuActions.xml"/>
 		</bp:Step>
 
@@ -220,6 +222,11 @@
 			<bp:Action Name="SelectTaskText" NextStep="SelectTaskText"></bp:Action>
 		</bp:Step>
 			<bp:Step Name="SelectTaskText" Screen="ShowText.xml" Controller="Tasks\ShowText.js"></bp:Step>
+	</bp:Workflow>
+
+	<bp:Workflow Name="ChekEnd">
+		<bp:Step Name="OrderChekEnd" Screen="Order_ChekEnd.xml" Controller="Order_ChekEnd.js">
+		</bp:Step>
 	</bp:Workflow>
 
 	<bp:Workflow Name="CreateTask">

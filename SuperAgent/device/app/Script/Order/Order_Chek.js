@@ -3,6 +3,9 @@ var SumMessage;
 var order;
 var thisDoc;
 var doc;
+var orderSumm;
+var countSumm;
+var fptr;
 
 function OnLoad() {
 
@@ -33,17 +36,21 @@ function CountSum() {
   var query = new Query("SELECT SUM(Total) FROM Document_Check_Payments WHERE Ref = @Ref");
 	query.AddParameter("Ref", $.workflow.chek);
 	var sum = query.ExecuteScalar();
-	if (sum == null)
+	if (sum == null){
+    countSumm = 0;
 		return 0;
-	else
+  }
+	else{
+    countSumm = String.Format("{0:F2}", sum);
 		return String.Format("{0:F2}", sum);
+  }
 
 }
 
 function GetSUMPay() {
 
-  var allSum = ToFloat(GetOrderSUM());
-  var Sum = ToFloat(CountSum());
+  var allSum = ToFloat(orderSumm);
+  var Sum = ToFloat(countSumm);
   var Mess;
 
   if (allSum < Sum) {
@@ -77,23 +84,78 @@ function GetOrderSUM() {
 	var query = new Query("SELECT SUM(Qty*Total) FROM Document_" + doc + "_SKUs WHERE Ref = @Ref");
 	query.AddParameter("Ref", thisDoc);
 	var sum = query.ExecuteScalar();
-	if (sum == null)
+	if (sum == null){
+    orderSumm = 0;
 		return 0;
-	else
+  }
+	else{
+    orderSumm = String.Format("{0:F2}", sum);
 		return String.Format("{0:F2}", sum);
+  }
 }
 
 function ScreenChek() {
 
-    
 
-    Workflow.Action("ChekEnd",[]);
+    if (fptr != NULL){
+
+
+      Fiscal.OpenCheque(fptr, 1);
+
+      Fiscal.SetEmailOrTelephoneNumber(fptr, "+79215776130");
+
+      var query = new Query("SELECT Id, SKU, Price, Qty, Discount, Total, Units, Qty*Total AS Amount FROM Document_" + doc + "_SKUs WHERE Ref = @Ref");
+  	   query.AddParameter("Ref", thisDoc);
+      var result = query.Execute();
+
+      while (result.Next()) {
+        Fiscal.RegistrationFz54(fptr, result["SKU"].Description, result["Price"], result["Qty"], result["Amount"], Fiscal.GetVATs(result["SKU"].VAT.Description));
+      }
+
+      var query = new Query("SELECT * FROM Document_Check_Payments WHERE Ref = @Ref");
+      query.AddParameter("Ref", $.workflow.chek);
+      var result = query.Execute();
+
+      while (result.Next()) {
+        if (result['Total'] >= 0)
+          Fiscal.Payment(fptr, result['Total'], ToFloat(result['Type'].PaymentCode));
+      }
+
+
+
+      Fiscal.SetKashierName(fptr, order.SR.Description);
+
+      Fiscal.CloseCheque(fptr, 1);
+
+
+
+      //Dialog.Message(Fiscal.GetError() + "----------error");
+      var Err = Fiscal.GetError();
+
+      if (IsEmptyValue(Err)) {
+
+        order.Cheque = $.workflow.chek;
+        order.Save();
+
+        Workflow.Action("ChekEnd",[]);
+      }
+      else {
+        Dialog.Message(Err);
+        fptr.CancelCheck();
+      }
+
+
+
+    }
+    else {
+      Dialog.Message(Translate["#NoFs#"])
+    }
 
 }
 
 function GetOrderedSKUs() {
 
-  var query = new Query("SELECT * FROM Document_" + doc + "_SKUs WHERE Ref = @Ref");
+  var query = new Query("SELECT Id, SKU, Feature, Qty, Discount, Total, Units, ROUND(Qty*Total, 2) AS Amount FROM Document_" + doc + "_SKUs WHERE Ref = @Ref");
 	query.AddParameter("Ref", thisDoc);
 
   return query.Execute();
@@ -111,8 +173,8 @@ function GetCheckPays() {
 
 function GetSUMDef() {
 
-  var allSum = ToFloat(GetOrderSUM());
-  var Sum = ToFloat(CountSum());
+  var allSum = ToFloat(orderSumm);
+  var Sum = ToFloat(countSumm);
   var Mess;
 
   if (allSum < Sum) {
@@ -125,8 +187,8 @@ function GetSUMDef() {
 
 function Sale() {
 
-  var allSum = ToFloat(GetOrderSUM());
-  var Sum = ToFloat(CountSum());
+  var allSum = ToFloat(orderSumm);
+  var Sum = ToFloat(countSumm);
   var Mess;
 
   if (allSum < Sum)
@@ -159,5 +221,29 @@ function GetSale() {
   }
 
   return (sum * -1);
+
+}
+
+function GetVatTranslate(vat) {
+  return Translate["#" + vat + "#"];
+}
+
+function GetFSNumber() {
+  fptr = $.workConst.fptr;
+
+  if (fptr != NULL){
+
+    var chek = $.workflow.chek;
+    var chekObj = chek.GetObject();
+
+    chekObj.KKTNumber = Fiscal.GetNumberOfFiscalStorage(fptr);
+    chekObj.Save();
+
+    return chekObj.KKTNumber;
+
+  }
+  else {
+    return 0;
+  }
 
 }

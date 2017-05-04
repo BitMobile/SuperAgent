@@ -113,13 +113,22 @@ function OpenSettings() {
 	fptr = FiscalRegistrator.GetProviderInstance();
 	fptr.Initialize();
 	fptr.OpenSettings();
-	//Dialog.Message('qwe');
+
+	Variables["workConst"]["fptr"] = fptr;
 
 }
 
 function PrintXReport() {
 
-	Dialog.Message('Печатаю Х.. отчет');
+	//Dialog.Message('Печатаю Х.. отчет');
+	if (fptr != NULL){
+
+		Fiscal.PrintX(fptr);
+
+	}
+	else {
+		Dialog.Message(Translate["#NoFs#"]);
+	}
 
 }
 
@@ -132,26 +141,32 @@ function PrintZReport() {
 function PrintZ(state, args) {
 	if (args.Result == 0) {
 
-	Dialog.Message('Печатаю Z отчет');
+		if (fptr != NULL){
+
+			Fiscal.PrintZ(fptr);
+
+		}
+		else {
+			Dialog.Message(Translate["#NoFs#"]);
+		}
+
 	}
 
 }
 
 function Connect(){
 
-	//if (FptrInstance.Instance.CurrentStatus >= 0)
-                  //  {
-                      //  status_CV = true;
-                      //  FptrInstance.Instance.Beep();
-                      //  ChangeLayoutsAsync();
-                  //  }
-                  //  else
-                  //  {
-                      //  status_CV = false;
-                        fptr.PutDeviceSettings(fptr.Settings);
-                        fptr.PutDeviceEnabled(true);
-												fptr.Beep();
-                      //  ChangeLayoutsAsync();
-                      //  Utils.TraceMessage($"{nameof(FptrInstance.Instance.CurrentStatus)}: {FptrInstance.Instance.CurrentStatus}");
-                  //  }
+	if (fptr != NULL){
+
+		fptr.PutDeviceSettings(fptr.Settings);
+	  fptr.PutDeviceEnabled(true);
+		fptr.Beep();
+
+	}
+	else {
+		Dialog.Message(Translate["#NoFs#"]);
+	}
+
+
+
 }

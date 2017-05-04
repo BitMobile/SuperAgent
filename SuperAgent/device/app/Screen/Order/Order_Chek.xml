@@ -7,6 +7,8 @@
 	<s:Push Id="Def" Value="$GetSUMDef()"></s:Push>
 	<s:Push Id="Address" Value="$GetAddress()"></s:Push>
 	<s:Push Id="Sale" Value="$GetSale()"></s:Push>
+	<s:Push Id="FSNumber" Value="$GetFSNumber()"></s:Push>
+
 
 
 	<c:SwipeHorizontalLayout Id="swipe_layout" Index="1">
@@ -102,7 +104,7 @@
 					<c:TextView Text="$Address" CssClass="main_rowChek"></c:TextView>
 					<c:HorizontalLayout CssClass="spaceChek"/>
 					<c:TextView Text="#KKTNumber#" CssClass="description_rowChek"></c:TextView>
-					<c:TextView Text="12345678901234578" CssClass="main_rowChek2"></c:TextView>
+					<c:TextView Text="$FSNumber" CssClass="main_rowChek2"></c:TextView>
 				</c:VerticalLayout>
 			</c:DockLayout>
 			<c:HorizontalLine />
@@ -117,7 +119,12 @@
 								</c:HorizontalLayout>
 								<c:HorizontalLayout CssClass="HayLay">
 										<c:TextView Text="{$orderitem.Qty} #pcs# х {$FormatValue($orderitem.Total)} #currency#" CssClass="description_rowPay"></c:TextView>
-										<c:TextView Text="НДС: 18%" CssClass="SymbolPay"></c:TextView>
+										<s:If Test="$sessionConst.UseVATs == true">
+											<c:TextView Text= "$GetVatTranslate($orderitem.SKU.VAT.Description)" CssClass="SymbolPay"></c:TextView>
+										</s:If >
+										<s:Else>
+											<c:TextView Text="" CssClass="SymbolPay"></c:TextView>
+										</s:Else >
 								</c:HorizontalLayout>
 							</c:VerticalLayout>
 						</c:DockLayout>

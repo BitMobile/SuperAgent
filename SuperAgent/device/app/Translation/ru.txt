@@ -397,3 +397,8 @@ Print		Напечатать
 PaidOrder		Заказ оплачен
 CalcDate		Дата расчета
 ContactAddress		Контакт для отправки чека
+Percent0		НДС 0%
+Percent10		НДС 10%
+Percent18		НДС 18%
+PercentWithoOut		Без НДС
+NoFs		Фискальный регистратор не подключен.

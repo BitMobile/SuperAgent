@@ -21,6 +21,10 @@ function SetOutlet(value){
 	outlet = value;
 }
 
+function SetChek(value){
+	chek = value;
+}
+
 function GetOutlet(){
 	return outlet;
 }
@@ -87,6 +91,7 @@ function GetMassDiscount(order){
 
 function ClearVariables(){
 	outlet = null;
+	chek = null;
 	currentTask = null;
 	outletIsCreated = null;
 	massDiscount = null;

@@ -397,3 +397,8 @@ Print		Print
 PaidOrder		Order paid
 CalcDate		Calculation Date
 ContactAddress		Contact for sending a check
+Percent0		VAT 0%
+Percent10		VAT 10%
+Percent18		VAT 18%
+PercentWithoOut		Not VAT
+NoFs		The fiscal recorder is not connected.

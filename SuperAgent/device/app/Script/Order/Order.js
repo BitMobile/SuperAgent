@@ -175,6 +175,7 @@ function GetOrderedSKUs(order) {
 	else
 		doc = "Return";
 
+
 	var query = new Query();
 	query.Text = "SELECT Id, SKU, Feature, Qty, Discount, Total, Units, ROUND(Qty*Total, 2) AS Amount FROM Document_" + doc + "_SKUs WHERE Ref = @Ref";
 	query.AddParameter("Ref", order);
@@ -302,28 +303,21 @@ function OrderBack() {
 }
 
 function OrderPay() {
-	//Workflow.Action("Pay",[]);
-	// if ($.workflow.name == "Order" || $.workflow.name == "Return")
+
+	var fptr = $.workConst.fptr;
+
+	if (fptr != NULL){
+
 		Workflow.Action("Pay",[]);
 
-	// else {
-	// 	ClearFilters();
-	//
-	// 	var stepNumber;
-	// 	if ($.workflow.currentDoc=="Order")
-	// 		stepNumber = '4';
-	// 	else
-	// 		stepNumber = '5';
-	//
-	// 	var q = new Query("SELECT NextStep FROM USR_WorkflowSteps WHERE StepOrder<@stepNumber AND Value=0 ORDER BY StepOrder DESC");
-	// 	q.AddParameter("stepNumber", stepNumber);
-	// 	var step = q.ExecuteScalar();
-	// 	if (step==null) {
-	// 		Workflow.BackTo("Outlet");
-	// 	}
-	// 	else
-	// 		Workflow.BackTo(step);
-	// }
+	}
+	else {
+
+		Dialog.Message(Translate["#NoFs#"]);
+
+	}
+
+
 }
 
 function ClearFilters() {

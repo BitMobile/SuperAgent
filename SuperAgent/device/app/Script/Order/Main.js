@@ -60,10 +60,30 @@ function GetItems() {
 }
 
 function SelectOrder(order, outlet){
+
 	order = order.GetObject();
 	GlobalWorkflow.SetOutlet(outlet);
 	$.AddGlobal("executedOrder", order.Id);
-	DoAction('Edit');
+
+	if (NotEmptyRef(order.Cheque)){
+		Variables["workConst"]["HasCheque"] = true;
+		if (order.Id.TableName == 'Document_Order'){
+			Variables["workConst"]["currentWorkFlow"] = "Order";
+			Variables["workConst"]["Cheque"] = order.Cheque;
+			Variables["workConst"]["currentRef"] = order.Id;
+		}
+		else{
+			Variables["workConst"]["currentWorkFlow"] = "Return";
+			Variables["workConst"]["Cheque"] = order.Cheque;
+			Variables["workConst"]["currentRef"] = order.Id;
+		}
+
+		GlobalWorkflow.SetChek(order.Cheque);
+		DoAction('ChekEnd');
+	}else{
+		Variables["workConst"]["HasCheque"] = false;
+		DoAction('Edit');
+	}
 }
 
 function OrderCanceled(status) {

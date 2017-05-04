@@ -403,13 +403,15 @@ function GpsStart() {
 		//Dialog.Message("Stop 403");
 	}
 	else {
+		//Dialog.Message(GPSTracking.MinInterval);
 		GPSTracking.IsBestAccuracy = true;
 		GPSTracking.MinInterval = $.sessionConst.GPSTrackWrite * 60;
 		GPSTracking.SendInterval = $.sessionConst.GPSTrackSend * 60;
+		//Dialog.Message(GPSTracking.MinInterval);
 		GPSTracking.MinDistance = 0;
     GPSTracking.DistanceFilter = 0;
 		GPSTracking.Start();
-		//Dialog.Message("Stop 412");
+		//Dialog.Message(GPSTracking.MinInterval);
 		Variables["workConst"]["GPSStarted"] = true;
 		$.GpsImage.CssClass = "gpsIconEnd";
 		$.GpsImage.Refresh();

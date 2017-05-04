@@ -385,3 +385,8 @@ Print		Print
 PaidOrder		Order zaplatil
 CalcDate		datu vypořádání
 ContactAddress		Kontakt poslat šek
+Percent0		VAT 0%
+Percent10		VAT 10%
+Percent18		VAT 18%
+PercentWithoOut		Not VAT
+NoFs		The fiscal recorder is not connected.

@@ -29,6 +29,7 @@ function SetSessionConstants() {
 	var GPSTrackWrite = new Query("SELECT NumericValue FROM Catalog_MobileApplicationSettings WHERE Description='GPSTrackWriteFrequency'");
 	//Dialog.Message(GPSStarted);
   var GPSPredefined = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='GPSPredefined'");
+	var UseVATs = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='UseVATs'");
 	$.AddGlobal("sessionConst", new Dictionary());
 	$.sessionConst.Add("UseSaveQuest", saveQuest.ExecuteScalar());
 	$.sessionConst.Add("solVersion", solVersion.ExecuteScalar());
@@ -46,6 +47,7 @@ function SetSessionConstants() {
 	$.sessionConst.Add("GPSTrackSend", GPSTrackSend.ExecuteScalar());
 	$.sessionConst.Add("GPSTrackWrite", GPSTrackWrite.ExecuteScalar());
 	$.sessionConst.Add("GPSPredefined", GPSPredefined.ExecuteScalar());
+	$.sessionConst.Add("UseVATs", EvaluateBoolean(UseVATs.ExecuteScalar()));
 	var countDayPlanEnd = DayPlanVisitCount.ExecuteScalar();
 	if (countDayPlanEnd == null) {
 		countDayPlanEnd = 0;
@@ -143,6 +145,11 @@ function SetWorkPeriodConstants() {
   var GPSStarted = false;
 	$.AddGlobal("workConst", new Dictionary());
 	$.workConst.Add("GPSStarted", GPSStarted);
+	$.workConst.Add("fptr", null);
+	$.workConst.Add("HasCheque", false);
+	$.workConst.Add("currentWorkFlow", null);
+	$.workConst.Add("currentRef", null);
+	$.workConst.Add("Cheque", null);
 }
 
 function SetGps() {
@@ -159,7 +166,7 @@ function SetGps() {
 
 	if ($.workConst.GPSStarted || $.sessionConst.GPSPredefined){
 		GPSTracking.IsBestAccuracy = true;
-		//Dialog.Message("Start 167");
+		//Dialog.Message(GPSTracking.MinInterval);
 		GPSTracking.MinInterval = $.sessionConst.GPSTrackWrite * 60;
 		GPSTracking.SendInterval = $.sessionConst.GPSTrackSend * 60;
 		GPSTracking.MinDistance = 0;

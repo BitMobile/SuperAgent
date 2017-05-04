@@ -10,8 +10,28 @@ var sumTitle;
 var skuTitle;
 var infoTitleSmall;
 var back;
+var orderSumm;
+var countSumm;
 
 function OnLoad() {
+
+}
+
+function OnStartAtServer() {
+
+  if ($.workConst.HasCheque == true) {
+    Variables["workflow"]["name"] = $.workConst.currentWorkFlow;
+    Variables["workflow"]["currentDoc"] = $.workConst.currentWorkFlow;
+    Variables["workflow"]["chek"] = $.workConst.Cheque;
+
+    if ($.workConst.currentWorkFlow == 'Order')
+      Variables["workflow"]["order"] = $.workConst.currentRef;
+    else
+      Variables["workflow"]["Return"] = $.workConst.currentRef;
+
+  }
+
+  return true;
 
 }
 
@@ -145,17 +165,21 @@ function CountSum() {
   var query = new Query("SELECT SUM(Total) FROM Document_Check_Payments WHERE Ref = @Ref");
 	query.AddParameter("Ref", $.workflow.chek);
 	var sum = query.ExecuteScalar();
-	if (sum == null)
+  if (sum == null){
+    countSumm = 0;
 		return 0;
-	else
+  }
+	else{
+    countSumm = String.Format("{0:F2}", sum);
 		return String.Format("{0:F2}", sum);
+  }
 
 }
 
 function GetSUMPay() {
 
-  var allSum = ToFloat(GetOrderSUM());
-  var Sum = ToFloat(CountSum());
+  var allSum = ToFloat(orderSumm);
+  var Sum = ToFloat(countSumm);
   var Mess;
 
   if (allSum < Sum) {
@@ -184,15 +208,23 @@ function GetOrderSUM() {
 	else
 		thisDoc = $.workflow.Return;
 
+
+  // Dialog.Message($.workConst.currentWorkFlow);
+  // Dialog.Message($.workflow.order);
+  // Dialog.Message($.workflow.currentDoc);
   order = thisDoc.GetObject();
 
 	var query = new Query("SELECT SUM(Qty*Total) FROM Document_" + doc + "_SKUs WHERE Ref = @Ref");
 	query.AddParameter("Ref", thisDoc);
 	var sum = query.ExecuteScalar();
-	if (sum == null)
+  if (sum == null){
+    orderSumm = 0;
 		return 0;
-	else
+  }
+	else{
+    orderSumm = String.Format("{0:F2}", sum);
 		return String.Format("{0:F2}", sum);
+  }
 }
 
 function ScreenChek() {
@@ -203,7 +235,7 @@ function ScreenChek() {
 
 function GetOrderedSKUs() {
 
-  var query = new Query("SELECT * FROM Document_" + doc + "_SKUs WHERE Ref = @Ref");
+  var query = new Query("SELECT Id, SKU, Feature, Qty, Discount, Total, Units, ROUND(Qty*Total, 2) AS Amount FROM Document_" + doc + "_SKUs WHERE Ref = @Ref");
 	query.AddParameter("Ref", thisDoc);
   itemsQty = query.ExecuteCount();
   return query.Execute();
@@ -221,8 +253,8 @@ function GetCheckPays() {
 
 function GetSUMDef() {
 
-  var allSum = ToFloat(GetOrderSUM());
-  var Sum = ToFloat(CountSum());
+  var allSum = ToFloat(orderSumm);
+  var Sum = ToFloat(countSumm);
   var Mess;
 
   if (allSum < Sum) {
@@ -235,8 +267,8 @@ function GetSUMDef() {
 
 function Sale() {
 
-  var allSum = ToFloat(GetOrderSUM());
-  var Sum = ToFloat(CountSum());
+  var allSum = ToFloat(orderSumm);
+  var Sum = ToFloat(countSumm);
   var Mess;
 
   if (allSum < Sum)
@@ -270,4 +302,8 @@ function GetSale() {
 
   return (sum * -1);
 
+}
+
+function GetVatTranslate(vat) {
+  return Translate["#" + vat + "#"];
 }

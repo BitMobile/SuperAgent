@@ -117,6 +117,7 @@
 			<bp:Action Name="Pay" NextStep="OrderPay"></bp:Action>
 			<bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
 			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
+			<bp:Action Name="FR" NextStep="FRSettings"></bp:Action>
 			<bp:Action Name="Forward" NextStep="Return"></bp:Action>
 			<bp:Action Name="SkipReturn" NextStep="Receivables" />
 			<bp:Action Name="SkipEncashment" NextStep="Total"/>
@@ -126,12 +127,16 @@
 			<bp:Action Name="Add" NextStep="AddSKU"></bp:Action>
 			<bp:Action Name="Edit" NextStep="EditSKU"></bp:Action>
 			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
+			<bp:Action Name="FR" NextStep="FRSettings"></bp:Action>
 			<bp:Action Name="Forward" NextStep="Receivables"></bp:Action>
 			<bp:Action Name="SkipEncashment" NextStep="Total"/>
 		</bp:Step>
 
 		<bp:Step Name="Receivables" Screen="Receivables.xml" Controller="Receivables\Main.js">
 			<bp:Action Name="Forward" NextStep="Total"></bp:Action>
+		</bp:Step>
+
+		<bp:Step Name="FRSettings" Screen="FR\FR.xml" Controller="FR\Main.js">
 		</bp:Step>
 
 		<bp:Step Name="Total" Screen="Visit\Total.xml" Controller="Visits\Total.js">
@@ -172,8 +177,9 @@
 			<bp:Action Name="Chek" NextStep="OrderChek"></bp:Action>
 		</bp:Step>
 
-		<bp:Step Name="OrderChek" Screen="Order_Chek.xml" Controller="Order_Chek.js">
+		<bp:Step Name="OrderChek" Screen="Order_ChekStart.xml" Controller="Order_ChekStart.js">
 			<bp:Action Name="ChekEnd" NextStep="OrderChekEnd"></bp:Action>
+			<bp:Action Name="FR" NextStep="FRSettings"></bp:Action>
 		</bp:Step>
 
 		<bp:Step Name="OrderChekEnd" Screen="Order_ChekEnd.xml" Controller="Order_ChekEnd.js">
@@ -260,8 +266,12 @@
 			<bp:Action Name="Chek" NextStep="OrderChek"></bp:Action>
 		</bp:Step>
 
-		<bp:Step Name="OrderChek" Screen="Order_Chek.xml" Controller="Order_Chek.js">
+		<bp:Step Name="OrderChek" Screen="Order_ChekStart.xml" Controller="Order_ChekStart.js">
 			<bp:Action Name="ChekEnd" NextStep="OrderChekEnd"></bp:Action>
+			<bp:Action Name="FR" NextStep="FRSettings"></bp:Action>
+		</bp:Step>
+
+		<bp:Step Name="FRSettings" Screen="FR\FR.xml" Controller="FR\Main.js">
 		</bp:Step>
 
 		<bp:Step Name="OrderChekEnd" Screen="Order_ChekEnd.xml" Controller="Order_ChekEnd.js">
@@ -299,8 +309,12 @@
 			<bp:Action Name="Chek" NextStep="OrderChek"></bp:Action>
 		</bp:Step>
 
-		<bp:Step Name="OrderChek" Screen="Order_Chek.xml" Controller="Order_Chek.js">
+		<bp:Step Name="OrderChek" Screen="Order_ChekStart.xml" Controller="Order_ChekStart.js">
 			<bp:Action Name="ChekEnd" NextStep="OrderChekEnd"></bp:Action>
+			<bp:Action Name="FR" NextStep="FRSettings"></bp:Action>
+		</bp:Step>
+
+		<bp:Step Name="FRSettings" Screen="FR\FR.xml" Controller="FR\Main.js">
 		</bp:Step>
 
 		<bp:Step Name="OrderChekEnd" Screen="Order_ChekEnd.xml" Controller="Order_ChekEnd.js">

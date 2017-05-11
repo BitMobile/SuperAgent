@@ -33,7 +33,7 @@
 		<s:If Test="$NotEmptyRef($thisDoc.PriceList)">
 		<s:If Test="$countSKU > 0">
 				<c:HorizontalLayout CssClass="bottom_btn" OnEvent="OrderPay" OnClickAction="$OrderPay()">
-					<c:TextView Text="#calculatePayment#"></c:TextView>
+					<c:TextView Text="@payTitle"></c:TextView>
 				</c:HorizontalLayout>
 				<c:HorizontalLine CssClass="b_line" />
 		</s:If>

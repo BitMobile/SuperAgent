@@ -33,6 +33,7 @@ function GetError(){return lastError}
 								}
 
 								function OpenCheque(fptr, type) {
+									//lastError = '';
 								  if (fptr.PutMode(FiscalRegistratorConsts.ModeRegistration) < 0)
 								    CheckError(fptr);
 								  if (fptr.SetMode() < 0)
@@ -171,6 +172,24 @@ function GetError(){return lastError}
 								  return fptr.GetSessionOpened();
 								}
 
+								function GetChequeCount(fptr) {
+								  if (fptr.PutRegisterNumber(44) < 0)
+								    CheckError(fptr);
+								  if (fptr.Register < 0)
+								    CheckError(fptr);
+
+								  return fptr.GetCount();
+								}
+
+								function GetChequeCountTime(fptr) {
+								  if (fptr.PutRegisterNumber(45) < 0)
+								    CheckError(fptr);
+								  if (fptr.Register < 0)
+								    CheckError(fptr);
+
+								  return fptr.GetTime();
+								}
+
 								function FptrDateTime(fptr) {
 								  if (fptr.PutRegisterNumber(17) < 0)
 								    CheckError(fptr);
@@ -282,4 +301,9 @@ function GetError(){return lastError}
 										return 3;
 									else if (Vat == "PercentWithoOut")
 										return 4;
+								}
+
+								function Annul(fptr) {
+									lastError = null;
+									fptr.CancelCheck();
 								}

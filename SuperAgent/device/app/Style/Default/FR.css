@@ -169,3 +169,33 @@
 	margin-right: 2.4mm;
 	background-image: url(arrow.png);
 }
+
+.btn_spaceChek{
+	width: 14%;
+	height: 100%;
+	dock-align: right;
+}
+
+.end_of_blockFR {
+	height: 4mm;
+	selected-color: #bacdce;
+	background-color: #efeff4;
+	dock-align: top;
+}
+
+.notSent {
+	height: 100%;
+	width: 5mm auto;
+	padding-left: 2.4mm;
+	color: #c82121;
+	background-color: #efeff4;
+	font: 55% Arial;
+}
+
+.notSentDate {
+	height: 100%;
+	width: 75%;
+	color: #000000;
+	background-color: #efeff4;
+	font: 55% Arial;
+}

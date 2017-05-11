@@ -1,48 +1,97 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Order_Chek.css">
 
-	<s:Push Id="TestFunction" Value="$OnStartAtServer()"></s:Push>
 	<s:Push Id="sum" Value="$GetOrderSUM()"></s:Push>
 	<s:Push Id="CountSum" Value="$CountSum()"></s:Push>
 	<s:Push Id="PaySum" Value="$GetSUMPay()"></s:Push>
-	<s:Push Id="Def" Value="$GetSUMDef()"></s:Push>
+	<s:Push Id="Def" Value="$GetSUMDeff()"></s:Push>
 	<s:Push Id="Address" Value="$GetAddress()"></s:Push>
 	<s:Push Id="Sale" Value="$GetSale()"></s:Push>
-	<s:Push Id="back" Value="$GetBack()"></s:Push>
-	<s:Push Id="mainTitle" Value="$GetMainTitle()"></s:Push>
 	<s:Push Id="FSNumber" Value="$GetFSNumber()"></s:Push>
 	<s:Push Id="OrderDescription" Value="$GetOrderDescription()"></s:Push>
-	<s:Push Id="PaidName" Value="$GetPaidName()"></s:Push>
+
 
 
 	<c:SwipeHorizontalLayout Id="swipe_layout" Index="1">
 
 		<c:DockLayout Id="VLayout" CssClass="bodyPay">
 
-			<c:DockLayout CssClass="top_navigator">
-				<c:DockLayout Id="btnBack" CssClass="btn_back" OnEvent="Back" OnClickAction="$OrderBack()">
-					<c:Image />
-							<c:TextView Text="@back" />
-					</c:DockLayout>
-				<c:DockLayout CssClass="btn_forward" OnEvent="Forward" OnClickAction="$CheckIfEmptyAndForward($workflow.name)">
-					<c:TextView Id="btnForward" Text="#forward#" />
+			<c:DockLayout CssClass="top_navigatorOr">
+				<c:DockLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$GoBackTo()">
+					<c:TextView Text="#cancel#" />
+				</c:DockLayout>
+				<c:DockLayout Id="btnMenuFR" CssClass="btn_menuFR" OnClickAction="$OpenFRSettings()">
+					<c:Image CssClass="menuIcon" />
+				</c:DockLayout>
+				<c:DockLayout CssClass="btn_spaceChek">
 				</c:DockLayout>
 				<c:HorizontalLayout>
-					<c:TextView Text="@mainTitle" />
+					<c:TextView Text="#Check#" />
 				</c:HorizontalLayout>
 			</c:DockLayout>
 
 
-			<c:HorizontalLayout CssClass="gridOR2">
+			<c:HorizontalLayout CssClass="bottom_btn" OnEvent="OrderPay" OnClickAction="$ScreenChek()">
+				<c:TextView Text="#TakeChek#"></c:TextView>
+			</c:HorizontalLayout>
+			<c:HorizontalLine CssClass="b_line" />
+
+
+
+			<c:HorizontalLayout CssClass="gridOR">
 				<c:VerticalLayout>
 					<c:DockLayout>
 						<c:TextView Text="{$sum} #currency#" />
 					</c:DockLayout>
-					<c:DockLayout CssClass="docLay2">
-						<c:TextView Id="SumMes" CssClass="docLay2Text" Text="$PaidName" />
+					<c:DockLayout CssClass="docLay">
+						<c:TextView Id="SumMes" Text="$PaySum" />
 					</c:DockLayout>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>
+
+			<c:HorizontalLayout CssClass="spaceOR"/>
+
+			<c:HorizontalLayout CssClass="caption_grid">
+				<c:TextView Text="#CheckSend#" />
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
+
+
+
+
+			<c:HorizontalLayout CssClass="VertDispPay">
+				<c:VerticalLayout>
+					<c:HorizontalLayout CssClass="small_gridPay">
+
+							<c:HorizontalLayout CssClass="mode_left_button_onPay">
+								<c:HorizontalLayout Id="planned" CssClass="select_zonePay">
+									<c:TextView Id="plannedText" Text="#Sms#"></c:TextView>
+								</c:HorizontalLayout>
+							</c:HorizontalLayout>
+							<c:HorizontalLayout CssClass="mode_center_button_offPay">
+								<c:HorizontalLayout Id="unPlanned" CssClass="select_zonePay">
+									<c:TextView Text="#Email#"></c:TextView>
+								</c:HorizontalLayout>
+							</c:HorizontalLayout>
+							<c:HorizontalLayout CssClass="mode_right_button_offPay">
+								<c:HorizontalLayout Id="unPlanned" CssClass="select_zonePay">
+									<c:TextView Text="#NO#"></c:TextView>
+								</c:HorizontalLayout>
+							</c:HorizontalLayout>
+
+
+
+					</c:HorizontalLayout>
+
+					<c:HorizontalLine />
+
+					<c:SwipeHorizontalLayout Id="swipe_layout{$index}" CssClass="swipe_contact" Index="1" OnSwipe="$GetQuickOrder($item.Id, $item.Price, pack{$index}, editText{$index}, textView{$index}, $item.RecOrder, $item.UnitId, $item.RecUnit)">
+
+					</c:SwipeHorizontalLayout>
+				</c:VerticalLayout>
+
+			</c:HorizontalLayout>
+			<c:HorizontalLine />
 
 
 
@@ -53,15 +102,6 @@
 			<c:HorizontalLine />
 
 		<c:ScrollView Id="grScrollView">
-			<c:DockLayout CssClass="gridChek">
-				<c:VerticalLayout>
-					<c:TextView Text="#CalcDate#" CssClass="description_rowChek"></c:TextView>
-					<c:TextView Text="@PrintDate" CssClass="main_rowChek"></c:TextView>
-					<c:HorizontalLayout CssClass="spaceChek"/>
-					<c:TextView Text="#ContactAddress#" CssClass="description_rowChek"></c:TextView>
-					<c:TextView Text="+ 79500435085" CssClass="main_rowChek2"></c:TextView>
-				</c:VerticalLayout>
-			</c:DockLayout>
 			<c:DockLayout CssClass="gridChek">
 				<c:VerticalLayout>
 					<c:TextView Text="#CalcAddress#" CssClass="description_rowChek"></c:TextView>
@@ -84,7 +124,7 @@
 								<c:HorizontalLayout CssClass="HayLay">
 										<c:TextView Text="{$orderitem.Qty} #pcs# х {$FormatValue($orderitem.Total)} #currency#" CssClass="description_rowPay"></c:TextView>
 										<s:If Test="$sessionConst.UseVATs == true">
-											<c:TextView Text="$GetVatTranslate($orderitem.SKU.VAT.Description)" CssClass="SymbolPay"></c:TextView>
+											<c:TextView Text= "$GetVatTranslate($orderitem.SKU.VAT.Description)" CssClass="SymbolPay"></c:TextView>
 										</s:If >
 										<s:Else>
 											<c:TextView Text="" CssClass="SymbolPay"></c:TextView>

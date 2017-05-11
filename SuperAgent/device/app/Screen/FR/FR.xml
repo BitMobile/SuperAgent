@@ -1,31 +1,53 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="FR.css">
 
+<s:Push Id="workRoad" Value="$AskWorkFlow()"></s:Push>
+
 	<c:SwipeHorizontalLayout Id="swipe_layout" Index="1">
 
 		<s:Include File="\Components\SideMenu.xml"/>
 
 		<c:VerticalLayout Id="VLayout">
 
-			<c:DockLayout CssClass="top_navigator">
-				<c:DockLayout Id="btnMenu" CssClass="btn_menu" OnEvent="Back" OnClickAction="$OpenMenu($swipe_layout)">
-					<c:Image CssClass="menuIcon" />
+			<s:If Test="$workRoad == true">
+				<c:DockLayout CssClass="top_navigator">
+					<c:DockLayout Id="btnMenu" CssClass="btn_back" OnEvent="Back" OnClickAction="$BackToScreen()">
+						<c:TextView Text="#cancel#" />
+					</c:DockLayout>
+					<c:DockLayout Id="btnMenuFR" CssClass="btn_menuFR" OnClickAction="$OpenSettings()">
+						<c:Image CssClass="menuIcon" />
+					</c:DockLayout>
+					<c:DockLayout CssClass="btn_spaceChek">
+					</c:DockLayout>
+					<c:HorizontalLayout>
+						<c:TextView Text="#reg#" />
+					</c:HorizontalLayout>
 				</c:DockLayout>
-				<c:DockLayout Id="btnMenuFR" CssClass="btn_menuFR" OnClickAction="$OpenSettings()">
-					<c:Image CssClass="menuIcon" />
+			</s:If>
+			<s:Else>
+				<c:DockLayout CssClass="top_navigator">
+					<c:DockLayout Id="btnMenu" CssClass="btn_menu" OnEvent="Back" OnClickAction="$OpenMenu($swipe_layout)">
+						<c:Image CssClass="menuIcon" />
+					</c:DockLayout>
+					<c:DockLayout Id="btnMenuFR" CssClass="btn_menuFR" OnClickAction="$OpenSettings()">
+						<c:Image CssClass="menuIcon" />
+					</c:DockLayout>
+					<c:HorizontalLayout>
+						<c:TextView Text="#reg#" />
+					</c:HorizontalLayout>
 				</c:DockLayout>
-				<c:HorizontalLayout>
-					<c:TextView Text="#reg#" />
-				</c:HorizontalLayout>
-			</c:DockLayout>
+			</s:Else >
 			<c:HorizontalLine />
 
 			<c:HorizontalLayout CssClass="caption_grid">
 					<c:TextView Text="#dontSend#" />
 			</c:HorizontalLayout>
 
-			<c:HorizontalLayout CssClass="end_of_block" />
-			<c:HorizontalLayout CssClass="end_of_block" />
+			<c:HorizontalLayout CssClass="end_of_blockFR">
+				<c:TextView Id="ChequeCount" Text="" CssClass="notSent" />
+				<c:TextView Id="ChequeCountDate" Text="" CssClass="notSentDate" />
+			</c:HorizontalLayout>
+			<c:HorizontalLayout CssClass="end_of_blockFR" />
 
 			<c:HorizontalLine />
 

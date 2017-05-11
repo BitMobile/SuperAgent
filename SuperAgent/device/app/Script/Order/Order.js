@@ -5,6 +5,7 @@ var sumTitle;
 var skuTitle;
 var infoTitleSmall;
 var back;
+var payTitle;
 
 function OnLoading(){
 
@@ -14,6 +15,7 @@ function OnLoading(){
 		sumTitle = Translate["#orderSum#"];
 		skuTitle = Translate["#skuInOrder#"];
 		infoTitleSmall = Translate["#orderInfoSmall#"];
+		payTitle = Translate["#calculatePayment#"];
 	}
 	else{
 		mainTitle = Translate["#return#"];
@@ -21,6 +23,7 @@ function OnLoading(){
 		sumTitle = Translate["#returnSum#"];
 		skuTitle = Translate["#skuInReturn#"];
 		infoTitleSmall = Translate["#returnInfoSmall#"];
+		payTitle = Translate["#calculatePaymentRetunr#"];
 	}
 
 	var menuItem = GlobalWorkflow.GetMenuItem();
@@ -304,19 +307,7 @@ function OrderBack() {
 
 function OrderPay() {
 
-	var fptr = $.workConst.fptr;
-
-	if (fptr != NULL){
-
 		Workflow.Action("Pay",[]);
-
-	}
-	else {
-
-		Dialog.Message(Translate["#NoFs#"]);
-
-	}
-
 
 }
 

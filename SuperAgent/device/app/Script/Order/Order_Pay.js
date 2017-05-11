@@ -4,6 +4,21 @@ var chek;
 var PayArray;
 var doc;
 var thisDoc;
+var descriptionTitle;
+var Title;
+
+function OnLoading(){
+
+  if ($.workflow.currentDoc=="Order"){
+    descriptionTitle = Translate["#PaymentsType#"];
+    Title = Translate["#Payments#"];
+  }
+  else{
+    descriptionTitle = Translate["#PaymentsTypeReturn#"];
+    Title = Translate["#PaymentsReturn#"];
+  }
+
+}
 
 function OnLoad() {
 
@@ -31,6 +46,16 @@ function OnLoad() {
     GetSUMPay();
 
   }
+
+
+}
+
+function GetBackName() {
+
+  if ($.workflow.currentDoc=="Order")
+		return Translate["#order#"];
+	else
+		return Translate["#return#"];
 
 }
 
@@ -204,7 +229,7 @@ function ScreenChek() {
       p.Total = result["Total"];
       p.Amount = result["Amount"];
       p.Units = result["Units"];
-      p.VAT = null;
+      p.VAT = result["SKU"].VAT;
       p.Save();
     }
 

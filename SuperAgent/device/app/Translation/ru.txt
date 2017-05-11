@@ -366,6 +366,7 @@ vpVisitsMainScreen		визитов
 plannedMainSkree			визитов
 сurrency		руб.
 calculatePayment		Рассчитать оплату
+calculatePaymentRetunr		Рассчитать выплату
 fr		Терминал
 reg		Регистратор
 сommunication		Связь установлена
@@ -376,25 +377,32 @@ printZ		Напечатать Z-отчет
 printX		Напечатать X-отчет
 AskPrintZ		Печать Z-отчета закроет текущую смену. Продолжить?
 Payments		Оплата
+PaymentsReturn		Выплата
 PaymentsType		СПОСОБЫ ОПЛАТЫ
+PaymentsTypeReturn		СПОСОБЫ ВЫПЛАТЫ
 NeedPay		Еще к оплате
 PushPay		Сдача:
 NoPay		Без сдачи
-TakeChek		Получить чек
+TakeChek		Напечатать
 ChangeScreenPay		Вносимой суммы недостаточно для оплаты
 Check		Чек
+Checks		чеков
 CheckSend		ОТПРАВКА ЧЕКА
 OrderDescript		ПОДРОБНОСТИ ЗАКАЗА
+ReturnDescript		ПОДРОБНОСТИ ВОЗВРАТА
 PushPayShort		Сдача
 TakeMoney		Получено
+TakeMoneyReturn		Выплачено
 TotalPay		Итого к оплате
+TotalPayReturn		Итого к выплате
 CalcAddress		Адрес расчета
 KKTNumber		Номер ККТ
 Sms		SMS
 Email		E-mail
 PayDiscount		Скидка
-Print		Напечатать
+Print		Получить чек
 PaidOrder		Заказ оплачен
+PaidReturn		Возврат выплачен
 CalcDate		Дата расчета
 ContactAddress		Контакт для отправки чека
 Percent0		НДС 0%

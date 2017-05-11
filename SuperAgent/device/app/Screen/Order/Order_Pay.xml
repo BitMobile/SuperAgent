@@ -2,6 +2,7 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Order_Pay.css">
 
 	<s:Push Id="sum" Value="$GetOrderSUM()"></s:Push>
+	<s:Push Id="BackName" Value="$GetBackName()"></s:Push>
 
 	<c:SwipeHorizontalLayout Id="swipe_layout" Index="1">
 
@@ -10,12 +11,12 @@
 			<c:DockLayout CssClass="top_navigatorOr">
 				<c:DockLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$GoBackTo()">
 					<c:Image />
-					<c:TextView Text="#order#" />
+					<c:TextView Text="$BackName" />
 				</c:DockLayout>
 				<c:DockLayout CssClass="btn_space">
 				</c:DockLayout>
 				<c:HorizontalLayout>
-					<c:TextView Text="#Payments#" />
+					<c:TextView Text="@Title" />
 				</c:HorizontalLayout>
 			</c:DockLayout>
 
@@ -41,7 +42,7 @@
 			<c:HorizontalLayout CssClass="spaceOR"/>
 
 			<c:HorizontalLayout CssClass="caption_grid">
-				<c:TextView Text="#PaymentsType#" />
+				<c:TextView Text="@descriptionTitle" />
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 		<c:ScrollView Id="grScrollView">

@@ -12,6 +12,27 @@ var infoTitleSmall;
 var back;
 var orderSumm;
 var countSumm;
+var TotalPay;
+var TakeMoney;
+var PrintDate;
+
+function OnLoading() {
+
+  if ($.workflow.currentDoc=="Order"){
+
+    TotalPay = Translate["#TotalPay#"];
+    TakeMoney = Translate["#TakeMoney#"];
+
+  }
+  else{
+
+    TotalPay = Translate["#TotalPayReturn#"];
+    TakeMoney = Translate["#TakeMoneyReturn#"];
+
+  }
+
+  PrintDate = $.workflow.chek.PrintDate;
+}
 
 function OnLoad() {
 
@@ -54,6 +75,20 @@ function GetBack(){
 		back = Translate["#back#"];
 	}
   return back;
+}
+
+function GetOrderDescription(){
+  if ($.workflow.currentDoc=="Order")
+    return Translate["#OrderDescript#"];
+  else
+    return Translate["#ReturnDescript#"];
+}
+
+function GetPaidName(){
+  if ($.workflow.currentDoc=="Order")
+    return Translate["#PaidOrder#"];
+  else
+    return Translate["#PaidReturn#"];
 }
 
 function GetMainTitle(){
@@ -125,7 +160,7 @@ function CheckIfEmptyAndForward(wfName) {
 		else{
 			var location = GPS.CurrentLocation;
 			if (ActualLocation(location)) {
-				var orderObj = order.GetObject();
+				var orderObj = thisDoc.GetObject();
 				orderObj.Lattitude = location.Latitude;
 				orderObj.Longitude = location.Longitude;
 				orderObj.Save();
@@ -306,4 +341,25 @@ function GetSale() {
 
 function GetVatTranslate(vat) {
   return Translate["#" + vat + "#"];
+}
+
+function GetChequeDate() {
+  fptr = $.workConst.fptr;
+
+  if (fptr != NULL){
+
+    return Fiscal.GetFptrSerialNumber(fptr);
+
+  }
+  else {
+    return null;
+  }
+
+}
+
+function GetFSNumber() {
+
+    var chek = $.workflow.chek;
+    return chek.KKTNumber;
+
 }

@@ -3,8 +3,8 @@
 
 function ToFloat(text) {
     if (String.IsNullOrEmpty(text))
-        return parseFloat(0, 10);
-    return parseFloat(text, 10);
+        return parseFloat(0);
+    return parseFloat(text);
 }
 
 function ToInteger(text) {

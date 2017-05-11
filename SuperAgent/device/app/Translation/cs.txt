@@ -355,6 +355,7 @@ vpVisitsMainScreen		(mimo plán)
 plannedMainSkree			(dle plánu)
 сurrency		czk
 calculatePayment		Vypočítat platby
+calculatePaymentRetunr		Vypočítat výši návratnosti
 fr		Terminál
 reg		Zapisovač
 сommunication		Spojení navázáno
@@ -365,17 +366,23 @@ printZ		Print Z-report
 printX		Print X-report
 AskPrintZ		Tisk Z-report zavře aktuální posun. Chcete pokračovat?
 Payments		Platby
+PaymentsReturn		Platby
 PaymentsType		PLATBA
+PaymentsTypeReturn		PLATBA
 NeedPay		Více zaplatit
 PushPay		Delivery:
 NoPay		Aniž by
 TakeChek		Získat kontrolní
 ChangeScreenPay		Se částka příspěvku dost platit za
 Check		zaslání šeku
+Checks		zaslání šeku
 OrderDescript		podrobnosti objednat
+ReturnDescript		podrobnosti objednat
 PushPayShort		Delivery
 TakeMoney		Přijaté
+TakeMoneyReturn		Přijaté
 TotalPay		Total zaplatit
+TotalPayReturn		Total zaplatit
 CalcAddress		Výpočet adresa
 KKTNumber		Číslo CCV
 Sms		SMS
@@ -383,6 +390,7 @@ Email		E-mail
 PayDiscount		Sleva
 Print		Print
 PaidOrder		Order zaplatil
+PaidReturn		Return zaplatil
 CalcDate		datu vypořádání
 ContactAddress		Kontakt poslat šek
 Percent0		VAT 0%

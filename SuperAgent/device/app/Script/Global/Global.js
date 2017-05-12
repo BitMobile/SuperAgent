@@ -48,6 +48,8 @@ function SetSessionConstants() {
 	$.sessionConst.Add("GPSTrackWrite", GPSTrackWrite.ExecuteScalar());
 	$.sessionConst.Add("GPSPredefined", GPSPredefined.ExecuteScalar());
 	$.sessionConst.Add("UseVATs", EvaluateBoolean(UseVATs.ExecuteScalar()));
+
+
 	var countDayPlanEnd = DayPlanVisitCount.ExecuteScalar();
 	if (countDayPlanEnd == null) {
 		countDayPlanEnd = 0;
@@ -68,6 +70,12 @@ function SetSessionConstants() {
 				$.sessionConst.Add("galleryChoose", false);
 			else
 				$.sessionConst.Add("galleryChoose", true);
+		}
+		if (rights.Code=='000000014') {
+			if (rights.AccessRight==null)
+				$.sessionConst.Add("AccessToKKT", false);
+			else
+				$.sessionConst.Add("AccessToKKT", true);
 		}
 		if (rights.Code=='000000004'){
 			if (rights.AccessRight==null)

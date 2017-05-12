@@ -6,6 +6,28 @@ var skuTitle;
 var infoTitleSmall;
 var back;
 var payTitle;
+var hasCheck;
+
+function CheckIfExsistAndGo(){
+	hasCheck = false;
+	if ($.workflow.name == 'Visit'){
+			var obj;
+			if ($.workflow.currentDoc=='Order'){
+				obj = $.workflow.order;
+			}else {
+				obj = $.workflow.Return;
+			}
+			if (obj.Cheque != NULL
+				&& obj.Cheque != null
+				) {
+					if (obj.Cheque.ToString() != "@ref[Document_Check]:00000000-0000-0000-0000-000000000000") {
+						hasCheck = true;
+						Workflow.Action("ChekEnd",[]);
+					}
+				//ChekEnd
+			}
+	}
+}
 
 function OnLoading(){
 
@@ -68,7 +90,7 @@ function OnLoad(){
 
 		var hasSKUs = q.ExecuteScalar();
 
-		if ($.sessionConst.UseAutoFillForRecOrder && parseInt(hasSKUs) != parseInt(0)){
+		if ($.sessionConst.UseAutoFillForRecOrder && parseInt(hasSKUs) != parseInt(0) && !hasCheck){
 
 			Dialog.Ask(Translate["#autoFillOrder#"], AutoFill);
 

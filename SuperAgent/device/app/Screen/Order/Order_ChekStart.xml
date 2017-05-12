@@ -50,68 +50,76 @@
 			</c:HorizontalLayout>
 
 			<c:HorizontalLayout CssClass="spaceOR"/>
-
-			<c:HorizontalLayout CssClass="caption_grid">
-				<c:TextView Text="#CheckSend#" />
-			</c:HorizontalLayout>
-			<c:HorizontalLine />
-
-
+			<c:ScrollView Id="grScrollView">
+				<c:HorizontalLayout CssClass="caption_grid">
+					<c:TextView Text="#CheckSend#" />
+				</c:HorizontalLayout>
+				<c:HorizontalLine />
 
 
-			<c:HorizontalLayout CssClass="VertDispPay">
-				<c:VerticalLayout>
-					<c:HorizontalLayout CssClass="small_gridPay">
 
-							<c:HorizontalLayout CssClass="mode_left_button_onPay">
-								<c:HorizontalLayout Id="planned" CssClass="select_zonePay">
-									<c:TextView Id="plannedText" Text="#Sms#"></c:TextView>
+
+				<c:HorizontalLayout CssClass="VertDispPay">
+					<c:VerticalLayout>
+						<c:HorizontalLayout CssClass="small_gridPay">
+
+								<c:HorizontalLayout Id="LeftButton" CssClass="mode_left_button_onPay" OnClick="$GoToLayLeft()">
+									<c:HorizontalLayout Id="planned" CssClass="select_zonePay">
+										<c:TextView Id="plannedText" Text="#Sms#"></c:TextView>
+									</c:HorizontalLayout>
 								</c:HorizontalLayout>
-							</c:HorizontalLayout>
-							<c:HorizontalLayout CssClass="mode_center_button_offPay">
-								<c:HorizontalLayout Id="unPlanned" CssClass="select_zonePay">
-									<c:TextView Text="#Email#"></c:TextView>
+								<c:HorizontalLayout Id="CenterButton" CssClass="mode_center_button_offPay" OnClick="$GoToLayCenter()">
+									<c:HorizontalLayout Id="unPlanned" CssClass="select_zonePay">
+										<c:TextView Text="#Email#"></c:TextView>
+									</c:HorizontalLayout>
 								</c:HorizontalLayout>
-							</c:HorizontalLayout>
-							<c:HorizontalLayout CssClass="mode_right_button_offPay">
-								<c:HorizontalLayout Id="unPlanned" CssClass="select_zonePay">
-									<c:TextView Text="#NO#"></c:TextView>
+								<c:HorizontalLayout Id="RightButton" CssClass="mode_right_button_offPay" OnClick="$GoToLayRight()">
+									<c:HorizontalLayout Id="unPlanned" CssClass="select_zonePay">
+										<c:TextView Text="#NO#"></c:TextView>
+									</c:HorizontalLayout>
 								</c:HorizontalLayout>
-							</c:HorizontalLayout>
 
 
 
-					</c:HorizontalLayout>
+						</c:HorizontalLayout>
 
-					<c:HorizontalLine />
+						<c:HorizontalLine />
 
-					<c:SwipeHorizontalLayout Id="swipe_layout{$index}" CssClass="swipe_contact" Index="1" OnSwipe="$GetQuickOrder($item.Id, $item.Price, pack{$index}, editText{$index}, textView{$index}, $item.RecOrder, $item.UnitId, $item.RecUnit)">
+						<c:SwipeHorizontalLayout Id="swipe_layout" CssClass="swipe_contact" Scrollable="False">
+							<c:VerticalLayout CssClass="editLay">
+									<c:EditText Id="SMS" Keyboard="phone" Text="$GetTel()" CssClass="editSto" Placeholder="#phone#"/>
+							</c:VerticalLayout>
+							<c:VerticalLayout CssClass="editLay">
+									<c:EditText Id="EMail" Keyboard="email" Text="$GetEmail()" CssClass="editSto" Placeholder="E-mail"/>
+							</c:VerticalLayout>
+							<c:VerticalLayout CssClass="editLay">
+									<c:EditText Id="NoOne" CssClass="editSto" Placeholder="#WithoutSend#" Enabled="False"/>
+							</c:VerticalLayout>
+						</c:SwipeHorizontalLayout>
+					</c:VerticalLayout>
 
-					</c:SwipeHorizontalLayout>
-				</c:VerticalLayout>
-
-			</c:HorizontalLayout>
-			<c:HorizontalLine />
+				</c:HorizontalLayout>
+				<c:HorizontalLine />
 
 
 
 
-			<c:HorizontalLayout CssClass="caption_grid">
-				<c:TextView Text="$OrderDescription" />
-			</c:HorizontalLayout>
-			<c:HorizontalLine />
+				<c:HorizontalLayout CssClass="caption_grid">
+					<c:TextView Text="$OrderDescription" />
+				</c:HorizontalLayout>
+				<c:HorizontalLine />
 
-		<c:ScrollView Id="grScrollView">
-			<c:DockLayout CssClass="gridChek">
-				<c:VerticalLayout>
-					<c:TextView Text="#CalcAddress#" CssClass="description_rowChek"></c:TextView>
-					<c:TextView Text="$Address" CssClass="main_rowChek"></c:TextView>
-					<c:HorizontalLayout CssClass="spaceChek"/>
-					<c:TextView Text="#KKTNumber#" CssClass="description_rowChek"></c:TextView>
-					<c:TextView Text="$FSNumber" CssClass="main_rowChek2"></c:TextView>
-				</c:VerticalLayout>
-			</c:DockLayout>
-			<c:HorizontalLine />
+
+				<c:DockLayout CssClass="gridChek">
+					<c:VerticalLayout>
+						<c:TextView Text="#CalcAddress#" CssClass="description_rowChek"></c:TextView>
+						<c:TextView Text="$Address" CssClass="main_rowChek"></c:TextView>
+						<c:HorizontalLayout CssClass="spaceChek"/>
+						<c:TextView Text="#KKTNumber#" CssClass="description_rowChek"></c:TextView>
+						<c:TextView Text="$FSNumber" CssClass="main_rowChek2"></c:TextView>
+					</c:VerticalLayout>
+				</c:DockLayout>
+				<c:HorizontalLine />
 			<s:Iterator Id="orderitem" Value="$GetOrderedSKUs()" Status="statusCount">
 				<s:Push Id="index" Value="$statusCount.Index"></s:Push>
 

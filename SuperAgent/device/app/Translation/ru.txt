@@ -410,3 +410,4 @@ Percent10		НДС 10%
 Percent18		НДС 18%
 PercentWithoOut		Без НДС
 NoFs		Фискальный регистратор не подключен.
+WithoutSend		Без отправки

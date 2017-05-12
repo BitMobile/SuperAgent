@@ -114,7 +114,7 @@
 					<s:Push Id="todo" Value="$CountTasks($workflow.outlet)"></s:Push>
 					<c:Image></c:Image>
 					<c:TextView Text="#todoDone#"></c:TextView>
-					<c:TextView Text="{$todoDone} #of# {$todo}" CssClass="value"></c:TextView>					
+					<c:TextView Text="{$todoDone} #of# {$todo}" CssClass="value"></c:TextView>
 				</c:DockLayout>
 				<c:HorizontalLine />
 			<!-- </s:If> -->

@@ -1,3 +1,16 @@
+.editLay{
+	width: 100%;
+	height: 100%;
+}
+
+.editSto{
+	width: 100%;
+	height: 100%;
+	margin-top: 25%;
+	text-align: center;
+	color: #000000;
+	placeholder-color: #9E9E9E;
+}
 .blue {
 	width: 100%;
 	height: 100%;
@@ -579,9 +592,7 @@
 	horizontal-align: central;
 }
 
-.mode_left_button_onPay select_zone {
-	selected-color: #FF7C4A;
-}
+
 
 .mode_left_button_onPay hl TextView {
 	color: #ffffff;
@@ -613,6 +624,21 @@
 	color: #FF7C4A;
 }
 
+.mode_center_button_onPay {
+	background-image: url(mode_center_button_on.png);
+	width: 32%;
+	height: 67%;
+	margin-top: 5.7%;
+	horizontal-align: central;
+}
+
+.mode_center_button_onPay select_zonePay TextView {
+	color: #ffffff;
+	width: 100%;
+	height: 100%;
+}
+
+
 .mode_right_button_onPay {
 	background-image: url(mode_right_button_on.png);
 	width: 32%;
@@ -621,9 +647,6 @@
 	horizontal-align: central;
 }
 
-.mode_right_button_onPay select_zonePay {
-	selected-color: #FF7C4A;
-}
 
 .mode_right_button_onPay select_zonePay TextView {
 	color: #ffffff;
@@ -653,41 +676,13 @@
 	horizontal-align: central;
 }
 
-.mode_left_button_onPay select_zonePay {
-	selected-color: #FF7C4A;
-}
 
 .mode_left_button_onPay select_zonePay TextView {
 	color: #ffffff;
 }
 
-.mode_right_button_offPay {
-	background-image: url(mode_right_button_off.png);
-	width: 32%;
-	height: 67%;
-	margin-top: 5.7%;
-	horizontal-align: central;
-}
 
-.mode_right_button_offPay select_zonePay TextView {
-	color: #FF7C4A;
-}
 
-.mode_right_button_onPay {
-	background-image: url(mode_right_button_on.png);
-	width: 32%;
-	height: 67%;
-	margin-top: 5.7%;
-	horizontal-align: central;
-}
-
-.mode_right_button_onPay select_zonePay {
-	selected-color: #FF7C4A;
-}
-
-.mode_right_button_onPay select_zonePay TextView {
-	color: #ffffff;
-}
 
 .mode_left_button_offPay {
 	background-image: url(mode_left_button_off.png);

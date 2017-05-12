@@ -1,4 +1,7 @@
 var lastError;
+function ClearError(){
+	lastError = null;
+}
 function GetError(){return lastError}
 							function CheckError(fptr) {
 

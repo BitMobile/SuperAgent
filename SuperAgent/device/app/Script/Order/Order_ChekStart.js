@@ -39,7 +39,33 @@ function OnLoad() {
 function GoBackTo(){
     Workflow.Back();
 }
-
+function GoToLayLeft(){
+  $.swipe_layout.Index = 0;
+  $.LeftButton.CssClass = "mode_left_button_onPay";
+  $.CenterButton.CssClass = "mode_center_button_offPay";
+  $.RightButton.CssClass = "mode_right_button_offPay";
+  $.LeftButton.Refresh();
+  $.CenterButton.Refresh();
+  $.RightButton.Refresh();
+}
+function GoToLayCenter(){
+  $.swipe_layout.Index = 1;
+  $.LeftButton.CssClass = "mode_left_button_offPay";
+  $.CenterButton.CssClass = "mode_center_button_onPay";
+  $.RightButton.CssClass = "mode_right_button_offPay";
+  $.LeftButton.Refresh();
+  $.CenterButton.Refresh();
+  $.RightButton.Refresh();
+}
+function GoToLayRight(){
+  $.swipe_layout.Index = 2;
+  $.LeftButton.CssClass = "mode_left_button_offPay";
+  $.CenterButton.CssClass = "mode_center_button_offPay";
+  $.RightButton.CssClass = "mode_right_button_onPay";
+  $.LeftButton.Refresh();
+  $.CenterButton.Refresh();
+  $.RightButton.Refresh();
+}
 function GetOrderDescription(){
   if ($.workflow.currentDoc=="Order")
     return Translate["#OrderDescript#"];
@@ -137,7 +163,36 @@ function GetSUMDeff() {
   return Mess;
 
 }
+function GetEmail(){
+  var query = new Query("SELECT CatalogContact.Email "+
+  " FROM Catalog_Outlet AS "+
+  " CatalogOutlet " +
+  " JOIN Document_" + doc + " AS DocumentOrder "+
+  " ON CatalogOutlet.Id = DocumentOrder.Outlet " +
+  " JOIN Catalog_Outlet_Contacts AS CatalogOutletContact "+
+  " ON CatalogOutletContact.Ref = CatalogOutlet.Id "+
+  " JOIN Catalog_ContactPersons AS CatalogContact "+
+  " ON CatalogContact.Id =  CatalogOutletContact.ContactPerson"+
+  " WHERE DocumentOrder.Id = @Ref");
+  query.AddParameter("Ref", thisDoc);
 
+  return query.ExecuteScalar();
+}
+function GetTel(){
+  var query = new Query("SELECT CatalogContact.PhoneNumber "+
+  " FROM Catalog_Outlet AS "+
+  " CatalogOutlet " +
+  " JOIN Document_" + doc + " AS DocumentOrder "+
+  " ON CatalogOutlet.Id = DocumentOrder.Outlet " +
+  " JOIN Catalog_Outlet_Contacts AS CatalogOutletContact "+
+  " ON CatalogOutletContact.Ref = CatalogOutlet.Id "+
+  " JOIN Catalog_ContactPersons AS CatalogContact "+
+  " ON CatalogContact.Id =  CatalogOutletContact.ContactPerson"+
+  " WHERE DocumentOrder.Id = @Ref");
+  query.AddParameter("Ref", thisDoc);
+
+  return query.ExecuteScalar();
+}
 function GetAddress() {
 
   var query = new Query("SELECT CatalogOutlet.Address FROM Catalog_Outlet AS CatalogOutlet " +
@@ -541,15 +596,25 @@ function ScreenChek() {
 
     if (fptr != NULL){
 
-
+      Fiscal.ClearError();
       Fiscal.OpenCheque(fptr, metod);
 
-      Fiscal.SetEmailOrTelephoneNumber(fptr, "+79215776130");
+      var telMail = null;
+      if ($.swipe_layout.Index == 0) {
+        telMail = $.SMS.Text;
+      }
+      if ($.swipe_layout.Index == 1) {
+        telMail = $.EMail.Text;
+      }
+      if (telMail != null) {
+        Fiscal.SetEmailOrTelephoneNumber(fptr, telMail);
+      }
+
 
       chekObj.FNNumber = Fiscal.GetNumberOfFiscalStorage(fptr);
 
 
-      var query = new Query("SELECT Id, SKU, Price, Qty, Discount, Total, Units, Qty*Total AS Amount FROM Document_" + doc + "_SKUs WHERE (Ref = @Ref AND Price > 0 AND Qty > 0)");
+      var query = new Query("SELECT Id, SKU, Price, Qty, Discount, Total, Units, Qty*Total AS Amount FROM Document_" + doc + "_SKUs WHERE (Ref = @Ref AND Total > 0 AND Qty > 0)");
   	  query.AddParameter("Ref", thisDoc);
       var result = query.Execute();
     //  var i = 0;

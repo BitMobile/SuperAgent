@@ -130,18 +130,82 @@
 			</s:If>
 
 			<s:If Test="@orderEnabled">
-				<c:DockLayout CssClass="parameter_grid">
-					<c:TextView Text="#orderSum#" CssClass="blackText"></c:TextView>
-					<c:TextView Text="{$GetOrderSUM($workflow.order)}" CssClass="value"></c:TextView>
-				</c:DockLayout>
+				<s:If Test="true == true">
+					<s:If Test="true == true">
+						<c:DockLayout CssClass="parameter_gridChek">
+							<c:VerticalLayout>
+								<c:TextView Text="#orderSum#" CssClass="firstPart"></c:TextView>
+								<c:TextView Text="#NotPaidOrder#" CssClass="secondPart"></c:TextView>
+							</c:VerticalLayout>
+							<c:HorizontalLayout>
+								<c:TextView Text="{$GetOrderSUM($workflow.order)}" CssClass="valueChek"></c:TextView>
+								<c:DockLayout CssClass="parameter_gridChek">
+									<c:Image></c:Image>
+								</c:DockLayout>
+							</c:HorizontalLayout>
+						</c:DockLayout>
+					</s:If>
+					<s:Else>
+						<c:DockLayout CssClass="parameter_gridChek">
+							<c:VerticalLayout>
+								<c:TextView Text="#orderSum#" CssClass="firstPart"></c:TextView>
+								<c:TextView Text="#PaidOrder#" CssClass="secondPartPay"></c:TextView>
+							</c:VerticalLayout>
+							<c:HorizontalLayout>
+								<c:TextView Text="{$GetOrderSUM($workflow.order)}" CssClass="valueChek"></c:TextView>
+								<c:DockLayout CssClass="parameter_gridChek">
+									<c:Image></c:Image>
+								</c:DockLayout>
+							</c:HorizontalLayout>
+						</c:DockLayout>
+					</s:Else>
+				</s:If>
+				<s:Else>
+					<c:DockLayout CssClass="parameter_grid">
+						<c:TextView Text="#orderSum#" CssClass="blackText"></c:TextView>
+						<c:TextView Text="{$GetOrderSUM($workflow.order)}" CssClass="value"></c:TextView>
+					</c:DockLayout>
+				</s:Else>
 				<c:HorizontalLine />
 			</s:If>
 
 			<s:If Test="@returnEnabled">
-				<c:DockLayout CssClass="parameter_grid">
-					<c:TextView Text="#returnSum#" CssClass="blackText"></c:TextView>
-					<c:TextView Text="{$GetReturnSum($workflow.Return)}" CssClass="value"></c:TextView>
-				</c:DockLayout>
+				<s:If Test="true == true">
+					<s:If Test="true == true">
+						<c:DockLayout CssClass="parameter_gridChek">
+							<c:VerticalLayout>
+								<c:TextView Text="#returnSum#" CssClass="firstPart"></c:TextView>
+								<c:TextView Text="#NotPaidReturn#" CssClass="secondPart"></c:TextView>
+							</c:VerticalLayout>
+							<c:HorizontalLayout>
+								<c:TextView Text="{$GetReturnSum($workflow.Return)}" CssClass="valueChek"></c:TextView>
+								<c:DockLayout CssClass="parameter_gridChek">
+									<c:Image></c:Image>
+								</c:DockLayout>
+							</c:HorizontalLayout>
+						</c:DockLayout>
+					</s:If>
+					<s:Else>
+						<c:DockLayout CssClass="parameter_gridChek">
+							<c:VerticalLayout>
+								<c:TextView Text="#returnSum#" CssClass="firstPart"></c:TextView>
+								<c:TextView Text="#PaidReturn#" CssClass="secondPartPay"></c:TextView>
+							</c:VerticalLayout>
+							<c:HorizontalLayout>
+								<c:TextView Text="{$GetReturnSum($workflow.Return)}" CssClass="valueChek"></c:TextView>
+								<c:DockLayout CssClass="parameter_gridChek">
+									<c:Image></c:Image>
+								</c:DockLayout>
+							</c:HorizontalLayout>
+						</c:DockLayout>
+					</s:Else>
+				</s:If>
+				<s:Else>
+					<c:DockLayout CssClass="parameter_grid">
+						<c:TextView Text="#returnSum#" CssClass="blackText"></c:TextView>
+						<c:TextView Text="{$GetReturnSum($workflow.Return)}" CssClass="value"></c:TextView>
+					</c:DockLayout>
+				</s:Else>
 				<c:HorizontalLine />
 			</s:If>
 

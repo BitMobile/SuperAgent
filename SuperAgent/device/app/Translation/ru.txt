@@ -411,3 +411,7 @@ Percent18		НДС 18%
 PercentWithoOut		Без НДС
 NoFs		Фискальный регистратор не подключен.
 WithoutSend		Без отправки
+NotPaidOrder		Не оплачен
+PaidOrder		Оплачен
+PaidReturn		Выплачен
+NotPaidReturn		Не выплачен

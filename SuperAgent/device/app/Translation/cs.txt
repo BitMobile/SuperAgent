@@ -398,3 +398,7 @@ Percent10		VAT 10%
 Percent18		VAT 18%
 PercentWithoOut		Not VAT
 NoFs		The fiscal recorder is not connected.
+NotPaidOrder		Not paid
+PaidOrder		Paid
+PaidReturn		Paid
+NotPaidReturn		Not paid

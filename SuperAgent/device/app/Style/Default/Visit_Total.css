@@ -60,3 +60,83 @@
 	margin-top: 36%;
 	dock-align: right;
 }
+
+.parameter_gridChek {
+	width: 100%;
+	height: 10.2mm;
+	dock-align: top;
+	background-color: #FFFFFF;
+}
+
+.parameter_gridChek vl {
+	width: 55%;
+	height: 100%;
+	dock-align: left;
+	background-color: #FFFFFF;
+}
+
+.parameter_gridChek hl {
+	width: 50%;
+	height: 100%;
+	dock-align: right;
+	background-color: #FFFFFF;
+}
+
+.parameter_gridChek vl TextView {
+	width: 100% auto;
+	height: 50%;
+	padding-top: 40%;
+	vertical-align: central;
+	margin-left: 2.7mm;
+	color: #000000;
+	dock-align: left;
+	font: 43% arial;
+}
+
+.parameter_gridChek hl dl {
+	width: 23.6%;
+	height: 5.7mm;
+}
+
+.parameter_gridChek hl dl img {
+	height: 1.9mm;
+	width: 1.3mm;
+	margin-top: 50%;
+	/*margin-left: 1mm;*/
+	margin-right: 2.4mm;
+	background-image: url(arrow.png);
+	dock-align: right;
+}
+
+.firstPart {
+	width: 100% auto;
+	height: 5.7mm;
+}
+
+.secondPart {
+	width: 100% auto;
+	padding-top: 0%;
+	height: 2.5mm;
+	font: 70% arial;
+	vertical-align: top;
+	color: #eb4040;
+}
+.secondPartPay {
+	width: 100% auto;
+	padding-top: 0%;
+	height: 2.5mm;
+	font: 70% arial;
+	vertical-align: top;
+	color: #4dd865;
+}
+
+.valueChek {
+	width: 76.4%;
+	height: 5.7mm;
+	white-space: nowrap;
+	padding-top: 47%;
+	font: 36% Arial;
+	color: #8e8e93;
+	dock-align: right;
+	text-align: right;
+}

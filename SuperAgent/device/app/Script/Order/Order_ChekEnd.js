@@ -178,7 +178,11 @@ function CheckIfEmptyAndForward(wfName) {
 				orderObj.Save();
 			}
 		}
-		Workflow.Forward([]);
+    if ($.workflow.currentDoc == "Return") {
+      Workflow.Action("SkipReturn",[]);
+    }else {
+      Workflow.Forward([]);
+    }
 	}
 
 	else if (wfName=="Order" || wfName=="Return")

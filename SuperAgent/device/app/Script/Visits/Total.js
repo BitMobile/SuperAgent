@@ -51,6 +51,34 @@ function OrderExists(visit) {
         return true;
 }
 
+function CheckIfExsistOrderPay(){
+
+			var obj = $.workflow.order;
+			if (obj.Cheque != NULL
+				&& obj.Cheque != null
+				) {
+					if (obj.Cheque != "@ref[Document_Check]:00000000-0000-0000-0000-000000000000") {
+						return false;
+					}
+				//ChekEnd
+			}
+
+	return true;
+}
+
+function CheckIfExsistReturnPay(){
+	var obj = $.workflow.Return;
+	if (obj.Cheque != NULL
+		&& obj.Cheque != null
+		) {
+			if (obj.Cheque.ToString() != "@ref[Document_Check]:00000000-0000-0000-0000-000000000000") {
+				return false;
+			}
+		//ChekEnd
+	}
+	return true;
+}
+
 function OptionAvailable(option) {
 	var q = new Query("SELECT Value FROM USR_WorkflowSteps WHERE Value=0 AND Skip=@skip");
 	q.AddParameter("skip", option);

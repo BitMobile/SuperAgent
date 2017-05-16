@@ -130,8 +130,8 @@
 			</s:If>
 
 			<s:If Test="@orderEnabled">
-				<s:If Test="true == true">
-					<s:If Test="true == true">
+				<s:If Test="$sessionConst.AccessToKKT">
+					<s:If Test="$CheckIfExsistOrderPay()">
 						<c:DockLayout CssClass="parameter_gridChek">
 							<c:VerticalLayout>
 								<c:TextView Text="#orderSum#" CssClass="firstPart"></c:TextView>
@@ -170,8 +170,8 @@
 			</s:If>
 
 			<s:If Test="@returnEnabled">
-				<s:If Test="true == true">
-					<s:If Test="true == true">
+				<s:If Test="$sessionConst.AccessToKKT">
+					<s:If Test="$CheckIfExsistReturnPay() == true">
 						<c:DockLayout CssClass="parameter_gridChek">
 							<c:VerticalLayout>
 								<c:TextView Text="#returnSum#" CssClass="firstPart"></c:TextView>

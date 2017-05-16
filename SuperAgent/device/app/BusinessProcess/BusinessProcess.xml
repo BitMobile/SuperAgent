@@ -130,6 +130,7 @@
 			<bp:Action Name="ShowInfo" NextStep="OrderInfo"></bp:Action>
 			<bp:Action Name="FR" NextStep="FRSettings"></bp:Action>
 			<bp:Action Name="ChekEnd" NextStep="OrderChekEnd"></bp:Action>
+			<bp:Action Name="Pay" NextStep="OrderPay"></bp:Action>
 			<bp:Action Name="Forward" NextStep="Receivables"></bp:Action>
 			<bp:Action Name="SkipEncashment" NextStep="Total"/>
 		</bp:Step>

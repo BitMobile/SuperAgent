@@ -127,7 +127,7 @@ function OrderBack() {
         stepNumber = '4';
 		else
       stepNumber = '5';
-    
+
 
 		var q = new Query("SELECT NextStep FROM USR_WorkflowSteps WHERE StepOrder<@stepNumber AND Value=0 ORDER BY StepOrder DESC");
 		q.AddParameter("stepNumber", stepNumber);
@@ -153,6 +153,7 @@ function ClearFilters() {
 function CheckIfEmptyAndForward(wfName) {
 	var empty = parseInt(itemsQty) == parseInt(0);
 
+  $.workflow.Remove("chek");
 	if (wfName=="Visit"){
 		if (empty){ //clearing parameters and delete order
 			DB.Delete(order);

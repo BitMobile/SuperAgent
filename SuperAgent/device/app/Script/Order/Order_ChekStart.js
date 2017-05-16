@@ -655,8 +655,20 @@ function ScreenChek() {
       if (IsEmptyValue(Err)) {
 
         order.Cheque = $.workflow.chek;
-        order.Save();
-        chekObj.Save();
+        order.Save(false);
+        chekObj.Save(false);
+
+        var queryPay = new Query("SELECT * FROM Document_Check_Payments WHERE Ref = @Ref");
+        queryPay.AddParameter("Ref", $.workflow.chek);
+        SaveOutTran(queryPay);
+
+        var querySKUCheck = new Query("SELECT * FROM Document_Check_SKUs WHERE Ref = @Ref");
+        querySKUCheck.AddParameter("Ref", $.workflow.chek);
+        SaveOutTran(querySKUCheck);
+
+        var queryOrdedSku = new Query("SELECT * FROM Document_" + doc + "_SKUs WHERE Ref = @Ref");
+    	  queryOrdedSku.AddParameter("Ref", thisDoc);
+        SaveOutTran(queryOrdedSku);
 
         Workflow.Action("ChekEnd",[]);
       }
@@ -672,4 +684,11 @@ function ScreenChek() {
       Dialog.Message(Translate["#NoFs#"])
     }
 
+}
+function SaveOutTran(query){
+  var result = query.Execute();
+  while (result.Next()) {
+    var obj = result['Id'].GetObject();
+    obj.Save(false);
+  }
 }

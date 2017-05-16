@@ -131,8 +131,8 @@
 
 			<s:If Test="@orderEnabled">
 				<s:If Test="$sessionConst.AccessToKKT">
-					<s:If Test="$CheckIfExsistOrderPay()">
-						<c:DockLayout CssClass="parameter_gridChek">
+					<s:If Test="$CheckIfExsistOrderPay() == true">
+						<c:DockLayout CssClass="parameter_gridChek" OnClickAction="$DoBackTo(Order)">
 							<c:VerticalLayout>
 								<c:TextView Text="#orderSum#" CssClass="firstPart"></c:TextView>
 								<c:TextView Text="#NotPaidOrder#" CssClass="secondPart"></c:TextView>
@@ -146,7 +146,7 @@
 						</c:DockLayout>
 					</s:If>
 					<s:Else>
-						<c:DockLayout CssClass="parameter_gridChek">
+						<c:DockLayout CssClass="parameter_gridChek" OnClickAction="$DoBackTo(Order)">
 							<c:VerticalLayout>
 								<c:TextView Text="#orderSum#" CssClass="firstPart"></c:TextView>
 								<c:TextView Text="#PaidOrder#" CssClass="secondPartPay"></c:TextView>
@@ -172,7 +172,7 @@
 			<s:If Test="@returnEnabled">
 				<s:If Test="$sessionConst.AccessToKKT">
 					<s:If Test="$CheckIfExsistReturnPay() == true">
-						<c:DockLayout CssClass="parameter_gridChek">
+						<c:DockLayout CssClass="parameter_gridChek" OnClickAction="$DoBackTo(Return)">
 							<c:VerticalLayout>
 								<c:TextView Text="#returnSum#" CssClass="firstPart"></c:TextView>
 								<c:TextView Text="#NotPaidReturn#" CssClass="secondPart"></c:TextView>
@@ -186,7 +186,7 @@
 						</c:DockLayout>
 					</s:If>
 					<s:Else>
-						<c:DockLayout CssClass="parameter_gridChek">
+						<c:DockLayout CssClass="parameter_gridChek" OnClickAction="$DoBackTo(Return)">
 							<c:VerticalLayout>
 								<c:TextView Text="#returnSum#" CssClass="firstPart"></c:TextView>
 								<c:TextView Text="#PaidReturn#" CssClass="secondPartPay"></c:TextView>

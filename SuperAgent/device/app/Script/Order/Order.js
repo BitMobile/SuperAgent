@@ -433,8 +433,8 @@ function CreateDocumentIfNotExists(executedOrder, visitId) {
 				order.Lattitude = location.Latitude;
 				order.Longitude = location.Longitude;
 			}
-			if (visitId != null)
-				order.Visit = visitId;
+			//if (visitId != null)
+			//	order.Visit = visitId;
 
 			// if (priceLists >= parseInt(1)) {
 			var pl = GetPriceListRef(outlet);

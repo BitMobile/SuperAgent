@@ -133,7 +133,7 @@
 			<bp:Action Name="Pay" NextStep="OrderPay"></bp:Action>
 			<bp:Action Name="Forward" NextStep="Receivables"></bp:Action>
 			<bp:Action Name="SkipEncashment" NextStep="Total"/>
-			<bp:Action Name="Pay" NextStep="OrderPay"></bp:Action>
+			
 		</bp:Step>
 
 		<bp:Step Name="Receivables" Screen="Receivables.xml" Controller="Receivables\Main.js">

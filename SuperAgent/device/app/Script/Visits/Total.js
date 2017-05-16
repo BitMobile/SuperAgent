@@ -57,7 +57,7 @@ function CheckIfExsistOrderPay(){
 			if (obj.Cheque != NULL
 				&& obj.Cheque != null
 				) {
-					if (obj.Cheque != "@ref[Document_Check]:00000000-0000-0000-0000-000000000000") {
+					if (obj.Cheque.ToString() != "@ref[Document_Check]:00000000-0000-0000-0000-000000000000") {
 						return false;
 					}
 				//ChekEnd
@@ -209,6 +209,7 @@ function CheckAndCommit(state, args) {
 	  visit = visit.GetObject();
 		visit.EndTime = DateTime.Now.ToString();
     if (OrderExists(visit.Id)) {
+				order.Visit = visit.Id;
         order.GetObject().Save();
     }
     CreateQuestionnaireAnswers();

@@ -152,7 +152,6 @@ function ClearFilters() {
 
 function CheckIfEmptyAndForward(wfName) {
 	var empty = parseInt(itemsQty) == parseInt(0);
-
   $.workflow.Remove("chek");
 	if (wfName=="Visit"){
 		if (empty){ //clearing parameters and delete order

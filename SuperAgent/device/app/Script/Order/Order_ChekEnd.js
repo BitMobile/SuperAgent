@@ -15,6 +15,7 @@ var countSumm;
 var TotalPay;
 var TakeMoney;
 var PrintDate;
+var ContactVal;
 
 function OnLoading() {
 
@@ -32,6 +33,7 @@ function OnLoading() {
   }
 
   PrintDate = $.workflow.chek.PrintDate;
+  ContactVal = $.workflow.chek.PrintDate;
 }
 
 function OnLoad() {

@@ -51,6 +51,38 @@ function OrderExists(visit) {
         return true;
 }
 
+function CheckOrderNotEmpty(){
+	var obj = $.workflow.order;
+	if (obj != NULL) {
+		var q = new Query("Select Id From Document_Order_SKUs Where Ref = @ref");
+		q.AddParameter("ref",obj.Id);
+		var nom = q.ExecuteCount();
+		if (nom>0) {
+			return true;
+		}else {
+			return false;
+		}
+	}else {
+		return false;
+	}
+}
+
+function CheckReturnNotEmpty(){
+	var obj = $.workflow.Return;
+	if (obj != NULL) {
+		var q = new Query("Select Id From Document_Return_SKUs Where Ref = @ref");
+		q.AddParameter("ref",obj.Id);
+		var nom = q.ExecuteCount();
+		if (nom>0) {
+			return true;
+		}else {
+			return false;
+		}
+	}else {
+		return false;
+	}
+}
+
 function CheckIfExsistOrderPay(){
 
 			var obj = $.workflow.order;
@@ -249,7 +281,6 @@ function CheckAndCommit(state, args) {
     Workflow.Commit();
 	}
 }
-
 
 //--------------------------internal functions--------------
 

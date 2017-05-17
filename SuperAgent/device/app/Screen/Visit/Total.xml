@@ -130,7 +130,7 @@
 			</s:If>
 
 			<s:If Test="@orderEnabled">
-				<s:If Test="$sessionConst.AccessToKKT">
+				<s:If Test="$sessionConst.AccessToKKT &amp;&amp; $CheckOrderNotEmpty()">
 					<s:If Test="$CheckIfExsistOrderPay() == true">
 						<c:DockLayout CssClass="parameter_gridChek" OnClickAction="$DoBackTo(Order)">
 							<c:VerticalLayout>
@@ -161,7 +161,8 @@
 					</s:Else>
 				</s:If>
 				<s:Else>
-					<c:DockLayout CssClass="parameter_grid">
+					<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoBackTo(Order)">
+						<c:Image></c:Image>
 						<c:TextView Text="#orderSum#" CssClass="blackText"></c:TextView>
 						<c:TextView Text="{$GetOrderSUM($workflow.order)}" CssClass="value"></c:TextView>
 					</c:DockLayout>
@@ -170,7 +171,7 @@
 			</s:If>
 
 			<s:If Test="@returnEnabled">
-				<s:If Test="$sessionConst.AccessToKKT">
+				<s:If Test="$sessionConst.AccessToKKT &amp;&amp; $CheckReturnNotEmpty()" >
 					<s:If Test="$CheckIfExsistReturnPay() == true">
 						<c:DockLayout CssClass="parameter_gridChek" OnClickAction="$DoBackTo(Return)">
 							<c:VerticalLayout>
@@ -201,7 +202,8 @@
 					</s:Else>
 				</s:If>
 				<s:Else>
-					<c:DockLayout CssClass="parameter_grid">
+					<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoBackTo(Return)">
+						<c:Image></c:Image>
 						<c:TextView Text="#returnSum#" CssClass="blackText"></c:TextView>
 						<c:TextView Text="{$GetReturnSum($workflow.Return)}" CssClass="value"></c:TextView>
 					</c:DockLayout>
@@ -210,7 +212,8 @@
 			</s:If>
 
 			<s:If Test="@encashmentEnabled">
-				<c:DockLayout CssClass="parameter_grid">
+				<c:DockLayout CssClass="parameter_grid" OnClickAction="$DoBackTo(Receivables)">
+					<c:Image></c:Image>
 					<c:TextView Text="#encashmentSum#" CssClass="blackText"></c:TextView>
 					<c:TextView Text="{$FormatValue($workflow.encashment.EncashmentAmount)}" CssClass="value"></c:TextView>
 				</c:DockLayout>

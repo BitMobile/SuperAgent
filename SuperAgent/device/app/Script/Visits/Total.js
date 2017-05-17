@@ -224,13 +224,21 @@ function CheckAndCommit(state, args) {
 		if (OrderExists(visit.Id)) {
 			order.GetObject().Save();
 		}
+
 		if ($.workflow.order != NULL) {
 			var order = $.workflow.order;
 			var orderobj = order.GetObject();
 			orderobj.Visit = visit.Id;
-			Dialog.Message(order.Visit);
 			orderobj.Save(false);
 		}
+
+		if ($.workflow.Return != NULL) {
+			var Return = $.workflow.Return;
+			var Returnobj = Return.GetObject();
+			Returnobj.Visit = visit.Id;
+			Returnobj.Save(false);
+		}
+
     CreateQuestionnaireAnswers();
     visit.Save();
 		var existorno = new Query("Select type From sqlite_master where name = 'UT_answerQuest' And type = 'table'");

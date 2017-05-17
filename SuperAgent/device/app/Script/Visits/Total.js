@@ -208,10 +208,11 @@ function CheckAndCommit(state, args) {
 		wfName = state[2];
 	  visit = visit.GetObject();
 		visit.EndTime = DateTime.Now.ToString();
-    if (OrderExists(visit.Id)) {
-				order.Visit = visit.Id;
-        order.GetObject().Save();
-    }
+		if ($.workflow.order != null) {
+			order.Visit = visit.Id;
+			order.GetObject().Save();
+		}
+
     CreateQuestionnaireAnswers();
     visit.Save();
 		var existorno = new Query("Select type From sqlite_master where name = 'UT_answerQuest' And type = 'table'");

@@ -226,7 +226,6 @@ function GetVatTranslate(vat) {
 
 function GetFSNumber() {
   fptr = $.workConst.fptr;
-
   if (fptr != NULL){
 
     var chek = $.workflow.chek;
@@ -626,7 +625,7 @@ function ScreenChek() {
         }
       //  i = 0;
 
-      }
+
 
       var query = new Query("SELECT * FROM Document_Check_Payments WHERE Ref = @Ref");
       query.AddParameter("Ref", $.workflow.chek);
@@ -660,15 +659,18 @@ function ScreenChek() {
 
         var queryPay = new Query("SELECT * FROM Document_Check_Payments WHERE Ref = @Ref");
         queryPay.AddParameter("Ref", $.workflow.chek);
-        SaveOutTran(queryPay);
+        var resultPay = query.Execute();
+        SaveOutTran(resultPay);
 
         var querySKUCheck = new Query("SELECT * FROM Document_Check_SKUs WHERE Ref = @Ref");
         querySKUCheck.AddParameter("Ref", $.workflow.chek);
-        SaveOutTran(querySKUCheck);
+        var resultSKUCheck = query.Execute();
+        SaveOutTran(resultSKUCheck);
 
         var queryOrdedSku = new Query("SELECT * FROM Document_" + doc + "_SKUs WHERE Ref = @Ref");
     	  queryOrdedSku.AddParameter("Ref", thisDoc);
-        SaveOutTran(queryOrdedSku);
+        var resultOrdedSku = query.Execute();
+        SaveOutTran(resultOrdedSku);
 
         Workflow.Action("ChekEnd",[]);
       }
@@ -685,8 +687,7 @@ function ScreenChek() {
     }
 
 }
-function SaveOutTran(query){
-  var result = query.Execute();
+function SaveOutTran(result){
   while (result.Next()) {
     var obj = result['Id'].GetObject();
     obj.Save(false);

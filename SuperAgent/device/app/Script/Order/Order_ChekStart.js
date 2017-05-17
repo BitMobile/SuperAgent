@@ -658,6 +658,8 @@ function ScreenChek() {
         //DB.Delete(order.Id);
         //var dbRef = DB.CreateRef("Document.Order", Global.GenerateGuid());
         //order.Id = "@ref[Document_Order]:"+Global.GenerateGuid();
+        //order.Visit = null;
+        order.Visit = null;
         order.Save(false);
         chekObj.Save(false);
 
@@ -676,10 +678,8 @@ function ScreenChek() {
         var resultOrdedSku = query.Execute();
         SaveOutTran(resultOrdedSku);
         var deleteTranStatus = new Query("Delete From ___TranStatus Where "+
-        " TableName = 'Document_Order'"+
-        " OR TableName = 'Document_Check' OR TableName = 'Document_Check_Payments' "+
-        " OR TableName = 'Document_Check_SKUs' "+
-        " OR TableName = 'Document_Order_SKUs'");
+        " TableName IN ('Document_Order','Document_Check', 'Document_Check_Payments',"+
+        " 'Document_Check_SKUs', 'Document_Order_SKUs','Document_Return', 'Document_Return_SKUs')");
         deleteTranStatus.Execute();
         Workflow.Action("ChekEnd",[]);
       }

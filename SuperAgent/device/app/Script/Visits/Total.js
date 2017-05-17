@@ -208,11 +208,29 @@ function CheckAndCommit(state, args) {
 		wfName = state[2];
 	  visit = visit.GetObject();
 		visit.EndTime = DateTime.Now.ToString();
-		if ($.workflow.order != null) {
-			order.Visit = visit.Id;
+		// if (!CheckIfExsistOrderPay()) {
+		// 	var ord = $.workflow.order;
+		// 	ord = ord.GetObject();
+		// 	ord.Visit = visit.Id;
+		// 	ord.Save();
+		// }
+		// if (!CheckIfExsistReturnPay()) {
+		// 	var ret = $.workflow.Return;
+		// 	ret = ret.GetObject();
+		// 	ret.Visit = visit.Id;
+		// 	ret.Save();
+		// }
+		// Dialog.Message(visit.Id);
+		if (OrderExists(visit.Id)) {
 			order.GetObject().Save();
 		}
-
+		if ($.workflow.order != NULL) {
+			var order = $.workflow.order;
+			var orderobj = order.GetObject();
+			orderobj.Visit = visit.Id;
+			Dialog.Message(order.Visit);
+			orderobj.Save(false);
+		}
     CreateQuestionnaireAnswers();
     visit.Save();
 		var existorno = new Query("Select type From sqlite_master where name = 'UT_answerQuest' And type = 'table'");

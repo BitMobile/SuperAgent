@@ -115,11 +115,25 @@ function CountSum() {
 
 }
 
+// if (CurrVal!=sender.Text) {
+//   if (TrimAll(sender.Text)!="") {
+//     sender.Text = ToFloat(sender.Text);
+//   }else {
+//     sender.Text = 0;
+//   }
+// }
+// CurrVal = sender.Text;
+function ChangeTextFloat(sender){
+  if (sender.Text != NULL) {
+    if (TrimAll(sender.Text)!="") {
+      sender.Text = String.Format("{0:F2}",parseFloat(sender.Text));
+    }
+  }
+}
 function GetSUMPay() {
 
   var allSum = ToFloat(GetOrderSUM());
   var Sum = ToFloat(CountSum());
-
 
   if (allSum < Sum) {
     Variables["SumMes"].Text = Translate["#PushPay#"] + " " + String.Format("{0:F2}", (Sum - allSum))+ " " + Translate["#currency#"];

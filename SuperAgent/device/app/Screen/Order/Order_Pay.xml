@@ -53,7 +53,7 @@
 					<c:VerticalLayout>
 						<c:TextView Text="$payments.Description" CssClass="main_rowPay"></c:TextView>
 							<c:HorizontalLayout CssClass="HayLay">
-									<c:EditText Id="control{$payNumber}" Placeholder="—" OnChange="$GetSUMPay()" Keyboard="numeric" CssClass="description_rowPay" Length="140"></c:EditText>
+									<c:EditText Id="control{$payNumber}" OnLostFocus="$ChangeTextFloat()" Placeholder="—" OnChange="$GetSUMPay()" Keyboard="numeric" CssClass="description_rowPay" Length="140"></c:EditText>
 									<c:TextView Text="₽" CssClass="SymbolPay"></c:TextView>
 							</c:HorizontalLayout>
 					</c:VerticalLayout>

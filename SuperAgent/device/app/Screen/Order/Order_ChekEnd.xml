@@ -104,7 +104,7 @@
 					</c:VerticalLayout>
 					<c:VerticalLayout CssClass="HayLayVer">
 							<c:TextView Text="{$CountSum} #currency#" CssClass="SymbolPayUpVer"></c:TextView>
-							<c:TextView Text="#PayDiscount#: {$Sale} #currency#" CssClass="SymbolPayVer"></c:TextView>
+							<c:TextView Text="{@PayDiscount}: {$Sale} #currency#" CssClass="SymbolPayVer"></c:TextView>
 					</c:VerticalLayout>
 				</c:HorizontalLayout>
 			</c:DockLayout>

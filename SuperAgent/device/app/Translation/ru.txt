@@ -400,6 +400,7 @@ KKTNumber		Номер ККТ
 Sms		SMS
 Email		E-mail
 PayDiscount		Скидка
+PayAnDiscount		Надбавка
 Print		Получить чек
 PaidOrder		Заказ оплачен
 PaidReturn		Возврат выплачен
@@ -415,3 +416,4 @@ NotPaidOrder		Не оплачен
 PaidOrder		Оплачен
 PaidReturn		Выплачен
 NotPaidReturn		Не выплачен
+Beep		Отклик

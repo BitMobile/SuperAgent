@@ -16,6 +16,7 @@ var TotalPay;
 var TakeMoney;
 var PrintDate;
 var ContactVal;
+var PayDiscount;
 
 function OnLoading() {
 
@@ -352,7 +353,14 @@ function GetSale() {
     sum = sum + ToFloat(result["Dif"]);
   }
 
-  return (sum * -1);
+  if (sum > 0) {
+    PayDiscount = Translate["#PayAnDiscount#"];
+    return (sum);
+  }
+  else {
+    PayDiscount = Translate["#PayDiscount#"];
+    return (sum * -1);
+  }
 
 }
 

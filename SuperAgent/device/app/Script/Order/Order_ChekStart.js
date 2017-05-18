@@ -8,6 +8,7 @@ var countSumm;
 var fptr;
 var TotalPay;
 var TakeMoney;
+var PayDiscount;
 
 function OnLoading() {
 
@@ -216,7 +217,14 @@ function GetSale() {
     sum = sum + parseFloat(result["Dif"]);
   }
 
-  return (sum * -1);
+  if (sum > 0) {
+    PayDiscount = Translate["#PayAnDiscount#"];
+    return (sum);
+  }
+  else {
+    PayDiscount = Translate["#PayDiscount#"];
+    return (sum * -1);
+  }
 
 }
 
@@ -619,7 +627,7 @@ function ScreenChek() {
     //  var i = 0;
       while (result.Next()) {
       //  while (i < 600){
-          Fiscal.RegistrationFz54(fptr, result["SKU"].Description, result["Price"], result["Qty"], result["Amount"], Fiscal.GetVATs(result["SKU"].VAT.Description));
+          Fiscal.RegistrationFz54(fptr, result["SKU"].Description, ToFloat(result["Price"]), ToFloat(result["Qty"]), ToFloat(result["Amount"]), Fiscal.GetVATs(result["SKU"].VAT.Description));
       //    i = i + 1;
       //    Dialog.Message(i);
         }
@@ -634,7 +642,7 @@ function ScreenChek() {
       while (result.Next()) {
         if (result['Total'] >= 0)
         //  Fiscal.Payment(fptr, 5000000, ToFloat(result['Type'].PaymentCode));
-          Fiscal.Payment(fptr, result['Total'], ToFloat(result['Type'].PaymentCode));
+          Fiscal.Payment(fptr, ToFloat(result['Total']), ToFloat(result['Type'].PaymentCode));
       }
 
       //chekObj.PrintDate = Fiscal.FptrDateTime(fptr);

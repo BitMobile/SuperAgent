@@ -55,7 +55,7 @@
 				<c:VerticalLayout>
 					<c:DockLayout>
 						<c:TextView Text="#сommunication#" />
-						<c:Button Text="#Connect#" OnClickAction="$Connect()"/>
+						<c:Button Id="ConnectButton" Text="#Connect#" OnClickAction="$Connect()"/>
 					</c:DockLayout>
 				</c:VerticalLayout>
 			</c:HorizontalLayout>

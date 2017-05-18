@@ -152,7 +152,7 @@
 					</c:VerticalLayout>
 					<c:VerticalLayout CssClass="HayLayVer">
 							<c:TextView Text="{$CountSum} #currency#" CssClass="SymbolPayUpVer"></c:TextView>
-							<c:TextView Text="#PayDiscount#: {$Sale} #currency#" CssClass="SymbolPayVer"></c:TextView>
+							<c:TextView Text="{@PayDiscount}: {$Sale} #currency#" CssClass="SymbolPayVer"></c:TextView>
 					</c:VerticalLayout>
 				</c:HorizontalLayout>
 			</c:DockLayout>
@@ -179,7 +179,7 @@
 									<c:TextView Text="$payitem.Type.Description" CssClass="main_rowPayVer3"></c:TextView>
 							</c:VerticalLayout>
 							<c:VerticalLayout CssClass="HayLayVer3">
-									<c:TextView Text="{$payitem.Total} #currency#" CssClass="SymbolPayUpVer3"></c:TextView>
+									<c:TextView Text="{$FormatValue($payitem.Total)} #currency#" CssClass="SymbolPayUpVer3"></c:TextView>
 							</c:VerticalLayout>
 						</c:HorizontalLayout>
 					</c:DockLayout>

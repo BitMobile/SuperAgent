@@ -63,9 +63,12 @@ function Connect(){
 	  fptr.PutDeviceEnabled(true);
 		fptr.Beep();
 
-		
-		Variables["ChequeCount"].Text = Fiscal.GetChequeCount(fptr);
-		Variables["ChequeCountDate"].Text = "от " + Fiscal.FptrDateTime(fptr);
+		if (fptr.CurrentStatus >= 0) {
+			$.ConnectButton.Text = Translate["#Beep#"];
+			Variables["ChequeCount"].Text = Fiscal.GetChequeCount(fptr);
+			Variables["ChequeCountDate"].Text = "от " + Fiscal.FptrDateTime(fptr);
+		}
+
 		//Dialog.Message(Fiscal.GetChequeCountTime(fptr));
 
 	}

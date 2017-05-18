@@ -30,6 +30,7 @@ function SetSessionConstants() {
 	//Dialog.Message(GPSStarted);
   var GPSPredefined = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='GPSPredefined'");
 	var UseVATs = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='UseVATs'");
+	var OsString = Variables[ "common" ].OS;
 	$.AddGlobal("sessionConst", new Dictionary());
 	$.sessionConst.Add("UseSaveQuest", saveQuest.ExecuteScalar());
 	$.sessionConst.Add("solVersion", solVersion.ExecuteScalar());
@@ -48,7 +49,7 @@ function SetSessionConstants() {
 	$.sessionConst.Add("GPSTrackWrite", GPSTrackWrite.ExecuteScalar());
 	$.sessionConst.Add("GPSPredefined", GPSPredefined.ExecuteScalar());
 	$.sessionConst.Add("UseVATs", EvaluateBoolean(UseVATs.ExecuteScalar()));
-
+	$.sessionConst.Add("CurrOs",OsString);
 
 	var countDayPlanEnd = DayPlanVisitCount.ExecuteScalar();
 	if (countDayPlanEnd == null) {
@@ -72,7 +73,7 @@ function SetSessionConstants() {
 				$.sessionConst.Add("galleryChoose", true);
 		}
 		if (rights.Code=='000000014') {
-			if (rights.AccessRight==null)
+			if (rights.AccessRight==null || OsString == "IOS")
 				$.sessionConst.Add("AccessToKKT", false);
 			else
 				$.sessionConst.Add("AccessToKKT", true);

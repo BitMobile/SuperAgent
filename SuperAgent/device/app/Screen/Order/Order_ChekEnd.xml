@@ -59,7 +59,7 @@
 					<c:TextView Text="@PrintDate" CssClass="main_rowChek"></c:TextView>
 					<c:HorizontalLayout CssClass="spaceChek"/>
 					<c:TextView Text="#ContactAddress#" CssClass="description_rowChek"></c:TextView>
-					<c:TextView Text="+ 79500435085" CssClass="main_rowChek2"></c:TextView>
+					<c:TextView Text="@ContactVal" CssClass="main_rowChek2"></c:TextView>
 				</c:VerticalLayout>
 			</c:DockLayout>
 			<c:DockLayout CssClass="gridChek">

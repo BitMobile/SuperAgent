@@ -647,6 +647,7 @@ function ScreenChek() {
       chekObj.DocumentShiftNumber = Fiscal.GetShiftChequeNumber(fptr);
       chekObj.Address = GetAddress();
       chekObj.PrintDate = Fiscal.FptrDateTime(fptr);
+      chekObj.SendType = telMail;
 
       //Dialog.Message(Fiscal.GetError() + "----------error");
       var Err = Fiscal.GetError();

@@ -33,7 +33,7 @@ function OnLoading() {
   }
 
   PrintDate = $.workflow.chek.PrintDate;
-  ContactVal = $.workflow.chek.PrintDate;
+  ContactVal = $.workflow.chek.SendType;
 }
 
 function OnLoad() {

@@ -220,15 +220,24 @@
 	font: 65% arial;
 }
 
-.main_rowPay {
-	width: 100%;
+.dlRowPay{
 	height: 30%;
+	width: 100%;
+}
+.main_rowPay {
+	dock-align: left;
+	width: 50%;
+	height: 100%;
 	white-space: normal;
 	placeholder-color: #FF7C4A;
 	font: 50% Arial;
 	color: #8e8e93;
 }
-
+.main_rowButton{
+	dock-align: right;
+	width: 50%;
+	height: 100%;
+}
 .description_rowPay {
 	width: 92%;
 	height: 100%;

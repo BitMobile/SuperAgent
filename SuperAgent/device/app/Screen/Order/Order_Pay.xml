@@ -51,7 +51,10 @@
 				<!-- <c:HorizontalLayout CssClass="grid" OnClickAction="$DoAction(Review,$order.Outlet,null,$order.Id)"> -->
 				<c:HorizontalLayout CssClass="grid">
 					<c:VerticalLayout>
-						<c:TextView Text="$payments.Description" CssClass="main_rowPay"></c:TextView>
+						<c:DockLayout CssClass="dlRowPay">
+							<c:TextView Text="$payments.Description" CssClass="main_rowPay"></c:TextView>
+							<c:Button Id="sendButton" OnClick="$FillFromChange($payNumber)" Text="#send#" CssClass="main_rowButton"/>
+						</c:DockLayout>
 							<c:HorizontalLayout CssClass="HayLay">
 									<c:EditText Id="control{$payNumber}" OnLostFocus="$ChangeTextFloat()" Placeholder="—" OnChange="$GetSUMPay()" Keyboard="numeric" CssClass="description_rowPay" Length="140"></c:EditText>
 									<c:TextView Text="₽" CssClass="SymbolPay"></c:TextView>

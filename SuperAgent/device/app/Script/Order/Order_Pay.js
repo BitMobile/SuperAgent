@@ -130,6 +130,11 @@ function ChangeTextFloat(sender){
     }
   }
 }
+function FillFromChange(sender, idEdit){
+  var allSum = ToFloat(GetOrderSUM());
+  var Sum = ToFloat(CountSum());
+  Variables["control"+idEdit].Text = String.Format("{0:F2}", (allSum - Sum));
+}
 function GetSUMPay() {
 
   var allSum = ToFloat(GetOrderSUM());

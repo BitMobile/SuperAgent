@@ -613,6 +613,9 @@ function ScreenChek() {
       if ($.swipe_layout.Index == 1) {
         telMail = $.EMail.Text;
       }
+      if (TrimAll(telMail) == "") {
+        telMail = null;
+      }
       if (telMail != null) {
         Fiscal.SetEmailOrTelephoneNumber(fptr, telMail);
       }

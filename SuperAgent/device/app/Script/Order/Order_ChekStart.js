@@ -219,11 +219,11 @@ function GetSale() {
 
   if (sum > 0) {
     PayDiscount = Translate["#PayAnDiscount#"];
-    return (sum);
+    return String.Format("{0:F2}",sum);
   }
   else {
     PayDiscount = Translate["#PayDiscount#"];
-    return (sum * -1);
+    return String.Format("{0:F2}",(sum * -1));
   }
 
 }

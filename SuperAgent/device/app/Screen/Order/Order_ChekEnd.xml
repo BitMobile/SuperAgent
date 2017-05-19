@@ -32,6 +32,10 @@
 				</c:HorizontalLayout>
 			</c:DockLayout>
 
+			<s:If Test="$workflow.name=='Visit'">
+				<c:Image CssClass="5_scroll"></c:Image>
+			</s:If>
+
 
 			<c:HorizontalLayout CssClass="gridOR2">
 				<c:VerticalLayout>

@@ -232,6 +232,8 @@ function FindTwinAndUnite(orderitem) {
 		var twin = q.ExecuteScalar();
 		twin = twin.GetObject();
 		twin.Qty += orderitem.Qty;
+		twin.Total += orderitem.Total;
+		twin.Amount += orderitem.Amount;
 		twin.Save();
 		DB.Delete(orderitem.Id);
 	} else

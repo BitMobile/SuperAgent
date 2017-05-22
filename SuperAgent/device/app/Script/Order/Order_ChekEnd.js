@@ -33,8 +33,8 @@ function OnLoading() {
 
   }
 
-  PrintDate = Date($.workflow.chek.PrintDate).ToString("d MMMM yyyy, H:mm");
-  ContactVal = $.workflow.chek.SendType;
+  //PrintDate = Date($.workflow.chek.PrintDate).ToString("d MMMM yyyy, H:mm");
+
 }
 
 function OnLoad() {
@@ -54,7 +54,8 @@ function OnStartAtServer() {
       Variables["workflow"]["Return"] = $.workConst.currentRef;
 
   }
-
+  PrintDate = $.workflow.chek.PrintDate.ToString("d MMMM yyyy, H:mm");
+  ContactVal = $.workflow.chek.SendType;
   return true;
 
 }

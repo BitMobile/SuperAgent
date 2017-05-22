@@ -33,7 +33,7 @@ function OnLoading() {
 
   }
 
-  PrintDate = $.workflow.chek.PrintDate;
+  PrintDate = Date($.workflow.chek.PrintDate).ToString("d MMMM yyyy, H:mm");
   ContactVal = $.workflow.chek.SendType;
 }
 

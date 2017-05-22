@@ -259,16 +259,20 @@ function CheckAndCommit(state, args) {
 
 		if ($.workflow.order != NULL) {
 			var order = $.workflow.order;
-			var orderobj = order.GetObject();
-			orderobj.Visit = visit.Id;
-			orderobj.Save(false);
+			if (order.Visit == null) {
+				var orderobj = order.GetObject();
+				orderobj.Visit = visit.Id;
+				orderobj.Save(false);
+			}
 		}
 
 		if ($.workflow.Return != NULL) {
 			var Return = $.workflow.Return;
-			var Returnobj = Return.GetObject();
-			Returnobj.Visit = visit.Id;
-			Returnobj.Save(false);
+			if (Return.Visit == null) {
+				var Returnobj = Return.GetObject();
+				Returnobj.Visit = visit.Id;
+				Returnobj.Save(false);
+			}
 		}
 
     CreateQuestionnaireAnswers();

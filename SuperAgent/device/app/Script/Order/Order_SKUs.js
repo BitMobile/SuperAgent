@@ -237,9 +237,14 @@ function SelectSKU(sku, price, recOrder, unit, thisDoc){
 
 function AddToOrder(control, editFieldName) {
     var editText = Converter.ToDecimal(0);
-    if (String.IsNullOrEmpty(Variables[editFieldName].Text) == false)
-        editText = Converter.ToDecimal(Variables[editFieldName].Text);
-    Variables[editFieldName].Text = editText + parseInt(1);
+    var str = StrReplace(Variables[editFieldName].Text, " ","");
+    if (parseFloat(str)==0) {
+      str = 0;
+      Variables[editFieldName].Text = 0;
+    }
+      if (String.IsNullOrEmpty(str) == false)
+          editText = Converter.ToDecimal(str);
+      Variables[editFieldName].Text = editText + parseInt(1);
 }
 
 function CreateOrderItem(control, editFieldName, textFieldName, packField, sku, price, swiped_rowName, recOrder, recUnitId) {
@@ -253,9 +258,10 @@ function CreateOrderItem(control, editFieldName, textFieldName, packField, sku, 
     //   a = false
     // }
     if (parseFloat(Variables[editFieldName].Text)!=0) {
-
-      if (String.IsNullOrEmpty(Variables[editFieldName].Text) == false) {
-        if (Converter.ToDecimal(Variables[editFieldName].Text) != Converter.ToDecimal(0)) {
+      var str = StrReplace(Variables[editFieldName].Text, " ","");
+      //Dialog.Message(str);
+      if (String.IsNullOrEmpty(str) == false) {
+        if (Converter.ToDecimal(str) != Converter.ToDecimal(0)) {
 
           var p = DB.Create("Document." + $.workflow.currentDoc + "_SKUs");
           if ($.workflow.currentDoc=="Order")
@@ -265,7 +271,7 @@ function CreateOrderItem(control, editFieldName, textFieldName, packField, sku, 
           p.SKU = sku;
           p.Feature = defFeature;
           p.Price = Round(price * defMultiplier,2);
-          p.Qty = Converter.ToDecimal(Variables[editFieldName].Text);
+          p.Qty = Converter.ToDecimal(str);
 
           var d = GlobalWorkflow.GetMassDiscount(thisDoc);
           //Dialog.Message(d);
@@ -291,6 +297,9 @@ function CreateOrderItem(control, editFieldName, textFieldName, packField, sku, 
           Variables[textFieldName].Text = qty + " " + packDescription + " " + alreadyOrdered;
         }
       }
+    }
+    else {
+      Variables[editFieldName].Text = 0;
     }
 }
 

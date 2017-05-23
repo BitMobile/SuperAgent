@@ -139,7 +139,10 @@ function GetSUMPay() {
     Variables["SumMes"].Text = Translate["#PushPay#"] + " " + String.Format("{0:F2}", (Sum - allSum))+ " " + Translate["#currency#"];
   }
   else if (allSum > Sum) {
-    Variables["SumMes"].Text = Translate["#NeedPay#"] + " " + String.Format("{0:F2}", (allSum - Sum))+ " " + Translate["#currency#"];
+    if ($.workflow.currentDoc=="Order")
+      Variables["SumMes"].Text = Translate["#NeedPay#"] + " " + String.Format("{0:F2}", (allSum - Sum))+ " " + Translate["#currency#"];
+    else
+      Variables["SumMes"].Text = Translate["#NeedPayReturn#"] + " " + String.Format("{0:F2}", (allSum - Sum))+ " " + Translate["#currency#"];
   }
   else if (allSum == Sum) {
     Variables["SumMes"].Text = Translate["#NoPay#"];

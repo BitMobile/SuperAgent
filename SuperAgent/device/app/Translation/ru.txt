@@ -381,6 +381,7 @@ PaymentsReturn		Выплата
 PaymentsType		СПОСОБЫ ОПЛАТЫ
 PaymentsTypeReturn		СПОСОБЫ ВЫПЛАТЫ
 NeedPay		Еще к оплате
+NeedPayReturn		Еще к выплате
 PushPay		Сдача:
 NoPay		Без сдачи
 TakeChek		Напечатать

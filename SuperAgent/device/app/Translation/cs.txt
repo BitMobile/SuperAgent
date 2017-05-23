@@ -370,6 +370,7 @@ PaymentsReturn		Platby
 PaymentsType		PLATBA
 PaymentsTypeReturn		PLATBA
 NeedPay		Více zaplatit
+NeedPayReturn		Více zaplatit
 PushPay		Delivery:
 NoPay		Aniž by
 TakeChek		Získat kontrolní

@@ -382,6 +382,7 @@ PaymentsType		PAYMENT METHODS
 PaymentsTypeReturn		PAYMENT METHODS
 NeedPay		More to payment
 PushPay		Surrender:
+NeedPayReturn		More to payment
 NoPay		No change
 TakeChek		Receive a receipt
 ChangeScreenPay		Amount invoiced is not enough to pay

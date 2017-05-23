@@ -55,7 +55,7 @@ function CheckOrderNotEmpty(){
 	var obj = $.workflow.order;
 	if (obj != NULL) {
 		var q = new Query("Select Id From Document_Order_SKUs Where Ref = @ref");
-		q.AddParameter("ref",obj.Id);
+		q.AddParameter("ref",obj);
 		var nom = q.ExecuteCount();
 		if (nom>0) {
 			return true;
@@ -71,7 +71,7 @@ function CheckReturnNotEmpty(){
 	var obj = $.workflow.Return;
 	if (obj != NULL) {
 		var q = new Query("Select Id From Document_Return_SKUs Where Ref = @ref");
-		q.AddParameter("ref",obj.Id);
+		q.AddParameter("ref",obj);
 		var nom = q.ExecuteCount();
 		if (nom>0) {
 			return true;

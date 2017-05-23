@@ -87,12 +87,7 @@
 								</c:HorizontalLayout>
 								<c:HorizontalLayout CssClass="HayLay">
 										<c:TextView Text="{$orderitem.Qty} #pcs# х {$FormatValue($orderitem.Total)} #currency#" CssClass="description_rowPay"></c:TextView>
-										<s:If Test="$sessionConst.UseVATs == true">
 											<c:TextView Text="$GetVatTranslate($orderitem.SKU.VAT.Description)" CssClass="SymbolPay"></c:TextView>
-										</s:If >
-										<s:Else>
-											<c:TextView Text="" CssClass="SymbolPay"></c:TextView>
-										</s:Else >
 								</c:HorizontalLayout>
 							</c:VerticalLayout>
 						</c:DockLayout>

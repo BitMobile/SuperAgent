@@ -172,7 +172,14 @@ function ScreenChek() {
 
   var allSum = ToFloat(GetOrderSUM());
   var Sum = ToFloat(CountSum());
-
+  if (allSum < ToFloat(Variables["control1"].Text)) {
+    if (doc=="Order") {
+      Dialog.Message(Translate["#TooMuchMoney#"]);
+    }else {
+      Dialog.Message(Translate["#TooMuchMoneyReturn#"]);
+    }
+    return;
+  }
   if (Sum < allSum) {
     Dialog.Message(Translate["#ChangeScreenPay#"]);
   }

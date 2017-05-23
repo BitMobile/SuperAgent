@@ -403,3 +403,5 @@ PaidOrder		Paid
 PaidReturn		Paid
 NotPaidReturn		Not paid
 Beep		Beep
+TooMuchMoney		Součet bezhotovostní úhrady nesmí překročit částku objednávky.
+TooMuchMoneyReturn		Součet bezhotovostní platby nesmí překročit částku náhrady.

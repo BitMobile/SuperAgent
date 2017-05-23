@@ -415,3 +415,5 @@ PaidOrder		Paid
 PaidReturn		Paid
 NotPaidReturn		Not paid
 Beep		Beep
+TooMuchMoney		The amount of non-cash payment shall not exceed the amount of the order.
+TooMuchMoneyReturn		The amount of non-cash payments shall not exceed the amount of the refund.

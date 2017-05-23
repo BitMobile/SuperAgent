@@ -42,9 +42,16 @@ function PrintZReport() {
 function PrintZ(state, args) {
 	if (args.Result == 0) {
 
+		Fiscal.ClearError();
+
 		if (fptr != NULL){
 
 			Fiscal.PrintZ(fptr);
+
+			var Err = Fiscal.GetError();
+      if (!IsEmptyValue(Err)) {
+				Dialog.Message(Err);
+			}
 
 		}
 		else {

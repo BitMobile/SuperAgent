@@ -91,7 +91,7 @@
 							<c:VerticalLayout>
 								<s:Push Id="featureDescr" Value="$GetFeatureDescr($orderitem.Feature)"></s:Push>
 								<c:TextView Text="{$orderitem.SKU.Description}{$GetFeatureDescr($orderitem.Feature)}" CssClass="main_row"></c:TextView>
-								<c:TextView Text="{$orderitem.Qty} #pcs# х {$FormatValue($orderitem.Total)} #сurrency# = {$FormatValue($orderitem.Amount)} #сurrency#" CssClass="description_row"></c:TextView>
+								<c:TextView Text="{$orderitem.Qty} {$orderitem.Units.Description} х {$FormatValue($orderitem.Total)} #сurrency# = {$FormatValue($orderitem.Amount)} #сurrency#" CssClass="description_row"></c:TextView>
 							</c:VerticalLayout>
 						</c:DockLayout>
 						<s:If Test="$IsNew($thisDoc)">

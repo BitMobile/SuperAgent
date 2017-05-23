@@ -293,9 +293,12 @@ function CalculateSKUAndForward(outlet, orderitem) {
     if (Converter.ToDecimal(orderitem.Qty) == Converter.ToDecimal(0)) {
         DB.Delete(orderitem);
     } else {
-        Global.FindTwinAndUnite(orderitem.GetObject());
+        var ordObject = orderitem.GetObject();
+        ordObject.Amount = Round(ordObject.Qty*ordObject.Total,2);
+        ordObject.Save();
+        Global.FindTwinAndUnite(ordObject);
         GlobalWorkflow.SetMassDiscount(null);
-        GlobalWorkflow.GetMassDiscount(orderitem.Ref);
+        GlobalWorkflow.GetMassDiscount(ordObject.Ref);
     }
 
     if ($.Exists("itemFields"))

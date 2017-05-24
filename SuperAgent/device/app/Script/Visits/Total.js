@@ -259,7 +259,7 @@ function CheckAndCommit(state, args) {
 
 		if ($.workflow.order != NULL) {
 			var order = $.workflow.order;
-			if (order.Visit == null) {
+			if (order.Visit == NULL) {
 				var orderobj = order.GetObject();
 				orderobj.Visit = visit.Id;
 				orderobj.Save(false);
@@ -268,7 +268,7 @@ function CheckAndCommit(state, args) {
 
 		if ($.workflow.Return != NULL) {
 			var Return = $.workflow.Return;
-			if (Return.Visit == null) {
+			if (Return.Visit == NULL) {
 				var Returnobj = Return.GetObject();
 				Returnobj.Visit = visit.Id;
 				Returnobj.Save(false);

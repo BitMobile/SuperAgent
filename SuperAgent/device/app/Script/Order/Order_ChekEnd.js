@@ -43,19 +43,31 @@ function OnLoad() {
 
 function OnStartAtServer() {
 
+
+
+
   if ($.workConst.HasCheque == true) {
     Variables["workflow"]["name"] = $.workConst.currentWorkFlow;
     Variables["workflow"]["currentDoc"] = $.workConst.currentWorkFlow;
     Variables["workflow"]["chek"] = $.workConst.Cheque;
-
     if ($.workConst.currentWorkFlow == 'Order')
       Variables["workflow"]["order"] = $.workConst.currentRef;
     else
       Variables["workflow"]["Return"] = $.workConst.currentRef;
-
   }
-  PrintDate = $.workflow.chek.PrintDate.ToString("d MMMM yyyy, H:mm");
-  ContactVal = $.workflow.chek.SendType;
+  if ($.workflow.currentDoc == 'Order')
+    thisDoc = $.workflow.order;
+  else
+    thisDoc = $.workflow.Return;
+  if ($.workflow.name == "Visit") {
+    Variables["workflow"]["chek"] = thisDoc.Cheque;
+    PrintDate = thisDoc.Cheque.PrintDate.ToString("d MMMM yyyy, H:mm");
+    ContactVal = thisDoc.Cheque.SendType;
+  }else {
+    PrintDate = $.workflow.chek.PrintDate.ToString("d MMMM yyyy, H:mm");
+    ContactVal = $.workflow.chek.SendType;
+  }
+
   return true;
 
 }
@@ -257,10 +269,6 @@ function GetOrderSUM() {
 		doc = "Return";
 
 
-	if ($.workflow.currentDoc == 'Order')
-		thisDoc = $.workflow.order;
-	else
-		thisDoc = $.workflow.Return;
 
 
   // Dialog.Message($.workConst.currentWorkFlow);

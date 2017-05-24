@@ -47,7 +47,8 @@ function OnStartAtServer() {
 
 
   if ($.workConst.HasCheque == true) {
-    Variables["workflow"]["name"] = $.workConst.currentWorkFlow;
+    Variables["workConst"]["HasCheque"] = false;
+    //Variables["workflow"]["name"] = $.workConst.currentWorkFlow;
     Variables["workflow"]["currentDoc"] = $.workConst.currentWorkFlow;
     Variables["workflow"]["chek"] = $.workConst.Cheque;
     if ($.workConst.currentWorkFlow == 'Order')
@@ -59,6 +60,7 @@ function OnStartAtServer() {
     thisDoc = $.workflow.order;
   else
     thisDoc = $.workflow.Return;
+//  Dialog.Message(thisDoc);
   if ($.workflow.name == "Visit") {
     Variables["workflow"]["chek"] = thisDoc.Cheque;
     PrintDate = thisDoc.Cheque.PrintDate.ToString("d MMMM yyyy, H:mm");

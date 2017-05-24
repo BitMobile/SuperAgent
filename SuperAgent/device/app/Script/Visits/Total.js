@@ -257,7 +257,7 @@ function CheckAndCommit(state, args) {
 			order.GetObject().Save();
 		}
 
-		if ($.workflow.order != NULL) {
+		if (CheckOrderNotEmpty()) {
 			var order = $.workflow.order;
 			if (order.Visit == NULL) {
 				var orderobj = order.GetObject();
@@ -266,7 +266,7 @@ function CheckAndCommit(state, args) {
 			}
 		}
 
-		if ($.workflow.Return != NULL) {
+		if (CheckReturnNotEmpty()) {
 			var Return = $.workflow.Return;
 			if (Return.Visit == NULL) {
 				var Returnobj = Return.GetObject();

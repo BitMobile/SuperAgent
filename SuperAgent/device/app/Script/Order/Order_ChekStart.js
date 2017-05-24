@@ -624,7 +624,7 @@ function ScreenChek() {
       chekObj.FNNumber = Fiscal.GetNumberOfFiscalStorage(fptr);
 
 
-      var query = new Query("SELECT Id, SKU, Price, Qty, Discount, Total, Units, Qty*Total AS Amount FROM Document_" + doc + "_SKUs WHERE (Ref = @Ref AND Total > 0 AND Qty > 0)");
+      var query = new Query("SELECT Id, SKU, Price, Qty, Discount, Total, Units, Qty*Total AS Amount FROM Document_" + doc + "_SKUs WHERE (Ref = @Ref AND Qty > 0)");
   	  query.AddParameter("Ref", thisDoc);
       var result = query.Execute();
     //  var i = 0;

@@ -238,7 +238,7 @@ function ScreenChek() {
       index++;
     }
 
-    var SKUs = new Query("SELECT SKU, Feature, Qty, Price, Discount, Total, Amount, Units, LineNumber FROM Document_" + doc + "_SKUs WHERE (Ref = @Ref AND Total > 0 AND Qty > 0)");
+    var SKUs = new Query("SELECT SKU, Feature, Qty, Price, Discount, Total, Amount, Units, LineNumber FROM Document_" + doc + "_SKUs WHERE (Ref = @Ref AND Amount > 0 AND Qty > 0)");
     SKUs.AddParameter("Ref", thisDoc);
     var result = SKUs.Execute();
     while (result.Next()) {

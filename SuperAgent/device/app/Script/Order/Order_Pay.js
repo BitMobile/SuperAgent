@@ -162,7 +162,7 @@ function GetOrderSUM() {
   else
   	thisDoc = $.workflow.Return;
 
-	var query = new Query("SELECT SUM(Qty*Total) FROM Document_" + doc + "_SKUs WHERE Ref = @Ref");
+	var query = new Query("SELECT SUM(Qty*Total) FROM Document_" + doc + "_SKUs WHERE (Ref = @Ref AND Qty > 0)");
 	query.AddParameter("Ref", thisDoc);
 	var sum = query.ExecuteScalar();
 	if (sum == null)

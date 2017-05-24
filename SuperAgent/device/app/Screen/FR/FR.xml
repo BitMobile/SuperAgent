@@ -2,10 +2,14 @@
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="FR.css">
 
 <s:Push Id="workRoad" Value="$AskWorkFlow()"></s:Push>
+<s:Push Id="workRoadVisit" Value="$AskWorkFlowVisit()"></s:Push>
+
 
 	<c:SwipeHorizontalLayout Id="swipe_layout" Index="1">
 
-		<s:Include File="\Components\SideMenu.xml"/>
+		<s:If Test="$workRoadVisit">
+			<s:Include File="\Components\SideMenu.xml"/>
+		</s:If>
 
 		<c:VerticalLayout Id="VLayout">
 

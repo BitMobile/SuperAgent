@@ -95,6 +95,16 @@ function AskWorkFlow(){
 	}
 }
 
+function AskWorkFlowVisit(){
+
+	if ($.workflow.name == 'Visit'){
+		return false;
+	}
+	else{
+		return true;
+	}
+}
+
 function BackToScreen(){
 	Workflow.Back();
 }

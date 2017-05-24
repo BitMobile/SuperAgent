@@ -135,7 +135,7 @@ function GetOrderSUM() {
 
   order = thisDoc.GetObject();
 
-	var query = new Query("SELECT SUM(Qty*Total) FROM Document_" + doc + "_SKUs WHERE Ref = @Ref");
+	var query = new Query("SELECT SUM(Qty*Total) FROM Document_" + doc + "_SKUs WHERE (Ref = @Ref AND Qty > 0)");
 	query.AddParameter("Ref", thisDoc);
 	var sum = query.ExecuteScalar();
 	if (sum == null){
@@ -208,7 +208,7 @@ function GetSale() {
 
   var sum = 0;
 
-  var query = new Query("SELECT ((Qty*Total) - (Qty*Price)) AS Dif FROM Document_" + doc + "_SKUs WHERE Ref = @Ref");
+  var query = new Query("SELECT ((Qty*Total) - (Qty*Price)) AS Dif FROM Document_" + doc + "_SKUs WHERE (Ref = @Ref AND Qty > 0)");
 	query.AddParameter("Ref", thisDoc);
 
   var result = query.Execute();
@@ -267,7 +267,7 @@ function GetChequeDate() {
 
 function GetOrderedSKUs() {
 
-  var query = new Query("SELECT Id, SKU, Feature, Qty, Discount, Total, Units, ROUND(Qty*Total, 2) AS Amount FROM Document_" + doc + "_SKUs WHERE Ref = @Ref");
+  var query = new Query("SELECT Id, SKU, Feature, Qty, Discount, Total, Units, ROUND(Qty*Total, 2) AS Amount FROM Document_" + doc + "_SKUs WHERE (Ref = @Ref AND Qty > 0)");
 	query.AddParameter("Ref", thisDoc);
 
   return query.Execute();

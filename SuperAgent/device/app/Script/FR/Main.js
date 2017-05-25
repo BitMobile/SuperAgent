@@ -6,6 +6,16 @@ function OnLoad() {
 	// DrawFtpReport();
 }
 
+function AskWorkFlowVisit(){
+
+	if ($.workflow.name == 'Visit'){
+		return false;
+	}
+	else{
+		return true;
+	}
+}
+
 
 function OpenSettings() {
 
@@ -73,7 +83,7 @@ function Connect(){
 		if (fptr.CurrentStatus >= 0) {
 			$.ConnectButton.Text = Translate["#Beep#"];
 			Variables["ChequeCount"].Text = Fiscal.GetChequeCount(fptr);
-			Variables["ChequeCountDate"].Text = "от " + Fiscal.FptrDateTime(fptr);
+			Variables["ChequeCountDate"].Text = "от " + Fiscal.GetChequeCountTime(fptr);
 		}
 
 		//Dialog.Message(Fiscal.GetChequeCountTime(fptr));
@@ -95,15 +105,7 @@ function AskWorkFlow(){
 	}
 }
 
-function AskWorkFlowVisit(){
 
-	if ($.workflow.name == 'Visit'){
-		return false;
-	}
-	else{
-		return true;
-	}
-}
 
 function BackToScreen(){
 	Workflow.Back();

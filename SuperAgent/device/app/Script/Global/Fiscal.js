@@ -190,7 +190,7 @@ function GetError(){return lastError}
 								  if (fptr.Register < 0)
 								    CheckError(fptr);
 
-								  return fptr.GetTime();
+								  return fptr.GetDateTime();
 								}
 
 								function FptrDateTime(fptr) {

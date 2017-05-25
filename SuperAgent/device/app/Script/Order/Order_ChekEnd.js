@@ -134,7 +134,8 @@ function FindExecutedOrder(){
 
 function OrderBack() {
 
-	if ($.workflow.name == "Order" || $.workflow.name == "Return")
+  //Dialog.Message($.workflow.name);
+	if ($.workflow.name == "Order" || $.workflow.name == "Return" || $.workflow.name == "ChekEnd")
 		Workflow.Rollback();
 
 	else {
@@ -202,7 +203,7 @@ function CheckIfEmptyAndForward(wfName) {
     }
 	}
 
-	else if (wfName=="Order" || wfName=="Return")
+	else if (wfName=="Order" || wfName=="Return" || wfName=="ChekEnd")
 	{
 		if (empty){
 			DB.Delete(order);

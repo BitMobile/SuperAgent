@@ -345,11 +345,11 @@ function Sale() {
 
 function GetAddress() {
 
-  var query = new Query("SELECT CatalogOutlet.Address FROM Catalog_Outlet AS CatalogOutlet " +
-  "JOIN Document_Order AS DocumentOrder ON CatalogOutlet.Id = DocumentOrder.Outlet WHERE DocumentOrder.Id = @Ref");
-	query.AddParameter("Ref", thisDoc);
+  // var query = new Query("SELECT CatalogOutlet.Address FROM Catalog_Outlet AS CatalogOutlet " +
+  // "JOIN Document_Order AS DocumentOrder ON CatalogOutlet.Id = DocumentOrder.Outlet WHERE DocumentOrder.Id = @Ref");
+	// query.AddParameter("Ref", thisDoc);
 
-  return query.ExecuteScalar();
+  return $.workflow.chek.Address;
 
 }
 

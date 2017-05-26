@@ -51,6 +51,66 @@ function OrderExists(visit) {
         return true;
 }
 
+function CheckOrderNotEmpty(){
+	var obj = $.workflow.order;
+	if (obj != NULL) {
+		var q = new Query("Select Id From Document_Order_SKUs Where Ref = @ref");
+		q.AddParameter("ref",obj);
+		var nom = q.ExecuteCount();
+		if (nom>0) {
+			return true;
+		}else {
+			return false;
+		}
+	}else {
+		return false;
+	}
+}
+
+function CheckReturnNotEmpty(){
+	var obj = $.workflow.Return;
+	if (obj != NULL) {
+		var q = new Query("Select Id From Document_Return_SKUs Where Ref = @ref");
+		q.AddParameter("ref",obj);
+		var nom = q.ExecuteCount();
+		if (nom>0) {
+			return true;
+		}else {
+			return false;
+		}
+	}else {
+		return false;
+	}
+}
+
+function CheckIfExsistOrderPay(){
+
+			var obj = $.workflow.order;
+			if (obj.Cheque != NULL
+				&& obj.Cheque != null
+				) {
+					if (obj.Cheque.ToString() != "@ref[Document_Check]:00000000-0000-0000-0000-000000000000") {
+						return false;
+					}
+				//ChekEnd
+			}
+
+	return true;
+}
+
+function CheckIfExsistReturnPay(){
+	var obj = $.workflow.Return;
+	if (obj.Cheque != NULL
+		&& obj.Cheque != null
+		) {
+			if (obj.Cheque.ToString() != "@ref[Document_Check]:00000000-0000-0000-0000-000000000000") {
+				return false;
+			}
+		//ChekEnd
+	}
+	return true;
+}
+
 function OptionAvailable(option) {
 	var q = new Query("SELECT Value FROM USR_WorkflowSteps WHERE Value=0 AND Skip=@skip");
 	q.AddParameter("skip", option);
@@ -180,9 +240,41 @@ function CheckAndCommit(state, args) {
 		wfName = state[2];
 	  visit = visit.GetObject();
 		visit.EndTime = DateTime.Now.ToString();
-    if (OrderExists(visit.Id)) {
-        order.GetObject().Save();
-    }
+		// if (!CheckIfExsistOrderPay()) {
+		// 	var ord = $.workflow.order;
+		// 	ord = ord.GetObject();
+		// 	ord.Visit = visit.Id;
+		// 	ord.Save();
+		// }
+		// if (!CheckIfExsistReturnPay()) {
+		// 	var ret = $.workflow.Return;
+		// 	ret = ret.GetObject();
+		// 	ret.Visit = visit.Id;
+		// 	ret.Save();
+		// }
+		// Dialog.Message(visit.Id);
+		if (OrderExists(visit.Id)) {
+			order.GetObject().Save();
+		}
+
+		if (CheckOrderNotEmpty()) {
+			var order = $.workflow.order;
+			if (order.Visit == NULL) {
+				var orderobj = order.GetObject();
+				orderobj.Visit = visit.Id;
+				orderobj.Save(false);
+			}
+		}
+
+		if (CheckReturnNotEmpty()) {
+			var Return = $.workflow.Return;
+			if (Return.Visit == NULL) {
+				var Returnobj = Return.GetObject();
+				Returnobj.Visit = visit.Id;
+				Returnobj.Save(false);
+			}
+		}
+
     CreateQuestionnaireAnswers();
     visit.Save();
 		var existorno = new Query("Select type From sqlite_master where name = 'UT_answerQuest' And type = 'table'");
@@ -193,7 +285,6 @@ function CheckAndCommit(state, args) {
     Workflow.Commit();
 	}
 }
-
 
 //--------------------------internal functions--------------
 

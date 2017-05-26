@@ -353,3 +353,56 @@ vpUnplannedMainScreen		návštěv
 vpplannedMainScreen		návštěv
 vpVisitsMainScreen		(mimo plán)
 plannedMainSkree			(dle plánu)
+сurrency		czk
+calculatePayment		Vypočítat platby
+calculatePaymentRetunr		Vypočítat výši návratnosti
+fr		Terminál
+reg		Zapisovač
+сommunication		Spojení navázáno
+Connect		Připojit
+cashHistori		Transakční historie
+dontSend		neodeslané
+printZ		Print Z-report
+printX		Print X-report
+AskPrintZ		Tisk Z-report zavře aktuální posun. Chcete pokračovat?
+Payments		Platby
+PaymentsReturn		Platby
+PaymentsType		PLATBA
+PaymentsTypeReturn		PLATBA
+NeedPay		Více zaplatit
+NeedPayReturn		Více zaplatit
+PushPay		Delivery:
+NoPay		Aniž by
+TakeChek		Získat kontrolní
+ChangeScreenPay		Se částka příspěvku dost platit za
+Check		zaslání šeku
+Checks		zaslání šeku
+OrderDescript		podrobnosti objednat
+ReturnDescript		podrobnosti objednat
+PushPayShort		Delivery
+TakeMoney		Přijaté
+TakeMoneyReturn		Přijaté
+TotalPay		Total zaplatit
+TotalPayReturn		Total zaplatit
+CalcAddress		Výpočet adresa
+KKTNumber		Číslo CCV
+Sms		SMS
+Email		E-mail
+PayDiscount		Sleva
+Print		Print
+PaidOrder		Order zaplatil
+PaidReturn		Return zaplatil
+CalcDate		datu vypořádání
+ContactAddress		Kontakt poslat šek
+Percent0		VAT 0%
+Percent10		VAT 10%
+Percent18		VAT 18%
+PercentWithoOut		Not VAT
+NoFs		The fiscal recorder is not connected.
+NotPaidOrder		Not paid
+PaidOrder		Paid
+PaidReturn		Paid
+NotPaidReturn		Not paid
+Beep		Beep
+TooMuchMoney		Součet bezhotovostní úhrady nesmí překročit částku objednávky.
+TooMuchMoneyReturn		Součet bezhotovostní platby nesmí překročit částku náhrady.

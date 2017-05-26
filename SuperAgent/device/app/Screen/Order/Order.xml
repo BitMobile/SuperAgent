@@ -1,12 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" xmlns:d="DefaultScope" StyleSheet="Order.css">
 
+	<s:Push Id="CheckAndGo" Value="$CheckIfExsistAndGo()"></s:Push>
 	<s:Push Id="executedOrder" Value="$FindExecutedOrder()"></s:Push>
 
 
 	<s:Push Id="thisDoc" Value="$CreateDocumentIfNotExists($executedOrder, $workflow.visit)"></s:Push>
 
 	<s:Push Id="sum" Value="$GetOrderSUM($thisDoc)"></s:Push>
+	<s:Push Id="countSKU" Value="$CountOrderedSKUs($thisDoc)"></s:Push>
 
 	<c:DockLayout>
 
@@ -29,13 +31,19 @@
 
 		<c:HorizontalLine />
 
-		<s:If Test="$IsNew($thisDoc)">
-			<s:If Test="$NotEmptyRef($thisDoc.PriceList)">
-				<c:HorizontalLayout Id="btnAdd" CssClass="bottom_btn" OnEvent="Back" OnClickAction="$DoAction(Add, null, $thisDoc)">
-					<c:TextView Text="#add#"></c:TextView>
+		<s:If Test="$NotEmptyRef($thisDoc.PriceList) &amp;&amp; $sessionConst.AccessToKKT">
+		<s:If Test="$countSKU > 0">
+				<c:HorizontalLayout CssClass="bottom_btn" OnEvent="OrderPay" OnClickAction="$OrderPay()">
+					<c:TextView Text="@payTitle"></c:TextView>
 				</c:HorizontalLayout>
 				<c:HorizontalLine CssClass="b_line" />
-			</s:If>
+		</s:If>
+		<s:Else >
+				<c:HorizontalLayout CssClass="bottom_btn_shadow">
+					<c:TextView Text="@payTitle"></c:TextView>
+				</c:HorizontalLayout>
+				<c:HorizontalLine CssClass="b_line" />
+		</s:Else >
 		</s:If>
 
 		<c:ScrollView Id="grScrollView">
@@ -58,7 +66,16 @@
 			<c:HorizontalLayout CssClass="end_of_block" />
 
 			<c:HorizontalLayout CssClass="caption_grid">
-				<c:TextView Id="skuTitleTV" Text="{@skuTitle}:"></c:TextView>
+					<c:TextView Id="skuTitleTV" Text="{@skuTitle}:"></c:TextView>
+				<s:If Test="$IsNew($thisDoc)">
+					<s:If Test="$NotEmptyRef($thisDoc.PriceList)">
+						<c:DockLayout>
+						<c:DockLayout Id="btnAdd" CssClass="plusIconDL" OnEvent="Back" OnClickAction="$DoAction(Add, null, $thisDoc)">
+							<c:Image Id="PlusIson" CssClass="plusIcon"/>
+						</c:DockLayout>
+						</c:DockLayout>
+					</s:If>
+				</s:If>
 			</c:HorizontalLayout>
 			<c:HorizontalLine />
 
@@ -74,7 +91,7 @@
 							<c:VerticalLayout>
 								<s:Push Id="featureDescr" Value="$GetFeatureDescr($orderitem.Feature)"></s:Push>
 								<c:TextView Text="{$orderitem.SKU.Description}{$GetFeatureDescr($orderitem.Feature)}" CssClass="main_row"></c:TextView>
-								<c:TextView Text="#quantity#: {$orderitem.Qty}   #amount#: {$FormatValue($orderitem.Amount)}" CssClass="description_row"></c:TextView>
+								<c:TextView Text="{$orderitem.Qty} {$orderitem.Units.Description} х {$FormatValue($orderitem.Total)} #сurrency# = {$FormatValue($orderitem.Amount)} #сurrency#" CssClass="description_row"></c:TextView>
 							</c:VerticalLayout>
 						</c:DockLayout>
 						<s:If Test="$IsNew($thisDoc)">

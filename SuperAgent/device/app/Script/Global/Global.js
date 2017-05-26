@@ -29,6 +29,8 @@ function SetSessionConstants() {
 	var GPSTrackWrite = new Query("SELECT NumericValue FROM Catalog_MobileApplicationSettings WHERE Description='GPSTrackWriteFrequency'");
 	//Dialog.Message(GPSStarted);
   var GPSPredefined = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='GPSPredefined'");
+	var UseVATs = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='UseVATs'");
+	var OsString = Variables[ "common" ].OS;
 	$.AddGlobal("sessionConst", new Dictionary());
 	$.sessionConst.Add("UseSaveQuest", saveQuest.ExecuteScalar());
 	$.sessionConst.Add("solVersion", solVersion.ExecuteScalar());
@@ -46,6 +48,9 @@ function SetSessionConstants() {
 	$.sessionConst.Add("GPSTrackSend", GPSTrackSend.ExecuteScalar());
 	$.sessionConst.Add("GPSTrackWrite", GPSTrackWrite.ExecuteScalar());
 	$.sessionConst.Add("GPSPredefined", GPSPredefined.ExecuteScalar());
+	$.sessionConst.Add("UseVATs", EvaluateBoolean(UseVATs.ExecuteScalar()));
+	$.sessionConst.Add("CurrOs",OsString);
+
 	var countDayPlanEnd = DayPlanVisitCount.ExecuteScalar();
 	if (countDayPlanEnd == null) {
 		countDayPlanEnd = 0;
@@ -66,6 +71,12 @@ function SetSessionConstants() {
 				$.sessionConst.Add("galleryChoose", false);
 			else
 				$.sessionConst.Add("galleryChoose", true);
+		}
+		if (rights.Code=='000000014') {
+			if (rights.AccessRight==null || OsString == "IOS")
+				$.sessionConst.Add("AccessToKKT", false);
+			else
+				$.sessionConst.Add("AccessToKKT", true);
 		}
 		if (rights.Code=='000000004'){
 			if (rights.AccessRight==null)
@@ -143,6 +154,11 @@ function SetWorkPeriodConstants() {
   var GPSStarted = false;
 	$.AddGlobal("workConst", new Dictionary());
 	$.workConst.Add("GPSStarted", GPSStarted);
+	$.workConst.Add("fptr", null);
+	$.workConst.Add("HasCheque", false);
+	$.workConst.Add("currentWorkFlow", null);
+	$.workConst.Add("currentRef", null);
+	$.workConst.Add("Cheque", null);
 }
 
 function SetGps() {
@@ -159,7 +175,7 @@ function SetGps() {
 
 	if ($.workConst.GPSStarted || $.sessionConst.GPSPredefined){
 		GPSTracking.IsBestAccuracy = true;
-		//Dialog.Message("Start 167");
+		//Dialog.Message(GPSTracking.MinInterval);
 		GPSTracking.MinInterval = $.sessionConst.GPSTrackWrite * 60;
 		GPSTracking.SendInterval = $.sessionConst.GPSTrackSend * 60;
 		GPSTracking.MinDistance = 0;
@@ -216,6 +232,7 @@ function FindTwinAndUnite(orderitem) {
 		var twin = q.ExecuteScalar();
 		twin = twin.GetObject();
 		twin.Qty += orderitem.Qty;
+		twin.Amount += orderitem.Amount;
 		twin.Save();
 		DB.Delete(orderitem.Id);
 	} else

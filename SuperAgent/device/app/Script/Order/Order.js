@@ -5,6 +5,29 @@ var sumTitle;
 var skuTitle;
 var infoTitleSmall;
 var back;
+var payTitle;
+var hasCheck;
+
+function CheckIfExsistAndGo(){
+	hasCheck = false;
+	if ($.workflow.name == 'Visit'){
+			var obj;
+			if ($.workflow.currentDoc=='Order'){
+				obj = $.workflow.order;
+			}else {
+				obj = $.workflow.Return;
+			}
+			if (obj.Cheque != NULL
+				&& obj.Cheque != null
+				) {
+					if (obj.Cheque.ToString() != "@ref[Document_Check]:00000000-0000-0000-0000-000000000000") {
+						hasCheck = true;
+						Workflow.Action("ChekEnd",[]);
+					}
+				//ChekEnd
+			}
+	}
+}
 
 function OnLoading(){
 
@@ -14,6 +37,7 @@ function OnLoading(){
 		sumTitle = Translate["#orderSum#"];
 		skuTitle = Translate["#skuInOrder#"];
 		infoTitleSmall = Translate["#orderInfoSmall#"];
+		payTitle = Translate["#calculatePayment#"];
 	}
 	else{
 		mainTitle = Translate["#return#"];
@@ -21,6 +45,7 @@ function OnLoading(){
 		sumTitle = Translate["#returnSum#"];
 		skuTitle = Translate["#skuInReturn#"];
 		infoTitleSmall = Translate["#returnInfoSmall#"];
+		payTitle = Translate["#calculatePaymentRetunr#"];
 	}
 
 	var menuItem = GlobalWorkflow.GetMenuItem();
@@ -65,7 +90,7 @@ function OnLoad(){
 
 		var hasSKUs = q.ExecuteScalar();
 
-		if ($.sessionConst.UseAutoFillForRecOrder && parseInt(hasSKUs) != parseInt(0)){
+		if ($.sessionConst.UseAutoFillForRecOrder && parseInt(hasSKUs) != parseInt(0) && !hasCheck){
 
 			Dialog.Ask(Translate["#autoFillOrder#"], AutoFill);
 
@@ -175,12 +200,28 @@ function GetOrderedSKUs(order) {
 	else
 		doc = "Return";
 
+
 	var query = new Query();
 	query.Text = "SELECT Id, SKU, Feature, Qty, Discount, Total, Units, ROUND(Qty*Total, 2) AS Amount FROM Document_" + doc + "_SKUs WHERE Ref = @Ref";
 	query.AddParameter("Ref", order);
 	var r = query.Execute();
 	itemsQty = query.ExecuteCount();
 	$.skuTitleTV.Text = skuTitle +" (" + itemsQty + "):";
+	return r;
+}
+
+function CountOrderedSKUs(order) {
+
+	var doc;
+	if ($.workflow.currentDoc=="Order")
+		doc = "Order";
+	else
+		doc = "Return";
+
+	var query = new Query();
+	query.Text = "SELECT Id, SKU FROM Document_" + doc + "_SKUs WHERE Ref = @Ref";
+	query.AddParameter("Ref", order);
+	r = query.ExecuteCount();
 	return r;
 }
 
@@ -284,6 +325,12 @@ function OrderBack() {
 		else
 			Workflow.BackTo(step);
 	}
+}
+
+function OrderPay() {
+
+		Workflow.Action("Pay",[]);
+
 }
 
 function ClearFilters() {

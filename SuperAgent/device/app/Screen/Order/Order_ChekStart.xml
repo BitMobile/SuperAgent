@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<c:Screen xmlns:c="BitMobile.Controls" xmlns:s="BitMobile.ValueStack" StyleSheet="Order_Chek.css">
+
+	<s:Push Id="sum" Value="$GetOrderSUM()"></s:Push>
+	<s:Push Id="CountSum" Value="$CountSum()"></s:Push>
+	<s:Push Id="PaySum" Value="$GetSUMPay()"></s:Push>
+	<s:Push Id="Def" Value="$GetSUMDeff()"></s:Push>
+	<s:Push Id="Address" Value="$GetAddress()"></s:Push>
+	<s:Push Id="Sale" Value="$GetSale()"></s:Push>
+	<s:Push Id="FSNumber" Value="$GetFSNumber()"></s:Push>
+	<s:Push Id="OrderDescription" Value="$GetOrderDescription()"></s:Push>
+
+
+
+	<c:SwipeHorizontalLayout Id="swipe_layout" Index="1">
+
+		<c:DockLayout Id="VLayout" CssClass="bodyPay">
+
+			<c:DockLayout CssClass="top_navigatorOr">
+				<c:DockLayout CssClass="btn_back" OnEvent="Back" OnClickAction="$GoBackTo()">
+					<c:TextView Text="#cancel#" />
+				</c:DockLayout>
+				<c:DockLayout Id="btnMenuFR" CssClass="btn_menuFR" OnClickAction="$OpenFRSettings()">
+					<c:Image CssClass="menuIcon" />
+				</c:DockLayout>
+				<c:DockLayout CssClass="btn_spaceChek">
+				</c:DockLayout>
+				<c:HorizontalLayout>
+					<c:TextView Text="#Check#" />
+				</c:HorizontalLayout>
+			</c:DockLayout>
+
+
+			<c:HorizontalLayout CssClass="bottom_btn" OnEvent="OrderPay" OnClickAction="$ScreenChek()">
+				<c:TextView Text="#TakeChek#"></c:TextView>
+			</c:HorizontalLayout>
+			<c:HorizontalLine CssClass="b_line" />
+
+
+
+			<c:HorizontalLayout CssClass="gridOR">
+				<c:VerticalLayout>
+					<c:DockLayout>
+						<c:TextView Text="{$sum} #currency#" />
+					</c:DockLayout>
+					<c:DockLayout CssClass="docLay">
+						<c:TextView Id="SumMes" Text="$PaySum" />
+					</c:DockLayout>
+				</c:VerticalLayout>
+			</c:HorizontalLayout>
+
+			<c:HorizontalLayout CssClass="spaceOR"/>
+			<c:ScrollView Id="grScrollView">
+				<c:HorizontalLayout CssClass="caption_grid">
+					<c:TextView Text="#CheckSend#" />
+				</c:HorizontalLayout>
+				<c:HorizontalLine />
+
+
+
+
+				<c:HorizontalLayout CssClass="VertDispPay">
+					<c:VerticalLayout>
+						<c:HorizontalLayout CssClass="small_gridPay">
+
+								<c:HorizontalLayout Id="LeftButton" CssClass="mode_left_button_onPay" OnClick="$GoToLayLeft()">
+									<c:HorizontalLayout Id="planned" CssClass="select_zonePay">
+										<c:TextView Id="plannedText" Text="#Sms#"></c:TextView>
+									</c:HorizontalLayout>
+								</c:HorizontalLayout>
+								<c:HorizontalLayout Id="CenterButton" CssClass="mode_center_button_offPay" OnClick="$GoToLayCenter()">
+									<c:HorizontalLayout Id="unPlanned" CssClass="select_zonePay">
+										<c:TextView Text="#Email#"></c:TextView>
+									</c:HorizontalLayout>
+								</c:HorizontalLayout>
+								<c:HorizontalLayout Id="RightButton" CssClass="mode_right_button_offPay" OnClick="$GoToLayRight()">
+									<c:HorizontalLayout Id="unPlanned" CssClass="select_zonePay">
+										<c:TextView Text="#NO#"></c:TextView>
+									</c:HorizontalLayout>
+								</c:HorizontalLayout>
+
+
+
+						</c:HorizontalLayout>
+
+						<c:HorizontalLine />
+
+						<c:SwipeHorizontalLayout Id="swipe_layout" CssClass="swipe_contact" Scrollable="False">
+							<c:VerticalLayout CssClass="editLay">
+									<c:EditText Id="SMS" Keyboard="phone" Text="$GetTel()" CssClass="editSto" Placeholder="#phone#"/>
+							</c:VerticalLayout>
+							<c:VerticalLayout CssClass="editLay">
+									<c:EditText Id="EMail" Keyboard="email" Text="$GetEmail()" CssClass="editSto" Placeholder="E-mail"/>
+							</c:VerticalLayout>
+							<c:VerticalLayout CssClass="editLay">
+									<c:EditText Id="NoOne" CssClass="editSto" Placeholder="#WithoutSend#" Enabled="False"/>
+							</c:VerticalLayout>
+						</c:SwipeHorizontalLayout>
+					</c:VerticalLayout>
+
+				</c:HorizontalLayout>
+				<c:HorizontalLine />
+
+
+
+
+				<c:HorizontalLayout CssClass="caption_grid">
+					<c:TextView Text="$OrderDescription" />
+				</c:HorizontalLayout>
+				<c:HorizontalLine />
+
+
+				<c:DockLayout CssClass="gridChek">
+					<c:VerticalLayout>
+						<c:TextView Text="#CalcAddress#" CssClass="description_rowChek"></c:TextView>
+						<c:TextView Text="$Address" CssClass="main_rowChek"></c:TextView>
+						<c:HorizontalLayout CssClass="spaceChek"/>
+						<c:TextView Text="#KKTNumber#" CssClass="description_rowChek"></c:TextView>
+						<c:TextView Text="$FSNumber" CssClass="main_rowChek2"></c:TextView>
+					</c:VerticalLayout>
+				</c:DockLayout>
+				<c:HorizontalLine />
+			<s:Iterator Id="orderitem" Value="$GetOrderedSKUs()" Status="statusCount">
+				<s:Push Id="index" Value="$statusCount.Index"></s:Push>
+
+						<c:DockLayout CssClass="grid">
+							<c:VerticalLayout>
+								<c:HorizontalLayout CssClass="HayLayUp">
+										<c:TextView Text="$orderitem.SKU.Description" CssClass="main_rowPay"></c:TextView>
+										<c:TextView Text="{$FormatValue($orderitem.Amount)} #currency#" CssClass="SymbolPayUp"></c:TextView>
+								</c:HorizontalLayout>
+								<c:HorizontalLayout CssClass="HayLay">
+										<c:TextView Text="{$orderitem.Qty} #pcs# х {$FormatValue($orderitem.Total)} #currency#" CssClass="description_rowPay"></c:TextView>
+											<c:TextView Text= "$GetVatTranslate($orderitem.SKU.VAT.Description)" CssClass="SymbolPay"></c:TextView>
+								</c:HorizontalLayout>
+							</c:VerticalLayout>
+						</c:DockLayout>
+
+
+					<c:HorizontalLine />
+			</s:Iterator>
+
+			<c:DockLayout CssClass="gridVer">
+				<c:HorizontalLayout>
+					<c:VerticalLayout CssClass="HayLayUpVer">
+							<c:TextView Text="@TotalPay" CssClass="main_rowPayVer"></c:TextView>
+					</c:VerticalLayout>
+					<c:VerticalLayout CssClass="HayLayVer">
+							<c:TextView Text="{$CountSum} #currency#" CssClass="SymbolPayUpVer"></c:TextView>
+							<c:TextView Text="{@PayDiscount}: {$Sale} #currency#" CssClass="SymbolPayVer"></c:TextView>
+					</c:VerticalLayout>
+				</c:HorizontalLayout>
+			</c:DockLayout>
+
+			<c:HorizontalLine />
+
+			<c:DockLayout CssClass="gridVer2">
+				<c:HorizontalLayout>
+					<c:VerticalLayout CssClass="HayLayUpVer2">
+							<c:TextView Text="@TakeMoney" CssClass="main_rowPayVer2"></c:TextView>
+					</c:VerticalLayout>
+					<c:VerticalLayout CssClass="HayLayVer2">
+							<c:TextView Text="{$CountSum} #currency#" CssClass="SymbolPayUpVer2"></c:TextView>
+					</c:VerticalLayout>
+				</c:HorizontalLayout>
+			</c:DockLayout>
+
+			<s:Iterator Id="payitem" Value="$GetCheckPays()" Status="statusCount">
+				<s:Push Id="index" Value="$statusCount.Index"></s:Push>
+
+					<c:DockLayout CssClass="gridVer3">
+						<c:HorizontalLayout>
+							<c:VerticalLayout CssClass="HayLayUpVer3">
+									<c:TextView Text="$payitem.Type.Description" CssClass="main_rowPayVer3"></c:TextView>
+							</c:VerticalLayout>
+							<c:VerticalLayout CssClass="HayLayVer3">
+									<c:TextView Text="{$FormatValue($payitem.Total)} #currency#" CssClass="SymbolPayUpVer3"></c:TextView>
+							</c:VerticalLayout>
+						</c:HorizontalLayout>
+					</c:DockLayout>
+
+			</s:Iterator>
+
+		<s:If Test="$Sale() == true">
+			<c:DockLayout CssClass="gridVer3">
+				<c:HorizontalLayout>
+					<c:VerticalLayout CssClass="HayLayUpVer3">
+							<c:TextView Text="#PushPayShort#" CssClass="main_rowPayVer3"></c:TextView>
+					</c:VerticalLayout>
+					<c:VerticalLayout CssClass="HayLayVer3">
+							<c:TextView Text="{$Def} #currency#" CssClass="SymbolPayUpVer3"></c:TextView>
+					</c:VerticalLayout>
+				</c:HorizontalLayout>
+			</c:DockLayout>
+		</s:If>
+
+		</c:ScrollView>
+
+		</c:DockLayout>
+
+	</c:SwipeHorizontalLayout>
+
+</c:Screen>

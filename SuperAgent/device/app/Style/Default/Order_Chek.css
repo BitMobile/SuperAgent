@@ -1,0 +1,785 @@
+.editLay{
+	width: 100%;
+	height: 100%;
+}
+
+.editSto{
+	width: 100%;
+	height: 100%;
+	margin-top: 25%;
+	text-align: center;
+	color: #FF7C4A;
+	placeholder-color: #9E9E9E;
+}
+.blue {
+	width: 100%;
+	height: 100%;
+	padding-top: 2%;
+	background-color: #efeff4;
+}
+
+.blue dl {
+	height: 35%;
+	width: 96%;
+	margin-top: 2%;
+	margin-left: 2%;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #c8c7cc;
+	border-radius: 10px;
+	background-color: #ffffff;
+}
+
+.blue dl grid {
+	margin-left: 11%;
+	margin-top: 2%;
+	margin-right: 2%;
+	margin-bottom: 2%;
+}
+
+.blue dl line {
+	margin-left: 11%;
+	margin-right: 2%;
+}
+
+.bodyPay {
+	background-color: #efeff4;
+	color: #ffffff;
+}
+
+.short_panel {
+	height: 17%;
+}
+
+.short_panel grid {
+	height: 92%;
+	margin-top: 4%;
+	margin-bottom: 4%;
+}
+
+.top_navigatorOr {
+	height: 6.7mm;
+	dock-align: top;
+	background-color: #4a4c60;
+}
+
+.top_navigatorOr Button {
+	selected-color: #D3D3D3;
+}
+
+.top_navigatorOr hl {
+	width: 100%;
+	height: 100%;
+	dock-align: top;
+	horizontal-align: central;
+}
+
+.top_navigatorOr hl TextView {
+	width: 100%;
+	height: 100%;
+	margin-left: 0%;
+	margin-right: 0%;
+	padding-top: 26%;
+	horizontal-align: central;
+	text-align: center;
+	color: #ffffff;
+	font: 39.5% arial;
+	selected-color: #D3D3D3;
+}
+
+.top_navigatorOr hl Image {
+	selected-color: #D3D3D3;
+}
+
+.top_navigatorOr dl {
+	width: 16.3mm;
+	height: 100%;
+}
+
+.gridOR {
+	height: 10mm;
+	width: 100%;
+	background-color: #3a3b4b;
+	selected-color: #3a3b4b;
+}
+
+.gridOR vl {
+	width: 100%;
+	height: 100%;
+	dock-align: left;
+	padding-top: 18%;
+	padding-left: 0mm;
+	padding-right: 0mm;
+	horizontal-align: central;
+}
+
+.gridOR vl dl {
+	height: 3.5mm;
+	width: 100%;
+	margin-left: 10%;
+	margin-right: 10%;
+}
+
+.docLay {
+	height: 2.5mm;
+}
+
+.gridOR vl dl TextView {
+	width: 100%;
+	height: 100%;
+	white-space: normal;
+	font: 90% Arial;
+	color: #ffffff;
+	text-align: center;
+	horizontal-align: central;
+}
+
+.gridOR vl dl Button {
+	width: 100%;
+	height: 100%;
+	dock-align: right;
+	margin-left: -40%;
+	margin-right: 3%;
+	margin-top: 15%;
+	margin-bottom: 15%;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #FF7C4A;
+	border-radius: 5px;
+	color: #FF7C4A;
+	text-align: center;
+	font: 42.5% arial;
+}
+
+.spaceOR {
+	height: 3mm;
+	width: 100%;
+	background-color: #4a4c60;
+	selected-color: #4a4c60;
+}
+
+.spaceChek {
+	height: 1.5mm;
+	width: 100%;
+}
+
+.gridPay {
+	height: 13.8mm;
+	width: 100%;
+	background-color: #ffffff;
+	selected-color: #ffffff;
+}
+
+.gridPay line {
+	width: 100%;
+	height: 1px;
+	background-color: #c8c7cc;
+}
+
+.gridPay img {
+	height: 1.9mm;
+	width: 1.3mm;
+	margin-top: 16%;
+	dock-align: right;
+	margin-right: 2.4mm;
+	background-image: url(arrow.png);
+}
+
+.gridPay vl {
+	width: 100%;
+	height: 100%;
+	dock-align: left;
+	padding-top: 11%;
+	padding-left: 2.4mm;
+}
+
+.gridPay vl MemoEdit {
+	height: 40%;
+	width: 90%;
+	font: 45% Arial;
+	placeholder-color: #FF7C4A;
+}
+
+.gridPay vl EditText {
+	height: 60%;
+	width: 90%;
+	font: 90% Arial;
+	color: #FF7C4A;
+}
+
+.gridPay vl dl {
+	height: 21%;
+	width: 100%;
+}
+
+.gridPay vl dl TextView {
+	width: 100%;
+	height: 100%;
+	margin-top: 5%;
+	white-space: normal;
+	font: 68% Arial;
+	color: #8e8e93;
+	dock-align: left;
+}
+
+.gridPay vl dl Button {
+	width: 13.5mm;
+	height: 100%;
+	dock-align: right;
+	margin-left: -32%;
+	margin-right: 3%;
+	margin-top: 0%;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #FF7C4A;
+	border-radius: 5px;
+	color: #FF7C4A;
+	text-align: center;
+	font: 65% arial;
+}
+
+.main_rowPay {
+	width: 100%;
+	height: 30%;
+	white-space: normal;
+	placeholder-color: #FF7C4A;
+	font: 50% Arial;
+	color: #8e8e93;
+}
+
+.description_rowPay {
+	width: 92%;
+	height: 100%;
+	white-space: normal;
+	font: 65% Arial;
+	placeholder-color: #FF7C4A;
+	color: #FF7C4A;
+}
+
+.SymbolPay {
+	width: 8%;
+	height: 100%;
+	white-space: normal;
+	placeholder-color: #FF7C4A;
+	font: 80% Arial;
+	color: #feb498;
+}
+
+.HayLay {
+	width: 100%;
+	height: 5mm;
+}
+
+.bottom_btn_shadow {
+	width: 100%;
+	height: 6.7mm;
+	dock-align: bottom;
+	selected-color: #bacdce;
+	background-color: #fff;
+}
+
+.bottom_btn_shadow TextView {
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	padding-top: 25%;
+	color: #8E8E93;;
+	font: 37% arial;
+}
+
+.gridChek {
+	height: 20.7mm;
+	width: 100%;
+	background-color: #ffffff;
+	selected-color: #bacdce;
+}
+
+.gridChek line {
+	width: 100%;
+	height: 1px;
+	background-color: #c8c7cc;
+}
+
+.gridChek img {
+	height: 1.9mm;
+	width: 1.3mm;
+	margin-top: 16%;
+	dock-align: right;
+	margin-right: 2.4mm;
+	background-image: url(arrow.png);
+}
+
+.gridChek vl {
+	width: 100%;
+	height: 100%;
+	dock-align: left;
+	padding-top: 11%;
+	padding-left: 2.4mm;
+}
+
+.gridChek vl MemoEdit {
+	height: 40%;
+	width: 90%;
+	font: 45% Arial;
+	placeholder-color: #FF7C4A;
+}
+
+.gridChek vl EditText {
+	height: 40%;
+	width: 90%;
+	font: 45% Arial;
+	color: #FF7C4A;
+}
+
+.gridChek vl dl {
+	height: 21%;
+	width: 100%;
+}
+
+.description_rowChek {
+	width: 100%;
+	height: 17.25%;
+	white-space: normal;
+	font: 62% Arial;
+	color: #8e8e93;
+}
+
+.main_rowChek {
+	width: 100%;
+	height: 30%;
+	white-space: normal;
+	placeholder-color: #FF7C4A;
+	font: 42% Arial;
+	color: #495052;
+}
+
+.main_rowChek2 {
+	width: 100%;
+	height: 30%;
+	white-space: normal;
+	placeholder-color: #FF7C4A;
+	font: 65% Arial;
+	color: #495052;
+}
+
+.main_rowPay {
+	width: 60%;
+	height: 100%;
+	white-space: normal;
+	placeholder-color: #FF7C4A;
+	font: 42% Arial;
+	color: #495052;
+}
+
+.description_rowPay {
+	width: 60%;
+	height: 100%;
+	white-space: normal;
+	font: 42% Arial;
+	placeholder-color: #8e8e93;
+	color: #8e8e93;
+}
+
+.HayLay {
+	width: 100%;
+	height: 5mm;
+}
+
+.HayLayUP {
+	width: 100%;
+	height: 6mm;
+}
+
+.SymbolPayUp {
+	width: 40%;
+	height: 100%;
+	white-space: normal;
+	placeholder-color: #FF7C4A;
+	padding-right: 2.4mm;
+	text-align: right;
+	font: 42% Arial;
+	color: #495052;
+}
+
+.SymbolPay {
+	width: 40%;
+	height: 100%;
+	white-space: normal;
+	placeholder-color: #FF7C4A;
+	padding-right: 2.4mm;
+	text-align: right;
+	font: 42% Arial;
+	color: #8e8e93;
+}
+
+.HayLayVer {
+	padding-top: 11%;
+	width: 50%;
+	height: 13mm;
+}
+
+.HayLayUPVer {
+	padding-top: 11%;
+	padding-left: 2.4mm;
+	width: 50%;
+	height: 13mm;
+}
+
+.SymbolPayUpVer {
+	width: 100%;
+	height: 50%;
+	white-space: normal;
+	placeholder-color: #FF7C4A;
+	padding-right: 2.4mm;
+	text-align: right;
+	font: 51% Arial;
+	color: #495052;
+}
+
+.SymbolPayVer {
+	width: 100%;
+	height: 50%;
+	white-space: normal;
+	placeholder-color: #FF7C4A;
+	padding-right: 2.4mm;
+	text-align: right;
+	font: 48% Arial;
+	color: #8e8e93;
+}
+
+.gridVer {
+	height: 10mm;
+	width: 100%;
+	background-color: #ffffff;
+	selected-color: #bacdce;
+}
+
+.main_rowPayVer {
+	width: 100%;
+	height: 100%;
+	white-space: normal;
+	placeholder-color: #FF7C4A;
+	font: 31% Arial;
+	color: #8e8e93;
+}
+
+.gridVer2 {
+	height: 5mm;
+	width: 100%;
+	selected-color: #bacdce;
+	background-color: #efeff4;
+}
+
+.main_rowPayVer2 {
+	width: 100%;
+	height: 100%;
+	white-space: normal;
+	placeholder-color: #FF7C4A;
+	font: 58% Arial;
+	color: #8e8e93;
+}
+
+.SymbolPayUpVer2 {
+	width: 100%;
+	height: 100%;
+	white-space: normal;
+	placeholder-color: #FF7C4A;
+	padding-right: 2.4mm;
+	text-align: right;
+	font: 55% Arial;
+	color: #495052;
+}
+
+.HayLayVer2 {
+	padding-top: 11%;
+	width: 50%;
+	height: 5mm;
+}
+
+.HayLayUPVer2 {
+	padding-top: 11%;
+	padding-left: 2.4mm;
+	width: 50%;
+	height: 5mm;
+}
+
+.gridVer3 {
+	height: 4mm;
+	width: 100%;
+	selected-color: #bacdce;
+	background-color: #efeff4;
+}
+
+.main_rowPayVer3 {
+	width: 100%;
+	height: 100%;
+	white-space: normal;
+	placeholder-color: #FF7C4A;
+	font: 58% Arial;
+	color: #8e8e93;
+}
+
+.SymbolPayUpVer3 {
+	width: 100%;
+	height: 100%;
+	white-space: normal;
+	placeholder-color: #FF7C4A;
+	padding-right: 2.4mm;
+	text-align: right;
+	font: 58% Arial;
+	color: #495052;
+}
+
+.HayLayVer3 {
+	padding-top: 11%;
+	width: 50%;
+	height: 5mm;
+}
+
+.HayLayUPVer3 {
+	padding-top: 11%;
+	padding-left: 2.4mm;
+	width: 50%;
+	height: 5mm;
+}
+
+
+
+
+
+
+
+
+
+
+.VertDispPay{
+	height: 15mm;
+	width: 100%;
+	background-color: #ffffff;
+}
+
+.small_gridPay {
+	height: 6.7mm;
+	width: 49.6mm;
+	selected-color: #bacdce;
+	dock-align: top;
+	margin-top: 10%;
+	horizontal-align: central;
+	background-color: #ffffff;
+}
+
+.small_gridPay hl select_zonePay {
+	width: 100%;
+	height: 90%;
+	margin-top: 20%;
+	/*margin-left: 5%;*/
+}
+
+.small_gridPay hl select_zonePay TextView {
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	padding-top: 5%;
+	font: 50% arial;
+}
+
+.mode_left_button_onPay {
+	background-image: url(mode_left_button_on.png);
+	width: 32%;
+	height: 67%;
+	margin-top: 5.7%;
+	margin-left: 2%;
+	horizontal-align: central;
+}
+
+
+
+.mode_left_button_onPay hl TextView {
+	color: #ffffff;
+	width: 100%;
+	height: 100%;
+}
+
+.mode_right_button_offPay {
+	background-image: url(mode_right_button_off.png);
+	width: 32%;
+	height: 67%;
+	margin-top: 5.7%;
+	horizontal-align: central;
+}
+
+.mode_right_button_offPay select_zonePay TextView {
+	color: #FF7C4A;
+}
+
+.mode_center_button_offPay {
+	background-image: url(mode_center_button_off.png);
+	width: 32%;
+	height: 67%;
+	margin-top: 5.7%;
+	horizontal-align: central;
+}
+
+.mode_center_button_offPay select_zonePay TextView {
+	color: #FF7C4A;
+}
+
+.mode_center_button_onPay {
+	background-image: url(mode_center_button_on.png);
+	width: 32%;
+	height: 67%;
+	margin-top: 5.7%;
+	horizontal-align: central;
+}
+
+.mode_center_button_onPay select_zonePay TextView {
+	color: #ffffff;
+	width: 100%;
+	height: 100%;
+}
+
+
+.mode_right_button_onPay {
+	background-image: url(mode_right_button_on.png);
+	width: 32%;
+	height: 67%;
+	margin-top: 5.7%;
+	horizontal-align: central;
+}
+
+
+.mode_right_button_onPay select_zonePay TextView {
+	color: #ffffff;
+	width: 100%;
+	height: 100%;
+}
+
+.mode_left_button_offPay {
+	background-image: url(mode_left_button_off.png);
+	width: 32%;
+	height: 67%;
+	margin-top: 5.7%;
+	margin-left: 2%;
+	horizontal-align: central;
+}
+
+.mode_left_button_offPay select_zonePay TextView {
+	color: #FF7C4A;
+}
+
+.mode_left_button_onPay {
+	background-image: url(mode_left_button_on.png);
+	width: 32%;
+	height: 67%;
+	margin-top: 5.7%;
+	margin-left: 2%;
+	horizontal-align: central;
+}
+
+
+.mode_left_button_onPay select_zonePay TextView {
+	color: #ffffff;
+}
+
+
+
+
+.mode_left_button_offPay {
+	background-image: url(mode_left_button_off.png);
+	width: 32%;
+	height: 67%;
+	margin-top: 5.7%;
+	margin-left: 2%;
+	horizontal-align: central;
+}
+
+.mode_left_button_offPay select_zonePay TextView {
+	color: #FF7C4A;
+}
+
+.swipe_contact {
+	width: 100%;
+	height: 7mm;
+}
+
+
+
+
+
+
+
+.gridOR2 {
+	height: 10mm;
+	width: 100%;
+	background-color: #ffffff;
+	selected-color: #ffffff;
+}
+
+.gridOR2 vl {
+	width: 100%;
+	height: 100%;
+	dock-align: left;
+	padding-top: 18%;
+	padding-left: 0mm;
+	padding-right: 0mm;
+	horizontal-align: central;
+}
+
+.gridOR2 vl dl {
+	height: 3.5mm;
+	width: 100%;
+	margin-left: 10%;
+	margin-right: 10%;
+}
+
+.gridOR2 vl dl TextView {
+	width: 100%;
+	height: 100%;
+	white-space: normal;
+	font: 90% Arial;
+	color: #000000;
+	text-align: center;
+	horizontal-align: central;
+}
+
+.docLay2 {
+	height: 2.5mm;
+}
+
+.docLay2Text {
+	color: #1c8721;
+}
+
+.btn_menuFR {
+	width: 7mm;
+	height: 100%;
+	dock-align: right;
+	margin-right: 0%;
+	margin-left: 0%;
+}
+
+.btn_menuFR menuIcon {
+	background-image: url(button_setings.png);
+	height: 57%;
+	margin-top: 25%;
+	margin-left: 35%;
+	margin-right: 1mm;
+	margin-bottom: 25%;
+	dock-align: left;
+}
+
+.btn_menuFR menuIcon {
+	background-image: url(button_setings.png);
+	height: 57%;
+	margin-top: 25%;
+	margin-left: 35%;
+	margin-right: 1mm;
+	margin-bottom: 25%;
+	dock-align: left;
+}
+
+.btn_spaceChek{
+	width: 18%;
+	height: 100%;
+	dock-align: right;
+}

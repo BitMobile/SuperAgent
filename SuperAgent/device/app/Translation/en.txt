@@ -364,3 +364,57 @@ vpUnplannedMainScreen		unplanned
 vpplannedMainScreen		planned
 vpVisitsMainScreen		visits
 plannedMainSkree			visits
+сurrency		usd
+calculatePayment		Calculate payment
+calculatePaymentRetunr		Calculate return
+fr		Terminal
+reg		Registrar
+сommunication		Communication established
+Connect		Connect
+cashHistori		Operations history
+dontSend		Don't send
+printZ		Print Z-report
+printX		Print X-report
+AskPrintZ		Printing a Z-report will close the current shift. Continue?
+Payments		Payment
+PaymentsReturn		Payment
+PaymentsType		PAYMENT METHODS
+PaymentsTypeReturn		PAYMENT METHODS
+NeedPay		More to payment
+PushPay		Surrender:
+NeedPayReturn		More to payment
+NoPay		No change
+TakeChek		Receive a receipt
+ChangeScreenPay		Amount invoiced is not enough to pay
+Check		Check
+Checks		checks
+CheckSend		SEND CHECK
+OrderDescript		ORDER DETAILS
+ReturnDescript		RETURN DETAILS
+PushPayShort		Surrender
+TakeMoney		Received
+TakeMoneyReturn		Received
+TotalPay		Total for payment
+TotalPayReturn		Total for payment
+CalcAddress		Calculation address
+KKTNumber		KKT Number
+Sms		SMS
+Email		E-mail
+PayDiscount		Discount
+Print		Print
+PaidOrder		Order paid
+PaidReturn		Return paid
+CalcDate		Calculation Date
+ContactAddress		Contact for sending a check
+Percent0		VAT 0%
+Percent10		VAT 10%
+Percent18		VAT 18%
+PercentWithoOut		Not VAT
+NoFs		The fiscal recorder is not connected.
+NotPaidOrder		Not paid
+PaidOrder		Paid
+PaidReturn		Paid
+NotPaidReturn		Not paid
+Beep		Beep
+TooMuchMoney		The amount of non-cash payment shall not exceed the amount of the order.
+TooMuchMoneyReturn		The amount of non-cash payments shall not exceed the amount of the refund.

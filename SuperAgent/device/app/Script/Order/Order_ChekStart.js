@@ -652,7 +652,14 @@ function ScreenChek() {
 
       Fiscal.SetKashierName(fptr, order.SR.Description);
 
-      Fiscal.CloseCheque(fptr, metod);
+      var Err = Fiscal.GetError();
+      if (IsEmptyValue(Err)) {
+        Fiscal.CloseCheque(fptr, metod);
+      }
+      else {
+        Fiscal.Annul(fptr);
+      }
+
 
       chekObj.ShiftNumber = Fiscal.GetShiftNumber(fptr);
       chekObj.DocumentShiftNumber = Fiscal.GetShiftChequeNumber(fptr);
@@ -661,7 +668,7 @@ function ScreenChek() {
       chekObj.SendType = telMail;
 
       //Dialog.Message(Fiscal.GetError() + "----------error");
-      var Err = Fiscal.GetError();
+      //var Err = Fiscal.GetError();
 
       if (IsEmptyValue(Err)) {
 

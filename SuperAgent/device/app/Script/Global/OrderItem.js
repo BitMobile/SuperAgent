@@ -101,7 +101,12 @@ function CreateOrderItem(args){//order, sku, orderItem, price, features, recOrde
         p = DB.Create("Document." + $.workflow.currentDoc + "_SKUs");
         p.Ref = args.Ref;
         p.SKU = args.SKU;
-        p.Feature = GetNewFeature(args.SKU);
+
+				if (args.HasValue("Feature"))
+					p.Feature = args.Feature;
+				else
+					p.Feature = GetNewFeature(args.SKU);
+
         p.Units = GetDefaultUnit(args.SKU, args.Units);
 
         var d = GlobalWorkflow.GetMassDiscount(p.Ref);

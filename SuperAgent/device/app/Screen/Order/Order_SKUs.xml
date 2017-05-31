@@ -73,12 +73,12 @@
 									<c:EditText Id="editText{$index}" Text="0" Keyboard="numeric" CssClass="numVar" />
 								</c:HorizontalLayout>
 								<c:Button Text="+1" CssClass="add_button" OnClick="$AddToOrder(editText{$index})" />
-								<c:Button CssClass="cart_button" OnClick="$CreateOrderItem(editText{$index}, textView{$index}, pack{$index}, $item.Id, $item.Price, swipe_layout{$index}, $item.RecOrder, $item.UnitId)" />
+								<c:Button CssClass="cart_button" OnClick="$CreateOrderItem(editText{$index}, textView{$index}, pack{$index}, $item.Id, $item.Price, swipe_layout{$index}, $item.RecOrder, $item.UnitId, $item.Feature)" />
 							</c:HorizontalLayout>
 							<c:TextView Id="textView{$index}" Text="0 {@alreadyOrdered}" />
 						</c:VerticalLayout>
 					</c:HorizontalLayout>
-					<c:DockLayout OnClickAction="$SelectSKU($item.Id, $item.Price, $item.RecOrder, $item.UnitId, $thisDoc)" CssClass="grid">
+					<c:DockLayout OnClickAction="$SelectSKU($item.Id, $item.Price, $item.RecOrder, $item.UnitId, $thisDoc, $item.Feature)" CssClass="grid">
 						<c:Image />
 						<c:VerticalLayout>
 							<c:DockLayout>
@@ -95,7 +95,7 @@
 										</s:If>
 									</s:Else>
 								</s:If>
-								<c:TextView Text="$item.Description" CssClass="main_row"></c:TextView>
+								<c:TextView Text="{$item.Description}/{$item.Feature.Description}" CssClass="main_row"></c:TextView>
 							</c:DockLayout>
 							<c:TextView Text="#price2# {$FormatValue($item.Price)}  #stock#: {$item.CommonStock}  #brand#: {$item.Brand}" CssClass="description_row"></c:TextView>
 						</c:VerticalLayout>

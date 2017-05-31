@@ -141,7 +141,7 @@ function GetSKUAndGroups(searchText, thisDoc) {
             var stockCondition = " AND SS.StockValue > 0 ";
     	}
 
-    	query.Text = "SELECT INQ.*, SS.StockValue AS CommonStock FROM _Catalog_SKU_Stocks SS INDEXED BY IND_SKUSSTOCK " +
+    	query.Text = "SELECT INQ.*, SS.StockValue AS CommonStock, SS.Feature FROM _Catalog_SKU_Stocks SS INDEXED BY IND_SKUSSTOCK " +
               "JOIN (SELECT DISTINCT S.Id, S.Description, PL.Price AS Price, " +
 	            groupFields +
 	            "CB.Description AS Brand " +
@@ -222,13 +222,14 @@ function GetQuickOrder(control, skuId, itemPrice, packField, editField, textView
     swipedRow = control;
 }
 
-function SelectSKU(sku, price, recOrder, unit, thisDoc){
+function SelectSKU(sku, price, recOrder, unit, thisDoc, feature){
     var args = new Dictionary();
     args.Add("SKU", sku);
     args.Add("basePrice", price);
     args.Add("recOrder", recOrder);
     args.Add("Units", unit);
     args.Add("Ref", thisDoc);
+    args.Add("Feature", feature);
 
     OrderItem.InitItem(args);
 
@@ -247,7 +248,7 @@ function AddToOrder(control, editFieldName) {
       Variables[editFieldName].Text = editText + parseInt(1);
 }
 
-function CreateOrderItem(control, editFieldName, textFieldName, packField, sku, price, swiped_rowName, recOrder, recUnitId) {
+function CreateOrderItem(control, editFieldName, textFieldName, packField, sku, price, swiped_rowName, recOrder, recUnitId, realFeature) {
 
 	// if (swipedRow!=Variables[swiped_rowName])
 	// 	GetQuickOrder(Variables[swiped_rowName], sku, price, packField, editFieldName, textViewField, recOrder, recUnitId, recUnit);
@@ -269,7 +270,12 @@ function CreateOrderItem(control, editFieldName, textFieldName, packField, sku, 
           else
           p.Ref = $.workflow.Return;
           p.SKU = sku;
-          p.Feature = defFeature;
+
+          if (realFeature == null)
+  					p.Feature = defFeature;
+  				else
+  					p.Feature = realFeature;
+
           p.Price = Round(price * defMultiplier,2);
           p.Qty = Converter.ToDecimal(str);
 

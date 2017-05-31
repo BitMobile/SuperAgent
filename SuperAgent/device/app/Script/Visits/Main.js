@@ -408,7 +408,7 @@ function GpsStart() {
 		GPSTracking.MinInterval = $.sessionConst.GPSTrackWrite * 60;
 		GPSTracking.SendInterval = $.sessionConst.GPSTrackSend * 60;
 		//Dialog.Message(GPSTracking.MinInterval);
-		GPSTracking.MinDistance = 0;
+		GPSTracking.MinDistance = $.sessionConst.GPSTrackDistance;
     GPSTracking.DistanceFilter = 0;
 		GPSTracking.Start();
 		//Dialog.Message(GPSTracking.MinInterval);

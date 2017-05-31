@@ -27,6 +27,7 @@ function SetSessionConstants() {
 	var GPSTrack = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='GPSSource'");
 	var GPSTrackSend = new Query("SELECT NumericValue FROM Catalog_MobileApplicationSettings WHERE Description='GPSTrackSendFrequency'");
 	var GPSTrackWrite = new Query("SELECT NumericValue FROM Catalog_MobileApplicationSettings WHERE Description='GPSTrackWriteFrequency'");
+  var GPSTrackDistance = new Query("SELECT NumericValue FROM Catalog_MobileApplicationSettings WHERE Description='GPSDistance'");
 	//Dialog.Message(GPSStarted);
   var GPSPredefined = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='GPSPredefined'");
 	var UseVATs = new Query("SELECT LogicValue FROM Catalog_MobileApplicationSettings WHERE Description='UseVATs'");
@@ -47,6 +48,7 @@ function SetSessionConstants() {
 	$.sessionConst.Add("GPSTrack", EvaluateBoolean(GPSTrack.ExecuteScalar()));
 	$.sessionConst.Add("GPSTrackSend", GPSTrackSend.ExecuteScalar());
 	$.sessionConst.Add("GPSTrackWrite", GPSTrackWrite.ExecuteScalar());
+  $.sessionConst.Add("GPSTrackDistance", GPSTrackDistance.ExecuteScalar());
 	$.sessionConst.Add("GPSPredefined", GPSPredefined.ExecuteScalar());
 	$.sessionConst.Add("UseVATs", EvaluateBoolean(UseVATs.ExecuteScalar()));
 	$.sessionConst.Add("CurrOs",OsString);
@@ -178,7 +180,7 @@ function SetGps() {
 		//Dialog.Message(GPSTracking.MinInterval);
 		GPSTracking.MinInterval = $.sessionConst.GPSTrackWrite * 60;
 		GPSTracking.SendInterval = $.sessionConst.GPSTrackSend * 60;
-		GPSTracking.MinDistance = 0;
+		GPSTracking.MinDistance = $.sessionConst.GPSTrackDistance;
     GPSTracking.DistanceFilter = 0;
 		GPSTracking.Start();
 	}

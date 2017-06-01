@@ -141,7 +141,12 @@ function GetSKUAndGroups(searchText, thisDoc) {
             var stockCondition = " AND SS.StockValue > 0 ";
     	}
 
-    	query.Text = "SELECT INQ.*, SS.StockValue AS CommonStock, SS.Feature FROM _Catalog_SKU_Stocks SS INDEXED BY IND_SKUSSTOCK " +
+      if ($.sessionConst.SKUFeaturesRegistration)
+        var FeatureVal = "SS.Feature AS Feature";
+      else
+        var FeatureVal = "null AS Feature";
+
+    	query.Text = "SELECT INQ.*, SS.StockValue AS CommonStock, " + FeatureVal + " FROM _Catalog_SKU_Stocks SS INDEXED BY IND_SKUSSTOCK " +
               "JOIN (SELECT DISTINCT S.Id, S.Description, PL.Price AS Price, " +
 	            groupFields +
 	            "CB.Description AS Brand " +
@@ -165,7 +170,7 @@ function GetSKUAndGroups(searchText, thisDoc) {
 
 }
 
-function GetQuickOrder(control, skuId, itemPrice, packField, editField, textViewField, recOrder, recUnitId, recUnit, index){
+function GetQuickOrder(control, skuId, itemPrice, packField, editField, textViewField, recOrder, recUnitId, recUnit, realFeature, index){
     if(swipedRow != control)
         HideSwiped();
 
@@ -204,10 +209,18 @@ function GetQuickOrder(control, skuId, itemPrice, packField, editField, textView
             defMultiplier = quickOrderItem.Multiplier;
         }
 
-       var query = new Query("SELECT Qty FROM Document_" + $.workflow.currentDoc + "_SKUs WHERE Ref=@ref AND SKU=@sku  AND Units=@units");
+       var query = new Query("SELECT Qty FROM Document_" + $.workflow.currentDoc + "_SKUs WHERE Ref=@ref AND SKU=@sku AND Feature=@feature AND Units=@units");
         query.AddParameter("ref", ($.workflow.currentDoc == "Order" ? $.workflow.order : $.workflow.Return));
         query.AddParameter("sku", skuId);
         query.AddParameter("units", defPack);
+
+        if ($.sessionConst.SKUFeaturesRegistration){
+          query.AddParameter("feature", realFeature);
+        }
+        else{
+          query.AddParameter("feature", defFeature);
+        }
+
         var qty = query.ExecuteScalar();
 
         if(qty == null){

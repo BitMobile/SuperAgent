@@ -109,7 +109,7 @@
 	height: 40%;
 	width: 90%;
 	font: 45% Arial;
-	color: #FF7C4A;
+	color: #05b622;
 }
 
 .child_grid hl {
@@ -128,8 +128,8 @@
 	margin-top: 5%;
 	white-space: normal;
 	font: 42% Arial;
-	color: #FF7C4A;
-	placeholder-color: #FF7C4A;
+	color: #05b622;
+	placeholder-color: #05b622;
 }
 
 .child_main_row {
@@ -138,8 +138,8 @@
 	margin-top: 5%;
 	white-space: normal;
 	font: 42% Arial;
-	color: #FF7C4A;
-	placeholder-color: #FF7C4A;
+	color: #05b622;
+	placeholder-color: #05b622;
 }
 
 .answer_snapshot {

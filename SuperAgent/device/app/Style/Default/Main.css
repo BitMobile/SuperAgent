@@ -61,7 +61,7 @@ sv {
 	width: 45mm;
 	height: 8mm;
 	margin-top: 1mm;
-	border-color: #FF7C4A;
+	border-color: #05b622;
 	border-radius: 16px;
 	border-width: 2px;
 	border-style: solid;
@@ -104,7 +104,7 @@ sv {
 	height: 60%;
 	width: 80%;
 	font: 60% Arial;
-	color: #FF7C4A;
+	color: #05b622;
 	vertical-align: center;
 	placeholder-color: #b7b7b7;
 }
@@ -185,7 +185,7 @@ sv {
 	border-style: solid;
 	font: 40% arial;
 	color: #ffffff;
-	background-color: #FF7C4A;
+	background-color: #05b622;
 }
 
 .register_button_blocked {
@@ -210,7 +210,7 @@ sv {
 	height: 60%;
 	width: 80%;
 	font: 60% Arial;
-	color: #FF7C4A;
+	color: #05b622;
 	vertical-align: center;
 	placeholder-color: #b7b7b7;
 	color: #b2b2b7;
@@ -234,7 +234,7 @@ sv {
 
 .grid vl main_row {
 	font: 95% Arial-BoldMT;
-	color: #FF7C4A;
+	color: #05b622;
 	white-space: nowrap;
 }
 
@@ -250,7 +250,7 @@ sv {
 	width: 100%;
 	height: 100%;
 	padding-top: 2%;
-	background-color: #4a4c60;
+	background-color: #05b622;
 }
 
 .blue dl {
@@ -326,7 +326,7 @@ sv {
 	margin-left: 2%;
 	text-align: left;
 	font: 95% Arial-BoldMT;
-	color: #FF7C4A;
+	color: #05b622;
 	dock-align: left;
 }
 

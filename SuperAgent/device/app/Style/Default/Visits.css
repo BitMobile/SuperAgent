@@ -52,7 +52,7 @@
 .TodayTextStyle TextView {
 	width: 100%;
 	height: 100%;
-	color: #FF7C4A;
+	color: #05b622;
 	font: 50% Arial;
 	horizontal-align: center;
 	text-align: center;
@@ -93,7 +93,7 @@
 	height: 100%;
 	white-space: normal;
 	padding-right: 7%;
-	color: #FF7C4A;
+	color: #05b622;
 	font: 42% Arial;
 	/*background-color: #bbaa00;*/
 }
@@ -129,7 +129,7 @@
 	height: 100%;
 	margin-right: 3.5%;
 	padding-top: 30%;
-	color: #FFFFFF;
+	color: #000000;
 	text-align: right;
 	font: 39.5% arial;
 }

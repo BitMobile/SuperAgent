@@ -104,7 +104,9 @@
 			</c:HorizontalLayout>
 		</c:DockLayout>
 		<c:HorizontalLine />
-
+		<c:HorizontalLayout CssClass="Label_in_bottom">
+			<c:Image/>
+		</c:HorizontalLayout>
 	</c:VerticalLayout>
 
 </c:Component>

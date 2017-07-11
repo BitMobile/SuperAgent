@@ -69,16 +69,14 @@ function RefreshScrolView(){
 		if (uncommitedVisits.OutletStatus == 3) {
 			toappend = toappend + "<c:VerticalLayout CssClass=\"no_mark\"></c:VerticalLayout>";
 		}
-		var desc = StrReplace(uncommitedVisits.Outlet.Description, "'", "\'");
-		var desc = StrReplace(uncommitedVisits.Outlet.Description, '"', '\"');
 		toappend = toappend + "<c:Image />";
 		toappend = toappend + "<c:VerticalLayout>"
-		+ "<c:TextView Text=\'{"+desc+"}\' CssClass=\"main_row\"></c:TextView>"
+		+ "<c:TextView Text=\'{"+ ReplaceBadSymbols(uncommitedVisits.Outlet.Description) +"}\' CssClass=\"main_row\"></c:TextView>"
 		+ "<c:HorizontalLayout>";
 		if (uncommitedVisits.Time != '') {
-			toappend = toappend + "<c:TextView Text=\""+uncommitedVisits.Time+"\" CssClass=\"bl_description_row\" />";
+			toappend = toappend + "<c:TextView Text=\"" + uncommitedVisits.Time + "\" CssClass=\"bl_description_row\" />";
 		}
-		toappend = toappend + "<c:TextView Text=\"{"+uncommitedVisits.Outlet.Address+"}\" CssClass=\"description_row\"></c:TextView>"
+		toappend = toappend + "<c:TextView Text=\"{" + ReplaceBadSymbols(uncommitedVisits.Outlet.Address) + "}\" CssClass=\"description_row\"></c:TextView>"
 		+ "</c:HorizontalLayout></c:VerticalLayout></c:DockLayout><c:HorizontalLine />";
 	}
 	if (addDay <= 0) {
@@ -101,13 +99,11 @@ function RefreshScrolView(){
 		if (commitedVisits.OutletStatus == 3) {
 			toappend = toappend + "<c:VerticalLayout CssClass=\"no_mark\"></c:VerticalLayout>";
 		}
-		var desc = StrReplace(commitedVisits.Description, "'", "\'");
-		var desc = StrReplace(commitedVisits.Description, '"', '\"');
 		toappend = toappend + "<c:Image />";
 		toappend = toappend + "<c:VerticalLayout>"
-		+ "<c:TextView Text=\'{"+desc+"}\' CssClass=\"main_row\"></c:TextView>"
+		+ "<c:TextView Text=\'{"+ ReplaceBadSymbols(commitedVisits.Description) +"}\' CssClass=\"main_row\"></c:TextView>"
 		+ "<c:HorizontalLayout>";
-		toappend = toappend + "<c:TextView Text=\"{"+commitedVisits.Address+"}\" CssClass=\"description_row\"></c:TextView>"
+		toappend = toappend + "<c:TextView Text=\"{"+ReplaceBadSymbols(commitedVisits.Address)+"}\" CssClass=\"description_row\"></c:TextView>"
 		+ "</c:HorizontalLayout></c:VerticalLayout></c:DockLayout><c:HorizontalLine />";
 
 		}
@@ -133,6 +129,7 @@ function RefreshScrolView(){
 		$.btnDateBack.Refresh();
 	}
 }
+
 function GoBackDate(){
 	if (parseInt(-32)<=parseInt(addDay-1)) {
 		addDay = addDay-1;

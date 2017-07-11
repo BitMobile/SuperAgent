@@ -23,6 +23,17 @@ function ToDecimal(val) {
 		return Converter.ToDecimal(val);
 }
 
+function ReplaceBadSymbols(value){
+
+	var replaceString = StrReplace(value, '&', "&amp;");
+	replaceString = StrReplace(replaceString, '"', "&quot;");
+	replaceString = StrReplace(replaceString, "'", "&apos;");
+ 	replaceString = StrReplace(replaceString, '<', "&lt;");
+	replaceString = StrReplace(replaceString, '>', "&gt;");
+
+	return replaceString;
+}
+
 function GetSum(val1, val2) {
 
 	if (val1 == null)

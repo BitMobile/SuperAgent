@@ -176,7 +176,7 @@ function TotalOutput(total){
 function ApplyTotal(sender, orderitem){
 
     if (sender.Text.length  > 10)
-      sender.Text = "100000000";
+      sender.Text = "999999999";
 
     CheckUserInput(sender);
     if (String.IsNullOrEmpty(sender.Text))

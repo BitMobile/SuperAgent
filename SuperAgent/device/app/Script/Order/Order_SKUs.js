@@ -125,6 +125,10 @@ function GetSKUAndGroups(searchText, thisDoc) {
             var stockCondition = " AND S.CommonStock > 0 ";
     	}
 
+      if ($.sessionConst.SKUFeaturesRegistration)
+        var grouBy = " GROUP BY S.Id, SS.Feature";
+      else
+        var grouBy = "";
 
 	    query.Text = "SELECT DISTINCT S.Id, S.Description, " + FeatureVal + ", PL.Price AS Price, S.CommonStock AS CommonStock, " +
 	            groupFields +
@@ -138,10 +142,11 @@ function GetSKUAndGroups(searchText, thisDoc) {
 	            groupParentJoin +
 	            recOrderStr + filterString +
 	            " WHERE PL.Ref = @Ref AND PL.IsTombstone = 0 AND S.IsTombstone = 0 " + stockCondition + searchString +
+              grouBy +
 	            " ORDER BY " + groupSort + recOrderSort + " S.Description LIMIT 100";
 
               if ($.sessionConst.SKUFeaturesRegistration)
-                query.Text = StrReplace(query.Text, "S.CommonStock", "SS.StockValue");
+                query.Text = StrReplace(query.Text, "S.CommonStock", "SUM(SS.StockValue)");
 
 
     } else {

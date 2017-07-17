@@ -78,7 +78,7 @@
 				<c:Button Id="btnSearch" Text="#search#" OnClickAction="$DoRefresh($edtSearch.Text)"></c:Button>
 				<c:DockLayout>
 					<c:Image />
-					<c:EditText Id="edtSearch" Text="$search" ImeOptions="Search" Placeholder="#search#" OnImeAction="$DoRefresh($edtSearch.Text)"></c:EditText>
+					<c:EditText Id="edtSearch" Text="$search" Placeholder="#search#"></c:EditText>
 				</c:DockLayout>
 			</c:DockLayout>
 			<c:HorizontalLayout CssClass="shadowLine"></c:HorizontalLayout>

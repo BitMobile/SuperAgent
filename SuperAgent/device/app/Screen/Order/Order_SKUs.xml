@@ -65,7 +65,7 @@
 				</s:If>
 
 
-				<c:SwipeHorizontalLayout Id="swipe_layout{$index}" CssClass="swipe_order" Index="1" OnSwipe="$GetQuickOrder($item.Id, $item.Price, pack{$index}, editText{$index}, textView{$index}, $item.RecOrder, $item.UnitId, $item.RecUnit)">
+				<c:SwipeHorizontalLayout Id="swipe_layout{$index}" CssClass="swipe_order" Index="1" OnSwipe="$GetQuickOrder($item.Id, $item.Price, pack{$index}, editText{$index}, textView{$index}, $item.RecOrder, $item.UnitId, $item.RecUnit, $item.Feature)">
 					<c:HorizontalLayout CssClass="quickOrder">
 						<c:VerticalLayout>
 							<c:HorizontalLayout>
@@ -95,7 +95,12 @@
 										</s:If>
 									</s:Else>
 								</s:If>
-								<c:TextView Text="{$item.Description}/{$item.Feature.Description}" CssClass="main_row"></c:TextView>
+								<s:If Test="$sessionConst.SKUFeaturesRegistration">
+									<c:TextView Text="{$item.Description}/{$item.Feature.Description}" CssClass="main_row"></c:TextView>
+								</s:If>
+								<s:Else>
+									<c:TextView Text="{$item.Description}" CssClass="main_row"></c:TextView>
+								</s:Else>
 							</c:DockLayout>
 							<c:TextView Text="#price2# {$FormatValue($item.Price)}  #stock#: {$item.CommonStock}  #brand#: {$item.Brand}" CssClass="description_row"></c:TextView>
 						</c:VerticalLayout>

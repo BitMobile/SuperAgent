@@ -160,7 +160,7 @@ function IsEditText(isInputField, editable, order) {
 
 function SelectStock(order, outlet, attr, control) {
 	if (IsNew(order) && NotEmptyRef(order.PriceList)) {
-		var q = new Query("SELECT CS.Id, CS.Description " +
+		var q = new Query("SELECT DISTINCT CS.Id, CS.Description " +
 			" FROM Catalog_Stock CS " +
 			" JOIN Catalog_Territory_Stocks CTS ON CS.Id = CTS.Stock " +
 			" LEFT JOIN Catalog_Territory_Outlets CTO ON CTS.Ref = CTO.Ref " +

@@ -112,6 +112,11 @@ function GetSKUAndGroups(searchText, thisDoc) {
         var recOrderSort = "";
     }
 
+    if ($.sessionConst.SKUFeaturesRegistration)
+      var FeatureVal = "SS.Feature AS Feature";
+    else
+      var FeatureVal = "null AS Feature";
+
     if (stock.EmptyRef()==true){
 
     	if ($.sessionConst.NoStkEnbl || $.workflow.currentDoc=='Return') {
@@ -120,18 +125,29 @@ function GetSKUAndGroups(searchText, thisDoc) {
             var stockCondition = " AND S.CommonStock > 0 ";
     	}
 
-	    query.Text = "SELECT DISTINCT S.Id, S.Description, PL.Price AS Price, S.CommonStock AS CommonStock, " +
+      if ($.sessionConst.SKUFeaturesRegistration)
+        var grouBy = " GROUP BY S.Id, SS.Feature";
+      else
+        var grouBy = "";
+
+	    query.Text = "SELECT DISTINCT S.Id, S.Description, " + FeatureVal + ", PL.Price AS Price, S.CommonStock AS CommonStock, " +
 	            groupFields +
 	            "CB.Description AS Brand " +
 	            recOrderFields +
 	            "FROM _Document_PriceList_Prices PL INDEXED BY IND_PLREFSKU " +
 	            "JOIN _Catalog_SKU S " +
 	            groupJoin + groupWhere +
+              "JOIN _Catalog_SKU_Stocks SS ON S.Id = SS.Ref " +
 	            "JOIN Catalog_Brands CB ON CB.Id=S.Brand " +
 	            groupParentJoin +
 	            recOrderStr + filterString +
 	            " WHERE PL.Ref = @Ref AND PL.IsTombstone = 0 AND S.IsTombstone = 0 " + stockCondition + searchString +
+              grouBy +
 	            " ORDER BY " + groupSort + recOrderSort + " S.Description LIMIT 100";
+
+              if ($.sessionConst.SKUFeaturesRegistration)
+                query.Text = StrReplace(query.Text, "S.CommonStock", "SUM(SS.StockValue)");
+
 
     } else {
 
@@ -140,8 +156,14 @@ function GetSKUAndGroups(searchText, thisDoc) {
         } else {
             var stockCondition = " AND SS.StockValue > 0 ";
     	}
+    //var gorupBy = "GROUP BY "
 
-    	query.Text = "SELECT INQ.*, SS.StockValue AS CommonStock, SS.Feature FROM _Catalog_SKU_Stocks SS INDEXED BY IND_SKUSSTOCK " +
+    if ($.sessionConst.SKUFeaturesRegistration)
+      var grouBy = "";
+    else
+      var grouBy = " GROUP BY INQ.Id";
+
+    	query.Text = "SELECT INQ.*, SS.StockValue AS CommonStock, " + FeatureVal + " FROM _Catalog_SKU_Stocks SS INDEXED BY IND_SKUSSTOCK " +
               "JOIN (SELECT DISTINCT S.Id, S.Description, PL.Price AS Price, " +
 	            groupFields +
 	            "CB.Description AS Brand " +
@@ -153,7 +175,10 @@ function GetSKUAndGroups(searchText, thisDoc) {
 	            groupParentJoin +
 	            recOrderStr + filterString +
 	            " WHERE PL.Ref = @Ref AND PL.IsTombstone = 0 AND S.IsTombstone = 0 " + groupWhere + searchString +
-	            ") INQ ON SS.Ref = INQ.Id WHERE SS.Stock=@stock AND SS.IsTombstone = 0 " + stockCondition + " ORDER BY " + groupSort + recOrderSort + " INQ.Description LIMIT 100";
+	            ") INQ ON SS.Ref = INQ.Id WHERE SS.Stock=@stock AND SS.IsTombstone = 0 " + stockCondition + grouBy + " ORDER BY " + groupSort + recOrderSort + " INQ.Description LIMIT 100";
+
+      if (!$.sessionConst.SKUFeaturesRegistration)
+        query.Text = StrReplace(query.Text, "SS.StockValue", "SUM(SS.StockValue)");
 
     	query.AddParameter("stock", stock);
 
@@ -165,7 +190,7 @@ function GetSKUAndGroups(searchText, thisDoc) {
 
 }
 
-function GetQuickOrder(control, skuId, itemPrice, packField, editField, textViewField, recOrder, recUnitId, recUnit, index){
+function GetQuickOrder(control, skuId, itemPrice, packField, editField, textViewField, recOrder, recUnitId, recUnit, realFeature, index){
     if(swipedRow != control)
         HideSwiped();
 
@@ -204,10 +229,18 @@ function GetQuickOrder(control, skuId, itemPrice, packField, editField, textView
             defMultiplier = quickOrderItem.Multiplier;
         }
 
-       var query = new Query("SELECT Qty FROM Document_" + $.workflow.currentDoc + "_SKUs WHERE Ref=@ref AND SKU=@sku  AND Units=@units");
+       var query = new Query("SELECT Qty FROM Document_" + $.workflow.currentDoc + "_SKUs WHERE Ref=@ref AND SKU=@sku AND Feature=@feature AND Units=@units");
         query.AddParameter("ref", ($.workflow.currentDoc == "Order" ? $.workflow.order : $.workflow.Return));
         query.AddParameter("sku", skuId);
         query.AddParameter("units", defPack);
+
+        if ($.sessionConst.SKUFeaturesRegistration){
+          query.AddParameter("feature", realFeature);
+        }
+        else{
+          query.AddParameter("feature", defFeature);
+        }
+
         var qty = query.ExecuteScalar();
 
         if(qty == null){

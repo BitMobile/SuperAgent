@@ -66,7 +66,7 @@ function ChangeListAndRefresh(control, param) {
 }
 
 function SetScrollIndex() {
-	
+
 	if (String.IsNullOrEmpty(scrollIndex)){
 
 		$.grScrollView.Index = parseInt(0);
@@ -427,31 +427,31 @@ function checkAndFormNextButton(obligateredLeft){
 
 function RefreshScreen(control, search, sku, question, answerType, indexpar, answerednow,totalanswred,reqorno) {
 
-	//var q2 = new Query("SELECT DISTINCT S.Description " +
-	//"FROM USR_SKUQuestions S " +
-	//"WHERE (RTRIM(Answer)='' OR S.Answer IS NULL) " +
-	//"AND (S.ParentQuestion=@emptyRef OR S.ParentQuestion IN (SELECT SS.Question FROM USR_SKUQuestions SS " +
-	//"WHERE SS.SKU=S.SKU AND (SS.Answer='Yes' OR SS.Answer='Да'))) AND S.SKU=@sku");
-	//q2.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
-	//q2.AddParameter("sku", sku);
-	//var notanswer = q2.ExecuteCount();
-	//Dialog.Message(notanswer);
+// 	//var q2 = new Query("SELECT DISTINCT S.Description " +
+// 	//"FROM USR_SKUQuestions S " +
+// 	//"WHERE (RTRIM(Answer)='' OR S.Answer IS NULL) " +
+// 	//"AND (S.ParentQuestion=@emptyRef OR S.ParentQuestion IN (SELECT SS.Question FROM USR_SKUQuestions SS " +
+// 	//"WHERE SS.SKU=S.SKU AND (SS.Answer='Yes' OR SS.Answer='Да'))) AND S.SKU=@sku");
+// 	//q2.AddParameter("emptyRef", DB.EmptyRef("Catalog_Question"));
+// 	//q2.AddParameter("sku", sku);
+// 	//var notanswer = q2.ExecuteCount();
+// Dialog.Message("LstFocusTest");
 	if (!relouded) {
 		answerednow = answerinsku;
 		totalanswred = totalanswerinsku;
 		//Dialog.Message("WeNotReload");
 	}
-	//Dialog.Message(answerednow);
-	//answerednow = parseInt(totalanswred) - parseInt(notanswer);
+// 	//Dialog.Message(answerednow);
+// 	//answerednow = parseInt(totalanswred) - parseInt(notanswer);
 	var parentCount = Variables["CountOnPar"+indexpar];
 	var answer = control.Text;
 	if (TrimAll(answer)=="") {
 		answer = "";
 		control.Text = "";
 	}
-
-	//var SkuObj = sku.GetObject();
-
+//
+// 	//var SkuObj = sku.GetObject();
+//
 	if (!String.IsNullOrEmpty(answer) && answerType == DB.Current.Constant.DataType.Integer){
 
 		control.Text = RoundToInt(answer);
@@ -459,7 +459,7 @@ function RefreshScreen(control, search, sku, question, answerType, indexpar, ans
 
 		AssignAnswer(control, question, sku, answer, answerType);
 	}
-	//Dialog.Message(answerednow);
+// 	//Dialog.Message(answerednow);
 	if (answerType == DB.Current.Constant.DataType.Decimal) {
 		var frstLetter = Left(answer,1);
 		if (frstLetter == "," || frstLetter == ".") {
@@ -467,11 +467,11 @@ function RefreshScreen(control, search, sku, question, answerType, indexpar, ans
 			control.Text = answer;
 		}
 	}
-
+//
 	var havenewotv = String.IsNullOrEmpty(answer);
-	if (!(havenewotv^buferansw)) {
-
-	}
+// 	// if (!(havenewotv^buferansw)) {
+// 	//
+// 	// }
 	if (buferansw && !havenewotv) {
 		//Dialog.Message("add");
 		if (regularAnswers) {
@@ -490,23 +490,23 @@ function RefreshScreen(control, search, sku, question, answerType, indexpar, ans
 		}
 		answerednow = parseInt(answerednow) - 1;
 	}
-	//Dialog.Message(answerednow);
-//	var q1 = new Query()
-
+// 	//Dialog.Message(answerednow);
+// //	var q1 = new Query()
+//
 	SetIndicators();
-//		Dialog.Message(q2.ExecuteCount());
-
-	parentCount.Text = answerednow + " " + Translate["#of#"] + " " + totalanswred;
-//	if (regularAnswers) {
-		$.CountRegAnswer.Text = Translate["#regular#"] + " (" +regular_answ + " " + Translate["#of#"] + " " + regular_total + ")";
-//	}else {
-
-		$.CountNoNRegAnswer.Text = Translate["#nonregular#"] + " (" +single_answ + " " + Translate["#of#"] + " " + single_total + ")";
-//	}
-	answerinsku = answerednow;
-	//Dialog.Message(answerinsku);
-	totalanswerinsku = totalanswred;
-	relouded = false;
+// //		Dialog.Message(q2.ExecuteCount());
+//
+ 	parentCount.Text = answerednow + " " + Translate["#of#"] + " " + totalanswred;
+// //	if (regularAnswers) {
+ 		$.CountRegAnswer.Text = Translate["#regular#"] + " (" +regular_answ + " " + Translate["#of#"] + " " + regular_total + ")";
+// //	}else {
+//
+ 		$.CountNoNRegAnswer.Text = Translate["#nonregular#"] + " (" +single_answ + " " + Translate["#of#"] + " " + single_total + ")";
+// //	}
+ 	answerinsku = answerednow;
+// 	//Dialog.Message(answerinsku);
+ 	totalanswerinsku = totalanswred;
+ 	relouded = false;
 	if (reqorno == 1) {
 		var obl =new Query("SELECT Question FROM USR_SKUQuestions WHERE Obligatoriness = @obl And SKU = @sku And Answer IS NULL");
 		obl.AddParameter("obl",1);
@@ -516,15 +516,20 @@ function RefreshScreen(control, search, sku, question, answerType, indexpar, ans
 			//Dialog.Message("ParentReq"+idChail);
 			//Variables["ParentReq"+idChail].Refresh();
 			if (Variables.Exists("ParentReq"+idChail)) {
-				Variables["ParentReq"+idChail].CssClass = "required_side_wh";
-				Variables["ParentReq"+idChail].Refresh();
+				if(Variables["ParentReq"+idChail].CssClass != "required_side_wh"){
+					Variables["ParentReq"+idChail].CssClass = "required_side_wh";
+					Variables["ParentReq"+idChail].Refresh();
+					//Dialog.Message("ParentReq"+idChail);
+				}
 			}
 		}
 		if (rez == 0) {
 			if (Variables.Exists("ParentReq"+idChail)) {
-			Variables["ParentReq"+idChail].CssClass = "answered_side_wh";
-			Variables["ParentReq"+idChail].Refresh();
-		}
+				 if(Variables["ParentReq"+idChail].CssClass != "answered_side_wh"){
+				 		Variables["ParentReq"+idChail].CssClass = "answered_side_wh";
+						Variables["ParentReq"+idChail].Refresh();
+				 }
+			}
 		}
 	}
 	//obligateredLeft = obligateredLeft - 1;
@@ -533,8 +538,10 @@ function RefreshScreen(control, search, sku, question, answerType, indexpar, ans
 		checkAndFormNextButton(obligateredLeft);
 
 		if (Variables.Exists("Req"+idPar)) {
-			Variables["Req"+idPar].CssClass = "answered_side_gr";
-			Variables["Req"+idPar].Refresh();
+			if(Variables["Req"+idPar].CssClass != "answered_side_gr"){
+				Variables["Req"+idPar].CssClass = "answered_side_gr";
+				Variables["Req"+idPar].Refresh();
+			}
 		}
 		//Dialog.Message("ParentReq"+idChail);
 
@@ -550,8 +557,10 @@ function RefreshScreen(control, search, sku, question, answerType, indexpar, ans
 		//	Variables["obligateredInfo"].Text = obligateredLeft;
 		//}
 		if (Variables.Exists("Req"+idPar)) {
-			Variables["Req"+idPar].CssClass = "required_side_gr";
-			Variables["Req"+idPar].Refresh();
+			if(Variables["Req"+idPar].CssClass != "required_side_gr"){
+				Variables["Req"+idPar].CssClass = "required_side_gr";
+				Variables["Req"+idPar].Refresh();
+			}
 		}
 
 	}
@@ -559,11 +568,12 @@ function RefreshScreen(control, search, sku, question, answerType, indexpar, ans
 }
 
 function BuferAns(control){
+	//Dialog.Message(control.Id);
 	if (String.IsNullOrEmpty(control.Text)) {
-			 	buferansw = true;
+						buferansw = true;
 			 }
 			 else {
-			 	buferansw = false;
+						buferansw = false;
 			 }
 }
 function AssignAnswer(control, question, sku, answer, answerType) {
